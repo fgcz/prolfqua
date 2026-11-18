@@ -161,6 +161,167 @@ knitr::kable(one, digits = 3)
 | ropeca_nested         | -0.495 |   0.000 | 0.000 |
 | ropecaV2_nested       | -0.495 |   0.000 | 0.000 |
 
+## Inspecting a fitted analysis
+
+The fitted analysis supports standard R methods.
+[`print()`](https://rdrr.io/r/base/print.html) gives the model
+specification, fit counts and a coefficient preview without calculating
+contrasts. [`summary()`](https://rdrr.io/r/base/summary.html) evaluates
+the contrasts and counts estimated, missing and significant results; the
+significance defaults are FDR \< 0.05 and absolute effect \> 1.
+
+``` r
+analysis <- build_contrast_analysis(lfq_protein, "~ group_", contrasts, method = "lm")
+print(analysis)
+#> prolfqua analysis: lm ( ContrastsLMFacade )
+#> Formula: medpolish ~ group_ 
+#> Contrasts: A_vs_Ctrl 
+#> Input subjects: 20 
+#> # A tibble: 1 × 5
+#>   subjects fitted failed singular imputed
+#>      <int>  <int>  <int>    <int>   <int>
+#> 1       20     20      0        0       0
+#> Coefficient preview:
+#> # A tibble: 6 × 5
+#>   protein_Id  term        estimate std.error    df
+#>   <chr>       <chr>          <dbl>     <dbl> <dbl>
+#> 1 0CubNR~5740 (Intercept)   4.67      0.0547     9
+#> 2 0CubNR~5740 group_B      -0.162     0.0756     9
+#> 3 0CubNR~5740 group_Ctrl    0.0872    0.0741     9
+#> 4 2kfAGV~3196 (Intercept)   4.65      0.0296     8
+#> 5 2kfAGV~3196 group_B      -0.210     0.0419     8
+#> 6 2kfAGV~3196 group_Ctrl   -0.215     0.0453     8
+summary(analysis)
+#> prolfqua analysis summary: lm 
+#> Formula: medpolish ~ group_ 
+#> # A tibble: 1 × 5
+#>   subjects fitted failed singular imputed
+#>      <int>  <int>  <int>    <int>   <int>
+#> 1       20     20      0        0       0
+#> # A tibble: 1 × 8
+#>   contrast  estimated missing significant    up  down median_sigma median_df
+#>   <chr>         <int>   <int>       <int> <int> <int>        <dbl>     <dbl>
+#> 1 A_vs_Ctrl        20       0           0     0     0       0.0701      12.2
+head(coef(analysis))
+#> # A tibble: 6 × 5
+#>   protein_Id  term        estimate std.error    df
+#>   <chr>       <chr>          <dbl>     <dbl> <dbl>
+#> 1 0CubNR~5740 (Intercept)   4.67      0.0547     9
+#> 2 0CubNR~5740 group_B      -0.162     0.0756     9
+#> 3 0CubNR~5740 group_Ctrl    0.0872    0.0741     9
+#> 4 2kfAGV~3196 (Intercept)   4.65      0.0296     8
+#> 5 2kfAGV~3196 group_B      -0.210     0.0419     8
+#> 6 2kfAGV~3196 group_Ctrl   -0.215     0.0453     8
+head(vcov(analysis))
+#> # A tibble: 6 × 4
+#>   protein_Id  term        term2       covariance
+#>   <chr>       <chr>       <chr>            <dbl>
+#> 1 0CubNR~5740 (Intercept) (Intercept)    0.00299
+#> 2 0CubNR~5740 group_B     (Intercept)   -0.00299
+#> 3 0CubNR~5740 group_Ctrl  (Intercept)   -0.00299
+#> 4 0CubNR~5740 (Intercept) group_B       -0.00299
+#> 5 0CubNR~5740 group_B     group_B        0.00572
+#> 6 0CubNR~5740 group_Ctrl  group_B        0.00299
+head(confint(analysis))
+#> # A tibble: 6 × 7
+#>   protein_Id  term        estimate std.error    df conf.low conf.high
+#>   <chr>       <chr>          <dbl>     <dbl> <dbl>    <dbl>     <dbl>
+#> 1 0CubNR~5740 (Intercept)   4.67      0.0547     9   4.55     4.80   
+#> 2 0CubNR~5740 group_B      -0.162     0.0756     9  -0.333    0.00895
+#> 3 0CubNR~5740 group_Ctrl    0.0872    0.0741     9  -0.0804   0.255  
+#> 4 2kfAGV~3196 (Intercept)   4.65      0.0296     8   4.59     4.72   
+#> 5 2kfAGV~3196 group_B      -0.210     0.0419     8  -0.307   -0.113  
+#> 6 2kfAGV~3196 group_Ctrl   -0.215     0.0453     8  -0.320   -0.111
+formula(analysis)
+#> medpolish ~ group_
+#> <environment: 0x566debf08618>
+head(nobs(analysis))
+#> # A tibble: 6 × 2
+#>   protein_Id   nobs
+#>   <chr>       <dbl>
+#> 1 0CubNR~5740    12
+#> 2 2kfAGV~3196    11
+#> 3 2yQxtd~5011    12
+#> 4 5VOuRp~9970    12
+#> 5 DOwxjj~3330    12
+#> 6 DTCi0N~1198    12
+head(fitted(analysis))
+#> # A tibble: 6 × 6
+#>   protein_Id  sampleName group_ response fitted imputed
+#>   <chr>       <chr>      <chr>     <dbl>  <dbl> <lgl>  
+#> 1 0CubNR~5740 A_V1       A          4.84   4.67 FALSE  
+#> 2 0CubNR~5740 A_V2       A          4.65   4.67 FALSE  
+#> 3 0CubNR~5740 A_V3       A          4.49   4.67 FALSE  
+#> 4 0CubNR~5740 A_V4       A          4.81   4.67 FALSE  
+#> 5 0CubNR~5740 B_V1       B          4.58   4.51 FALSE  
+#> 6 0CubNR~5740 B_V2       B          4.60   4.51 FALSE
+head(residuals(analysis))
+#> # A tibble: 6 × 6
+#>   protein_Id  sampleName group_ response residual imputed
+#>   <chr>       <chr>      <chr>     <dbl>    <dbl> <lgl>  
+#> 1 0CubNR~5740 A_V1       A          4.84   0.166  FALSE  
+#> 2 0CubNR~5740 A_V2       A          4.65  -0.0194 FALSE  
+#> 3 0CubNR~5740 A_V3       A          4.49  -0.182  FALSE  
+#> 4 0CubNR~5740 A_V4       A          4.81   0.136  FALSE  
+#> 5 0CubNR~5740 B_V1       B          4.58   0.0730 FALSE  
+#> 6 0CubNR~5740 B_V2       B          4.60   0.0915 FALSE
+plot(analysis)
+```
+
+![](ModellingMethods_files/figure-html/inspect-analysis-1.png)
+
+``` r
+plot(analysis, type = "volcano")
+```
+
+![](ModellingMethods_files/figure-html/inspect-analysis-2.png)
+
+Coefficient tables describe the fitted model; requested comparisons
+remain available through `analysis$get_contrasts()`. Confidence
+intervals are Wald t intervals, with moderated standard errors and
+degrees of freedom for limma and normal Wald intervals for the Firth
+logistic backend. ROPECA coefficient tables are keyed by protein and
+peptide because those methods fit peptide-level models.
+
+[`vcov()`](https://rdrr.io/r/stats/vcov.html) returns the coefficient
+covariance as a long table keyed by subject, `term` and `term2`.
+LOD-refitted models use their borrowed covariance; matrix models use the
+moderated variance and each subject’s weighted design. The default plot
+shows observed responses and fitted group means with confidence
+intervals for the six subjects with the smallest FDR in the first
+contrast. Select other subjects with
+`plot(analysis, subject = top, level = 0.9)`. Points and intervals share
+the modelled response scale; detection models show probabilities, and
+mixed models use fixed-effect means with Satterthwaite intervals. For
+multiple factors, the plotted means correspond to factor combinations.
+ROPECA plots have one panel per peptide of each selected protein.
+Volcano and MA plots remain available through `type = "volcano"` and
+`type = "ma"`; combined hurdle analyses default to volcano and require
+selecting an intensity or detection component for a fitted plot.
+
+The modelling call retains its input, and the fitted-value and residual
+accessors retain observed modelled responses. Internal child-feature
+aggregation and detection encoding have no inverse. Preceding LFQData
+transformations retain their original input columns; they are not
+recorded as a new transformation-history object. See
+[`?build_contrast_analysis`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
+for the affected methods and output scales.
+
+Fitted values and residuals retain sample, factor and available
+child-feature identifiers. They include observed responses from
+successful fits and a subject-level `imputed` flag; rows filled during
+LOD imputation are excluded. The values use the fitting scale: log2
+intensity here, and probabilities for detection models. Binomial
+detection responses are the adjusted proportions used in fitting;
+response residuals equal response minus fitted probability.
+[`nobs()`](https://rdrr.io/r/stats/nobs.html) excludes imputed
+observations.
+
+Hurdle results combine two fitted models. Their print, summary and plot
+methods describe the combined analysis; use
+`analysis$contrast$intensity` or `analysis$contrast$detection` for
+coefficients, formula, observation counts, fitted values and residuals.
+
 ## Session info
 
 ``` r
@@ -194,30 +355,31 @@ sessionInfo()
 #>  [7] digest_0.6.39          lifecycle_1.0.5        Rfit_0.27.0           
 #> [10] survival_3.8-12        statmod_1.5.2          magrittr_2.0.5        
 #> [13] compiler_4.6.2         rlang_1.3.0            sass_0.4.10           
-#> [16] progress_1.2.3         tools_4.6.2            yaml_2.3.12           
-#> [19] data.table_1.18.6.1    limpa_1.4.2            knitr_1.52            
-#> [22] prettyunits_1.2.0      htmlwidgets_1.6.4      RColorBrewer_1.1-3    
-#> [25] numDeriv_2016.8-1.1    withr_3.0.3            purrr_1.2.2           
-#> [28] desc_1.4.3             nnet_7.3-21            grid_4.6.2            
-#> [31] jomo_2.7-6             mice_3.19.0            ggplot2_4.0.4         
-#> [34] scales_1.4.0           iterators_1.0.14       MASS_7.3-66           
-#> [37] cli_3.6.6              rmarkdown_2.32         crayon_1.5.3          
-#> [40] ragg_1.5.2             reformulas_0.4.4       generics_0.1.4        
-#> [43] otel_0.3.0             minqa_1.2.8            cachem_1.1.0          
-#> [46] stringr_1.6.0          operator.tools_1.6.3.1 splines_4.6.2         
-#> [49] BiocManager_1.30.27    vctrs_0.7.3            boot_1.3-32           
-#> [52] glmnet_5.2             Matrix_1.7-6           jsonlite_2.0.0        
-#> [55] bookdown_0.48          hms_1.1.4              mitml_0.4-5           
-#> [58] ggrepel_0.9.8          systemfonts_1.3.3      foreach_1.5.2         
-#> [61] limma_3.68.5           tidyr_1.3.2            jquerylib_0.1.4       
-#> [64] glue_1.8.1             pkgdown_2.2.1          nloptr_2.2.1          
-#> [67] pan_2.0                codetools_0.2-20       stringi_1.8.9         
-#> [70] gtable_0.3.6           shape_1.4.6.1          lmerTest_3.2-1        
-#> [73] lme4_2.1-0             tibble_3.3.1           pillar_1.11.1         
-#> [76] htmltools_0.5.9        R6_2.6.1               textshaping_1.0.5     
-#> [79] Rdpack_2.6.6           formula.tools_1.7.1    evaluate_1.0.5        
-#> [82] lattice_0.23-1         rbibutils_2.4.1        backports_1.5.1       
-#> [85] broom_1.0.13           bslib_0.12.0           Rcpp_1.1.2            
-#> [88] nlme_3.1-171           mgcv_1.9-4             logistf_1.26.1        
-#> [91] xfun_0.62              fs_2.1.0               pkgconfig_2.0.3
+#> [16] progress_1.2.3         tools_4.6.2            utf8_1.2.6            
+#> [19] yaml_2.3.12            data.table_1.18.6.1    limpa_1.4.2           
+#> [22] knitr_1.52             labeling_0.4.3         prettyunits_1.2.0     
+#> [25] htmlwidgets_1.6.4      RColorBrewer_1.1-3     numDeriv_2016.8-1.1   
+#> [28] withr_3.0.3            purrr_1.2.2            desc_1.4.3            
+#> [31] nnet_7.3-21            grid_4.6.2             jomo_2.7-6            
+#> [34] mice_3.19.0            ggplot2_4.0.4          scales_1.4.0          
+#> [37] iterators_1.0.14       MASS_7.3-66            cli_3.6.6             
+#> [40] rmarkdown_2.32         crayon_1.5.3           ragg_1.5.2            
+#> [43] reformulas_0.4.4       generics_0.1.4         otel_0.3.0            
+#> [46] minqa_1.2.8            cachem_1.1.0           stringr_1.6.0         
+#> [49] operator.tools_1.6.3.1 splines_4.6.2          BiocManager_1.30.27   
+#> [52] vctrs_0.7.3            boot_1.3-32            glmnet_5.2            
+#> [55] Matrix_1.7-6           jsonlite_2.0.0         bookdown_0.48         
+#> [58] hms_1.1.4              mitml_0.4-5            ggrepel_0.9.8         
+#> [61] systemfonts_1.3.3      foreach_1.5.2          limma_3.68.5          
+#> [64] tidyr_1.3.2            jquerylib_0.1.4        glue_1.8.1            
+#> [67] pkgdown_2.2.1          nloptr_2.2.1           pan_2.0               
+#> [70] codetools_0.2-20       stringi_1.8.9          gtable_0.3.6          
+#> [73] shape_1.4.6.1          lmerTest_3.2-1         lme4_2.1-0            
+#> [76] tibble_3.3.1           pillar_1.11.1          htmltools_0.5.9       
+#> [79] R6_2.6.1               textshaping_1.0.5      Rdpack_2.6.6          
+#> [82] formula.tools_1.7.1    evaluate_1.0.5         lattice_0.23-1        
+#> [85] rbibutils_2.4.1        backports_1.5.1        broom_1.0.13          
+#> [88] bslib_0.12.0           Rcpp_1.1.2             nlme_3.1-171          
+#> [91] mgcv_1.9-4             logistf_1.26.1         xfun_0.62             
+#> [94] fs_2.1.0               pkgconfig_2.0.3
 ```

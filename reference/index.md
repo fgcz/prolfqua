@@ -234,6 +234,9 @@
 - [`df.residual(`*`<rfit_prolfqua>`*`)`](https://fgcz.github.io/prolfqua/reference/df.residual.rfit_prolfqua.md)
   : Residual degrees of freedom for an augmented rfit fit
 
+- [`fdr_sig_level()`](https://fgcz.github.io/prolfqua/reference/fdr_sig_level.md)
+  : Per-test significance level for FDR-controlled sample-size planning
+
 - [`find_package_file()`](https://fgcz.github.io/prolfqua/reference/find_package_file.md)
   : find file stored in package
 
@@ -289,6 +292,9 @@
 - [`merge_contrasts_results()`](https://fgcz.github.io/prolfqua/reference/merge_contrasts_results.md)
   : Merge contrast results coming from two different model.
 
+- [`nobs(`*`<rfit_prolfqua>`*`)`](https://fgcz.github.io/prolfqua/reference/nobs.rfit_prolfqua.md)
+  : Number of observations in an augmented rfit fit
+
 - [`nr_children_experiment()`](https://fgcz.github.io/prolfqua/reference/nr_children_experiment.md)
   : Max nr_children across samples per hierarchy unit
 
@@ -301,6 +307,23 @@
 - [`pivot_model_contrasts_to_wide()`](https://fgcz.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md)
   : pivot model contrasts matrix to wide format produced by
   \`contrasts_linfct\` and ...
+
+- [`power_fdr_prior_n()`](https://fgcz.github.io/prolfqua/reference/power_fdr_prior_n.md)
+  : Plan sample size from a pilot variance prior and a planned effect
+  distribution
+
+- [`print(`*`<ContrastsFacadeBase>`*`)`](https://fgcz.github.io/prolfqua/reference/prolfqua_analysis_methods.md)
+  [`summary(`*`<ContrastsFacadeBase>`*`)`](https://fgcz.github.io/prolfqua/reference/prolfqua_analysis_methods.md)
+  [`print(`*`<summary.ContrastsFacadeBase>`*`)`](https://fgcz.github.io/prolfqua/reference/prolfqua_analysis_methods.md)
+  [`coef(`*`<ContrastsFacadeBase>`*`)`](https://fgcz.github.io/prolfqua/reference/prolfqua_analysis_methods.md)
+  [`vcov(`*`<ContrastsFacadeBase>`*`)`](https://fgcz.github.io/prolfqua/reference/prolfqua_analysis_methods.md)
+  [`confint(`*`<ContrastsFacadeBase>`*`)`](https://fgcz.github.io/prolfqua/reference/prolfqua_analysis_methods.md)
+  [`formula(`*`<ContrastsFacadeBase>`*`)`](https://fgcz.github.io/prolfqua/reference/prolfqua_analysis_methods.md)
+  [`nobs(`*`<ContrastsFacadeBase>`*`)`](https://fgcz.github.io/prolfqua/reference/prolfqua_analysis_methods.md)
+  [`fitted(`*`<ContrastsFacadeBase>`*`)`](https://fgcz.github.io/prolfqua/reference/prolfqua_analysis_methods.md)
+  [`residuals(`*`<ContrastsFacadeBase>`*`)`](https://fgcz.github.io/prolfqua/reference/prolfqua_analysis_methods.md)
+  [`plot(`*`<ContrastsFacadeBase>`*`)`](https://fgcz.github.io/prolfqua/reference/prolfqua_analysis_methods.md)
+  : Inspect a fitted prolfqua analysis
 
 - [`prolfqua_data()`](https://fgcz.github.io/prolfqua/reference/prolfqua_data.md)
   : load data from prolfqua

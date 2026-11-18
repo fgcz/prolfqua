@@ -22,6 +22,7 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Vignettes</h6></li>
     <li><a class="dropdown-item" href="../articles/CreatingConfigurations.html">Importing your data: AnalysisConfiguration</a></li>
+    <li><a class="dropdown-item" href="../articles/TransformingLFQData.html">Transforming and calibrating LFQ data</a></li>
     <li><a class="dropdown-item" href="../articles/Comparing2Groups.html">Comparing Two Groups with prolfqua</a></li>
     <li><a class="dropdown-item" href="../articles/ModellingMethods.html">All modelling methods at a glance</a></li>
     <li><a class="dropdown-item" href="../articles/TwoFactorDesigns.html">Two-factor designs</a></li>
@@ -66,8 +67,10 @@
 <p>The filtering and imputation methods in this package assume that
 missing values are Missing Completely At Random (MCAR) or Missing At
 Random (MAR). Abundance-dependent missingness (MNAR), which is common
-in DDA proteomics, is not modelled. Users should be aware that MNAR
-can bias fold-change estimates and inflate false discovery rates.</p>
+in DDA proteomics, is not modelled. When low intensities are missing,
+fold changes of down-regulated proteins shrink toward zero; LOD imputation
+(the <code>_impute</code> methods) caps estimates at the LOD and does not remove
+this bias. MNAR can also inflate false discovery rates.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

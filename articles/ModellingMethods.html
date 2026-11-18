@@ -36,6 +36,7 @@
 <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Vignettes</h6></li>
     <li><a class="dropdown-item" href="../articles/CreatingConfigurations.html">Importing your data: AnalysisConfiguration</a></li>
+    <li><a class="dropdown-item" href="../articles/TransformingLFQData.html">Transforming and calibrating LFQ data</a></li>
     <li><a class="dropdown-item" href="../articles/Comparing2Groups.html">Comparing Two Groups with prolfqua</a></li>
     <li><a class="dropdown-item" href="../articles/ModellingMethods.html">All modelling methods at a glance</a></li>
     <li><a class="dropdown-item" href="../articles/TwoFactorDesigns.html">Two-factor designs</a></li>
@@ -488,9 +489,160 @@ protein is detected in every sample, so the detection models report
 </table>
 </div>
 <div class="section level2">
+<h2 id="inspecting-a-fitted-analysis">Inspecting a fitted analysis<a class="anchor" aria-label="anchor" href="#inspecting-a-fitted-analysis"></a>
+</h2>
+<p>The fitted analysis supports standard R methods. <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code>
+gives the model specification, fit counts and a coefficient preview
+without calculating contrasts. <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> evaluates the
+contrasts and counts estimated, missing and significant results; the
+significance defaults are FDR &lt; 0.05 and absolute effect &gt; 1.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">analysis</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_contrast_analysis.html">build_contrast_analysis</a></span><span class="op">(</span><span class="va">lfq_protein</span>, <span class="st">"~ group_"</span>, <span class="va">contrasts</span>, method <span class="op">=</span> <span class="st">"lm"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">analysis</span><span class="op">)</span></span>
+<span><span class="co">#&gt; prolfqua analysis: lm ( ContrastsLMFacade )</span></span>
+<span><span class="co">#&gt; Formula: medpolish ~ group_ </span></span>
+<span><span class="co">#&gt; Contrasts: A_vs_Ctrl </span></span>
+<span><span class="co">#&gt; Input subjects: 20 </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 5</span></span></span>
+<span><span class="co">#&gt;   subjects fitted failed singular imputed</span></span>
+<span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>       20     20      0        0       0</span></span>
+<span><span class="co">#&gt; Coefficient preview:</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 5</span></span></span>
+<span><span class="co">#&gt;   protein_Id  term        estimate std.error    df</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0CubNR~5740 (Intercept)   4.67      0.054<span style="text-decoration: underline;">7</span>     9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 0CubNR~5740 group_B      -<span style="color: #BB0000;">0.162</span>     0.075<span style="text-decoration: underline;">6</span>     9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 0CubNR~5740 group_Ctrl    0.087<span style="text-decoration: underline;">2</span>    0.074<span style="text-decoration: underline;">1</span>     9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 2kfAGV~3196 (Intercept)   4.65      0.029<span style="text-decoration: underline;">6</span>     8</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 2kfAGV~3196 group_B      -<span style="color: #BB0000;">0.210</span>     0.041<span style="text-decoration: underline;">9</span>     8</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 2kfAGV~3196 group_Ctrl   -<span style="color: #BB0000;">0.215</span>     0.045<span style="text-decoration: underline;">3</span>     8</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">analysis</span><span class="op">)</span></span>
+<span><span class="co">#&gt; prolfqua analysis summary: lm </span></span>
+<span><span class="co">#&gt; Formula: medpolish ~ group_ </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 5</span></span></span>
+<span><span class="co">#&gt;   subjects fitted failed singular imputed</span></span>
+<span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>       20     20      0        0       0</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 8</span></span></span>
+<span><span class="co">#&gt;   contrast  estimated missing significant    up  down median_sigma median_df</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> A_vs_Ctrl        20       0           0     0     0       0.070<span style="text-decoration: underline;">1</span>      12.2</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">analysis</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 5</span></span></span>
+<span><span class="co">#&gt;   protein_Id  term        estimate std.error    df</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0CubNR~5740 (Intercept)   4.67      0.054<span style="text-decoration: underline;">7</span>     9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 0CubNR~5740 group_B      -<span style="color: #BB0000;">0.162</span>     0.075<span style="text-decoration: underline;">6</span>     9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 0CubNR~5740 group_Ctrl    0.087<span style="text-decoration: underline;">2</span>    0.074<span style="text-decoration: underline;">1</span>     9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 2kfAGV~3196 (Intercept)   4.65      0.029<span style="text-decoration: underline;">6</span>     8</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 2kfAGV~3196 group_B      -<span style="color: #BB0000;">0.210</span>     0.041<span style="text-decoration: underline;">9</span>     8</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 2kfAGV~3196 group_Ctrl   -<span style="color: #BB0000;">0.215</span>     0.045<span style="text-decoration: underline;">3</span>     8</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov</a></span><span class="op">(</span><span class="va">analysis</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 4</span></span></span>
+<span><span class="co">#&gt;   protein_Id  term        term2       covariance</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0CubNR~5740 (Intercept) (Intercept)    0.002<span style="text-decoration: underline;">99</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 0CubNR~5740 group_B     (Intercept)   -<span style="color: #BB0000;">0.002</span><span style="color: #BB0000; text-decoration: underline;">99</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 0CubNR~5740 group_Ctrl  (Intercept)   -<span style="color: #BB0000;">0.002</span><span style="color: #BB0000; text-decoration: underline;">99</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 0CubNR~5740 (Intercept) group_B       -<span style="color: #BB0000;">0.002</span><span style="color: #BB0000; text-decoration: underline;">99</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 0CubNR~5740 group_B     group_B        0.005<span style="text-decoration: underline;">72</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 0CubNR~5740 group_Ctrl  group_B        0.002<span style="text-decoration: underline;">99</span></span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">analysis</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 7</span></span></span>
+<span><span class="co">#&gt;   protein_Id  term        estimate std.error    df conf.low conf.high</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0CubNR~5740 (Intercept)   4.67      0.054<span style="text-decoration: underline;">7</span>     9   4.55     4.80   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 0CubNR~5740 group_B      -<span style="color: #BB0000;">0.162</span>     0.075<span style="text-decoration: underline;">6</span>     9  -<span style="color: #BB0000;">0.333</span>    0.008<span style="text-decoration: underline;">95</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 0CubNR~5740 group_Ctrl    0.087<span style="text-decoration: underline;">2</span>    0.074<span style="text-decoration: underline;">1</span>     9  -<span style="color: #BB0000;">0.080</span><span style="color: #BB0000; text-decoration: underline;">4</span>   0.255  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 2kfAGV~3196 (Intercept)   4.65      0.029<span style="text-decoration: underline;">6</span>     8   4.59     4.72   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 2kfAGV~3196 group_B      -<span style="color: #BB0000;">0.210</span>     0.041<span style="text-decoration: underline;">9</span>     8  -<span style="color: #BB0000;">0.307</span>   -<span style="color: #BB0000;">0.113</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 2kfAGV~3196 group_Ctrl   -<span style="color: #BB0000;">0.215</span>     0.045<span style="text-decoration: underline;">3</span>     8  -<span style="color: #BB0000;">0.320</span>   -<span style="color: #BB0000;">0.111</span></span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">formula</a></span><span class="op">(</span><span class="va">analysis</span><span class="op">)</span></span>
+<span><span class="co">#&gt; medpolish ~ group_</span></span>
+<span><span class="co">#&gt; &lt;environment: 0x566debf08618&gt;</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/nobs.html" class="external-link">nobs</a></span><span class="op">(</span><span class="va">analysis</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 2</span></span></span>
+<span><span class="co">#&gt;   protein_Id   nobs</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0CubNR~5740    12</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 2kfAGV~3196    11</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 2yQxtd~5011    12</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 5VOuRp~9970    12</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> DOwxjj~3330    12</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> DTCi0N~1198    12</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/fitted.values.html" class="external-link">fitted</a></span><span class="op">(</span><span class="va">analysis</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 6</span></span></span>
+<span><span class="co">#&gt;   protein_Id  sampleName group_ response fitted imputed</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0CubNR~5740 A_V1       A          4.84   4.67 FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 0CubNR~5740 A_V2       A          4.65   4.67 FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 0CubNR~5740 A_V3       A          4.49   4.67 FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 0CubNR~5740 A_V4       A          4.81   4.67 FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 0CubNR~5740 B_V1       B          4.58   4.51 FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 0CubNR~5740 B_V2       B          4.60   4.51 FALSE</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/residuals.html" class="external-link">residuals</a></span><span class="op">(</span><span class="va">analysis</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 6</span></span></span>
+<span><span class="co">#&gt;   protein_Id  sampleName group_ response residual imputed</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0CubNR~5740 A_V1       A          4.84   0.166  FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 0CubNR~5740 A_V2       A          4.65  -<span style="color: #BB0000;">0.019</span><span style="color: #BB0000; text-decoration: underline;">4</span> FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 0CubNR~5740 A_V3       A          4.49  -<span style="color: #BB0000;">0.182</span>  FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 0CubNR~5740 A_V4       A          4.81   0.136  FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 0CubNR~5740 B_V1       B          4.58   0.073<span style="text-decoration: underline;">0</span> FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 0CubNR~5740 B_V2       B          4.60   0.091<span style="text-decoration: underline;">5</span> FALSE</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">analysis</span><span class="op">)</span></span></code></pre></div>
+<p><img src="ModellingMethods_files/figure-html/inspect-analysis-1.png" class="r-plt" alt="" width="700"></p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">analysis</span>, type <span class="op">=</span> <span class="st">"volcano"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="ModellingMethods_files/figure-html/inspect-analysis-2.png" class="r-plt" alt="" width="700"></p>
+<p>Coefficient tables describe the fitted model; requested comparisons
+remain available through <code>analysis$get_contrasts()</code>.
+Confidence intervals are Wald t intervals, with moderated standard
+errors and degrees of freedom for limma and normal Wald intervals for
+the Firth logistic backend. ROPECA coefficient tables are keyed by
+protein and peptide because those methods fit peptide-level models.</p>
+<p><code><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov()</a></code> returns the coefficient covariance as a long
+table keyed by subject, <code>term</code> and <code>term2</code>.
+LOD-refitted models use their borrowed covariance; matrix models use the
+moderated variance and each subject’s weighted design. The default plot
+shows observed responses and fitted group means with confidence
+intervals for the six subjects with the smallest FDR in the first
+contrast. Select other subjects with
+<code>plot(analysis, subject = top, level = 0.9)</code>. Points and
+intervals share the modelled response scale; detection models show
+probabilities, and mixed models use fixed-effect means with
+Satterthwaite intervals. For multiple factors, the plotted means
+correspond to factor combinations. ROPECA plots have one panel per
+peptide of each selected protein. Volcano and MA plots remain available
+through <code>type = "volcano"</code> and <code>type = "ma"</code>;
+combined hurdle analyses default to volcano and require selecting an
+intensity or detection component for a fitted plot.</p>
+<p>The modelling call retains its input, and the fitted-value and
+residual accessors retain observed modelled responses. Internal
+child-feature aggregation and detection encoding have no inverse.
+Preceding LFQData transformations retain their original input columns;
+they are not recorded as a new transformation-history object. See
+<code><a href="../reference/build_contrast_analysis.html">?build_contrast_analysis</a></code> for the affected methods and
+output scales.</p>
+<p>Fitted values and residuals retain sample, factor and available
+child-feature identifiers. They include observed responses from
+successful fits and a subject-level <code>imputed</code> flag; rows
+filled during LOD imputation are excluded. The values use the fitting
+scale: log2 intensity here, and probabilities for detection models.
+Binomial detection responses are the adjusted proportions used in
+fitting; response residuals equal response minus fitted probability.
+<code><a href="https://rdrr.io/r/stats/nobs.html" class="external-link">nobs()</a></code> excludes imputed observations.</p>
+<p>Hurdle results combine two fitted models. Their print, summary and
+plot methods describe the combined analysis; use
+<code>analysis$contrast$intensity</code> or
+<code>analysis$contrast$detection</code> for coefficients, formula,
+observation counts, fitted values and residuals.</p>
+</div>
+<div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; R version 4.6.2 (2026-10-29)</span></span>
 <span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu</span></span>
@@ -521,32 +673,33 @@ protein is detected in every sample, so the detection models report
 <span><span class="co">#&gt;  [7] digest_0.6.39          lifecycle_1.0.5        Rfit_0.27.0           </span></span>
 <span><span class="co">#&gt; [10] survival_3.8-12        statmod_1.5.2          magrittr_2.0.5        </span></span>
 <span><span class="co">#&gt; [13] compiler_4.6.2         rlang_1.3.0            sass_0.4.10           </span></span>
-<span><span class="co">#&gt; [16] progress_1.2.3         tools_4.6.2            yaml_2.3.12           </span></span>
-<span><span class="co">#&gt; [19] data.table_1.18.6.1    limpa_1.4.2            knitr_1.52            </span></span>
-<span><span class="co">#&gt; [22] prettyunits_1.2.0      htmlwidgets_1.6.4      RColorBrewer_1.1-3    </span></span>
-<span><span class="co">#&gt; [25] numDeriv_2016.8-1.1    withr_3.0.3            purrr_1.2.2           </span></span>
-<span><span class="co">#&gt; [28] desc_1.4.3             nnet_7.3-21            grid_4.6.2            </span></span>
-<span><span class="co">#&gt; [31] jomo_2.7-6             mice_3.19.0            ggplot2_4.0.4         </span></span>
-<span><span class="co">#&gt; [34] scales_1.4.0           iterators_1.0.14       MASS_7.3-66           </span></span>
-<span><span class="co">#&gt; [37] cli_3.6.6              rmarkdown_2.32         crayon_1.5.3          </span></span>
-<span><span class="co">#&gt; [40] ragg_1.5.2             reformulas_0.4.4       generics_0.1.4        </span></span>
-<span><span class="co">#&gt; [43] otel_0.3.0             minqa_1.2.8            cachem_1.1.0          </span></span>
-<span><span class="co">#&gt; [46] stringr_1.6.0          operator.tools_1.6.3.1 splines_4.6.2         </span></span>
-<span><span class="co">#&gt; [49] BiocManager_1.30.27    vctrs_0.7.3            boot_1.3-32           </span></span>
-<span><span class="co">#&gt; [52] glmnet_5.2             Matrix_1.7-6           jsonlite_2.0.0        </span></span>
-<span><span class="co">#&gt; [55] bookdown_0.48          hms_1.1.4              mitml_0.4-5           </span></span>
-<span><span class="co">#&gt; [58] ggrepel_0.9.8          systemfonts_1.3.3      foreach_1.5.2         </span></span>
-<span><span class="co">#&gt; [61] limma_3.68.5           tidyr_1.3.2            jquerylib_0.1.4       </span></span>
-<span><span class="co">#&gt; [64] glue_1.8.1             pkgdown_2.2.1          nloptr_2.2.1          </span></span>
-<span><span class="co">#&gt; [67] pan_2.0                codetools_0.2-20       stringi_1.8.9         </span></span>
-<span><span class="co">#&gt; [70] gtable_0.3.6           shape_1.4.6.1          lmerTest_3.2-1        </span></span>
-<span><span class="co">#&gt; [73] lme4_2.1-0             tibble_3.3.1           pillar_1.11.1         </span></span>
-<span><span class="co">#&gt; [76] htmltools_0.5.9        R6_2.6.1               textshaping_1.0.5     </span></span>
-<span><span class="co">#&gt; [79] Rdpack_2.6.6           formula.tools_1.7.1    evaluate_1.0.5        </span></span>
-<span><span class="co">#&gt; [82] lattice_0.23-1         rbibutils_2.4.1        backports_1.5.1       </span></span>
-<span><span class="co">#&gt; [85] broom_1.0.13           bslib_0.12.0           Rcpp_1.1.2            </span></span>
-<span><span class="co">#&gt; [88] nlme_3.1-171           mgcv_1.9-4             logistf_1.26.1        </span></span>
-<span><span class="co">#&gt; [91] xfun_0.62              fs_2.1.0               pkgconfig_2.0.3</span></span></code></pre></div>
+<span><span class="co">#&gt; [16] progress_1.2.3         tools_4.6.2            utf8_1.2.6            </span></span>
+<span><span class="co">#&gt; [19] yaml_2.3.12            data.table_1.18.6.1    limpa_1.4.2           </span></span>
+<span><span class="co">#&gt; [22] knitr_1.52             labeling_0.4.3         prettyunits_1.2.0     </span></span>
+<span><span class="co">#&gt; [25] htmlwidgets_1.6.4      RColorBrewer_1.1-3     numDeriv_2016.8-1.1   </span></span>
+<span><span class="co">#&gt; [28] withr_3.0.3            purrr_1.2.2            desc_1.4.3            </span></span>
+<span><span class="co">#&gt; [31] nnet_7.3-21            grid_4.6.2             jomo_2.7-6            </span></span>
+<span><span class="co">#&gt; [34] mice_3.19.0            ggplot2_4.0.4          scales_1.4.0          </span></span>
+<span><span class="co">#&gt; [37] iterators_1.0.14       MASS_7.3-66            cli_3.6.6             </span></span>
+<span><span class="co">#&gt; [40] rmarkdown_2.32         crayon_1.5.3           ragg_1.5.2            </span></span>
+<span><span class="co">#&gt; [43] reformulas_0.4.4       generics_0.1.4         otel_0.3.0            </span></span>
+<span><span class="co">#&gt; [46] minqa_1.2.8            cachem_1.1.0           stringr_1.6.0         </span></span>
+<span><span class="co">#&gt; [49] operator.tools_1.6.3.1 splines_4.6.2          BiocManager_1.30.27   </span></span>
+<span><span class="co">#&gt; [52] vctrs_0.7.3            boot_1.3-32            glmnet_5.2            </span></span>
+<span><span class="co">#&gt; [55] Matrix_1.7-6           jsonlite_2.0.0         bookdown_0.48         </span></span>
+<span><span class="co">#&gt; [58] hms_1.1.4              mitml_0.4-5            ggrepel_0.9.8         </span></span>
+<span><span class="co">#&gt; [61] systemfonts_1.3.3      foreach_1.5.2          limma_3.68.5          </span></span>
+<span><span class="co">#&gt; [64] tidyr_1.3.2            jquerylib_0.1.4        glue_1.8.1            </span></span>
+<span><span class="co">#&gt; [67] pkgdown_2.2.1          nloptr_2.2.1           pan_2.0               </span></span>
+<span><span class="co">#&gt; [70] codetools_0.2-20       stringi_1.8.9          gtable_0.3.6          </span></span>
+<span><span class="co">#&gt; [73] shape_1.4.6.1          lmerTest_3.2-1         lme4_2.1-0            </span></span>
+<span><span class="co">#&gt; [76] tibble_3.3.1           pillar_1.11.1          htmltools_0.5.9       </span></span>
+<span><span class="co">#&gt; [79] R6_2.6.1               textshaping_1.0.5      Rdpack_2.6.6          </span></span>
+<span><span class="co">#&gt; [82] formula.tools_1.7.1    evaluate_1.0.5         lattice_0.23-1        </span></span>
+<span><span class="co">#&gt; [85] rbibutils_2.4.1        backports_1.5.1        broom_1.0.13          </span></span>
+<span><span class="co">#&gt; [88] bslib_0.12.0           Rcpp_1.1.2             nlme_3.1-171          </span></span>
+<span><span class="co">#&gt; [91] mgcv_1.9-4             logistf_1.26.1         xfun_0.62             </span></span>
+<span><span class="co">#&gt; [94] fs_2.1.0               pkgconfig_2.0.3</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

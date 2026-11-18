@@ -78,6 +78,22 @@ needed. Interaction cell means are named with a colon and quoted with
 backticks inside expressions. See the *Under the hood* article for
 worked one-factor and `~ A * B` design matrices and linear functions.
 
+Internally, `limpa_nested` and `hurdle_nested` aggregate child features
+to proteins. Detection methods (`binomial_nested`,
+`binomial_firth_nested`, `firth`, and the detection component of
+`hurdle_nested`) encode intensities as detected/not detected. These
+aggregation and detection steps have no inverse. The analysis keeps its
+input in `analysis$.lfqdata`; for aggregated input this is already at
+the modelled hierarchy.
+[`fitted()`](https://rdrr.io/r/stats/fitted.values.html) and
+[`residuals()`](https://rdrr.io/r/stats/residuals.html) expose the
+modelled observed responses (inspect each hurdle component separately).
+Intensity effects are differences on the modelled scale, hence log2 fold
+changes for log2 responses; detection effects are log odds ratios, with
+fitted responses reported as probabilities. Transformations performed
+before this call retain their input columns in LFQData; this call does
+not record a transformation history or infer inverse transformations.
+
 With a fixed design and fixed observations per protein, the per-protein
 `lm` and `lmer_nested` fitting loops grow approximately linearly with
 the number of proteins and run sequentially. `limma` fits the expression
@@ -169,7 +185,9 @@ Other modelling:
 [`moderated_p_deqms_long()`](https://fgcz.github.io/prolfqua/reference/moderated_p_deqms_long.md),
 [`moderated_p_limma()`](https://fgcz.github.io/prolfqua/reference/moderated_p_limma.md),
 [`new_imputed_model()`](https://fgcz.github.io/prolfqua/reference/new_imputed_model.md),
+[`nobs.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/nobs.rfit_prolfqua.md),
 [`pivot_model_contrasts_to_wide()`](https://fgcz.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
+[`prolfqua_analysis_methods`](https://fgcz.github.io/prolfqua/reference/prolfqua_analysis_methods.md),
 [`register_facade()`](https://fgcz.github.io/prolfqua/reference/register_facade.md),
 [`sigma.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/sigma.rfit_prolfqua.md),
 [`sim_build_models_lm()`](https://fgcz.github.io/prolfqua/reference/sim_build_models_lm.md),
@@ -297,9 +315,9 @@ head(fa_firth$get_contrasts())
 #> # Groups:   contrast [1]
 #>   modelName estimate_type protein_Id  contrast  sigma    df      diff   FDR
 #>   <chr>     <chr>         <chr>       <chr>     <dbl> <int>     <dbl> <dbl>
-#> 1 firth     observed      0EfVhX~5954 A_vs_Ctrl     1     9  1.07e-15     1
+#> 1 firth     observed      0EfVhX~5954 A_vs_Ctrl     1     9  4.27e-16     1
 #> 2 firth     observed      0m5WN4~1448 A_vs_Ctrl     1     9 -2.20e+ 0     1
-#> 3 firth     observed      7cbcrd~8305 A_vs_Ctrl     1     9  1.07e-15     1
+#> 3 firth     observed      7cbcrd~8305 A_vs_Ctrl     1     9  4.27e-16     1
 #> 4 firth     observed      9VUkAq~4562 A_vs_Ctrl     1     9 -1.35e+ 0     1
 #> 5 firth     observed      At886V~3296 A_vs_Ctrl     1     9  5.58e-16     1
 #> 6 firth     observed      BEJI92~9143 A_vs_Ctrl     1     9 -1.35e+ 0     1

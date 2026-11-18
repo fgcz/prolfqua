@@ -36,6 +36,7 @@
 <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Vignettes</h6></li>
     <li><a class="dropdown-item" href="../articles/CreatingConfigurations.html">Importing your data: AnalysisConfiguration</a></li>
+    <li><a class="dropdown-item" href="../articles/TransformingLFQData.html">Transforming and calibrating LFQ data</a></li>
     <li><a class="dropdown-item" href="../articles/Comparing2Groups.html">Comparing Two Groups with prolfqua</a></li>
     <li><a class="dropdown-item" href="../articles/ModellingMethods.html">All modelling methods at a glance</a></li>
     <li><a class="dropdown-item" href="../articles/TwoFactorDesigns.html">Two-factor designs</a></li>
@@ -72,7 +73,7 @@
                         <h4 data-toc-skip class="author">Witold E.
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">2026-11-17</h4>
+            <h4 data-toc-skip class="date">2026-11-18</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/main/vignettes/articles/ComparingMethods.Rmd" class="external-link"><code>vignettes/articles/ComparingMethods.Rmd</code></a></small>
       <div class="d-none name"><code>ComparingMethods.Rmd</code></div>
@@ -1034,7 +1035,7 @@ detected peptides per protein and sample.</p>
 <p><code>ropeca_nested</code> and <code>ropecaV2_nested</code> aggregate
 peptide evidence back to proteins; <code>ropecaV2_nested</code>
 estimates the correlation of the peptides of a protein from the
-residuals, here 0.03, so that proteins with many peptides are not
+residuals, here 0.06, so that proteins with many peptides are not
 reported as more significant. In contrast, <code>lmer_nested</code>
 models the nested peptide structure directly before reporting
 protein-level contrasts. <code>binomial_firth_nested</code> also reports
@@ -1124,12 +1125,12 @@ estimates <code>diff</code> for proteins detected in one group only.</p>
 <span><span class="co">## <span style="color: #BCBCBC;"> 2</span> A_vs_Ct… KVkccD~18… -<span style="color: #BB0000;">0.524</span>          1.99<span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span>      -<span style="color: #BB0000;">1.88</span><span style="color: #949494;">e</span>+ 0             0.251</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 3</span> A_vs_Ct… 4Y4DYT~09…  0.583          1.99<span style="color: #949494;">e</span><span style="color: #BB0000;">- 8</span>       8.51<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span>             1    </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 4</span> A_vs_Ct… 0CubNR~08…  0.674          4.07<span style="color: #949494;">e</span><span style="color: #BB0000;">- 8</span>       1.35<span style="color: #949494;">e</span>+ 0             0.449</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> A_vs_Ct… 6TevMr~75…  0.765          4.26<span style="color: #949494;">e</span><span style="color: #BB0000;">- 8</span>      -<span style="color: #BB0000;">2.15</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span>             1.000</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> B_vs_Ct… fylZqB~38…  0.717          1.66<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span>       0   <span style="color: #949494;"> </span>                1    </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> B_vs_Ct… f0Cvvj~66…  0.345          3.71<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span>       1.97<span style="color: #949494;">e</span><span style="color: #BB0000;">-31</span>           <span style="color: #BB0000;">NaN</span>    </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> B_vs_Ct… XxJoJB~72…  0.587          2.82<span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span>       0   <span style="color: #949494;"> </span>                1    </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> B_vs_Ct… DOwxjj~62…  0.294          1.44<span style="color: #949494;">e</span><span style="color: #BB0000;">- 7</span>      -<span style="color: #BB0000;">3.94</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-31</span>             1    </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> B_vs_Ct… TR3Ksv~14… -<span style="color: #BB0000;">0.413</span>          4.18<span style="color: #949494;">e</span><span style="color: #BB0000;">- 7</span>       0   <span style="color: #949494;"> </span>                1    </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> A_vs_Ct… 6TevMr~75…  0.765          4.26<span style="color: #949494;">e</span><span style="color: #BB0000;">- 8</span>      -<span style="color: #BB0000;">2.11</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span>             1.000</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> B_vs_Ct… fylZqB~38…  0.717          1.66<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span>      -<span style="color: #BB0000;">9.86</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-32</span>             1    </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> B_vs_Ct… f0Cvvj~66…  0.345          3.71<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span>       0   <span style="color: #949494;"> </span>              <span style="color: #BB0000;">NaN</span>    </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> B_vs_Ct… XxJoJB~72…  0.587          2.82<span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span>      -<span style="color: #BB0000;">9.86</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-32</span>             1    </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> B_vs_Ct… DOwxjj~62…  0.294          1.44<span style="color: #949494;">e</span><span style="color: #BB0000;">- 7</span>       1.97<span style="color: #949494;">e</span><span style="color: #BB0000;">-31</span>             1    </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> B_vs_Ct… TR3Ksv~14… -<span style="color: #BB0000;">0.413</span>          4.18<span style="color: #949494;">e</span><span style="color: #BB0000;">- 7</span>      -<span style="color: #BB0000;">9.86</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-32</span>             1    </span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 2 more variables: p.value &lt;dbl&gt;, FDR &lt;dbl&gt;</span></span></span></code></pre>
 <p>The <code>hurdle_nested</code> method does all of this from the
 peptide data in one call: median polish, <code>lm_impute</code>,

@@ -24,6 +24,7 @@ used by the missingness model path in prolfquapp."></head><body>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Vignettes</h6></li>
     <li><a class="dropdown-item" href="../articles/CreatingConfigurations.html">Importing your data: AnalysisConfiguration</a></li>
+    <li><a class="dropdown-item" href="../articles/TransformingLFQData.html">Transforming and calibrating LFQ data</a></li>
     <li><a class="dropdown-item" href="../articles/Comparing2Groups.html">Comparing Two Groups with prolfqua</a></li>
     <li><a class="dropdown-item" href="../articles/ModellingMethods.html">All modelling methods at a glance</a></li>
     <li><a class="dropdown-item" href="../articles/TwoFactorDesigns.html">Two-factor designs</a></li>
@@ -155,7 +156,9 @@ used by the missingness model path in <code>prolfquapp</code>.</p>
 <code><a href="moderated_p_deqms_long.html">moderated_p_deqms_long()</a></code>,
 <code><a href="moderated_p_limma.html">moderated_p_limma()</a></code>,
 <code><a href="new_imputed_model.html">new_imputed_model()</a></code>,
+<code><a href="nobs.rfit_prolfqua.html">nobs.rfit_prolfqua()</a></code>,
 <code><a href="pivot_model_contrasts_to_wide.html">pivot_model_contrasts_to_wide()</a></code>,
+<code><a href="prolfqua_analysis_methods.html">prolfqua_analysis_methods</a></code>,
 <code><a href="register_facade.html">register_facade()</a></code>,
 <code><a href="sigma.rfit_prolfqua.html">sigma.rfit_prolfqua()</a></code>,
 <code><a href="sim_build_models_lm.html">sim_build_models_lm()</a></code>,
@@ -179,15 +182,14 @@ used by the missingness model path in <code>prolfquapp</code>.</p>
 <span class="r-in"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu">build_model_glm_protein</span><span class="op">(</span><span class="va">lfqdata</span>, <span class="st">"~ group_"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mod</span><span class="op">$</span><span class="fu">get_coefficients</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 11</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   protein_Id [2]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   protein_Id  factor      Estimate se.coef. lower.0.95 upper.0.95    Chisq     p</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 7IZdVV~0841 (Intercep…  2.20<span style="color: #949494;">e</span>+ 0     1.49     -<span style="color: #BB0000;">0.725</span>       5.12 2.17<span style="color: #949494;">e</span>+ 0 0.140</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 7IZdVV~0841 group_B     5.68<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span>     2.11     -<span style="color: #BB0000;">4.13</span>        4.13 7.74<span style="color: #949494;">e</span><span style="color: #BB0000;">-32</span> 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 7IZdVV~0841 group_B     9.70<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span>     2.11     -<span style="color: #BB0000;">4.13</span>        4.13 1.74<span style="color: #949494;">e</span><span style="color: #BB0000;">-31</span> 1    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 7IZdVV~0841 group_Ctrl -<span style="color: #BB0000;">2.20</span><span style="color: #949494;">e</span>+ 0     1.74     -<span style="color: #BB0000;">5.60</span>        1.21 1.60<span style="color: #949494;">e</span>+ 0 0.206</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> AZPG26~2091 (Intercep…  2.20<span style="color: #949494;">e</span>+ 0     1.49     -<span style="color: #BB0000;">0.725</span>       5.12 2.17<span style="color: #949494;">e</span>+ 0 0.140</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> AZPG26~2091 group_B    -<span style="color: #BB0000;">1.52</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span>     2.11     -<span style="color: #BB0000;">4.13</span>        4.13 4.84<span style="color: #949494;">e</span><span style="color: #BB0000;">-31</span> 1.00 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> AZPG26~2091 group_Ctrl -<span style="color: #BB0000;">1.07</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span>     2.11     -<span style="color: #BB0000;">4.13</span>        4.13 3.10<span style="color: #949494;">e</span><span style="color: #BB0000;">-31</span> 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> AZPG26~2091 group_B     1.26<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span>     2.11     -<span style="color: #BB0000;">4.13</span>        4.13 3.10<span style="color: #949494;">e</span><span style="color: #BB0000;">-31</span> 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> AZPG26~2091 group_Ctrl -<span style="color: #BB0000;">4.27</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span>     2.11     -<span style="color: #BB0000;">4.13</span>        4.13 1.94<span style="color: #949494;">e</span><span style="color: #BB0000;">-32</span> 1    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 3 more variables: method &lt;dbl&gt;, isSingular &lt;lgl&gt;, nr_coef &lt;int&gt;</span></span>
 </code></pre></div>
     </div>

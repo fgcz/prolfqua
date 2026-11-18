@@ -22,6 +22,7 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Vignettes</h6></li>
     <li><a class="dropdown-item" href="../articles/CreatingConfigurations.html">Importing your data: AnalysisConfiguration</a></li>
+    <li><a class="dropdown-item" href="../articles/TransformingLFQData.html">Transforming and calibrating LFQ data</a></li>
     <li><a class="dropdown-item" href="../articles/Comparing2Groups.html">Comparing Two Groups with prolfqua</a></li>
     <li><a class="dropdown-item" href="../articles/ModellingMethods.html">All modelling methods at a glance</a></li>
     <li><a class="dropdown-item" href="../articles/TwoFactorDesigns.html">Two-factor designs</a></li>
@@ -186,7 +187,9 @@ affecting analyses are recorded in NEWS.</p>
     models assume a linear mean, independent errors and constant residual
     variance; exact t inference also assumes normal errors. Weights allow
     specified relative variances and mixed models allow specified dependence
-    within subjects. Robust, detection and imputation methods have
+    within subjects. Outliers and heavy-tailed errors pull least-squares
+    estimates; the robust methods rlm and rfit limit their influence.
+    Robust, detection and imputation methods have
     different assumptions; diagnostics and the experimental design must
     guide the method choice.</p></dd>
 

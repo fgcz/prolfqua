@@ -36,6 +36,7 @@
 <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Vignettes</h6></li>
     <li><a class="dropdown-item" href="../articles/CreatingConfigurations.html">Importing your data: AnalysisConfiguration</a></li>
+    <li><a class="dropdown-item" href="../articles/TransformingLFQData.html">Transforming and calibrating LFQ data</a></li>
     <li><a class="dropdown-item" href="../articles/Comparing2Groups.html">Comparing Two Groups with prolfqua</a></li>
     <li><a class="dropdown-item" href="../articles/ModellingMethods.html">All modelling methods at a glance</a></li>
     <li><a class="dropdown-item" href="../articles/TwoFactorDesigns.html">Two-factor designs</a></li>
@@ -72,7 +73,7 @@
                         <h4 data-toc-skip class="author">Witold E.
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">2026-11-17</h4>
+            <h4 data-toc-skip class="date">2026-11-18</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/main/vignettes/articles/LowLevelAPI.Rmd" class="external-link"><code>vignettes/articles/LowLevelAPI.Rmd</code></a></small>
       <div class="d-none name"><code>LowLevelAPI.Rmd</code></div>
@@ -179,16 +180,17 @@ FDR of the per-protein analysis of variance.
 <p>The model coefficients:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mod</span><span class="op">$</span><span class="fu">get_coefficients</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 8</span></span></span>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 9</span></span></span>
 <span><span class="co">## <span style="color: #949494;"># Groups:   protein_Id [2]</span></span></span>
-<span><span class="co">##   protein_Id  factor     Estimate Std..Error t.value Pr...t.. isSingular nr_coef</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> 0EfVhX~3967 (Intercep…    22.0       0.494   44.5  7.53<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span> FALSE            3</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> 0EfVhX~3967 group_B       -<span style="color: #BB0000;">2.39</span>      0.755   -<span style="color: #BB0000;">3.17</span> 1.57<span style="color: #949494;">e</span><span style="color: #BB0000;">- 2</span> FALSE            3</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> 0EfVhX~3967 group_Ctrl    -<span style="color: #BB0000;">1.37</span>      0.755   -<span style="color: #BB0000;">1.82</span> 1.12<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> FALSE            3</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> 0m5WN4~6025 (Intercep…    16.9       0.599   28.2  2.68<span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span> FALSE            3</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span> 0m5WN4~6025 group_B        6.58      0.792    8.31 3.32<span style="color: #949494;">e</span><span style="color: #BB0000;">- 5</span> FALSE            3</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">6</span> 0m5WN4~6025 group_Ctrl     3.04      0.792    3.84 4.96<span style="color: #949494;">e</span><span style="color: #BB0000;">- 3</span> FALSE            3</span></span></code></pre>
+<span><span class="co">##   protein_Id  factor      Estimate Std..Error    df t.value Pr...t.. isSingular</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> 0EfVhX~3967 (Intercept)    22.0       0.494     7   44.5  7.53<span style="color: #949494;">e</span><span style="color: #BB0000;">-10</span> FALSE     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> 0EfVhX~3967 group_B        -<span style="color: #BB0000;">2.39</span>      0.755     7   -<span style="color: #BB0000;">3.17</span> 1.57<span style="color: #949494;">e</span><span style="color: #BB0000;">- 2</span> FALSE     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> 0EfVhX~3967 group_Ctrl     -<span style="color: #BB0000;">1.37</span>      0.755     7   -<span style="color: #BB0000;">1.82</span> 1.12<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> FALSE     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> 0m5WN4~6025 (Intercept)    16.9       0.599     8   28.2  2.68<span style="color: #949494;">e</span><span style="color: #BB0000;">- 9</span> FALSE     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> 0m5WN4~6025 group_B         6.58      0.792     8    8.31 3.32<span style="color: #949494;">e</span><span style="color: #BB0000;">- 5</span> FALSE     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">6</span> 0m5WN4~6025 group_Ctrl      3.04      0.792     8    3.84 4.96<span style="color: #949494;">e</span><span style="color: #BB0000;">- 3</span> FALSE     </span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 1 more variable: nr_coef &lt;int&gt;</span></span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="from-a-formula-to-coefficient-weights">From a formula to coefficient weights<a class="anchor" aria-label="anchor" href="#from-a-formula-to-coefficient-weights"></a>

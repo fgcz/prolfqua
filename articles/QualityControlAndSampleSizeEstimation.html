@@ -36,6 +36,7 @@
 <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Vignettes</h6></li>
     <li><a class="dropdown-item" href="../articles/CreatingConfigurations.html">Importing your data: AnalysisConfiguration</a></li>
+    <li><a class="dropdown-item" href="../articles/TransformingLFQData.html">Transforming and calibrating LFQ data</a></li>
     <li><a class="dropdown-item" href="../articles/Comparing2Groups.html">Comparing Two Groups with prolfqua</a></li>
     <li><a class="dropdown-item" href="../articles/ModellingMethods.html">All modelling methods at a glance</a></li>
     <li><a class="dropdown-item" href="../articles/TwoFactorDesigns.html">Two-factor designs</a></li>
@@ -72,7 +73,7 @@
                         <h4 data-toc-skip class="author">Witold E.
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">2026-11-17</h4>
+            <h4 data-toc-skip class="date">2026-11-18</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/main/vignettes/QualityControlAndSampleSizeEstimation.Rmd" class="external-link"><code>vignettes/QualityControlAndSampleSizeEstimation.Rmd</code></a></small>
       <div class="d-none name"><code>QualityControlAndSampleSizeEstimation.Rmd</code></div>
@@ -766,13 +767,191 @@ Distribution of the required sample sizes for two fold change thresholds
 for all the proteins.
 </p>
 </div>
+</div>
+<div class="section level3">
+<h3 id="sample-size-planning-with-an-fdr-target">Sample-size planning with an FDR target<a class="anchor" aria-label="anchor" href="#sample-size-planning-with-an-fdr-target"></a>
+</h3>
+<p>For many simultaneous tests, the Jung/Liu–Hwang relationship converts
+the target FDR, assumed null-feature proportion (<code>pi0</code>) and
+target average power into a per-test significance level <span class="citation">(Jung 2005; Liu and Hwang 2007)</span>. Pass this
+threshold to the existing protein or SD-quantile methods. Here we plan
+differences of 0.05 and 0.1 on the transformed response scale, within
+the range of this pilot’s within-group variation.</p>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">alpha</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/fdr_sig_level.html">fdr_sig_level</a></span><span class="op">(</span>fdr <span class="op">=</span> <span class="fl">0.05</span>, pi0 <span class="op">=</span> <span class="fl">0.95</span>, power <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span></span>
+<span><span class="va">fdr_quantiles</span> <span class="op">&lt;-</span> <span class="va">stats</span><span class="op">$</span><span class="fu">power_t_test_quantiles</span><span class="op">(</span></span>
+<span>  delta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.05</span>, <span class="fl">0.1</span><span class="op">)</span>, power <span class="op">=</span> <span class="fl">0.8</span>, sig.level <span class="op">=</span> <span class="va">alpha</span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">group_</span> <span class="op">!=</span> <span class="st">"All"</span><span class="op">)</span></span>
+<span><span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/table_facade.html">table_facade</a></span><span class="op">(</span><span class="va">fdr_quantiles</span>, <span class="st">"FDR planning: samples per group by SD quantile"</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<caption>FDR planning: samples per group by SD quantile</caption>
+<thead><tr class="header">
+<th align="left">group_</th>
+<th align="right">probs</th>
+<th align="right">quantiles</th>
+<th align="right">sdtrimmed</th>
+<th align="right">N_exact</th>
+<th align="right">N</th>
+<th align="right">delta</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">A</td>
+<td align="right">0.10</td>
+<td align="right">0.0355196</td>
+<td align="right">0.0355196</td>
+<td align="right">17.770975</td>
+<td align="right">18</td>
+<td align="right">0.05</td>
+</tr>
+<tr class="even">
+<td align="left">A</td>
+<td align="right">0.25</td>
+<td align="right">0.0587524</td>
+<td align="right">0.0587524</td>
+<td align="right">44.398337</td>
+<td align="right">45</td>
+<td align="right">0.05</td>
+</tr>
+<tr class="odd">
+<td align="left">A</td>
+<td align="right">0.50</td>
+<td align="right">0.0717438</td>
+<td align="right">0.0717438</td>
+<td align="right">65.031397</td>
+<td align="right">66</td>
+<td align="right">0.05</td>
+</tr>
+<tr class="even">
+<td align="left">A</td>
+<td align="right">0.75</td>
+<td align="right">0.1240478</td>
+<td align="right">0.1240478</td>
+<td align="right">189.707462</td>
+<td align="right">190</td>
+<td align="right">0.05</td>
+</tr>
+<tr class="odd">
+<td align="left">A</td>
+<td align="right">0.90</td>
+<td align="right">0.1687990</td>
+<td align="right">0.1687990</td>
+<td align="right">349.271485</td>
+<td align="right">350</td>
+<td align="right">0.05</td>
+</tr>
+<tr class="even">
+<td align="left">A</td>
+<td align="right">0.10</td>
+<td align="right">0.0355196</td>
+<td align="right">0.0355196</td>
+<td align="right">6.335427</td>
+<td align="right">7</td>
+<td align="right">0.10</td>
+</tr>
+<tr class="odd">
+<td align="left">A</td>
+<td align="right">0.25</td>
+<td align="right">0.0587524</td>
+<td align="right">0.0587524</td>
+<td align="right">12.939389</td>
+<td align="right">13</td>
+<td align="right">0.10</td>
+</tr>
+<tr class="even">
+<td align="left">A</td>
+<td align="right">0.50</td>
+<td align="right">0.0717438</td>
+<td align="right">0.0717438</td>
+<td align="right">18.076136</td>
+<td align="right">19</td>
+<td align="right">0.10</td>
+</tr>
+<tr class="odd">
+<td align="left">A</td>
+<td align="right">0.75</td>
+<td align="right">0.1240478</td>
+<td align="right">0.1240478</td>
+<td align="right">49.206489</td>
+<td align="right">50</td>
+<td align="right">0.10</td>
+</tr>
+<tr class="even">
+<td align="left">A</td>
+<td align="right">0.90</td>
+<td align="right">0.1687990</td>
+<td align="right">0.1687990</td>
+<td align="right">89.086736</td>
+<td align="right">90</td>
+<td align="right">0.10</td>
+</tr>
+</tbody>
+</table>
+<p>Alternatively, estimate a variance distribution from all pilot
+groups, pooling the raw within-group variances using the observed
+replicate counts. <code>power_fdr_pilot()</code> fits an inverse-gamma
+variance prior with limma and averages ordinary two-sided t-test power
+over this prior and the planned distribution of true non-null effects.
+<code>delta_se</code> is the standard deviation of those effects, not
+the standard error of an estimated mean. Supply effects on the same
+scale as the transformed response. Neither effects nor <code>pi0</code>
+are estimated from the pilot.</p>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pilot_plan</span> <span class="op">&lt;-</span> <span class="va">transformed</span><span class="op">$</span><span class="fu">get_Stats</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">power_fdr_pilot</span><span class="op">(</span></span>
+<span>  delta_mean <span class="op">=</span> <span class="fl">0.1</span>, delta_se <span class="op">=</span> <span class="fl">0.02</span>, fdr <span class="op">=</span> <span class="fl">0.05</span>, power <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span>  pi0 <span class="op">=</span> <span class="fl">0.95</span>, max_n <span class="op">=</span> <span class="fl">100</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">pilot_plan</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"N"</span>, <span class="st">"power_achieved"</span>, <span class="st">"var_prior"</span>, <span class="st">"df_prior"</span>, <span class="st">"n_features_used"</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
+<pre><code><span><span class="co">## $N</span></span>
+<span><span class="co">## [1] 29</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $power_achieved</span></span>
+<span><span class="co">## [1] 0.8049355</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $var_prior</span></span>
+<span><span class="co">## [1] 0.006989028</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $df_prior</span></span>
+<span><span class="co">## [1] 24.91456</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $n_features_used</span></span>
+<span><span class="co">## [1] 28</span></span></code></pre>
+<p><code>N</code> is the first integer sample count <strong>per
+group</strong> reaching the target average power, or <code>NA</code> if
+the target is not reached by <code>max_n</code>. In the latter case,
+<code>power_achieved</code> reports power at <code>max_n</code>. For
+matrix-derived pilot estimates, call
+<code>prolfqua::power_fdr_prior_n(var, df, ...)</code> directly with
+unweighted, unmoderated per-feature variance estimates and their
+residual degrees of freedom.</p>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">pilot_plan</span><span class="op">$</span><span class="va">power_curve</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">n</span>, <span class="va">power</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">0.8</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Samples per group"</span>, y <span class="op">=</span> <span class="st">"Average power"</span><span class="op">)</span></span></code></pre></div>
+<div class="figure">
+<img src="QualityControlAndSampleSizeEstimation_files/figure-html/fdr-pilot-power-curve-1.png" class="r-plt" alt="Average power under the planned effect distribution and fitted variance prior." width="700"><p class="caption">
+Average power under the planned effect distribution and fitted variance
+prior.
+</p>
+</div>
+<p>These calculations assume a balanced two-group design, equal
+within-group variances, independent effect and variance priors, and
+independent tests (or an adequate approximation under weak dependence).
+They use ordinary t-test degrees of freedom, so sample sizes are
+conservative relative to a moderated test under the same model. The
+fixed significance threshold gives the FDR planning bound once the
+target power is reached; lower-power points on the curve need not meet
+it. The specified FDR is a planning expectation under these assumptions,
+not a guarantee for each realized experiment.</p>
 <p>The <code>prolfqua</code> package is described in <span class="citation">(Wolski et al. 2023)</span>.</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## R version 4.6.2 (2026-10-29)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu</span></span>
@@ -835,6 +1014,15 @@ for all the proteins.
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-Jung2005" class="csl-entry">
+Jung, Sin-Ho. 2005. <span>“Sample Size for FDR-Control in Microarray
+Data Analysis.”</span> <em>Bioinformatics</em> 21 (14): 3097–3104. <a href="https://doi.org/10.1093/bioinformatics/bti456" class="external-link">https://doi.org/10.1093/bioinformatics/bti456</a>.
+</div>
+<div id="ref-LiuHwang2007" class="csl-entry">
+Liu, Peng, and J. T. Gene Hwang. 2007. <span>“Quick Calculation for
+Sample Size While Controlling False Discovery Rate with Application to
+Microarray Analysis.”</span> <em>Bioinformatics</em> 23 (6): 739–46. <a href="https://doi.org/10.1093/bioinformatics/btl664" class="external-link">https://doi.org/10.1093/bioinformatics/btl664</a>.
+</div>
 <div id="ref-Wolski2023prolfqua" class="csl-entry">
 Wolski, Witold E., Paolo Nanni, Jonas Grossmann, Maria d’Errico, Ralph
 Schlapbach, and Christian Panse. 2023. <span>“<span class="nocase">prolfqua</span>: A Comprehensive <span>R-Package</span>

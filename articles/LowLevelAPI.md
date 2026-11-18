@@ -117,16 +117,17 @@ The model coefficients:
 head(mod$get_coefficients())
 ```
 
-    ## # A tibble: 6 × 8
+    ## # A tibble: 6 × 9
     ## # Groups:   protein_Id [2]
-    ##   protein_Id  factor     Estimate Std..Error t.value Pr...t.. isSingular nr_coef
-    ##   <chr>       <chr>         <dbl>      <dbl>   <dbl>    <dbl> <lgl>        <int>
-    ## 1 0EfVhX~3967 (Intercep…    22.0       0.494   44.5  7.53e-10 FALSE            3
-    ## 2 0EfVhX~3967 group_B       -2.39      0.755   -3.17 1.57e- 2 FALSE            3
-    ## 3 0EfVhX~3967 group_Ctrl    -1.37      0.755   -1.82 1.12e- 1 FALSE            3
-    ## 4 0m5WN4~6025 (Intercep…    16.9       0.599   28.2  2.68e- 9 FALSE            3
-    ## 5 0m5WN4~6025 group_B        6.58      0.792    8.31 3.32e- 5 FALSE            3
-    ## 6 0m5WN4~6025 group_Ctrl     3.04      0.792    3.84 4.96e- 3 FALSE            3
+    ##   protein_Id  factor      Estimate Std..Error    df t.value Pr...t.. isSingular
+    ##   <chr>       <chr>          <dbl>      <dbl> <int>   <dbl>    <dbl> <lgl>     
+    ## 1 0EfVhX~3967 (Intercept)    22.0       0.494     7   44.5  7.53e-10 FALSE     
+    ## 2 0EfVhX~3967 group_B        -2.39      0.755     7   -3.17 1.57e- 2 FALSE     
+    ## 3 0EfVhX~3967 group_Ctrl     -1.37      0.755     7   -1.82 1.12e- 1 FALSE     
+    ## 4 0m5WN4~6025 (Intercept)    16.9       0.599     8   28.2  2.68e- 9 FALSE     
+    ## 5 0m5WN4~6025 group_B         6.58      0.792     8    8.31 3.32e- 5 FALSE     
+    ## 6 0m5WN4~6025 group_Ctrl      3.04      0.792     8    3.84 4.96e- 3 FALSE     
+    ## # ℹ 1 more variable: nr_coef <int>
 
 ## From a formula to coefficient weights
 

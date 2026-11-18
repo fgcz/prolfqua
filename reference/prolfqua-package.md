@@ -163,9 +163,11 @@ release. Changes affecting analyses are recorded in NEWS.
   On the working scale, classical linear models assume a linear mean,
   independent errors and constant residual variance; exact t inference
   also assumes normal errors. Weights allow specified relative variances
-  and mixed models allow specified dependence within subjects. Robust,
-  detection and imputation methods have different assumptions;
-  diagnostics and the experimental design must guide the method choice.
+  and mixed models allow specified dependence within subjects. Outliers
+  and heavy-tailed errors pull least-squares estimates; the robust
+  methods rlm and rfit limit their influence. Robust, detection and
+  imputation methods have different assumptions; diagnostics and the
+  experimental design must guide the method choice.
 
 ## See also
 

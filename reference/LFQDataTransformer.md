@@ -28,6 +28,8 @@ An R6 class generator.
 
 - [`LFQDataTransformer$center_to_reference()`](#method-LFQDataTransformer-center_to_reference)
 
+- [`LFQDataTransformer$subtract_sample_offsets()`](#method-LFQDataTransformer-subtract_sample_offsets)
+
 - [`LFQDataTransformer$intensity_array()`](#method-LFQDataTransformer-intensity_array)
 
 - [`LFQDataTransformer$intensity_matrix()`](#method-LFQDataTransformer-intensity_matrix)
@@ -166,6 +168,31 @@ center data to a reference subset
 #### Returns
 
 LFQDataTransformer (self)
+
+------------------------------------------------------------------------
+
+### `LFQDataTransformer$subtract_sample_offsets()`
+
+Subtract caller-supplied offsets from the active log2 response. The
+caller supplies log2 data and chooses the global level through the
+offsets. Missing intensities remain missing. The result becomes the
+active response in a new column named `<response>_offset_adjusted`, with
+a numeric suffix if the name already exists.
+
+#### Usage
+
+    LFQDataTransformer$subtract_sample_offsets(offsets)
+
+#### Arguments
+
+- `offsets`:
+
+  Named numeric vector with one finite log2 offset per sample. Names
+  must match the configured sample IDs exactly and may be in any order.
+
+#### Returns
+
+LFQDataTransformer (self, invisibly)
 
 ------------------------------------------------------------------------
 
@@ -321,15 +348,15 @@ if(require("vsn")){
 #> Loading required package: vsn
 #> $medians
 #>     A_V1     A_V2     A_V3     A_V4     B_V1     B_V2     B_V3     B_V4 
-#> 5.067592 5.060373 5.052612 5.063121 5.106810 5.128959 5.089511 5.100129 
+#> 5.010572 5.002975 4.994914 5.006013 5.051370 5.074292 5.033370 5.044391 
 #>  Ctrl_V1  Ctrl_V2  Ctrl_V3  Ctrl_V4 
-#> 5.098851 5.067436 5.089542 5.072697 
+#> 5.043057 5.010404 5.033362 5.015886 
 #> 
 #> $mads
 #>      A_V1      A_V2      A_V3      A_V4      B_V1      B_V2      B_V3      B_V4 
-#> 0.2356539 0.2539392 0.2391802 0.2462082 0.2603902 0.2549782 0.2228186 0.2342742 
+#> 0.2443545 0.2638516 0.2494166 0.2556915 0.2710033 0.2638501 0.2316761 0.2437389 
 #>   Ctrl_V1   Ctrl_V2   Ctrl_V3   Ctrl_V4 
-#> 0.2618927 0.2316253 0.2412538 0.2422008 
+#> 0.2738565 0.2415127 0.2514121 0.2512947 
 #> 
 if(require("preprocessCore")){
 quant <- function(y){
@@ -392,4 +419,12 @@ robscale$get_Plotter()$intensity_distribution_density()
 #> Warning: Removed 36 rows containing non-finite outside the scale range
 #> (`stat_density()`).
 
+
+# Apply a one-unit log2 offset to the first sample
+tr <- lfqdata$get_Transformer()$log2()
+#> Column added : log2_abundance
+samples <- unique(tr$lfq$data_long()[[tr$lfq$sample_name()]])
+offsets <- setNames(numeric(length(samples)), samples)
+offsets[1] <- 1
+tr$subtract_sample_offsets(offsets)
 ```

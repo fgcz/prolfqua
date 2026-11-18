@@ -89,7 +89,9 @@ Other modelling:
 [`moderated_p_deqms_long()`](https://fgcz.github.io/prolfqua/reference/moderated_p_deqms_long.md),
 [`moderated_p_limma()`](https://fgcz.github.io/prolfqua/reference/moderated_p_limma.md),
 [`new_imputed_model()`](https://fgcz.github.io/prolfqua/reference/new_imputed_model.md),
+[`nobs.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/nobs.rfit_prolfqua.md),
 [`pivot_model_contrasts_to_wide()`](https://fgcz.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
+[`prolfqua_analysis_methods`](https://fgcz.github.io/prolfqua/reference/prolfqua_analysis_methods.md),
 [`register_facade()`](https://fgcz.github.io/prolfqua/reference/register_facade.md),
 [`sigma.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/sigma.rfit_prolfqua.md),
 [`sim_build_models_lm()`](https://fgcz.github.io/prolfqua/reference/sim_build_models_lm.md),
@@ -190,9 +192,9 @@ head(fa$get_contrasts())
 #> # Groups:   contrast [1]
 #>   modelName estimate_type protein_Id  contrast  sigma    df      diff   FDR
 #>   <chr>     <chr>         <chr>       <chr>     <dbl> <int>     <dbl> <dbl>
-#> 1 firth     observed      0EfVhX~5954 A_vs_Ctrl     1     9  1.07e-15 1    
+#> 1 firth     observed      0EfVhX~5954 A_vs_Ctrl     1     9  4.27e-16 1    
 #> 2 firth     observed      0m5WN4~1448 A_vs_Ctrl     1     9  8.47e- 1 0.978
-#> 3 firth     observed      7cbcrd~8305 A_vs_Ctrl     1     9  1.07e-15 1    
+#> 3 firth     observed      7cbcrd~8305 A_vs_Ctrl     1     9  4.27e-16 1    
 #> 4 firth     observed      9VUkAq~4562 A_vs_Ctrl     1     9 -1.35e+ 0 0.978
 #> 5 firth     observed      At886V~3296 A_vs_Ctrl     1     9 -8.47e- 1 0.978
 #> 6 firth     observed      BEJI92~9143 A_vs_Ctrl     1     9 -1.35e+ 0 0.978
@@ -203,24 +205,24 @@ fa$to_wide()
 #> # A tibble: 20 × 5
 #>    protein_Id diff.A_vs_Ctrl p.value.A_vs_Ctrl FDR.A_vs_Ctrl statistic.A_vs_Ctrl
 #>    <chr>               <dbl>             <dbl>         <dbl>               <dbl>
-#>  1 0EfVhX~59…       1.07e-15             1             1                5.08e-16
+#>  1 0EfVhX~59…       4.27e-16             1             1                2.03e-16
 #>  2 0m5WN4~14…       8.47e- 1             0.538         0.978            6.40e- 1
-#>  3 7cbcrd~83…       1.07e-15             1             1                5.08e-16
+#>  3 7cbcrd~83…       4.27e-16             1             1                2.03e-16
 #>  4 9VUkAq~45…      -1.35e+ 0             0.468         0.978           -7.58e- 1
 #>  5 At886V~32…      -8.47e- 1             0.538         0.978           -6.40e- 1
 #>  6 BEJI92~91…      -1.35e+ 0             0.468         0.978           -7.58e- 1
-#>  7 CGzoYe~28…      -4.13e-16             1             1               -1.96e-16
+#>  7 CGzoYe~28…       2.16e-15             1.000         1                1.02e-15
 #>  8 CtOJ9t~28…       1.35e+ 0             0.468         0.978            7.58e- 1
 #>  9 DoWup2~29…       2.20e+ 0             0.238         0.978            1.26e+ 0
 #> 10 DuwH7n~34…       8.47e- 1             0.538         0.978            6.40e- 1
-#> 11 Fl4JiV~75…      -2.94e-17             1             1               -2.32e-17
+#> 11 Fl4JiV~75…       3.22e-16             1             1                2.54e-16
 #> 12 HC8K98~49…       8.47e- 1             0.538         0.978            6.40e- 1
-#> 13 HvIpHG~40…       1.07e-15             1             1                5.08e-16
+#> 13 HvIpHG~40…       4.27e-16             1             1                2.03e-16
 #> 14 I1Jk2Z~08…      -8.47e- 1             0.538         0.978           -6.40e- 1
-#> 15 JV3Z7t~29…       1.07e-15             1             1                5.08e-16
+#> 15 JV3Z7t~29…       4.27e-16             1             1                2.03e-16
 #> 16 JcKVfU~08…      -1.35e+ 0             0.468         0.978           -7.58e- 1
 #> 17 JfvT8X~27…      -2.20e+ 0             0.238         0.978           -1.26e+ 0
-#> 18 R2i6w7~02…       4.22e-16             1             1                3.33e-16
-#> 19 SGIVBl~95…       1.07e-15             1             1                5.08e-16
-#> 20 r2J0Eh~26…      -4.13e-16             1             1               -1.96e-16
+#> 18 R2i6w7~02…      -1.11e-17             1             1               -8.81e-18
+#> 19 SGIVBl~95…       4.27e-16             1             1                2.03e-16
+#> 20 r2J0Eh~26…       2.16e-15             1.000         1                1.02e-15
 ```

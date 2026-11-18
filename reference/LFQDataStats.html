@@ -22,6 +22,7 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Vignettes</h6></li>
     <li><a class="dropdown-item" href="../articles/CreatingConfigurations.html">Importing your data: AnalysisConfiguration</a></li>
+    <li><a class="dropdown-item" href="../articles/TransformingLFQData.html">Transforming and calibrating LFQ data</a></li>
     <li><a class="dropdown-item" href="../articles/Comparing2Groups.html">Comparing Two Groups with prolfqua</a></li>
     <li><a class="dropdown-item" href="../articles/ModellingMethods.html">All modelling methods at a glance</a></li>
     <li><a class="dropdown-item" href="../articles/TwoFactorDesigns.html">Two-factor designs</a></li>
@@ -105,6 +106,7 @@
 <li><p><a href="#method-LFQDataStats-stdv_vs_mean"><code>LFQDataStats$stdv_vs_mean()</code></a></p></li>
 <li><p><a href="#method-LFQDataStats-power_t_test_quantiles"><code>LFQDataStats$power_t_test_quantiles()</code></a></p></li>
 <li><p><a href="#method-LFQDataStats-power_t_test"><code>LFQDataStats$power_t_test()</code></a></p></li>
+<li><p><a href="#method-LFQDataStats-power_fdr_pilot"><code>LFQDataStats$power_fdr_pilot()</code></a></p></li>
 <li><p><a href="#method-LFQDataStats-clone"><code>LFQDataStats$clone()</code></a></p></li>
 </ul></div><p></p><hr><a id="method-LFQDataStats-initialize"></a><div class="section">
 <h3 id="lfqdatastats-new-"><code>LFQDataStats$new()</code><a class="anchor" aria-label="anchor" href="#lfqdatastats-new-"></a></h3>
@@ -117,8 +119,8 @@
 <dd><p>LFQData object</p></dd>
 
       <dt><code>stats</code></dt>
-<dd><p>if `interaction`, compute within-group stats; if `all`,
-compute overall CV; if `pooled`, use pooled variance with grouping
+<dd><p>if <code>interaction</code>, compute within-group stats; if <code>all</code>,
+compute overall CV; if <code>pooled</code>, use pooled variance with grouping
 information</p></dd>
 
 
@@ -188,7 +190,7 @@ information</p></dd>
 
 <p></p><hr><a id="method-LFQDataStats-density_median"></a><div class="section">
 <h3 id="lfqdatastats-density-median-"><code>LFQDataStats$density_median()</code><a class="anchor" aria-label="anchor" href="#lfqdatastats-density-median-"></a></h3>
-<p>plot density or ecdf of CV or sd for the 50<!-- % of low intensity data and 50% of high intensity data --></p><div class="section">
+<p>plot density or ecdf of CV or sd for the 50% of low intensity data and 50% of high intensity data</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataStats</span><span class="op">$</span><span class="fu">density_median</span><span class="op">(</span>ggstat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"density"</span>, <span class="st">"ecdf"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
@@ -219,7 +221,7 @@ information</p></dd>
 
 <p></p><hr><a id="method-LFQDataStats-violin_median"></a><div class="section">
 <h3 id="lfqdatastats-violin-median-"><code>LFQDataStats$violin_median()</code><a class="anchor" aria-label="anchor" href="#lfqdatastats-violin-median-"></a></h3>
-<p>plot violinplot of CV or sd for the 50<!-- % of low intensity data and 50% of high intensity data --></p><div class="section">
+<p>plot violinplot of CV or sd for the 50% of low intensity data and 50% of high intensity data</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataStats</span><span class="op">$</span><span class="fu">violin_median</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
@@ -300,13 +302,58 @@ information</p></dd>
 
 </div>
 
+<p></p><hr><a id="method-LFQDataStats-power_fdr_pilot"></a><div class="section">
+<h3 id="lfqdatastats-power-fdr-pilot-"><code>LFQDataStats$power_fdr_pilot()</code><a class="anchor" aria-label="anchor" href="#lfqdatastats-power-fdr-pilot-"></a></h3>
+<p>Plan balanced two-group sample size from pooled within-group pilot
+variances; see <code><a href="power_fdr_prior_n.html">power_fdr_prior_n()</a></code> for assumptions and returned values.
+Grouping and feature identities follow the current LFQData configuration,
+regardless of the <code>stats</code> mode used to construct this decorator.
+Untransformed data emit a warning and return <code>NULL</code>.</p><div class="section">
+<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataStats</span><span class="op">$</span><span class="fu">power_fdr_pilot</span><span class="op">(</span></span>
+<span>  <span class="va">delta_mean</span>,</span>
+<span>  delta_se <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  fdr <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  power <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span>  pi0 <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  max_n <span class="op">=</span> <span class="fl">100</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>delta_mean</code></dt>
+<dd><p>planned mean difference among non-null features, on the transformed response scale</p></dd>
+
+      <dt><code>delta_se</code></dt>
+<dd><p>standard deviation of true non-null differences, not an estimated mean's standard error</p></dd>
+
+      <dt><code>fdr</code></dt>
+<dd><p>target false discovery rate</p></dd>
+
+      <dt><code>power</code></dt>
+<dd><p>target average power among non-null features</p></dd>
+
+      <dt><code>pi0</code></dt>
+<dd><p>assumed proportion of truly null features</p></dd>
+
+      <dt><code>max_n</code></dt>
+<dd><p>largest sample count per group to consider</p></dd>
+
+
+</dl><p></p></div>
+</div><p></p><div class="section">
+<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
+<p>The list returned by <code><a href="power_fdr_prior_n.html">power_fdr_prior_n()</a></code>.</p>
+</div>
+
+</div>
+
 <p></p><hr><a id="method-LFQDataStats-clone"></a><div class="section">
 <h3 id="lfqdatastats-clone-"><code>LFQDataStats$clone()</code><a class="anchor" aria-label="anchor" href="#lfqdatastats-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
+<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataStats</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
+<h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 
@@ -339,6 +386,9 @@ information</p></dd>
 <span class="r-in"><span>  <span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="va">x</span><span class="op">$</span><span class="va">lfq</span><span class="op">$</span><span class="fu">is_transformed</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="fu">power_t_test</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="fu">power_t_test_quantiles</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="fu">power_fdr_pilot</span><span class="op">(</span>delta_mean <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">is.list</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="fu">power_fdr_pilot</span><span class="op">(</span>delta_mean <span class="op">=</span> <span class="fl">0.1</span>, max_n <span class="op">=</span> <span class="fl">20</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">}</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span><span class="op">)</span></span></span>
@@ -358,6 +408,7 @@ information</p></dd>
 <span class="r-in"><span><span class="fu">runallfuncs</span><span class="op">(</span><span class="va">lfqstats</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>power_t_test requires transformed data; aborting.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>power_t_test_quantiles requires transformed data; aborting.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>power_fdr_pilot requires transformed data; aborting.</span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">lfqstats</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">#study variance of normalized data</span></span></span>
@@ -405,6 +456,7 @@ information</p></dd>
 <span class="r-in"><span><span class="fu">runallfuncs</span><span class="op">(</span><span class="va">lfqstats</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>power_t_test requires transformed data; aborting.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>power_t_test_quantiles requires transformed data; aborting.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>power_fdr_pilot requires transformed data; aborting.</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

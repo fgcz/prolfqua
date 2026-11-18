@@ -34,6 +34,7 @@ c(&quot;imputed_model&quot;, &quot;rfit_prolfqua&quot;, &quot;rfit&quot;))."></h
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Vignettes</h6></li>
     <li><a class="dropdown-item" href="../articles/CreatingConfigurations.html">Importing your data: AnalysisConfiguration</a></li>
+    <li><a class="dropdown-item" href="../articles/TransformingLFQData.html">Transforming and calibrating LFQ data</a></li>
     <li><a class="dropdown-item" href="../articles/Comparing2Groups.html">Comparing Two Groups with prolfqua</a></li>
     <li><a class="dropdown-item" href="../articles/ModellingMethods.html">All modelling methods at a glance</a></li>
     <li><a class="dropdown-item" href="../articles/TwoFactorDesigns.html">Two-factor designs</a></li>
@@ -79,7 +80,8 @@ carries (e.g. <code>c("imputed_model", "lm")</code> or
 <span>  <span class="va">borrowed_vcov</span>,</span>
 <span>  <span class="va">borrowed_sigma</span>,</span>
 <span>  <span class="va">borrowed_df</span>,</span>
-<span>  <span class="va">n_observed</span></span>
+<span>  <span class="va">n_observed</span>,</span>
+<span>  imputed_rows <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -105,6 +107,10 @@ carries (e.g. <code>c("imputed_model", "lm")</code> or
 
 <dt id="arg-n-observed">n_observed<a class="anchor" aria-label="anchor" href="#arg-n-observed"></a></dt>
 <dd><p>integer, number of non-imputed observations</p></dd>
+
+
+<dt id="arg-imputed-rows">imputed_rows<a class="anchor" aria-label="anchor" href="#arg-imputed-rows"></a></dt>
+<dd><p>logical vector identifying rows filled at the LOD</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -187,7 +193,9 @@ carries (e.g. <code>c("imputed_model", "lm")</code> or
 <code><a href="moderated_p_deqms.html">moderated_p_deqms()</a></code>,
 <code><a href="moderated_p_deqms_long.html">moderated_p_deqms_long()</a></code>,
 <code><a href="moderated_p_limma.html">moderated_p_limma()</a></code>,
+<code><a href="nobs.rfit_prolfqua.html">nobs.rfit_prolfqua()</a></code>,
 <code><a href="pivot_model_contrasts_to_wide.html">pivot_model_contrasts_to_wide()</a></code>,
+<code><a href="prolfqua_analysis_methods.html">prolfqua_analysis_methods</a></code>,
 <code><a href="register_facade.html">register_facade()</a></code>,
 <code><a href="sigma.rfit_prolfqua.html">sigma.rfit_prolfqua()</a></code>,
 <code><a href="sim_build_models_lm.html">sim_build_models_lm()</a></code>,

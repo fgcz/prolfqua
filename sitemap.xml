@@ -15,6 +15,7 @@
 <url><loc>https://fgcz.github.io/prolfqua/articles/ModellingMethods.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/articles/SimulateData.html</loc></url>
+<url><loc>https://fgcz.github.io/prolfqua/articles/TransformingLFQData.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/articles/TwoFactorDesigns.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/articles/index.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/articles/prolfqua.html</loc></url>
@@ -120,6 +121,7 @@
 <url><loc>https://fgcz.github.io/prolfqua/reference/dot-resolve_weights.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/encode_bin_resp.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/estimate_intensity.html</loc></url>
+<url><loc>https://fgcz.github.io/prolfqua/reference/fdr_sig_level.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/filter_proteins_by_peptide_count.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/find_d0_deqms.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/find_package_file.html</loc></url>
@@ -164,6 +166,7 @@
 <url><loc>https://fgcz.github.io/prolfqua/reference/moderated_p_limma.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/multigroup_volcano.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/new_imputed_model.html</loc></url>
+<url><loc>https://fgcz.github.io/prolfqua/reference/nobs.rfit_prolfqua.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/nr_B_in_A.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/nr_children_experiment.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/nr_features_experiment.html</loc></url>
@@ -189,7 +192,9 @@
 <url><loc>https://fgcz.github.io/prolfqua/reference/plot_stat_violin_median.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/plot_stdv_vs_mean.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/pooled_var.html</loc></url>
+<url><loc>https://fgcz.github.io/prolfqua/reference/power_fdr_prior_n.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/prolfqua-package.html</loc></url>
+<url><loc>https://fgcz.github.io/prolfqua/reference/prolfqua_analysis_methods.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/prolfqua_data.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/rank_peptide_by_intensity.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/register_facade.html</loc></url>

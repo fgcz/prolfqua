@@ -94,8 +94,8 @@ Facades split by input/output hierarchy shape —
 **`needs = "aggregated"`** — facade emits contrasts at the same
 hierarchy level as its input (protein → protein FC, or peptide/precursor
 → peptide/precursor FC; `subject_Id == hierarchy_keys`). Lives in
-`R/ContrastsFacades.R`: `lm`, `rlm`, `lm_impute`, `limma`,
-`limma_impute`, `limma_voom`, `limma_voom_impute`, `deqms`,
+`R/ContrastsFacades.R`: `lm`, `rlm`, `rfit`, `lm_impute`, `rfit_impute`,
+`limma`, `limma_impute`, `limma_voom`, `limma_voom_impute`, `deqms`,
 `deqms_voom`, `firth`, `limpa`
 
 **`needs = "nested"`** — facade takes child-level input
@@ -103,7 +103,7 @@ hierarchy level as its input (protein → protein FC, or peptide/precursor
 `subject_Id` is a strict subset of `hierarchy_keys`. Lives in
 `R/ContrastsChildToParentFacades.R`: `lmer_nested`, `ropeca_nested`,
 `ropecaV2_nested`, `binomial_nested`, `binomial_firth_nested`,
-`limpa_nested`
+`hurdle_nested`, `limpa_nested`
 
 There are no same-level `lmer`/`ropeca` facades — mixed-model and ROPECA
 analyses are nested-only.

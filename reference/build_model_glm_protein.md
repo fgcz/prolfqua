@@ -103,7 +103,9 @@ Other modelling:
 [`moderated_p_deqms_long()`](https://fgcz.github.io/prolfqua/reference/moderated_p_deqms_long.md),
 [`moderated_p_limma()`](https://fgcz.github.io/prolfqua/reference/moderated_p_limma.md),
 [`new_imputed_model()`](https://fgcz.github.io/prolfqua/reference/new_imputed_model.md),
+[`nobs.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/nobs.rfit_prolfqua.md),
 [`pivot_model_contrasts_to_wide()`](https://fgcz.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
+[`prolfqua_analysis_methods`](https://fgcz.github.io/prolfqua/reference/prolfqua_analysis_methods.md),
 [`register_facade()`](https://fgcz.github.io/prolfqua/reference/register_facade.md),
 [`sigma.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/sigma.rfit_prolfqua.md),
 [`sim_build_models_lm()`](https://fgcz.github.io/prolfqua/reference/sim_build_models_lm.md),
@@ -127,14 +129,13 @@ lfqdata <- LFQData$new(istar$data, istar$config)
 mod <- build_model_glm_protein(lfqdata, "~ group_")
 head(mod$get_coefficients())
 #> # A tibble: 6 × 11
-#> # Groups:   protein_Id [2]
 #>   protein_Id  factor      Estimate se.coef. lower.0.95 upper.0.95    Chisq     p
 #>   <chr>       <chr>          <dbl>    <dbl>      <dbl>      <dbl>    <dbl> <dbl>
 #> 1 7IZdVV~0841 (Intercep…  2.20e+ 0     1.49     -0.725       5.12 2.17e+ 0 0.140
-#> 2 7IZdVV~0841 group_B     5.68e-16     2.11     -4.13        4.13 7.74e-32 1    
+#> 2 7IZdVV~0841 group_B     9.70e-16     2.11     -4.13        4.13 1.74e-31 1    
 #> 3 7IZdVV~0841 group_Ctrl -2.20e+ 0     1.74     -5.60        1.21 1.60e+ 0 0.206
 #> 4 AZPG26~2091 (Intercep…  2.20e+ 0     1.49     -0.725       5.12 2.17e+ 0 0.140
-#> 5 AZPG26~2091 group_B    -1.52e-15     2.11     -4.13        4.13 4.84e-31 1.00 
-#> 6 AZPG26~2091 group_Ctrl -1.07e-15     2.11     -4.13        4.13 3.10e-31 1    
+#> 5 AZPG26~2091 group_B     1.26e-15     2.11     -4.13        4.13 3.10e-31 1    
+#> 6 AZPG26~2091 group_Ctrl -4.27e-16     2.11     -4.13        4.13 1.94e-32 1    
 #> # ℹ 3 more variables: method <dbl>, isSingular <lgl>, nr_coef <int>
 ```

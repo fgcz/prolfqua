@@ -4,6 +4,61 @@
 
 ### New features
 
+- `LFQDataTransformer$subtract_sample_offsets()` applies caller-supplied
+  log2 offsets by sample ID and stores the adjusted intensities in a new
+  response column.
+
+- The Transforming and calibrating LFQ data vignette shows how to use
+  the active response, internal reference proteins and offsets from
+  external calibrants.
+
+- [`plot()`](https://rdrr.io/r/graphics/plot.default.html) now defaults
+  to observed responses and fitted group means with confidence intervals
+  for up to six subjects selected by FDR. Select subjects with `subject`
+  and confidence level with `level`; volcano and MA plots remain
+  available through `type`. Combined hurdle analyses retain the volcano
+  default and expose fitted plots through their intensity and detection
+  components.
+
+- [`vcov()`](https://rdrr.io/r/stats/vcov.html) on fitted analyses
+  returns coefficient covariances in a subject-keyed table, using
+  borrowed uncertainty for LOD refits and moderated per-subject
+  covariances for matrix models.
+
+- [`fdr_sig_level()`](https://fgcz.github.io/prolfqua/reference/fdr_sig_level.md)
+  converts a target FDR, null-feature proportion and power into a
+  per-test threshold for the existing protein and SD-quantile
+  sample-size methods.
+  [`power_fdr_prior_n()`](https://fgcz.github.io/prolfqua/reference/power_fdr_prior_n.md)
+  and `LFQDataStats$power_fdr_pilot()` plan balanced two-group sample
+  sizes by averaging power over a pilot variance prior and a specified
+  effect distribution. The QC and Sample Size Estimation vignette
+  demonstrates both approaches.
+
+- Fitted analysis results support
+  [`print()`](https://rdrr.io/r/base/print.html) for a concise model
+  overview without computing contrasts, and
+  [`summary()`](https://rdrr.io/r/base/summary.html) for fit status and
+  per-contrast significance counts.
+  [`coef()`](https://rdrr.io/r/stats/coef.html),
+  [`confint()`](https://rdrr.io/r/stats/confint.html),
+  [`formula()`](https://rdrr.io/r/stats/formula.html) and
+  [`nobs()`](https://rdrr.io/r/stats/nobs.html) expose model
+  coefficients, Wald intervals, the fitted specification and observed
+  sample counts in subject-keyed tables.
+  [`fitted()`](https://rdrr.io/r/stats/fitted.values.html) and
+  [`residuals()`](https://rdrr.io/r/stats/residuals.html) return
+  observed responses with sample identifiers and imputation flags, on
+  the fitted response scale.
+  [`plot()`](https://rdrr.io/r/graphics/plot.default.html) returns
+  fitted group means with intervals, or a volcano or MA plot. The
+  Modelling methods vignette demonstrates these methods, and all
+  registered backends are tested against the common result contract.
+
+- Fitted analyses retain an independent input snapshot. Matrix models
+  retain their response matrix, weights and observed-response mask, and
+  LOD-refitted models identify imputed rows for result inspection.
+
 - New method `ropecaV2_nested` (`ContrastsROPECAV2NestedFacade`,
   `ContrastsROPECAV2`): ROPECA with calibrated protein p-values.
   `ropeca_nested` tests the median signed peptide p-value against a beta
@@ -23,6 +78,7 @@
   the median peptide fold change, as in `ropeca_nested`; `statistic`,
   `std.error` and the 95% interval follow from the p-value.
   `ropeca_nested` is unchanged.
+
 - New option `prolfqua.verbose`: set `options(prolfqua.verbose = FALSE)`
   to silence prolfqua’s informative messages (columns added, rows
   removed, files written). The messages carry class `prolfqua_message`,
@@ -32,10 +88,16 @@
 
 ### Behaviour changes
 
-- Source annotations and a standards report now trace all General and
-  Regression rOpenSci standards to evidence, explicit partial limits,
-  non-applicability reasons or deferred work. The feasibility assessment
-  is kept separate from current compliance.
+- [`?prolfqua`](https://fgcz.github.io/prolfqua/reference/prolfqua-package.md)
+  and [`?LFQData`](https://fgcz.github.io/prolfqua/reference/LFQData.md)
+  state how violated assumptions affect estimates: outliers pull
+  least-squares fits while `rlm` and `rfit` resist them, and missing low
+  intensities shrink fold changes of down-regulated proteins toward
+  zero, also with LOD imputation.
+
+- Analysis help and the Modelling methods vignette document internal
+  aggregation, detection encoding, retained responses and output scales,
+  including which steps have no inverse.
 
 - The package help now defines the API lifecycle, analysis terminology
   and statistical terms. The Under the hood article explains categorical
@@ -50,13 +112,13 @@
 
 - Fewer hard dependencies: ‘UpSetR’, ‘ComplexHeatmap’, ‘circlize’,
   ‘plotly’, ‘ggbeeswarm’, ‘progress’, ‘logistf’, ‘lme4’ and ‘lmerTest’
-  moved from Imports to Suggests, and ‘forcats’, ‘tidyselect’ and
-  ‘withr’ are no longer needed (Imports: 23 to 11). Heatmaps, UpSet
-  plots, interactive plots, the `firth` and `lmer_nested` methods ask to
-  install the packages they need. Without ‘plotly’ the intensity density
-  plot is static, without ‘ggbeeswarm’ box plots show jittered points,
-  and without ‘progress’ no progress bar is shown. Progress of
-  aggregation and of writing box and aggregation plots now also follows
+  moved from Imports to Suggests, and ‘forcats’ and ‘tidyselect’ are no
+  longer needed (Imports: 23 to 12). Heatmaps, UpSet plots, interactive
+  plots, the `firth` and `lmer_nested` methods ask to install the
+  packages they need. Without ‘plotly’ the intensity density plot is
+  static, without ‘ggbeeswarm’ box plots show jittered points, and
+  without ‘progress’ no progress bar is shown. Progress of aggregation
+  and of writing box and aggregation plots now also follows
   `options(prolfqua.progress)`.
 
 - prolfqua no longer prints internal progress messages such as “setup
@@ -89,18 +151,27 @@
 
 ### Bug fixes
 
+- The introductory and Modelling methods vignettes no longer fail when
+  `R CMD check --no-build-vignettes` runs their code: the factory figure
+  is left out of the extracted R code. The Transforming and calibrating
+  LFQ data vignette ends with session information.
+
+- Coefficient tables for LOD-refitted proteins use their borrowed
+  covariance and degrees of freedom. Robust and rank-based models expose
+  consistent coefficient and p-value columns, restoring their
+  coefficient volcano plots. Firth coefficient tables skip failed fits.
+
+- Printing fitted analyses extracts coefficients from only the first few
+  subject fits for its preview. Limma summaries correctly count failed
+  fits and report singularity as unknown (`NA`) instead of inferring it
+  from failed fits.
+
 - ANOVA extractors again accept the supported `LRT`, `Rao` and `Cp`
   tests, with correct p-value column metadata. Direct construction
   validates the same choices as
   [`get_anova_df()`](https://fgcz.github.io/prolfqua/reference/get_anova_df.md).
   Analysis, aggregation and ANOVA selectors reject multi-value arguments
   instead of silently choosing the first value.
-
-- Statistical standards reports now count only fully met standards as
-  compliant. Partial requirements remain TODOs; fitted-response
-  retention is partial and prediction for new categorical groups is
-  unmet. Internal helper documentation now distinguishes response
-  values, column names, palette sizes and quadrature sizes correctly.
 
 - Condition tests cover all-zero contrasts; covariance-borrowing
   documentation now describes selection of the largest matching donor

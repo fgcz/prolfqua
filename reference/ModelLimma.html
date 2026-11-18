@@ -24,6 +24,7 @@ coef_histogram(), coef_volcano(), anova_histogram()."></head><body>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Vignettes</h6></li>
     <li><a class="dropdown-item" href="../articles/CreatingConfigurations.html">Importing your data: AnalysisConfiguration</a></li>
+    <li><a class="dropdown-item" href="../articles/TransformingLFQData.html">Transforming and calibrating LFQ data</a></li>
     <li><a class="dropdown-item" href="../articles/Comparing2Groups.html">Comparing Two Groups with prolfqua</a></li>
     <li><a class="dropdown-item" href="../articles/ModellingMethods.html">All modelling methods at a glance</a></li>
     <li><a class="dropdown-item" href="../articles/TwoFactorDesigns.html">Two-factor designs</a></li>
@@ -138,7 +139,9 @@ coef_histogram(), coef_volcano(), anova_histogram()."></head><body>
 <code><a href="moderated_p_deqms_long.html">moderated_p_deqms_long()</a></code>,
 <code><a href="moderated_p_limma.html">moderated_p_limma()</a></code>,
 <code><a href="new_imputed_model.html">new_imputed_model()</a></code>,
+<code><a href="nobs.rfit_prolfqua.html">nobs.rfit_prolfqua()</a></code>,
 <code><a href="pivot_model_contrasts_to_wide.html">pivot_model_contrasts_to_wide()</a></code>,
+<code><a href="prolfqua_analysis_methods.html">prolfqua_analysis_methods</a></code>,
 <code><a href="register_facade.html">register_facade()</a></code>,
 <code><a href="sigma.rfit_prolfqua.html">sigma.rfit_prolfqua()</a></code>,
 <code><a href="sim_build_models_lm.html">sim_build_models_lm()</a></code>,
@@ -160,6 +163,26 @@ coef_histogram(), coef_volcano(), anova_histogram()."></head><body>
     <h2 id="public-fields">Public fields<a class="anchor" aria-label="anchor" href="#public-fields"></a></h2>
     <p></p><div class="r6-fields"><dl><dt><code>fit</code></dt>
 <dd><p>limma MArrayLM object from lmFit</p></dd>
+
+
+    <dt><code>E</code></dt>
+<dd><p>response matrix used for the stored coefficients</p></dd>
+
+
+    <dt><code>weights</code></dt>
+<dd><p>observation-weight matrix or NULL</p></dd>
+
+
+    <dt><code>observed</code></dt>
+<dd><p>logical matrix identifying responses observed before imputation</p></dd>
+
+
+    <dt><code>annotation</code></dt>
+<dd><p>sample table in response-matrix column order</p></dd>
+
+
+    <dt><code>formula</code></dt>
+<dd><p>fitted model formula, including the response</p></dd>
 
 
     <dt><code>subject_id</code></dt>
@@ -191,10 +214,10 @@ coef_histogram(), coef_volcano(), anova_histogram()."></head><body>
 
 
     <dt><code>imputed_proteins</code></dt>
-<dd><p>character vector of protein ids (matching
-<code>rownames(fit$coefficients)</code>) that were rescued via LOD
+<dd><p>character vector of bare protein ids (matching
+the first subject column in <code>rowdata</code>) that were rescued via LOD
 imputation. <code>ContrastsLimma$get_contrasts()</code> reads this to
-tag refit rows with a <code>"_imputed"</code> modelName suffix so the
+tag refit rows with <code>estimate_type = "lod_imputed"</code> so the
 rescue is visible downstream. Empty for builders that do not
 impute.</p></dd>
 
@@ -227,7 +250,12 @@ impute.</p></dd>
 <span>  robust <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  dummy_model <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  p.adjust <span class="op">=</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/adjust_p_values.html">adjust_p_values</a></span>,</span>
-<span>  imputed_proteins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span>
+<span>  imputed_proteins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
+<span>  E <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  weights <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  observed <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  annotation <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  formula <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
@@ -257,6 +285,9 @@ impute.</p></dd>
 
       <dt><code>imputed_proteins</code></dt>
 <dd><p>character vector of LOD-rescued protein ids</p></dd>
+
+      <dt><code>E, weights, observed, annotation, formula</code></dt>
+<dd><p>retained fitted inputs; see the corresponding fields</p></dd>
 
 
 </dl><p></p></div>

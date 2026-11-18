@@ -85,7 +85,9 @@ Other modelling:
 [`moderated_p_deqms_long()`](https://fgcz.github.io/prolfqua/reference/moderated_p_deqms_long.md),
 [`moderated_p_limma()`](https://fgcz.github.io/prolfqua/reference/moderated_p_limma.md),
 [`new_imputed_model()`](https://fgcz.github.io/prolfqua/reference/new_imputed_model.md),
+[`nobs.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/nobs.rfit_prolfqua.md),
 [`pivot_model_contrasts_to_wide()`](https://fgcz.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
+[`prolfqua_analysis_methods`](https://fgcz.github.io/prolfqua/reference/prolfqua_analysis_methods.md),
 [`register_facade()`](https://fgcz.github.io/prolfqua/reference/register_facade.md),
 [`sigma.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/sigma.rfit_prolfqua.md),
 [`sim_build_models_lm()`](https://fgcz.github.io/prolfqua/reference/sim_build_models_lm.md),
@@ -109,6 +111,26 @@ Other modelling:
 - `fit`:
 
   limma MArrayLM object from lmFit
+
+- `E`:
+
+  response matrix used for the stored coefficients
+
+- `weights`:
+
+  observation-weight matrix or NULL
+
+- `observed`:
+
+  logical matrix identifying responses observed before imputation
+
+- `annotation`:
+
+  sample table in response-matrix column order
+
+- `formula`:
+
+  fitted model formula, including the response
 
 - `subject_id`:
 
@@ -140,10 +162,10 @@ Other modelling:
 
 - `imputed_proteins`:
 
-  character vector of protein ids (matching
-  `rownames(fit$coefficients)`) that were rescued via LOD imputation.
-  `ContrastsLimma$get_contrasts()` reads this to tag refit rows with a
-  `"_imputed"` modelName suffix so the rescue is visible downstream.
+  character vector of bare protein ids (matching the first subject
+  column in `rowdata`) that were rescued via LOD imputation.
+  `ContrastsLimma$get_contrasts()` reads this to tag refit rows with
+  `estimate_type = "lod_imputed"` so the rescue is visible downstream.
   Empty for builders that do not impute.
 
 ## Methods
@@ -182,7 +204,12 @@ initialize ModelLimma
       robust = FALSE,
       dummy_model = NULL,
       p.adjust = prolfqua::adjust_p_values,
-      imputed_proteins = character(0)
+      imputed_proteins = character(0),
+      E = NULL,
+      weights = NULL,
+      observed = NULL,
+      annotation = NULL,
+      formula = NULL
     )
 
 #### Arguments
@@ -222,6 +249,10 @@ initialize ModelLimma
 - `imputed_proteins`:
 
   character vector of LOD-rescued protein ids
+
+- `E, weights, observed, annotation, formula`:
+
+  retained fitted inputs; see the corresponding fields
 
 ------------------------------------------------------------------------
 

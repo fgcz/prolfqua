@@ -408,6 +408,103 @@ proteins.](QualityControlAndSampleSizeEstimation_files/figure-html/unnamed-chunk
 Distribution of the required sample sizes for two fold change thresholds
 for all the proteins.
 
+### Sample-size planning with an FDR target
+
+For many simultaneous tests, the Jung/Liu–Hwang relationship converts
+the target FDR, assumed null-feature proportion (`pi0`) and target
+average power into a per-test significance level (Jung 2005; Liu and
+Hwang 2007). Pass this threshold to the existing protein or SD-quantile
+methods. Here we plan differences of 0.05 and 0.1 on the transformed
+response scale, within the range of this pilot’s within-group variation.
+
+``` r
+alpha <- prolfqua::fdr_sig_level(fdr = 0.05, pi0 = 0.95, power = 0.8)
+fdr_quantiles <- stats$power_t_test_quantiles(
+  delta = c(0.05, 0.1), power = 0.8, sig.level = alpha
+) |>
+  dplyr::filter(group_ != "All")
+prolfqua::table_facade(fdr_quantiles, "FDR planning: samples per group by SD quantile")
+```
+
+| group\_ | probs | quantiles | sdtrimmed |    N_exact |   N | delta |
+|:--------|------:|----------:|----------:|-----------:|----:|------:|
+| A       |  0.10 | 0.0355196 | 0.0355196 |  17.770975 |  18 |  0.05 |
+| A       |  0.25 | 0.0587524 | 0.0587524 |  44.398337 |  45 |  0.05 |
+| A       |  0.50 | 0.0717438 | 0.0717438 |  65.031397 |  66 |  0.05 |
+| A       |  0.75 | 0.1240478 | 0.1240478 | 189.707462 | 190 |  0.05 |
+| A       |  0.90 | 0.1687990 | 0.1687990 | 349.271485 | 350 |  0.05 |
+| A       |  0.10 | 0.0355196 | 0.0355196 |   6.335427 |   7 |  0.10 |
+| A       |  0.25 | 0.0587524 | 0.0587524 |  12.939389 |  13 |  0.10 |
+| A       |  0.50 | 0.0717438 | 0.0717438 |  18.076136 |  19 |  0.10 |
+| A       |  0.75 | 0.1240478 | 0.1240478 |  49.206489 |  50 |  0.10 |
+| A       |  0.90 | 0.1687990 | 0.1687990 |  89.086736 |  90 |  0.10 |
+
+FDR planning: samples per group by SD quantile
+
+Alternatively, estimate a variance distribution from all pilot groups,
+pooling the raw within-group variances using the observed replicate
+counts. `power_fdr_pilot()` fits an inverse-gamma variance prior with
+limma and averages ordinary two-sided t-test power over this prior and
+the planned distribution of true non-null effects. `delta_se` is the
+standard deviation of those effects, not the standard error of an
+estimated mean. Supply effects on the same scale as the transformed
+response. Neither effects nor `pi0` are estimated from the pilot.
+
+``` r
+pilot_plan <- transformed$get_Stats()$power_fdr_pilot(
+  delta_mean = 0.1, delta_se = 0.02, fdr = 0.05, power = 0.8,
+  pi0 = 0.95, max_n = 100
+)
+pilot_plan[c("N", "power_achieved", "var_prior", "df_prior", "n_features_used")]
+```
+
+    ## $N
+    ## [1] 29
+    ## 
+    ## $power_achieved
+    ## [1] 0.8049355
+    ## 
+    ## $var_prior
+    ## [1] 0.006989028
+    ## 
+    ## $df_prior
+    ## [1] 24.91456
+    ## 
+    ## $n_features_used
+    ## [1] 28
+
+`N` is the first integer sample count **per group** reaching the target
+average power, or `NA` if the target is not reached by `max_n`. In the
+latter case, `power_achieved` reports power at `max_n`. For
+matrix-derived pilot estimates, call
+`prolfqua::power_fdr_prior_n(var, df, ...)` directly with unweighted,
+unmoderated per-feature variance estimates and their residual degrees of
+freedom.
+
+``` r
+ggplot2::ggplot(pilot_plan$power_curve, ggplot2::aes(n, power)) +
+  ggplot2::geom_line() +
+  ggplot2::geom_hline(yintercept = 0.8, linetype = "dashed") +
+  ggplot2::labs(x = "Samples per group", y = "Average power")
+```
+
+![Average power under the planned effect distribution and fitted
+variance
+prior.](QualityControlAndSampleSizeEstimation_files/figure-html/fdr-pilot-power-curve-1.png)
+
+Average power under the planned effect distribution and fitted variance
+prior.
+
+These calculations assume a balanced two-group design, equal
+within-group variances, independent effect and variance priors, and
+independent tests (or an adequate approximation under weak dependence).
+They use ordinary t-test degrees of freedom, so sample sizes are
+conservative relative to a moderated test under the same model. The
+fixed significance threshold gives the FDR planning bound once the
+target power is reached; lower-power points on the curve need not meet
+it. The specified FDR is a planning expectation under these assumptions,
+not a guarantee for each realized experiment.
+
 The `prolfqua` package is described in (Wolski et al. 2023).
 
 ## Session Info
@@ -474,6 +571,15 @@ sessionInfo()
     ## [94] fs_2.1.0              pkgconfig_2.0.3       GlobalOptions_0.1.4
 
 ## References
+
+Jung, Sin-Ho. 2005. “Sample Size for FDR-Control in Microarray Data
+Analysis.” *Bioinformatics* 21 (14): 3097–3104.
+<https://doi.org/10.1093/bioinformatics/bti456>.
+
+Liu, Peng, and J. T. Gene Hwang. 2007. “Quick Calculation for Sample
+Size While Controlling False Discovery Rate with Application to
+Microarray Analysis.” *Bioinformatics* 23 (6): 739–46.
+<https://doi.org/10.1093/bioinformatics/btl664>.
 
 Wolski, Witold E., Paolo Nanni, Jonas Grossmann, Maria d’Errico, Ralph
 Schlapbach, and Christian Panse. 2023. “prolfqua: A Comprehensive
