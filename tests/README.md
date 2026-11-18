@@ -10,12 +10,12 @@ The suite in `tests/testthat` has standard and extended tests. Both run under te
 
 ## Extended tests
 
-Extended tests repeat parameter-recovery checks over many seeds, cover nested models on simulated peptide data, grow the number of samples and proteins, and compare fit times on noiseless and noisy data.
+Extended tests repeat parameter-recovery checks over many seeds, cover nested models on simulated peptide data, grow the number of samples per group, and compare fit times on noiseless and noisy data.
 
 - Switch: environment variable `PROLFQUA_EXTENDED_TESTS=true`; otherwise they are skipped by `skip_if_not_extended()` (`tests/testthat/helper-extended.R`)
 - Run locally: `PROLFQUA_EXTENDED_TESTS=true make test`
 - CI: `.github/workflows/r.yaml` sets the variable for commits whose message contains `run-extended`
-- Runtime: about 5–10 minutes on a current laptop, most of it in the mixed-model (`lmer_nested`) recovery tests; the standard suite takes about 10 minutes
+- Runtime: about 5 minutes on a current laptop, most of it in the 50-seed recovery and group-size tests; the standard suite takes about 2 minutes
 - Memory: under 2 GB
 - Platform: any platform that runs the standard suite; timing comparisons use medians of repeated runs
 - Downloads: none; data are simulated or packaged

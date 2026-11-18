@@ -226,8 +226,6 @@ sim_lfq_data_peptide_config <- function(
 #'   validated.
 #' @srrstats {G5.1} Documented simulators and bundled datasets are publicly available for tests and examples.
 #' @srrstats {G5.5} Simulators use explicit reproducible seeds and restore the calling RNG state.
-#' @srrstatsTODO {G5.6} Tests recover exact means and noisy ROPECA correlation; limit: noisy fold-change recovery is
-#'   incomplete.
 sim_lfq_data_protein_config <- function(
   Nprot = 10,
   with_missing = TRUE,

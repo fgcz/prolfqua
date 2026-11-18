@@ -288,8 +288,6 @@ ContrastsROPECA <- R6::R6Class(
 #' @noRd
 #' @srrstats {G5.4a} Tests include exact fold changes and one-peptide/independent-null ROPECA reductions.
 #' @srrstats {G5.6a} Numerical recovery and null-calibration tests use explicit tolerances.
-#' @srrstatsTODO {G5.7} ROPECA null calibration is tested across peptide counts; limit: broader sample-size/power tests
-#'   remain.
 .ropeca_v2_pvalue <- function(median_z, n, rho) {
   rule <- .gauss_hermite_normal()
   p <- rep(NA_real_, length(median_z))

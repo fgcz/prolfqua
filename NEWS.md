@@ -21,6 +21,8 @@
 
 ## Behaviour changes
 
+- `?prolfqua` and `?LFQData` state how violated assumptions affect estimates: outliers pull least-squares fits while `rlm` and `rfit` resist them, and missing low intensities shrink fold changes of down-regulated proteins toward zero, also with LOD imputation.
+
 - Analysis help and the Modelling methods vignette document internal aggregation, detection encoding, retained responses and output scales, including which steps have no inverse.
 
 - The package help now defines the API lifecycle, analysis terminology and statistical terms. The Under the hood article explains categorical formula coding and contrast weights, and the analysis help documents measured runtime scaling.

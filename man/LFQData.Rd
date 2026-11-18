@@ -14,8 +14,10 @@ LFQData R6 class
 The filtering and imputation methods in this package assume that
 missing values are Missing Completely At Random (MCAR) or Missing At
 Random (MAR). Abundance-dependent missingness (MNAR), which is common
-in DDA proteomics, is not modelled. Users should be aware that MNAR
-can bias fold-change estimates and inflate false discovery rates.
+in DDA proteomics, is not modelled. When low intensities are missing,
+fold changes of down-regulated proteins shrink toward zero; LOD imputation
+(the \code{_impute} methods) caps estimates at the LOD and does not remove
+this bias. MNAR can also inflate false discovery rates.
 }
 
 \examples{

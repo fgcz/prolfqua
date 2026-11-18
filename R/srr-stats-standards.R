@@ -11,14 +11,6 @@
 #'   TODO/prolfqua/TODO_ropensci_compliance.md section 5.
 #' @srrstatsTODO {G3.1a} Add and document a covariance-policy API if accepted in a later design; deferred follow-up:
 #'   TODO/prolfqua/TODO_ropensci_compliance.md section 5.
-#' @srrstatsTODO {G5.6b} No repeated-seed recovery experiment for the same known generative parameters; deferred
-#'   follow-up: TODO/prolfqua/TODO_ropensci_compliance.md section 5.
-#' @srrstatsTODO {G5.9} Deterministic fixture construction is not a noise-susceptibility test of statistical results;
-#'   deferred follow-up: TODO/prolfqua/TODO_ropensci_compliance.md section 5.
-#' @srrstatsTODO {G5.9a} Add fixed-problem perturbation tests in a later statistical-testing plan; deferred follow-up:
-#'   TODO/prolfqua/TODO_ropensci_compliance.md section 5.
-#' @srrstatsTODO {G5.9b} No committed fixed-problem test establishes result stability under different RNG seeds or
-#'   initial conditions; deferred follow-up: TODO/prolfqua/TODO_ropensci_compliance.md section 5.
 #' @srrstatsTODO {RE2.2} missing predictors not handled separately from missing responses; deferred follow-up:
 #'   TODO/prolfqua/TODO_ropensci_compliance.md section 5.
 #' @srrstatsTODO {RE2.4b} no check for perfect predictor-response fit (sigma = 0); deferred follow-up:
@@ -29,8 +21,6 @@
 #'   TODO/prolfqua/TODO_ropensci_compliance.md section 5.
 #' @srrstatsTODO {RE4.16} New-group prediction is required for categorical-group models independently of
 #'   forecasting. No prediction method for new categorical groups is implemented; its semantics need a later design.
-#' @srrstatsTODO {RE7.1a} timing comparison noiseless vs noisy; deferred follow-up:
-#'   TODO/prolfqua/TODO_ropensci_compliance.md section 5.
 #' @noRd
 NULL
 

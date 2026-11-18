@@ -1,4 +1,3 @@
 ✖ This package still has TODO standards and can not be submitted
-✔ All applicable standards [v0.3.0] have been documented in this package (47 complied with; 7 N/A standards)
-! Package must comply with at least 50% of all standards, but currently complies with only 41%
-! Package must comply with at least 50% of category-specific standards, but currently complies with only 29%
+✔ All applicable standards [v0.3.0] have been documented in this package (58 complied with; 7 N/A standards)
+! Package must comply with at least 50% of category-specific standards, but currently complies with only 43%

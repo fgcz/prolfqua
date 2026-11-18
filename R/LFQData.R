@@ -6,8 +6,10 @@
 #' The filtering and imputation methods in this package assume that
 #' missing values are Missing Completely At Random (MCAR) or Missing At
 #' Random (MAR). Abundance-dependent missingness (MNAR), which is common
-#' in DDA proteomics, is not modelled. Users should be aware that MNAR
-#' can bias fold-change estimates and inflate false discovery rates.
+#' in DDA proteomics, is not modelled. When low intensities are missing,
+#' fold changes of down-regulated proteins shrink toward zero; LOD imputation
+#' (the \code{_impute} methods) caps estimates at the LOD and does not remove
+#' this bias. MNAR can also inflate false discovery rates.
 #'
 #' @return An R6 class generator.
 #' @export
@@ -41,8 +43,6 @@
 #' stopifnot(nrow(tmp$hierarchy()) == 5)
 #'
 #' @srrstats {G2.8} LFQData wraps validated numeric measurements and their AnalysisConfiguration for all facades.
-#' @srrstatsTODO {RE1.4} Package/LFQData help states model and missingness assumptions; limit: violations are not fully
-#'   tested.
 #' @srrstats {RE4.13} LFQData exposes categorical predictor values, factor keys and configuration.
 #' @srrstats {RE7.2} Tests preserve subject IDs and sample alignment, including wide-to-long roundtrips.
 LFQData <- R6::R6Class(
