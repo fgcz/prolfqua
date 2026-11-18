@@ -1,0 +1,119 @@
+---
+title: "Transforming and calibrating LFQ data"
+author:
+  - name: Witold E. Wolski
+    affiliation: Functional Genomics Center Zurich (FGCZ), ETH Zurich and University of Zurich
+package: prolfqua
+output: BiocStyle::html_document
+vignette: >
+  %\VignetteIndexEntry{9. Transforming and calibrating LFQ data}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", message = FALSE)
+```
+
+# The active response
+
+`LFQData` holds the measurements and their configuration. Its `response()` method gives the name of the intensity column used by downstream operations. `get_Transformer()` creates a transformer with its own copy of the data. Transformation methods return the transformer for chaining, and `$lfq` retrieves the result.
+
+This example uses protein-level data from three samples. The two standards, `StdA` and `StdB`, each have a constant amount across samples. Their measured signals are doubled in `S2` and halved in `S3` relative to `S1`.
+
+```{r example-data}
+library(prolfqua)
+
+samples <- c("S1", "S2", "S3")
+quant <- data.frame(
+  protein_Id = rep(c("StdA", "StdB", "Target"), each = 3),
+  sampleName = rep(samples, 3),
+  raw.file = rep(paste0(samples, ".raw"), 3),
+  condition = rep(c("Control", "Control", "Treatment"), 3),
+  intensity = c(64, 128, 32, 256, 512, 128, 512, 1024, 512),
+  nr_children = 1
+)
+
+cfg <- AnalysisConfiguration$new()
+cfg$file_name <- "raw.file"
+cfg$hierarchy <- list(protein_Id = "protein_Id")
+cfg$factors <- list(condition = "condition")
+cfg$set_response("intensity")
+lfq <- LFQData$new(quant, cfg, setup = TRUE)
+
+logged <- lfq$get_Transformer()$log2()$lfq
+logged$response()
+head(logged$data_long()[c("protein_Id", "sampleName", lfq$response(), logged$response())])
+```
+
+`log2()` expects positive measured intensities and carries missing intensities through as `NA`. Convert zeros that encode non-detection to `NA` before logging. The `is_transformed()` flag records transformation status. Track the scale separately when using an operation that requires a particular scale.
+
+| Method | Operation on the active response |
+|---|---|
+| `log2()` | Take the base-2 logarithm of each intensity. |
+| `intensity_array(.func)` | Apply a function such as `asinh` to the response vector. |
+| `intensity_matrix(.func)` | Apply a matrix function to features in rows and samples in columns. For example, `intensity_matrix(vsn::justvsn)` fits a variance-stabilizing transformation to raw intensities. |
+| `robscale()` | Centre each sample by its median and scale by its relative median absolute deviation. The default restores a common level based on the original medians. |
+| `robscale_subset(lfqsubset)` | Estimate the medians and median absolute deviations from a subset of features and apply them to the full data. |
+
+# Calibrate against internal standards
+
+Internal standards are reference proteins measured in the same samples as the targets. Select proteins expected to have stable amounts across samples. `center_to_reference()` subtracts the median log2 intensity of the reference proteins from every feature in each sample. The median of the reference proteins is then zero in each sample with a usable reference. When all reference intensities for a sample are missing, its centred intensities are missing.
+
+```{r internal-standards}
+reference_ids <- data.frame(protein_Id = c("StdA", "StdB"))
+reference <- logged$get_subset(reference_ids)
+calibrated_internal <- logged$get_Transformer()$center_to_reference(reference)$lfq
+```
+
+In prolfquapp, give the measured protein IDs in the DEA YAML under `processing_options$internal`. For a protein-level analysis, `transform: none` means a log2 transform without additional global normalization. With `internal` configured, prolfquapp computes a median from the finite log2 reference intensities per sample and calls `subtract_sample_offsets()`. If a sample has no finite reference intensity, it stops and lists the affected sample IDs.
+
+```yaml
+processing_options:
+  transform: none
+  internal: [StdA, StdB]
+```
+
+The VSN and robscale paths centre on their respective transformed scales. For nested analyses, prolfquapp uses the internal standards for the protein abundances shown in the report. The peptide model uses the transformed peptide data before that protein-level centring.
+
+# Apply offsets from external calibrants
+
+Use `subtract_sample_offsets()` when the correction comes from measurements outside the LFQ table. Supply one finite log2 offset per sample, named by the configured sample ID. For example, suppose an external calibrant has a reference signal of 128, and you have matched one calibrant measurement to each sample. Divide each measured signal by 128 to obtain the fold change in response, then take its log2.
+
+```{r external-calibrants}
+external <- data.frame(
+  sampleName = c("S3", "S1", "S2"),
+  measured_intensity = c(64, 128, 256)
+)
+offsets <- setNames(log2(external$measured_intensity / 128), external$sampleName)
+offsets
+
+calibrated_external <- logged$get_Transformer()$subtract_sample_offsets(offsets)$lfq
+```
+
+The order of the calibrant rows can differ from the order in the LFQ table. The method matches by sample ID and rejects missing, duplicate or unknown IDs. The caller is responsible for establishing that the external measurement tracks a multiplicative effect shared by the features in that sample.
+
+If the log2 intensity is $y$ and the offset is $d$, the calibrated intensity is $y - d$. On the original scale this divides the measurement by $2^d$. All features in a sample receive the same shift, which preserves within-sample log2 differences. Between-sample differences change by the difference between their offsets.
+
+# Compare the two calibrations
+
+```{r comparison}
+target_values <- function(lfq) {
+  rows <- lfq$data_long()
+  target <- rows[rows$protein_Id == "Target", ]
+  setNames(target[[lfq$response()]], target$sampleName)[samples]
+}
+
+knitr::kable(
+  data.frame(
+    Sample = samples,
+    `Original log2` = unname(target_values(logged)),
+    `Internal standards` = unname(target_values(calibrated_internal)),
+    `External calibrant` = unname(target_values(calibrated_external)),
+    check.names = FALSE
+  ),
+  caption = "Target log2 intensity before and after calibration."
+)
+```
+
+Both calibrations recover a target that is equal in `S1` and `S2` and twice as abundant in `S3`. The absolute log2 levels differ because internal centring puts the reference median at zero, while the external offsets are anchored to the calibrant's reference signal of 128. The example treats them as two estimates of the same sample effect, so it applies each to a separate copy of the logged data.

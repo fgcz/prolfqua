@@ -187,6 +187,61 @@ test_that("LFQDataTransformer", {
   expect_true(tr2$lfq$is_transformed())
 })
 
+test_that("sample offsets adjust the log2 response by sample ID", {
+  cfg <- AnalysisConfiguration$new()
+  cfg$file_name <- "run"
+  cfg$sample_name <- "sample_id"
+  cfg$hierarchy <- list(feature = "feature")
+  cfg$set_response("log2_intensity")
+  cfg$is_response_transformed <- TRUE
+  data <- data.frame(
+    feature = rep(c("p1", "p2", "p3"), each = 2),
+    run = rep(c("a.raw", "b.raw"), 3),
+    sample_id = factor(rep(c("A", "B"), 3)),
+    log2_intensity = c(9, 5, 13, NA, 7, 10),
+    log2_intensity_offset_adjusted = 0
+  )
+  lfq <- LFQData$new(data, cfg, prefix = "protein_")
+  tr <- lfq$get_Transformer()
+
+  result <- withVisible(tr$subtract_sample_offsets(c(B = -2, A = 1)))
+  expect_identical(result$value, tr)
+  expect_false(result$visible)
+  expect_identical(tr$lfq$response(), "log2_intensity_offset_adjusted.1")
+  adjusted <- tr$lfq$data_long()
+  expect_equal(adjusted[[tr$lfq$response()]], c(8, 7, 12, NA, 6, 12))
+  expect_equal(diff(adjusted[[tr$lfq$response()]][c(1, 3, 5)]), diff(data$log2_intensity[c(1, 3, 5)]))
+  expect_identical(adjusted[names(data)], data)
+  expect_true(tr$lfq$is_transformed())
+  expect_identical(tr$lfq$prefix, "protein_")
+  expect_identical(lfq$data_long(), data)
+  expect_identical(lfq$get_config()$work_intensity, "log2_intensity")
+})
+
+test_that("sample offsets require one finite numeric value per sample ID", {
+  logged <- lfqdata$get_Transformer()$log2()$lfq
+  tr <- logged$get_Transformer()
+  sample_ids <- unique(logged$data_long()[[logged$sample_name()]])
+  offsets <- setNames(numeric(length(sample_ids)), sample_ids)
+  invalid <- list(
+    as.character(offsets),
+    as.matrix(offsets),
+    unname(offsets),
+    offsets[-1],
+    setNames(offsets, replace(sample_ids, 1, sample_ids[2])),
+    setNames(offsets, replace(sample_ids, 1, "")),
+    setNames(offsets, replace(sample_ids, 1, NA_character_)),
+    c(offsets, unexpected_sample = 0),
+    replace(offsets, 1, NA_real_),
+    replace(offsets, 1, Inf)
+  )
+  for (value in invalid) {
+    expect_error(tr$subtract_sample_offsets(value), class = "prolfqua_error_bad_argument")
+  }
+  expect_identical(tr$lfq$data_long(), logged$data_long())
+  expect_identical(tr$lfq$response(), logged$response())
+})
+
 test_that("LFQDataStats", {
   lfq_copy <- lfqdata$get_copy()
   stats <- lfq_copy$get_Stats()

@@ -6,6 +6,7 @@
 \alias{summary.ContrastsFacadeBase}
 \alias{print.summary.ContrastsFacadeBase}
 \alias{coef.ContrastsFacadeBase}
+\alias{vcov.ContrastsFacadeBase}
 \alias{confint.ContrastsFacadeBase}
 \alias{formula.ContrastsFacadeBase}
 \alias{nobs.ContrastsFacadeBase}
@@ -22,6 +23,8 @@
 
 \method{coef}{ContrastsFacadeBase}(object, ...)
 
+\method{vcov}{ContrastsFacadeBase}(object, ...)
+
 \method{confint}{ContrastsFacadeBase}(object, parm, level = 0.95, ...)
 
 \method{formula}{ContrastsFacadeBase}(x, ...)
@@ -32,12 +35,12 @@
 
 \method{residuals}{ContrastsFacadeBase}(object, ...)
 
-\method{plot}{ContrastsFacadeBase}(x, type = c("volcano", "ma"), ...)
+\method{plot}{ContrastsFacadeBase}(x, type = c("fitted", "volcano", "ma"), subject = NULL, level = 0.95, ...)
 }
 \arguments{
-\item{x, object}{a fitted analysis returned by [build_contrast_analysis()].}
+\item{x, object}{a fitted analysis returned by \code{\link[=build_contrast_analysis]{build_contrast_analysis()}}.}
 
-\item{...}{arguments passed to the selected plotter method by `plot()`;
+\item{...}{arguments passed to the volcano or MA plotter by \code{plot()};
 unused by the other methods.}
 
 \item{FDR_threshold}{false discovery rate threshold for significant contrasts.}
@@ -48,35 +51,47 @@ unused by the other methods.}
 
 \item{level}{confidence level, strictly between zero and one.}
 
-\item{type}{plot type: an FDR volcano plot (default) or an MA plot.}
+\item{type}{plot type: fitted responses (default), FDR volcano or MA.
+Hurdle analyses default to volcano because they have two models.}
+
+\item{subject}{character vector of identifiers from the first model subject
+column for fitted plots; `NULL` selects up to six by FDR in the first contrast.}
 }
 \value{
-`print()` returns its input invisibly. `summary()` returns a list of
-  class `summary.ContrastsFacadeBase`, with method, formula, fit status and a
-  `per_contrast` table of estimated, missing, significant, up and down counts
-  and median sigma and degrees of freedom when available.
-  Matrix models report `NA` for singularity because it is not recorded by limma.
-  `coef()` returns subject identifiers, term, estimate, standard error and df.
-  `confint()` adds Wald t confidence limits (`conf.low`, `conf.high`).
-  Limma uses moderated standard errors and degrees of freedom; Firth logistic
-  fits use normal Wald intervals (infinite df). `formula()` returns the fitted
-  model specification and `nobs()` returns a subject-keyed observation-count table.
-  Counts exclude LOD-filled responses. Combined hurdle results have no single
-  coefficient table, formula or observation count; inspect their intensity
-  and detection facades through `analysis$contrast` instead.
-  `fitted()` and `residuals()` return subject, sample, factor and available
-  child identifiers, `response`, `fitted` or `residual`, and a subject-level
-  `imputed` flag. Only observed responses from successful fits are included.
-  Values use the fitting scale: transformed intensity or detection probability.
-  Binomial responses are the fitted model's adjusted detection proportions;
-  response residuals equal response minus fitted value. Hurdle results require
-  selecting an intensity or detection component for these methods too.
-  `plot()` returns a ggplot visibly: an FDR volcano plot or an MA plot.
-  There is no analysis-level `vcov()` method; covariance access remains on
-  backend fits. Summary fit counts are not per-subject convergence diagnostics.
+\code{print()} returns its input invisibly. \code{summary()} returns a list of
+class \code{summary.ContrastsFacadeBase}, with method, formula, fit status and a
+\code{per_contrast} table of estimated, missing, significant, up and down counts
+and median sigma and degrees of freedom when available.
+Matrix models report \code{NA} for singularity because it is not recorded by limma.
+\code{coef()} returns subject identifiers, term, estimate, standard error and df.
+\code{confint()} adds Wald t confidence limits (\code{conf.low}, \code{conf.high}).
+Limma uses moderated standard errors and degrees of freedom; Firth logistic
+fits use normal Wald intervals (infinite df). \code{formula()} returns the fitted
+model specification and \code{nobs()} returns a subject-keyed observation-count table.
+Counts exclude LOD-filled responses. Combined hurdle results have no single
+coefficient table, formula or observation count; inspect their intensity
+and detection facades through \code{analysis$contrast} instead.
+\code{fitted()} and \code{residuals()} return subject, sample, factor and available
+child identifiers, \code{response}, \code{fitted} or \code{residual}, and a subject-level
+\code{imputed} flag. Only observed responses from successful fits are included.
+Values use the fitting scale: transformed intensity or detection probability.
+Binomial responses are the fitted model's adjusted detection proportions;
+response residuals equal response minus fitted value. Hurdle results require
+selecting an intensity or detection component for these methods too.
+\code{plot()} returns a ggplot visibly. By default, observed responses and fitted
+cell means with confidence intervals are shown for six subjects selected by
+the smallest FDR in the first contrast. Mixed-model means use fixed effects
+and Satterthwaite uncertainty; detection means and limits are probabilities.
+ROPECA displays one panel per peptide of each selected protein. Hurdle
+analyses default to the volcano plot; request a component for fitted plots.
+\code{vcov()} returns subject identifiers, \code{term}, \code{term2} and \code{covariance}.
+It uses backend covariance (borrowed for LOD refits) or, for matrix models,
+the moderated variance times the inverse of the per-subject weighted design
+crossproduct. Failed matrix fits are omitted.
+Summary fit counts are not per-subject convergence diagnostics.
 }
 \description{
-Standard R methods for results returned by [build_contrast_analysis()].
+Standard R methods for results returned by \code{\link[=build_contrast_analysis]{build_contrast_analysis()}}.
 Printing reports the model specification, fit status and a coefficient preview
 without computing contrasts. Summaries evaluate the contrasts and report counts at the requested
 FDR and absolute effect thresholds.
@@ -88,12 +103,14 @@ analysis <- build_contrast_analysis(lfq, "~ group_", c(A_vs_Ctrl = "group_A - gr
 print(analysis)
 summary(analysis)
 head(stats::coef(analysis))
+head(stats::vcov(analysis))
 head(stats::confint(analysis))
 stats::formula(analysis)
 head(stats::nobs(analysis))
 head(stats::fitted(analysis))
 head(stats::residuals(analysis))
 plot(analysis)
+plot(analysis, type = "volcano")
 }
 \seealso{
 Other modelling:

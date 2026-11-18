@@ -33,8 +33,6 @@
 #'   TODO/prolfqua/TODO_ropensci_compliance.md section 5.
 #' @srrstatsTODO {RE4.16} New-group prediction is required for categorical-group models independently of
 #'   forecasting. No prediction method for new categorical groups is implemented; its semantics need a later design.
-#' @srrstatsTODO {RE6.2} no plot of fitted values with confidence intervals; deferred follow-up:
-#'   TODO/prolfqua/TODO_ropensci_compliance.md section 5.
 #' @srrstatsTODO {RE7.1a} timing comparison noiseless vs noisy; deferred follow-up:
 #'   TODO/prolfqua/TODO_ropensci_compliance.md section 5.
 #' @noRd

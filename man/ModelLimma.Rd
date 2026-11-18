@@ -151,10 +151,10 @@ Other modelling:
 
     \item{\code{p.adjust}}{function to adjust p-values}
 
-    \item{\code{imputed_proteins}}{character vector of protein ids (matching
-\code{rownames(fit$coefficients)}) that were rescued via LOD
+    \item{\code{imputed_proteins}}{character vector of bare protein ids (matching
+the first subject column in \code{rowdata}) that were rescued via LOD
 imputation. \code{ContrastsLimma$get_contrasts()} reads this to
-tag refit rows with a \code{"_imputed"} modelName suffix so the
+tag refit rows with \code{estimate_type = "lod_imputed"} so the
 rescue is visible downstream. Empty for builders that do not
 impute.}
   }

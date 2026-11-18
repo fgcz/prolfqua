@@ -49,6 +49,20 @@
 #'   inside expressions. See the \emph{Under the hood} article for worked
 #'   one-factor and \code{~ A * B} design matrices and linear functions.
 #'
+#'   Internally, \code{limpa_nested} and \code{hurdle_nested} aggregate child
+#'   features to proteins. Detection methods (\code{binomial_nested},
+#'   \code{binomial_firth_nested}, \code{firth}, and the detection component
+#'   of \code{hurdle_nested}) encode intensities as detected/not detected.
+#'   These aggregation and detection steps have no inverse. The analysis keeps
+#'   its input in \code{analysis$.lfqdata}; for aggregated input this is already
+#'   at the modelled hierarchy. \code{fitted()} and \code{residuals()} expose
+#'   the modelled observed responses (inspect each hurdle component separately).
+#'   Intensity effects are differences on the modelled scale, hence log2 fold
+#'   changes for log2 responses; detection effects are log odds ratios, with
+#'   fitted responses reported as probabilities. Transformations performed
+#'   before this call retain their input columns in LFQData; this call does not
+#'   record a transformation history or infer inverse transformations.
+#'
 #'   With a fixed design and fixed observations per protein, the per-protein
 #'   \code{lm} and \code{lmer_nested} fitting loops grow approximately linearly
 #'   with the number of proteins and run sequentially. \code{limma} fits the
@@ -66,6 +80,8 @@
 #' @return a facade object of the class registered for \code{method}, see
 #'   \code{\link{lookup_facade}}.
 #' @export
+#' @srrstats {RE4.12} Modelling aggregation and detection encoding, their retained responses and lack of inverses
+#'   are documented; preceding user transformations retain their input columns.
 #' @family modelling
 #' @examplesIf requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)
 #' istar <- sim_lfq_data_protein_config(Nprot = 20)

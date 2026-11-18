@@ -1,5 +1,55 @@
 # Test Model and ModelFirth R6 classes
 
+test_that("coefficient tables preserve lm estimates and uncertainty", {
+  data <- transform(iris, protein_Id = "p1")
+  model <- build_model(data, strategy_lm("Sepal.Length ~ Species"), subject_id = "protein_Id")
+  fit <- model$model_df$linear_model[[1]]
+  actual <- model$get_coefficients()
+  expected <- stats::coef(summary(fit))
+  expect_equal(actual$Estimate, unname(expected[, "Estimate"]))
+  expect_equal(actual$Std..Error, unname(expected[, "Std. Error"]))
+  expect_equal(actual$t.value, unname(expected[, "t value"]))
+  expect_equal(actual$Pr...t.., unname(expected[, "Pr(>|t|)"]))
+  expect_equal(actual$df, rep(stats::df.residual(fit), nrow(actual)))
+})
+
+test_that("coefficient tables preserve lmer Satterthwaite inference", {
+  skip_if_not_installed("lmerTest")
+  data <- transform(lme4::sleepstudy, protein_Id = "p1")
+  model <- build_model(data, strategy_lmer("Reaction ~ Days + (Days | Subject)"), subject_id = "protein_Id")
+  expected <- stats::coef(summary(model$model_df$linear_model[[1]]))
+  actual <- model$get_coefficients()
+  expect_equal(actual$Estimate, unname(expected[, "Estimate"]))
+  expect_equal(actual$Std..Error, unname(expected[, "Std. Error"]))
+  expect_equal(actual$df, unname(expected[, "df"]))
+  expect_equal(actual$Pr...t.., unname(expected[, "Pr(>|t|)"]))
+})
+
+for (method in c("rlm", "rfit")) {
+  test_that(paste(method, "coefficient tables support coefficient volcano plots"), {
+    if (method == "rfit") {
+      skip_if_not_installed("Rfit")
+    }
+    data <- transform(iris, protein_Id = "p1")
+    strategy <- if (method == "rlm") strategy_rlm else strategy_rfit
+    model <- build_model(data, strategy("Sepal.Length ~ Species"), subject_id = "protein_Id")
+    actual <- model$get_coefficients()
+    expect_true(all(c("Estimate", "Pr...t..", "Std..Error", "df") %in% names(actual)))
+    expect_s3_class(model$coef_volcano()$plot, "ggplot")
+  })
+}
+
+test_that("Firth coefficient tables skip failed fits", {
+  skip_if_not_installed("logistf")
+  sim <- sim_lfq_data_protein_config(Nprot = 5, weight_missing = 0.5, seed = 3)
+  model <- build_model_glm_protein(LFQData$new(sim$data, sim$config), "~ group_")
+  before <- model$get_coefficients()
+  failed <- model$models$model_df$protein_Id[1]
+  model$models$model_df$has_model_fit[1] <- FALSE
+  model$models$model_df$linear_model[[1]] <- "failed"
+  expect_equal(model$get_coefficients(), before[before$protein_Id != failed, ])
+})
+
 test_that("Model (lm strategy)", {
   istar <- sim_lfq_data_peptide_config(Nprot = 20)
   config <- istar$config

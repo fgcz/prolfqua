@@ -119,15 +119,21 @@ analysis <- build_contrast_analysis(lfq_protein, "~ group_", contrasts, method =
 print(analysis)
 summary(analysis)
 head(coef(analysis))
+head(vcov(analysis))
 head(confint(analysis))
 formula(analysis)
 head(nobs(analysis))
 head(fitted(analysis))
 head(residuals(analysis))
 plot(analysis)
+plot(analysis, type = "volcano")
 ```
 
 Coefficient tables describe the fitted model; requested comparisons remain available through `analysis$get_contrasts()`. Confidence intervals are Wald t intervals, with moderated standard errors and degrees of freedom for limma and normal Wald intervals for the Firth logistic backend. ROPECA coefficient tables are keyed by protein and peptide because those methods fit peptide-level models.
+
+`vcov()` returns the coefficient covariance as a long table keyed by subject, `term` and `term2`. LOD-refitted models use their borrowed covariance; matrix models use the moderated variance and each subject's weighted design. The default plot shows observed responses and fitted group means with confidence intervals for the six subjects with the smallest FDR in the first contrast. Select other subjects with `plot(analysis, subject = top, level = 0.9)`. Points and intervals share the modelled response scale; detection models show probabilities, and mixed models use fixed-effect means with Satterthwaite intervals. For multiple factors, the plotted means correspond to factor combinations. ROPECA plots have one panel per peptide of each selected protein. Volcano and MA plots remain available through `type = "volcano"` and `type = "ma"`; combined hurdle analyses default to volcano and require selecting an intensity or detection component for a fitted plot.
+
+The modelling call retains its input, and the fitted-value and residual accessors retain observed modelled responses. Internal child-feature aggregation and detection encoding have no inverse. Preceding LFQData transformations retain their original input columns; they are not recorded as a new transformation-history object. See `?build_contrast_analysis` for the affected methods and output scales.
 
 Fitted values and residuals retain sample, factor and available child-feature identifiers. They include observed responses from successful fits and a subject-level `imputed` flag; rows filled during LOD imputation are excluded. The values use the fitting scale: log2 intensity here, and probabilities for detection models. Binomial detection responses are the adjusted proportions used in fitting; response residuals equal response minus fitted probability. `nobs()` excludes imputed observations.
 

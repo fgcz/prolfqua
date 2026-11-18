@@ -2,9 +2,17 @@
 
 ## New features
 
+- `LFQDataTransformer$subtract_sample_offsets()` applies caller-supplied log2 offsets by sample ID and stores the adjusted intensities in a new response column.
+
+- The Transforming and calibrating LFQ data vignette shows how to use the active response, internal reference proteins and offsets from external calibrants.
+
+- `plot()` now defaults to observed responses and fitted group means with confidence intervals for up to six subjects selected by FDR. Select subjects with `subject` and confidence level with `level`; volcano and MA plots remain available through `type`. Combined hurdle analyses retain the volcano default and expose fitted plots through their intensity and detection components.
+
+- `vcov()` on fitted analyses returns coefficient covariances in a subject-keyed table, using borrowed uncertainty for LOD refits and moderated per-subject covariances for matrix models.
+
 - `fdr_sig_level()` converts a target FDR, null-feature proportion and power into a per-test threshold for the existing protein and SD-quantile sample-size methods. `power_fdr_prior_n()` and `LFQDataStats$power_fdr_pilot()` plan balanced two-group sample sizes by averaging power over a pilot variance prior and a specified effect distribution. The QC and Sample Size Estimation vignette demonstrates both approaches.
 
-- Fitted analysis results support `print()` for a concise model overview without computing contrasts, and `summary()` for fit status and per-contrast significance counts. `coef()`, `confint()`, `formula()` and `nobs()` expose model coefficients, Wald intervals, the fitted specification and observed sample counts in subject-keyed tables. `fitted()` and `residuals()` return observed responses with sample identifiers and imputation flags, on the fitted response scale. `plot()` returns an FDR volcano plot or an MA plot. The Modelling methods vignette demonstrates these methods, and all registered backends are tested against the common result contract.
+- Fitted analysis results support `print()` for a concise model overview without computing contrasts, and `summary()` for fit status and per-contrast significance counts. `coef()`, `confint()`, `formula()` and `nobs()` expose model coefficients, Wald intervals, the fitted specification and observed sample counts in subject-keyed tables. `fitted()` and `residuals()` return observed responses with sample identifiers and imputation flags, on the fitted response scale. `plot()` returns fitted group means with intervals, or a volcano or MA plot. The Modelling methods vignette demonstrates these methods, and all registered backends are tested against the common result contract.
 
 - Fitted analyses retain an independent input snapshot. Matrix models retain their response matrix, weights and observed-response mask, and LOD-refitted models identify imputed rows for result inspection.
 
@@ -12,6 +20,8 @@
 - New option `prolfqua.verbose`: set `options(prolfqua.verbose = FALSE)` to silence prolfqua's informative messages (columns added, rows removed, files written). The messages carry class `prolfqua_message`, so applications can route them to their own log. Both options are described in `?prolfqua`.
 
 ## Behaviour changes
+
+- Analysis help and the Modelling methods vignette document internal aggregation, detection encoding, retained responses and output scales, including which steps have no inverse.
 
 - The package help now defines the API lifecycle, analysis terminology and statistical terms. The Under the hood article explains categorical formula coding and contrast weights, and the analysis help documents measured runtime scaling.
 
@@ -25,6 +35,8 @@
 - README: the getting-started example called the removed aggregator method `$medpolish()` and the undeclared package `ggpubr`; it now runs as shown and ends with `build_contrast_analysis()`. Installation is from Bioconductor first.
 
 ## Bug fixes
+
+- Coefficient tables for LOD-refitted proteins use their borrowed covariance and degrees of freedom. Robust and rank-based models expose consistent coefficient and p-value columns, restoring their coefficient volcano plots. Firth coefficient tables skip failed fits.
 
 - Printing fitted analyses extracts coefficients from only the first few subject fits for its preview. Limma summaries correctly count failed fits and report singularity as unknown (`NA`) instead of inferring it from failed fits.
 

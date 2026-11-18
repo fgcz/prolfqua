@@ -518,8 +518,6 @@ new_imputed_model <- function(model, borrowed_vcov, borrowed_sigma, borrowed_df,
 }
 
 #' @export
-#' @srrstatsTODO {RE4.6} Inner imputed/rfit fits implement vcov; limit: no common model/facade accessor or
-#'   covariance-policy hook.
 vcov.imputed_model <- function(object, ...) {
   attr(object, "borrowed_vcov")
 }

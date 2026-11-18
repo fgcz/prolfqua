@@ -217,6 +217,74 @@
 #' @export
 .model_coef.NULL <- function(model, n = Inf) .model_not_available()
 
+#' Coefficient covariance in the coefficient accessor's term order
+#' @param fit a successful backend fit
+#' @noRd
+.fit_vcov <- function(fit) {
+  terms <- .fit_coef(fit)$term
+  as.matrix(stats::vcov(fit))[terms, terms, drop = FALSE]
+}
+
+#' Represent a named covariance matrix as a long table
+#' @param covariance named coefficient covariance matrix
+#' @noRd
+.covariance_table <- function(covariance) {
+  tibble::tibble(
+    term = rep(rownames(covariance), times = ncol(covariance)),
+    term2 = rep(colnames(covariance), each = nrow(covariance)),
+    covariance = as.numeric(covariance)
+  )
+}
+
+#' Coefficient covariance tables across subjects
+#' @param model a model adapter
+#' @noRd
+.model_vcov <- function(model) UseMethod(".model_vcov")
+
+#' @rdname dot-model_vcov
+#' @noRd
+#' @export
+.model_vcov.Model <- function(model) {
+  fits <- .model_fits(model)
+  .bind_fit_results(
+    fits,
+    model$subject_id,
+    lapply(fits$linear_model, function(fit) .covariance_table(.fit_vcov(fit))),
+    tibble::tibble(term = character(), term2 = character(), covariance = double())
+  )
+}
+
+#' @rdname dot-model_vcov
+#' @noRd
+#' @export
+.model_vcov.ModelFirth <- function(model) .model_vcov.Model(model)
+
+#' @rdname dot-model_vcov
+#' @noRd
+#' @export
+.model_vcov.ModelLimma <- function(model) {
+  fit <- limma::eBayes(model$fit, trend = model$trend, robust = model$robust)
+  rows <- which(rowSums(!is.finite(fit$coefficients)) == 0L)
+  result <- lapply(rows, function(i) {
+    weights <- if (is.null(model$weights)) rep(1, ncol(model$E)) else model$weights[i, ]
+    used <- is.finite(model$E[i, ]) & is.finite(weights) & weights > 0
+    design <- fit$design[used, , drop = FALSE]
+    covariance <- fit$s2.post[i] * solve(crossprod(design, weights[used] * design))
+    .covariance_table(covariance)
+  })
+  .bind_fit_results(
+    model$rowdata[rows, , drop = FALSE],
+    model$subject_id,
+    result,
+    tibble::tibble(term = character(), term2 = character(), covariance = double())
+  )
+}
+
+#' @rdname dot-model_vcov
+#' @noRd
+#' @export
+.model_vcov.NULL <- function(model) .model_not_available()
+
 #' Observation counts across model subjects
 #' @param model a model adapter
 #' @noRd
@@ -398,3 +466,124 @@
 #' @noRd
 #' @export
 .model_values.NULL <- function(model, lfqdata) .model_not_available()
+
+#' Fitted cell means and their uncertainty for one subject
+#' @param fit a successful backend fit
+#' @param contrast_fun the model strategy's contrast evaluator
+#' @param level confidence level
+#' @noRd
+.fit_group_means <- function(fit, contrast_fun, level) UseMethod(".fit_group_means")
+
+#' @rdname dot-fit_group_means
+#' @noRd
+#' @export
+.fit_group_means.default <- function(fit, contrast_fun, level) {
+  # Cell means align with observed factor combinations; marginal means do not.
+  linear <- linfct_from_model(fit)$linfct_interactions
+  estimates <- contrast_fun(fit, linear)
+  margin <- stats::qt((1 + level) / 2, estimates$df) * estimates$std.error
+  tibble::tibble(
+    group = rownames(linear),
+    estimate = estimates$estimate,
+    conf.low = estimates$estimate - margin,
+    conf.high = estimates$estimate + margin
+  )
+}
+
+#' @rdname dot-fit_group_means
+#' @noRd
+#' @export
+.fit_group_means.glm <- function(fit, contrast_fun, level) {
+  result <- .fit_group_means.default(fit, contrast_fun, level)
+  result[c("estimate", "conf.low", "conf.high")] <- lapply(
+    result[c("estimate", "conf.low", "conf.high")],
+    stats::plogis
+  )
+  result
+}
+
+#' @rdname dot-fit_group_means
+#' @noRd
+#' @export
+.fit_group_means.logistf <- function(fit, contrast_fun, level) {
+  data <- fit$model
+  terms <- stats::terms(stats::formula(fit))
+  factors <- intersect(attr(terms, "term.labels"), names(data))
+  groups <- make_interaction_column(data, factors, sep = ":")$interaction
+  rows <- which(!duplicated(groups))
+  design <- stats::model.matrix(terms, data)[rows, , drop = FALSE]
+  estimate <- as.numeric(design %*% stats::coef(fit))
+  margin <- stats::qnorm((1 + level) / 2) * sqrt(rowSums((design %*% .fit_vcov(fit)) * design))
+  tibble::tibble(
+    group = as.character(groups[rows]),
+    estimate = stats::plogis(estimate),
+    conf.low = stats::plogis(estimate - margin),
+    conf.high = stats::plogis(estimate + margin)
+  )
+}
+
+#' Bind selected subjects' group means using the appropriate contrast strategy
+#' @param model a per-subject model adapter
+#' @param subjects identifiers in the first subject column
+#' @param level confidence level
+#' @param contrast_fun the model strategy's contrast evaluator
+#' @noRd
+.group_means_from_fits <- function(model, subjects, level, contrast_fun) {
+  fits <- .model_fits(model)
+  fits <- fits[fits[[model$subject_id[1]]] %in% subjects, , drop = FALSE]
+  .bind_fit_results(
+    fits,
+    model$subject_id,
+    lapply(fits$linear_model, .fit_group_means, contrast_fun = contrast_fun, level = level),
+    tibble::tibble(group = character(), estimate = double(), conf.low = double(), conf.high = double())
+  )
+}
+
+#' Group means and confidence limits for selected model subjects
+#' @param model a model adapter
+#' @param subjects identifiers in the first subject column
+#' @param level confidence level
+#' @noRd
+.model_group_means <- function(model, subjects, level = 0.95) UseMethod(".model_group_means")
+
+#' @rdname dot-model_group_means
+#' @noRd
+#' @export
+.model_group_means.Model <- function(model, subjects, level = 0.95) {
+  .group_means_from_fits(model, subjects, level, model$model_strategy$contrast_fun)
+}
+
+#' @rdname dot-model_group_means
+#' @noRd
+#' @export
+.model_group_means.ModelFirth <- function(model, subjects, level = 0.95) {
+  .group_means_from_fits(model, subjects, level, model$models$strategy$contrast_fun)
+}
+
+#' @rdname dot-model_group_means
+#' @noRd
+#' @export
+.model_group_means.ModelLimma <- function(model, subjects, level = 0.95) {
+  linear <- linfct_from_model(model$dummy_model)$linfct_interactions
+  fit <- limma::contrasts.fit(model$fit, t(linear))
+  fit <- limma::eBayes(fit, trend = model$trend, robust = model$robust)
+  selected <- model$rowdata[[model$subject_id[1]]] %in% subjects & rowSums(!is.finite(model$fit$coefficients)) == 0L
+  result <- lapply(seq_len(nrow(linear)), function(i) {
+    table <- limma::topTable(fit, coef = i, number = Inf, sort.by = "none", confint = level)
+    dplyr::bind_cols(
+      model$rowdata[selected, , drop = FALSE],
+      tibble::tibble(
+        group = rep(rownames(linear)[i], sum(selected)),
+        estimate = table$logFC[selected],
+        conf.low = table$CI.L[selected],
+        conf.high = table$CI.R[selected]
+      )
+    )
+  })
+  dplyr::bind_rows(result)
+}
+
+#' @rdname dot-model_group_means
+#' @noRd
+#' @export
+.model_group_means.NULL <- function(model, subjects, level = 0.95) .model_not_available()

@@ -83,9 +83,16 @@ Model <- R6::R6Class(
       complete_models <- get_complete_model_fit(self$model_df)
       # Extract coefficients
       .coef_df <- function(x) {
-        x <- coef(summary(x))
-        x <- data.frame(factor = row.names(x), x)
-        return(x)
+        coefficients <- .fit_coef(x)
+        statistic <- coefficients$estimate / coefficients$std.error
+        tibble::tibble(
+          factor = coefficients$term,
+          Estimate = coefficients$estimate,
+          Std..Error = coefficients$std.error,
+          df = coefficients$df,
+          t.value = statistic,
+          Pr...t.. = 2 * stats::pt(-abs(statistic), df = coefficients$df)
+        )
       }
       model_coeff <- complete_models |>
         dplyr::mutate(!!"Coeffs_model" := purrr::map(!!sym(lmermodel), .coef_df))

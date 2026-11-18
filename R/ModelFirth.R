@@ -80,7 +80,7 @@ ModelFirth <- R6::R6Class(
         return(out)
       }
 
-      model_coeff <- self$models$model_df |>
+      model_coeff <- .model_fits(self) |>
         dplyr::mutate(!!"Coeffs_model" := purrr::map(!!sym(lmermodel), .coef_df))
       model_coeff <- model_coeff |>
         dplyr::select(!!!syms(self$subject_id), !!sym("Coeffs_model"), isSingular, nr_coef)

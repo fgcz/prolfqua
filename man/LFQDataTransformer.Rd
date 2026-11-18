@@ -87,6 +87,13 @@ lfqdata2$get_Plotter()$intensity_distribution_density()
 robscale <- lfqdata2$get_Transformer()$robscale_subset(internal)$lfq
 robscale$get_Plotter()$intensity_distribution_density()
 
+# Apply a one-unit log2 offset to the first sample
+tr <- lfqdata$get_Transformer()$log2()
+samples <- unique(tr$lfq$data_long()[[tr$lfq$sample_name()]])
+offsets <- setNames(numeric(length(samples)), samples)
+offsets[1] <- 1
+tr$subtract_sample_offsets(offsets)
+
 }
 \section{Public fields}{
   \if{html}{\out{<div class="r6-fields">}}
@@ -104,6 +111,7 @@ robscale$get_Plotter()$intensity_distribution_density()
     \item \href{#method-LFQDataTransformer-robscale}{\code{LFQDataTransformer$robscale()}}
     \item \href{#method-LFQDataTransformer-robscale_subset}{\code{LFQDataTransformer$robscale_subset()}}
     \item \href{#method-LFQDataTransformer-center_to_reference}{\code{LFQDataTransformer$center_to_reference()}}
+    \item \href{#method-LFQDataTransformer-subtract_sample_offsets}{\code{LFQDataTransformer$subtract_sample_offsets()}}
     \item \href{#method-LFQDataTransformer-intensity_array}{\code{LFQDataTransformer$intensity_array()}}
     \item \href{#method-LFQDataTransformer-intensity_matrix}{\code{LFQDataTransformer$intensity_matrix()}}
     \item \href{#method-LFQDataTransformer-clone}{\code{LFQDataTransformer$clone()}}
@@ -239,6 +247,32 @@ transformed a second time. `TRUE` forces log transformation}
   }
   \subsection{Returns}{
     LFQDataTransformer (self)
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LFQDataTransformer-subtract_sample_offsets"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataTransformer-subtract_sample_offsets}{}}}
+\subsection{\code{LFQDataTransformer$subtract_sample_offsets()}}{
+  Subtract caller-supplied offsets from the active log2 response. The caller supplies
+log2 data and chooses the global level through the offsets. Missing intensities
+remain missing. The result becomes the active response in a new column named
+\code{<response>_offset_adjusted}, with a numeric suffix if the name already exists.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataTransformer$subtract_sample_offsets(offsets)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{offsets}}{Named numeric vector with one finite log2 offset per sample.
+Names must match the configured sample IDs exactly and may be in any order.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    LFQDataTransformer (self, invisibly)
   }
 }
 

@@ -6,7 +6,7 @@
 #' FDR and absolute effect thresholds.
 #'
 #' @param x,object a fitted analysis returned by [build_contrast_analysis()].
-#' @param ... arguments passed to the selected plotter method by `plot()`;
+#' @param ... arguments passed to the volcano or MA plotter by `plot()`;
 #'   unused by the other methods.
 #' @param FDR_threshold false discovery rate threshold for significant contrasts.
 #' @param diff_threshold minimum absolute contrast effect for significance.
@@ -30,11 +30,20 @@
 #'   Binomial responses are the fitted model's adjusted detection proportions;
 #'   response residuals equal response minus fitted value. Hurdle results require
 #'   selecting an intensity or detection component for these methods too.
-#'   `plot()` returns a ggplot visibly: an FDR volcano plot or an MA plot.
-#'   There is no analysis-level `vcov()` method; covariance access remains on
-#'   backend fits. Summary fit counts are not per-subject convergence diagnostics.
+#'   `plot()` returns a ggplot visibly. By default, observed responses and fitted
+#'   cell means with confidence intervals are shown for six subjects selected by
+#'   the smallest FDR in the first contrast. Mixed-model means use fixed effects
+#'   and Satterthwaite uncertainty; detection means and limits are probabilities.
+#'   ROPECA displays one panel per peptide of each selected protein. Hurdle
+#'   analyses default to the volcano plot; request a component for fitted plots.
+#'   `vcov()` returns subject identifiers, `term`, `term2` and `covariance`.
+#'   It uses backend covariance (borrowed for LOD refits) or, for matrix models,
+#'   the moderated variance times the inverse of the per-subject weighted design
+#'   crossproduct. Failed matrix fits are omitted.
+#'   Summary fit counts are not per-subject convergence diagnostics.
 #' @name prolfqua_analysis_methods
 #' @family modelling
+#' @md
 #' @examples
 #' sim <- sim_lfq_data_protein_config(Nprot = 10, weight_missing = 0, seed = 42)
 #' lfq <- LFQData$new(sim$data, sim$config)
@@ -42,12 +51,14 @@
 #' print(analysis)
 #' summary(analysis)
 #' head(stats::coef(analysis))
+#' head(stats::vcov(analysis))
 #' head(stats::confint(analysis))
 #' stats::formula(analysis)
 #' head(stats::nobs(analysis))
 #' head(stats::fitted(analysis))
 #' head(stats::residuals(analysis))
 #' plot(analysis)
+#' plot(analysis, type = "volcano")
 NULL
 
 #' Formula information for a single model or both hurdle components
@@ -170,6 +181,11 @@ print.summary.ContrastsFacadeBase <- function(x, ...) {
 #' @exportS3Method stats::coef
 coef.ContrastsFacadeBase <- function(object, ...) .model_coef(object$model)
 
+#' @rdname prolfqua_analysis_methods
+#' @exportS3Method stats::vcov
+#' @srrstats {RE4.6} Subject-keyed covariance tables expose backend, borrowed and moderated matrix covariances.
+vcov.ContrastsFacadeBase <- function(object, ...) .model_vcov(object$model)
+
 #' Resolve requested coefficient names or indices
 #' @param parm requested coefficient names or positive indices
 #' @param terms available coefficient names
@@ -237,19 +253,76 @@ residuals.ContrastsFacadeBase <- function(object, ...) {
 }
 
 #' @rdname prolfqua_analysis_methods
-#' @param type plot type: an FDR volcano plot (default) or an MA plot.
+#' @param type plot type: fitted responses (default), FDR volcano or MA.
+#'   Hurdle analyses default to volcano because they have two models.
+#' @param subject character vector of identifiers from the first model subject
+#'   column for fitted plots; `NULL` selects up to six by FDR in the first contrast.
 #' @exportS3Method graphics::plot
-#' @srrstats {RE6.0} The default plot method returns the analysis FDR volcano plot.
+#' @srrstats {RE6.0} The default plot shows fitted responses, or an FDR volcano for combined hurdle analyses.
 #' @srrstats {RE6.1} S3 plot dispatch connects analysis results to the existing contrast plotter.
-plot.ContrastsFacadeBase <- function(x, type = c("volcano", "ma"), ...) {
+#' @srrstats {RE6.2} Default fitted plots show observations and group means with configurable confidence limits.
+plot.ContrastsFacadeBase <- function(x, type = c("fitted", "volcano", "ma"), subject = NULL, level = 0.95, ...) {
   if (missing(type)) {
-    type <- "volcano"
+    type <- if (is.null(x$model)) "volcano" else "fitted"
   }
-  type <- .arg_match_prolfqua(type, c("volcano", "ma"), "type")
+  type <- .arg_match_prolfqua(type, c("fitted", "volcano", "ma"), "type")
+  if (type == "fitted") {
+    return(.plot_fitted_analysis(x, subject, level))
+  }
   plotter <- x$get_Plotter()
   if (type == "volcano") {
     plotter$volcano(...)$FDR
   } else {
     plotter$ma_plot(...)
   }
+}
+
+#' Resolve explicitly requested subjects or the six smallest first-contrast FDRs
+#' @param x a fitted analysis facade
+#' @param subject requested identifiers or NULL for selection by FDR
+#' @noRd
+.fitted_plot_subjects <- function(x, subject) {
+  available <- .model_nobs(x$model)
+  key <- x$model$subject_id[1]
+  if (is.null(subject)) {
+    contrasts <- x$get_contrasts()
+    config <- x$get_config()
+    contrasts <- contrasts[contrasts[[config$contrast_col]] == x$.contrast_names[1], , drop = FALSE]
+    ordered <- contrasts[[key]][order(contrasts[[config$fdr_col]])]
+    subject <- head(unique(as.character(ordered[ordered %in% available[[key]]])), 6L)
+  }
+  if (!is.character(subject) || length(subject) == 0L || anyNA(subject) || !all(subject %in% available[[key]])) {
+    abort_bad_argument("subject", "contain one or more identifiers from the first model subject column")
+  }
+  unique(subject)
+}
+
+#' Plot observed responses and estimated cell means on the fitted response scale
+#' @param x a fitted analysis facade
+#' @param subject selected first-column subject identifiers or NULL
+#' @param level confidence level
+#' @noRd
+.plot_fitted_analysis <- function(x, subject, level) {
+  if (!.is_finite_number(level) || level <= 0 || level >= 1) {
+    abort_bad_argument("level", "be one finite number strictly between zero and one")
+  }
+  subject <- .fitted_plot_subjects(x, subject)
+  keys <- x$model$subject_id
+  observed <- .model_values(x$model, x$.lfqdata)
+  observed <- observed[observed[[keys[1]]] %in% subject, , drop = FALSE]
+  factors <- intersect(attr(stats::terms(.model_formula(x$model)), "term.labels"), x$.lfqdata$factor_keys())
+  observed$group <- as.character(make_interaction_column(observed, factors, sep = ":")$interaction)
+  means <- .model_group_means(x$model, subject, level)
+  observed$subject <- do.call(paste, c(observed[keys], sep = " / "))
+  means$subject <- do.call(paste, c(means[keys], sep = " / "))
+  ggplot2::ggplot(observed, ggplot2::aes(x = .data$group, y = .data$response)) +
+    ggplot2::geom_point(position = ggplot2::position_jitter(width = 0.15, height = 0, seed = 1), alpha = 0.5) +
+    ggplot2::geom_pointrange(
+      data = means,
+      mapping = ggplot2::aes(x = .data$group, y = .data$estimate, ymin = .data$conf.low, ymax = .data$conf.high),
+      inherit.aes = FALSE,
+      colour = "#0072B2"
+    ) +
+    ggplot2::facet_wrap(ggplot2::vars(.data$subject), scales = "free_y") +
+    ggplot2::labs(x = "Group", y = "Modelled response")
 }

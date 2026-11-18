@@ -304,8 +304,7 @@ facade_method_dependencies <- list(
   limpa_nested = "limpa"
 )
 
-#' @srrstats {RE7.3} The registry loop tests supported accessors, documented hurdle errors and unavailable
-#'   analysis-level vcov.
+#' @srrstats {RE7.3} The registry loop tests supported accessors, covariance consistency and documented hurdle errors.
 #' @noRd
 NULL
 
@@ -320,13 +319,13 @@ for (method in names(list_facades())) {
       summary <- summary(facade)
       expect_true(all(c("subjects", "fitted", "failed", "singular", "imputed") %in% names(summary$fit_status)))
       expect_equal(summary$fit_status$fitted + summary$fit_status$failed, summary$fit_status$subjects)
-      expect_error(stats::vcov(facade), "no applicable method")
       expect_equal(summary$per_contrast$estimated, nrow(facade$get_contrasts()))
       expect_equal(summary$per_contrast$missing, nrow(facade$get_missing()))
       expect_s3_class(graphics::plot(facade), "ggplot")
       if (method == "hurdle_nested") {
         for (accessor in list(
           stats::coef,
+          stats::vcov,
           stats::confint,
           stats::formula,
           stats::nobs,
@@ -339,6 +338,12 @@ for (method in names(list_facades())) {
         coefficients <- stats::coef(facade)
         expect_named(coefficients, c(facade$model$subject_id, "term", "estimate", "std.error", "df"))
         expect_gt(nrow(coefficients), 0L)
+        covariance <- stats::vcov(facade)
+        expect_named(covariance, c(facade$model$subject_id, "term", "term2", "covariance"))
+        diagonal <- covariance[covariance$term == covariance$term2, ]
+        compared <- dplyr::inner_join(diagonal, coefficients, by = c(facade$model$subject_id, "term"))
+        expect_equal(nrow(compared), sum(is.finite(coefficients$estimate)))
+        expect_equal(sqrt(compared$covariance), compared$std.error)
         intervals <- stats::confint(facade)
         expect_equal(intervals[, names(coefficients)], coefficients)
         expect_true(all(c("conf.low", "conf.high") %in% names(intervals)))
@@ -375,6 +380,43 @@ for (method in names(list_facades())) {
   })
 }
 
+test_that("analysis covariance matches each ordinary backend fit", {
+  facade <- facade_methods_fit()
+  covariance <- stats::vcov(facade)
+  fits <- .model_fits(facade$model)
+  for (i in seq_len(nrow(fits))) {
+    actual <- covariance[covariance$protein_Id == fits$protein_Id[i], ]
+    expected <- stats::vcov(fits$linear_model[[i]])
+    expect_equal(actual$covariance, as.numeric(expected))
+    expect_equal(actual$term, rep(rownames(expected), ncol(expected)))
+    expect_equal(actual$term2, rep(colnames(expected), each = nrow(expected)))
+  }
+  facade$model$model_df$has_model_fit[] <- FALSE
+  expect_named(stats::vcov(facade), names(covariance))
+  expect_equal(nrow(stats::vcov(facade)), 0L)
+})
+
+test_that("matrix covariance uses each subject's measured cells and precision weights", {
+  for (method in c("limma", "limma_voom")) {
+    lfq <- facade_methods_input()
+    data <- lfq$data_long()
+    data[[lfq$response()]][c(1, 14, 27)] <- NA_real_
+    lfq$set_data(data)
+    facade <- facade_methods_fit(method, lfq)
+    model <- facade$model
+    covariance <- stats::vcov(facade)
+    moderated <- limma::eBayes(model$fit, trend = model$trend, robust = model$robust)
+    for (i in seq_len(nrow(model$E))) {
+      used <- is.finite(model$E[i, ])
+      weights <- if (is.null(model$weights)) rep(1, sum(used)) else model$weights[i, used]
+      design <- model$fit$design[used, , drop = FALSE]
+      expected <- moderated$s2.post[i] * solve(t(design) %*% diag(weights) %*% design)
+      actual <- covariance[covariance$protein_Id == model$rowdata$protein_Id[i], ]
+      expect_equal(actual$covariance, as.numeric(expected))
+    }
+  }
+})
+
 test_that("limpa imputation flags describe observations rather than the model label", {
   skip_if_not_installed("limpa")
   facade <- facade_method_case("limpa")
@@ -384,4 +426,114 @@ test_that("limpa imputation flags describe observations rather than the model la
   expect_equal(values$imputed, unname(expected[match(values$protein_Id, facade$model$rowdata$protein_Id)]))
   facade$model$model_name <- "custom model label"
   expect_identical(stats::fitted(facade)$imputed, values$imputed)
+})
+
+test_that("fitted lm cell means and intervals match prediction for one and two factors", {
+  for (two_factors in c(FALSE, TRUE)) {
+    lfq <- facade_methods_input()
+    formula <- "~ group_"
+    if (two_factors) {
+      data <- lfq$data_long()
+      samples <- data[[lfq$sample_name()]]
+      data$batch <- c("X", "Y")[1 + match(samples, unique(samples)) %% 2]
+      config <- lfq$get_config()
+      config$factors <- c(config$factors, batch = "batch")
+      config$factor_depth <- 2
+      lfq <- LFQData$new(data, config)
+      formula <- "~ group_ * batch"
+    }
+    facade <- build_contrast_analysis(lfq, formula, c(A_vs_Ctrl = "group_A - group_Ctrl"))
+    fits <- .model_fits(facade$model)
+    selected <- fits$protein_Id[1:2]
+    actual <- .model_group_means(facade$model, selected, level = 0.9)
+    for (protein in selected) {
+      fit <- fits$linear_model[[match(protein, fits$protein_Id)]]
+      factors <- intersect(attr(stats::terms(fit), "term.labels"), names(fit$model))
+      data <- unique(fit$model[, factors, drop = FALSE])
+      groups <- as.character(make_interaction_column(data, factors, sep = ":")$interaction)
+      expected <- stats::predict(fit, newdata = data, interval = "confidence", level = 0.9)
+      rows <- actual[actual$protein_Id == protein, ]
+      expected <- expected[match(rows$group, groups), , drop = FALSE]
+      expect_equal(rows$estimate, unname(expected[, "fit"]))
+      expect_equal(rows$conf.low, unname(expected[, "lwr"]))
+      expect_equal(rows$conf.high, unname(expected[, "upr"]))
+    }
+    plot <- graphics::plot(facade, subject = selected, level = 0.9)
+    expect_setequal(plot$data$group, plot$layers[[2]]$data$group)
+    expect_setequal(plot$data$protein_Id, selected)
+    expect_no_error(ggplot2::ggplot_build(plot))
+  }
+})
+
+test_that("fitted mixed-model means retain Satterthwaite confidence limits", {
+  skip_if_not_installed("lmerTest")
+  facade <- muffle_warnings_matching(facade_method_case("lmer_nested"), facade_fixture_warnings)
+  fits <- .model_fits(facade$model)
+  protein <- fits$protein_Id[1]
+  fit <- fits$linear_model[[1]]
+  linear <- linfct_from_model(fit)$linfct_factors
+  expected <- compute_lmer_contrast(fit, linear)
+  actual <- .model_group_means(facade$model, protein, level = 0.9)
+  margin <- stats::qt(0.95, expected$df) * expected$std.error
+  expect_equal(actual$estimate, expected$estimate)
+  expect_equal(actual$conf.low, expected$estimate - margin)
+  expect_equal(actual$conf.high, expected$estimate + margin)
+})
+
+test_that("fitted matrix-model means match moderated contrast intervals", {
+  facade <- facade_methods_fit("limma")
+  model <- facade$model
+  linear <- linfct_from_model(model$dummy_model)$linfct_factors
+  fit <- limma::eBayes(limma::contrasts.fit(model$fit, t(linear)), trend = model$trend, robust = model$robust)
+  actual <- .model_group_means(model, model$rowdata$protein_Id, level = 0.95)
+  for (i in seq_len(nrow(linear))) {
+    expected <- limma::topTable(fit, coef = i, number = Inf, sort.by = "none", confint = TRUE)
+    rows <- actual[actual$group == rownames(linear)[i], ]
+    expect_equal(rows$estimate, expected$logFC)
+    expect_equal(rows$conf.low, expected$CI.L)
+    expect_equal(rows$conf.high, expected$CI.R)
+  }
+})
+
+for (method in c("lm", "limma", "lmer_nested", "firth", "binomial_nested", "binomial_firth_nested", "ropeca_nested")) {
+  test_that(paste("fitted plotting renders observations and intervals for", method), {
+    for (package in facade_method_dependencies[[method]]) {
+      skip_if_not_installed(package)
+    }
+    facade <- muffle_warnings_matching(facade_method_case(method), facade_fixture_warnings)
+    plot <- muffle_warnings_matching(graphics::plot(facade, type = "fitted"), "Zero sample variances detected")
+    expect_s3_class(plot, "ggplot")
+    expect_no_error(ggplot2::ggplot_build(plot))
+    expect_true(all(c("response", "subject", "group") %in% names(plot$data)))
+    means <- plot$layers[[2]]$data
+    expect_true(all(c("estimate", "conf.low", "conf.high", "subject", "group") %in% names(means)))
+    if (method %in% c("firth", "binomial_nested", "binomial_firth_nested")) {
+      expect_true(all(as.matrix(means[c("estimate", "conf.low", "conf.high")]) >= 0))
+      expect_true(all(as.matrix(means[c("estimate", "conf.low", "conf.high")]) <= 1))
+    }
+    if (method == "ropeca_nested") {
+      expect_equal(length(unique(plot$data$subject)), nrow(unique(plot$data[c("protein_Id", "peptide_Id")])))
+    }
+  })
+}
+
+test_that("fitted plots select first-contrast FDRs and validate explicit requests", {
+  facade <- facade_methods_fit()
+  contrasts <- facade$get_contrasts()
+  expected <- head(contrasts$protein_Id[order(contrasts$FDR)], 6)
+  expect_setequal(graphics::plot(facade)$data$protein_Id, expected)
+  for (subject in list("unknown", NA_character_, character(), 1)) {
+    expect_error(graphics::plot(facade, subject = subject), "subject", class = "prolfqua_error_bad_argument")
+  }
+  for (level in list(0, 1, NA_real_, c(0.9, 0.95))) {
+    expect_error(graphics::plot(facade, level = level), "level", class = "prolfqua_error_bad_argument")
+  }
+  expect_error(graphics::plot(facade, type = c("fitted", "volcano", "ma")), class = "prolfqua_error_bad_argument")
+  hurdle <- muffle_warnings_matching(facade_method_case("hurdle_nested"), facade_fixture_warnings)
+  expect_equal(graphics::plot(hurdle)$labels, graphics::plot(hurdle, type = "volcano")$labels)
+  expect_error(
+    graphics::plot(hurdle, type = "fitted"),
+    "x\\$contrast\\$intensity",
+    class = "prolfqua_error_not_available"
+  )
 })

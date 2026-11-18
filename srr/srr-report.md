@@ -3,15 +3,15 @@
 [Click here for full text of all standards](https://stats-devguide.ropensci.org/standards.html)
 
 
-:heavy_multiplication_x: Error: Package must comply with at least 50% of all standards, but currently complies with only 38%
-:heavy_multiplication_x: Error: Package must comply with at least 50% of category-specific standards, but currently complies with only 29%
+:heavy_multiplication_x: Error: Package must comply with at least 50% of all standards, but currently complies with only 41%
+:heavy_multiplication_x: Error: Package must comply with at least 50% of category-specific standards, but currently complies with only 31%
 
 ## Standards with `srrstats` tag
 
 **Numbers of standards:**
 -  G :  20  /  68
--  RE :  24  /  48
-- Total : 44 / 116
+-  RE :  27  /  48
+- Total : 47 / 116
 
 
 ### R directory
@@ -21,23 +21,26 @@ Standards on line#74 of file [R/BinomialNested.R](https://github.com/fgcz/prolfq
 Standards on line#29 of file [R/ContrastsFacadeBase.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeBase.R#L29):
 - RE1.3 Regression Software which passes or otherwise transforms aspects of input data onto output structures should ensure that those output structures retain all relevant aspects of input data, notably including row and column names, and potentially information from other `attributes()`.
 - RE4.8 Response variables, and associated "metadata" where applicable.
-Standards on line#96 of file [R/ContrastsFacadeMethods.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeMethods.R#L96):
+Standards on line#107 of file [R/ContrastsFacadeMethods.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeMethods.R#L107):
 - RE4.17 Model objects returned by Regression Software should implement or appropriately extend a default `print` method which provides an on-screen summary of model (input) parameters and (output) coefficients.
-Standards on line#129 of file [R/ContrastsFacadeMethods.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeMethods.R#L129):
+Standards on line#140 of file [R/ContrastsFacadeMethods.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeMethods.R#L140):
 - RE4.18 Regression Software may also implement `summary` methods for model objects, and in particular should implement distinct `summary` methods for any cases in which calculation of summary statistics is computationally non-trivial (for example, for bootstrapped estimates of confidence intervals).*
-Standards on line#196 of file [R/ContrastsFacadeMethods.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeMethods.R#L196):
+Standards on line#187 of file [R/ContrastsFacadeMethods.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeMethods.R#L187):
+- RE4.6 The variance-covariance matrix of the model parameters (via `vcov()`)
+Standards on line#212 of file [R/ContrastsFacadeMethods.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeMethods.R#L212):
 - RE4.3 Confidence intervals on those coefficients (via `confint()`)
-Standards on line#215 of file [R/ContrastsFacadeMethods.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeMethods.R#L215):
+Standards on line#231 of file [R/ContrastsFacadeMethods.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeMethods.R#L231):
 - RE4.4 The specification of the model, generally as a formula (via `formula()`)
-Standards on line#220 of file [R/ContrastsFacadeMethods.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeMethods.R#L220):
+Standards on line#236 of file [R/ContrastsFacadeMethods.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeMethods.R#L236):
 - RE4.5 Numbers of observations submitted to model (via `nobs()`)
-Standards on line#226 of file [R/ContrastsFacadeMethods.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeMethods.R#L226):
+Standards on line#242 of file [R/ContrastsFacadeMethods.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeMethods.R#L242):
 - RE4.9 Modelled values of response variables.
-Standards on line#234 of file [R/ContrastsFacadeMethods.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeMethods.R#L234):
+Standards on line#250 of file [R/ContrastsFacadeMethods.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeMethods.R#L250):
 - RE4.10 Model Residuals, including sufficient documentation to enable interpretation of residuals, and to enable users to submit residuals to their own tests.
-Standards on line#244 of file [R/ContrastsFacadeMethods.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeMethods.R#L244):
+Standards on line#264 of file [R/ContrastsFacadeMethods.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsFacadeMethods.R#L264):
 - RE6.0 Model objects returned by Regression Software (see* **RE4***) should have default `plot` methods, either through explicit implementation, extension of methods for existing model objects, or through ensuring default methods work appropriately.
 - RE6.1 Where the default `plot` method is **NOT** a generic `plot` method dispatched on the class of return objects (that is, through an S3-type `plot.<myclass>` function or equivalent), that method dispatch (or equivalent) should nevertheless exist in order to explicitly direct users to the appropriate function.
+- RE6.2 The default `plot` method should produce a plot of the `fitted` values of the model, with optional visualisation of confidence intervals or equivalent.*
 Standards on line#293 of file [R/ContrastsROPECA.R](https://github.com/fgcz/prolfqua/blob/main/R/ContrastsROPECA.R#L293):
 - G5.4a For new methods, it can be difficult to separate out correctness of the method from the correctness of the implementation, as there may not be reference for comparison. In this case, testing may be implemented against simple, trivial cases or against multiple implementations such as an initial R implementation compared with results from a C/C++ implementation.
 - G5.6a Parameter recovery tests should generally be expected to succeed within a defined tolerance rather than recovering exact values.
@@ -45,13 +48,16 @@ Standards on line#48 of file [R/LFQData.R](https://github.com/fgcz/prolfqua/blob
 - G2.8 Software should provide appropriate conversion or dispatch routines as part of initial pre-processing to ensure that all other sub-functions of a package receive inputs of a single defined class or type.
 - RE4.13 Predictor variables, and associated "metadata" where applicable.*
 - RE7.2 Demonstrate that output objects retain aspects of input data such as row or case names (see **RE1.3**).
+Standards on line#98 of file [R/LFQDataTransformer.R](https://github.com/fgcz/prolfqua/blob/main/R/LFQDataTransformer.R#L98):
+- G2.4e explicit conversion from factor via `as...()` functions
 Standards on line#34 of file [R/Model.R](https://github.com/fgcz/prolfqua/blob/main/R/Model.R#L34):
 - RE4.0 Regression Software should return some form of "model" object, generally through using or modifying existing class structures for model objects (such as `lm`, `glm`, or model objects from other packages), or creating a new class of model objects.
 - RE4.11 Goodness-of-fit and other statistics associated such as effect sizes with model coefficients.
 - RE4.2 Model coefficients (via `coef()` / `coefficients()`)
-Standards on line#112 of file [R/build_contrast_analysis.R](https://github.com/fgcz/prolfqua/blob/main/R/build_contrast_analysis.R#L112):
+Standards on line#128 of file [R/build_contrast_analysis.R](https://github.com/fgcz/prolfqua/blob/main/R/build_contrast_analysis.R#L128):
 - G2.3b Either: use `tolower()` or equivalent to ensure input of character parameters is not case dependent; or explicitly document that parameters are strictly case-sensitive.
 - RE1.0 Regression Software should enable models to be specified via a formula interface, unless reasons for not doing so are explicitly documented.
+- RE4.12 Where appropriate, functions used to transform input data, and associated inverse transform functions.*
 - RE5.0 Scaling relationships between sizes of input data (numbers of observations, with potential extension to numbers of variables/columns) and speed of algorithm.*
 Standards on line#89 of file [R/conditions.R](https://github.com/fgcz/prolfqua/blob/main/R/conditions.R#L89):
 - G1.4a All internal (non-exported) functions should also be documented in standard [`roxygen2`](https://roxygen2.r-lib.org/) format, along with a final `@noRd` tag to suppress automatic generation of `.Rd` files or [`@keywords internal`](https://roxygen2.r-lib.org/reference/tags-index-crossref.html?q=keywords%20internal#null) if documentation is still desired.*
@@ -85,7 +91,7 @@ Standards on line#23 of file [R/tidyMS_moderation.R](https://github.com/fgcz/pro
 
 ### tests directory
 
-Standards on line#310 of file [tests/testthat/test-facade-methods.R](https://github.com/fgcz/prolfqua/blob/main/tests/testthat/test-facade-methods.R#L310):
+Standards on line#309 of file [tests/testthat/test-facade-methods.R](https://github.com/fgcz/prolfqua/blob/main/tests/testthat/test-facade-methods.R#L309):
 - RE7.3 Demonstrate and test expected behaviour when objects returned from regression software are submitted to the accessor methods of **RE4.2**--**RE4.7**.
 Standards on line#6 of file [tests/testthat/test-input-validation.R](https://github.com/fgcz/prolfqua/blob/main/tests/testthat/test-input-validation.R#L6):
 - G5.8b Data of unsupported types (e.g., character or complex numbers in for functions designed only for numeric data)
@@ -102,7 +108,7 @@ Standards on line#6 of file [tests/testthat/test-input-validation.R](https://git
 
 ### R directory
 
-Standards on line#61 of file [R/srr-stats-standards.R](https://github.com/fgcz/prolfqua/blob/main/R/srr-stats-standards.R#L61):
+Standards on line#59 of file [R/srr-stats-standards.R](https://github.com/fgcz/prolfqua/blob/main/R/srr-stats-standards.R#L59):
 - G5.11 Where extended tests require large data sets or other assets, these should be provided for downloading and fetched as part of the testing workflow.
 - G5.11a When any downloads of additional data necessary for extended tests fail, the tests themselves should not fail, rather be skipped and implicitly succeed with an appropriate diagnostic message.
 - G5.4c Where applicable, stored values may be drawn from published paper outputs when applicable and where code from original implementations is not available
@@ -117,8 +123,8 @@ Standards on line#61 of file [R/srr-stats-standards.R](https://github.com/fgcz/p
 
 **Numbers of standards:**
 -  G :  45  /  68
--  RE :  20  /  48
-- Total : 65 / 116
+-  RE :  17  /  48
+- Total : 62 / 116
 
 
 ### R directory
@@ -136,13 +142,12 @@ Standards on line#293 of file [R/ContrastsROPECA.R](https://github.com/fgcz/prol
 - G5.7 *Algorithm performance tests** *to test that implementation performs as expected as properties of data change. For instance, a test may show that parameters approach correct estimates within tolerance as data size increases, or that convergence times decrease for higher convergence thresholds.
 Standards on line#48 of file [R/LFQData.R](https://github.com/fgcz/prolfqua/blob/main/R/LFQData.R#L48):
 - RE1.4 Regression Software should document any assumptions made with regard to input data; for example distributional assumptions, or assumptions that predictor data have mean values of zero. Implications of violations of these assumptions should be both documented and tested.*
-Standards on line#92 of file [R/LFQDataTransformer.R](https://github.com/fgcz/prolfqua/blob/main/R/LFQDataTransformer.R#L92):
+Standards on line#98 of file [R/LFQDataTransformer.R](https://github.com/fgcz/prolfqua/blob/main/R/LFQDataTransformer.R#L98):
 - G2.16 All functions should also provide options to handle undefined values (e.g., `NaN`, `Inf` and `-Inf`), including potentially ignoring or removing such values.*
 - RE2.3 Where applicable, Regression Software should enable data to be centred (for example, through converting to zero-mean equivalent values; or to z-scores) or offset (for example, to zero-intercept equivalent values) via additional parameters, with the effects of any such parameters clearly documented and tested.
-- RE4.12 Where appropriate, functions used to transform input data, and associated inverse transform functions.*
-Standards on line#359 of file [R/LFQDataTransformer.R](https://github.com/fgcz/prolfqua/blob/main/R/LFQDataTransformer.R#L359):
+Standards on line#397 of file [R/LFQDataTransformer.R](https://github.com/fgcz/prolfqua/blob/main/R/LFQDataTransformer.R#L397):
 - G5.8c Data with all-`NA` fields or columns or all identical fields or columns
-Standards on line#112 of file [R/build_contrast_analysis.R](https://github.com/fgcz/prolfqua/blob/main/R/build_contrast_analysis.R#L112):
+Standards on line#128 of file [R/build_contrast_analysis.R](https://github.com/fgcz/prolfqua/blob/main/R/build_contrast_analysis.R#L128):
 - G1.1 Statistical Software should document whether the algorithm(s) it implements are:* - *The first implementation of a novel algorithm*; or - *The first implementation within **R** of an algorithm which has previously been implemented in other languages or contexts*; or - *An improvement on other implementations of similar algorithms in **R***.
 - G1.6 Software should include code necessary to compare performance claims with alternative implementations in other R packages.*
 - G2.1a Provide explicit secondary documentation of expectations on data types of all vector inputs.
@@ -164,7 +169,7 @@ Standards on line#233 of file [R/simulate_LFQ_data.R](https://github.com/fgcz/pr
 - G2.4a explicit conversion to `integer` via `as.integer()`
 - G5.0 Where applicable or practicable, tests should use standard data sets with known properties (for example, the [NIST Standard Reference Datasets](https://www.itl.nist.gov/div898/strd/), or data sets provided by other widely-used R packages).
 - G5.6 *Parameter recovery tests** *to test that the implementation produce expected results given data with known properties. For instance, a linear regression algorithm should return expected coefficient values for a simulated data set generated from a linear model.
-Standards on line#41 of file [R/srr-stats-standards.R](https://github.com/fgcz/prolfqua/blob/main/R/srr-stats-standards.R#L41):
+Standards on line#39 of file [R/srr-stats-standards.R](https://github.com/fgcz/prolfqua/blob/main/R/srr-stats-standards.R#L39):
 - G2.11 Software should ensure that `data.frame`-like tabular objects which have columns which do not themselves have standard class attributes (typically, `vector`) are appropriately processed, and do not error without reason. This behaviour should be tested. Again, columns created by the [`units` package](https://github.com/r-quantities/units/) provide a good test case.
 - G2.14a error on missing data
 - G3.1a The ability to use arbitrarily specified covariance methods should be documented (typically in examples or vignettes).*
@@ -179,7 +184,6 @@ Standards on line#41 of file [R/srr-stats-standards.R](https://github.com/fgcz/p
 - RE3.2 Ensure that convergence thresholds have sensible default values, demonstrated through explicit documentation.
 - RE3.3 Allow explicit setting of convergence thresholds, unless reasons against doing so are explicitly documented.*
 - RE4.16 Regression Software which models distinct responses for different categorical groups should include the ability to submit new groups to `predict()` methods.*
-- RE6.2 The default `plot` method should produce a plot of the `fitted` values of the model, with optional visualisation of confidence intervals or equivalent.*
 - RE7.1a In particular, these tests should confirm that model fitting is at least as fast or (preferably) faster than testing with equivalent noisy data (see RE2.4b).*
 Standards on line#47 of file [R/tidyMS_R6_Modelling.R](https://github.com/fgcz/prolfqua/blob/main/R/tidyMS_R6_Modelling.R#L47):
 - RE2.4 Regression Software should implement pre-processing routines to identify whether aspects of input data are perfectly collinear, notably including:
@@ -191,11 +195,9 @@ Standards on line#198 of file [R/tidyMS_build_model.R](https://github.com/fgcz/p
 - G2.14 Where possible, all functions should provide options for users to specify how to handle missing (`NA`) data, with options minimally including:
 Standards on line#245 of file [R/tidyMS_build_model.R](https://github.com/fgcz/prolfqua/blob/main/R/tidyMS_build_model.R#L245):
 - G5.8a Zero-length data
-Standards on line#523 of file [R/tidyMS_build_model.R](https://github.com/fgcz/prolfqua/blob/main/R/tidyMS_build_model.R#L523):
-- RE4.6 The variance-covariance matrix of the model parameters (via `vcov()`)
-Standards on line#574 of file [R/tidyMS_build_model.R](https://github.com/fgcz/prolfqua/blob/main/R/tidyMS_build_model.R#L574):
+Standards on line#572 of file [R/tidyMS_build_model.R](https://github.com/fgcz/prolfqua/blob/main/R/tidyMS_build_model.R#L572):
 - G3.1 Statistical software which relies on covariance calculations should enable users to choose between different algorithms for calculating covariances, and should not rely solely on covariances from the `stats::cov` function.
-Standards on line#883 of file [R/tidyMS_build_model.R](https://github.com/fgcz/prolfqua/blob/main/R/tidyMS_build_model.R#L883):
+Standards on line#881 of file [R/tidyMS_build_model.R](https://github.com/fgcz/prolfqua/blob/main/R/tidyMS_build_model.R#L881):
 - RE3.1 Enable such messages to be optionally suppressed, yet should ensure that the resultant model object nevertheless includes sufficient data to identify lack of convergence.
 - RE4.7 Where appropriate, convergence statistics*
 Standards on line#311 of file [R/tidyMS_contrasts.R](https://github.com/fgcz/prolfqua/blob/main/R/tidyMS_contrasts.R#L311):

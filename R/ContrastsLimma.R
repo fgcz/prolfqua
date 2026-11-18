@@ -672,10 +672,10 @@ ModelLimma <- R6::R6Class(
     dummy_model = NULL,
     #' @field p.adjust function to adjust p-values
     p.adjust = NULL,
-    #' @field imputed_proteins character vector of protein ids (matching
-    #'   \code{rownames(fit$coefficients)}) that were rescued via LOD
+    #' @field imputed_proteins character vector of bare protein ids (matching
+    #'   the first subject column in \code{rowdata}) that were rescued via LOD
     #'   imputation. \code{ContrastsLimma$get_contrasts()} reads this to
-    #'   tag refit rows with a \code{"_imputed"} modelName suffix so the
+    #'   tag refit rows with \code{estimate_type = "lod_imputed"} so the
     #'   rescue is visible downstream. Empty for builders that do not
     #'   impute.
     imputed_proteins = character(0),

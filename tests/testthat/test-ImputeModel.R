@@ -1,5 +1,26 @@
 # Test imputed_model S3 class and build_model_impute
 
+test_that("coefficient tables use the borrowed covariance and df of imputed fits", {
+  data <- transform(iris, protein_Id = "p1")
+  model <- build_model(data, strategy_lm("Sepal.Length ~ Species"), subject_id = "protein_Id")
+  fit <- model$model_df$linear_model[[1]]
+  covariance <- stats::vcov(fit) * 10
+  model$model_df$linear_model[[1]] <- new_imputed_model(
+    fit,
+    covariance,
+    borrowed_sigma = 1,
+    borrowed_df = 7,
+    n_observed = nrow(data)
+  )
+  actual <- model$get_coefficients()
+  expect_equal(actual$Std..Error, unname(sqrt(diag(covariance))))
+  expect_equal(actual$df, rep(7, nrow(actual)))
+  expect_equal(
+    actual$Pr...t..,
+    unname(2 * stats::pt(-abs(actual$Estimate / sqrt(diag(covariance))), df = 7))
+  )
+})
+
 test_that("imputed_model S3 dispatch works", {
   dat <- data.frame(x = 1:10, y = rnorm(10))
   m <- lm(y ~ x, data = dat)

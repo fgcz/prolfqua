@@ -83,12 +83,17 @@
 #' robscale <- lfqdata2$get_Transformer()$robscale_subset(internal)$lfq
 #' robscale$get_Plotter()$intensity_distribution_density()
 #'
+#' # Apply a one-unit log2 offset to the first sample
+#' tr <- lfqdata$get_Transformer()$log2()
+#' samples <- unique(tr$lfq$data_long()[[tr$lfq$sample_name()]])
+#' offsets <- setNames(numeric(length(samples)), samples)
+#' offsets[1] <- 1
+#' tr$subtract_sample_offsets(offsets)
+#'
 #' @srrstatsTODO {G2.16} Log transforms diagnose zeros/negatives; limit: no shared Inf/NaN policy before every model
 #'   backend.
 #' @srrstatsTODO {RE2.3} Transformer centering is explicit; limit: its inferential effect on contrasts lacks
 #'   documentation/tests.
-#' @srrstatsTODO {RE4.12} Transformers support inverse functions and scales; limit: transformation history/inverses are
-#'   not recorded.
 LFQDataTransformer <- R6::R6Class(
   "LFQDataTransformer",
   public = list(
@@ -158,6 +163,27 @@ LFQDataTransformer <- R6::R6Class(
     },
 
     #' @description
+    #' Subtract caller-supplied offsets from the active log2 response. The caller supplies
+    #' log2 data and chooses the global level through the offsets. Missing intensities
+    #' remain missing. The result becomes the active response in a new column named
+    #' \code{<response>_offset_adjusted}, with a numeric suffix if the name already exists.
+    #' @param offsets Named numeric vector with one finite log2 offset per sample.
+    #'   Names must match the configured sample IDs exactly and may be in any order.
+    #' @return LFQDataTransformer (self, invisibly)
+    subtract_sample_offsets = function(offsets) {
+      data <- self$lfq$data_long()
+      sample_ids <- as.character(data[[self$lfq$sample_name()]])
+      matched_offsets <- .match_sample_offsets(offsets, sample_ids)
+      response <- self$lfq$response()
+      colname <- tail(make.unique(c(names(data), paste0(response, "_offset_adjusted"))), 1)
+      data[[colname]] <- data[[response]] - matched_offsets
+      cfg <- self$lfq$get_config()$clone(deep = TRUE)
+      cfg$set_response(colname)
+      self$lfq <- LFQData$new(data, cfg, prefix = self$lfq$prefix)
+      invisible(self)
+    },
+
+    #' @description
     #' Transforms intensities
     #' @param .func transformation function working with arrays e.g. log2, log10, asinh etc.
     #' @param force transformation on already transformed data.
@@ -204,6 +230,31 @@ LFQDataTransformer <- R6::R6Class(
 )
 
 # Intensity transformation helpers ----
+
+#' Validate log2 offsets and align them to the sample ID of each measurement
+#' @param offsets Named numeric vector of finite log2 offsets, one per sample.
+#' @param sample_ids Character vector of sample IDs in measurement order.
+#' @return Unnamed numeric vector of offsets in measurement order.
+#' @noRd
+.match_sample_offsets <- function(offsets, sample_ids) {
+  if (!is.numeric(offsets) || !is.null(dim(offsets)) || any(!is.finite(offsets))) {
+    abort_bad_argument("offsets", "be a numeric vector of finite log2 offsets")
+  }
+  offset_ids <- names(offsets)
+  valid_ids <- all(
+    !is.null(offset_ids),
+    !anyNA(offset_ids),
+    all(nzchar(offset_ids)),
+    anyDuplicated(offset_ids) == 0L
+  )
+  if (!valid_ids) {
+    abort_bad_argument("offsets", "have unique, nonempty sample IDs as names")
+  }
+  if (!setequal(offset_ids, sample_ids)) {
+    abort_bad_argument("offsets", "name exactly the samples in the data")
+  }
+  unname(offsets[sample_ids])
+}
 
 #' Transform intensity column by applying a function
 #' @param pdata data.frame
