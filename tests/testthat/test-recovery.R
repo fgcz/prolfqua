@@ -3,7 +3,7 @@
 #' @srrstats {G5.6} Contrast estimates of all aggregated intensity methods recover simulated true group differences
 #'   (bias, slope of estimate on truth, RMSE within tolerance); nested methods recover the true peptide-level
 #'   differences in the extended suite.
-#' @srrstats {G5.6b} Recovery is repeated over seeds 1-5 in the standard suite and 1-50 in the extended suite, with
+#' @srrstats {G5.6b} Recovery is repeated over seeds 1-2 in the standard suite and 1-50 in the extended suite, with
 #'   tolerances per seed and tighter ones on the average over seeds.
 #' @srrstats {G5.7} Estimation error falls as the number of samples per group grows from 3 to 6 to 12 (and to 24 in
 #'   the extended suite).
@@ -52,9 +52,9 @@ skip_if_backend_missing <- function(method) {
 }
 
 for (method in AGGREGATED_RECOVERY_METHODS) {
-  test_that(paste(method, "recovers simulated fold changes over 5 seeds"), {
+  test_that(paste(method, "recovers simulated fold changes over 2 seeds"), {
     skip_if_backend_missing(method)
-    expect_recovery(method, seeds = 1:5)
+    expect_recovery(method, seeds = 1:2)
   })
   test_that(paste(method, "recovers simulated fold changes over 50 seeds (extended)"), {
     skip_if_not_extended()

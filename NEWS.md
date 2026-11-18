@@ -38,6 +38,8 @@
 
 ## Bug fixes
 
+- The introductory and Modelling methods vignettes no longer fail when `R CMD check --no-build-vignettes` runs their code: the factory figure is left out of the extracted R code. The Transforming and calibrating LFQ data vignette ends with session information.
+
 - Coefficient tables for LOD-refitted proteins use their borrowed covariance and degrees of freedom. Robust and rank-based models expose consistent coefficient and p-value columns, restoring their coefficient volcano plots. Firth coefficient tables skip failed fits.
 
 - Printing fitted analyses extracts coefficients from only the first few subject fits for its preview. Limma summaries correctly count failed fits and report singularity as unknown (`NA`) instead of inferring it from failed fits.

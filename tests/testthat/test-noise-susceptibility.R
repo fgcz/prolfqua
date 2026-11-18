@@ -1,6 +1,7 @@
 # Noise susceptibility: trivial input noise and different random seeds must not change results.
 
-#' @srrstats {G5.9} Noise susceptibility is tested for every registered modelling method.
+#' @srrstats {G5.9} Noise susceptibility is tested for one method per fitting engine (lm, rlm, limma, lmer_nested,
+#'   firth) in the standard suite and for every registered modelling method in the extended suite.
 #' @srrstats {G5.9a} Multiplying the response by 1 + .Machine$double.eps * N(0, 1) changes contrast estimates,
 #'   standard errors and p-values by less than 1e-6 (relative); 1e-4 for limpa, whose iterative estimation of
 #'   protein quantities and weights moves at about the 1e-5 level.
@@ -20,6 +21,8 @@ NOISE_WARNINGS <- paste(
 )
 # limpa estimates protein quantities and weights iteratively; trivial input noise moves its results at ~1e-5.
 NOISE_TOLERANCE <- c(limpa = 1e-4, limpa_nested = 1e-4)
+# Standard suite: one method per fitting engine; the extended suite runs all registered methods.
+NOISE_STANDARD_METHODS <- c("lm", "rlm", "limma", "lmer_nested", "firth")
 NOISE_PACKAGES <- list(
   rfit = "Rfit",
   rfit_impute = "Rfit",
@@ -69,6 +72,9 @@ numeric_result_columns <- function(res) {
 
 for (method in names(list_facades())) {
   test_that(paste("trivial noise and seeds leave", method, "results unchanged"), {
+    if (!method %in% NOISE_STANDARD_METHODS) {
+      skip_if_not_extended()
+    }
     for (package in NOISE_PACKAGES[[method]]) {
       skip_if_not_installed(package)
     }

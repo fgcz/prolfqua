@@ -117,3 +117,9 @@ knitr::kable(
 ```
 
 Both calibrations recover a target that is equal in `S1` and `S2` and twice as abundant in `S3`. The absolute log2 levels differ because internal centring puts the reference median at zero, while the external offsets are anchored to the calibrant's reference signal of 128. The example treats them as two estimates of the same sample effect, so it applies each to a separate copy of the logged data.
+
+# Session info
+
+```{r session_info}
+sessionInfo()
+```
