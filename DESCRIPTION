@@ -85,5 +85,5 @@ Suggests:
 Roxygen: list(r6 = TRUE, roclets = c("collate", "namespace", "rd", "srr::srr_stats_roclet"))
 Depends: 
     R (>= 4.6)
-biocViews: MassSpectrometry, Proteomics, Metabolomics, Normalization, Preprocessing, QualityControl
+biocViews: MassSpectrometry, Proteomics, Metabolomics, Normalization, Preprocessing, QualityControl, FunctionalGenomics, Regression
 Config/roxygen2/version: 8.1.1
