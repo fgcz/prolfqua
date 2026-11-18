@@ -15,27 +15,6 @@
   requireNamespace(pkg, quietly = TRUE)
 }
 
-#' Evaluate code with a fixed seed and restore the caller's random number state
-#'
-#' afterwards, as withr::with_seed() does with the default RNG kinds.
-#' @param seed random seed or NULL
-#' @param code expression evaluated with the selected random-number state
-#' @noRd
-.with_seed <- function(seed, code) {
-  force(seed)
-  old_seed <- get0(".Random.seed", envir = globalenv(), mode = "integer", inherits = FALSE)
-  on.exit(
-    if (is.null(old_seed)) {
-      rm(".Random.seed", envir = globalenv())
-    } else {
-      assign(".Random.seed", old_seed, envir = globalenv())
-    },
-    add = TRUE
-  )
-  set.seed(seed)
-  code
-}
-
 #' Close graphics device `which` and make the previously active device current
 #'
 #' again, as withr::local_pdf() does when its frame exits.

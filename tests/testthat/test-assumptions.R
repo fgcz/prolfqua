@@ -24,7 +24,7 @@ test_that("outliers pull lm estimates while rlm and rfit resist them", {
     sim <- sim_with_truth(Nprot = 200, N = 4, seed = seed)
     data <- sim$lfqdata$data_long()
     # Shift 5% of the observations by 6 units, six residual standard deviations.
-    outliers <- .with_seed(100 + seed, sample(nrow(data), round(0.05 * nrow(data))))
+    outliers <- withr::with_seed(100 + seed, sample(nrow(data), round(0.05 * nrow(data))))
     data$abundance[outliers] <- data$abundance[outliers] + 6
     contaminated <- LFQData$new(data, sim$lfqdata$get_config())
     rmse <- vapply(

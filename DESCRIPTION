@@ -46,7 +46,8 @@ Imports:
     rlang,
     stringi,
     tidyr (>= 1.3.0),
-    tibble
+    tibble,
+    withr
 Suggests:
     BiocCheck,
     BiocStyle,
@@ -80,8 +81,7 @@ Suggests:
     SummarizedExperiment,
     testthat,
     UpSetR,
-    vsn,
-    withr
+    vsn
 Roxygen: list(r6 = TRUE, roclets = c("collate", "namespace", "rd", "srr::srr_stats_roclet"))
 Depends: 
     R (>= 4.6)

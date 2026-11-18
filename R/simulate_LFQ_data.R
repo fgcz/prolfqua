@@ -142,7 +142,7 @@ which_missing <- function(x, weight_missing = 0.2) {
 #' @param code expression evaluated with the selected random-number state
 #' @noRd
 .with_sim_seed <- function(seed, code) {
-  if (is.null(seed)) code else .with_seed(seed, code)
+  if (is.null(seed)) code else withr::with_seed(seed, code)
 }
 
 #' Shared tail of the sim_lfq_data_*_config() simulators: configuration of the simulated columns and setup_analysis().

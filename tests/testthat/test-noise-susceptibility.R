@@ -37,7 +37,7 @@ noise_case_input <- function(method, perturb = FALSE) {
   data <- sim$data
   if (perturb) {
     response <- sim$config$get_response()
-    noise <- .with_seed(7, stats::rnorm(nrow(data)))
+    noise <- withr::with_seed(7, stats::rnorm(nrow(data)))
     data[[response]] <- data[[response]] * (1 + .Machine$double.eps * noise)
   }
   peptide <- LFQData$new(data, sim$config)$get_Transformer()$log2()$lfq

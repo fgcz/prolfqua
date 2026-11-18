@@ -152,7 +152,7 @@ LFQData <- R6::R6Class(
       subset <- if (is.null(seed)) {
         sample_data()
       } else {
-        .with_seed(seed, sample_data())
+        withr::with_seed(seed, sample_data())
       }
       return(LFQData$new(subset, self$get_config()))
     },

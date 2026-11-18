@@ -9,7 +9,7 @@ NULL
 test_that("lm and limma fit noiseless data at least as fast as noisy data (extended)", {
   skip_if_not_extended()
   sim <- sim_with_truth(Nprot = 500, N = 4, seed = 1)
-  raw <- .with_seed(1, sim_lfq_data(Nprot = 500, N = 4))
+  raw <- withr::with_seed(1, sim_lfq_data(Nprot = 500, N = 4))
   true_mean <- stats::setNames(raw$average_prot_abundance, paste(raw$proteinID, raw$idtype2, raw$sample, sep = "~"))
   data <- sim$lfqdata$data_long()
   data$abundance <- unname(true_mean[paste(data$protein_Id, data$sample, sep = "~")])
