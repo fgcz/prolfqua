@@ -25,6 +25,20 @@
 #' (constant or noiseless response) keeps its estimated difference, but its
 #' test statistics are `NA`, with a `prolfqua_zero_variance` warning, and it is
 #' left out of the variance moderation prior.
+#' @section Provenance:
+#' Each \code{LFQData}, model and analysis records the problems and dropped
+#' items that happen in it; \code{$provenance()} returns them as a table (step,
+#' event, count, IDs, reason). Recorded are values set to `NA`
+#' (\code{remove_small_intensities()}, zeros in log transforms), removed rows,
+#' features and proteins (\code{remove_decoys()}, \code{remove_contaminants()},
+#' \code{filter_proteins_by_peptide_count()}), estimation warnings in
+#' aggregation (e.g. `rlm` not converging), failed, warned, singular and
+#' LOD-refit fits, missing responses dropped per fit and, for an analysis, the
+#' subjects absent from the contrasts with the reason. Each step reports its
+#' new entries once: failures as one warning of class `prolfqua_fit_failed`,
+#' everything else as one `prolfqua_message`, which `prolfqua.verbose = FALSE`
+#' silences. Derived data (transformed, subset, rows removed) continues the
+#' record of its input; aggregated data and models start their own.
 #' @section Lifecycle:
 #' prolfqua is stable. Its exported API follows the Bioconductor deprecation
 #' cycle: a renamed or removed interface calls \code{.Deprecated()} for one

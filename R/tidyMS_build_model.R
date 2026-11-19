@@ -133,8 +133,8 @@ plot_lrt_diagnostics <- function(result, model_name, model_name_int, path) {
 #' model_summary(mod)
 #'
 #'
-#' @srrstatsTODO {G2.14b} Fits omit missing responses and get_missing reports unestimable contrasts; limit: per-fit
-#'   omission is silent.
+#' @srrstats {G2.14b} Fits omit missing responses; the model's provenance counts them per subject and build_model()
+#'   reports them in one message; get_missing() and the analysis provenance list unestimable contrasts.
 build_model <- function(
   data,
   model_strategy,
@@ -205,7 +205,8 @@ build_model <- function(
 #' strat <- strategy_lm(paste(lfqdata$response(), "~ group_"))
 #' mod <- build_model_impute(lfqdata, strat)
 #'
-#' @srrstatsTODO {G2.14} Users select plain or imputed methods; limit: there is no unified explicit NA policy.
+#' @srrstats {G2.14} The `method` argument selects how missing responses are handled (dropped per fit, LOD
+#'   imputation, model-based imputation, detection models), stated in ?prolfqua; dropped responses are reported.
 #' @srrstats {G2.14c} The imputation builder refits missing groups at the LOD and borrows variance from successful
 #'   fits.
 build_model_impute <- function(
@@ -897,8 +898,9 @@ get_complete_model_fit <- function(complete_models) {
 #'  subject_id = x$config$hierarchy_keys_depth())
 #' stopifnot(nrow(get_complete_model_fit(mr$model_df)) == 6)
 #'
-#' @srrstatsTODO {RE3.1} model_analyse retains fit status and errors; convergence metadata and suppression are not
-#'   uniform.
+#' @srrstats {RE3.1} model_analyse keeps each subject's fit error and fit warnings (e.g. non-convergence) in
+#'   model_df and the model's provenance; the one summary warning per step can be suppressed while $provenance()
+#'   keeps the record.
 #' @srrstatsTODO {RE4.7} Fit tables retain status and singularity; limit: optimizer/iteration metadata is not exposed
 #'   uniformly.
 model_analyse <- function(

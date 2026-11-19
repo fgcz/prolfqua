@@ -41,8 +41,8 @@ sigma.rlm <- function(object, ...) {
 #'   dependency check.
 #' @srrstatsTODO {RE2.4a} Some strategies detect deficient rank; there is no shared upfront predictor-collinearity
 #'   diagnostic.
-#' @srrstatsTODO {RE3.0} Failed fits and Firth exhaustion are reported; nonconvergence metadata is not uniform per
-#'   subject.
+#' @srrstats {RE3.0} Failed fits and warnings raised while fitting or aggregating, including non-convergence of rlm,
+#'   lmer, Firth and medpolish, give one `prolfqua_fit_failed` warning per step naming the subjects and the reason.
 #' @srrstats {RE4.1} Strategies expose a formula and fitting specification without fitting a model.
 StrategyBase <- R6::R6Class(
   "StrategyBase",

@@ -110,6 +110,8 @@ An `NA` intensity is a missing observation, and the method decides what happens 
 
 The `log2()` transform turns zero intensities, which mean "not detected", into `NA`. `Inf`, `-Inf` and `NaN` intensities, and `NA` in protein, peptide, group or sample columns, stop the analysis with a classed error.
 
+What happened on the way is recorded: `$provenance()` of the analysis lists the values set to `NA`, removed rows, failed or singular fits, missing responses dropped per fit, and the proteins absent from a contrast with the reason.
+
 # One protein, all methods
 
 All methods return the same columns. Here is the protein with the smallest `lm` p-value. For the detection models `diff` is a log odds ratio, not a log2 fold change. This protein is detected in every sample, so the detection models report `diff` 0 and a p-value of 1 or `NaN`.
@@ -123,12 +125,13 @@ knitr::kable(one, digits = 3)
 
 # Inspecting a fitted analysis
 
-The fitted analysis supports standard R methods. `print()` gives the model specification, fit counts and a coefficient preview without calculating contrasts. `summary()` evaluates the contrasts and counts estimated, missing and significant results; the significance defaults are FDR < 0.05 and absolute effect > 1.
+The fitted analysis supports standard R methods. `print()` gives the model specification, fit counts, a one-line provenance summary and a coefficient preview without calculating contrasts. `summary()` evaluates the contrasts and counts estimated, missing and significant results; the significance defaults are FDR < 0.05 and absolute effect > 1.
 
 ```{r inspect-analysis}
 analysis <- build_contrast_analysis(lfq_protein, "~ group_", contrasts, method = "lm")
 print(analysis)
 summary(analysis)
+analysis$provenance()
 head(coef(analysis))
 head(vcov(analysis))
 head(confint(analysis))
