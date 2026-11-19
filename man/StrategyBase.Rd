@@ -33,6 +33,7 @@ Holds the fields, constructor and default methods shared by \code{\link{Strategy
     \item \href{#method-StrategyBase-contrast_fun}{\code{StrategyBase$contrast_fun()}}
     \item \href{#method-StrategyBase-df_residual}{\code{StrategyBase$df_residual()}}
     \item \href{#method-StrategyBase-sigma}{\code{StrategyBase$sigma()}}
+    \item \href{#method-StrategyBase-zero_residual_variance}{\code{StrategyBase$zero_residual_variance()}}
     \item \href{#method-StrategyBase-clone}{\code{StrategyBase$clone()}}
   }
 }
@@ -147,6 +148,27 @@ Holds the fields, constructor and default methods shared by \code{\link{Strategy
     \if{html}{\out{<div class="arguments">}}
     \describe{
       \item{\code{model}}{fitted model}
+    }
+    \if{html}{\out{</div>}}
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-StrategyBase-zero_residual_variance"></a>}}
+\if{latex}{\out{\hypertarget{method-StrategyBase-zero_residual_variance}{}}}
+\subsection{\code{StrategyBase$zero_residual_variance()}}{
+  Flag residual scales indistinguishable from zero (constant or noiseless response); their
+  tests are set to NA
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{StrategyBase$zero_residual_variance(sigma, scale)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{sigma}}{residual scales, one per contrast row}
+      \item{\code{scale}}{response level of the same rows (average abundance)}
     }
     \if{html}{\out{</div>}}
   }

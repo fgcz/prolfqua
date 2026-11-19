@@ -121,13 +121,14 @@ Other modelling:
     \item \href{#method-StrategyRfit-clone}{\code{StrategyRfit$clone()}}
   }
 }
-\if{html}{\out{<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details><summary>Inherited methods</summary>
 <ul>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="contrast_fun"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-contrast_fun'><code>StrategyBase$contrast_fun()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="df_residual"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual'><code>StrategyBase$df_residual()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="isSingular"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-isSingular'><code>StrategyBase$isSingular()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="model_fun"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun'><code>StrategyBase$model_fun()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="sigma"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-sigma'><code>StrategyBase$sigma()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="zero_residual_variance"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-zero_residual_variance'><code>StrategyBase$zero_residual_variance()</code></a></span></li>
 </ul>
 </details>}}
 \if{html}{\out{<hr>}}

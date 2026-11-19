@@ -63,8 +63,9 @@
 #' @param contrasts named character vector of contrast expressions
 #' @param subject_id column names identifying the modelled subjects
 #' @param p.adjust p-value adjustment function
+#' @param zero_residual_variance function(sigma, scale) flagging rows whose tests are set to NA, or NULL
 #' @noRd
-.finalize_wald_contrasts <- function(contrast_result, contrasts, subject_id, p.adjust) {
+.finalize_wald_contrasts <- function(contrast_result, contrasts, subject_id, p.adjust, zero_residual_variance = NULL) {
   contrast_result <- dplyr::rename(ungroup(contrast_result), contrast = "lhs", diff = "estimate")
 
   differences <- contrast_result |>
@@ -77,6 +78,10 @@
   avg_abd$contrast <- gsub("^avg_", "", avg_abd$contrast)
   avg_abd <- avg_abd |> dplyr::rename(avgAbd = "diff")
   contrast_result <- left_join(differences, avg_abd, by = c(subject_id, "contrast"))
+  if (!is.null(zero_residual_variance)) {
+    zero <- zero_residual_variance(contrast_result$sigma, contrast_result$avgAbd)
+    contrast_result <- .na_zero_variance(contrast_result, zero, subject_id)
+  }
 
   contrast_result <- p.adjust(contrast_result, column = "p.value", group_by_col = "contrast")
   contrast_result <- contrast_result |> relocate("FDR", .after = "diff")
@@ -202,6 +207,7 @@ Contrasts <- R6::R6Class(
       self$models <- model$model_df |> dplyr::filter(.data$has_model_fit)
       self$contrasts <- contrasts
       self$contrastfun <- model$model_strategy$contrast_fun
+      private$zero_residual_variance <- model$model_strategy$zero_residual_variance
       self$model_name <- model_name
       self$subject_id <- model$subject_id
       self$p.adjust <- p.adjust
@@ -238,7 +244,13 @@ Contrasts <- R6::R6Class(
           subject_id = self$subject_id,
           contrastfun = self$contrastfun
         )
-        contrast_result <- .finalize_wald_contrasts(contrast_result, self$contrasts, self$subject_id, self$p.adjust)
+        contrast_result <- .finalize_wald_contrasts(
+          contrast_result,
+          self$contrasts,
+          self$subject_id,
+          self$p.adjust,
+          zero_residual_variance = private$zero_residual_variance
+        )
         # Stamp modelName uniformly with the model identity. Rescue/imputation
         # state lives in a separate `estimate_type` column: rows refit from an
         # LOD-imputed model (flagged by impute_refit_singular) get
@@ -265,5 +277,8 @@ Contrasts <- R6::R6Class(
       .stop_if_missing_columns(res, super$column_description()$column_name, "return contrasts")
       return(res)
     }
+  ),
+  private = list(
+    zero_residual_variance = NULL
   )
 )

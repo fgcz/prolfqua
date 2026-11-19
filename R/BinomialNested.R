@@ -88,7 +88,13 @@ StrategyBinomial <- R6::R6Class(
       prior_count <- .validate_binomial_prior_count(prior_count)
       super$initialize(paste("cbind(.detected, .undetected)", modelstr), model_name)
       self$prior_count <- prior_count
-    }
+    },
+
+    #' @description Never flags: a zero Pearson dispersion (identical detection pattern within groups) is bounded
+    #'   below by the binomial variance (\code{binomial_bound}), which keeps the test defined
+    #' @param sigma Pearson residual scales
+    #' @param scale unused
+    zero_residual_variance = function(sigma, scale) rep(FALSE, length(sigma))
   ),
   private = list(
     prepare = function(x) {

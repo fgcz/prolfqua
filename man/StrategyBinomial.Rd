@@ -36,6 +36,7 @@ coefficients(fit)
 \subsection{Public methods}{
   \itemize{
     \item \href{#method-StrategyBinomial-initialize}{\code{StrategyBinomial$new()}}
+    \item \href{#method-StrategyBinomial-zero_residual_variance}{\code{StrategyBinomial$zero_residual_variance()}}
     \item \href{#method-StrategyBinomial-clone}{\code{StrategyBinomial$clone()}}
   }
 }
@@ -70,6 +71,27 @@ coefficients(fit)
 \code{"~ group_"}}
       \item{\code{prior_count}}{non-negative symmetric pseudo-count}
       \item{\code{model_name}}{model identity}
+    }
+    \if{html}{\out{</div>}}
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-StrategyBinomial-zero_residual_variance"></a>}}
+\if{latex}{\out{\hypertarget{method-StrategyBinomial-zero_residual_variance}{}}}
+\subsection{\code{StrategyBinomial$zero_residual_variance()}}{
+  Never flags: a zero Pearson dispersion (identical detection pattern within groups) is bounded
+  below by the binomial variance (\code{binomial_bound}), which keeps the test defined
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{StrategyBinomial$zero_residual_variance(sigma, scale)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{sigma}}{Pearson residual scales}
+      \item{\code{scale}}{unused}
     }
     \if{html}{\out{</div>}}
   }

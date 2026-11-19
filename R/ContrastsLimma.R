@@ -908,8 +908,11 @@ ContrastsLimma <- R6::R6Class(
 
       # limma pipeline: contrasts.fit, optionally + eBayes
       fit2 <- limma::contrasts.fit(self$model$fit, contrast_matrix)
+      # proteins without residual variance stay out of the eBayes prior; their tests are set to NA below
+      zero <- .zero_residual_variance(fit2$sigma, self$model$fit$Amean)
 
       if (self$eBayes) {
+        fit2$sigma[zero] <- NA
         fit2 <- limma::eBayes(fit2, trend = self$model$trend, robust = self$model$robust)
       }
 
@@ -962,6 +965,7 @@ ContrastsLimma <- R6::R6Class(
         res_list[[i]] <- df_i
       }
       contrast_result <- dplyr::bind_rows(res_list)
+      contrast_result <- .na_zero_variance(contrast_result, rep(zero, length(diff_names)), self$subject_id)
 
       # Adjust p-values per contrast
       contrast_result <- self$p.adjust(contrast_result, column = "p.value", group_by_col = "contrast", newname = "FDR")

@@ -21,7 +21,10 @@
 #' classed error on `Inf`, `-Inf` or `NaN` intensities
 #' (`prolfqua_error_nonfinite_response`), on `NA` in hierarchy, factor or sample
 #' columns (`prolfqua_error_missing_key`), and on inputs without rows
-#' (`prolfqua_error_bad_argument`).
+#' (`prolfqua_error_bad_argument`). A subject whose residual variance is zero
+#' (constant or noiseless response) keeps its estimated difference, but its
+#' test statistics are `NA`, with a `prolfqua_zero_variance` warning, and it is
+#' left out of the variance moderation prior.
 #' @section Lifecycle:
 #' prolfqua is stable. Its exported API follows the Bioconductor deprecation
 #' cycle: a renamed or removed interface calls \code{.Deprecated()} for one

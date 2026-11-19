@@ -664,3 +664,43 @@ is_contaminant <- function(ids, pattern = NULL) {
     as.character(ids)
   )
 }
+
+#' Residual scale indistinguishable from zero relative to the response level
+#'
+#' A constant or noiseless response leaves residuals of floating-point noise; tests built on that scale are
+#' meaningless (noise / noise), and the near-zero variance would shrink the empirical-Bayes prior.
+#' @param sigma residual standard deviations
+#' @param scale response level of the same rows (average abundance)
+#' @noRd
+.zero_residual_variance <- function(sigma, scale) {
+  !is.na(sigma) & sigma <= sqrt(.Machine$double.eps) * pmax(1, abs(scale), na.rm = TRUE)
+}
+
+#' Set the test columns of rows with zero residual variance to NA and warn once
+#'
+#' The estimate (`diff`) is kept; the scale and everything derived from it is not defined.
+#' @param contrast_result contrast table
+#' @param zero logical, rows with zero residual variance
+#' @param subject_id columns identifying the modelled subjects
+#' @noRd
+.na_zero_variance <- function(contrast_result, zero, subject_id) {
+  if (!any(zero)) {
+    return(contrast_result)
+  }
+  cols <- c("sigma", "std.error", "std.error.unmoderated", "statistic", "p.value", "conf.low", "conf.high")
+  cols <- intersect(cols, colnames(contrast_result))
+  for (col in cols) {
+    contrast_result[[col]][zero] <- NA
+  }
+  subjects <- unique(do.call(paste, c(as.data.frame(contrast_result)[zero, subject_id, drop = FALSE], sep = "~")))
+  rlang::warn(
+    paste0(
+      length(subjects),
+      " subjects with zero residual variance (constant or noiseless response), e.g. ",
+      toString(utils::head(subjects, 5)),
+      ": test statistics set to NA."
+    ),
+    class = "prolfqua_zero_variance"
+  )
+  contrast_result
+}

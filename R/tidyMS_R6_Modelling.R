@@ -91,7 +91,13 @@ StrategyBase <- R6::R6Class(
 
     #' @description Get residual standard error
     #' @param model fitted model
-    sigma = function(model) stats::sigma(model)
+    sigma = function(model) stats::sigma(model),
+
+    #' @description Flag residual scales indistinguishable from zero (constant or noiseless response); their
+    #'   tests are set to NA
+    #' @param sigma residual scales, one per contrast row
+    #' @param scale response level of the same rows (average abundance)
+    zero_residual_variance = function(sigma, scale) .zero_residual_variance(sigma, scale)
   ),
   private = list(
     # Input preparation that runs outside the error handler of model_fun().

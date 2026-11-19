@@ -40,7 +40,8 @@ moderated_p_limma <- function(
   # that prolfqua's former squeezeVarRob() fork carried over from MSqRob.
   squeezed_var <- limma::squeezeVar(contrast_df$sigma^2, df = contrast_df[[df]], robust = robust)
   if (all(is.infinite(squeezed_var$df.prior))) {
-    squeezed_var$df.prior <- mean(contrast_df[[df]], na.rm = TRUE) * nrow(contrast_df) / 10
+    # count only rows with a variance; NA variances (zero residual variance, failed fits) are not in the prior
+    squeezed_var$df.prior <- mean(contrast_df[[df]], na.rm = TRUE) * sum(!is.na(contrast_df$sigma)) / 10
   }
   if (!is.null(variance_floor)) {
     bounded <- !is.na(squeezed_var$var.post) & squeezed_var$var.post < variance_floor

@@ -131,6 +131,7 @@ Other modelling:
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="initialize"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-initialize'><code>StrategyBase$initialize()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="model_fun"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun'><code>StrategyBase$model_fun()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="sigma"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-sigma'><code>StrategyBase$sigma()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="zero_residual_variance"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-zero_residual_variance'><code>StrategyBase$zero_residual_variance()</code></a></span></li>
 </ul>
 </details>}}
 \if{html}{\out{<hr>}}

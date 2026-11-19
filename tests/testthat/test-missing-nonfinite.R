@@ -99,20 +99,79 @@ test_that("a protein with an all-NA response is absent from the contrasts and li
   }
 })
 
-test_that("a protein with a constant response gives finite or NA results, no error", {
-  withr::local_options(prolfqua.verbose = FALSE)
+# Proteins with zero residual variance: one constant (all 20), one noiseless with a real difference (A 22, rest 20)
+md_degenerate <- function() {
   protein <- md_protein(with_missing = FALSE)
-  target <- unique(protein$data_long()$protein_Id)[1]
-  constant <- md_replace(protein, protein$response(), 20, protein$data_long()$protein_Id == target)
-  for (method in c("lm", "limma")) {
-    contrasts <- muffle_warnings_matching(
-      build_contrast_analysis(constant, "~ group_", MD_CONTRASTS, method)$get_contrasts(),
-      paste("essentially perfect fit", partial_na_warning, sep = "|")
-    )
-    row <- contrasts[contrasts$protein_Id == target, c("diff", "std.error", "p.value")]
-    expect_equal(nrow(row), 1L, label = method)
-    expect_false(any(is.infinite(unlist(row)) | is.nan(unlist(row))), label = method)
+  data <- protein$data_long()
+  response <- protein$response()
+  ids <- unique(data$protein_Id)
+  data[[response]][data$protein_Id == ids[1]] <- 20
+  noiseless <- data$protein_Id == ids[2]
+  data[[response]][noiseless] <- ifelse(data$group_[noiseless] == "A", 22, 20)
+  list(lfq = LFQData$new(data, protein$get_config()), constant = ids[1], noiseless = ids[2], ids = ids)
+}
+
+md_contrasts_counting_zero_variance <- function(lfq, method) {
+  n_zero <- 0L
+  contrasts <- withCallingHandlers(
+    muffle_warnings_matching(
+      build_contrast_analysis(lfq, "~ group_", MD_CONTRASTS, method)$get_contrasts(),
+      paste("essentially perfect fit", loess_ties_warning, rlm_convergence_warning, sep = "|")
+    ),
+    prolfqua_zero_variance = function(w) {
+      n_zero <<- n_zero + 1L
+      invokeRestart("muffleWarning")
+    }
+  )
+  list(contrasts = contrasts, n_zero = n_zero)
+}
+
+test_that("zero residual variance keeps the difference and sets the test to NA, with one warning", {
+  withr::local_options(prolfqua.verbose = FALSE)
+  degenerate <- md_degenerate()
+  for (method in c("lm", "rlm", "limma", "deqms", "lm_impute", "limma_impute")) {
+    res <- md_contrasts_counting_zero_variance(degenerate$lfq, method)
+    expect_gte(res$n_zero, 1L)
+    rows <- res$contrasts[res$contrasts$protein_Id %in% c(degenerate$constant, degenerate$noiseless), ]
+    expect_true(all(is.na(rows$p.value)), label = method)
+    expect_true(all(is.na(rows$std.error)), label = method)
+    constant <- rows[rows$protein_Id == degenerate$constant, ]
+    expect_equal(constant$diff, 0, tolerance = 1e-8, label = method)
+    if (method != "rlm") {
+      noiseless <- rows[rows$protein_Id == degenerate$noiseless, ]
+      expect_equal(noiseless$diff, 2, tolerance = 1e-8, label = method)
+    }
   }
+})
+
+test_that("proteins with zero residual variance do not change the variance prior of the others", {
+  withr::local_options(prolfqua.verbose = FALSE)
+  degenerate <- md_degenerate()
+  others <- setdiff(degenerate$ids, c(degenerate$constant, degenerate$noiseless))
+  without <- LFQData$new(
+    degenerate$lfq$data_long()[degenerate$lfq$data_long()$protein_Id %in% others, ],
+    degenerate$lfq$get_config()
+  )
+  for (method in c("lm", "limma")) {
+    with_degenerate <- md_contrasts_counting_zero_variance(degenerate$lfq, method)$contrasts
+    reference <- md_contrasts_counting_zero_variance(without, method)$contrasts
+    with_degenerate <- with_degenerate[match(reference$protein_Id, with_degenerate$protein_Id), ]
+    expect_equal(with_degenerate$p.value, reference$p.value, tolerance = 1e-10, label = method)
+  }
+})
+
+test_that("moderated_p_limma leaves NA variances out of the prior", {
+  contrast_df <- data.frame(
+    sigma = c(0.25, 0.32, 0.28, 0.40, 0.35, NA),
+    df = rep(6, 6),
+    statistic = c(2.1, -1.8, 0.5, 3.0, -2.2, NA),
+    std.error = c(0.38, 0.33, 0.4, 0.4, 0.41, NA),
+    diff = c(0.8, -0.6, 0.2, 1.2, -0.9, 2)
+  )
+  with_na <- moderated_p_limma(contrast_df)
+  reference <- moderated_p_limma(contrast_df[1:5, ])
+  expect_equal(with_na$moderated.p.value[1:5], reference$moderated.p.value)
+  expect_true(is.na(with_na$moderated.p.value[6]))
 })
 
 #' @srrstats {G5.3} Contrast tables of the intensity methods lm, rlm, limma, lm_impute, limma_impute and deqms on data
