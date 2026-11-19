@@ -215,3 +215,57 @@ test_that("rlm non-convergence and lmer failures each give one warning for the f
   expect_length(lmer$messages, 1L)
   expect_match(lmer$messages, "fits failed")
 })
+
+test_that("an analysis lists a protein observed in one group only as absent, with the reason", {
+  withr::local_options(prolfqua.verbose = FALSE)
+  fixture <- prov_one_group()
+  contrasts <- c(AvsC = "group_A - group_Ctrl")
+  lm <- prov_fit_warnings(build_contrast_analysis(fixture$lfq, "~ group_", contrasts, "lm"))$result
+  entries <- lm$provenance()
+  absent <- entries[entries$source == "contrasts", ]
+  expect_equal(absent$ids, list(fixture$target))
+  expect_match(absent$reason, "^fit failed: .*contrasts can be applied only to factors")
+  expect_true(fixture$target %in% entries$ids[[which(entries$source == "model" & entries$event == "fits failed")]])
+  limma <- build_contrast_analysis(fixture$lfq, "~ group_", contrasts, "limma")$provenance()
+  absent <- limma[limma$source == "contrasts", ]
+  expect_equal(absent$ids, list(fixture$target))
+  expect_equal(absent$reason, "contrast not estimable")
+})
+
+test_that("an analysis reads the input data record, e.g. zeros set to NA by log2", {
+  sim <- sim_lfq_data_protein_config(Nprot = 10, with_missing = FALSE, seed = 42)
+  sim$data$abundance[1:2] <- 0
+  withr::local_options(prolfqua.verbose = FALSE)
+  lfq <- LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq
+  facade <- build_contrast_analysis(lfq, "~ group_", c(AvsC = "group_A - group_Ctrl"), "lm")
+  entries <- facade$provenance()
+  zeros <- entries[entries$source == "input data", ]
+  expect_equal(zeros$step, "log transform")
+  expect_equal(zeros$n, 2L)
+  expect_setequal(zeros$ids[[1]], sim$data$protein_Id[1:2])
+})
+
+test_that("hurdle_nested reads the input, the aggregated data and both component models", {
+  sim <- sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.4, seed = 42)
+  withr::local_options(prolfqua.verbose = FALSE)
+  lfq <- LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq
+  facade <- suppressWarnings(build_contrast_analysis(
+    lfq,
+    "~ group_",
+    c(AvsC = "group_A - group_Ctrl"),
+    "hurdle_nested"
+  ))
+  sources <- unique(facade$.recorded_provenance()$source)
+  expect_true(all(sources %in% c("input data", "aggregated data", "model (intensity)", "model (detection)")))
+  expect_true("model (intensity)" %in% sources)
+})
+
+test_that("print() and summary() show a one-line provenance summary", {
+  withr::local_options(prolfqua.verbose = FALSE)
+  fixture <- prov_one_group()
+  facade <- prov_fit_warnings(
+    build_contrast_analysis(fixture$lfq, "~ group_", c(AvsC = "group_A - group_Ctrl"), "lm")
+  )$result
+  expect_output(print(facade), "Provenance: 1 failure and [0-9]+ other entries; see \\$provenance\\(\\)")
+  expect_output(print(summary(facade)), "Provenance: 1 failure and [0-9]+ other entries")
+})

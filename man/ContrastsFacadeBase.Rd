@@ -147,6 +147,8 @@ Other modelling:
     \item \href{#method-ContrastsFacadeBase-get_missing}{\code{ContrastsFacadeBase$get_missing()}}
     \item \href{#method-ContrastsFacadeBase-get_Plotter}{\code{ContrastsFacadeBase$get_Plotter()}}
     \item \href{#method-ContrastsFacadeBase-to_wide}{\code{ContrastsFacadeBase$to_wide()}}
+    \item \href{#method-ContrastsFacadeBase-provenance}{\code{ContrastsFacadeBase$provenance()}}
+    \item \href{#method-ContrastsFacadeBase-.recorded_provenance}{\code{ContrastsFacadeBase$.recorded_provenance()}}
     \item \href{#method-ContrastsFacadeBase-clone}{\code{ContrastsFacadeBase$clone()}}
   }
 }
@@ -240,6 +242,39 @@ Other modelling:
       \item{\code{...}}{passed to the inner contrast object's to_wide}
     }
     \if{html}{\out{</div>}}
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ContrastsFacadeBase-provenance"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsFacadeBase-provenance}{}}}
+\subsection{\code{ContrastsFacadeBase$provenance()}}{
+  problems and dropped items of this analysis, read from the input data, the aggregated data
+  (\code{hurdle_nested}, \code{limpa_nested}) and the model(s), plus the subjects absent from the contrasts
+  with the reason
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ContrastsFacadeBase$provenance()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    tibble with columns source, step, event, n, ids (list), reason, failure, response
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ContrastsFacadeBase-.recorded_provenance"></a>}}
+\if{latex}{\out{\hypertarget{method-ContrastsFacadeBase-.recorded_provenance}{}}}
+\subsection{\code{ContrastsFacadeBase$.recorded_provenance()}}{
+  internal: the entries recorded in the input data, the aggregated data and the model(s),
+  without evaluating contrasts (used by \code{print()})
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ContrastsFacadeBase$.recorded_provenance()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    tibble as \code{provenance()}, without the absent subjects
   }
 }
 

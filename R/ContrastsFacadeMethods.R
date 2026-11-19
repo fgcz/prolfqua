@@ -111,6 +111,7 @@ print.ContrastsFacadeBase <- function(x, ...) {
   input <- x$.lfqdata
   cat("Input subjects:", nrow(unique(input$data_long()[, input$subject_id(), drop = FALSE])), "\n")
   print(.facade_fit_status(x))
+  cat(.provenance_line(x$.recorded_provenance()), "\n")
   if (is.null(x$model)) {
     cat("Intensity coefficient preview:\n")
     print(.model_coef(x$contrast$intensity$model, n = 6L))
@@ -161,7 +162,8 @@ summary.ContrastsFacadeBase <- function(object, FDR_threshold = 0.05, diff_thres
       method = object$facade_name,
       formula = .facade_formulas(object),
       fit_status = .facade_fit_status(object),
-      per_contrast = dplyr::bind_rows(per_contrast)
+      per_contrast = dplyr::bind_rows(per_contrast),
+      provenance = .provenance_line(object$provenance())
     ),
     class = "summary.ContrastsFacadeBase"
   )
@@ -174,6 +176,7 @@ print.summary.ContrastsFacadeBase <- function(x, ...) {
   .print_analysis_formulas(x$formula)
   print(x$fit_status)
   print(x$per_contrast)
+  cat(x$provenance, "\n")
   invisible(x)
 }
 
@@ -325,4 +328,18 @@ plot.ContrastsFacadeBase <- function(x, type = c("fitted", "volcano", "ma"), sub
     ) +
     ggplot2::facet_wrap(ggplot2::vars(.data$subject), scales = "free_y") +
     ggplot2::labs(x = "Group", y = "Modelled response")
+}
+
+
+#' One-line provenance summary for print() and summary()
+#' @param entries provenance entries
+#' @noRd
+.provenance_line <- function(entries) {
+  paste0(
+    "Provenance: ",
+    sum(entries$failure),
+    " failure and ",
+    sum(!entries$failure),
+    " other entries; see $provenance()"
+  )
 }

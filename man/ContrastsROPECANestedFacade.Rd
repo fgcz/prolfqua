@@ -138,8 +138,10 @@ Other modelling:
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_contrast_sides"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_contrast_sides'><code>ContrastsInterface$get_contrast_sides()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_ora"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_ora'><code>ContrastsInterface$get_ora()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_rank"><a href='../../prolfqua/html/ContrastsInterface.html#method-ContrastsInterface-get_rank'><code>ContrastsInterface$get_rank()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id=".recorded_provenance"><a href='../../prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-.recorded_provenance'><code>ContrastsFacadeBase$.recorded_provenance()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="get_config"><a href='../../prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_config'><code>ContrastsFacadeBase$get_config()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="get_missing"><a href='../../prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-get_missing'><code>ContrastsFacadeBase$get_missing()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="provenance"><a href='../../prolfqua/html/ContrastsFacadeBase.html#method-ContrastsFacadeBase-provenance'><code>ContrastsFacadeBase$provenance()</code></a></span></li>
 </ul>
 </details>}}
 \if{html}{\out{<hr>}}

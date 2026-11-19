@@ -73,9 +73,37 @@ ContrastsFacadeBase <- R6::R6Class(
     get_Plotter = function(...) self$contrast$get_Plotter(...),
     #' @description convert results to wide format
     #' @param ... passed to the inner contrast object's to_wide
-    to_wide = function(...) self$contrast$to_wide(...)
+    to_wide = function(...) self$contrast$to_wide(...),
+    #' @description problems and dropped items of this analysis, read from the input data, the aggregated data
+    #'   (\code{hurdle_nested}, \code{limpa_nested}) and the model(s), plus the subjects absent from the contrasts
+    #'   with the reason
+    #' @return tibble with columns source, step, event, n, ids (list), reason, failure, response
+    provenance = function() {
+      absent <- .absent_provenance(self$get_missing(), self$model, self$.lfqdata$subject_id())
+      dplyr::bind_rows(self$.recorded_provenance(), dplyr::mutate(absent, source = "contrasts", .before = 1))
+    },
+    #' @description internal: the entries recorded in the input data, the aggregated data and the model(s),
+    #'   without evaluating contrasts (used by \code{print()})
+    #' @return tibble as \code{provenance()}, without the absent subjects
+    .recorded_provenance = function() {
+      sources <- list(`input data` = private$.input$provenance())
+      if (!identical(self$.lfqdata, private$.input)) {
+        sources[["aggregated data"]] <- self$.lfqdata$provenance()
+      }
+      models <- if (is.null(self$model)) {
+        list(`model (intensity)` = self$contrast$intensity$model, `model (detection)` = self$contrast$detection$model)
+      } else {
+        list(model = self$model)
+      }
+      for (name in names(models)) {
+        sources[[name]] <- models[[name]]$provenance()
+      }
+      dplyr::bind_rows(sources, .id = "source")
+    }
   ),
   private = list(
+    # the input LFQData copy made by .setup(); hurdle_nested and limpa_nested replace .lfqdata afterwards
+    .input = NULL,
     # Shared initialize() prologue: check the input shape required by the
     # registry entry of `key` (`needs`), store the input and the contrast names,
     # record the facade key, and return the full model formula string.
@@ -97,9 +125,46 @@ ContrastsFacadeBase <- R6::R6Class(
       }
       .assert_contrast_groups(lfqdata, contrasts)
       self$.lfqdata <- lfqdata$get_copy()
+      private$.input <- self$.lfqdata
       self$.contrast_names <- names(contrasts)
       self$facade_name <- key
       paste(lfqdata$response(), modelstr)
     }
   )
 )
+
+
+#' Provenance entries for the subjects absent from the contrasts
+#'
+#' The reason is the failure text when the subject's fit failed, otherwise "contrast not estimable".
+#' @param missing get_missing() result: subject columns and contrast
+#' @param model fitted model (ModelInterface) or NULL
+#' @param subject_id subject key columns
+#' @noRd
+.absent_provenance <- function(missing, model, subject_id) {
+  log <- Provenance$new()
+  if (nrow(missing) == 0L) {
+    return(log$entries())
+  }
+  missing$id <- do.call(paste, c(as.data.frame(missing)[, subject_id, drop = FALSE], sep = "~"))
+  missing$reason <- "contrast not estimable"
+  if (!is.null(model)) {
+    entries <- model$provenance()
+    failed <- entries[entries$event == "fits failed", ]
+    for (i in seq_len(nrow(failed))) {
+      missing$reason[missing$id %in% failed$ids[[i]]] <- paste("fit failed:", failed$reason[i])
+    }
+  }
+  contrast_col <- setdiff(colnames(missing), c(subject_id, "id", "reason"))[1]
+  groups <- unique(missing[, c(contrast_col, "reason")])
+  for (i in seq_len(nrow(groups))) {
+    rows <- missing[[contrast_col]] == groups[[contrast_col]][i] & missing$reason == groups$reason[i]
+    log$record(
+      "get_missing",
+      paste0("subjects absent from contrast ", groups[[contrast_col]][i]),
+      missing$id[rows],
+      groups$reason[i]
+    )
+  }
+  log$entries()
+}
