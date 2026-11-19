@@ -196,10 +196,9 @@ sim_lfq_data_peptide_config <- function(
   .with_sim_seed(seed, {
     data <- sim_lfq_data(Nprot = Nprot, PEPTIDE = TRUE, N = N)
 
-    not_missing <- !which_missing(data$abundance, weight_missing = weight_missing)
-    data$nr_children <- as.numeric(not_missing)
+    data$nr_children <- 1
     if (with_missing) {
-      data <- data[data$nr_children > 0, ]
+      data <- data[!which_missing(data$abundance, weight_missing = weight_missing), ]
     }
     .sim_setup(data, list(group_ = "group"), peptide = TRUE)
   })
@@ -248,9 +247,8 @@ sim_lfq_data_protein_config <- function(
         mutate(subject = paste0("P", subject))
       data <- inner_join(annot, data, by = c("group", "sample"))
     }
-    data$nrPeptides[which_missing(data$abundance, weight_missing = weight_missing)] <- 0
     if (with_missing) {
-      data <- data[data$nrPeptides > 0, ]
+      data <- data[!which_missing(data$abundance, weight_missing = weight_missing), ]
     }
     factors <- if (paired) list(group_ = "group", subject_ = "subject") else list(group_ = "group")
     .sim_setup(data, factors, peptide = FALSE, nr_children = "nrPeptides")
@@ -301,9 +299,8 @@ sim_lfq_data_2factor_config <- function(
     if (!"nrPeptides" %in% colnames(data)) {
       data$nrPeptides <- 1
     }
-    data$nrPeptides[which_missing(data$abundance, weight_missing = weight_missing)] <- 0
     if (with_missing) {
-      data <- data[data$nrPeptides > 0, ]
+      data <- data[!which_missing(data$abundance, weight_missing = weight_missing), ]
     }
     if (TWO) {
       factors <- list(Treatment = "Treatment", Background = "Background")

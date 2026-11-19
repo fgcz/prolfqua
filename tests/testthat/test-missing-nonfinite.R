@@ -158,3 +158,24 @@ test_that("moderation with equal variances ignores an NA residual df for the pri
 test_that("which_missing rejects NA input", {
   expect_error(which_missing(c(1, NA, 3)), class = "prolfqua_error_bad_argument")
 })
+
+test_that("simulators with with_missing = FALSE give complete data with positive peptide counts", {
+  sims <- list(
+    peptide = function(m) sim_lfq_data_peptide_config(Nprot = 10, with_missing = m, seed = 42),
+    protein = function(m) sim_lfq_data_protein_config(Nprot = 10, with_missing = m, seed = 42),
+    two_factor = function(m) sim_lfq_data_2factor_config(Nprot = 10, with_missing = m, seed = 42)
+  )
+  for (name in names(sims)) {
+    complete <- sims[[name]](FALSE)
+    with_na <- sims[[name]](TRUE)
+    counts <- complete$data[[complete$config$nr_children]]
+    expect_true(all(counts > 0), label = name)
+    expect_false(anyNA(complete$data$abundance), label = name)
+    observed <- with_na$data[!is.na(with_na$data$abundance), ]
+    expect_lt(nrow(observed), nrow(complete$data))
+    key <- c(complete$config$sample_name, complete$config$hierarchy_keys())
+    joined <- dplyr::inner_join(observed, complete$data, by = key, suffix = c(".na", ".complete"))
+    expect_equal(nrow(joined), nrow(observed), label = name)
+    expect_equal(joined$abundance.na, joined$abundance.complete, label = name)
+  }
+})

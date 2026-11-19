@@ -44,6 +44,7 @@
 - `get_complete_model_fit()`, and with it `Model$get_anova()`, `Model$get_coefficients()` and the coefficient and ANOVA plots, now leaves out fits with fewer coefficients than the full design, for example a protein with one group entirely missing. Before, every fit counted as complete, so these tables also listed such proteins, whose coefficients referred to another reference level. Limit-of-detection imputation is unchanged.
 
 - `moderated_p_limma()`: when all variances are equal, one missing residual df no longer makes the prior df, and with it every moderated p-value, `NA`.
+- `sim_lfq_data_peptide_config()`, `sim_lfq_data_protein_config()` and `sim_lfq_data_2factor_config()` with `with_missing = FALSE` return complete data with positive peptide counts; before, intensities chosen as missing were kept with a peptide count of 0, which gave them fitting weight 0.
 
 - The introductory and Modelling methods vignettes no longer fail when `R CMD check --no-build-vignettes` runs their code: the factory figure is left out of the extracted R code. The Transforming and calibrating LFQ data vignette ends with session information.
 
