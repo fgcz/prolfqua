@@ -312,8 +312,8 @@ compute_borrowed_variance_limma <- function(fit) {
   fitted <- withCallingHandlers(
     fit_fun(setup$expr_matrix, setup$design, weights = weights),
     warning = function(w) {
-      # with impute = TRUE, the proteins with NA coefficients are refit below
-      if (impute && grepl("^Partial NA coefficients", conditionMessage(w))) {
+      # proteins with NA coefficients are recorded in the model's provenance (and refit with impute = TRUE)
+      if (grepl("^Partial NA coefficients", conditionMessage(w))) {
         invokeRestart("muffleWarning")
       }
     }
@@ -326,7 +326,8 @@ compute_borrowed_variance_limma <- function(fit) {
   }
   failed <- if (impute) which(rowSums(is.na(fit$coefficients)) > 0) else integer(0)
   if (length(failed) == 0) {
-    return(.new_model_limma(fit, setup, strategy, model_name, setup$expr_matrix, fitted$weights, observed))
+    model <- .new_model_limma(fit, setup, strategy, model_name, setup$expr_matrix, fitted$weights, observed)
+    return(.record_limma_fits(model, setup))
   }
 
   lod <- .resolve_lod(lod, lfqdata)
@@ -348,7 +349,7 @@ compute_borrowed_variance_limma <- function(fit) {
   if (!is.null(fitted$weights)) {
     fitted$weights[failed, ] <- fitted_lod$weights[failed, ]
   }
-  .new_model_limma(
+  model <- .new_model_limma(
     fit,
     setup,
     strategy,
@@ -359,6 +360,40 @@ compute_borrowed_variance_limma <- function(fit) {
     dummy_model = .limma_dummy_model(setup$annotation, setup$rhs_formula, imputed$expression[1, ]),
     imputed_proteins = setup$rowdata[failed, setup$subject_id[1], drop = TRUE]
   )
+  .record_limma_fits(model, setup, refit = failed)
+}
+
+#' Record the per-protein outcomes of a limma fit in the model's provenance and report them
+#'
+#' Rows with NA coefficients (a factor level without observations) are singular fits, as in build_model();
+#' refit rows were imputed at the LOD; NA responses of the other rows are dropped by lmFit.
+#' @param model ModelLimma
+#' @param setup matrix data and metadata returned by .lfqdata_to_elist
+#' @param refit row indices refit at the limit of detection
+#' @noRd
+.record_limma_fits <- function(model, setup, refit = integer(0)) {
+  log <- model$get_provenance_log()
+  step <- paste0("fit (", model$model_name, ")")
+  ids <- .key_ids(setup$rowdata, setup$subject_id)
+  singular <- rowSums(is.na(model$fit$coefficients)) > 0
+  log$record(step, "singular fits", ids[singular], "coefficients not estimable (Partial NA coefficients)")
+  log$record(
+    step,
+    "refit at the limit of detection",
+    ids[refit],
+    "fit failed, singular or missing a group; missing responses imputed at the LOD"
+  )
+  n_dropped <- rowSums(is.na(setup$expr_matrix))
+  n_dropped[refit] <- 0
+  log$record(
+    step,
+    "missing responses dropped",
+    ids[n_dropped > 0],
+    "NA response (missing observation) left out of the fit",
+    n = sum(n_dropped)
+  )
+  log$report()
+  model
 }
 
 #' Multiply vooma precision weights by external observation or sample weights

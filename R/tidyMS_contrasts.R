@@ -467,8 +467,15 @@ contrasts_linfct <- function(models, linfct, subject_id = "protein_Id", contrast
 
   interaction_models <- vector(mode = "list", length = nrow(models))
   pb <- .make_progress(nrow(models), label = "contrasts")
+  contrast_warnings <- character(0)
   for (i in seq_along(models[[modelcol]])) {
-    interaction_models[[i]] <- contrastfun(models[[modelcol]][[i]], linfct = linfct[[i]])
+    interaction_models[[i]] <- withCallingHandlers(
+      contrastfun(models[[modelcol]][[i]], linfct = linfct[[i]]),
+      warning = function(w) {
+        contrast_warnings <<- c(contrast_warnings, conditionMessage(w))
+        invokeRestart("muffleWarning")
+      }
+    )
     pb$tick()
   }
   interaction_model_matrix <- models
@@ -478,14 +485,18 @@ contrasts_linfct <- function(models, linfct, subject_id = "protein_Id", contrast
   n_failed <- sum(failed)
   if (n_failed > 0) {
     failed_ids <- interaction_model_matrix[[subject_id[1]]][failed]
-    warning(
-      "contrasts_linfct: dropped ",
-      n_failed,
-      " of ",
-      nrow(interaction_model_matrix),
-      " proteins with failed contrasts: ",
-      toString(failed_ids),
-      call. = FALSE
+    reasons <- table(contrast_warnings)
+    rlang::warn(
+      paste0(
+        "contrasts_linfct: dropped ",
+        n_failed,
+        " of ",
+        nrow(interaction_model_matrix),
+        " proteins with failed contrasts: ",
+        toString(failed_ids),
+        if (length(reasons) > 0L) paste0(". Reasons: ", toString(paste0(names(reasons), " (", reasons, ")")))
+      ),
+      class = "prolfqua_fit_failed"
     )
   }
 

@@ -169,12 +169,14 @@ impute.}
     \item \href{#method-ModelLimma-clone}{\code{ModelLimma$clone()}}
   }
 }
-\if{html}{\out{<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details><summary>Inherited methods</summary>
 <ul>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="anova_histogram"><a href='../../prolfqua/html/ModelInterface.html#method-ModelInterface-anova_histogram'><code>ModelInterface$anova_histogram()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="coef_histogram"><a href='../../prolfqua/html/ModelInterface.html#method-ModelInterface-coef_histogram'><code>ModelInterface$coef_histogram()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="coef_pairs"><a href='../../prolfqua/html/ModelInterface.html#method-ModelInterface-coef_pairs'><code>ModelInterface$coef_pairs()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="coef_volcano"><a href='../../prolfqua/html/ModelInterface.html#method-ModelInterface-coef_volcano'><code>ModelInterface$coef_volcano()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="get_provenance_log"><a href='../../prolfqua/html/ModelInterface.html#method-ModelInterface-get_provenance_log'><code>ModelInterface$get_provenance_log()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="provenance"><a href='../../prolfqua/html/ModelInterface.html#method-ModelInterface-provenance'><code>ModelInterface$provenance()</code></a></span></li>
 </ul>
 </details>}}
 \if{html}{\out{<hr>}}

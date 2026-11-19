@@ -125,3 +125,93 @@ test_that("rlm aggregation gives one warning naming the non-converged proteins a
   expect_true(all(entries$ids[[1]] %in% protein$data_long()$protein_Id))
   expect_equal(nrow(lfq$provenance()), 0L)
 })
+
+# protein-level data where the first protein is observed in group Ctrl only
+prov_one_group <- function() {
+  sim <- sim_lfq_data_protein_config(Nprot = 10, with_missing = FALSE, seed = 42)
+  data <- sim$data
+  target <- unique(data$protein_Id)[1]
+  data$abundance[data$protein_Id == target & data$group_ != "Ctrl"] <- NA
+  lfq <- LFQData$new(data, sim$config)$get_Transformer()$log2()$lfq
+  list(lfq = lfq, target = target)
+}
+
+prov_fit_warnings <- function(expr) {
+  messages <- character(0)
+  result <- withCallingHandlers(
+    expr,
+    prolfqua_fit_failed = function(w) {
+      messages <<- c(messages, conditionMessage(w))
+      invokeRestart("muffleWarning")
+    }
+  )
+  list(result = result, messages = messages)
+}
+
+test_that("a failed fit gives one warning per step and a provenance entry with its reason", {
+  withr::local_options(prolfqua.verbose = FALSE)
+  fixture <- prov_one_group()
+  res <- prov_fit_warnings(build_model(fixture$lfq, strategy_lm(paste(fixture$lfq$response(), "~ group_"))))
+  expect_length(res$messages, 1L)
+  expect_match(res$messages, "contrasts can be applied only to factors with 2 or more levels")
+  entries <- res$result$provenance()
+  failed <- entries[entries$event == "fits failed", ]
+  expect_equal(failed$ids, list(fixture$target))
+  expect_true(failed$failure)
+  dropped <- entries[entries$event == "missing responses dropped", ]
+  expect_equal(nrow(dropped), 0L)
+})
+
+test_that("missing responses dropped per fit are counted (G2.14b)", {
+  withr::local_options(prolfqua.verbose = FALSE)
+  fixture <- prov_one_group()
+  data <- fixture$lfq$data_long()
+  second <- unique(data$protein_Id)[2]
+  data[[fixture$lfq$response()]][data$protein_Id == second][1:2] <- NA
+  lfq <- LFQData$new(data, fixture$lfq$get_config())
+  n_target <- sum(is.na(data[[fixture$lfq$response()]][data$protein_Id == fixture$target]))
+  # lm: the one-group protein fails to fit, so none of its responses count as dropped; limma fits it with NA
+  # coefficients and drops its missing responses
+  expected <- list(lm = list(n = 2L, ids = second), limma = list(n = 2L + n_target, ids = c(fixture$target, second)))
+  for (method in names(expected)) {
+    facade <- suppressWarnings(build_contrast_analysis(lfq, "~ group_", c(AvsC = "group_A - group_Ctrl"), method))
+    dropped <- facade$model$provenance()
+    dropped <- dropped[dropped$event == "missing responses dropped", ]
+    expect_equal(dropped$n, expected[[method]]$n, label = method)
+    expect_setequal(dropped$ids[[1]], expected[[method]]$ids)
+  }
+})
+
+test_that("limma records non-estimable coefficients as singular fits; lm_impute records the LOD refit", {
+  withr::local_options(prolfqua.verbose = FALSE)
+  fixture <- prov_one_group()
+  contrasts <- c(AvsC = "group_A - group_Ctrl")
+  limma <- prov_fit_warnings(build_contrast_analysis(fixture$lfq, "~ group_", contrasts, "limma"))
+  expect_length(limma$messages, 0L)
+  singular <- limma$result$model$provenance()
+  expect_equal(singular$ids[singular$event == "singular fits"], list(fixture$target))
+  for (method in c("lm_impute", "limma_impute")) {
+    imputed <- prov_fit_warnings(build_contrast_analysis(fixture$lfq, "~ group_", contrasts, method))
+    expect_length(imputed$messages, 0L)
+    entries <- imputed$result$model$provenance()
+    expect_equal(entries$ids[entries$event == "refit at the limit of detection"], list(fixture$target), label = method)
+  }
+})
+
+test_that("rlm non-convergence and lmer failures each give one warning for the fitting step", {
+  withr::local_options(prolfqua.verbose = FALSE)
+  sim <- sim_lfq_data_peptide_config(Nprot = 20, seed = 42)
+  peptide <- LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq
+  protein <- suppressWarnings(peptide$get_Aggregator()$aggregate())
+  rlm <- prov_fit_warnings(build_contrast_analysis(protein, "~ group_", c(AvsC = "group_A - group_Ctrl"), "rlm"))
+  expect_length(rlm$messages, 1L)
+  expect_match(rlm$messages, "fits with a warning.*'rlm' failed to converge")
+  lmer <- suppressMessages(prov_fit_warnings(build_contrast_analysis(
+    peptide,
+    "~ group_ + (1 | peptide_Id) + (1 | sampleName)",
+    c(AvsC = "group_A - group_Ctrl"),
+    "lmer_nested"
+  )))
+  expect_length(lmer$messages, 1L)
+  expect_match(lmer$messages, "fits failed")
+})

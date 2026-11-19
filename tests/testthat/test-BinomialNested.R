@@ -129,10 +129,8 @@ test_that("strategy_binomial rejects rank-deficient and insufficient-df fits", {
     detected = c(1, 2, 1, 4, 3, 4),
     undetected = 5 - c(1, 2, 1, 4, 3, 4)
   )
-  expect_warning(
-    fit_rank <- strategy_binomial("~ group_ + batch")$model_fun(rank_deficient),
-    "rank-deficient"
-  )
+  fit_rank <- strategy_binomial("~ group_ + batch")$model_fun(rank_deficient)
+  expect_match(fit_rank, "rank-deficient")
   expect_type(fit_rank, "character")
 
   too_small <- data.frame(
@@ -140,10 +138,8 @@ test_that("strategy_binomial rejects rank-deficient and insufficient-df fits", {
     detected = c(1, 2, 4),
     undetected = c(4, 3, 1)
   )
-  expect_warning(
-    fit_small <- strategy_binomial("~ group_")$model_fun(too_small),
-    "residual degrees of freedom"
-  )
+  fit_small <- strategy_binomial("~ group_")$model_fun(too_small)
+  expect_match(fit_small, "residual degrees of freedom")
   expect_type(fit_small, "character")
 
   absent_level <- data.frame(
@@ -151,10 +147,8 @@ test_that("strategy_binomial rejects rank-deficient and insufficient-df fits", {
     detected = c(1, 2, 3, 2),
     undetected = c(4, 3, 2, 3)
   )
-  expect_warning(
-    fit_absent <- strategy_binomial("~ group_")$model_fun(absent_level),
-    "factors with 2 or more levels"
-  )
+  fit_absent <- strategy_binomial("~ group_")$model_fun(absent_level)
+  expect_match(fit_absent, "factors with 2 or more levels")
   expect_type(fit_absent, "character")
 })
 
@@ -336,10 +330,8 @@ test_that("strategy_binomial_firth matches logistf on the expanded binary rows",
     detected = c(1, 2, 4),
     undetected = c(4, 3, 1)
   )
-  expect_warning(
-    fit_small <- strategy$model_fun(too_small),
-    "residual degrees of freedom"
-  )
+  fit_small <- strategy$model_fun(too_small)
+  expect_match(fit_small, "residual degrees of freedom")
   expect_type(fit_small, "character")
 })
 

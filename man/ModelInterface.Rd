@@ -25,6 +25,8 @@ testthat::expect_error(mi$anova_histogram())
 \section{Methods}{
 \subsection{Public methods}{
   \itemize{
+    \item \href{#method-ModelInterface-provenance}{\code{ModelInterface$provenance()}}
+    \item \href{#method-ModelInterface-get_provenance_log}{\code{ModelInterface$get_provenance_log()}}
     \item \href{#method-ModelInterface-get_coefficients}{\code{ModelInterface$get_coefficients()}}
     \item \href{#method-ModelInterface-get_anova}{\code{ModelInterface$get_anova()}}
     \item \href{#method-ModelInterface-coef_histogram}{\code{ModelInterface$coef_histogram()}}
@@ -34,6 +36,37 @@ testthat::expect_error(mi$anova_histogram())
     \item \href{#method-ModelInterface-clone}{\code{ModelInterface$clone()}}
   }
 }
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ModelInterface-provenance"></a>}}
+\if{latex}{\out{\hypertarget{method-ModelInterface-provenance}{}}}
+\subsection{\code{ModelInterface$provenance()}}{
+  problems recorded while fitting: failed fits, fit warnings (e.g. non-convergence), singular fits, fits refit
+at the limit of detection, missing responses dropped
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ModelInterface$provenance()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    tibble with columns step, event, n, ids (list), reason, failure, response
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ModelInterface-get_provenance_log"></a>}}
+\if{latex}{\out{\hypertarget{method-ModelInterface-get_provenance_log}{}}}
+\subsection{\code{ModelInterface$get_provenance_log()}}{
+  internal: the model's provenance record
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ModelInterface$get_provenance_log()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Provenance object
+  }
+}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ModelInterface-get_coefficients"></a>}}
 \if{latex}{\out{\hypertarget{method-ModelInterface-get_coefficients}{}}}

@@ -145,6 +145,16 @@ build_model <- function(
   },
   model_name = model_strategy$model_name
 ) {
+  model <- .build_model_core(data, model_strategy, subject_id, model_name)
+  .record_model_fits(model$get_provenance_log(), model$model_df, model$subject_id, model_strategy, model$model_name)
+  model$get_provenance_log()$report()
+  model
+}
+
+#' build_model() without recording and reporting, for builders that change the fits afterwards
+#' @inheritParams build_model
+#' @noRd
+.build_model_core <- function(data, model_strategy, subject_id, model_name) {
   if (inherits(data, "LFQData")) {
     .assert_model_input(data)
   }
@@ -216,7 +226,7 @@ build_model_impute <- function(
   borrow_method <- match.arg(borrow_method)
   df_method <- match.arg(df_method)
   on_misalign <- match.arg(on_misalign)
-  model <- build_model(lfqdata, model_strategy, model_name = model_name)
+  model <- .build_model_core(lfqdata, model_strategy, lfqdata$subject_id(), model_name)
   lod <- .resolve_lod(lod, lfqdata)
 
   # Resolve nr_children column name (used as lm weights; must be filled for imputed rows)
@@ -236,6 +246,8 @@ build_model_impute <- function(
     nr_children_col = nr_children_col,
     on_misalign = on_misalign
   )
+  .record_model_fits(model$get_provenance_log(), model$model_df, model$subject_id, model_strategy, model$model_name)
+  model$get_provenance_log()$report()
   model
 }
 
@@ -732,6 +744,7 @@ impute_refit_singular <- function(
     model_df$df.residual[idx] <- vapply(results, `[[`, numeric(1), "df.residual")
     model_df$nr_coef[idx] <- vapply(results, `[[`, numeric(1), "nr_coef")
     model_df$nr_coef_not_NA[idx] <- vapply(results, `[[`, numeric(1), "nr_coef_not_NA")
+    model_df$fit_warnings[idx] <- lapply(results, `[[`, "fit_warnings")
   }
 
   return(model_df)
@@ -780,11 +793,9 @@ impute_refit_singular <- function(
   dat[[response]] <- pmax(dat[[response]], lod)
 
   # A refit that fails (e.g. Rfit on a response that is constant at the LOD) leaves the
-  # protein unrescued, so it is reported by get_missing(); its fit warning adds nothing.
-  new_model <- withCallingHandlers(
-    model_strategy$model_fun(dat),
-    prolfqua_fit_failed = function(w) invokeRestart("muffleWarning")
-  )
+  # protein unrescued: it keeps its first failure, and get_missing() reports it.
+  refit <- .fit_capturing_warnings(model_strategy$model_fun, dat)
+  new_model <- refit$fit
   if (is.character(new_model)) {
     return(NULL)
   }
@@ -821,7 +832,8 @@ impute_refit_singular <- function(
     sigma = borrowed$sigma,
     df.residual = imp_df,
     nr_coef = p,
-    nr_coef_not_NA = p
+    nr_coef_not_NA = p,
+    fit_warnings = refit$warnings
   )
 }
 
@@ -908,7 +920,10 @@ model_analyse <- function(
   # log heartbeat.
   pb <- .make_progress(nrow(nested_proteins), label = label, reporter = progress)
   model_proteins <- nested_proteins |>
-    dplyr::mutate(linear_model = purrr::map(data, model_strategy$model_fun, pb = pb))
+    dplyr::mutate(.fitted = purrr::map(data, function(x) .fit_capturing_warnings(model_strategy$model_fun, x, pb = pb)))
+  model_proteins$linear_model <- purrr::map(model_proteins$.fitted, "fit")
+  model_proteins$fit_warnings <- purrr::map(model_proteins$.fitted, "warnings")
+  model_proteins$.fitted <- NULL
 
   # Per-fit summaries; NA for failed fits (the error message is stored in place of the model).
   fits <- model_proteins$linear_model
@@ -932,4 +947,78 @@ model_analyse <- function(
   model_proteins$nr_coef_not_NA <- per_fit(purrr::map2_int, function(m) count_coef(m, not_na = TRUE), NA_integer_)
 
   return(list(model_df = model_proteins, model_name = model_name))
+}
+
+
+#' Run one fit and return it with the warnings it raised (muffled), for recording in the model's provenance
+#' @param fun fitting function
+#' @param ... passed to fun
+#' @noRd
+.fit_capturing_warnings <- function(fun, ...) {
+  warnings <- character(0)
+  fit <- withCallingHandlers(
+    fun(...),
+    warning = function(w) {
+      warnings <<- c(warnings, conditionMessage(w))
+      invokeRestart("muffleWarning")
+    }
+  )
+  list(fit = fit, warnings = unique(warnings))
+}
+
+#' Record the per-subject fit outcomes of a model_df in a provenance log
+#'
+#' Failed fits (with their error text) and warnings raised while fitting are failures; singular fits, fits refit
+#' at the limit of detection and missing responses dropped per fit are reported as a message.
+#' @param log Provenance object
+#' @param model_df model table from model_analyse() or impute_refit_singular()
+#' @param subject_id subject key columns
+#' @param model_strategy strategy with the model formula
+#' @param model_name model identity, used as the step name
+#' @noRd
+.record_model_fits <- function(log, model_df, subject_id, model_strategy, model_name) {
+  step <- paste0("fit (", model_name, ")")
+  ids <- .key_ids(model_df, subject_id)
+  fitted <- model_df$has_model_fit
+  errors <- trimws(vapply(model_df$linear_model, function(m) if (is.character(m)) m else NA_character_, ""))
+  for (reason in unique(errors[!fitted])) {
+    log$record(step, "fits failed", ids[!fitted & errors == reason], reason, failure = TRUE)
+  }
+  if ("fit_warnings" %in% colnames(model_df)) {
+    warned <- tibble::tibble(
+      id = rep(ids, lengths(model_df$fit_warnings)),
+      warning = as.character(unlist(model_df$fit_warnings))
+    )
+    for (reason in unique(warned$warning)) {
+      log$record(step, "fits with a warning", warned$id[warned$warning == reason], reason, failure = TRUE)
+    }
+  }
+  singular <- fitted & !is.na(model_df$isSingular) & model_df$isSingular
+  log$record(step, "singular fits", ids[singular], "coefficients not estimable or fewer than 2 residual df")
+  if ("imputed" %in% colnames(model_df)) {
+    log$record(
+      step,
+      "refit at the limit of detection",
+      ids[model_df$imputed],
+      "fit failed, singular or missing a group; missing responses imputed at the LOD"
+    )
+  }
+  responses <- all.vars(model_strategy$formula[[2]])
+  n_dropped <- vapply(
+    model_df$data,
+    function(d) {
+      present <- intersect(responses, colnames(d))
+      if (length(present) == 0L) 0L else sum(!stats::complete.cases(d[present]))
+    },
+    integer(1)
+  )
+  n_dropped[!fitted] <- 0L
+  log$record(
+    step,
+    "missing responses dropped",
+    ids[n_dropped > 0],
+    "NA response (missing observation) left out of the fit",
+    n = sum(n_dropped)
+  )
+  invisible(log)
 }

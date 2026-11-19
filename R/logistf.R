@@ -71,7 +71,10 @@ build_model_logistf <- function(data, formula) {
     subject_id = data$subject_id()
   )
   models$strategy <- strategy
-  ModelFirth$new(models, subject_id = data$subject_id())
+  model <- ModelFirth$new(models, subject_id = data$subject_id())
+  .record_model_fits(model$get_provenance_log(), models$model_df, data$subject_id(), strategy, model$model_name)
+  model$get_provenance_log()$report()
+  model
 }
 
 

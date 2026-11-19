@@ -165,7 +165,7 @@ test_that("limma ANOVA warns for an intercept-only model", {
   expect_warning(model$get_anova(), "No non-intercept coefficients for ANOVA")
 })
 
-test_that("Firth fitting reports failure when coefficient iteration cannot converge", {
+test_that("Firth fitting returns the failure when coefficient iteration cannot converge", {
   dat <- data.frame(
     group_ = rep(c("A", "B"), each = 4),
     detected = c(1, 2, 1, 3, 4, 5, 3, 5),
@@ -180,10 +180,6 @@ test_that("Firth fitting reports failure when coefficient iteration cannot conve
     },
     .package = "stats"
   )
-  expect_warning(
-    strategy_binomial_firth("~ group_")$model_fun(dat),
-    "Firth iteration did not converge",
-    class = "prolfqua_fit_failed"
-  )
+  expect_match(strategy_binomial_firth("~ group_")$model_fun(dat), "Firth iteration did not converge")
   expect_gte(calls, 100L)
 })

@@ -19,6 +19,22 @@ ModelInterface <- R6::R6Class(
   "ModelInterface",
   public = list(
     #' @description
+    #' problems recorded while fitting: failed fits, fit warnings (e.g. non-convergence), singular fits, fits refit
+    #' at the limit of detection, missing responses dropped
+    #' @return tibble with columns step, event, n, ids (list), reason, failure, response
+    provenance = function() {
+      self$get_provenance_log()$entries()
+    },
+    #' @description
+    #' internal: the model's provenance record
+    #' @return Provenance object
+    get_provenance_log = function() {
+      if (is.null(private$.provenance)) {
+        private$.provenance <- Provenance$new()
+      }
+      private$.provenance
+    },
+    #' @description
     #' return model coefficients
     #' @return data.frame
     get_coefficients = function() {
@@ -77,6 +93,7 @@ ModelInterface <- R6::R6Class(
     }
   ),
   private = list(
+    .provenance = NULL,
     # coefficient p-value column of get_coefficients()
     coef_pvalue = "Pr...t..",
     # colour column of the coefficient volcano plot
