@@ -910,8 +910,10 @@ ContrastsLimma <- R6::R6Class(
       fit2 <- limma::contrasts.fit(self$model$fit, contrast_matrix)
       # proteins without residual variance stay out of the eBayes prior; their tests are set to NA below
       zero <- .zero_residual_variance(fit2$sigma, self$model$fit$Amean)
+      # without any variance there is no eBayes prior; the raw branch runs and the tests are set to NA below
+      moderate <- self$eBayes && !all(zero | is.na(fit2$sigma))
 
-      if (self$eBayes) {
+      if (moderate) {
         fit2$sigma[zero] <- NA
         fit2 <- limma::eBayes(fit2, trend = self$model$trend, robust = self$model$robust)
       }
@@ -925,7 +927,7 @@ ContrastsLimma <- R6::R6Class(
         df_i <- self$model$rowdata
         df_i$contrast <- diff_names[i]
 
-        if (self$eBayes) {
+        if (moderate) {
           tt <- limma::topTable(fit2, coef = i, number = Inf, sort.by = "none", confint = TRUE)
           df_i$diff <- tt$logFC
           df_i$std.error.unmoderated <- fit2$sigma * fit2$stdev.unscaled[, i]

@@ -38,7 +38,12 @@ moderated_p_limma <- function(
   # estimates the prior robustly on fractional / low residual df (as produced by
   # rlm, lmer_nested and the imputation facades) without the min_df workaround
   # that prolfqua's former squeezeVarRob() fork carried over from MSqRob.
-  squeezed_var <- limma::squeezeVar(contrast_df$sigma^2, df = contrast_df[[df]], robust = robust)
+  if (all(is.na(contrast_df$sigma))) {
+    # no subject has a variance (all failed or with zero residual variance): no prior, nothing to moderate
+    squeezed_var <- list(var.post = rep(NA_real_, nrow(contrast_df)), var.prior = NA_real_, df.prior = NA_real_)
+  } else {
+    squeezed_var <- limma::squeezeVar(contrast_df$sigma^2, df = contrast_df[[df]], robust = robust)
+  }
   if (all(is.infinite(squeezed_var$df.prior))) {
     # count only rows with a variance; NA variances (zero residual variance, failed fits) are not in the prior
     squeezed_var$df.prior <- mean(contrast_df[[df]], na.rm = TRUE) * sum(!is.na(contrast_df$sigma)) / 10

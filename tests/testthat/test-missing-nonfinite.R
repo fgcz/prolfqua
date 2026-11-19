@@ -160,6 +160,20 @@ test_that("proteins with zero residual variance do not change the variance prior
   }
 })
 
+test_that("every subject with zero residual variance gives NA tests, no error", {
+  withr::local_options(prolfqua.verbose = FALSE)
+  protein <- md_protein(with_missing = FALSE)
+  data <- protein$data_long()
+  data[[protein$response()]] <- ifelse(data$group_ == "A", 22, 20)
+  noiseless <- LFQData$new(data, protein$get_config())
+  for (method in c("lm", "limma", "deqms")) {
+    res <- md_contrasts_counting_zero_variance(noiseless, method)
+    expect_equal(res$n_zero, 1L, label = method)
+    expect_true(all(is.na(res$contrasts$p.value)), label = method)
+    expect_equal(unname(res$contrasts$diff), rep(2, nrow(res$contrasts)), tolerance = 1e-8, label = method)
+  }
+})
+
 test_that("moderated_p_limma leaves NA variances out of the prior", {
   contrast_df <- data.frame(
     sigma = c(0.25, 0.32, 0.28, 0.40, 0.35, NA),
