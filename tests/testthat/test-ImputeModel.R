@@ -192,6 +192,18 @@ test_that("borrow_method vcov works", {
 })
 
 
+test_that("compute_borrowed_variance keeps fits missing a whole group as donors", {
+  bb <- sim_lfq_data_protein_config(Nprot = 10, with_missing = FALSE)
+  first <- unique(bb$data$protein_Id)[1]
+  bb$data$abundance[bb$data$protein_Id == first & bb$data$group_ == "A"] <- NA
+  mod <- build_model(bb$data, strategy_lm("abundance ~ group_"), subject_id = "protein_Id")
+  md <- mod$model_df
+  expect_false(md$isSingular[md$protein_Id == first])
+  borrowed <- compute_borrowed_variance(md, method = "sigma")
+  expect_equal(borrowed$sigma, stats::median(md$sigma))
+})
+
+
 test_that("df_method borrowed works", {
   istar <- sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0.5, seed = 42)
   lfqdata <- LFQData$new(istar$data, istar$config)

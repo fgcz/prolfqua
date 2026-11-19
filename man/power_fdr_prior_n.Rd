@@ -102,6 +102,8 @@ Other stats:
 \code{\link[=plot_stat_violin]{plot_stat_violin()}},
 \code{\link[=plot_stat_violin_median]{plot_stat_violin_median()}},
 \code{\link[=plot_stdv_vs_mean]{plot_stdv_vs_mean()}},
-\code{\link[=summarize_stats]{summarize_stats()}}
+\code{\link[=pooled_variance_explained]{pooled_variance_explained()}},
+\code{\link[=summarize_stats]{summarize_stats()}},
+\code{\link[=summarize_variance_explained]{summarize_variance_explained()}}
 }
 \concept{stats}

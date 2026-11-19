@@ -2,6 +2,8 @@
 
 ## New features
 
+- `summarize_variance_explained()` fits a least-squares model per feature of a log-transformed `LFQData` (default: the full factorial of its factors) and returns each term's share of the feature's variance (eta²) and the model R². `pooled_variance_explained()` pools the sums of squares over features; on complete features its R² equals the Euclidean PERMANOVA R². Use them to check that a normalization lowers within-group variance more than overall variance.
+
 - `LFQDataTransformer$subtract_sample_offsets()` applies caller-supplied log2 offsets by sample ID and stores the adjusted intensities in a new response column.
 
 - The Transforming and calibrating LFQ data vignette shows how to use the active response, internal reference proteins and offsets from external calibrants.
@@ -37,6 +39,8 @@
 - README: the getting-started example called the removed aggregator method `$medpolish()` and the undeclared package `ggpubr`; it now runs as shown and ends with `build_contrast_analysis()`. Installation is from Bioconductor first.
 
 ## Bug fixes
+
+- `get_complete_model_fit()`, and with it `Model$get_anova()`, `Model$get_coefficients()` and the coefficient and ANOVA plots, now leaves out fits with fewer coefficients than the full design, for example a protein with one group entirely missing. Before, every fit counted as complete, so these tables also listed such proteins, whose coefficients referred to another reference level. Limit-of-detection imputation is unchanged.
 
 - The introductory and Modelling methods vignettes no longer fail when `R CMD check --no-build-vignettes` runs their code: the factory figure is left out of the extracted R code. The Transforming and calibrating LFQ data vignette ends with session information.
 

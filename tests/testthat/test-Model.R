@@ -93,6 +93,17 @@ test_that("Model (lm strategy)", {
   expect_s3_class(ah$plot, "ggplot")
 })
 
+test_that("get_complete_model_fit drops fits with fewer coefficients than the full design", {
+  bb <- sim_lfq_data_protein_config(Nprot = 10, with_missing = FALSE)
+  first <- unique(bb$data$protein_Id)[1]
+  bb$data$abundance[bb$data$protein_Id == first & bb$data$group_ == "A"] <- NA
+  mod <- build_model(bb$data, strategy_lm("abundance ~ group_"), subject_id = bb$config$hierarchy_keys())
+  complete <- get_complete_model_fit(mod$model_df)
+  expect_setequal(complete$protein_Id, setdiff(unique(bb$data$protein_Id), first))
+  expect_false(first %in% mod$get_anova()$protein_Id)
+  expect_false(first %in% mod$get_coefficients()$protein_Id)
+})
+
 test_that("strategy_rlm sigma matches the scale embedded in vcov() (moderation coherence)", {
   set.seed(1)
   d <- data.frame(

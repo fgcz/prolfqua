@@ -576,8 +576,9 @@ compute_borrowed_variance <- function(
 ) {
   method <- match.arg(method)
   on_misalign <- match.arg(on_misalign)
-  good <- get_complete_model_fit(model_df)
-  good <- good |> dplyr::filter(!.data$isSingular)
+  # Donors: every successful, non-singular fit with df > 1, including fits missing a whole group;
+  # their sigma estimates the same residual variance. Not get_complete_model_fit(): that also drops reduced designs.
+  good <- model_df |> dplyr::filter(.data$has_model_fit, .data$df.residual > 1, !.data$isSingular)
 
   if (nrow(good) == 0) {
     abort_prolfqua("No successful model fits available to borrow variance from.")
@@ -844,8 +845,10 @@ impute_refit_singular <- function(
 #' stopifnot(nrow(cfits) == 6)
 get_complete_model_fit <- function(complete_models) {
   complete_models <- complete_models |> dplyr::filter(.data$has_model_fit)
+  # One maximum over all fits: model_df is grouped by subject, so max() inside filter() would be per fit.
+  max_coef <- max(complete_models$nr_coef_not_NA)
   complete_models <- complete_models |>
-    dplyr::filter(.data$nr_coef_not_NA == max(.data$nr_coef_not_NA)) |>
+    dplyr::filter(.data$nr_coef_not_NA == max_coef) |>
     dplyr::arrange(dplyr::desc(.data$nr_coef_not_NA))
   complete_models <- complete_models |> dplyr::filter(df.residual > 1)
   return(complete_models)
