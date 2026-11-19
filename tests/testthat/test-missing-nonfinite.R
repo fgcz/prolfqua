@@ -71,7 +71,7 @@ test_that("a zero intensity becomes NA after the log transform and keeps its pro
   sim$data[[sim$config$get_response()]][1] <- 0
   expect_message(
     peptide <- LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq,
-    "1 zeros.*set to NA"
+    "log transform: 1 values set to NA.*zero intensity"
   )
   expect_true(is.na(peptide$data_long()[[peptide$response()]][1]))
   withr::local_options(prolfqua.verbose = FALSE)

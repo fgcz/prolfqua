@@ -380,7 +380,12 @@ impute_from_model <- function(model, lfqdata) {
     dplyr::select(dplyr::all_of(colnames(data)))
 
   list(
-    lfqdata = LFQData$new(imputed_data, lfqdata$get_config(), prefix = lfqdata$prefix),
+    lfqdata = LFQData$new(
+      imputed_data,
+      lfqdata$get_config(),
+      prefix = lfqdata$prefix,
+      provenance = lfqdata$get_provenance_log()
+    ),
     summary = summary
   )
 }

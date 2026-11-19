@@ -143,7 +143,7 @@ LFQDataTransformer <- R6::R6Class(
       cfg <- self$lfq$get_config()$clone(deep = TRUE)
       scaled <- prolfqua::scale_with_subset(self$lfq, lfqsubset, preserve_mean = preserve_mean, colname = colname)
       cfg$set_response(scaled$colname)
-      self$lfq <- LFQData$new(scaled$data, cfg)
+      self$lfq <- LFQData$new(scaled$data, cfg, provenance = self$lfq$get_provenance_log())
       invisible(self)
     },
     #' @description
@@ -179,7 +179,7 @@ LFQDataTransformer <- R6::R6Class(
       data[[colname]] <- data[[response]] - matched_offsets
       cfg <- self$lfq$get_config()$clone(deep = TRUE)
       cfg$set_response(colname)
-      self$lfq <- LFQData$new(data, cfg, prefix = self$lfq$prefix)
+      self$lfq <- LFQData$new(data, cfg, prefix = self$lfq$prefix, provenance = self$lfq$get_provenance_log())
       invisible(self)
     },
 
@@ -223,7 +223,20 @@ LFQDataTransformer <- R6::R6Class(
       cfg <- self$lfq$get_config()$clone(deep = TRUE)
       cfg$set_response(res$colname)
       cfg$is_response_transformed <- transformed
-      self$lfq <- LFQData$new(res$data, cfg)
+      response <- self$lfq$response()
+      result <- LFQData$new(res$data, cfg, provenance = self$lfq$get_provenance_log())
+      zeros <- res$zeros %||% rep(FALSE, nrow(res$data))
+      log <- result$get_provenance_log()
+      log$record(
+        "log transform",
+        "values set to NA",
+        .key_ids(res$data[zeros, ], self$lfq$hierarchy_keys()),
+        "zero intensity (not detected)",
+        n = sum(zeros),
+        response = response
+      )
+      log$report()
+      self$lfq <- result
       invisible(self)
     }
   )
@@ -261,9 +274,11 @@ LFQDataTransformer <- R6::R6Class(
 #' @param response character, name of the response column to transform
 #' @param .func function to transform intensities e.g. log2
 #' @param .funcname name of function (used for creating new column name)
-#' @return list with `data` (data.frame) and `colname` (new column name)
-#' @details For `log`, `log2` and `log10`, zero intensities mean "not detected" and become `NA` (reported as a
-#'   message); negative intensities give `NaN` with a warning, which fitting and aggregation then reject.
+#' @return list with `data` (data.frame), `colname` (new column name) and `zeros` (logical, rows whose zero
+#'   intensity became `NA`)
+#' @details For `log`, `log2` and `log10`, zero intensities mean "not detected" and become `NA`; LFQData records
+#'   them in its provenance. Negative intensities give `NaN` with a warning, which fitting and aggregation then
+#'   reject.
 #' @export
 #' @keywords internal
 #' @examples
@@ -282,8 +297,8 @@ LFQDataTransformer <- R6::R6Class(
 transform_work_intensity <- function(pdata, response, .func, .funcname = NULL) {
   newcol <- paste(.funcname %||% deparse(match.call()$.func), response, sep = "_")
   vals <- pdata[[response]]
+  zeros <- rep(FALSE, nrow(pdata))
   if (identical(.func, log2) || identical(.func, log) || identical(.func, log10)) {
-    n_zero <- sum(vals == 0, na.rm = TRUE)
     n_neg <- sum(vals < 0, na.rm = TRUE)
     if (n_neg > 0) {
       warning(
@@ -294,11 +309,9 @@ transform_work_intensity <- function(pdata, response, .func, .funcname = NULL) {
         "' will produce NaN. Consider filtering or using asinh."
       )
     }
-    if (n_zero > 0) {
-      # 0 means not detected: a missing observation, not -Inf.
-      pdata[[response]][!is.na(vals) & vals == 0] <- NA
-      inform_prolfqua("log transform: ", n_zero, " zeros in '", response, "' set to NA (not detected).")
-    }
+    # 0 means not detected: a missing observation, not -Inf.
+    zeros <- !is.na(vals) & vals == 0
+    pdata[[response]][zeros] <- NA
   }
 
   pdata <- pdata |>
@@ -306,7 +319,7 @@ transform_work_intensity <- function(pdata, response, .func, .funcname = NULL) {
       !!sym(newcol) := .func(!!sym(response))
     )
   inform_prolfqua("Column added : ", newcol)
-  return(list(data = pdata, colname = newcol))
+  return(list(data = pdata, colname = newcol, zeros = zeros))
 }
 
 #' Takes matrix of responses and converts into tibble

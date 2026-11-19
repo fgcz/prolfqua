@@ -16,14 +16,16 @@ transform_work_intensity(pdata, response, .func, .funcname = NULL)
 \item{.funcname}{name of function (used for creating new column name)}
 }
 \value{
-list with `data` (data.frame) and `colname` (new column name)
+list with `data` (data.frame), `colname` (new column name) and `zeros` (logical, rows whose zero
+  intensity became `NA`)
 }
 \description{
 Transform intensity column by applying a function
 }
 \details{
-For `log`, `log2` and `log10`, zero intensities mean "not detected" and become `NA` (reported as a
-  message); negative intensities give `NaN` with a warning, which fitting and aggregation then reject.
+For `log`, `log2` and `log10`, zero intensities mean "not detected" and become `NA`; LFQData records
+  them in its provenance. Negative intensities give `NaN` with a warning, which fitting and aggregation then
+  reject.
 }
 \examples{
 

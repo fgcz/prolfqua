@@ -76,6 +76,8 @@ Other LFQData:
 \subsection{Public methods}{
   \itemize{
     \item \href{#method-LFQData-initialize}{\code{LFQData$new()}}
+    \item \href{#method-LFQData-provenance}{\code{LFQData$provenance()}}
+    \item \href{#method-LFQData-get_provenance_log}{\code{LFQData$get_provenance_log()}}
     \item \href{#method-LFQData-set_data}{\code{LFQData$set_data()}}
     \item \href{#method-LFQData-get_config}{\code{LFQData$get_config()}}
     \item \href{#method-LFQData-set_config_value}{\code{LFQData$set_config_value()}}
@@ -122,7 +124,7 @@ Other LFQData:
   initialize
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{LFQData$new(data, config, prefix = "ms_", setup = FALSE)}
+    \preformatted{LFQData$new(data, config, prefix = "ms_", setup = FALSE, provenance = NULL)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
@@ -132,8 +134,40 @@ Other LFQData:
       \item{\code{config}}{configuration}
       \item{\code{prefix}}{will be use as output prefix}
       \item{\code{setup}}{is data setup needed, default = FALSE, if TRUE, calls \code{\link{setup_analysis}} on data first.}
+      \item{\code{provenance}}{internal: record of an LFQData this one continues (the same data transformed or
+subset); a copy is kept. NULL starts a new record.}
     }
     \if{html}{\out{</div>}}
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LFQData-provenance"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-provenance}{}}}
+\subsection{\code{LFQData$provenance()}}{
+  problems and dropped items recorded for this data: values set to NA, rows, features or proteins removed
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$provenance()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    tibble with columns step, event, n, ids (list), reason, failure, response
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LFQData-get_provenance_log"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-get_provenance_log}{}}}
+\subsection{\code{LFQData$get_provenance_log()}}{
+  internal: the record this data continues, passed to \code{LFQData$new()} for derived data
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$get_provenance_log()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Provenance object
   }
 }
 

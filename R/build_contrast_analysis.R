@@ -147,19 +147,8 @@ build_contrast_analysis <- function(
   # full data upstream; here we drop decoys so the model sees targets only.
   cfg <- lfqdata$get_config()
   if (!is.null(cfg$pattern_decoys)) {
-    top <- lfqdata$hierarchy_keys()[1]
-    n_before <- length(unique(lfqdata$data_long()[[top]]))
+    # remove_decoys() records and reports the dropped decoys
     lfqdata <- lfqdata$remove_decoys()
-    n_dropped <- n_before - length(unique(lfqdata$data_long()[[top]]))
-    if (n_dropped > 0) {
-      inform_prolfqua(
-        "build_contrast_analysis: dropped ",
-        n_dropped,
-        " decoy ",
-        top,
-        " before modelling (targets-only fit)."
-      )
-    }
   }
   facade_class <- utils::getFromNamespace(entry$class, entry$package)
   facade_class$new(lfqdata, modelstr, contrasts, ...)

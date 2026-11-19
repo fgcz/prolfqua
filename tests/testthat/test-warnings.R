@@ -4,10 +4,11 @@
 #'   wording.
 #' @noRd
 
-test_that("log transforms set zeros to NA and say so", {
+test_that("log transforms set zeros to NA and return which", {
   for (fun in list(log, log2, log10)) {
-    expect_message(res <- transform_work_intensity(data.frame(x = c(0, 1)), "x", fun, "f"), "1 zeros.*set to NA")
+    res <- transform_work_intensity(data.frame(x = c(0, 1)), "x", fun, "f")
     expect_identical(res$data$f_x, c(NA, 0))
+    expect_identical(res$zeros, c(TRUE, FALSE))
   }
 })
 

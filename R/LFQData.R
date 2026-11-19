@@ -52,6 +52,16 @@ LFQData <- R6::R6Class(
   private = list(
     .data = NULL,
     .config = NULL,
+    .provenance = NULL,
+    # new LFQData without the dropped rows, continuing this record with the removed top-level ids
+    .remove_rows = function(pdata, keep, step, reason) {
+      top <- self$hierarchy_keys()[1]
+      result <- LFQData$new(pdata[keep, , drop = FALSE], self$get_config(), provenance = private$.provenance)
+      log <- result$get_provenance_log()
+      log$record(step, paste0(top, " removed"), pdata[[top]][!keep], reason, response = self$response())
+      log$report()
+      result
+    },
     # proportion of distinct modelling-level keys (subject_id) whose top-level
     # hierarchy id (protein_Id) is flagged by `detector` (is_decoy / is_contaminant).
     .prefix_proportion = function(detector, pattern) {
@@ -93,7 +103,9 @@ LFQData <- R6::R6Class(
     #' @param config configuration
     #' @param prefix will be use as output prefix
     #' @param setup is data setup needed, default = FALSE, if TRUE, calls \code{\link{setup_analysis}} on data first.
-    initialize = function(data, config, prefix = "ms_", setup = FALSE) {
+    #' @param provenance internal: record of an LFQData this one continues (the same data transformed or
+    #'   subset); a copy is kept. NULL starts a new record.
+    initialize = function(data, config, prefix = "ms_", setup = FALSE, provenance = NULL) {
       .assert_response_data(data, config)
       private$.data <- if (setup) {
         setup_analysis(data, config)
@@ -102,6 +114,19 @@ LFQData <- R6::R6Class(
       }
       private$.config <- config$clone(deep = TRUE)
       self$prefix <- prefix
+      private$.provenance <- if (is.null(provenance)) Provenance$new() else provenance$clone(deep = TRUE)
+    },
+    #' @description
+    #' problems and dropped items recorded for this data: values set to NA, rows, features or proteins removed
+    #' @return tibble with columns step, event, n, ids (list), reason, failure, response
+    provenance = function() {
+      private$.provenance$entries()
+    },
+    #' @description
+    #' internal: the record this data continues, passed to \code{LFQData$new()} for derived data
+    #' @return Provenance object
+    get_provenance_log = function() {
+      private$.provenance
     },
     #' @description
     #' set data (replaces the internal data frame)
@@ -156,7 +181,7 @@ LFQData <- R6::R6Class(
       } else {
         withr::with_seed(seed, sample_data())
       }
-      return(LFQData$new(subset, self$get_config()))
+      return(LFQData$new(subset, self$get_config(), provenance = private$.provenance))
     },
     #' @description
     #' get subset of data
@@ -164,7 +189,7 @@ LFQData <- R6::R6Class(
     get_subset = function(x) {
       x <- select(x, any_of(self$subject_id())) |> distinct()
       subset <- inner_join(x, self$data_long(), by = colnames(x))
-      return(LFQData$new(subset, self$get_config()))
+      return(LFQData$new(subset, self$get_config(), provenance = private$.provenance))
     },
     #' @description
     #' get subject ID columns
@@ -187,8 +212,25 @@ LFQData <- R6::R6Class(
     #' @param threshold default 4.
     #' @return self
     remove_small_intensities = function(threshold = 4) {
-      private$.data <- dplyr::filter(self$data_long(), !!sym(self$response()) >= threshold)
+      response <- self$response()
+      before <- self$data_long()
+      small <- !is.na(before[[response]]) & before[[response]] < threshold
+      private$.data <- dplyr::filter(before, !!sym(response) >= threshold)
+      features <- self$hierarchy_keys()
+      removed <- setdiff(.key_ids(before, features), .key_ids(private$.data, features))
       private$.data <- prolfqua::complete_cases(self)
+      step <- "remove_small_intensities"
+      reason <- paste0("intensity below ", threshold)
+      private$.provenance$record(
+        step,
+        "values set to NA",
+        .key_ids(before[small, ], features),
+        reason,
+        n = sum(small),
+        response = response
+      )
+      private$.provenance$record(step, "features removed", removed, reason, response = response)
+      private$.provenance$report()
       invisible(self)
     },
     #' @description
@@ -206,9 +248,9 @@ LFQData <- R6::R6Class(
       parent <- parent %||% keys[1]
       child <- child %||% keys[2]
       threshold <- threshold %||% cfg$min_peptides_protein
-      inform_prolfqua("removing ", parent, " with fewer than ", threshold, " ", child)
+      before <- self$data_long()
       filtered <- filter_proteins_by_peptide_count(
-        self$data_long(),
+        before,
         cfg,
         parent = parent,
         child = child,
@@ -216,6 +258,14 @@ LFQData <- R6::R6Class(
       )
       inform_prolfqua("Column added : ", filtered$name)
       private$.data <- filtered$data
+      private$.provenance$record(
+        "filter_proteins_by_peptide_count",
+        paste0(parent, " removed"),
+        setdiff(unique(before[[parent]]), unique(filtered$data[[parent]])),
+        paste0("fewer than ", threshold, " ", child),
+        response = self$response()
+      )
+      private$.provenance$report()
       invisible(self)
     },
     #' @description
@@ -229,7 +279,7 @@ LFQData <- R6::R6Class(
       top <- self$hierarchy_keys()[1]
       pdata <- self$data_long()
       keep <- !prolfqua::is_decoy(pdata[[top]], self$get_config()$pattern_decoys)
-      return(LFQData$new(pdata[keep, , drop = FALSE], self$get_config()))
+      private$.remove_rows(pdata, keep, "remove_decoys", "decoy")
     },
     #' @description
     #' remove contaminant entries (rows whose top-level hierarchy id, e.g.
@@ -242,7 +292,7 @@ LFQData <- R6::R6Class(
       top <- self$hierarchy_keys()[1]
       pdata <- self$data_long()
       keep <- !prolfqua::is_contaminant(pdata[[top]], self$get_config()$pattern_contaminants)
-      return(LFQData$new(pdata[keep, , drop = FALSE], self$get_config()))
+      private$.remove_rows(pdata, keep, "remove_contaminants", "contaminant")
     },
     #' @description
     #' proportion of modelling-level keys (subject_id, e.g. protein or peptide by
