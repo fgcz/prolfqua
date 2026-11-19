@@ -104,3 +104,24 @@ test_that("prolfqua.verbose = FALSE silences the provenance message, not the rec
   expect_silent(transformed <- lfq$get_Transformer()$log2()$lfq)
   expect_equal(nrow(transformed$provenance()), 1L)
 })
+
+test_that("rlm aggregation gives one warning naming the non-converged proteins and records them", {
+  sim <- sim_lfq_data_peptide_config(Nprot = 20, seed = 42)
+  withr::local_options(prolfqua.verbose = FALSE)
+  lfq <- LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq
+  n_warnings <- 0L
+  protein <- withCallingHandlers(
+    lfq$get_Aggregator("rlm")$aggregate(),
+    prolfqua_fit_failed = function(w) {
+      n_warnings <<- n_warnings + 1L
+      expect_match(conditionMessage(w), "'rlm' failed to converge")
+      invokeRestart("muffleWarning")
+    }
+  )
+  expect_equal(n_warnings, 1L)
+  entries <- protein$provenance()
+  expect_equal(entries$step, "aggregate (rlm)")
+  expect_true(entries$failure)
+  expect_true(all(entries$ids[[1]] %in% protein$data_long()$protein_Id))
+  expect_equal(nrow(lfq$provenance()), 0L)
+})

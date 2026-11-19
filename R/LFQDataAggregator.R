@@ -128,7 +128,7 @@ AggregateMedpolish <- R6::R6Class(
     #' @return LFQData
     aggregate = function() {
       res <- estimate_intensity(self$lfq, method = "medpolish")
-      private$.set_result(LFQData$new(res$data, res$config, prefix = self$prefix))
+      private$.set_result(.aggregated_with_failures(res, self$prefix, "medpolish"))
     }
   ),
   private = list(
@@ -175,7 +175,7 @@ AggregateRlm <- R6::R6Class(
     #' @return LFQData
     aggregate = function() {
       res <- estimate_intensity(self$lfq, method = "rlm")
-      private$.set_result(LFQData$new(res$data, res$config, prefix = self$prefix))
+      private$.set_result(.aggregated_with_failures(res, self$prefix, "rlm"))
     }
   ),
   private = list(
@@ -430,3 +430,26 @@ AggregateLimpa <- R6::R6Class(
     }
   )
 )
+
+
+#' Protein-level LFQData of an estimate_intensity() result, with its estimation warnings in a new record
+#' @param res result of \code{estimate_intensity()}
+#' @param prefix output prefix
+#' @param method aggregation method
+#' @noRd
+.aggregated_with_failures <- function(res, prefix, method) {
+  result <- LFQData$new(res$data, res$config, prefix = prefix)
+  log <- result$get_provenance_log()
+  for (reason in unique(res$failures$warning)) {
+    log$record(
+      paste0("aggregate (", method, ")"),
+      "subjects with estimation warning",
+      res$failures$id[res$failures$warning == reason],
+      reason,
+      failure = TRUE,
+      response = result$response()
+    )
+  }
+  log$report()
+  result
+}

@@ -259,7 +259,9 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
 #' @param lfqdata LFQData object
 #' @param method "medpolish" (Tukey's median polish, column `medpolish`) or "rlm" (robust regression with
 #'   `MASS::rlm`, column `lmrob`)
-#' @return returns list with data (data.frame) and config (AnalysisConfiguration)
+#' @return returns list with data (data.frame), config (AnalysisConfiguration) and failures (tibble with the
+#'   subject `id` and `warning` text of every warning raised while estimating one subject; the warnings are not
+#'   re-raised)
 #' @family aggregation
 #' @keywords internal
 #' @importFrom MASS rlm
@@ -304,9 +306,18 @@ estimate_intensity <- function(lfqdata, method = c("medpolish", "rlm")) {
     nest()
 
   pb <- .make_progress(nrow(xnested))
-  res <- purrr::map(xnested$data, function(d) {
+  # per-subject warnings (e.g. rlm or medpolish not converging) are collected with the subject id and returned
+  ids <- .key_ids(xnested, hkeysd)
+  failures <- list()
+  res <- purrr::map(seq_len(nrow(xnested)), function(i) {
     pb$tick()
-    .reestablish_condition(d, estimate(d), sname, fkeys, fname, iso)
+    withCallingHandlers(
+      .reestablish_condition(xnested$data[[i]], estimate(xnested$data[[i]]), sname, fkeys, fname, iso),
+      warning = function(w) {
+        failures[[length(failures) + 1L]] <<- tibble::tibble(id = ids[i], warning = conditionMessage(w))
+        invokeRestart("muffleWarning")
+      }
+    )
   })
 
   xnested[[make_name]] <- res
@@ -321,7 +332,9 @@ estimate_intensity <- function(lfqdata, method = c("medpolish", "rlm")) {
     tidyr::unnest(cols = dplyr::all_of(make_name)) |>
     dplyr::ungroup()
 
-  return(.add_nr_children(data, unnested, hkeysd, fname, response, nrc, newconfig))
+  result <- .add_nr_children(data, unnested, hkeysd, fname, response, nrc, newconfig)
+  result$failures <- dplyr::bind_rows(tibble::tibble(id = character(0), warning = character(0)), failures)
+  return(result)
 }
 
 

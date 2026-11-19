@@ -13,7 +13,9 @@ estimate_intensity(lfqdata, method = c("medpolish", "rlm"))
 `MASS::rlm`, column `lmrob`)}
 }
 \value{
-returns list with data (data.frame) and config (AnalysisConfiguration)
+returns list with data (data.frame), config (AnalysisConfiguration) and failures (tibble with the
+  subject `id` and `warning` text of every warning raised while estimating one subject; the warnings are not
+  re-raised)
 }
 \description{
 Aggregates e.g. protein abundances from peptide abundances
