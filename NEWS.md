@@ -2,6 +2,7 @@
 
 ## New features
 
+- `null_split_check()` checks the calibration of normalization and model together: it splits the samples within each group at random into two pseudo-groups, tests them against each other with any `build_contrast_analysis()` method, and returns per split the share of p < 0.05 and p < 0.01, the number of FDR < 0.05 hits and the Kolmogorov-Smirnov distance from uniform, with the sample assignment and the contrasts. No feature differs between pseudo-groups, so a calibrated pipeline gives about 5% of p < 0.05 and no FDR hits.
 - `summarize_variance_explained()` fits a least-squares model per feature of a log-transformed `LFQData` (default: the full factorial of its factors) and returns each term's share of the feature's variance (eta²) and the model R². `pooled_variance_explained()` pools the sums of squares over features; on complete features its R² equals the Euclidean PERMANOVA R². Use them to check that a normalization lowers within-group variance more than overall variance.
 
 - `LFQDataTransformer$subtract_sample_offsets()` applies caller-supplied log2 offsets by sample ID and stores the adjusted intensities in a new response column.
