@@ -27,15 +27,27 @@ Extracts columns relevant for a configuration from a data frame
 and create new columns e.g. sampleName column etc.
 }
 \details{
-Configured factor source columns are converted to character
-  categorical labels, including numeric and ordered factors. Ordered levels
-  and their ordering are not retained. Names of \code{configuration$factors}
-  become the output predictor column names. Configured hierarchy columns are
-  combined into identifiers. Unconfigured columns and their attributes are
-  discarded; the returned table retains only configured analysis columns.
-  A missing sample name is derived from the file name. Missing isotope labels,
-  identification q-values and child counts receive the documented setup
-  defaults; adding child counts of one emits a warning.
+`setup_analysis()` is optional: `LFQData$new(setup = FALSE)`, the
+  default, applies none of the steps below. Each step that changes the data
+  says so with a message (class `prolfqua_message`) or warning:
+  \itemize{
+  \item several configured hierarchy or factor source columns are united into
+    one key column (separator `configuration$sep`); avoid by configuring one
+    column per key;
+  \item factor source columns that are not character (numeric, factor,
+    ordered) are converted to character labels; ordered levels and their
+    ordering are not retained; avoid by supplying character columns;
+    names of \code{configuration$factors} become the predictor column names;
+  \item a missing sample name is derived from the file name; avoid by
+    supplying the sample name column;
+  \item missing isotope labels, identification q-values and child counts
+    receive default values (child counts of one with a warning); avoid by
+    supplying these columns;
+  \item unconfigured columns and their attributes are dropped; the returned
+    table keeps only configured analysis columns;
+  \item feature and sample combinations absent from the input are added as
+    rows with NA response, so every feature has a row in every sample.
+  }
 }
 \examples{
 

@@ -29,6 +29,7 @@
 
 ## Behaviour changes
 
+- `setup_analysis()` announces each transformation it applies with a `prolfqua_message`: source columns united into one key, non-character factor columns converted to character labels, unconfigured columns dropped, and rows with NA response added for absent feature and sample combinations. Its help lists every step and how to avoid it.
 - `build_contrast_analysis()` checks before fitting that the fixed-effect design is of full rank across samples (aliased factors, empty interaction cells) and stops with `prolfqua_error_collinear_design` naming the aliased coefficients; such designs used to fail later with unrelated errors.
 - Fitting and aggregation reject data with more than one row per sample and hierarchy key (`prolfqua_error_duplicate_keys`), also when the `LFQData` was created without `setup_analysis()`.
 - `LFQData$new()` drops extra classes and attributes (e.g. `I()`, units, labels) from the response column with a message; transformations and models use the plain numeric values.

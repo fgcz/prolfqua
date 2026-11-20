@@ -17,6 +17,7 @@
 #' @noRd
 .setup_hierarchy_columns <- function(data, configuration) {
   for (i in seq_along(configuration$hierarchy)) {
+    .inform_united(configuration$hierarchy_keys()[i], configuration$hierarchy[[i]], configuration$sep)
     data <- tidyr::unite(
       data,
       !!sym(configuration$hierarchy_keys()[i]),
@@ -55,6 +56,7 @@
 
   for (i in seq_along(configuration$factors)) {
     if (length(configuration$factors[[i]]) > 1) {
+      .inform_united(configuration$factor_keys()[i], configuration$factors[[i]], configuration$sep)
       data <- tidyr::unite(
         data,
         !!sym(configuration$factor_keys()[i]),
@@ -64,6 +66,18 @@
       )
     } else {
       newname <- configuration$factor_keys()[i]
+      source <- data[[configuration$factors[[i]]]]
+      if (!is.character(source)) {
+        inform_prolfqua(
+          "Factor `",
+          newname,
+          "`: ",
+          class(source)[1],
+          " column `",
+          configuration$factors[[i]],
+          "` converted to character labels."
+        )
+      }
       data <- dplyr::mutate(
         data,
         !!newname := as.character(!!sym(configuration$factors[[i]]))
@@ -71,6 +85,17 @@
     }
   }
   data
+}
+
+#' Announce that several source columns are united into one key column
+#' @param key resulting key column
+#' @param sources configured source columns
+#' @param sep separator
+#' @noRd
+.inform_united <- function(key, sources, sep) {
+  if (length(sources) > 1L) {
+    inform_prolfqua("`", key, "`: columns ", toString(paste0("`", sources, "`")), " united with separator '", sep, "'.")
+  }
 }
 
 #' Create sample names from file names when absent
@@ -199,15 +224,27 @@
 #'
 #' Extracts columns relevant for a configuration from a data frame
 #' and create new columns e.g. sampleName column etc.
-#' @details Configured factor source columns are converted to character
-#'   categorical labels, including numeric and ordered factors. Ordered levels
-#'   and their ordering are not retained. Names of \code{configuration$factors}
-#'   become the output predictor column names. Configured hierarchy columns are
-#'   combined into identifiers. Unconfigured columns and their attributes are
-#'   discarded; the returned table retains only configured analysis columns.
-#'   A missing sample name is derived from the file name. Missing isotope labels,
-#'   identification q-values and child counts receive the documented setup
-#'   defaults; adding child counts of one emits a warning.
+#' @details `setup_analysis()` is optional: `LFQData$new(setup = FALSE)`, the
+#'   default, applies none of the steps below. Each step that changes the data
+#'   says so with a message (class `prolfqua_message`) or warning:
+#'   \itemize{
+#'   \item several configured hierarchy or factor source columns are united into
+#'     one key column (separator `configuration$sep`); avoid by configuring one
+#'     column per key;
+#'   \item factor source columns that are not character (numeric, factor,
+#'     ordered) are converted to character labels; ordered levels and their
+#'     ordering are not retained; avoid by supplying character columns;
+#'     names of \code{configuration$factors} become the predictor column names;
+#'   \item a missing sample name is derived from the file name; avoid by
+#'     supplying the sample name column;
+#'   \item missing isotope labels, identification q-values and child counts
+#'     receive default values (child counts of one with a warning); avoid by
+#'     supplying these columns;
+#'   \item unconfigured columns and their attributes are dropped; the returned
+#'     table keeps only configured analysis columns;
+#'   \item feature and sample combinations absent from the input are added as
+#'     rows with NA response, so every feature has a row in every sample.
+#'   }
 #' @param data a data.frame with the configured source hierarchy, factor,
 #'   file-name and numeric response columns
 #' @param configuration AnalysisConfiguration
@@ -248,13 +285,15 @@
 #'   audited.
 #' @srrstatsTODO {G2.4d} Design matrices factor categorical labels as documented; limit: setup discards supplied level
 #'   order.
-#' @srrstatsTODO {G2.9} Setup reports inserted defaults; limit: coercion and removal of unconfigured columns have no
-#'   diagnostics.
+#' @srrstats {G2.9} Setup announces conversion of factor columns to character, united key columns, inserted default
+#'   columns and dropped unconfigured columns; `LFQData$new()` announces dropped response attributes.
 #' @srrstats {RE1.2} Setup help documents categorical predictors, numeric coercion and loss of ordered-factor
 #'   semantics.
 #' @srrstats {RE1.3a} Setup help states retained columns, discarded attributes, categorical conversion and inserted
 #'   defaults.
-#' @srrstatsTODO {RE2.0} Setup documents automatic conversions/defaults; those operations lack individual controls.
+#' @srrstats {RE2.0} Every setup transformation is documented in Details, announced by a message or warning when
+#'   it changes the data, and avoidable: setup is opt-in (`LFQData$new(setup = FALSE)` is the default), and each step
+#'   is skipped when the input already has the configured form (test-setup-messages.R).
 setup_analysis <- function(data, configuration, debug = FALSE) {
   .assert_response_data(data, configuration)
   .validate_setup_file_name(data, configuration)
@@ -270,6 +309,10 @@ setup_analysis <- function(data, configuration, debug = FALSE) {
   data <- data |>
     dplyr::select(-dplyr::all_of(dplyr::setdiff(unlist(configuration$factors), configuration$factor_keys())))
   data <- .add_setup_default_columns(data, configuration)
+  dropped <- setdiff(names(data), c(configuration$id_vars(), configuration$value_vars()))
+  if (length(dropped) > 0L) {
+    inform_prolfqua("setup_analysis: dropped ", length(dropped), " unconfigured columns: ", toString(dropped), ".")
+  }
   data <- data |> dplyr::select(c(configuration$id_vars(), configuration$value_vars()))
 
   duplicate_counts <- .setup_duplicate_counts(data, configuration)
@@ -281,6 +324,7 @@ setup_analysis <- function(data, configuration, debug = FALSE) {
   if (!is.null(duplicate_result)) {
     return(duplicate_result)
   }
+  n_input <- nrow(data)
   data <- .complete_cases_impl(
     data,
     configuration$file_name,
@@ -289,6 +333,13 @@ setup_analysis <- function(data, configuration, debug = FALSE) {
     configuration$isotope_label,
     configuration$hierarchy_keys()
   )
+  if (nrow(data) > n_input) {
+    inform_prolfqua(
+      "setup_analysis: added ",
+      nrow(data) - n_input,
+      " rows with NA response for feature and sample combinations absent from the input."
+    )
+  }
   return(data)
 }
 
