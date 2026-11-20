@@ -298,7 +298,7 @@ LFQDataPlotter <- R6::R6Class(
       if (length(samples) > max) {
         limit <- samples |> sample(max)
         lfq <- lfq$get_copy()
-        lfq$set_data(dplyr::filter(lfq$data_long(), !!sym(sample_col) %in% limit))
+        lfq$set_data(dplyr::filter(lfq$data_long(), !!sym(sample_col) %in% .env$limit))
       }
       prolfqua::pairs_smooth(lfq$data_wide(as.matrix = TRUE)$data)
       NULL

@@ -224,6 +224,9 @@ LFQData <- R6::R6Class(
     #' @param x data frame with columns containing subject_id
     get_subset = function(x) {
       x <- select(x, any_of(self$subject_id())) |> distinct()
+      if (ncol(x) == 0L) {
+        abort_missing_columns(self$subject_id(), data_nm = "x")
+      }
       subset <- inner_join(x, self$data_long(), by = colnames(x))
       return(LFQData$new(subset, self$get_config(), provenance = private$.provenance))
     },
@@ -251,7 +254,7 @@ LFQData <- R6::R6Class(
       response <- self$response()
       before <- self$data_long()
       small <- !is.na(before[[response]]) & before[[response]] < threshold
-      private$.data <- dplyr::filter(before, !!sym(response) >= threshold)
+      private$.data <- dplyr::filter(before, !!sym(response) >= .env$threshold)
       features <- self$hierarchy_keys()
       removed <- setdiff(.key_ids(before, features), .key_ids(private$.data, features))
       private$.data <- prolfqua::complete_cases(self)

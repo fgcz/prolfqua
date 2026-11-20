@@ -506,5 +506,5 @@ filter_proteins_by_peptide_count <- function(
   counts <- nr_B_in_A(pdata, parent, child)
   name <- setdiff(names(counts), parent)
   data <- dplyr::inner_join(pdata, counts, by = parent)
-  list(data = dplyr::filter(data, .data[[name]] >= threshold), name = name)
+  list(data = dplyr::filter(data, .data[[name]] >= .env$threshold), name = name)
 }

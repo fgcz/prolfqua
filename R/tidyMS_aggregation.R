@@ -429,7 +429,7 @@ aggregate_intensity_top_n <- function(ranked_data, lfqdata, .func, N = 3) {
   config <- lfqdata$get_config()$clone(deep = TRUE)
 
   top_intensities <-
-    ranked_data |> dplyr::filter(!!sym("srm_meanIntRank") <= N)
+    ranked_data |> dplyr::filter(!!sym("srm_meanIntRank") <= .env$N)
 
   top_intensities <- top_intensities |>
     dplyr::group_by(across(all_of(c(
