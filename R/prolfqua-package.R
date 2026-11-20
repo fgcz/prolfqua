@@ -1,3 +1,8 @@
+#' @section Audience:
+#' Proteomics core facilities and researchers analysing label-free protein or
+#' peptide intensities quantified with MaxQuant, DIA-NN, Spectronaut, FragPipe or
+#' similar software: quality control, normalization, aggregation, differential
+#' expression and sample size estimation.
 #' @section Options:
 #' \describe{
 #'   \item{`prolfqua.verbose`}{`TRUE` (default) or `FALSE`. With `FALSE`,
@@ -115,6 +120,7 @@
 #' }
 #' @importFrom R6 R6Class
 #' @keywords internal
+#' @srrstats {EA1.0} Target audience stated in the Audience section, DESCRIPTION and README.
 #' @srrstats {G1.0} Package citation and vignette bibliography include primary statistical references;
 #'   tidyMS_power_fdr.R cites Jung (2005) and Liu/Hwang (2007) for FDR sample-size planning.
 #' @srrstats {G1.2} Package Lifecycle declares stable status and the Bioconductor deprecation cycle.

@@ -102,3 +102,115 @@ test_that("return types follow the input: data frames in, data frames and double
   expect_type(protein$data_long()[[protein$response()]], "double")
   expect_type(fit$get_contrasts()$diff, "double")
 })
+
+eda_tables <- function() {
+  withr::local_options(prolfqua.verbose = FALSE)
+  peptide <- eda_fixture()
+  protein <- suppressWarnings(peptide$get_Aggregator()$aggregate())
+  fit <- build_contrast_analysis(
+    protein,
+    "~ group_",
+    c(AvsC = "group_A - group_Ctrl", BvsC = "group_B - group_Ctrl"),
+    "lm"
+  )
+  list(peptide = peptide, protein = protein, fit = fit)
+}
+
+column_classes <- function(table) vapply(table, function(column) class(column)[1], character(1))
+
+#' @srrstats {EA6.0, EA6.0b, EA6.0d} Main returned tables (contrasts, coefficients, per-group statistics, variance
+#'   explained, hierarchy counts, provenance, sample annotation) are tested for dimensions and the class of every
+#'   column; with the class, column-name and value tests (EA6.0a, EA6.0c, EA6.0e) this covers EA6.0.
+#' @noRd
+NULL
+
+test_that("main returned tables have the documented dimensions and column classes", {
+  fixture <- eda_tables()
+  n_protein <- nrow(fixture$protein$hierarchy())
+  n_peptide <- nrow(unique(fixture$peptide$data_long()[, fixture$peptide$hierarchy_keys()]))
+
+  contrasts <- fixture$fit$get_contrasts()
+  expect_identical(dim(contrasts), c(2L * n_protein, 16L))
+  expect_identical(
+    unname(column_classes(contrasts)),
+    c(rep("character", 4), "numeric", "numeric", "numeric", "integer", rep("numeric", 8))
+  )
+
+  coefs <- coef(fixture$fit)
+  expect_identical(dim(coefs), c(3L * n_protein, 5L))
+  expect_identical(unname(column_classes(coefs)), c("character", "character", "numeric", "numeric", "numeric"))
+
+  stats <- fixture$peptide$get_Stats()$stats()
+  expect_identical(dim(stats), c(4L * n_peptide, 12L)) # three groups and "All"
+  expect_identical(
+    unname(column_classes(stats)),
+    c(rep("character", 4), rep("integer", 3), rep("numeric", 4), "character")
+  )
+
+  variance <- summarize_variance_explained(fixture$protein)
+  expect_identical(dim(variance), c(2L * n_protein, 8L))
+  expect_identical(unname(column_classes(variance)), c(rep("character", 3), "integer", rep("numeric", 4)))
+
+  counts <- fixture$peptide$hierarchy_counts()
+  expect_identical(dim(counts), c(1L, 3L))
+  expect_identical(unname(column_classes(counts)), c("character", "integer", "integer"))
+  expect_identical(counts$protein_Id, n_protein)
+
+  provenance <- fixture$protein$provenance()
+  expect_identical(ncol(provenance), 7L)
+  expect_identical(
+    unname(column_classes(provenance)),
+    c("character", "character", "integer", "list", "character", "logical", "character")
+  )
+
+  factors <- fixture$peptide$factors()
+  expect_identical(dim(factors), c(12L, 3L))
+  expect_true(all(column_classes(factors) == "character"))
+})
+
+#' @srrstats {EA6.1} Default plots are tested for their layers, aesthetic mappings, axis titles and colour scales by
+#'   building them with ggplot2 (no image snapshots: vdiffr is not used, so tests stay stable across ggplot2
+#'   versions).
+#' @noRd
+NULL
+
+test_that("default plots have the expected layers, mappings, labels and colour scales", {
+  fixture <- eda_tables()
+  layer_geoms <- function(p) vapply(p$layers, function(l) class(l$geom)[1], character(1))
+  # missing intensities are dropped from the distribution plots with ggplot2's "Removed ... rows" warning
+  build <- function(p) {
+    withCallingHandlers(
+      ggplot2::ggplot_build(p),
+      warning = function(w) if (grepl("^Removed [0-9]+ rows", conditionMessage(w))) invokeRestart("muffleWarning")
+    )
+  }
+
+  violin <- plot(fixture$peptide)
+  build(violin)
+  expect_true("GeomViolin" %in% layer_geoms(violin))
+  expect_identical(rlang::as_label(violin$mapping$y), fixture$peptide$response())
+
+  plotter <- fixture$peptide$get_Plotter()
+  density <- plotter$intensity_distribution_density()
+  build(density)
+  expect_identical(rlang::as_label(density$mapping$x), fixture$peptide$response())
+
+  pca <- fixture$protein$get_Plotter()$pca()
+  build(pca)
+  expect_match(pca$labels$x %||% ggplot2::get_labs(pca)$x, "^PC1 \\([0-9]+% variance\\)$")
+  expect_true("GeomPoint" %in% layer_geoms(pca))
+
+  volcano <- plot(fixture$fit, type = "volcano")
+  built <- build(volcano)
+  expect_true("GeomPoint" %in% layer_geoms(volcano))
+  expect_identical(
+    built$plot$scales$get_scales("colour")$map("observed"),
+    "#000000"
+  )
+  expect_true(all(c("GeomHline", "GeomVline") %in% layer_geoms(volcano)))
+
+  fitted <- plot(fixture$fit)
+  build(fitted)
+  expect_s3_class(fitted, "ggplot")
+  expect_gt(length(fitted$layers), 1L)
+})

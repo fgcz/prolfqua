@@ -2,7 +2,6 @@
 #'
 #' Standards 0.3.0, Exploratory Data Analysis. Assessment per standard in srr/standards-compliance.md.
 #'
-#' @srrstatsTODO {EA1.0} target audience not stated explicitly; block H, TODO/prolfqua/PLAN_srr_block_H_eda.md.
 #' @srrstats {EA1.1} Long-format mass-spectrometry LFQ data (intensities per protein/peptide/precursor and sample)
 #'   described in DESCRIPTION and vignettes/prolfqua.Rmd.
 #' @srrstats {EA1.2} Questions (QC, variance and CV, sample size, differential expression) stated in the
@@ -21,16 +20,13 @@
 #'   merge_contrasts_results() and the ComparingMethods vignette compare methods.
 #' @srrstats {EA5.4} Axes use ggplot2 pretty breaks; PCA axis labels round the explained variance
 #'   (R/tidyMS_plotting.R).
-#' @srrstatsTODO {EA5.5} no units on axes; block H, TODO/prolfqua/PLAN_srr_block_H_eda.md.
-#' @srrstatsTODO {EA6.0} Closed with EA6.0b and EA6.0d; block H, TODO/prolfqua/PLAN_srr_block_H_eda.md.
 #' @srrstats {EA6.0a} Tests check classes and types of returned objects (expect_s3_class, expect_type, expect_r6_class
 #'   throughout tests/testthat).
-#' @srrstatsTODO {EA6.0b} many return values untested for dimensions; block H, TODO/prolfqua/PLAN_srr_block_H_eda.md.
 #' @srrstats {EA6.0c} Tests check column names of returned tables (e.g. test-ContrastsFacades.R, test-LFQDataStats.R).
-#' @srrstatsTODO {EA6.0d} tests of column classes/types; block H, TODO/prolfqua/PLAN_srr_block_H_eda.md.
 #' @srrstats {EA6.0e} Single values tested with expect_equal() and explicit tolerance (e.g. test-Contrasts.R).
-#' @srrstatsTODO {EA6.1} no vdiffr snapshots; most plots only class-checked; block H,
-#'   TODO/prolfqua/PLAN_srr_block_H_eda.md.
+#' @srrstats {EA5.5} Mass-spectrometry intensities carry no physical unit, so none can be obtained from the
+#'   input. Axis titles name the response column, which records the transformation (e.g. `log2_abundance`);
+#'   untransformed intensities are drawn on a log10 axis; effect axes name the effect and score columns.
 #' @noRd
 NULL
 

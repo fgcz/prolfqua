@@ -6,8 +6,16 @@
 \alias{prolfqua-package}
 \title{prolfqua: Proteomics Label Free Quantification}
 \description{
-Covers the steps of a mass spectrometry based label-free quantification (LFQ) analysis: quality control, normalization, aggregation of peptides to proteins, modelling, hypothesis testing and sample size estimation. A single function, build_contrast_analysis(), fits a model per protein and computes contrasts with one of many methods: linear, robust and rank-based regression, 'limma' and 'limma'-voom, 'DEqMS' variance moderation, the detection probability model of 'limpa', Firth logistic and binomial models of detection, mixed models and ROPECA on peptide-level data, a hurdle model combining intensity and detection, and variants that impute groups without observations at the limit of detection. All methods return their results through the same interface and columns, so they can be compared and combined. Models simple designs with one explanatory variable as well as experiments with several factors. Developed while analysing dozens of proteomics datasets at the Functional Genomics Center Zurich.
+Covers the steps of a mass spectrometry based label-free quantification (LFQ) analysis: quality control, normalization, aggregation of peptides to proteins, modelling, hypothesis testing and sample size estimation. A single function, build_contrast_analysis(), fits a model per protein and computes contrasts with one of many methods: linear, robust and rank-based regression, 'limma' and 'limma'-voom, 'DEqMS' variance moderation, the detection probability model of 'limpa', Firth logistic and binomial models of detection, mixed models and ROPECA on peptide-level data, a hurdle model combining intensity and detection, and variants that impute groups without observations at the limit of detection. All methods return their results through the same interface and columns, so they can be compared and combined. Models simple designs with one explanatory variable as well as experiments with several factors. Intended for proteomics core facilities and researchers analysing protein or peptide intensities quantified with MaxQuant, DIA-NN, Spectronaut, FragPipe or similar software. Developed while analysing dozens of proteomics datasets at the Functional Genomics Center Zurich.
 }
+\section{Audience}{
+
+Proteomics core facilities and researchers analysing label-free protein or
+peptide intensities quantified with MaxQuant, DIA-NN, Spectronaut, FragPipe or
+similar software: quality control, normalization, aggregation, differential
+expression and sample size estimation.
+}
+
 \section{Options}{
 
 \describe{

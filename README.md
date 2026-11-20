@@ -10,6 +10,7 @@
 # prolfqua - a comprehensive R package for Proteomics Differential Expression Analysis
 
 The R package contains functions for analyzing mass spectrometry based experiments.
+It is intended for proteomics core facilities and researchers who analyse label-free protein or peptide intensities quantified with MaxQuant, DIA-NN, Spectronaut, FragPipe or similar software.
 This package is developed at the [FGCZ](https://fgcz.ch/).
 The package documentation including vignettes can be accessed at https://fgcz.github.io/prolfqua/index.html
 
