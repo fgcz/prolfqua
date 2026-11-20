@@ -88,7 +88,8 @@ analyses default to the volcano plot; request a component for fitted plots.
 It uses backend covariance (borrowed for LOD refits) or, for matrix models,
 the moderated variance times the inverse of the per-subject weighted design
 crossproduct. Failed matrix fits are omitted.
-Summary fit counts are not per-subject convergence diagnostics.
+The fit status counts subjects that did not converge (\code{not_converged}); per subject, \code{converged} and
+\code{iterations} are columns of the model table (\code{analysis$model$model_df}).
 }
 \description{
 Standard R methods for results returned by \code{\link[=build_contrast_analysis]{build_contrast_analysis()}}.

@@ -59,6 +59,59 @@
 #' @export
 .fit_nobs.imputed_model <- function(fit) attr(fit, "n_observed")
 
+#' Convergence of one successful fit
+#'
+#' @param fit a successful fitted backend object
+#' @return list with `converged` (logical; TRUE for non-iterative fits, NA when the backend keeps no status) and
+#'   `iterations` (integer; NA for non-iterative fits)
+#' @noRd
+.fit_convergence <- function(fit) UseMethod(".fit_convergence")
+
+#' @rdname dot-fit_convergence
+#' @noRd
+#' @export
+.fit_convergence.default <- function(fit) {
+  if (isS4(fit) && methods::is(fit, "merMod")) {
+    conv <- fit@optinfo$conv
+    return(list(
+      # lme4 sets `code` for convergence problems; a singular fit only adds a message (recorded as singular)
+      converged = identical(as.integer(conv$opt), 0L) && all(conv$lme4$code %||% 0L == 0L),
+      iterations = as.integer(fit@optinfo$feval)
+    ))
+  }
+  list(converged = TRUE, iterations = NA_integer_)
+}
+
+#' @rdname dot-fit_convergence
+#' @noRd
+#' @export
+.fit_convergence.rlm <- function(fit) list(converged = isTRUE(fit$converged), iterations = length(fit$conv))
+
+#' @rdname dot-fit_convergence
+#' @noRd
+#' @export
+.fit_convergence.glm <- function(fit) {
+  list(converged = isTRUE(fit$converged), iterations = as.integer(fit$firth_iterations %||% fit$iter))
+}
+
+#' @rdname dot-fit_convergence
+#' @noRd
+#' @export
+.fit_convergence.logistf <- function(fit) {
+  iterations <- as.integer(fit$iter[[1]])
+  list(converged = iterations < fit$control$maxit, iterations = iterations)
+}
+
+#' @rdname dot-fit_convergence
+#' @noRd
+#' @export
+.fit_convergence.rfit_prolfqua <- function(fit) list(converged = NA, iterations = NA_integer_)
+
+#' @rdname dot-fit_convergence
+#' @noRd
+#' @export
+.fit_convergence.imputed_model <- function(fit) NextMethod()
+
 #' Fitted responses and response residuals indexed into a subject's data
 #' @param fit a successful fitted backend object
 #' @param data data frame used for this subject's fit
@@ -352,7 +405,8 @@
     fitted = sum(fits$has_model_fit),
     failed = sum(!fits$has_model_fit),
     singular = sum(fits$isSingular, na.rm = TRUE),
-    imputed = sum(fits[["imputed"]], na.rm = TRUE)
+    imputed = sum(fits[["imputed"]], na.rm = TRUE),
+    not_converged = sum(!fits[["converged"]], na.rm = TRUE)
   )
 }
 
@@ -387,7 +441,8 @@
     fitted = sum(has_fit),
     failed = sum(!has_fit),
     singular = NA_integer_,
-    imputed = sum(.matrix_imputed_subjects(model))
+    imputed = sum(.matrix_imputed_subjects(model)),
+    not_converged = 0L
   )
 }
 

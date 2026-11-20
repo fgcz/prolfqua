@@ -746,6 +746,9 @@ impute_refit_singular <- function(
     model_df$nr_coef[idx] <- vapply(results, `[[`, numeric(1), "nr_coef")
     model_df$nr_coef_not_NA[idx] <- vapply(results, `[[`, numeric(1), "nr_coef_not_NA")
     model_df$fit_warnings[idx] <- lapply(results, `[[`, "fit_warnings")
+    convergence <- lapply(results, function(r) .fit_convergence(r$linear_model))
+    model_df$converged[idx] <- vapply(convergence, `[[`, logical(1), "converged")
+    model_df$iterations[idx] <- vapply(convergence, `[[`, integer(1), "iterations")
   }
 
   return(model_df)
@@ -901,8 +904,8 @@ get_complete_model_fit <- function(complete_models) {
 #' @srrstats {RE3.1} model_analyse keeps each subject's fit error and fit warnings (e.g. non-convergence) in
 #'   model_df and the model's provenance; the one summary warning per step can be suppressed while $provenance()
 #'   keeps the record.
-#' @srrstatsTODO {RE4.7} Fit tables retain status and singularity; limit: optimizer/iteration metadata is not exposed
-#'   uniformly.
+#' @srrstats {RE4.7} model_df keeps per subject `converged` and `iterations` (rlm, glm and Firth, lmer optimizer,
+#'   logistf; NA where the backend keeps no status, e.g. rfit), counted as `not_converged` in the fit status.
 model_analyse <- function(
   pepIntensity,
   model_strategy,
@@ -947,6 +950,8 @@ model_analyse <- function(
   model_proteins$sigma <- per_fit(purrr::map2_dbl, model_strategy$sigma, NA_real_)
   model_proteins$nr_coef <- per_fit(purrr::map2_int, count_coef, NA_integer_)
   model_proteins$nr_coef_not_NA <- per_fit(purrr::map2_int, function(m) count_coef(m, not_na = TRUE), NA_integer_)
+  model_proteins$converged <- per_fit(purrr::map2_lgl, function(m) .fit_convergence(m)$converged, NA)
+  model_proteins$iterations <- per_fit(purrr::map2_int, function(m) .fit_convergence(m)$iterations, NA_integer_)
 
   return(list(model_df = model_proteins, model_name = model_name))
 }
@@ -994,6 +999,11 @@ model_analyse <- function(
     for (reason in unique(warned$warning)) {
       log$record(step, "fits with a warning", warned$id[warned$warning == reason], reason, failure = TRUE)
     }
+  }
+  if ("converged" %in% colnames(model_df)) {
+    warned_ids <- if ("fit_warnings" %in% colnames(model_df)) ids[lengths(model_df$fit_warnings) > 0L] else character(0)
+    silent <- fitted & !is.na(model_df$converged) & !model_df$converged & !ids %in% warned_ids
+    log$record(step, "fits not converged", ids[silent], "iteration limit reached without convergence", failure = TRUE)
   }
   singular <- fitted & !is.na(model_df$isSingular) & model_df$isSingular
   log$record(step, "singular fits", ids[singular], "coefficients not estimable or fewer than 2 residual df")

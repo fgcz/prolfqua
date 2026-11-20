@@ -40,7 +40,8 @@
 #'   It uses backend covariance (borrowed for LOD refits) or, for matrix models,
 #'   the moderated variance times the inverse of the per-subject weighted design
 #'   crossproduct. Failed matrix fits are omitted.
-#'   Summary fit counts are not per-subject convergence diagnostics.
+#'   The fit status counts subjects that did not converge (`not_converged`); per subject, `converged` and
+#'   `iterations` are columns of the model table (`analysis$model$model_df`).
 #' @name prolfqua_analysis_methods
 #' @family modelling
 #' @md

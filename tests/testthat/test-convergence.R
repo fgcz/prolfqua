@@ -84,3 +84,64 @@ test_that("default controls leave aggregation and rlm results unchanged", {
   explicit <- suppressWarnings(peptide$get_Aggregator("rlm", control = list(maxit = 20, acc = 1e-4))$aggregate())
   expect_equal(default$data_long(), explicit$data_long())
 })
+
+#' @srrstats {RE4.7} Tests read per-subject convergence status and iteration counts from the model table and the
+#'   not_converged count from the fit status.
+#' @noRd
+NULL
+
+test_that("model tables record convergence and iterations per subject", {
+  withr::local_options(prolfqua.verbose = FALSE)
+  fixture <- conv_protein()
+  contrasts <- c(AvsC = "group_A - group_Ctrl")
+  lm <- build_contrast_analysis(fixture$protein, "~ group_", contrasts, "lm")
+  expect_true(all(lm$model$model_df$converged))
+  expect_true(all(is.na(lm$model$model_df$iterations)))
+  rlm <- suppressWarnings(build_contrast_analysis(
+    fixture$protein,
+    "~ group_",
+    contrasts,
+    "rlm",
+    control = list(maxit = 1)
+  ))
+  model_df <- rlm$model$model_df
+  expect_type(model_df$converged, "logical")
+  expect_type(model_df$iterations, "integer")
+  expect_true(all(model_df$iterations[model_df$has_model_fit] <= 1L))
+  status <- summary(rlm)$fit_status
+  expect_equal(status$not_converged, sum(!model_df$converged, na.rm = TRUE))
+  expect_gt(status$not_converged, 0L)
+  default <- suppressWarnings(build_contrast_analysis(fixture$protein, "~ group_", contrasts, "rlm"))
+  expect_true(all(default$model$model_df$iterations >= 1L, na.rm = TRUE))
+})
+
+test_that("binomial and Firth detection models record glm and Firth iterations", {
+  withr::local_options(prolfqua.verbose = FALSE)
+  sim <- sim_lfq_data_peptide_config(Nprot = 10, weight_missing = 0.4, seed = 42)
+  peptide <- LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq
+  contrasts <- c(AvsC = "group_A - group_Ctrl")
+  for (method in c("binomial_nested", "binomial_firth_nested")) {
+    facade <- suppressWarnings(build_contrast_analysis(peptide, "~ group_", contrasts, method))
+    model_df <- facade$model$model_df
+    fitted <- model_df$has_model_fit
+    expect_true(all(model_df$converged[fitted]), label = method)
+    expect_true(all(model_df$iterations[fitted] >= 1L), label = method)
+  }
+})
+
+test_that("lmer fits record the optimizer status", {
+  skip_if_not_installed("lme4")
+  skip_if_not_installed("lmerTest")
+  withr::local_options(prolfqua.verbose = FALSE)
+  peptide <- conv_protein()$peptide
+  facade <- suppressMessages(suppressWarnings(build_contrast_analysis(
+    peptide,
+    "~ group_ + (1 | peptide_Id)",
+    c(AvsC = "group_A - group_Ctrl"),
+    "lmer_nested"
+  )))
+  model_df <- facade$model$model_df
+  fitted <- model_df$has_model_fit
+  expect_type(model_df$converged, "logical")
+  expect_true(all(model_df$iterations[fitted] > 0L))
+})
