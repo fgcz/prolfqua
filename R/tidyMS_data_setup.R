@@ -172,7 +172,7 @@
         configuration$isotope_label
       ))
     ) |>
-    summarize(n = n())
+    summarize(n = n(), .groups = "drop")
 }
 
 #' Describe duplicate measurements and their offending keys

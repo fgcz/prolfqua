@@ -59,6 +59,7 @@
 
 ## Bug fixes
 
+- `adjust_p_values()`, `summarize_hierarchy()`, `missingness_per_condition()`, `missingness_per_condition_cumsum()`, `HierarchyCountsSample` and the `summary` tables of `ContrastsPlotter$barplot_threshold()` return ungrouped tibbles. Before, they kept the grouping used inside, so a later `mutate()` or `summarise()` on the result ran per group without asking for it.
 - `medpolish` and `rlm` aggregation no longer report "Response `medpolish`: dropped attributes names" (or `lmrob`): the estimates are returned as plain numeric values.
 - `rlm` aggregation (`get_Aggregator("rlm")`) removed estimable design columns when a sample or peptide column was a factor with an unused level, and then silently used per-sample means for that protein. It now drops unused levels and removes only aliased columns. Data set up with `setup_analysis()` (character columns) is not affected.
 - `LFQDataPlotter$write_pdf()` and `$write_boxplots()` no longer append `.pdf` to a file name that already ends in `.pdf`.

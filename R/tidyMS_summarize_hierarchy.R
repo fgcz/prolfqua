@@ -119,7 +119,7 @@ HierarchyCountsSample <- R6::R6Class(
           !!rlang::sym(configuration$nr_children) >= .env$nr_children
         ) |>
         dplyr::group_by(across(all_of(c(configuration$isotope_label, configuration$sample_name)))) |>
-        dplyr::summarise(across(all_of(hierarchy), dplyr::n_distinct))
+        dplyr::summarise(across(all_of(hierarchy), dplyr::n_distinct), .groups = "drop")
     },
     #' @description Return wide-format summary
     wide = function() {
@@ -190,6 +190,9 @@ summarize_hierarchy <- function(
   precursor <- pdata |> dplyr::select(dplyr::all_of(c(factors, all_hierarchy))) |> dplyr::distinct()
   x3 <- precursor |>
     dplyr::group_by(across(all_of(c(factors, hierarchy)))) |>
-    dplyr::summarize(across(all_of(base::setdiff(all_hierarchy, hierarchy)), list(n = dplyr::n_distinct)))
+    dplyr::summarize(
+      across(all_of(base::setdiff(all_hierarchy, hierarchy)), list(n = dplyr::n_distinct)),
+      .groups = "drop"
+    )
   return(x3)
 }

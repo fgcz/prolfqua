@@ -136,7 +136,6 @@ ContrastsHurdleFacade <- R6::R6Class(
         !is.na(p_detection) ~ "detection"
       )
       res <- adjust_p_values(res) |>
-        dplyr::ungroup() |>
         dplyr::select(-".detection_informative") |>
         dplyr::mutate(modelName = self$model_name, .before = 1) |>
         dplyr::relocate("estimate_type", .after = "modelName") |>

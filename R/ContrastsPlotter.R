@@ -274,7 +274,7 @@ ContrastsPlotter <- R6::R6Class(
           filt <- dplyr::filter(filt, abs(!!sym(self$diff)) > self$fcthresh)
         }
         summary_counts <- group_by(filt, !!sym(self$contrast), !!sym(self$model_name)) |>
-          dplyr::summarize(n = n())
+          dplyr::summarize(n = n(), .groups = "drop")
         p <- ggplot(summary_counts, aes(x = !!sym(self$contrast), y = n, fill = !!sym(self$model_name))) +
           theme_prolfqua() +
           geom_bar(position = "stack", stat = "identity")

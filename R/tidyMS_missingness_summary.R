@@ -183,12 +183,13 @@ missingness_per_condition_cumsum <- function(lfqdata, factors = lfqdata$relevant
 
   xx <- missing_percent |>
     group_by(across(all_of(c(lfqdata$isotope_label(), factors, "nrNAs", "nrReplicates")))) |>
-    dplyr::summarize(nrTransitions = n())
+    dplyr::summarize(nrTransitions = n(), .groups = "drop")
 
   xxcs <- xx |>
     group_by(across(all_of(c(lfqdata$isotope_label(), factors)))) |>
     arrange(.data$nrNAs) |>
-    dplyr::mutate(cumulative_sum = cumsum(.data$nrTransitions))
+    dplyr::mutate(cumulative_sum = cumsum(.data$nrTransitions)) |>
+    dplyr::ungroup()
   res <- xxcs |> dplyr::select(-dplyr::all_of("nrTransitions"))
 
   formula <- .isotope_by_factors_formula(lfqdata, factors)
@@ -225,7 +226,7 @@ missingness_per_condition <- function(lfqdata, factors = lfqdata$relevant_factor
   hierarchy_key <- paste0("nr_", hierarchy_key)
   xx <- missing_percent |>
     group_by(across(all_of(c(lfqdata$isotope_label(), factors, "nrNAs", "nrReplicates")))) |>
-    dplyr::summarize(!!sym(hierarchy_key) := n())
+    dplyr::summarize(!!sym(hierarchy_key) := n(), .groups = "drop")
 
   formula <- .isotope_by_factors_formula(lfqdata, factors)
 
