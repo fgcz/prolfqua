@@ -4,7 +4,12 @@
 \alias{strategy_binomial}
 \title{Create a quasibinomial detection-count strategy}
 \usage{
-strategy_binomial(modelstr, prior_count = 0.1, model_name = "binomial_nested")
+strategy_binomial(
+  modelstr,
+  prior_count = 0.1,
+  model_name = "binomial_nested",
+  control = list()
+)
 }
 \arguments{
 \item{modelstr}{right-hand-side model formula}
@@ -12,6 +17,10 @@ strategy_binomial(modelstr, prior_count = 0.1, model_name = "binomial_nested")
 \item{prior_count}{non-negative symmetric pseudo-count}
 
 \item{model_name}{model identity}
+
+\item{control}{\code{epsilon} (default 1e-8) and \code{maxit} (default 25) of \code{\link[stats]{glm.control}}:
+the relative deviance change that stops IRLS and its iteration limit; relative, so independent of the
+number of detections, and glm's own defaults.}
 }
 \value{
 A \code{\link{StrategyBinomial}} object.

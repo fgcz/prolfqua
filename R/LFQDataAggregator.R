@@ -123,11 +123,23 @@ AggregateMedpolish <- R6::R6Class(
   "AggregateMedpolish",
   inherit = AggregatorBase,
   public = list(
+    #' @field control convergence controls, see \code{\link{estimate_intensity}}
+    control = NULL,
+    #' @description
+    #' initialize
+    #' @param lfq LFQData
+    #' @param prefix default protein
+    #' @param control named list of convergence controls merged over the defaults, see
+    #'   \code{\link{estimate_intensity}}
+    initialize = function(lfq, prefix = "protein", control = list()) {
+      self$control <- .aggregation_control("medpolish", control)
+      super$initialize(lfq, prefix)
+    },
     #' @description
     #' run median polish aggregation
     #' @return LFQData
     aggregate = function() {
-      res <- estimate_intensity(self$lfq, method = "medpolish")
+      res <- estimate_intensity(self$lfq, method = "medpolish", control = self$control)
       private$.set_result(.aggregated_with_failures(res, self$prefix, "medpolish"))
     }
   ),
@@ -170,11 +182,23 @@ AggregateRlm <- R6::R6Class(
   "AggregateRlm",
   inherit = AggregatorBase,
   public = list(
+    #' @field control convergence controls, see \code{\link{estimate_intensity}}
+    control = NULL,
+    #' @description
+    #' initialize
+    #' @param lfq LFQData
+    #' @param prefix default protein
+    #' @param control named list of convergence controls merged over the defaults, see
+    #'   \code{\link{estimate_intensity}}
+    initialize = function(lfq, prefix = "protein", control = list()) {
+      self$control <- .aggregation_control("rlm", control)
+      super$initialize(lfq, prefix)
+    },
     #' @description
     #' run robust regression aggregation
     #' @return LFQData
     aggregate = function() {
-      res <- estimate_intensity(self$lfq, method = "rlm")
+      res <- estimate_intensity(self$lfq, method = "rlm", control = self$control)
       private$.set_result(.aggregated_with_failures(res, self$prefix, "rlm"))
     }
   ),

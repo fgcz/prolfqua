@@ -4,13 +4,17 @@
 \alias{estimate_intensity}
 \title{Aggregates e.g. protein abundances from peptide abundances}
 \usage{
-estimate_intensity(lfqdata, method = c("medpolish", "rlm"))
+estimate_intensity(lfqdata, method = c("medpolish", "rlm"), control = list())
 }
 \arguments{
 \item{lfqdata}{LFQData object}
 
 \item{method}{"medpolish" (Tukey's median polish, column `medpolish`) or "rlm" (robust regression with
 `MASS::rlm`, column `lmrob`)}
+
+\item{control}{convergence controls merged over the defaults. medpolish: `maxiter` (default 10) and `eps`
+(default 0.01, the change of the sum of absolute residuals that stops the polish, on the log2 scale of the
+input); rlm: `maxit` (default 20) and `acc` (default 1e-4, relative change of the IRLS residuals).}
 }
 \value{
 returns list with data (data.frame), config (AnalysisConfiguration) and failures (tibble with the

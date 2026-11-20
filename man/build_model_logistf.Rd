@@ -4,7 +4,14 @@
 \alias{build_model_logistf}
 \title{build_model_logistf}
 \usage{
-build_model_logistf(data, formula)
+build_model_logistf(data, formula, control = list())
+}
+\arguments{
+\item{data}{aggregated LFQData with a binary detection response}
+
+\item{formula}{model formula with the binary response}
+
+\item{control}{convergence controls, see \code{\link{strategy_logistf}}}
 }
 \description{
 Fits Firth's logistic regression per subject to the binary detection

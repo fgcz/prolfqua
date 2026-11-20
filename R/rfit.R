@@ -89,18 +89,20 @@ StrategyRfit <- R6::R6Class(
     #'   \code{df.residual()} and \code{sigma()} of the augmented fit.
     #' @param modelstr model formula string
     #' @param model_name name of model
-    initialize = function(modelstr, model_name = "rfit") {
-      super$initialize(modelstr, model_name)
+    #' @param control named list of convergence controls, see \code{\link{strategy_rfit}}
+    initialize = function(modelstr, model_name = "rfit", control = list()) {
+      super$initialize(modelstr, model_name, control = control)
     }
   ),
   private = list(
+    control_defaults = function() list(maxit = 200, reltol = .Machine$double.eps^(3 / 4)),
     prepare = function(x) {
       rlang::check_installed("Rfit", reason = "for the rfit backend.")
       x
     },
     # Fit rfit, augmenting the fit so the classic contrast path can introspect it.
     fit = function(x) {
-      fit <- Rfit::rfit(self$formula, data = x)
+      fit <- Rfit::rfit(self$formula, data = x, control = self$control)
       # When the rank fit is no better than the intercept-only model,
       # `Rfit::rfit()` falls back to `bhat0 <- c(median(y), rep(0, p))`,
       # an UNNAMED coefficient vector at full QR rank. The names matter:
@@ -140,8 +142,11 @@ StrategyRfit <- R6::R6Class(
 #' @examples
 #' tmp <- strategy_rfit("Intensity ~ condition", model_name = "parallel design")
 #' tmp$formula
-strategy_rfit <- function(modelstr, model_name = "rfit") {
-  StrategyRfit$new(modelstr, model_name)
+#' @param control for \code{strategy_rfit()}: \code{maxit} (default 200) and \code{reltol} (default
+#'   \code{.Machine$double.eps^(3/4)}) of the \code{optim} minimisation of Jaeckel's dispersion, Rfit's own defaults;
+#'   relative, so independent of the intensity scale.
+strategy_rfit <- function(modelstr, model_name = "rfit", control = list()) {
+  StrategyRfit$new(modelstr, model_name, control = control)
 }
 
 #' Number of observations in an augmented rfit fit

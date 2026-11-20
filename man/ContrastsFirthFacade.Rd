@@ -150,7 +150,7 @@ Other modelling:
   initialize
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{ContrastsFirthFacade$new(lfqdata, modelstr, contrasts, ...)}
+    \preformatted{ContrastsFirthFacade$new(lfqdata, modelstr, contrasts, control = list(), ...)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
@@ -159,6 +159,7 @@ Other modelling:
       \item{\code{lfqdata}}{LFQData object}
       \item{\code{modelstr}}{model formula string (e.g. "~ group_")}
       \item{\code{contrasts}}{named character vector of contrasts}
+      \item{\code{control}}{convergence controls of \code{\link[logistf]{logistf}}, see \code{\link{strategy_logistf}}}
       \item{\code{...}}{ignored; accepted for dispatch compatibility with other facades}
     }
     \if{html}{\out{</div>}}

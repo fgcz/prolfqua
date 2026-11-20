@@ -60,7 +60,8 @@ coefficients(fit)
     \preformatted{StrategyBinomial$new(
   modelstr,
   prior_count = 0.1,
-  model_name = "binomial_nested"
+  model_name = "binomial_nested",
+  control = list()
 )}
     \if{html}{\out{</div>}}
   }
@@ -71,6 +72,7 @@ coefficients(fit)
 \code{"~ group_"}}
       \item{\code{prior_count}}{non-negative symmetric pseudo-count}
       \item{\code{model_name}}{model identity}
+      \item{\code{control}}{named list of convergence controls, see \code{\link{strategy_binomial}}}
     }
     \if{html}{\out{</div>}}
   }

@@ -662,10 +662,11 @@ ContrastsFirthFacade <- R6::R6Class(
     #' @param lfqdata LFQData object
     #' @param modelstr model formula string (e.g. "~ group_")
     #' @param contrasts named character vector of contrasts
+    #' @param control convergence controls of \code{\link[logistf]{logistf}}, see \code{\link{strategy_logistf}}
     #' @param ... ignored; accepted for dispatch compatibility with other facades
-    initialize = function(lfqdata, modelstr, contrasts, ...) {
+    initialize = function(lfqdata, modelstr, contrasts, control = list(), ...) {
       private$.setup(lfqdata, contrasts, "firth", modelstr)
-      self$model <- build_model_glm_protein(lfqdata, modelstr)
+      self$model <- build_model_glm_protein(lfqdata, modelstr, control = control)
       self$contrast <- ContrastsFirth$new(self$model, contrasts)
     }
   )

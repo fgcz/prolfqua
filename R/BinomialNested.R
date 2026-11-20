@@ -84,9 +84,10 @@ StrategyBinomial <- R6::R6Class(
     #'   \code{"~ group_"}
     #' @param prior_count non-negative symmetric pseudo-count
     #' @param model_name model identity
-    initialize = function(modelstr, prior_count = 0.1, model_name = "binomial_nested") {
+    #' @param control named list of convergence controls, see \code{\link{strategy_binomial}}
+    initialize = function(modelstr, prior_count = 0.1, model_name = "binomial_nested", control = list()) {
       prior_count <- .validate_binomial_prior_count(prior_count)
-      super$initialize(paste("cbind(.detected, .undetected)", modelstr), model_name)
+      super$initialize(paste("cbind(.detected, .undetected)", modelstr), model_name, control = control)
       self$prior_count <- prior_count
     },
 
@@ -97,13 +98,21 @@ StrategyBinomial <- R6::R6Class(
     zero_residual_variance = function(sigma, scale) rep(FALSE, length(sigma))
   ),
   private = list(
+    control_defaults = function() list(epsilon = 1e-8, maxit = 25),
+    # controls of the inner glm fit
+    glm_control = function() self$control,
     prepare = function(x) {
       x$.detected <- x$detected + self$prior_count
       x$.undetected <- x$undetected + self$prior_count
       x
     },
     fit = function(x) {
-      model <- stats::glm(self$formula, data = x, family = stats::quasibinomial())
+      model <- stats::glm(
+        self$formula,
+        data = x,
+        family = stats::quasibinomial(),
+        control = do.call(stats::glm.control, private$glm_control())
+      )
       if (anyNA(stats::coef(model)) || model$rank < length(stats::coef(model))) {
         abort_prolfqua("binomial design is rank-deficient")
       }
@@ -121,13 +130,16 @@ StrategyBinomial <- R6::R6Class(
 #' @param modelstr right-hand-side model formula
 #' @param prior_count non-negative symmetric pseudo-count
 #' @param model_name model identity
+#' @param control \code{epsilon} (default 1e-8) and \code{maxit} (default 25) of \code{\link[stats]{glm.control}}:
+#'   the relative deviance change that stops IRLS and its iteration limit; relative, so independent of the
+#'   number of detections, and glm's own defaults.
 #' @return A \code{\link{StrategyBinomial}} object.
 #' @export
 #' @examples
 #' strategy <- strategy_binomial("~ group_", prior_count = 0.1)
 #' strategy$formula
-strategy_binomial <- function(modelstr, prior_count = 0.1, model_name = "binomial_nested") {
-  StrategyBinomial$new(modelstr, prior_count, model_name)
+strategy_binomial <- function(modelstr, prior_count = 0.1, model_name = "binomial_nested", control = list()) {
+  StrategyBinomial$new(modelstr, prior_count, model_name, control = control)
 }
 
 
@@ -161,20 +173,25 @@ StrategyBinomialFirth <- R6::R6Class(
     #' @param modelstr right-hand-side model formula, for example
     #'   \code{"~ group_"}
     #' @param model_name model identity
-    initialize = function(modelstr, model_name = "binomial_firth_nested") {
-      super$initialize(modelstr, prior_count = 0, model_name = model_name)
+    #' @param control named list of convergence controls, see \code{\link{strategy_binomial_firth}}
+    initialize = function(modelstr, model_name = "binomial_firth_nested", control = list()) {
+      super$initialize(modelstr, prior_count = 0, model_name = model_name, control = control)
     }
   ),
   private = list(
+    control_defaults = function() list(maxit = 100, tol = 1e-8),
+    # the inner glm fits keep glm's defaults; the controls apply to the Firth iteration
+    glm_control = function() list(),
     fit = function(x) {
       trials <- x$detected + x$undetected
       hat <- rep(1, nrow(x))
       previous <- NULL
-      for (iteration in seq_len(100)) {
+      for (iteration in seq_len(self$control$maxit)) {
         x$.detected <- x$detected + hat / 2
         x$.undetected <- x$undetected + hat / 2
         model <- super$fit(x)
-        if (!is.null(previous) && max(abs(stats::coef(model) - previous)) < 1e-8) {
+        if (!is.null(previous) && max(abs(stats::coef(model) - previous)) < self$control$tol) {
+          model$firth_iterations <- iteration
           return(model)
         }
         previous <- stats::coef(model)
@@ -192,11 +209,14 @@ StrategyBinomialFirth <- R6::R6Class(
 #'
 #' @param modelstr right-hand-side model formula
 #' @param model_name model identity
+#' @param control \code{maxit} (default 100) and \code{tol} (default 1e-8): iteration limit of the Firth
+#'   adjustment and the largest coefficient change (log odds) that stops it; log odds of detection range over
+#'   about -10 to 10, so 1e-8 is far below any reported precision.
 #' @return A \code{\link{StrategyBinomialFirth}} object.
 #' @export
 #' @examples
 #' strategy <- strategy_binomial_firth("~ group_")
 #' strategy$formula
-strategy_binomial_firth <- function(modelstr, model_name = "binomial_firth_nested") {
-  StrategyBinomialFirth$new(modelstr, model_name)
+strategy_binomial_firth <- function(modelstr, model_name = "binomial_firth_nested", control = list()) {
+  StrategyBinomialFirth$new(modelstr, model_name, control = control)
 }

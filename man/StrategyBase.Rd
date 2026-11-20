@@ -21,6 +21,8 @@ Holds the fields, constructor and default methods shared by \code{\link{Strategy
     \item{\code{model_name}}{name of model}
 
     \item{\code{anova_df}}{ANOVA extractor, see \code{\link{AnovaExtractor}}}
+
+    \item{\code{control}}{convergence controls passed to the fitting backend (empty for non-iterative fits)}
   }
   \if{html}{\out{</div>}}
 }
@@ -44,7 +46,7 @@ Holds the fields, constructor and default methods shared by \code{\link{Strategy
   Create a new strategy
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{StrategyBase$new(modelstr, model_name = "Model")}
+    \preformatted{StrategyBase$new(modelstr, model_name = "Model", control = list())}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
@@ -52,6 +54,8 @@ Holds the fields, constructor and default methods shared by \code{\link{Strategy
     \describe{
       \item{\code{modelstr}}{model formula string}
       \item{\code{model_name}}{name of model}
+      \item{\code{control}}{named list of convergence controls merged over the strategy's defaults; names the
+backend does not accept raise a classed error}
     }
     \if{html}{\out{</div>}}
   }

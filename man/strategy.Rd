@@ -8,20 +8,25 @@
 \alias{strategy_rlm}
 \title{Create Firth's logistic regression strategy}
 \usage{
-strategy_logistf(modelstr, model_name = "logistf")
+strategy_logistf(modelstr, model_name = "logistf", control = list())
 
-strategy_rfit(modelstr, model_name = "rfit")
+strategy_rfit(modelstr, model_name = "rfit", control = list())
 
-strategy_lmer(modelstr, model_name = "Model")
+strategy_lmer(modelstr, model_name = "Model", control = list())
 
 strategy_lm(modelstr, model_name = "Model", weights = NULL)
 
-strategy_rlm(modelstr, model_name = "Model")
+strategy_rlm(modelstr, model_name = "Model", control = list())
 }
 \arguments{
 \item{modelstr}{model formula}
 
 \item{model_name}{name of model}
+
+\item{control}{for \code{strategy_rlm()}: \code{maxit} (default 20) and \code{acc} (default 1e-4), the
+iteration limit and the relative change of the IRLS residuals that stops \code{\link[MASS]{rlm}}; the
+criterion is relative, so it does not depend on the intensity scale, and 1e-4 is far below the precision of
+log2 intensities.}
 
 \item{weights}{optional character string naming a column in the data
 containing per-observation weights, passed to \code{\link[stats]{lm}}.
@@ -80,6 +85,7 @@ tmp$formula
 tmp$weights
 tmp <- strategy_rlm("Intensity ~ condition", model_name = "parallel design")
 tmp$formula
+strategy_rlm("Intensity ~ condition", control = list(maxit = 50))$control
 }
 \seealso{
 Other modelling:

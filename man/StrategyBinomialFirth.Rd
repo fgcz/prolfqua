@@ -53,7 +53,11 @@ coefficients(fit)
   Create a Firth-penalized quasibinomial count strategy.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{StrategyBinomialFirth$new(modelstr, model_name = "binomial_firth_nested")}
+    \preformatted{StrategyBinomialFirth$new(
+  modelstr,
+  model_name = "binomial_firth_nested",
+  control = list()
+)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
@@ -62,6 +66,7 @@ coefficients(fit)
       \item{\code{modelstr}}{right-hand-side model formula, for example
 \code{"~ group_"}}
       \item{\code{model_name}}{model identity}
+      \item{\code{control}}{named list of convergence controls, see \code{\link{strategy_binomial_firth}}}
     }
     \if{html}{\out{</div>}}
   }

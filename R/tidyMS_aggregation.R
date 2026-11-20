@@ -119,13 +119,14 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
 #' @param response name of the numeric response column
 #' @param feature child-feature identifier column
 #' @param sample_name column identifying samples
+#' @param control `maxiter` and `eps` of \code{stats::medpolish}
 #' @noRd
-.medpolish_estimate <- function(pdata, response, feature, sample_name) {
+.medpolish_estimate <- function(pdata, response, feature, sample_name, control = .aggregation_control("medpolish")) {
   wide <- pdata |>
     dplyr::select(all_of(c(sample_name, feature, response))) |>
     tidyr::pivot_wider(names_from = all_of(sample_name), values_from = all_of(response))
   mat <- as.matrix(wide[, vapply(wide, is.numeric, logical(1))])
-  X <- medpolish(mat, na.rm = TRUE, trace.iter = FALSE, maxiter = 10)
+  X <- medpolish(mat, na.rm = TRUE, trace.iter = FALSE, maxiter = control$maxiter, eps = control$eps)
   tibble(!!sample_name := names(X$col), medpolish = X$col + X$overall)
 }
 
@@ -134,9 +135,9 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
 #' @param response name of the numeric response column
 #' @param feature child-feature identifier column
 #' @param samples name of the sample identifier column
-#' @param maxIt maximum robust-regression iterations
+#' @param control `maxit` and `acc` of \code{MASS::rlm}
 #' @noRd
-.rlm_estimate <- function(pdata, response, feature, samples = "samples", maxIt = 20) {
+.rlm_estimate <- function(pdata, response, feature, samples = "samples", control = .aggregation_control("rlm")) {
   data <- pdata |>
     select(all_of(c(samples, feature, response))) |>
     na.omit()
@@ -194,7 +195,7 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
   }
   ## Last step is always rlm if X > has some columns left
   if (ncol(X) > 0) {
-    fit <- MASS::rlm(X, y, maxit = maxIt)
+    fit <- MASS::rlm(X, y, maxit = control$maxit, acc = control$acc)
     data$residuals <- fit$residuals
     usamples <- unique(data[[samples]])
     coef_names <- paste0(samples, usamples)
@@ -259,6 +260,9 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
 #' @param lfqdata LFQData object
 #' @param method "medpolish" (Tukey's median polish, column `medpolish`) or "rlm" (robust regression with
 #'   `MASS::rlm`, column `lmrob`)
+#' @param control convergence controls merged over the defaults. medpolish: `maxiter` (default 10) and `eps`
+#'   (default 0.01, the change of the sum of absolute residuals that stops the polish, on the log2 scale of the
+#'   input); rlm: `maxit` (default 20) and `acc` (default 1e-4, relative change of the IRLS residuals).
 #' @return returns list with data (data.frame), config (AnalysisConfiguration) and failures (tibble with the
 #'   subject `id` and `warning` text of every warning raised while estimating one subject; the warnings are not
 #'   re-raised)
@@ -279,8 +283,9 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
 #' plot(xt$medpolish, xt$lmrob, log = "xy", pch = "*")
 #' abline(0, 1, col = 2)
 #'
-estimate_intensity <- function(lfqdata, method = c("medpolish", "rlm")) {
+estimate_intensity <- function(lfqdata, method = c("medpolish", "rlm"), control = list()) {
   method <- match.arg(method)
+  control <- .aggregation_control(method, control)
   make_name <- if (method == "medpolish") "medpolish" else "lmrob"
   config <- lfqdata$get_config()$clone(deep = TRUE)
   data <- lfqdata$data_long()
@@ -296,9 +301,9 @@ estimate_intensity <- function(lfqdata, method = c("medpolish", "rlm")) {
   nrc <- lfqdata$nr_children_col()
   feature <- base::setdiff(hkeys, hkeysd)
   estimate <- if (method == "medpolish") {
-    function(d) .medpolish_estimate(d, response, feature, sname)
+    function(d) .medpolish_estimate(d, response, feature, sname, control)
   } else {
-    function(d) .rlm_estimate(unite(d, "feature", all_of(feature)), response, "feature", sname)
+    function(d) .rlm_estimate(unite(d, "feature", all_of(feature)), response, "feature", sname, control)
   }
 
   xnested <- data |>
@@ -611,4 +616,14 @@ rank_peptide_by_intensity <- function(pdata, response, hierarchy_keys) {
 
   inform_prolfqua("Columns added : ", summary_column, " ", rank_column)
   return(pdata)
+}
+
+
+#' Convergence controls of an aggregation method, merged over its defaults
+#' @param method "medpolish" or "rlm"
+#' @param control named list of user controls
+#' @noRd
+.aggregation_control <- function(method, control = list()) {
+  defaults <- switch(method, medpolish = list(maxiter = 10, eps = 0.01), rlm = list(maxit = 20, acc = 1e-4))
+  .merge_control(control, defaults)
 }

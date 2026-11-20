@@ -4,12 +4,14 @@
 \alias{build_model_glm_protein}
 \title{Build Firth logistic model for aggregated LFQData}
 \usage{
-build_model_glm_protein(lfqdata, modelstr)
+build_model_glm_protein(lfqdata, modelstr, control = list())
 }
 \arguments{
 \item{lfqdata}{aggregated \code{\link{LFQData}} object}
 
-\item{modelstr}{model formula string without the response variable
+\item{modelstr}{model formula string without the response variable}
+
+\item{control}{convergence controls, see \code{\link{strategy_logistf}}
 (e.g. \code{"~ group_"})}
 }
 \value{

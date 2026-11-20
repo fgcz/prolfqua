@@ -4,12 +4,20 @@
 \alias{strategy_binomial_firth}
 \title{Create a Firth-penalized quasibinomial detection-count strategy}
 \usage{
-strategy_binomial_firth(modelstr, model_name = "binomial_firth_nested")
+strategy_binomial_firth(
+  modelstr,
+  model_name = "binomial_firth_nested",
+  control = list()
+)
 }
 \arguments{
 \item{modelstr}{right-hand-side model formula}
 
 \item{model_name}{model identity}
+
+\item{control}{\code{maxit} (default 100) and \code{tol} (default 1e-8): iteration limit of the Firth
+adjustment and the largest coefficient change (log odds) that stops it; log odds of detection range over
+about -10 to 10, so 1e-8 is far below any reported precision.}
 }
 \value{
 A \code{\link{StrategyBinomialFirth}} object.

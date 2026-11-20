@@ -139,7 +139,7 @@ Other modelling:
   \code{df.residual()} and \code{sigma()} of the augmented fit.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{StrategyRfit$new(modelstr, model_name = "rfit")}
+    \preformatted{StrategyRfit$new(modelstr, model_name = "rfit", control = list())}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
@@ -147,6 +147,7 @@ Other modelling:
     \describe{
       \item{\code{modelstr}}{model formula string}
       \item{\code{model_name}}{name of model}
+      \item{\code{control}}{named list of convergence controls, see \code{\link{strategy_rfit}}}
     }
     \if{html}{\out{</div>}}
   }

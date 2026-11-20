@@ -20,6 +20,7 @@
 #'
 #' @param lfqdata aggregated \code{\link{LFQData}} object
 #' @param modelstr model formula string without the response variable
+#' @param control convergence controls, see \code{\link{strategy_logistf}}
 #'   (e.g. \code{"~ group_"})
 #' @return a \code{\link{ModelFirth}} object
 #' @export
@@ -30,11 +31,11 @@
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' mod <- build_model_glm_protein(lfqdata, "~ group_")
 #' head(mod$get_coefficients())
-build_model_glm_protein <- function(lfqdata, modelstr) {
+build_model_glm_protein <- function(lfqdata, modelstr, control = list()) {
   .assert_aggregated_facade_input(lfqdata, "build_model_glm_protein")
   lfq_missing <- .prepare_detection_lfqdata(lfqdata)
   formula <- paste(lfq_missing$get_config()$bin_resp, modelstr)
-  build_model_logistf(lfq_missing, formula)
+  build_model_logistf(lfq_missing, formula, control = control)
 }
 
 
@@ -42,6 +43,9 @@ build_model_glm_protein <- function(lfqdata, modelstr) {
 #'
 #' Fits Firth's logistic regression per subject to the binary detection
 #' response of aggregated data, one row per subject and sample.
+#' @param data aggregated LFQData with a binary detection response
+#' @param formula model formula with the binary response
+#' @param control convergence controls, see \code{\link{strategy_logistf}}
 #' @export
 #' @family modelling
 #' @keywords internal
@@ -57,12 +61,12 @@ build_model_glm_protein <- function(lfqdata, modelstr) {
 #' contrasts <- c(AvsB = "group_A - group_B")
 #' m <- xx$models$model_df$linear_model[[1]]
 #' linfct_matrix_contrasts(linfct_from_model(m)$linfct_factors, contrasts)
-build_model_logistf <- function(data, formula) {
+build_model_logistf <- function(data, formula, control = list()) {
   if (!inherits(data, "LFQData")) {
     abort_bad_argument("data", "be an LFQData object")
   }
   .assert_aggregated_facade_input(data, "build_model_logistf")
-  strategy <- strategy_logistf(formula)
+  strategy <- strategy_logistf(formula, control = control)
   models <- model_analyse(
     data$data_long(),
     strategy,
@@ -152,8 +156,9 @@ StrategyLogistf <- R6::R6Class(
     #' @description Create a new StrategyLogistf
     #' @param modelstr model formula string
     #' @param model_name name of model
-    initialize = function(modelstr, model_name = "logistf") {
-      super$initialize(modelstr, model_name)
+    #' @param control named list of convergence controls, see \code{\link{strategy_logistf}}
+    initialize = function(modelstr, model_name = "logistf", control = list()) {
+      super$initialize(modelstr, model_name, control = control)
     },
 
     #' @description Get residual degrees of freedom
@@ -173,7 +178,19 @@ StrategyLogistf <- R6::R6Class(
         dplyr::group_by(dplyr::across(dplyr::all_of(predictor_vars))) |>
         dplyr::summarize(Freq = dplyr::n(), .groups = "drop")
     },
-    fit = function(DFT) logistf::logistf(self$formula, data = DFT, weights = Freq, pl = FALSE)
+    control_names = function() {
+      rlang::check_installed("logistf", reason = "for Firth logistic regression.")
+      names(formals(logistf::logistf.control))
+    },
+    fit = function(DFT) {
+      logistf::logistf(
+        self$formula,
+        data = DFT,
+        weights = Freq,
+        pl = FALSE,
+        control = do.call(logistf::logistf.control, self$control)
+      )
+    }
   )
 )
 
@@ -204,6 +221,9 @@ StrategyLogistf <- R6::R6Class(
 #'   model_name = "random_example")
 #' modelFunction$model_fun(nestProtein$data[[1]])
 #' modelFunction$model_fun(nestProtein$data[[4]])
-strategy_logistf <- function(modelstr, model_name = "logistf") {
-  StrategyLogistf$new(modelstr, model_name)
+#' @param control for \code{strategy_logistf()}: arguments of \code{\link[logistf]{logistf.control}}, e.g.
+#'   \code{list(maxit = 50)}; default: logistf's defaults (25 iterations, convergence criteria 1e-5 on the
+#'   log likelihood, the score and the coefficients), suited to log odds of detection.
+strategy_logistf <- function(modelstr, model_name = "logistf", control = list()) {
+  StrategyLogistf$new(modelstr, model_name, control = control)
 }

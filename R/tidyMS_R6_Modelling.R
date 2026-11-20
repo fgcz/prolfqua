@@ -53,14 +53,20 @@ StrategyBase <- R6::R6Class(
     model_name = NULL,
     #' @field anova_df ANOVA extractor, see \code{\link{AnovaExtractor}}
     anova_df = NULL,
+    #' @field control convergence controls passed to the fitting backend (empty for non-iterative fits)
+    control = NULL,
 
     #' @description Create a new strategy
     #' @param modelstr model formula string
     #' @param model_name name of model
-    initialize = function(modelstr, model_name = "Model") {
+    #' @param control named list of convergence controls merged over the strategy's defaults; names the
+    #'   backend does not accept raise a classed error
+    initialize = function(modelstr, model_name = "Model", control = list()) {
       self$formula <- .as_model_formula(modelstr)
       self$model_name <- model_name
       self$anova_df <- get_anova_df(test = "F")
+      allowed <- if (length(control) > 0L) private$control_names() else names(private$control_defaults())
+      self$control <- .merge_control(control, private$control_defaults(), allowed)
     },
 
     #' @description Fit the model to one subject's data. A failed fit returns the error message.
@@ -100,6 +106,9 @@ StrategyBase <- R6::R6Class(
     zero_residual_variance = function(sigma, scale) .zero_residual_variance(sigma, scale)
   ),
   private = list(
+    # convergence controls of the backend and their defaults; non-iterative fits have none
+    control_defaults = function() list(),
+    control_names = function() names(private$control_defaults()),
     # Input preparation that runs outside the error handler of model_fun().
     prepare = function(x) x,
     fit = function(x) abort_prolfqua("fit is not implemented")
@@ -140,7 +149,11 @@ StrategyLmer <- R6::R6Class(
       rlang::check_installed(c("lme4", "lmerTest"), reason = "for mixed models.")
       x
     },
-    fit = function(x) lmerTest::lmer(self$formula, data = x)
+    control_names = function() {
+      rlang::check_installed("lme4", reason = "for mixed models.")
+      names(formals(lme4::lmerControl))
+    },
+    fit = function(x) lmerTest::lmer(self$formula, data = x, control = do.call(lme4::lmerControl, self$control))
   )
 )
 
@@ -156,8 +169,11 @@ StrategyLmer <- R6::R6Class(
 #' modelFunction <- strategy_lmer("abundanceC ~ group_ + (1|peptide_Id)",
 #'   model_name = "random_example")
 #' modelFunction$formula
-strategy_lmer <- function(modelstr, model_name = "Model") {
-  StrategyLmer$new(modelstr, model_name)
+#' @param control for \code{strategy_lmer()}: arguments of \code{\link[lme4]{lmerControl}}, e.g.
+#'   \code{list(optimizer = "bobyqa", optCtrl = list(maxfun = 1e5))}; default: lme4's defaults (nloptwrap,
+#'   gradient tolerance 0.002), which suit per-protein models of a few dozen observations.
+strategy_lmer <- function(modelstr, model_name = "Model", control = list()) {
+  StrategyLmer$new(modelstr, model_name, control = control)
 }
 
 #' Linear model strategy (R6 class)
@@ -250,7 +266,10 @@ StrategyRLM <- R6::R6Class(
     sigma = function(model) model$s
   ),
   private = list(
-    fit = function(x) MASS::rlm(self$formula, data = x, method = "M")
+    control_defaults = function() list(maxit = 20, acc = 1e-4),
+    fit = function(x) {
+      MASS::rlm(self$formula, data = x, method = "M", maxit = self$control$maxit, acc = self$control$acc)
+    }
   )
 )
 
@@ -265,8 +284,13 @@ StrategyRLM <- R6::R6Class(
 #' @examples
 #' tmp <- strategy_rlm("Intensity ~ condition", model_name = "parallel design")
 #' tmp$formula
-strategy_rlm <- function(modelstr, model_name = "Model") {
-  StrategyRLM$new(modelstr, model_name)
+#' strategy_rlm("Intensity ~ condition", control = list(maxit = 50))$control
+#' @param control for \code{strategy_rlm()}: \code{maxit} (default 20) and \code{acc} (default 1e-4), the
+#'   iteration limit and the relative change of the IRLS residuals that stops \code{\link[MASS]{rlm}}; the
+#'   criterion is relative, so it does not depend on the intensity scale, and 1e-4 is far below the precision of
+#'   log2 intensities.
+strategy_rlm <- function(modelstr, model_name = "Model", control = list()) {
+  StrategyRLM$new(modelstr, model_name, control = control)
 }
 
 

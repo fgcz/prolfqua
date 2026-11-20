@@ -223,3 +223,26 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
 .is_finite_number <- function(x) {
   is.numeric(x) && length(x) == 1 && is.finite(x)
 }
+
+
+#' Merge user convergence controls over a backend's defaults
+#'
+#' @param control named list of controls given by the user
+#' @param defaults named list of default controls (may be empty when the backend's own defaults apply)
+#' @param allowed names the backend accepts
+#' @return the merged named list
+#' @noRd
+.merge_control <- function(control, defaults, allowed = names(defaults)) {
+  if (!is.list(control) || (length(control) > 0L && (is.null(names(control)) || any(names(control) == "")))) {
+    abort_bad_argument("control", "be a named list")
+  }
+  unknown <- setdiff(names(control), allowed)
+  if (length(unknown) > 0L) {
+    abort_bad_argument(
+      "control",
+      paste0("only name ", if (length(allowed) > 0L) toString(allowed) else "nothing (no convergence controls)"),
+      not = toString(unknown)
+    )
+  }
+  utils::modifyList(defaults, control)
+}

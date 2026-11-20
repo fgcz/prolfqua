@@ -39,20 +39,49 @@ Other LFQData:
 \section{Super class}{
 \code{\link[prolfqua:AggregatorBase]{AggregatorBase}} -> \code{AggregateMedpolish}
 }
+\section{Public fields}{
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{control}}{convergence controls, see \code{\link{estimate_intensity}}}
+  }
+  \if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
   \itemize{
+    \item \href{#method-AggregateMedpolish-initialize}{\code{AggregateMedpolish$new()}}
     \item \href{#method-AggregateMedpolish-aggregate}{\code{AggregateMedpolish$aggregate()}}
     \item \href{#method-AggregateMedpolish-clone}{\code{AggregateMedpolish$clone()}}
   }
 }
 \if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="AggregatorBase" data-id="initialize"><a href='../../prolfqua/html/AggregatorBase.html#method-AggregatorBase-initialize'><code>AggregatorBase$initialize()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="AggregatorBase" data-id="plot"><a href='../../prolfqua/html/AggregatorBase.html#method-AggregatorBase-plot'><code>AggregatorBase$plot()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="AggregatorBase" data-id="write_plots"><a href='../../prolfqua/html/AggregatorBase.html#method-AggregatorBase-write_plots'><code>AggregatorBase$write_plots()</code></a></span></li>
 </ul>
 </details>}}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-AggregateMedpolish-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-AggregateMedpolish-initialize}{}}}
+\subsection{\code{AggregateMedpolish$new()}}{
+  initialize
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AggregateMedpolish$new(lfq, prefix = "protein", control = list())}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{lfq}}{LFQData}
+      \item{\code{prefix}}{default protein}
+      \item{\code{control}}{named list of convergence controls merged over the defaults, see
+\code{\link{estimate_intensity}}}
+    }
+    \if{html}{\out{</div>}}
+  }
+}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AggregateMedpolish-aggregate"></a>}}
 \if{latex}{\out{\hypertarget{method-AggregateMedpolish-aggregate}{}}}

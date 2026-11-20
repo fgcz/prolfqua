@@ -133,7 +133,7 @@ Other modelling:
   Create a new StrategyLogistf
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{StrategyLogistf$new(modelstr, model_name = "logistf")}
+    \preformatted{StrategyLogistf$new(modelstr, model_name = "logistf", control = list())}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
@@ -141,6 +141,7 @@ Other modelling:
     \describe{
       \item{\code{modelstr}}{model formula string}
       \item{\code{model_name}}{name of model}
+      \item{\code{control}}{named list of convergence controls, see \code{\link{strategy_logistf}}}
     }
     \if{html}{\out{</div>}}
   }
