@@ -106,7 +106,9 @@ Other modelling:
 
 ``` r
 mf <- sim_make_model_lmer("factors")
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 7 unconfigured columns: average_prot_abundance, sd, group, mean, N, avg_peptide_abd, Replicate.
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
@@ -116,7 +118,9 @@ mf <- sim_make_model_lmer("factors")
 #> fit (Model): 4 singular fits (e.g. BEJI92~5282, HvIpHG~9079, JcKVfU~9653, SGIVBl~5782): coefficients not estimable or fewer than 2 residual df
 #> See $provenance().
 mi <- sim_make_model_lmer("interaction")
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 7 unconfigured columns: average_prot_abundance, sd, group, mean, N, avg_peptide_abd, Replicate.
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')

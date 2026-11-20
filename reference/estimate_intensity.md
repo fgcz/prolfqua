@@ -5,7 +5,7 @@ Aggregates e.g. protein abundances from peptide abundances
 ## Usage
 
 ``` r
-estimate_intensity(lfqdata, method = c("medpolish", "rlm"))
+estimate_intensity(lfqdata, method = c("medpolish", "rlm"), control = list())
 ```
 
 ## Arguments
@@ -18,6 +18,14 @@ estimate_intensity(lfqdata, method = c("medpolish", "rlm"))
 
   "medpolish" (Tukey's median polish, column \`medpolish\`) or "rlm"
   (robust regression with \`MASS::rlm\`, column \`lmrob\`)
+
+- control:
+
+  convergence controls merged over the defaults. medpolish: \`maxiter\`
+  (default 10) and \`eps\` (default 0.01, the change of the sum of
+  absolute residuals that stops the polish, on the log2 scale of the
+  input); rlm: \`maxit\` (default 20) and \`acc\` (default 1e-4,
+  relative change of the IRLS residuals).
 
 ## Value
 
@@ -38,7 +46,10 @@ Other aggregation:
 
 ``` r
 dd <- prolfqua::sim_lfq_data_peptide_config()
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
 lfq <- LFQData$new(dd$data, dd$config)
 lfq <- lfq$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance

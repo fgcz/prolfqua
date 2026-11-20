@@ -133,7 +133,10 @@ Other modelling:
 
 ``` r
 mod <- sim_build_models_lm(model = "parallel3", weight_missing = 1)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 5 unconfigured columns: average_prot_abundance, sd, mean, N, Replicate.
+#> setup_analysis: added 45 rows with NA response for feature and sample combinations absent from the input.
 #> fit (Model): 2 singular fits (e.g. BEJI92~5282, Fl4JiV~8625): coefficients not estimable or fewer than 2 residual df
 #> fit (Model): 45 missing responses dropped (e.g. 0EfVhX~0087, 7cbcrd~5725, 9VUkAq~4703, BEJI92~5282, DoWup2~5896, ...): NA response (missing observation) left out of the fit
 #> See $provenance().
@@ -149,7 +152,9 @@ stopifnot(is.numeric(borrowed_s$df) && borrowed_s$df > 0)
 # Falls back to sigma if donor models have misaligned coefficient names.
 mod_no_missing <- sim_build_models_lm(model = "parallel3",
   Nprot = 10, with_missing = FALSE)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 5 unconfigured columns: average_prot_abundance, sd, mean, N, Replicate.
 borrowed_v <- prolfqua:::compute_borrowed_variance(
   mod_no_missing$model_df, method = "vcov")
 stopifnot(borrowed_v$method == "vcov")

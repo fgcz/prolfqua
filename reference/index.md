@@ -311,6 +311,9 @@
   : pivot model contrasts matrix to wide format produced by
   \`contrasts_linfct\` and ...
 
+- [`plot(`*`<LFQData>`*`)`](https://fgcz.github.io/prolfqua/reference/plot.LFQData.md)
+  : Plot an LFQData object
+
 - [`pooled_variance_explained()`](https://fgcz.github.io/prolfqua/reference/pooled_variance_explained.md)
   : Variance explained by each term, pooled over features
 
@@ -327,6 +330,7 @@
   [`formula(`*`<ContrastsFacadeBase>`*`)`](https://fgcz.github.io/prolfqua/reference/prolfqua_analysis_methods.md)
   [`nobs(`*`<ContrastsFacadeBase>`*`)`](https://fgcz.github.io/prolfqua/reference/prolfqua_analysis_methods.md)
   [`fitted(`*`<ContrastsFacadeBase>`*`)`](https://fgcz.github.io/prolfqua/reference/prolfqua_analysis_methods.md)
+  [`predict(`*`<ContrastsFacadeBase>`*`)`](https://fgcz.github.io/prolfqua/reference/prolfqua_analysis_methods.md)
   [`residuals(`*`<ContrastsFacadeBase>`*`)`](https://fgcz.github.io/prolfqua/reference/prolfqua_analysis_methods.md)
   [`plot(`*`<ContrastsFacadeBase>`*`)`](https://fgcz.github.io/prolfqua/reference/prolfqua_analysis_methods.md)
   : Inspect a fitted prolfqua analysis

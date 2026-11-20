@@ -207,7 +207,10 @@ The objects of this class are cloneable with this method.
 
 ``` r
 istar <- sim_lfq_data_protein_config(Nprot = 50)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 5 unconfigured columns: average_prot_abundance, sd, mean, N, Replicate.
+#> setup_analysis: added 82 rows with NA response for feature and sample combinations absent from the input.
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata$rename_response("transformedIntensity")
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
@@ -216,7 +219,7 @@ fa <- ContrastsDEqMSVoomFacade$new(lfqdata, "~ group_", contrasts)
 #> fit (limma): 82 missing responses dropped (e.g. 0EfVhX~7161, 0m5WN4~3543, 7QuTub~5556, 7cbcrd~0495, 9VUkAq~8655, ...): NA response (missing observation) left out of the fit
 #> See $provenance().
 head(fa$get_contrasts())
-#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=A_vs_Ctrl (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17)
+#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=A_vs_Ctrl (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  7.3328e-17)
 #> # A tibble: 6 × 16
 #>   modelName  estimate_type contrast  protein_Id    diff std.error.unmoderated
 #>   <chr>      <chr>         <chr>     <chr>        <dbl>                 <dbl>

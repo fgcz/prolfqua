@@ -141,11 +141,17 @@ Other modelling:
 
 ``` r
 D <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.1)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 68 rows with NA response for feature and sample combinations absent from the input.
 D$data$abundance |> is.na() |> sum()
 #> [1] 68
 D <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.1, seed =3)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 59 rows with NA response for feature and sample combinations absent from the input.
 D$data$abundance |> is.na() |> sum()
 #> [1] 59
 model_name <- "f_condtion_r_peptide"

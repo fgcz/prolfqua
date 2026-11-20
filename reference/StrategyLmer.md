@@ -176,7 +176,9 @@ The objects of this class are cloneable with this method.
 
 ``` r
 istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = FALSE)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
 istar <- prolfqua::LFQData$new(istar$data, istar$config)
 istar$set_data(istar$data_long() |> dplyr::group_by(protein_Id) |>
   dplyr::mutate(abundanceC = abundance - mean(abundance)) |> dplyr::ungroup())

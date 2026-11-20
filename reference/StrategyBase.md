@@ -30,6 +30,11 @@ An R6 class generator.
   ANOVA extractor, see
   [`AnovaExtractor`](https://fgcz.github.io/prolfqua/reference/AnovaExtractor.md)
 
+- `control`:
+
+  convergence controls passed to the fitting backend (empty for
+  non-iterative fits)
+
 ## Methods
 
 ### Public methods
@@ -58,7 +63,7 @@ Create a new strategy
 
 #### Usage
 
-    StrategyBase$new(modelstr, model_name = "Model")
+    StrategyBase$new(modelstr, model_name = "Model", control = list())
 
 #### Arguments
 
@@ -69,6 +74,11 @@ Create a new strategy
 - `model_name`:
 
   name of model
+
+- `control`:
+
+  named list of convergence controls merged over the strategy's
+  defaults; names the backend does not accept raise a classed error
 
 ------------------------------------------------------------------------
 

@@ -13,6 +13,7 @@ plot_heatmap_cor(
   R2 = FALSE,
   color = colorRampPalette(c("white", "red"))(1024),
   max_sample_label_chars = 20,
+  method = "pearson",
   ...
 )
 ```
@@ -48,6 +49,13 @@ plot_heatmap_cor(
   maximum displayed sample label length. Labels keep their suffix
   because sample prefixes are often shared.
 
+- method:
+
+  correlation method: \`"pearson"\` (default), \`"spearman"\` or
+  \`"kendall"\` for \[stats::cor()\] on pairwise complete observations,
+  or a function of the matrix returning a sample-by-sample correlation
+  matrix
+
 - ...:
 
   passed to \[ComplexHeatmap::Heatmap()\]
@@ -76,7 +84,10 @@ Other plotting:
 
 ``` r
 istar <- sim_lfq_data_protein_config()
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 5 unconfigured columns: average_prot_abundance, sd, mean, N, Replicate.
+#> setup_analysis: added 16 rows with NA response for feature and sample combinations absent from the input.
 lfq <- LFQData$new(istar$data, istar$config)
 wide <- lfq$data_wide(as.matrix = TRUE)
 pheat_map <- plot_heatmap_cor(wide$data, wide$annotation,
@@ -85,4 +96,9 @@ stopifnot(methods::is(pheat_map, "Heatmap"))
 pheat_map <- plot_heatmap_cor(wide$data, wide$annotation,
   lfq$factor_keys(), lfq$sample_name(), R2 = TRUE)
 stopifnot(methods::is(pheat_map, "Heatmap"))
+# rank correlation, or any function returning a correlation matrix
+spearman <- plot_heatmap_cor(wide$data, wide$annotation,
+  lfq$factor_keys(), lfq$sample_name(), method = "spearman")
+complete <- plot_heatmap_cor(wide$data, wide$annotation,
+  lfq$factor_keys(), lfq$sample_name(), method = function(x) stats::cor(x, use = "complete.obs"))
 ```

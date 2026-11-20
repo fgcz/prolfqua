@@ -145,7 +145,10 @@ data_2Factor <- prolfqua::sim_lfq_data_2factor_config(
  Nprot = 200,
  with_missing = TRUE,
  weight_missing = 1)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, group, mean, N, Replicate.
+#> setup_analysis: added 1087 rows with NA response for feature and sample combinations absent from the input.
 
 pMerged <- LFQData$new(data_2Factor$data, data_2Factor$config)
 

@@ -56,7 +56,10 @@ Other configuration:
 
 ``` r
 istar <- sim_lfq_data_peptide_config()
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
 lfq <- LFQData$new(istar$data, istar$config)
 xx <- table_factors_size(lfq$data_long(), lfq$file_name(),
   lfq$sample_name(), lfq$factor_keys(), lfq$relevant_factor_keys())

@@ -141,7 +141,7 @@ Create a new StrategyRfit. Residual df and scale come from
 
 #### Usage
 
-    StrategyRfit$new(modelstr, model_name = "rfit")
+    StrategyRfit$new(modelstr, model_name = "rfit", control = list())
 
 #### Arguments
 
@@ -152,6 +152,11 @@ Create a new StrategyRfit. Residual df and scale come from
 - `model_name`:
 
   name of model
+
+- `control`:
+
+  named list of convergence controls, see
+  [`strategy_rfit`](https://fgcz.github.io/prolfqua/reference/strategy.md)
 
 ------------------------------------------------------------------------
 
@@ -175,5 +180,5 @@ The objects of this class are cloneable with this method.
 strat <- StrategyRfit$new("Intensity ~ condition", model_name = "parallel design")
 strat$formula
 #> Intensity ~ condition
-#> <environment: 0x5db4e54c3a50>
+#> <environment: 0x5c35844e3678>
 ```

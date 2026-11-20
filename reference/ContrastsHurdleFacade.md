@@ -233,11 +233,15 @@ The objects of this class are cloneable with this method.
 
 ``` r
 istar <- sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.5, seed = 3)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 205 rows with NA response for feature and sample combinations absent from the input.
 lfq_peptide <- LFQData$new(istar$data, istar$config)
 lfq_peptide <- lfq_peptide$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance
 lfq_protein <- lfq_peptide$get_Aggregator()$aggregate()
+#> Response `medpolish`: dropped attributes names; prolfqua uses the numeric values only.
 #> Warning: aggregate (medpolish): 1 subjects with estimation warning (e.g. 4JK499~3111): medpolish() did not converge in 10 iterations
 #> See $provenance().
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")

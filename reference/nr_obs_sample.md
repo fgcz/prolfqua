@@ -61,7 +61,10 @@ Other hierarchy counting:
 
 ``` r
 dd <- prolfqua::sim_lfq_data_peptide_config()
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
 dd$data <- na.omit(dd$data)
 
 xd <- nr_obs_sample(na.omit(dd$data), dd$config$get_response(),
@@ -73,7 +76,10 @@ xd$nr_children |> table()
 # xd |> pivot_wider(id_cols = protein_Id, names_from = sample, values_from = nr_children)
 
 dp <- prolfqua::sim_lfq_data_protein_config()
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 5 unconfigured columns: average_prot_abundance, sd, mean, N, Replicate.
+#> setup_analysis: added 16 rows with NA response for feature and sample combinations absent from the input.
 xp <- nr_obs_sample(dp$data, dp$config$get_response(),
   dp$config$hierarchy_keys_depth(), dp$config$file_name, dp$config$nr_children)
 # xp

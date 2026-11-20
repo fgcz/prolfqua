@@ -23,15 +23,15 @@ object.
 ## Usage
 
 ``` r
-strategy_logistf(modelstr, model_name = "logistf")
+strategy_logistf(modelstr, model_name = "logistf", control = list())
 
-strategy_rfit(modelstr, model_name = "rfit")
+strategy_rfit(modelstr, model_name = "rfit", control = list())
 
-strategy_lmer(modelstr, model_name = "Model")
+strategy_lmer(modelstr, model_name = "Model", control = list())
 
 strategy_lm(modelstr, model_name = "Model", weights = NULL)
 
-strategy_rlm(modelstr, model_name = "Model")
+strategy_rlm(modelstr, model_name = "Model", control = list())
 ```
 
 ## Arguments
@@ -43,6 +43,14 @@ strategy_rlm(modelstr, model_name = "Model")
 - model_name:
 
   name of model
+
+- control:
+
+  for `strategy_rlm()`: `maxit` (default 20) and `acc` (default 1e-4),
+  the iteration limit and the relative change of the IRLS residuals that
+  stops [`rlm`](https://rdrr.io/pkg/MASS/man/rlm.html); the criterion is
+  relative, so it does not depend on the intensity scale, and 1e-4 is
+  far below the precision of log2 intensities.
 
 - weights:
 
@@ -170,11 +178,14 @@ Other modelling:
 tmp <- strategy_logistf("bin_resp ~ condition", model_name = "parallel design")
 tmp$formula
 #> bin_resp ~ condition
-#> <environment: 0x5db4d88f9db8>
+#> <environment: 0x5c3582a8f6c0>
 
 istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 60 rows with NA response for feature and sample combinations absent from the input.
 istar$data <- encode_bin_resp(LFQData$new(istar$data, istar$config))
 istar$config$bin_resp <- "bin_resp"
 istar <- LFQData$new(istar$data, istar$config)
@@ -188,15 +199,16 @@ modelFunction <- strategy_logistf("bin_resp ~ group_ + peptide_Id",
   model_name = "random_example")
 modelFunction$model_fun(nestProtein$data[[1]])
 #> logistf::logistf(formula = self$formula, data = DFT, pl = FALSE, 
+#>     control = do.call(logistf::logistf.control, self$control), 
 #>     weights = Freq)
 #> Model fitted by Penalized ML
 #> Confidence intervals and p-values by Wald 
 #> 
 #> Coefficients:
 #>        (Intercept)            group_B         group_Ctrl peptide_IdFLq7LKTq 
-#>       2.101899e+00       6.773389e-01      -6.663876e-01      -1.226933e-15 
+#>       2.101899e+00       6.773389e-01      -6.663876e-01       9.509484e-16 
 #> peptide_IdJYhOpuPH peptide_IdLiw5EMKP peptide_IdVcatZJTa peptide_IdjrLUqOjg 
-#>      -1.068335e+00      -7.226922e-16      -1.068335e+00       1.197563e+00 
+#>      -1.068335e+00       7.971977e-16      -1.068335e+00       1.197563e+00 
 #> peptide_Idq2jTaC1y 
 #>      -1.445323e+00 
 #> 
@@ -204,13 +216,14 @@ modelFunction$model_fun(nestProtein$data[[1]])
 #> 
 modelFunction$model_fun(nestProtein$data[[4]])
 #> logistf::logistf(formula = self$formula, data = DFT, pl = FALSE, 
+#>     control = do.call(logistf::logistf.control, self$control), 
 #>     weights = Freq)
 #> Model fitted by Penalized ML
 #> Confidence intervals and p-values by Wald 
 #> 
 #> Coefficients:
 #>        (Intercept)            group_B         group_Ctrl peptide_IdWcAw5ozd 
-#>       8.375544e-03       8.360389e-11       9.365126e-01      -3.147690e-01 
+#>       8.375544e-03       8.360364e-11       9.365126e-01      -3.147690e-01 
 #> peptide_IdgdnXrza3 peptide_IdxvlVt88v 
 #>      -2.035803e-09      -6.303721e-01 
 #> 
@@ -219,20 +232,27 @@ modelFunction$model_fun(nestProtein$data[[4]])
 tmp <- strategy_rfit("Intensity ~ condition", model_name = "parallel design")
 tmp$formula
 #> Intensity ~ condition
-#> <environment: 0x5db4e7a53878>
+#> <environment: 0x5c3584c55100>
 modelFunction <- strategy_lmer("abundanceC ~ group_ + (1|peptide_Id)",
   model_name = "random_example")
 modelFunction$formula
 #> abundanceC ~ group_ + (1 | peptide_Id)
-#> <environment: 0x5db4e7db7580>
+#> <environment: 0x5c3584994c80>
 tmp <- strategy_lm("Intensity ~ condition", model_name = "parallel design")
 tmp$formula
 #> Intensity ~ condition
-#> <environment: 0x5db4e60723b8>
+#> <environment: 0x5c358477bb00>
 tmp$weights
 #> NULL
 tmp <- strategy_rlm("Intensity ~ condition", model_name = "parallel design")
 tmp$formula
 #> Intensity ~ condition
-#> <environment: 0x5db4e0c0e080>
+#> <environment: 0x5c3584350800>
+strategy_rlm("Intensity ~ condition", control = list(maxit = 50))$control
+#> $maxit
+#> [1] 50
+#> 
+#> $acc
+#> [1] 1e-04
+#> 
 ```

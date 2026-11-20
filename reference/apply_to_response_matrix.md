@@ -40,7 +40,10 @@ Other preprocessing:
 
 ``` r
 bb <- sim_lfq_data_peptide_config(Nprot = 100)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 528 rows with NA response for feature and sample combinations absent from the input.
 lfqdata <- LFQData$new(bb$data, bb$config)
 res <- apply_to_response_matrix(lfqdata, .func = base::scale)
 stopifnot("abundance_base..scale" %in% colnames(res$data))

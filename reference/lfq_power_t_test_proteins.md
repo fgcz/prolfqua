@@ -58,7 +58,10 @@ Other stats:
 
 ``` r
 bb1 <- prolfqua::sim_lfq_data_peptide_config()
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
 ldata <- LFQData$new(bb1$data, bb1$config)
 stats_res <- summarize_stats(ldata)
 bb <- lfq_power_t_test_proteins(stats_res)

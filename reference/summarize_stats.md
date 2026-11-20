@@ -67,12 +67,18 @@ Other stats:
 
 ``` r
 bb <- prolfqua::sim_lfq_data_protein_config()
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 5 unconfigured columns: average_prot_abundance, sd, mean, N, Replicate.
+#> setup_analysis: added 16 rows with NA response for feature and sample combinations absent from the input.
 lfq <- LFQData$new(bb$data, bb$config)
 res1 <- summarize_stats(lfq)
 
 res2 <- prolfqua::sim_lfq_data_2factor_config()
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, group, mean, N, Replicate.
+#> setup_analysis: added 22 rows with NA response for feature and sample combinations absent from the input.
 res2$config$factor_depth <- 2
 lfq2 <- LFQData$new(res2$data, res2$config)
 stats <- summarize_stats(lfq2)
@@ -86,7 +92,10 @@ stats <- summarize_stats(lfq2, factor_key = NULL)
 stopifnot(nrow(stats) == 10)
 library(ggplot2)
 bb1 <- prolfqua::sim_lfq_data_peptide_config()
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
 lfq <- LFQData$new(bb1$data, bb1$config)
 stats_res <- summarize_stats(lfq)
 sq <- summarize_stats_quantiles(stats_res, lfq$relevant_factor_keys())

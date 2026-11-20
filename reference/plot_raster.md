@@ -86,7 +86,10 @@ Other plotting:
 
 ``` r
 istar <- sim_lfq_data_protein_config()
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 5 unconfigured columns: average_prot_abundance, sd, mean, N, Replicate.
+#> setup_analysis: added 16 rows with NA response for feature and sample combinations absent from the input.
 lfq <- LFQData$new(istar$data, istar$config)
 wide <- lfq$data_wide(as.matrix = TRUE)
 rs <- plot_raster(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name())

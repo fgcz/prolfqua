@@ -36,15 +36,31 @@ hierarchy-key/sample combination is observed more than once (unless
 
 ## Details
 
-Configured factor source columns are converted to character categorical
-labels, including numeric and ordered factors. Ordered levels and their
-ordering are not retained. Names of `configuration$factors` become the
-output predictor column names. Configured hierarchy columns are combined
-into identifiers. Unconfigured columns and their attributes are
-discarded; the returned table retains only configured analysis columns.
-A missing sample name is derived from the file name. Missing isotope
-labels, identification q-values and child counts receive the documented
-setup defaults; adding child counts of one emits a warning.
+\`setup_analysis()\` is optional: \`LFQData\$new(setup = FALSE)\`, the
+default, applies none of the steps below. Each step that changes the
+data says so with a message (class \`prolfqua_message\`) or warning:
+
+- several configured hierarchy or factor source columns are united into
+  one key column (separator \`configuration\$sep\`); avoid by
+  configuring one column per key;
+
+- factor source columns that are not character (numeric, factor,
+  ordered) are converted to character labels; ordered levels and their
+  ordering are not retained; avoid by supplying character columns; names
+  of `configuration$factors` become the predictor column names;
+
+- a missing sample name is derived from the file name; avoid by
+  supplying the sample name column;
+
+- missing isotope labels, identification q-values and child counts
+  receive default values (child counts of one with a warning); avoid by
+  supplying these columns;
+
+- unconfigured columns and their attributes are dropped; the returned
+  table keeps only configured analysis columns;
+
+- feature and sample combinations absent from the input are added as
+  rows with NA response, so every feature has a row in every sample.
 
 ## See also
 
@@ -86,5 +102,7 @@ config$set_response("abundance")
 config$norm_value = "creatinine"
 
 adata <- setup_analysis(data, config)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
 ```

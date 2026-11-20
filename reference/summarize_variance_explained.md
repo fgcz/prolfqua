@@ -85,7 +85,10 @@ Other stats:
 
 ``` r
 bb <- prolfqua::sim_lfq_data_protein_config(Nprot = 20)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 5 unconfigured columns: average_prot_abundance, sd, mean, N, Replicate.
+#> setup_analysis: added 34 rows with NA response for feature and sample combinations absent from the input.
 lfqdata <- LFQData$new(bb$data, bb$config)
 # the simulated intensities are already on the log2 scale
 lfqdata$is_transformed(TRUE)

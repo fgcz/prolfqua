@@ -176,7 +176,7 @@ logistic regression via <code><a href="https://rdrr.io/pkg/logistf/man/logistf.h
 <h3 id="strategylogistf-new-"><code>StrategyLogistf$new()</code><a class="anchor" aria-label="anchor" href="#strategylogistf-new-"></a></h3>
 <p>Create a new StrategyLogistf</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/StrategyLogistf.html">StrategyLogistf</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">modelstr</span>, model_name <span class="op">=</span> <span class="st">"logistf"</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/StrategyLogistf.html">StrategyLogistf</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">modelstr</span>, model_name <span class="op">=</span> <span class="st">"logistf"</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>modelstr</code></dt>
@@ -184,6 +184,9 @@ logistic regression via <code><a href="https://rdrr.io/pkg/logistf/man/logistf.h
 
       <dt><code>model_name</code></dt>
 <dd><p>name of model</p></dd>
+
+      <dt><code>control</code></dt>
+<dd><p>named list of convergence controls, see <code><a href="strategy.html">strategy_logistf</a></code></p></dd>
 
 
 </dl><p></p></div>
@@ -247,7 +250,7 @@ logistic regression via <code><a href="https://rdrr.io/pkg/logistf/man/logistf.h
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">strat</span> <span class="op">&lt;-</span> <span class="va">StrategyLogistf</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"bin_resp ~ condition"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">strat</span><span class="op">$</span><span class="va">formula</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> bin_resp ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5db4aa004148&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5c35940eca10&gt;</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -203,10 +203,10 @@ print(analysis)
 #> Formula: medpolish ~ group_ 
 #> Contrasts: A_vs_Ctrl 
 #> Input subjects: 20 
-#> # A tibble: 1 × 5
-#>   subjects fitted failed singular imputed
-#>      <int>  <int>  <int>    <int>   <int>
-#> 1       20     20      0        0       0
+#> # A tibble: 1 × 6
+#>   subjects fitted failed singular imputed not_converged
+#>      <int>  <int>  <int>    <int>   <int>         <int>
+#> 1       20     20      0        0       0             0
 #> Provenance: 0 failure and 1 other entries; see $provenance() 
 #> Coefficient preview:
 #> # A tibble: 6 × 5
@@ -216,15 +216,15 @@ print(analysis)
 #> 2 0CubNR~5740 group_B      -0.162     0.0756     9
 #> 3 0CubNR~5740 group_Ctrl    0.0872    0.0741     9
 #> 4 2kfAGV~3196 (Intercept)   4.65      0.0296     8
-#> 5 2kfAGV~3196 group_B      -0.210     0.0419     8
+#> 5 2kfAGV~3196 group_B      -0.21      0.0419     8
 #> 6 2kfAGV~3196 group_Ctrl   -0.215     0.0453     8
 summary(analysis)
 #> prolfqua analysis summary: lm 
 #> Formula: medpolish ~ group_ 
-#> # A tibble: 1 × 5
-#>   subjects fitted failed singular imputed
-#>      <int>  <int>  <int>    <int>   <int>
-#> 1       20     20      0        0       0
+#> # A tibble: 1 × 6
+#>   subjects fitted failed singular imputed not_converged
+#>      <int>  <int>  <int>    <int>   <int>         <int>
+#> 1       20     20      0        0       0             0
 #> # A tibble: 1 × 8
 #>   contrast  estimated missing significant    up  down median_sigma median_df
 #>   <chr>         <int>   <int>       <int> <int> <int>        <dbl>     <dbl>
@@ -267,7 +267,7 @@ head(confint(analysis))
 #> 6 2kfAGV~3196 group_Ctrl   -0.215     0.0453     8  -0.320   -0.111
 formula(analysis)
 #> medpolish ~ group_
-#> <environment: 0x5e0fa4df71e0>
+#> <environment: 0x645fcb13c168>
 head(nobs(analysis))
 #> # A tibble: 6 × 2
 #>   protein_Id   nobs

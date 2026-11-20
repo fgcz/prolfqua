@@ -6,6 +6,20 @@ Decorate LFQData with Methods for transforming Intensities
 
 An R6 class generator.
 
+## Centring and contrasts
+
+Centring is an explicit transformation step, never applied by a model.
+\`robscale()\` and \`robscale_subset()\` centre each sample at its
+median (and scale by its MAD); \`preserve_mean = TRUE\` adds the overall
+mean back, so abundances stay on the original level, \`FALSE\` centres
+them at zero. \`center_to_reference()\` and
+\`subtract_sample_offsets()\` shift each sample by one offset. A
+per-sample shift moves every feature of that sample by the same amount:
+a contrast between groups changes by the difference of the mean offsets
+of the groups, and a shift common to all samples (such as
+\`preserve_mean\`) changes the average abundance (\`avgAbd\`) but not
+the contrast estimates, standard errors or p-values.
+
 ## Public fields
 
 - `lfq`:
@@ -105,7 +119,8 @@ robust scale data
 - `preserve_mean`:
 
   should original mean value be preserved TRUE, if FALSE then center at
-  zero
+  zero; changes the average abundance, not the contrasts (see section
+  "Centring and contrasts")
 
 - `colname`:
 
@@ -273,7 +288,10 @@ The objects of this class are cloneable with this method.
 
 ``` r
 istar <- sim_lfq_data_peptide_config(Nprot = 50)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 225 rows with NA response for feature and sample combinations absent from the input.
 lfqdata <- LFQData$new(istar$data, istar$config)
 
 lfqcopy <- lfqdata$get_copy()
@@ -348,15 +366,15 @@ if(require("vsn")){
 #> Loading required package: vsn
 #> $medians
 #>     A_V1     A_V2     A_V3     A_V4     B_V1     B_V2     B_V3     B_V4 
-#> 5.067592 5.060373 5.052612 5.063121 5.106810 5.128959 5.089511 5.100129 
+#> 5.010572 5.002975 4.994914 5.006013 5.051370 5.074292 5.033370 5.044391 
 #>  Ctrl_V1  Ctrl_V2  Ctrl_V3  Ctrl_V4 
-#> 5.098851 5.067436 5.089542 5.072697 
+#> 5.043057 5.010404 5.033362 5.015886 
 #> 
 #> $mads
 #>      A_V1      A_V2      A_V3      A_V4      B_V1      B_V2      B_V3      B_V4 
-#> 0.2356539 0.2539392 0.2391802 0.2462082 0.2603902 0.2549782 0.2228186 0.2342742 
+#> 0.2443545 0.2638516 0.2494166 0.2556915 0.2710033 0.2638501 0.2316761 0.2437389 
 #>   Ctrl_V1   Ctrl_V2   Ctrl_V3   Ctrl_V4 
-#> 0.2618927 0.2316253 0.2412538 0.2422008 
+#> 0.2738565 0.2415127 0.2514121 0.2512947 
 #> 
 if(require("preprocessCore")){
 quant <- function(y){
@@ -378,7 +396,10 @@ quant <- function(y){
 #subset scaling
 
 istar2 <- sim_lfq_data_peptide_config()
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
 lfqdata2 <- LFQData$new(istar2$data, istar2$config)
 lfqdata2 <- lfqdata2$get_Transformer()$intensity_array(log2)$lfq
 #> Column added : log2_abundance

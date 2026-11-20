@@ -51,7 +51,10 @@ Other preprocessing:
 
 ``` r
 istar <- prolfqua::sim_lfq_data_peptide_config()
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
 head(prolfqua:::nr_B_in_A(istar$data, "protein_Id", "peptide_Id"))
 #> # A tibble: 6 × 2
 #>   protein_Id  nr_peptide_Id_IN_protein_Id

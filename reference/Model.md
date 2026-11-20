@@ -227,7 +227,10 @@ The objects of this class are cloneable with this method.
 
 
 istar <- sim_lfq_data_peptide_config(Nprot = 20)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 110 rows with NA response for feature and sample combinations absent from the input.
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance
@@ -250,7 +253,7 @@ mod <- prolfqua::build_model(
 #> See $provenance().
 
 mod$model_df
-#> # A tibble: 20 × 10
+#> # A tibble: 20 × 12
 #> # Groups:   protein_Id [20]
 #>    protein_Id  data     linear_model fit_warnings has_model_fit isSingular
 #>    <chr>       <list>   <list>       <list>       <lgl>         <lgl>     
@@ -274,8 +277,8 @@ mod$model_df
 #> 18 R2i6w7~0288 <tibble> <lmrMdLmT>   <chr [0]>    TRUE          TRUE      
 #> 19 SGIVBl~9558 <tibble> <lmrMdLmT>   <chr [0]>    TRUE          FALSE     
 #> 20 r2J0Eh~2687 <tibble> <chr [1]>    <chr [0]>    FALSE         NA        
-#> # ℹ 4 more variables: df.residual <dbl>, sigma <dbl>, nr_coef <int>,
-#> #   nr_coef_not_NA <int>
+#> # ℹ 6 more variables: df.residual <dbl>, sigma <dbl>, nr_coef <int>,
+#> #   nr_coef_not_NA <int>, converged <lgl>, iterations <int>
 aovtable  <- mod$get_anova()
 mod$get_coefficients()
 #> # A tibble: 39 × 9

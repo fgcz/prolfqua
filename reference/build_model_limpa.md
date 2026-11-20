@@ -153,7 +153,10 @@ if (requireNamespace("limpa", quietly = TRUE)) {
   mod <- build_model_limpa(lfq, strat)
   mod$model_name
 }
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
 #> Column added : log2_abundance
 #> [1] "limpa"
 ```

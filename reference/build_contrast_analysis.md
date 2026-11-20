@@ -109,6 +109,31 @@ affect cost. Some mixed fits in this run emitted convergence warnings.
 Reproduction code and environment details are in
 `srr/benchmark-runtime.R` in the source repository.
 
+## Prior art
+
+- Improvements on existing R implementations, applied per protein behind
+  one interface: `lm` (stats), `rlm` (MASS), `rfit` (Rfit), `limma` and
+  `limma_voom` (limma), `deqms` (DEqMS), `limpa` and `limpa_nested`
+  (limpa), `lmer_nested` (lme4, lmerTest), `firth` (logistf).
+
+- Reimplementation in R of a published method: `ropeca_nested`, ROPECA
+  (Suomi and Elo 2017, Bioconductor package PECA), on peptide-level
+  models of any design.
+
+- First implementations of new methods: the `_impute` methods
+  (`lm_impute`, `rfit_impute`, `limma_impute`, `limma_voom_impute`),
+  which refit groups without observations at the limit of detection with
+  a borrowed variance (Wolski et al. 2023); `ropecaV2_nested`, a median
+  peptide z-score with a correlation-aware null; `binomial_nested` and
+  `binomial_firth_nested`, per-protein models of peptide detection.
+
+- `hurdle_nested` combines the intensity and detection tests as
+  msqrob2's `hypothesisTestHurdle` does, on prolfqua's own components.
+
+The Comparing methods article on the package website compares these
+implementations on one dataset. Comparisons with MSstats, msqrob2 and
+proDA are in the companion package prolfquabenchmark.
+
 ## See also
 
 Other modelling:
@@ -205,7 +230,10 @@ Other modelling:
 
 ``` r
 istar <- sim_lfq_data_protein_config(Nprot = 20)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 5 unconfigured columns: average_prot_abundance, sd, mean, N, Replicate.
+#> setup_analysis: added 34 rows with NA response for feature and sample combinations absent from the input.
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata$rename_response("transformedIntensity")
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
@@ -262,7 +290,10 @@ head(fa_deqms$get_contrasts())
 #> #   conf.high <dbl>, sigma <dbl>, FDR <dbl>
 
 istar_pep <- sim_lfq_data_peptide_config()
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
 lfqdata_pep <- LFQData$new(istar_pep$data, istar_pep$config)
 lfqdata_pep <- lfqdata_pep$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance
@@ -320,9 +351,9 @@ head(fa_firth$get_contrasts())
 #> # Groups:   contrast [1]
 #>   modelName estimate_type protein_Id  contrast  sigma    df      diff   FDR
 #>   <chr>     <chr>         <chr>       <chr>     <dbl> <int>     <dbl> <dbl>
-#> 1 firth     observed      0EfVhX~5954 A_vs_Ctrl     1     9  1.07e-15     1
+#> 1 firth     observed      0EfVhX~5954 A_vs_Ctrl     1     9  4.27e-16     1
 #> 2 firth     observed      0m5WN4~1448 A_vs_Ctrl     1     9 -2.20e+ 0     1
-#> 3 firth     observed      7cbcrd~8305 A_vs_Ctrl     1     9  1.07e-15     1
+#> 3 firth     observed      7cbcrd~8305 A_vs_Ctrl     1     9  4.27e-16     1
 #> 4 firth     observed      9VUkAq~4562 A_vs_Ctrl     1     9 -1.35e+ 0     1
 #> 5 firth     observed      At886V~3296 A_vs_Ctrl     1     9  5.58e-16     1
 #> 6 firth     observed      BEJI92~9143 A_vs_Ctrl     1     9 -1.35e+ 0     1

@@ -58,7 +58,10 @@ Other hierarchy counting:
 
 ``` r
 bb <- sim_lfq_data_peptide_config()
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
 lfq <- LFQData$new(bb$data, bb$config)
 summarize_hierarchy(lfq$data_long(), lfq$hierarchy_keys(), lfq$isotope_label())
 #> # A tibble: 28 × 3

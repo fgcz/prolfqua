@@ -125,7 +125,9 @@ Other modelling:
 
 ``` r
 m <- sim_make_model_lm("factors")
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, group, mean, N, Replicate.
 linfct <- linfct_from_model(m, as_list = TRUE)
 
 linfct$linfct_factors
@@ -149,7 +151,9 @@ dimnames = list(c("BackgroundX", "BackgroundZ", "TreatmentA", "TreatmentB"),
 )
 stopifnot(lf == linfct$linfct_factors)
 m <- sim_make_model_lm("interaction")
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, group, mean, N, Replicate.
 linfct <- linfct_from_model(m)
 
 m <- lm(Petal.Width ~ Species, data = iris)

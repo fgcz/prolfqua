@@ -109,7 +109,10 @@ Other modelling:
 
 ``` r
 modi <- sim_build_models_lmer(model = "interaction", weight_missing = 1)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 7 unconfigured columns: average_prot_abundance, sd, group, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 140 rows with NA response for feature and sample combinations absent from the input.
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
@@ -122,7 +125,10 @@ modi <- sim_build_models_lmer(model = "interaction", weight_missing = 1)
 #> See $provenance().
 stopifnot(sum(modi$model_df$has_model_fit) == 6)
 mod2 <- sim_build_models_lmer(model = "parallel2", weight_missing = 1)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 7 unconfigured columns: average_prot_abundance, sd, group, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 140 rows with NA response for feature and sample combinations absent from the input.
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
@@ -134,7 +140,10 @@ mod2 <- sim_build_models_lmer(model = "parallel2", weight_missing = 1)
 #> See $provenance().
 stopifnot(sum(mod2$model_df$has_model_fit) == 6)
 mod4 <- sim_build_models_lmer(model = "parallel3", weight_missing = 1)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
@@ -147,7 +156,10 @@ mod4 <- sim_build_models_lmer(model = "parallel3", weight_missing = 1)
 #> See $provenance().
 stopifnot(sum(mod4$model_df$has_model_fit) == 6)
 modf <- sim_build_models_lmer(model = "factors", weight_missing = 1)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 7 unconfigured columns: average_prot_abundance, sd, group, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 140 rows with NA response for feature and sample combinations absent from the input.
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')

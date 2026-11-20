@@ -260,12 +260,14 @@ small data.frame with canonical column names
 <code>contrast</code>, <code>effect</code>, <code>score</code>, <code>fdr</code>
 regardless of backend.</p><div class="section">
 <h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsInterface</span><span class="op">$</span><span class="fu">contrast_summary_table</span><span class="op">(</span>rounded <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsInterface</span><span class="op">$</span><span class="fu">contrast_summary_table</span><span class="op">(</span>rounded <span class="op">=</span> <span class="cn">TRUE</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>rounded</code></dt>
-<dd><p>if TRUE round numeric columns to 3 significant
-digits (matches the prolfquapp report convention)</p></dd>
+<dd><p>if TRUE round numeric columns to `digits` significant digits</p></dd>
+
+      <dt><code>digits</code></dt>
+<dd><p>significant digits when `rounded` (default 3, the prolfquapp report convention)</p></dd>
 
 
 </dl><p></p></div>

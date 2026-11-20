@@ -232,7 +232,10 @@ if (requireNamespace("limpa", quietly = TRUE)) {
   fa <- ContrastsLimpaNestedFacade$new(lfqdata, "~ group_", contrasts)
   head(fa$get_contrasts())
 }
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
 #> Column added : log2_abundance
 #> # A tibble: 6 × 16
 #>   modelName    estimate_type protein_Id  contrast     diff      FDR

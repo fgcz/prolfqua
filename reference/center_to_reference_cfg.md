@@ -29,7 +29,10 @@ The computed result.
 # example code
 
 bb <- sim_lfq_data_peptide_config(Nprot = 100)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 528 rows with NA response for feature and sample combinations absent from the input.
 x <- LFQData$new(bb$data, bb$config)
 xc <- x$get_copy()
 xc$set_data(xc$data_long() |> dplyr::filter(protein_Id == "0EfVhX~3967"))

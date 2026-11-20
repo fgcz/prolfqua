@@ -133,7 +133,7 @@ Create a new StrategyLogistf
 
 #### Usage
 
-    StrategyLogistf$new(modelstr, model_name = "logistf")
+    StrategyLogistf$new(modelstr, model_name = "logistf", control = list())
 
 #### Arguments
 
@@ -144,6 +144,11 @@ Create a new StrategyLogistf
 - `model_name`:
 
   name of model
+
+- `control`:
+
+  named list of convergence controls, see
+  [`strategy_logistf`](https://fgcz.github.io/prolfqua/reference/strategy.md)
 
 ------------------------------------------------------------------------
 
@@ -199,5 +204,5 @@ The objects of this class are cloneable with this method.
 strat <- StrategyLogistf$new("bin_resp ~ condition")
 strat$formula
 #> bin_resp ~ condition
-#> <environment: 0x5db4aa004148>
+#> <environment: 0x5c35940eca10>
 ```

@@ -5,7 +5,7 @@ visualize correlation among samples
 ## Usage
 
 ``` r
-plot_sample_correlation(matrix)
+plot_sample_correlation(matrix, method = "pearson", ...)
 ```
 
 ## Arguments
@@ -13,6 +13,15 @@ plot_sample_correlation(matrix)
 - matrix:
 
   numeric matrix — wide-format intensity data (samples as columns)
+
+- method:
+
+  correlation method, as for \[plot_heatmap_cor()\]
+
+- ...:
+
+  passed to \[corrplot::corrplot.mixed()\], e.g. \`tl.cex\` and
+  \`number.cex\` for text size (default 1)
 
 ## See also
 
@@ -38,7 +47,10 @@ Other plotting:
 
 ``` r
 istar <- sim_lfq_data_peptide_config()
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
 lfq <- LFQData$new(istar$data, istar$config)
 lfq <- lfq$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance

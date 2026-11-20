@@ -83,6 +83,10 @@ fit(x) method and overrides only the methods that differ."></head><body>
 <dd><p>ANOVA extractor, see <code><a href="AnovaExtractor.html">AnovaExtractor</a></code></p></dd>
 
 
+    <dt><code>control</code></dt>
+<dd><p>convergence controls passed to the fitting backend (empty for non-iterative fits)</p></dd>
+
+
 </dl><p></p></div>
     </div>
     <div class="section level2">
@@ -102,7 +106,7 @@ fit(x) method and overrides only the methods that differ."></head><body>
 <h3 id="strategybase-new-"><code>StrategyBase$new()</code><a class="anchor" aria-label="anchor" href="#strategybase-new-"></a></h3>
 <p>Create a new strategy</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/StrategyBase.html">StrategyBase</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">modelstr</span>, model_name <span class="op">=</span> <span class="st">"Model"</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/StrategyBase.html">StrategyBase</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">modelstr</span>, model_name <span class="op">=</span> <span class="st">"Model"</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>modelstr</code></dt>
@@ -110,6 +114,10 @@ fit(x) method and overrides only the methods that differ."></head><body>
 
       <dt><code>model_name</code></dt>
 <dd><p>name of model</p></dd>
+
+      <dt><code>control</code></dt>
+<dd><p>named list of convergence controls merged over the strategy's defaults; names the
+backend does not accept raise a classed error</p></dd>
 
 
 </dl><p></p></div>

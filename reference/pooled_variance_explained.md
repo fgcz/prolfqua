@@ -51,7 +51,10 @@ Other stats:
 
 ``` r
 bb <- prolfqua::sim_lfq_data_2factor_config(Nprot = 20)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, group, mean, N, Replicate.
+#> setup_analysis: added 44 rows with NA response for feature and sample combinations absent from the input.
 bb$config$factor_depth <- 2
 lfqdata <- LFQData$new(bb$data, bb$config)
 lfqdata$is_transformed(TRUE)

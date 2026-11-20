@@ -50,13 +50,19 @@ A list containing simulated data and an analysis configuration.
 
 ``` r
 x <- sim_lfq_data_2factor_config(PEPTIDE= FALSE)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, group, mean, N, Replicate.
+#> setup_analysis: added 22 rows with NA response for feature and sample combinations absent from the input.
 dim(x$data)
 #> [1] 160   9
 stopifnot("data.frame" %in% class(x$data))
 stopifnot("AnalysisConfiguration" %in% class(x$config))
 x <- sim_lfq_data_2factor_config(PEPTIDE = TRUE)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 7 unconfigured columns: average_prot_abundance, sd, group, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 40 rows with NA response for feature and sample combinations absent from the input.
 
 head(x$data)
 #> # A tibble: 6 × 10
@@ -70,7 +76,10 @@ head(x$data)
 #> 6 A_V1   A_V1       A         X          light        BEJI92~5282 HBkZvdhT  
 #> # ℹ 3 more variables: abundance <dbl>, qValue <dbl>, nrPeptides <dbl>
 x <- sim_lfq_data_2factor_config(PEPTIDE = TRUE, TWO = TRUE)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 7 unconfigured columns: average_prot_abundance, sd, group, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 40 rows with NA response for feature and sample combinations absent from the input.
 names(x)
 #> [1] "data"   "config"
 nrow(x$data) > 10

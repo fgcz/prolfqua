@@ -118,7 +118,9 @@ Other modelling:
 
 ``` r
 mb <- sim_make_model_lmer("interaction")
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 7 unconfigured columns: average_prot_abundance, sd, group, mean, N, avg_peptide_abd, Replicate.
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
@@ -134,6 +136,7 @@ summary(mb)
 #> lmerModLmerTest]
 #> Formula: self$formula
 #>    Data: x
+#> Control: do.call(lme4::lmerControl, self$control)
 #> 
 #> REML criterion at convergence: 193.5
 #> 
@@ -195,6 +198,7 @@ summary(mb)
 #> lmerModLmerTest]
 #> Formula: self$formula
 #>    Data: x
+#> Control: do.call(lme4::lmerControl, self$control)
 #> 
 #> REML criterion at convergence: 193.5
 #> 

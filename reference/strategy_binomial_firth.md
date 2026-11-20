@@ -5,7 +5,11 @@ Create a Firth-penalized quasibinomial detection-count strategy
 ## Usage
 
 ``` r
-strategy_binomial_firth(modelstr, model_name = "binomial_firth_nested")
+strategy_binomial_firth(
+  modelstr,
+  model_name = "binomial_firth_nested",
+  control = list()
+)
 ```
 
 ## Arguments
@@ -17,6 +21,13 @@ strategy_binomial_firth(modelstr, model_name = "binomial_firth_nested")
 - model_name:
 
   model identity
+
+- control:
+
+  `maxit` (default 100) and `tol` (default 1e-8): iteration limit of the
+  Firth adjustment and the largest coefficient change (log odds) that
+  stops it; log odds of detection range over about -10 to 10, so 1e-8 is
+  far below any reported precision.
 
 ## Value
 
@@ -30,5 +41,5 @@ object.
 strategy <- strategy_binomial_firth("~ group_")
 strategy$formula
 #> cbind(.detected, .undetected) ~ group_
-#> <environment: 0x5db4d41b8398>
+#> <environment: 0x5c358f384c00>
 ```

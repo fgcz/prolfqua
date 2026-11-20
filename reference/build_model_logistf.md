@@ -6,8 +6,23 @@ response of aggregated data, one row per subject and sample.
 ## Usage
 
 ``` r
-build_model_logistf(data, formula)
+build_model_logistf(data, formula, control = list())
 ```
+
+## Arguments
+
+- data:
+
+  aggregated LFQData with a binary detection response
+
+- formula:
+
+  model formula with the binary response
+
+- control:
+
+  convergence controls, see
+  [`strategy_logistf`](https://fgcz.github.io/prolfqua/reference/strategy.md)
 
 ## See also
 
@@ -106,7 +121,10 @@ Other modelling:
 ``` r
 istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 5 unconfigured columns: average_prot_abundance, sd, mean, N, Replicate.
+#> setup_analysis: added 23 rows with NA response for feature and sample combinations absent from the input.
 istar$data <- prolfqua::encode_bin_resp(LFQData$new(istar$data, istar$config))
 istar$config$bin_resp <- "bin_resp"
 tmp <- LFQData$new(istar$data, istar$config)

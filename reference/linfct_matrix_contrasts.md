@@ -128,7 +128,9 @@ Other modelling:
 
 ``` r
 m <- sim_make_model_lm( "factors")
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, group, mean, N, Replicate.
 Contr <- c("TreatmentA_vs_B" = "TreatmentA - TreatmentB",
     "BackgroundX_vs_Z" = "BackgroundX - BackgroundZ",
     "IntoflintoA" = "`TreatmentA:BackgroundX` - `TreatmentA:BackgroundZ`",
@@ -144,7 +146,9 @@ stopifnot(sum(x["interactXZ",]) == 0 )
 stopifnot(sum(x["interactAB",]) == 0 )
 
 m <- sim_make_model_lm( "interaction")
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, group, mean, N, Replicate.
 linfct <- linfct_from_model(m, as_list = FALSE)
 x <- linfct_matrix_contrasts(linfct, Contr )
 stopifnot(sum(x["interactXZ",]) ==1 )

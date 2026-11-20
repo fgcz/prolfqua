@@ -114,13 +114,19 @@ The objects of this class are cloneable with this method.
 
 ``` r
 dd <- prolfqua::sim_lfq_data_protein_config(Nprot = 100,weight_missing = 1)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 5 unconfigured columns: average_prot_abundance, sd, mean, N, Replicate.
+#> setup_analysis: added 406 rows with NA response for feature and sample combinations absent from the input.
 mh <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.8)
 xx <- mh$get_stats()
 xx <- mh$get_lod()
 
 dd <- prolfqua::sim_lfq_data_2factor_config(Nprot = 100,weight_missing = 0.1)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, group, mean, N, Replicate.
+#> setup_analysis: added 97 rows with NA response for feature and sample combinations absent from the input.
 mh <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.8)
 mh$get_stats()$interaction |> table()
 #> 

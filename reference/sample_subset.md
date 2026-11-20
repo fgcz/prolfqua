@@ -42,7 +42,10 @@ Other configuration:
 
 ``` r
 bb <- sim_lfq_data_peptide_config(Nprot = 5)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 39 rows with NA response for feature and sample combinations absent from the input.
 subset <- sample_subset(2, bb$data, bb$config$hierarchy_keys_depth())
 length(unique(subset[[bb$config$hierarchy_keys_depth()[1]]]))
 #> [1] 2

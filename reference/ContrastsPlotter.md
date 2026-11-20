@@ -505,7 +505,10 @@ The objects of this class are cloneable with this method.
 
 ``` r
 istar <- sim_lfq_data_peptide_config(Nprot = 20)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 110 rows with NA response for feature and sample combinations absent from the input.
 model_name <- "Model"
 modelFunction <-
   strategy_lmer("abundance  ~ group_ + (1 | peptide_Id) + (1|sample)",

@@ -19,16 +19,26 @@ Other LFQData:
 [`LFQDataStats`](https://fgcz.github.io/prolfqua/reference/LFQDataStats.md),
 [`LFQDataSummariser`](https://fgcz.github.io/prolfqua/reference/LFQDataSummariser.md),
 [`LFQDataToSummarizedExperiment()`](https://fgcz.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md),
-[`lfqdata_from_wide()`](https://fgcz.github.io/prolfqua/reference/lfqdata_from_wide.md)
+[`lfqdata_from_wide()`](https://fgcz.github.io/prolfqua/reference/lfqdata_from_wide.md),
+[`plot.LFQData()`](https://fgcz.github.io/prolfqua/reference/plot.LFQData.md)
 
 ## Super class
 
 [`AggregatorBase`](https://fgcz.github.io/prolfqua/reference/AggregatorBase.md)
 -\> `AggregateMedpolish`
 
+## Public fields
+
+- `control`:
+
+  convergence controls, see
+  [`estimate_intensity`](https://fgcz.github.io/prolfqua/reference/estimate_intensity.md)
+
 ## Methods
 
 ### Public methods
+
+- [`AggregateMedpolish$new()`](#method-AggregateMedpolish-initialize)
 
 - [`AggregateMedpolish$aggregate()`](#method-AggregateMedpolish-aggregate)
 
@@ -36,9 +46,33 @@ Other LFQData:
 
 Inherited methods
 
-- [`AggregatorBase$initialize()`](https://fgcz.github.io/prolfqua/reference/AggregatorBase.html#method-initialize)
 - [`AggregatorBase$plot()`](https://fgcz.github.io/prolfqua/reference/AggregatorBase.html#method-plot)
 - [`AggregatorBase$write_plots()`](https://fgcz.github.io/prolfqua/reference/AggregatorBase.html#method-write_plots)
+
+------------------------------------------------------------------------
+
+### `AggregateMedpolish$new()`
+
+initialize
+
+#### Usage
+
+    AggregateMedpolish$new(lfq, prefix = "protein", control = list())
+
+#### Arguments
+
+- `lfq`:
+
+  LFQData
+
+- `prefix`:
+
+  default protein
+
+- `control`:
+
+  named list of convergence controls merged over the defaults, see
+  [`estimate_intensity`](https://fgcz.github.io/prolfqua/reference/estimate_intensity.md)
 
 ------------------------------------------------------------------------
 
@@ -74,7 +108,10 @@ The objects of this class are cloneable with this method.
 
 ``` r
 istar <- prolfqua::sim_lfq_data_peptide_config()
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
 data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 lfqdata <- LFQData$new(data, istar$config)
 lfqTrans <- lfqdata$clone()$get_Transformer()$log2()$robscale()$lfq
@@ -82,6 +119,7 @@ lfqTrans <- lfqdata$clone()$get_Transformer()$log2()$robscale()$lfq
 
 agg <- AggregateMedpolish$new(lfqTrans, "protein")
 agg$aggregate()
+#> Response `medpolish`: dropped attributes names; prolfqua uses the numeric values only.
 p <- agg$plot()
 p$plots[[1]]
 #> Warning: Removed 7 rows containing missing values or values outside the scale range

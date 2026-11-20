@@ -110,7 +110,9 @@ Other stats:
 
 ``` r
 bb <- sim_lfq_data_protein_config(Nprot = 50, with_missing = FALSE)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 5 unconfigured columns: average_prot_abundance, sd, mean, N, Replicate.
 lfqdata <- LFQData$new(bb$data, bb$config)
 lfqdata$is_transformed(TRUE)
 res <- null_split_check(lfqdata, method = "limma", n_splits = 5, seed = 1)

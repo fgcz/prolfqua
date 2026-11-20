@@ -106,7 +106,10 @@ The objects of this class are cloneable with this method.
 
 ``` r
 istar <- sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.5, seed = 3)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 205 rows with NA response for feature and sample combinations absent from the input.
 lfqdata <- LFQData$new(istar$data, istar$config)
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 facade <- ContrastsBinomialFirthNestedFacade$new(lfqdata, "~ group_", contrasts)

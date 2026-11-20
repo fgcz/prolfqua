@@ -31,7 +31,8 @@ Other LFQData:
 [`LFQDataStats`](https://fgcz.github.io/prolfqua/reference/LFQDataStats.md),
 [`LFQDataSummariser`](https://fgcz.github.io/prolfqua/reference/LFQDataSummariser.md),
 [`LFQDataToSummarizedExperiment()`](https://fgcz.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md),
-[`lfqdata_from_wide()`](https://fgcz.github.io/prolfqua/reference/lfqdata_from_wide.md)
+[`lfqdata_from_wide()`](https://fgcz.github.io/prolfqua/reference/lfqdata_from_wide.md),
+[`plot.LFQData()`](https://fgcz.github.io/prolfqua/reference/plot.LFQData.md)
 
 ## Public fields
 
@@ -48,6 +49,8 @@ Other LFQData:
 - [`LFQData$provenance()`](#method-LFQData-provenance)
 
 - [`LFQData$get_provenance_log()`](#method-LFQData-get_provenance_log)
+
+- [`LFQData$print()`](#method-LFQData-print)
 
 - [`LFQData$set_data()`](#method-LFQData-set_data)
 
@@ -188,6 +191,31 @@ derived data
 #### Returns
 
 Provenance object
+
+------------------------------------------------------------------------
+
+### `LFQData$print()`
+
+print samples, response, hierarchy counts, samples per factor level,
+missing responses and provenance
+
+#### Usage
+
+    LFQData$print(digits = 3, ...)
+
+#### Arguments
+
+- `digits`:
+
+  significant digits of printed numbers (default 3)
+
+- `...`:
+
+  unused
+
+#### Returns
+
+self (invisible)
 
 ------------------------------------------------------------------------
 
@@ -769,7 +797,10 @@ The objects of this class are cloneable with this method.
 
 ``` r
 istar <- sim_lfq_data_peptide_config()
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata$filter_proteins_by_peptide_count()
 #> Column added : nr_peptide_Id_IN_protein_Id

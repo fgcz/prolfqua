@@ -69,15 +69,15 @@ Convenience wrapper that creates a StrategyRLM object."></head><body>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">strategy_logistf</span><span class="op">(</span><span class="va">modelstr</span>, model_name <span class="op">=</span> <span class="st">"logistf"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">strategy_logistf</span><span class="op">(</span><span class="va">modelstr</span>, model_name <span class="op">=</span> <span class="st">"logistf"</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">strategy_rfit</span><span class="op">(</span><span class="va">modelstr</span>, model_name <span class="op">=</span> <span class="st">"rfit"</span><span class="op">)</span></span>
+<span><span class="fu">strategy_rfit</span><span class="op">(</span><span class="va">modelstr</span>, model_name <span class="op">=</span> <span class="st">"rfit"</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">strategy_lmer</span><span class="op">(</span><span class="va">modelstr</span>, model_name <span class="op">=</span> <span class="st">"Model"</span><span class="op">)</span></span>
+<span><span class="fu">strategy_lmer</span><span class="op">(</span><span class="va">modelstr</span>, model_name <span class="op">=</span> <span class="st">"Model"</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">strategy_lm</span><span class="op">(</span><span class="va">modelstr</span>, model_name <span class="op">=</span> <span class="st">"Model"</span>, weights <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">strategy_rlm</span><span class="op">(</span><span class="va">modelstr</span>, model_name <span class="op">=</span> <span class="st">"Model"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">strategy_rlm</span><span class="op">(</span><span class="va">modelstr</span>, model_name <span class="op">=</span> <span class="st">"Model"</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -90,6 +90,13 @@ Convenience wrapper that creates a StrategyRLM object."></head><body>
 
 <dt id="arg-model-name">model_name<a class="anchor" aria-label="anchor" href="#arg-model-name"></a></dt>
 <dd><p>name of model</p></dd>
+
+
+<dt id="arg-control">control<a class="anchor" aria-label="anchor" href="#arg-control"></a></dt>
+<dd><p>for <code>strategy_rlm()</code>: <code>maxit</code> (default 20) and <code>acc</code> (default 1e-4), the
+iteration limit and the relative change of the IRLS residuals that stops <code><a href="https://rdrr.io/pkg/MASS/man/rlm.html" class="external-link">rlm</a></code>; the
+criterion is relative, so it does not depend on the intensity scale, and 1e-4 is far below the precision of
+log2 intensities.</p></dd>
 
 
 <dt id="arg-weights">weights<a class="anchor" aria-label="anchor" href="#arg-weights"></a></dt>
@@ -204,11 +211,14 @@ Default <code>NULL</code> (unweighted).</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_logistf</span><span class="op">(</span><span class="st">"bin_resp ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">formula</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> bin_resp ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5db4d88f9db8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5c3582a8f6c0&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span>Nprot <span class="op">=</span> <span class="fl">10</span>, with_missing <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  weight_missing <span class="op">=</span> <span class="fl">0.5</span>, seed <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from file_name column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> setup_analysis: added 60 rows with NA response for feature and sample combinations absent from the input.</span>
 <span class="r-in"><span><span class="va">istar</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="encode_bin_resp.html">encode_bin_resp</a></span><span class="op">(</span><span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">istar</span><span class="op">$</span><span class="va">data</span>, <span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">bin_resp</span> <span class="op">&lt;-</span> <span class="st">"bin_resp"</span></span></span>
 <span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">istar</span><span class="op">$</span><span class="va">data</span>, <span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
@@ -222,15 +232,16 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <span class="r-in"><span>  model_name <span class="op">=</span> <span class="st">"random_example"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">modelFunction</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span><span class="va">nestProtein</span><span class="op">$</span><span class="va">data</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> logistf::logistf(formula = self$formula, data = DFT, pl = FALSE, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     control = do.call(logistf::logistf.control, self$control), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     weights = Freq)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model fitted by Penalized ML</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Confidence intervals and p-values by Wald </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        (Intercept)            group_B         group_Ctrl peptide_IdFLq7LKTq </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       2.101899e+00       6.773389e-01      -6.663876e-01      -1.226933e-15 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       2.101899e+00       6.773389e-01      -6.663876e-01       9.509484e-16 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> peptide_IdJYhOpuPH peptide_IdLiw5EMKP peptide_IdVcatZJTa peptide_IdjrLUqOjg </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      -1.068335e+00      -7.226922e-16      -1.068335e+00       1.197563e+00 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      -1.068335e+00       7.971977e-16      -1.068335e+00       1.197563e+00 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> peptide_Idq2jTaC1y </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      -1.445323e+00 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -238,13 +249,14 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="va">modelFunction</span><span class="op">$</span><span class="fu">model_fun</span><span class="op">(</span><span class="va">nestProtein</span><span class="op">$</span><span class="va">data</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> logistf::logistf(formula = self$formula, data = DFT, pl = FALSE, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     control = do.call(logistf::logistf.control, self$control), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     weights = Freq)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model fitted by Penalized ML</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Confidence intervals and p-values by Wald </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        (Intercept)            group_B         group_Ctrl peptide_IdWcAw5ozd </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       8.375544e-03       8.360389e-11       9.365126e-01      -3.147690e-01 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       8.375544e-03       8.360364e-11       9.365126e-01      -3.147690e-01 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> peptide_IdgdnXrza3 peptide_IdxvlVt88v </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      -2.035803e-09      -6.303721e-01 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -253,22 +265,29 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_rfit</span><span class="op">(</span><span class="st">"Intensity ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">formula</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Intensity ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5db4e7a53878&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5c3584c55100&gt;</span>
 <span class="r-in"><span><span class="va">modelFunction</span> <span class="op">&lt;-</span> <span class="fu">strategy_lmer</span><span class="op">(</span><span class="st">"abundanceC ~ group_ + (1|peptide_Id)"</span>,</span></span>
 <span class="r-in"><span>  model_name <span class="op">=</span> <span class="st">"random_example"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">modelFunction</span><span class="op">$</span><span class="va">formula</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> abundanceC ~ group_ + (1 | peptide_Id)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5db4e7db7580&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5c3584994c80&gt;</span>
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_lm</span><span class="op">(</span><span class="st">"Intensity ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">formula</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Intensity ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5db4e60723b8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5c358477bb00&gt;</span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">weights</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_rlm</span><span class="op">(</span><span class="st">"Intensity ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">formula</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Intensity ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5db4e0c0e080&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5c3584350800&gt;</span>
+<span class="r-in"><span><span class="fu">strategy_rlm</span><span class="op">(</span><span class="st">"Intensity ~ condition"</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>maxit <span class="op">=</span> <span class="fl">50</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">control</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $maxit</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $acc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

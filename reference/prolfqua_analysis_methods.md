@@ -10,13 +10,13 @@ and report counts at the requested FDR and absolute effect thresholds.
 
 ``` r
 # S3 method for class 'ContrastsFacadeBase'
-print(x, ...)
+print(x, digits = 3, ...)
 
 # S3 method for class 'ContrastsFacadeBase'
 summary(object, FDR_threshold = 0.05, diff_threshold = 1, ...)
 
 # S3 method for class 'summary.ContrastsFacadeBase'
-print(x, ...)
+print(x, digits = 3, ...)
 
 # S3 method for class 'ContrastsFacadeBase'
 coef(object, ...)
@@ -37,6 +37,9 @@ nobs(object, ...)
 fitted(object, ...)
 
 # S3 method for class 'ContrastsFacadeBase'
+predict(object, newdata = NULL, ...)
+
+# S3 method for class 'ContrastsFacadeBase'
 residuals(object, ...)
 
 # S3 method for class 'ContrastsFacadeBase'
@@ -49,6 +52,11 @@ plot(x, type = c("fitted", "volcano", "ma"), subject = NULL, level = 0.95, ...)
 
   a fitted analysis returned by
   [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md).
+
+- digits:
+
+  significant digits of the numbers printed by
+  [`print()`](https://rdrr.io/r/base/print.html) (default 3).
 
 - ...:
 
@@ -72,6 +80,13 @@ plot(x, type = c("fitted", "volcano", "ma"), subject = NULL, level = 0.95, ...)
 - level:
 
   confidence level, strictly between zero and one.
+
+- newdata:
+
+  for \`predict()\`: data frame with the subject identifier and
+  predictor columns; \`NULL\` (default) predicts every subject in every
+  sample of the analysis input, including samples with missing
+  responses.
 
 - type:
 
@@ -125,8 +140,14 @@ component for fitted plots.
 identifiers, `term`, `term2` and `covariance`. It uses backend
 covariance (borrowed for LOD refits) or, for matrix models, the
 moderated variance times the inverse of the per-subject weighted design
-crossproduct. Failed matrix fits are omitted. Summary fit counts are not
-per-subject convergence diagnostics.
+crossproduct. Failed matrix fits are omitted.
+[`predict()`](https://rdrr.io/r/stats/predict.html) returns `newdata`
+with `prediction` on the fitting scale (probabilities for detection
+models; mixed models at population level, without random effects) and
+`imputed` (the subject's fit is a limit-of-detection refit). Hurdle
+results predict per component. The fit status counts subjects that did
+not converge (`not_converged`); per subject, `converged` and
+`iterations` are columns of the model table (`analysis$model$model_df`).
 
 ## See also
 
@@ -224,7 +245,9 @@ Other modelling:
 
 ``` r
 sim <- sim_lfq_data_protein_config(Nprot = 10, weight_missing = 0, seed = 42)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 5 unconfigured columns: average_prot_abundance, sd, mean, N, Replicate.
 lfq <- LFQData$new(sim$data, sim$config)
 analysis <- build_contrast_analysis(lfq, "~ group_", c(A_vs_Ctrl = "group_A - group_Ctrl"))
 print(analysis)
@@ -232,28 +255,28 @@ print(analysis)
 #> Formula: abundance ~ group_ 
 #> Contrasts: A_vs_Ctrl 
 #> Input subjects: 10 
-#> # A tibble: 1 × 5
-#>   subjects fitted failed singular imputed
-#>      <int>  <int>  <int>    <int>   <int>
-#> 1       10     10      0        0       0
+#> # A tibble: 1 × 6
+#>   subjects fitted failed singular imputed not_converged
+#>      <int>  <int>  <int>    <int>   <int>         <int>
+#> 1       10     10      0        0       0             0
 #> Provenance: 0 failure and 0 other entries; see $provenance() 
 #> Coefficient preview:
 #> # A tibble: 6 × 5
 #>   protein_Id  term        estimate std.error    df
 #>   <chr>       <chr>          <dbl>     <dbl> <dbl>
-#> 1 0CubNR~8247 (Intercept)   24.1       0.680     9
+#> 1 0CubNR~8247 (Intercept)   24.1       0.68      9
 #> 2 0CubNR~8247 group_B        0.223     0.961     9
 #> 3 0CubNR~8247 group_Ctrl    -1.05      0.961     9
-#> 4 2kfAGV~7674 (Intercept)   18.2       0.610     9
+#> 4 2kfAGV~7674 (Intercept)   18.2       0.61      9
 #> 5 2kfAGV~7674 group_B        0.585     0.863     9
 #> 6 2kfAGV~7674 group_Ctrl     0.123     0.863     9
 summary(analysis)
 #> prolfqua analysis summary: lm 
 #> Formula: abundance ~ group_ 
-#> # A tibble: 1 × 5
-#>   subjects fitted failed singular imputed
-#>      <int>  <int>  <int>    <int>   <int>
-#> 1       10     10      0        0       0
+#> # A tibble: 1 × 6
+#>   subjects fitted failed singular imputed not_converged
+#>      <int>  <int>  <int>    <int>   <int>         <int>
+#> 1       10     10      0        0       0             0
 #> # A tibble: 1 × 8
 #>   contrast  estimated missing significant    up  down median_sigma median_df
 #>   <chr>         <int>   <int>       <int> <int> <int>        <dbl>     <dbl>
@@ -291,7 +314,7 @@ head(stats::confint(analysis))
 #> 6 2kfAGV~7674 group_Ctrl     0.123     0.863     9    -1.83      2.07
 stats::formula(analysis)
 #> abundance ~ group_
-#> <environment: 0x5db4cb66e608>
+#> <environment: 0x5c358cc7d458>
 head(stats::nobs(analysis))
 #> # A tibble: 6 × 2
 #>   protein_Id   nobs

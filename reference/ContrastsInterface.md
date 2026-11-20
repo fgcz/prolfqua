@@ -237,14 +237,18 @@ data.frame with canonical column names `contrast`, `effect`, `score`,
 
 #### Usage
 
-    ContrastsInterface$contrast_summary_table(rounded = TRUE)
+    ContrastsInterface$contrast_summary_table(rounded = TRUE, digits = 3)
 
 #### Arguments
 
 - `rounded`:
 
-  if TRUE round numeric columns to 3 significant digits (matches the
-  prolfquapp report convention)
+  if TRUE round numeric columns to \`digits\` significant digits
+
+- `digits`:
+
+  significant digits when \`rounded\` (default 3, the prolfquapp report
+  convention)
 
 ------------------------------------------------------------------------
 

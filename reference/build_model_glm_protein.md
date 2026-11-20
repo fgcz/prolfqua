@@ -6,7 +6,7 @@ backend used by the missingness model path in `prolfquapp`.
 ## Usage
 
 ``` r
-build_model_glm_protein(lfqdata, modelstr)
+build_model_glm_protein(lfqdata, modelstr, control = list())
 ```
 
 ## Arguments
@@ -19,7 +19,13 @@ build_model_glm_protein(lfqdata, modelstr)
 
 - modelstr:
 
-  model formula string without the response variable (e.g. `"~ group_"`)
+  model formula string without the response variable
+
+- control:
+
+  convergence controls, see
+  [`strategy_logistf`](https://fgcz.github.io/prolfqua/reference/strategy.md)
+  (e.g. `"~ group_"`)
 
 ## Value
 
@@ -124,7 +130,10 @@ Other modelling:
 ``` r
 istar <- sim_lfq_data_protein_config(
   Nprot = 10, with_missing = TRUE, weight_missing = 0.5, seed = 3)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 5 unconfigured columns: average_prot_abundance, sd, mean, N, Replicate.
+#> setup_analysis: added 23 rows with NA response for feature and sample combinations absent from the input.
 lfqdata <- LFQData$new(istar$data, istar$config)
 mod <- build_model_glm_protein(lfqdata, "~ group_")
 head(mod$get_coefficients())
@@ -132,10 +141,10 @@ head(mod$get_coefficients())
 #>   protein_Id  factor      Estimate se.coef. lower.0.95 upper.0.95    Chisq     p
 #>   <chr>       <chr>          <dbl>    <dbl>      <dbl>      <dbl>    <dbl> <dbl>
 #> 1 7IZdVV~0841 (Intercep…  2.20e+ 0     1.49     -0.725       5.12 2.17e+ 0 0.140
-#> 2 7IZdVV~0841 group_B     5.68e-16     2.11     -4.13        4.13 7.74e-32 1    
+#> 2 7IZdVV~0841 group_B     9.70e-16     2.11     -4.13        4.13 1.74e-31 1    
 #> 3 7IZdVV~0841 group_Ctrl -2.20e+ 0     1.74     -5.60        1.21 1.60e+ 0 0.206
 #> 4 AZPG26~2091 (Intercep…  2.20e+ 0     1.49     -0.725       5.12 2.17e+ 0 0.140
-#> 5 AZPG26~2091 group_B    -1.52e-15     2.11     -4.13        4.13 4.84e-31 1.00 
-#> 6 AZPG26~2091 group_Ctrl -1.07e-15     2.11     -4.13        4.13 3.10e-31 1    
+#> 5 AZPG26~2091 group_B     1.26e-15     2.11     -4.13        4.13 3.10e-31 1    
+#> 6 AZPG26~2091 group_Ctrl -4.27e-16     2.11     -4.13        4.13 1.94e-32 1    
 #> # ℹ 3 more variables: method <dbl>, isSingular <lgl>, nr_coef <int>
 ```

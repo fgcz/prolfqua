@@ -4,6 +4,57 @@
 
 ### New features
 
+- [`plot_heatmap_cor()`](https://fgcz.github.io/prolfqua/reference/plot_heatmap_cor.md),
+  [`plot_sample_correlation()`](https://fgcz.github.io/prolfqua/reference/plot_sample_correlation.md)
+  and the plotter’s `$heatmap_cor()` and `$sample_correlation()` take
+  `method`: a [`stats::cor()`](https://rdrr.io/r/stats/cor.html) method
+  (`"pearson"`, `"spearman"`, `"kendall"`) or a function returning a
+  sample correlation matrix.
+
+- [`predict()`](https://rdrr.io/r/stats/predict.html) on fitted analyses
+  returns predictions for any combination of subject and group (default:
+  every subject in every input sample, including samples with missing
+  responses), on the fitting scale. Groups absent from a subject’s fit
+  are predicted from the limit-of-detection refit of the `_impute`
+  methods and are `NA` otherwise; ROPECA predicts per peptide, mixed
+  models at population level, detection models as probabilities, and
+  hurdle analyses per component.
+
+- `LFQData` prints a summary (samples, response and whether it is
+  transformed, hierarchy counts, samples per factor level, response
+  range, missing responses, provenance), and
+  [`plot()`](https://rdrr.io/r/graphics/plot.default.html) on an
+  `LFQData` shows the response distribution per sample.
+
+- `digits` controls the significant digits of numbers printed by
+  [`print()`](https://rdrr.io/r/base/print.html) of `LFQData`, of fitted
+  analyses and of their
+  [`summary()`](https://rdrr.io/r/base/summary.html) (default 3), and of
+  `contrast_summary_table(digits = )`.
+
+- Convergence controls:
+  [`strategy_rlm()`](https://fgcz.github.io/prolfqua/reference/strategy.md),
+  [`strategy_lmer()`](https://fgcz.github.io/prolfqua/reference/strategy.md),
+  [`strategy_binomial()`](https://fgcz.github.io/prolfqua/reference/strategy_binomial.md),
+  [`strategy_binomial_firth()`](https://fgcz.github.io/prolfqua/reference/strategy_binomial_firth.md),
+  [`strategy_logistf()`](https://fgcz.github.io/prolfqua/reference/strategy.md),
+  [`strategy_rfit()`](https://fgcz.github.io/prolfqua/reference/strategy.md),
+  the `medpolish` and `rlm` aggregators
+  (`get_Aggregator(method, control = )`) and
+  [`estimate_intensity()`](https://fgcz.github.io/prolfqua/reference/estimate_intensity.md)
+  take a `control` list (iteration limit, tolerance), which
+  `build_contrast_analysis(..., control = )` passes on, also for
+  `firth`. Defaults are unchanged and documented with their reasons;
+  unknown names raise `prolfqua_error_bad_argument`.
+
+- Convergence statistics: model tables keep `converged` and `iterations`
+  per subject (rlm, glm and Firth, lmer, logistf; `NA` where the backend
+  keeps no status), the fit status of
+  [`print()`](https://rdrr.io/r/base/print.html) and
+  [`summary()`](https://rdrr.io/r/base/summary.html) counts
+  `not_converged`, and a fit that stops at its iteration limit without a
+  backend warning is recorded in `$provenance()`.
+
 - Provenance: `LFQData`, models and analyses record the problems and
   dropped items that happen in them, read with `$provenance()`: values
   set to `NA` (`remove_small_intensities()`, zeros in log transforms),
@@ -122,6 +173,44 @@
 
 ### Behaviour changes
 
+- [`setup_analysis()`](https://fgcz.github.io/prolfqua/reference/setup_analysis.md)
+  announces each transformation it applies with a `prolfqua_message`:
+  source columns united into one key, non-character factor columns
+  converted to character labels, unconfigured columns dropped, and rows
+  with NA response added for absent feature and sample combinations. Its
+  help lists every step and how to avoid it.
+
+- [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
+  checks before fitting that the fixed-effect design is of full rank
+  across samples (aliased factors, empty interaction cells) and stops
+  with `prolfqua_error_collinear_design` naming the aliased
+  coefficients; such designs used to fail later with unrelated errors.
+
+- Fitting and aggregation reject data with more than one row per sample
+  and hierarchy key (`prolfqua_error_duplicate_keys`), also when the
+  `LFQData` was created without
+  [`setup_analysis()`](https://fgcz.github.io/prolfqua/reference/setup_analysis.md).
+
+- `LFQData$new()` drops extra classes and attributes
+  (e.g. [`I()`](https://rdrr.io/r/base/AsIs.html), units, labels) from
+  the response column with a message; transformations and models use the
+  plain numeric values.
+
+- Colour-blind safe default colours: abundance heatmaps use
+  blue-white-red instead of green-black-red, factor levels in heatmap
+  annotations and PCA use Okabe-Ito (viridis beyond 8 levels) instead of
+  the ggplot2 hue palette, estimate types in volcano, MA and score plots
+  use black, orange and blue instead of black, green and blue, and zero
+  lines are grey instead of green.
+
+- Larger default text:
+  [`multigroup_volcano()`](https://fgcz.github.io/prolfqua/reference/multigroup_volcano.md)
+  labels default to `size = 3` (was 1);
+  [`plot_sample_correlation()`](https://fgcz.github.io/prolfqua/reference/plot_sample_correlation.md)
+  uses the corrplot text sizes and passes `...` (e.g. `tl.cex`,
+  `number.cex`) to
+  [`corrplot::corrplot.mixed()`](https://rdrr.io/pkg/corrplot/man/corrplot.mixed.html).
+
 - [`?prolfqua`](https://fgcz.github.io/prolfqua/reference/prolfqua-package.md)
   and [`?LFQData`](https://fgcz.github.io/prolfqua/reference/LFQData.md)
   state how violated assumptions affect estimates: outliers pull
@@ -199,6 +288,12 @@
   Applies to lm, rlm, rfit, lmer and the limma and DEqMS methods;
   detection models keep their dispersion floor.
 
+- `rlm` on a constant or noiseless subject returns the least-squares
+  estimates with robust scale 0 instead of iterating
+  [`MASS::rlm()`](https://rdrr.io/pkg/MASS/man/rlm.html), whose scale
+  could underflow to zero and turn the estimates `NA` on Linux and
+  Windows.
+
 - Failed fits and warnings raised while fitting (e.g. `rlm`, `lmer` or
   Firth not converging) or aggregating (`rlm`, `medpolish`) are reported
   once per step as one warning of class `prolfqua_fit_failed` naming the
@@ -222,6 +317,17 @@
   Installation is from Bioconductor first.
 
 ### Bug fixes
+
+- `rlm` aggregation (`get_Aggregator("rlm")`) removed estimable design
+  columns when a sample or peptide column was a factor with an unused
+  level, and then silently used per-sample means for that protein. It
+  now drops unused levels and removes only aliased columns. Data set up
+  with
+  [`setup_analysis()`](https://fgcz.github.io/prolfqua/reference/setup_analysis.md)
+  (character columns) is not affected.
+
+- `LFQDataPlotter$write_pdf()` and `$write_boxplots()` no longer append
+  `.pdf` to a file name that already ends in `.pdf`.
 
 - [`get_complete_model_fit()`](https://fgcz.github.io/prolfqua/reference/get_complete_model_fit.md),
   and with it `Model$get_anova()`, `Model$get_coefficients()` and the

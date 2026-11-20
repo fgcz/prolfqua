@@ -86,7 +86,8 @@ zero and non-finite intensities are treated is described in
 <code><a href="LFQDataStats.html">LFQDataStats</a></code>,
 <code><a href="LFQDataSummariser.html">LFQDataSummariser</a></code>,
 <code><a href="LFQDataToSummarizedExperiment.html">LFQDataToSummarizedExperiment()</a></code>,
-<code><a href="lfqdata_from_wide.html">lfqdata_from_wide()</a></code></p></div>
+<code><a href="lfqdata_from_wide.html">lfqdata_from_wide()</a></code>,
+<code><a href="plot.LFQData.html">plot.LFQData()</a></code></p></div>
     </div>
     <div class="section level2">
     <h2 id="public-fields">Public fields<a class="anchor" aria-label="anchor" href="#public-fields"></a></h2>
@@ -104,6 +105,7 @@ zero and non-finite intensities are treated is described in
 <p></p><ul><li><p><a href="#method-LFQData-initialize"><code>LFQData$new()</code></a></p></li>
 <li><p><a href="#method-LFQData-provenance"><code>LFQData$provenance()</code></a></p></li>
 <li><p><a href="#method-LFQData-get_provenance_log"><code>LFQData$get_provenance_log()</code></a></p></li>
+<li><p><a href="#method-LFQData-print"><code>LFQData$print()</code></a></p></li>
 <li><p><a href="#method-LFQData-set_data"><code>LFQData$set_data()</code></a></p></li>
 <li><p><a href="#method-LFQData-get_config"><code>LFQData$get_config()</code></a></p></li>
 <li><p><a href="#method-LFQData-set_config_value"><code>LFQData$set_config_value()</code></a></p></li>
@@ -194,15 +196,18 @@ subset); a copy is kept. NULL starts a new record.</p></dd>
 
 </div>
 
-<p></p><hr><a id="method-LFQData-set_data"></a><div class="section">
-<h3 id="lfqdata-set-data-"><code>LFQData$set_data()</code><a class="anchor" aria-label="anchor" href="#lfqdata-set-data-"></a></h3>
-<p>set data (replaces the internal data frame)</p><div class="section">
+<p></p><hr><a id="method-LFQData-print"></a><div class="section">
+<h3 id="lfqdata-print-"><code>LFQData$print()</code><a class="anchor" aria-label="anchor" href="#lfqdata-print-"></a></h3>
+<p>print samples, response, hierarchy counts, samples per factor level, missing responses and provenance</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">set_data</span><span class="op">(</span><span class="va">new_data</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">3</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>new_data</code></dt>
-<dd><p>data.frame</p></dd>
+<p></p><div class="arguments"><dl><dt><code>digits</code></dt>
+<dd><p>significant digits of printed numbers (default 3)</p></dd>
+
+      <dt><code>...</code></dt>
+<dd><p>unused</p></dd>
 
 
 </dl><p></p></div>
@@ -213,13 +218,32 @@ subset); a copy is kept. NULL starts a new record.</p></dd>
 
 </div>
 
+<p></p><hr><a id="method-LFQData-set_data"></a><div class="section">
+<h3 id="lfqdata-set-data-"><code>LFQData$set_data()</code><a class="anchor" aria-label="anchor" href="#lfqdata-set-data-"></a></h3>
+<p>set data (replaces the internal data frame)</p><div class="section">
+<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">set_data</span><span class="op">(</span><span class="va">new_data</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>new_data</code></dt>
+<dd><p>data.frame</p></dd>
+
+
+</dl><p></p></div>
+</div><p></p><div class="section">
+<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+<p>self (invisible)</p>
+</div>
+
+</div>
+
 <p></p><hr><a id="method-LFQData-get_config"></a><div class="section">
 <h3 id="lfqdata-get-config-"><code>LFQData$get_config()</code><a class="anchor" aria-label="anchor" href="#lfqdata-get-config-"></a></h3>
 <p>return the AnalysisConfiguration object</p><div class="section">
-<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">get_config</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p>AnalysisConfiguration</p>
 </div>
 
@@ -228,10 +252,10 @@ subset); a copy is kept. NULL starts a new record.</p></dd>
 <p></p><hr><a id="method-LFQData-set_config_value"></a><div class="section">
 <h3 id="lfqdata-set-config-value-"><code>LFQData$set_config_value()</code><a class="anchor" aria-label="anchor" href="#lfqdata-set-config-value-"></a></h3>
 <p>set a config field value</p><div class="section">
-<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">set_config_value</span><span class="op">(</span><span class="va">field</span>, <span class="va">value</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>field</code></dt>
 <dd><p>character — field name</p></dd>
 
@@ -247,7 +271,7 @@ subset); a copy is kept. NULL starts a new record.</p></dd>
 <p></p><hr><a id="method-LFQData-get_copy"></a><div class="section">
 <h3 id="lfqdata-get-copy-"><code>LFQData$get_copy()</code><a class="anchor" aria-label="anchor" href="#lfqdata-get-copy-"></a></h3>
 <p>get deep copy</p><div class="section">
-<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
+<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">get_copy</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -257,10 +281,10 @@ subset); a copy is kept. NULL starts a new record.</p></dd>
 <h3 id="lfqdata-is-aggregatable-"><code>LFQData$is_aggregatable()</code><a class="anchor" aria-label="anchor" href="#lfqdata-is-aggregatable-"></a></h3>
 <p>can the data be aggregated, i.e. is there a hierarchy level below the
 modelled one (`hierarchy_depth`)</p><div class="section">
-<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
+<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">is_aggregatable</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
+<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
 <p>logical</p>
 </div>
 
@@ -269,10 +293,10 @@ modelled one (`hierarchy_depth`)</p><div class="section">
 <p></p><hr><a id="method-LFQData-get_sample"></a><div class="section">
 <h3 id="lfqdata-get-sample-"><code>LFQData$get_sample()</code><a class="anchor" aria-label="anchor" href="#lfqdata-get-sample-"></a></h3>
 <p>samples subset of data</p><div class="section">
-<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
+<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">get_sample</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">100</span>, seed <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>size</code></dt>
 <dd><p>size of subset default 100</p></dd>
 
@@ -288,10 +312,10 @@ modelled one (`hierarchy_depth`)</p><div class="section">
 <p></p><hr><a id="method-LFQData-get_subset"></a><div class="section">
 <h3 id="lfqdata-get-subset-"><code>LFQData$get_subset()</code><a class="anchor" aria-label="anchor" href="#lfqdata-get-subset-"></a></h3>
 <p>get subset of data</p><div class="section">
-<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
+<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">get_subset</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
+<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>x</code></dt>
 <dd><p>data frame with columns containing subject_id</p></dd>
 
@@ -304,7 +328,7 @@ modelled one (`hierarchy_depth`)</p><div class="section">
 <p></p><hr><a id="method-LFQData-subject_id"></a><div class="section">
 <h3 id="lfqdata-subject-id-"><code>LFQData$subject_id()</code><a class="anchor" aria-label="anchor" href="#lfqdata-subject-id-"></a></h3>
 <p>get subject ID columns</p><div class="section">
-<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
+<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">subject_id</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -313,17 +337,17 @@ modelled one (`hierarchy_depth`)</p><div class="section">
 <p></p><hr><a id="method-LFQData-is_transformed"></a><div class="section">
 <h3 id="lfqdata-is-transformed-"><code>LFQData$is_transformed()</code><a class="anchor" aria-label="anchor" href="#lfqdata-is-transformed-"></a></h3>
 <p>is data transformed</p><div class="section">
-<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
+<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">is_transformed</span><span class="op">(</span><span class="va">is_transformed</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
+<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>is_transformed</code></dt>
 <dd><p>logical</p></dd>
 
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
+<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
 <p>logical when called without argument, otherwise self (invisible)</p>
 </div>
 
@@ -332,17 +356,17 @@ modelled one (`hierarchy_depth`)</p><div class="section">
 <p></p><hr><a id="method-LFQData-remove_small_intensities"></a><div class="section">
 <h3 id="lfqdata-remove-small-intensities-"><code>LFQData$remove_small_intensities()</code><a class="anchor" aria-label="anchor" href="#lfqdata-remove-small-intensities-"></a></h3>
 <p>some software is reporting NA's as 0, you must remove it from your data</p><div class="section">
-<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
+<h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">remove_small_intensities</span><span class="op">(</span>threshold <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
+<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>threshold</code></dt>
 <dd><p>default 4.</p></dd>
 
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
+<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
 <p>self</p>
 </div>
 
@@ -354,14 +378,14 @@ modelled one (`hierarchy_depth`)</p><div class="section">
 children (e.g. peptides) and add the count as a column. By default the
 second hierarchy level is counted within the first, independent of
 `hierarchy_depth`; a hierarchy with one level is an error.</p><div class="section">
-<h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
+<h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">filter_proteins_by_peptide_count</span><span class="op">(</span></span>
 <span>  threshold <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  parent <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  child <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
+<h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>threshold</code></dt>
 <dd><p>minimum number of children, default `config$min_peptides_protein`</p></dd>
 
@@ -374,7 +398,7 @@ second hierarchy level is counted within the first, independent of
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
+<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
 <p>self (invisible)</p>
 </div>
 
@@ -387,10 +411,10 @@ e.g. protein_Id, is a decoy). Detection uses the configured
 `pattern_decoys` unioned with the built-in defaults (see
 <code><a href="is_decoy.html">is_decoy</a></code>); decoys are always detectable even when no pattern
 is configured. Returns a new decoy-free LFQData (self is not modified).</p><div class="section">
-<h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
+<h4 id="usage-15">Usage<a class="anchor" aria-label="anchor" href="#usage-15"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">remove_decoys</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
+<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
 <p>LFQData without decoys</p>
 </div>
 
@@ -403,10 +427,10 @@ protein_Id, is a contaminant). Detection uses the configured
 `pattern_contaminants` unioned with the built-in defaults (see
 <code><a href="is_contaminant.html">is_contaminant</a></code>). Returns a new contaminant-free LFQData
 (self is not modified).</p><div class="section">
-<h4 id="usage-15">Usage<a class="anchor" aria-label="anchor" href="#usage-15"></a></h4>
+<h4 id="usage-16">Usage<a class="anchor" aria-label="anchor" href="#usage-16"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">remove_contaminants</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
+<h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
 <p>LFQData without contaminants</p>
 </div>
 
@@ -417,10 +441,10 @@ protein_Id, is a contaminant). Detection uses the configured
 <p>proportion of modelling-level keys (subject_id, e.g. protein or peptide by
 `hierarchy_depth`) that are decoys — an empirical-FDR / target-decoy QC
 signal. Decoy status derives from the top-level hierarchy id (protein_Id).</p><div class="section">
-<h4 id="usage-16">Usage<a class="anchor" aria-label="anchor" href="#usage-16"></a></h4>
+<h4 id="usage-17">Usage<a class="anchor" aria-label="anchor" href="#usage-17"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">decoy_proportion</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
+<h4 id="returns-11">Returns<a class="anchor" aria-label="anchor" href="#returns-11"></a></h4>
 <p>numeric in [0, 1]</p>
 </div>
 
@@ -429,10 +453,10 @@ signal. Decoy status derives from the top-level hierarchy id (protein_Id).</p><d
 <p></p><hr><a id="method-LFQData-complete_cases"></a><div class="section">
 <h3 id="lfqdata-complete-cases-"><code>LFQData$complete_cases()</code><a class="anchor" aria-label="anchor" href="#lfqdata-complete-cases-"></a></h3>
 <p>some software is reporting NA's as 0, you must remove it from your data</p><div class="section">
-<h4 id="usage-17">Usage<a class="anchor" aria-label="anchor" href="#usage-17"></a></h4>
+<h4 id="usage-18">Usage<a class="anchor" aria-label="anchor" href="#usage-18"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">complete_cases</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-11">Returns<a class="anchor" aria-label="anchor" href="#returns-11"></a></h4>
+<h4 id="returns-12">Returns<a class="anchor" aria-label="anchor" href="#returns-12"></a></h4>
 <p>self</p>
 </div>
 
@@ -441,10 +465,10 @@ signal. Decoy status derives from the top-level hierarchy id (protein_Id).</p><d
 <p></p><hr><a id="method-LFQData-data_wide"></a><div class="section">
 <h3 id="lfqdata-data-wide-"><code>LFQData$data_wide()</code><a class="anchor" aria-label="anchor" href="#lfqdata-data-wide-"></a></h3>
 <p>converts the data to wide</p><div class="section">
-<h4 id="usage-18">Usage<a class="anchor" aria-label="anchor" href="#usage-18"></a></h4>
+<h4 id="usage-19">Usage<a class="anchor" aria-label="anchor" href="#usage-19"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">data_wide</span><span class="op">(</span>as.matrix <span class="op">=</span> <span class="cn">FALSE</span>, value <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
+<h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>as.matrix</code></dt>
 <dd><p>return as data.frame or matrix</p></dd>
 
@@ -454,7 +478,7 @@ signal. Decoy status derives from the top-level hierarchy id (protein_Id).</p><d
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-12">Returns<a class="anchor" aria-label="anchor" href="#returns-12"></a></h4>
+<h4 id="returns-13">Returns<a class="anchor" aria-label="anchor" href="#returns-13"></a></h4>
 <p>list with data, annotation, and configuration</p>
 </div>
 
@@ -463,10 +487,10 @@ signal. Decoy status derives from the top-level hierarchy id (protein_Id).</p><d
 <p></p><hr><a id="method-LFQData-factors"></a><div class="section">
 <h3 id="lfqdata-factors-"><code>LFQData$factors()</code><a class="anchor" aria-label="anchor" href="#lfqdata-factors-"></a></h3>
 <p>Annotation table</p><div class="section">
-<h4 id="usage-19">Usage<a class="anchor" aria-label="anchor" href="#usage-19"></a></h4>
+<h4 id="usage-20">Usage<a class="anchor" aria-label="anchor" href="#usage-20"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">factors</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-13">Returns<a class="anchor" aria-label="anchor" href="#returns-13"></a></h4>
+<h4 id="returns-14">Returns<a class="anchor" aria-label="anchor" href="#returns-14"></a></h4>
 <p>data.frame</p>
 </div>
 
@@ -475,7 +499,7 @@ signal. Decoy status derives from the top-level hierarchy id (protein_Id).</p><d
 <p></p><hr><a id="method-LFQData-hierarchy"></a><div class="section">
 <h3 id="lfqdata-hierarchy-"><code>LFQData$hierarchy()</code><a class="anchor" aria-label="anchor" href="#lfqdata-hierarchy-"></a></h3>
 <p>Hierarchy table</p><div class="section">
-<h4 id="usage-20">Usage<a class="anchor" aria-label="anchor" href="#usage-20"></a></h4>
+<h4 id="usage-21">Usage<a class="anchor" aria-label="anchor" href="#usage-21"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">hierarchy</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -484,10 +508,10 @@ signal. Decoy status derives from the top-level hierarchy id (protein_Id).</p><d
 <p></p><hr><a id="method-LFQData-response"></a><div class="section">
 <h3 id="lfqdata-response-"><code>LFQData$response()</code><a class="anchor" aria-label="anchor" href="#lfqdata-response-"></a></h3>
 <p>name of response variable</p><div class="section">
-<h4 id="usage-21">Usage<a class="anchor" aria-label="anchor" href="#usage-21"></a></h4>
+<h4 id="usage-22">Usage<a class="anchor" aria-label="anchor" href="#usage-22"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">response</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-14">Returns<a class="anchor" aria-label="anchor" href="#returns-14"></a></h4>
+<h4 id="returns-15">Returns<a class="anchor" aria-label="anchor" href="#returns-15"></a></h4>
 <p>data.frame</p>
 </div>
 
@@ -496,7 +520,7 @@ signal. Decoy status derives from the top-level hierarchy id (protein_Id).</p><d
 <p></p><hr><a id="method-LFQData-hierarchy_keys"></a><div class="section">
 <h3 id="lfqdata-hierarchy-keys-"><code>LFQData$hierarchy_keys()</code><a class="anchor" aria-label="anchor" href="#lfqdata-hierarchy-keys-"></a></h3>
 <p>return all hierarchy column names</p><div class="section">
-<h4 id="usage-22">Usage<a class="anchor" aria-label="anchor" href="#usage-22"></a></h4>
+<h4 id="usage-23">Usage<a class="anchor" aria-label="anchor" href="#usage-23"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">hierarchy_keys</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -505,7 +529,7 @@ signal. Decoy status derives from the top-level hierarchy id (protein_Id).</p><d
 <p></p><hr><a id="method-LFQData-relevant_hierarchy_keys"></a><div class="section">
 <h3 id="lfqdata-relevant-hierarchy-keys-"><code>LFQData$relevant_hierarchy_keys()</code><a class="anchor" aria-label="anchor" href="#lfqdata-relevant-hierarchy-keys-"></a></h3>
 <p>return hierarchy column names at current depth (alias for subject_id)</p><div class="section">
-<h4 id="usage-23">Usage<a class="anchor" aria-label="anchor" href="#usage-23"></a></h4>
+<h4 id="usage-24">Usage<a class="anchor" aria-label="anchor" href="#usage-24"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">relevant_hierarchy_keys</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -514,7 +538,7 @@ signal. Decoy status derives from the top-level hierarchy id (protein_Id).</p><d
 <p></p><hr><a id="method-LFQData-factor_keys"></a><div class="section">
 <h3 id="lfqdata-factor-keys-"><code>LFQData$factor_keys()</code><a class="anchor" aria-label="anchor" href="#lfqdata-factor-keys-"></a></h3>
 <p>return all factor column names</p><div class="section">
-<h4 id="usage-24">Usage<a class="anchor" aria-label="anchor" href="#usage-24"></a></h4>
+<h4 id="usage-25">Usage<a class="anchor" aria-label="anchor" href="#usage-25"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">factor_keys</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -523,7 +547,7 @@ signal. Decoy status derives from the top-level hierarchy id (protein_Id).</p><d
 <p></p><hr><a id="method-LFQData-relevant_factor_keys"></a><div class="section">
 <h3 id="lfqdata-relevant-factor-keys-"><code>LFQData$relevant_factor_keys()</code><a class="anchor" aria-label="anchor" href="#lfqdata-relevant-factor-keys-"></a></h3>
 <p>return factor column names at current depth</p><div class="section">
-<h4 id="usage-25">Usage<a class="anchor" aria-label="anchor" href="#usage-25"></a></h4>
+<h4 id="usage-26">Usage<a class="anchor" aria-label="anchor" href="#usage-26"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">relevant_factor_keys</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -532,7 +556,7 @@ signal. Decoy status derives from the top-level hierarchy id (protein_Id).</p><d
 <p></p><hr><a id="method-LFQData-sample_name"></a><div class="section">
 <h3 id="lfqdata-sample-name-"><code>LFQData$sample_name()</code><a class="anchor" aria-label="anchor" href="#lfqdata-sample-name-"></a></h3>
 <p>return sample name column</p><div class="section">
-<h4 id="usage-26">Usage<a class="anchor" aria-label="anchor" href="#usage-26"></a></h4>
+<h4 id="usage-27">Usage<a class="anchor" aria-label="anchor" href="#usage-27"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">sample_name</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -541,7 +565,7 @@ signal. Decoy status derives from the top-level hierarchy id (protein_Id).</p><d
 <p></p><hr><a id="method-LFQData-file_name"></a><div class="section">
 <h3 id="lfqdata-file-name-"><code>LFQData$file_name()</code><a class="anchor" aria-label="anchor" href="#lfqdata-file-name-"></a></h3>
 <p>return file name column</p><div class="section">
-<h4 id="usage-27">Usage<a class="anchor" aria-label="anchor" href="#usage-27"></a></h4>
+<h4 id="usage-28">Usage<a class="anchor" aria-label="anchor" href="#usage-28"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">file_name</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -550,7 +574,7 @@ signal. Decoy status derives from the top-level hierarchy id (protein_Id).</p><d
 <p></p><hr><a id="method-LFQData-nr_children_col"></a><div class="section">
 <h3 id="lfqdata-nr-children-col-"><code>LFQData$nr_children_col()</code><a class="anchor" aria-label="anchor" href="#lfqdata-nr-children-col-"></a></h3>
 <p>return name of nr_children column</p><div class="section">
-<h4 id="usage-28">Usage<a class="anchor" aria-label="anchor" href="#usage-28"></a></h4>
+<h4 id="usage-29">Usage<a class="anchor" aria-label="anchor" href="#usage-29"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">nr_children_col</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -559,7 +583,7 @@ signal. Decoy status derives from the top-level hierarchy id (protein_Id).</p><d
 <p></p><hr><a id="method-LFQData-isotope_label"></a><div class="section">
 <h3 id="lfqdata-isotope-label-"><code>LFQData$isotope_label()</code><a class="anchor" aria-label="anchor" href="#lfqdata-isotope-label-"></a></h3>
 <p>return isotope label column name</p><div class="section">
-<h4 id="usage-29">Usage<a class="anchor" aria-label="anchor" href="#usage-29"></a></h4>
+<h4 id="usage-30">Usage<a class="anchor" aria-label="anchor" href="#usage-30"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">isotope_label</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -568,10 +592,10 @@ signal. Decoy status derives from the top-level hierarchy id (protein_Id).</p><d
 <p></p><hr><a id="method-LFQData-data_long"></a><div class="section">
 <h3 id="lfqdata-data-long-"><code>LFQData$data_long()</code><a class="anchor" aria-label="anchor" href="#lfqdata-data-long-"></a></h3>
 <p>return the tidy (long-format) data frame</p><div class="section">
-<h4 id="usage-30">Usage<a class="anchor" aria-label="anchor" href="#usage-30"></a></h4>
+<h4 id="usage-31">Usage<a class="anchor" aria-label="anchor" href="#usage-31"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">data_long</span><span class="op">(</span>na.omit <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
+<h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>na.omit</code></dt>
 <dd><p>if TRUE, remove rows with NA in response column</p></dd>
 
@@ -585,17 +609,17 @@ signal. Decoy status derives from the top-level hierarchy id (protein_Id).</p><d
 <h3 id="lfqdata-rename-response-"><code>LFQData$rename_response()</code><a class="anchor" aria-label="anchor" href="#lfqdata-rename-response-"></a></h3>
 <p>new name of response variable. Renaming to the current response name
 changes nothing; renaming to another existing column is an error.</p><div class="section">
-<h4 id="usage-31">Usage<a class="anchor" aria-label="anchor" href="#usage-31"></a></h4>
+<h4 id="usage-32">Usage<a class="anchor" aria-label="anchor" href="#usage-32"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">rename_response</span><span class="op">(</span>newname <span class="op">=</span> <span class="st">"Intensity"</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
+<h4 id="arguments-11">Arguments<a class="anchor" aria-label="anchor" href="#arguments-11"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>newname</code></dt>
 <dd><p>default Intensity</p></dd>
 
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-15">Returns<a class="anchor" aria-label="anchor" href="#returns-15"></a></h4>
+<h4 id="returns-16">Returns<a class="anchor" aria-label="anchor" href="#returns-16"></a></h4>
 <p>self (invisible)</p>
 </div>
 
@@ -604,7 +628,7 @@ changes nothing; renaming to another existing column is an error.</p><div class=
 <p></p><hr><a id="method-LFQData-hierarchy_counts"></a><div class="section">
 <h3 id="lfqdata-hierarchy-counts-"><code>LFQData$hierarchy_counts()</code><a class="anchor" aria-label="anchor" href="#lfqdata-hierarchy-counts-"></a></h3>
 <p>number of elements at each level</p><div class="section">
-<h4 id="usage-32">Usage<a class="anchor" aria-label="anchor" href="#usage-32"></a></h4>
+<h4 id="usage-33">Usage<a class="anchor" aria-label="anchor" href="#usage-33"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">hierarchy_counts</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -613,10 +637,10 @@ changes nothing; renaming to another existing column is an error.</p><div class=
 <p></p><hr><a id="method-LFQData-summarize_hierarchy"></a><div class="section">
 <h3 id="lfqdata-summarize-hierarchy-"><code>LFQData$summarize_hierarchy()</code><a class="anchor" aria-label="anchor" href="#lfqdata-summarize-hierarchy-"></a></h3>
 <p>e.g. number of peptides per protein etc</p><div class="section">
-<h4 id="usage-33">Usage<a class="anchor" aria-label="anchor" href="#usage-33"></a></h4>
+<h4 id="usage-34">Usage<a class="anchor" aria-label="anchor" href="#usage-34"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">summarize_hierarchy</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-16">Returns<a class="anchor" aria-label="anchor" href="#returns-16"></a></h4>
+<h4 id="returns-17">Returns<a class="anchor" aria-label="anchor" href="#returns-17"></a></h4>
 <p>data.frame</p>
 </div>
 
@@ -625,10 +649,10 @@ changes nothing; renaming to another existing column is an error.</p><div class=
 <p></p><hr><a id="method-LFQData-get_Plotter"></a><div class="section">
 <h3 id="lfqdata-get-plotter-"><code>LFQData$get_Plotter()</code><a class="anchor" aria-label="anchor" href="#lfqdata-get-plotter-"></a></h3>
 <p>get Plotter</p><div class="section">
-<h4 id="usage-34">Usage<a class="anchor" aria-label="anchor" href="#usage-34"></a></h4>
+<h4 id="usage-35">Usage<a class="anchor" aria-label="anchor" href="#usage-35"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-17">Returns<a class="anchor" aria-label="anchor" href="#returns-17"></a></h4>
+<h4 id="returns-18">Returns<a class="anchor" aria-label="anchor" href="#returns-18"></a></h4>
 <p>LFQDataPlotter</p>
 </div>
 
@@ -637,10 +661,10 @@ changes nothing; renaming to another existing column is an error.</p><div class=
 <p></p><hr><a id="method-LFQData-get_Summariser"></a><div class="section">
 <h3 id="lfqdata-get-summariser-"><code>LFQData$get_Summariser()</code><a class="anchor" aria-label="anchor" href="#lfqdata-get-summariser-"></a></h3>
 <p>get Summariser</p><div class="section">
-<h4 id="usage-35">Usage<a class="anchor" aria-label="anchor" href="#usage-35"></a></h4>
+<h4 id="usage-36">Usage<a class="anchor" aria-label="anchor" href="#usage-36"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">get_Summariser</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-18">Returns<a class="anchor" aria-label="anchor" href="#returns-18"></a></h4>
+<h4 id="returns-19">Returns<a class="anchor" aria-label="anchor" href="#returns-19"></a></h4>
 <p>LFQDataSummarizer</p>
 </div>
 
@@ -649,17 +673,17 @@ changes nothing; renaming to another existing column is an error.</p><div class=
 <p></p><hr><a id="method-LFQData-get_Stats"></a><div class="section">
 <h3 id="lfqdata-get-stats-"><code>LFQData$get_Stats()</code><a class="anchor" aria-label="anchor" href="#lfqdata-get-stats-"></a></h3>
 <p>Get <code><a href="LFQDataStats.html">LFQDataStats</a></code>. For more details see <code><a href="LFQDataStats.html">LFQDataStats</a></code>.</p><div class="section">
-<h4 id="usage-36">Usage<a class="anchor" aria-label="anchor" href="#usage-36"></a></h4>
+<h4 id="usage-37">Usage<a class="anchor" aria-label="anchor" href="#usage-37"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">get_Stats</span><span class="op">(</span>stats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"everything"</span>, <span class="st">"interaction"</span>, <span class="st">"all"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-11">Arguments<a class="anchor" aria-label="anchor" href="#arguments-11"></a></h4>
+<h4 id="arguments-12">Arguments<a class="anchor" aria-label="anchor" href="#arguments-12"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>stats</code></dt>
 <dd><p>default interaction, computes statistics within interaction.</p></dd>
 
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-19">Returns<a class="anchor" aria-label="anchor" href="#returns-19"></a></h4>
+<h4 id="returns-20">Returns<a class="anchor" aria-label="anchor" href="#returns-20"></a></h4>
 <p>LFQDataStats</p>
 </div>
 
@@ -668,10 +692,10 @@ changes nothing; renaming to another existing column is an error.</p><div class=
 <p></p><hr><a id="method-LFQData-get_Transformer"></a><div class="section">
 <h3 id="lfqdata-get-transformer-"><code>LFQData$get_Transformer()</code><a class="anchor" aria-label="anchor" href="#lfqdata-get-transformer-"></a></h3>
 <p>get Stats</p><div class="section">
-<h4 id="usage-37">Usage<a class="anchor" aria-label="anchor" href="#usage-37"></a></h4>
+<h4 id="usage-38">Usage<a class="anchor" aria-label="anchor" href="#usage-38"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">get_Transformer</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-20">Returns<a class="anchor" aria-label="anchor" href="#returns-20"></a></h4>
+<h4 id="returns-21">Returns<a class="anchor" aria-label="anchor" href="#returns-21"></a></h4>
 <p>LFQDataTransformer</p>
 </div>
 
@@ -680,10 +704,10 @@ changes nothing; renaming to another existing column is an error.</p><div class=
 <p></p><hr><a id="method-LFQData-get_Aggregator"></a><div class="section">
 <h3 id="lfqdata-get-aggregator-"><code>LFQData$get_Aggregator()</code><a class="anchor" aria-label="anchor" href="#lfqdata-get-aggregator-"></a></h3>
 <p>get Aggregator</p><div class="section">
-<h4 id="usage-38">Usage<a class="anchor" aria-label="anchor" href="#usage-38"></a></h4>
+<h4 id="usage-39">Usage<a class="anchor" aria-label="anchor" href="#usage-39"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">get_Aggregator</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"medpolish"</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-12">Arguments<a class="anchor" aria-label="anchor" href="#arguments-12"></a></h4>
+<h4 id="arguments-13">Arguments<a class="anchor" aria-label="anchor" href="#arguments-13"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>method</code></dt>
 <dd><p>aggregation method: "medpolish", "rlm", "topN", or "limpa"</p></dd>
 
@@ -693,7 +717,7 @@ changes nothing; renaming to another existing column is an error.</p><div class=
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-21">Returns<a class="anchor" aria-label="anchor" href="#returns-21"></a></h4>
+<h4 id="returns-22">Returns<a class="anchor" aria-label="anchor" href="#returns-22"></a></h4>
 <p>AggregateMedpolish, AggregateRlm, AggregateTopN, or AggregateLimpa</p>
 </div>
 
@@ -702,10 +726,10 @@ changes nothing; renaming to another existing column is an error.</p><div class=
 <p></p><hr><a id="method-LFQData-clone"></a><div class="section">
 <h3 id="lfqdata-clone-"><code>LFQData$clone()</code><a class="anchor" aria-label="anchor" href="#lfqdata-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-39">Usage<a class="anchor" aria-label="anchor" href="#usage-39"></a></h4>
+<h4 id="usage-40">Usage<a class="anchor" aria-label="anchor" href="#usage-40"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-13">Arguments<a class="anchor" aria-label="anchor" href="#arguments-13"></a></h4>
+<h4 id="arguments-14">Arguments<a class="anchor" aria-label="anchor" href="#arguments-14"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 
@@ -722,7 +746,10 @@ changes nothing; renaming to another existing column is an error.</p><div class=
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from file_name column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.</span>
 <span class="r-in"><span><span class="va">lfqdata</span> <span class="op">&lt;-</span> <span class="va">LFQData</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">istar</span><span class="op">$</span><span class="va">data</span>, <span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">filter_proteins_by_peptide_count</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : nr_peptide_Id_IN_protein_Id</span>

@@ -102,7 +102,8 @@ to Firth's bias-reducing penalty.</p>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/StrategyBinomial.html">StrategyBinomial</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
 <span>  <span class="va">modelstr</span>,</span>
 <span>  prior_count <span class="op">=</span> <span class="fl">0.1</span>,</span>
-<span>  model_name <span class="op">=</span> <span class="st">"binomial_nested"</span></span>
+<span>  model_name <span class="op">=</span> <span class="st">"binomial_nested"</span>,</span>
+<span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
@@ -115,6 +116,9 @@ to Firth's bias-reducing penalty.</p>
 
       <dt><code>model_name</code></dt>
 <dd><p>model identity</p></dd>
+
+      <dt><code>control</code></dt>
+<dd><p>named list of convergence controls, see <code><a href="strategy_binomial.html">strategy_binomial</a></code></p></dd>
 
 
 </dl><p></p></div>

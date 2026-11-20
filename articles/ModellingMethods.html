@@ -534,10 +534,10 @@ missing and significant results; the significance defaults are FDR &lt;
 <span><span class="co">#&gt; Formula: medpolish ~ group_ </span></span>
 <span><span class="co">#&gt; Contrasts: A_vs_Ctrl </span></span>
 <span><span class="co">#&gt; Input subjects: 20 </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 5</span></span></span>
-<span><span class="co">#&gt;   subjects fitted failed singular imputed</span></span>
-<span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>       20     20      0        0       0</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 6</span></span></span>
+<span><span class="co">#&gt;   subjects fitted failed singular imputed not_converged</span></span>
+<span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>       20     20      0        0       0             0</span></span>
 <span><span class="co">#&gt; Provenance: 0 failure and 1 other entries; see $provenance() </span></span>
 <span><span class="co">#&gt; Coefficient preview:</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 5</span></span></span>
@@ -547,15 +547,15 @@ missing and significant results; the significance defaults are FDR &lt;
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 0CubNR~5740 group_B      -<span style="color: #BB0000;">0.162</span>     0.075<span style="text-decoration: underline;">6</span>     9</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 0CubNR~5740 group_Ctrl    0.087<span style="text-decoration: underline;">2</span>    0.074<span style="text-decoration: underline;">1</span>     9</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 2kfAGV~3196 (Intercept)   4.65      0.029<span style="text-decoration: underline;">6</span>     8</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 2kfAGV~3196 group_B      -<span style="color: #BB0000;">0.210</span>     0.041<span style="text-decoration: underline;">9</span>     8</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 2kfAGV~3196 group_B      -<span style="color: #BB0000;">0.21</span>      0.041<span style="text-decoration: underline;">9</span>     8</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 2kfAGV~3196 group_Ctrl   -<span style="color: #BB0000;">0.215</span>     0.045<span style="text-decoration: underline;">3</span>     8</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">analysis</span><span class="op">)</span></span>
 <span><span class="co">#&gt; prolfqua analysis summary: lm </span></span>
 <span><span class="co">#&gt; Formula: medpolish ~ group_ </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 5</span></span></span>
-<span><span class="co">#&gt;   subjects fitted failed singular imputed</span></span>
-<span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>       20     20      0        0       0</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 6</span></span></span>
+<span><span class="co">#&gt;   subjects fitted failed singular imputed not_converged</span></span>
+<span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>       20     20      0        0       0             0</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 8</span></span></span>
 <span><span class="co">#&gt;   contrast  estimated missing significant    up  down median_sigma median_df</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
@@ -598,7 +598,7 @@ missing and significant results; the significance defaults are FDR &lt;
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 2kfAGV~3196 group_Ctrl   -<span style="color: #BB0000;">0.215</span>     0.045<span style="text-decoration: underline;">3</span>     8  -<span style="color: #BB0000;">0.320</span>   -<span style="color: #BB0000;">0.111</span></span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">formula</a></span><span class="op">(</span><span class="va">analysis</span><span class="op">)</span></span>
 <span><span class="co">#&gt; medpolish ~ group_</span></span>
-<span><span class="co">#&gt; &lt;environment: 0x5e0fa4df71e0&gt;</span></span>
+<span><span class="co">#&gt; &lt;environment: 0x645fcb13c168&gt;</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/nobs.html" class="external-link">nobs</a></span><span class="op">(</span><span class="va">analysis</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 2</span></span></span>
 <span><span class="co">#&gt;   protein_Id   nobs</span></span>

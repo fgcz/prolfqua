@@ -91,16 +91,25 @@ and return the diagnostic count table (inspect rows where n &gt; 1) instead.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>Configured factor source columns are converted to character
-  categorical labels, including numeric and ordered factors. Ordered levels
-  and their ordering are not retained. Names of <code>configuration$factors</code>
-  become the output predictor column names. Configured hierarchy columns are
-  combined into identifiers. Unconfigured columns and their attributes are
-  discarded; the returned table retains only configured analysis columns.
-  A missing sample name is derived from the file name. Missing isotope labels,
-  identification q-values and child counts receive the documented setup
-  defaults; adding child counts of one emits a warning.</p>
-    </div>
+    <p>`setup_analysis()` is optional: `LFQData$new(setup = FALSE)`, the
+  default, applies none of the steps below. Each step that changes the data
+  says so with a message (class `prolfqua_message`) or warning:</p><ul><li><p>several configured hierarchy or factor source columns are united into
+    one key column (separator `configuration$sep`); avoid by configuring one
+    column per key;</p></li>
+<li><p>factor source columns that are not character (numeric, factor,
+    ordered) are converted to character labels; ordered levels and their
+    ordering are not retained; avoid by supplying character columns;
+    names of <code>configuration$factors</code> become the predictor column names;</p></li>
+<li><p>a missing sample name is derived from the file name; avoid by
+    supplying the sample name column;</p></li>
+<li><p>missing isotope labels, identification q-values and child counts
+    receive default values (child counts of one with a warning); avoid by
+    supplying these columns;</p></li>
+<li><p>unconfigured columns and their attributes are dropped; the returned
+    table keeps only configured analysis columns;</p></li>
+<li><p>feature and sample combinations absent from the input are added as
+    rows with NA response, so every feature has a row in every sample.</p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other configuration:
@@ -142,7 +151,9 @@ and return the diagnostic count table (inspect rows where n &gt; 1) instead.</p>
 <span class="r-in"><span><span class="va">config</span><span class="op">$</span><span class="va">norm_value</span> <span class="op">=</span> <span class="st">"creatinine"</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">adata</span> <span class="op">&lt;-</span> <span class="fu">setup_analysis</span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from file_name column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

@@ -47,7 +47,11 @@ Create a Firth-penalized quasibinomial count strategy.
 
 #### Usage
 
-    StrategyBinomialFirth$new(modelstr, model_name = "binomial_firth_nested")
+    StrategyBinomialFirth$new(
+      modelstr,
+      model_name = "binomial_firth_nested",
+      control = list()
+    )
 
 #### Arguments
 
@@ -58,6 +62,11 @@ Create a Firth-penalized quasibinomial count strategy.
 - `model_name`:
 
   model identity
+
+- `control`:
+
+  named list of convergence controls, see
+  [`strategy_binomial_firth`](https://fgcz.github.io/prolfqua/reference/strategy_binomial_firth.md)
 
 ------------------------------------------------------------------------
 

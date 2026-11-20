@@ -279,7 +279,10 @@ The objects of this class are cloneable with this method.
 
 ``` r
 istar <- sim_lfq_data_protein_config(Nprot = 50)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 5 unconfigured columns: average_prot_abundance, sd, mean, N, Replicate.
+#> setup_analysis: added 82 rows with NA response for feature and sample combinations absent from the input.
 lProt <- LFQData$new(istar$data, istar$config)
 lProt$rename_response("transformedIntensity")
 

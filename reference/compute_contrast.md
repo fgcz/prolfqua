@@ -118,7 +118,9 @@ Other modelling:
 
 ``` r
 m <- sim_make_model_lm( "factors")
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, group, mean, N, Replicate.
 linfct <- linfct_from_model(m)$linfct_factors
 compute_contrast(m, linfct, confint = 0.95)
 #>                     lhs    sigma df estimate std.error statistic      p.value

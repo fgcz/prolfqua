@@ -14,7 +14,7 @@ multigroup_volcano(
   xintercept = c(-2, 2),
   yintercept = 0.05,
   label = NULL,
-  size = 1,
+  size = 3,
   segment.size = 0.3,
   segment.alpha = 0.3,
   scales = "fixed",
@@ -58,7 +58,7 @@ multigroup_volcano(
 
 - size:
 
-  controls size of text
+  label text size in mm (default 3, about 8.5 pt)
 
 - segment.size:
 

@@ -13,8 +13,26 @@ and variants that impute groups without observations at the limit of
 detection. All methods return their results through the same interface
 and columns, so they can be compared and combined. Models simple designs
 with one explanatory variable as well as experiments with several
-factors. Developed while analysing dozens of proteomics datasets at the
-Functional Genomics Center Zurich.
+factors. Intended for proteomics core facilities and researchers
+analysing protein or peptide intensities quantified with MaxQuant,
+DIA-NN, Spectronaut, FragPipe or similar software. Developed while
+analysing dozens of proteomics datasets at the Functional Genomics
+Center Zurich.
+
+## Audience
+
+Proteomics core facilities and researchers analysing label-free protein
+or peptide intensities quantified with MaxQuant, DIA-NN, Spectronaut,
+FragPipe or similar software: quality control, normalization,
+aggregation, differential expression and sample size estimation.
+
+## Benchmarks
+
+The performance claims of Wolski et al. (2023, J Proteome Res),
+comparing prolfqua's methods with MSstats, msqrob2 and proDA on
+benchmark datasets, are reproduced by the vignettes of the companion
+package prolfquabenchmark
+(<https://prolfqua.github.io/prolfquabenchmark/>).
 
 ## Options
 

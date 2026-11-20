@@ -104,7 +104,10 @@ Other modelling:
 
 ``` r
 x <- sim_build_models_lmer(model = "factors", Nprot = 10)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 7 unconfigured columns: average_prot_abundance, sd, group, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 140 rows with NA response for feature and sample combinations absent from the input.
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')

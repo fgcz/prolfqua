@@ -22,7 +22,8 @@ Other LFQData:
 [`LFQDataStats`](https://fgcz.github.io/prolfqua/reference/LFQDataStats.md),
 [`LFQDataSummariser`](https://fgcz.github.io/prolfqua/reference/LFQDataSummariser.md),
 [`LFQDataToSummarizedExperiment()`](https://fgcz.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md),
-[`lfqdata_from_wide()`](https://fgcz.github.io/prolfqua/reference/lfqdata_from_wide.md)
+[`lfqdata_from_wide()`](https://fgcz.github.io/prolfqua/reference/lfqdata_from_wide.md),
+[`plot.LFQData()`](https://fgcz.github.io/prolfqua/reference/plot.LFQData.md)
 
 ## Public fields
 
@@ -208,7 +209,7 @@ euclidean distance is used to compute the distances.
 
 #### Usage
 
-    LFQDataPlotter$heatmap_cor(max_sample_label_chars = 20)
+    LFQDataPlotter$heatmap_cor(max_sample_label_chars = 20, method = "pearson")
 
 #### Arguments
 
@@ -216,6 +217,11 @@ euclidean distance is used to compute the distances.
 
   maximum displayed sample label length. Labels keep their suffix
   because sample prefixes are often shared.
+
+- `method`:
+
+  correlation method or function, see
+  [`plot_heatmap_cor`](https://fgcz.github.io/prolfqua/reference/plot_heatmap_cor.md)
 
 #### Returns
 
@@ -397,7 +403,14 @@ plot of sample correlations
 
 #### Usage
 
-    LFQDataPlotter$sample_correlation()
+    LFQDataPlotter$sample_correlation(method = "pearson")
+
+#### Arguments
+
+- `method`:
+
+  correlation method or function, see
+  [`plot_heatmap_cor`](https://fgcz.github.io/prolfqua/reference/plot_heatmap_cor.md)
 
 #### Returns
 
@@ -435,7 +448,8 @@ write boxplots to file
 
 - `filename`:
 
-  file to write into
+  file name; one ending in \`.pdf\` is used as given, otherwise
+  \`boxplot.pdf\` is appended (default: the plotter prefix)
 
 - `width`:
 
@@ -471,7 +485,7 @@ write figure to pdf
 
 - `fig_name`:
 
-  name of figure (no extension)
+  name of figure; \`.pdf\` is appended unless it ends in \`.pdf\`
 
 - `width`:
 
@@ -505,7 +519,10 @@ The objects of this class are cloneable with this method.
 
 ``` r
 istar <- sim_lfq_data_peptide_config()
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
 
 lfqdata <- LFQData$new(
  istar$data,

@@ -52,7 +52,8 @@ scale used by [`vcov()`](https://rdrr.io/r/stats/vcov.html).
     StrategyBinomial$new(
       modelstr,
       prior_count = 0.1,
-      model_name = "binomial_nested"
+      model_name = "binomial_nested",
+      control = list()
     )
 
 #### Arguments
@@ -68,6 +69,11 @@ scale used by [`vcov()`](https://rdrr.io/r/stats/vcov.html).
 - `model_name`:
 
   model identity
+
+- `control`:
+
+  named list of convergence controls, see
+  [`strategy_binomial`](https://fgcz.github.io/prolfqua/reference/strategy_binomial.md)
 
 ------------------------------------------------------------------------
 

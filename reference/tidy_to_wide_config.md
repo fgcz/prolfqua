@@ -51,7 +51,10 @@ list with data, rowdata, and annotation (colData)
 
 ``` r
 dd <- prolfqua::sim_lfq_data_peptide_config()
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
+#> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
 lfqdata <- prolfqua::LFQData$new(dd$data, dd$config)
 res <- tidy_to_wide_config(lfqdata)
 testthat::expect_equal(nrow(res$rowdata), nrow(res$data))
@@ -118,10 +121,14 @@ tidy_to_wide_config(lfqdata, value = lfqdata$nr_children_col())
 res <- lfqdata$get_Aggregator("medpolish")
 #> Warning: You did not transform the intensities. medpolish works best with already variance stabilized intensities. Use LFQData$get_Transformer to transform the data: abundance
 x <- res$aggregate()
+#> Response `medpolish`: dropped attributes names; prolfqua uses the numeric values only.
 towide <- tidy_to_wide_config(x, value = x$nr_children_col())
 
 dd <- prolfqua::sim_lfq_data_protein_config()
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: dropped 5 unconfigured columns: average_prot_abundance, sd, mean, N, Replicate.
+#> setup_analysis: added 16 rows with NA response for feature and sample combinations absent from the input.
 lfqprot <- prolfqua::LFQData$new(dd$data, dd$config)
 xt <- tidy_to_wide_config(lfqprot, value = lfqprot$nr_children_col())
 xt$data
