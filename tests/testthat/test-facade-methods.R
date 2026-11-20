@@ -7,6 +7,16 @@ facade_methods_fit <- function(method = "lm", lfq = facade_methods_input()) {
   build_contrast_analysis(lfq, "~ group_", c(A_vs_Ctrl = "group_A - group_Ctrl"), method)
 }
 
+# limma::squeezeVar() warns about zero sample variances in limma 3.68 but not in 3.99;
+# these tests are about printing and accessors, not about that warning.
+muffle_limma_zero_variance <- function(expr) {
+  withCallingHandlers(expr, warning = function(w) {
+    if (grepl("Zero sample variances detected", conditionMessage(w), fixed = TRUE)) {
+      invokeRestart("muffleWarning")
+    }
+  })
+}
+
 test_that("internal fit accessors align omitted observations and aliased coefficients", {
   data <- iris
   data$Sepal.Length[c(2, 8)] <- NA_real_
@@ -141,10 +151,7 @@ test_that("hurdle printing and summaries describe both component models", {
   sim <- sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.4, seed = 42)
   lfq <- LFQData$new(sim$data, sim$config)
   lfq <- lfq$get_Transformer()$log2()$lfq
-  expect_warning(
-    facade <- facade_methods_fit("hurdle_nested", lfq),
-    "Zero sample variances detected"
-  )
+  facade <- muffle_limma_zero_variance(facade_methods_fit("hurdle_nested", lfq))
   expect_output(print(facade), "intensity formula:")
   expect_output(print(facade), "detection formula:")
   result <- summary(facade)
@@ -186,10 +193,7 @@ test_that("public coefficient accessors preserve limma estimates and rfit counts
 test_that("a hurdle result has no single coefficient table or formula", {
   sim <- sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.4, seed = 42)
   lfq <- LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq
-  expect_warning(
-    facade <- facade_methods_fit("hurdle_nested", lfq),
-    "Zero sample variances detected"
-  )
+  facade <- muffle_limma_zero_variance(facade_methods_fit("hurdle_nested", lfq))
   for (method in list(stats::coef, stats::confint, stats::formula, stats::nobs)) {
     expect_error(method(facade), "x\\$contrast\\$detection", class = "prolfqua_error_not_available")
   }

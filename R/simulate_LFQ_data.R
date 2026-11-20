@@ -360,7 +360,7 @@ sim_lfq_data_2factor_config <- function(
 #' @keywords internal
 #' @examples
 #' modi <- sim_build_models_lm(model = "interaction", weight_missing = 1)
-#' stopifnot(dim(modi$model_df) == c(10,9))
+#' stopifnot(nrow(modi$model_df) == 10)
 #' mod2 <- sim_build_models_lm(model = "parallel2", weight_missing = 1)
 #' mod2$model_df$linear_model[[1]]
 #' mod3 <- sim_build_models_lm(model = "parallel3", weight_missing = 1)
