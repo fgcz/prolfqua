@@ -124,6 +124,7 @@ ContrastsFacadeBase <- R6::R6Class(
         .assert_aggregated_facade_input(lfqdata, entry$class)
       }
       .assert_contrast_groups(lfqdata, contrasts)
+      .assert_full_rank_design(lfqdata, modelstr)
       self$.lfqdata <- lfqdata$get_copy()
       private$.input <- self$.lfqdata
       self$.contrast_names <- names(contrasts)

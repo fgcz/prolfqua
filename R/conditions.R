@@ -205,6 +205,44 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
   invisible(lfqdata)
 }
 
+#' Abort when the fixed-effect design is not of full rank across samples
+#'
+#' The check runs once per analysis on one row per sample, before any model is fitted. Random-effect terms
+#' (`(1 | peptide_Id)`) are left out. Rank deficiency of single subjects caused by missing values is detected after
+#' fitting instead (failed fit, listed by `get_missing()`).
+#' @param lfqdata LFQData to fit
+#' @param modelstr right-hand-side model formula string
+#' @noRd
+#' @srrstats {RE2.4, RE2.4a} Before fitting, every analysis checks that the fixed-effect design over the samples is of
+#'   full rank and raises `prolfqua_error_collinear_design` naming the aliased coefficients (test-design-checks.R).
+.assert_full_rank_design <- function(lfqdata, modelstr) {
+  model_terms <- stats::terms(stats::as.formula(modelstr))
+  labels <- attr(model_terms, "term.labels")
+  labels <- labels[!grepl("|", labels, fixed = TRUE)]
+  if (length(labels) == 0L) {
+    return(invisible(lfqdata))
+  }
+  fixed <- stats::reformulate(labels, intercept = attr(model_terms, "intercept") == 1L)
+  samples <- unique(lfqdata$data_long()[, unique(c(lfqdata$sample_name(), all.vars(fixed))), drop = FALSE])
+  design <- stats::model.matrix(fixed, data = as.data.frame(samples))
+  decomposition <- qr(design)
+  if (decomposition$rank < ncol(design)) {
+    aliased <- colnames(design)[decomposition$pivot[seq(decomposition$rank + 1L, ncol(design))]]
+    abort_prolfqua(
+      "The design `",
+      paste(deparse(fixed), collapse = " "),
+      "` is not of full rank across the ",
+      nrow(samples),
+      " samples: ",
+      toString(paste0("`", aliased, "`")),
+      " are linear combinations of the other columns (collinear or empty factor combinations). ",
+      "Remove or merge the aliased factors.",
+      class = "prolfqua_error_collinear_design"
+    )
+  }
+  invisible(lfqdata)
+}
+
 #' Abort when key columns do not identify each row
 #' @param data long-format data
 #' @param keys sample, hierarchy and isotope key columns

@@ -29,6 +29,7 @@
 
 ## Behaviour changes
 
+- `build_contrast_analysis()` checks before fitting that the fixed-effect design is of full rank across samples (aliased factors, empty interaction cells) and stops with `prolfqua_error_collinear_design` naming the aliased coefficients; such designs used to fail later with unrelated errors.
 - Fitting and aggregation reject data with more than one row per sample and hierarchy key (`prolfqua_error_duplicate_keys`), also when the `LFQData` was created without `setup_analysis()`.
 - `LFQData$new()` drops extra classes and attributes (e.g. `I()`, units, labels) from the response column with a message; transformations and models use the plain numeric values.
 - Colour-blind safe default colours: abundance heatmaps use blue-white-red instead of green-black-red, factor levels in heatmap annotations and PCA use Okabe-Ito (viridis beyond 8 levels) instead of the ggplot2 hue palette, estimate types in volcano, MA and score plots use black, orange and blue instead of black, green and blue, and zero lines are grey instead of green.

@@ -37,10 +37,6 @@ sigma.rlm <- function(object, ...) {
 #'
 #' @return An R6 class generator.
 #' @keywords internal
-#' @srrstatsTODO {RE2.4} StrategyBase flags singular fits after fitting; limit: there is no common preprocessing
-#'   dependency check.
-#' @srrstatsTODO {RE2.4a} Some strategies detect deficient rank; there is no shared upfront predictor-collinearity
-#'   diagnostic.
 #' @srrstats {RE3.0} Failed fits and warnings raised while fitting or aggregating, including non-convergence of rlm,
 #'   lmer, Firth and medpolish, give one `prolfqua_fit_failed` warning per step naming the subjects and the reason.
 #' @srrstats {RE4.1} Strategies expose a formula and fitting specification without fitting a model.
