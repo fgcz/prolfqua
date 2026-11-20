@@ -79,6 +79,7 @@ Other plotting:
 [`plot_na_heatmap()`](https://fgcz.github.io/prolfqua/reference/plot_na_heatmap.md),
 [`plot_pca()`](https://fgcz.github.io/prolfqua/reference/plot_pca.md),
 [`plot_sample_correlation()`](https://fgcz.github.io/prolfqua/reference/plot_sample_correlation.md),
+[`theme_prolfqua()`](https://fgcz.github.io/prolfqua/reference/theme_prolfqua.md),
 [`upset_interaction_missing_stats()`](https://fgcz.github.io/prolfqua/reference/upset_interaction_missing_stats.md),
 [`upset_missing_stats()`](https://fgcz.github.io/prolfqua/reference/upset_missing_stats.md)
 

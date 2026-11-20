@@ -197,7 +197,6 @@ lfq_peptide <- lfq_peptide$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 facade <- build_contrast_analysis(lfq_peptide, "~ group_", contrasts, method = "hurdle_nested")
-#> Response `medpolish`: dropped attributes names; prolfqua uses the numeric values only.
 #> Warning: aggregate (medpolish): 1 subjects with estimation warning (e.g. 4JK499~3111): medpolish() did not converge in 10 iterations
 #> See $provenance().
 #> fit (ModelImputed): 20 missing responses dropped (e.g. 0GRprF~7339, 4JK499~3111, CibL2O~2149, quTD7H~9280, xpDUdv~6137): NA response (missing observation) left out of the fit

@@ -173,6 +173,15 @@
 
 ### Behaviour changes
 
+- All ggplot figures have a new default look in the style of GraphPad
+  Prism: white background, black axis lines with outward ticks, bold
+  axis titles, bold facet labels on a light grey strip. Volcano, MA,
+  score, fitted-value, PCA, density and SD-versus-mean plots keep faint
+  gridlines; histograms, bar charts, boxplots and violins have none. Add
+  any ggplot2 theme to override, or add the new
+  [`theme_prolfqua()`](https://fgcz.github.io/prolfqua/reference/theme_prolfqua.md)
+  to your own ggplots to match.
+
 - [`setup_analysis()`](https://fgcz.github.io/prolfqua/reference/setup_analysis.md)
   announces each transformation it applies with a `prolfqua_message`:
   source columns united into one key, non-character factor columns
@@ -317,6 +326,10 @@
   Installation is from Bioconductor first.
 
 ### Bug fixes
+
+- `medpolish` and `rlm` aggregation no longer report “Response
+  `medpolish`: dropped attributes names” (or `lmrob`): the estimates are
+  returned as plain numeric values.
 
 - `rlm` aggregation (`get_Aggregator("rlm")`) removed estimable design
   columns when a sample or peptide column was a factor with an unused

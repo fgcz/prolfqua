@@ -241,7 +241,6 @@ lfq_peptide <- LFQData$new(istar$data, istar$config)
 lfq_peptide <- lfq_peptide$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance
 lfq_protein <- lfq_peptide$get_Aggregator()$aggregate()
-#> Response `medpolish`: dropped attributes names; prolfqua uses the numeric values only.
 #> Warning: aggregate (medpolish): 1 subjects with estimation warning (e.g. 4JK499~3111): medpolish() did not converge in 10 iterations
 #> See $provenance().
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")

@@ -340,7 +340,8 @@ proteins.
 sampleSize |>
   ggplot2::ggplot(ggplot2::aes(x = factor(probs) , y = N)) +
   ggplot2::facet_wrap(~delta) +
-  ggplot2::geom_bar(stat = "identity")
+  ggplot2::geom_bar(stat = "identity") +
+  prolfqua::theme_prolfqua()
 ```
 
 ![Estimated sample sizes for various FC levels and various quantiles of
@@ -398,7 +399,8 @@ Sample size for each protein
 x |> ggplot2::ggplot(ggplot2::aes(x = N)) +
   ggplot2::geom_histogram() +
   ggplot2::facet_wrap(~delta) +
-  ggplot2::xlim(0,100)
+  ggplot2::xlim(0,100) +
+  prolfqua::theme_prolfqua()
 ```
 
 ![Distribution of the required sample sizes for two fold change
@@ -485,7 +487,8 @@ freedom.
 ggplot2::ggplot(pilot_plan$power_curve, ggplot2::aes(n, power)) +
   ggplot2::geom_line() +
   ggplot2::geom_hline(yintercept = 0.8, linetype = "dashed") +
-  ggplot2::labs(x = "Samples per group", y = "Average power")
+  ggplot2::labs(x = "Samples per group", y = "Average power") +
+  prolfqua::theme_prolfqua(grid = TRUE)
 ```
 
 ![Average power under the planned effect distribution and fitted

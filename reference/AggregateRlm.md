@@ -120,7 +120,6 @@ lfqTrans <- lfqdata$clone()$get_Transformer()$log2()$robscale()$lfq
 
 agg <- AggregateRlm$new(lfqTrans, "protein")
 agg$aggregate()
-#> Response `lmrob`: dropped attributes names; prolfqua uses the numeric values only.
 p <- agg$plot()
 p$plots[[1]]
 #> Warning: Removed 7 rows containing missing values or values outside the scale range

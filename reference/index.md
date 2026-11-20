@@ -390,6 +390,9 @@
 - [`table_facade()`](https://fgcz.github.io/prolfqua/reference/table_facade.md)
   : table facade to easily switch implementations
 
+- [`theme_prolfqua()`](https://fgcz.github.io/prolfqua/reference/theme_prolfqua.md)
+  : Prism-style ggplot theme used by all prolfqua plots
+
 - [`upset_interaction_missing_stats()`](https://fgcz.github.io/prolfqua/reference/upset_interaction_missing_stats.md)
   : UpSetR plot from interaction_missing_stats
 

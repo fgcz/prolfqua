@@ -93,6 +93,7 @@
 <code><a href="plot_pca.html">plot_pca()</a></code>,
 <code><a href="plot_raster.html">plot_raster()</a></code>,
 <code><a href="plot_sample_correlation.html">plot_sample_correlation()</a></code>,
+<code><a href="theme_prolfqua.html">theme_prolfqua()</a></code>,
 <code><a href="upset_interaction_missing_stats.html">upset_interaction_missing_stats()</a></code>,
 <code><a href="upset_missing_stats.html">upset_missing_stats()</a></code></p>
 <p>Other aggregation:
@@ -115,7 +116,6 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : log2_abundance</span>
 <span class="r-in"><span><span class="va">bbMed</span> <span class="op">&lt;-</span> <span class="fu"><a href="estimate_intensity.html">estimate_intensity</a></span><span class="op">(</span><span class="va">lfq</span>, method <span class="op">=</span> <span class="st">"medpolish"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lfq_med</span> <span class="op">&lt;-</span> <span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">bbMed</span><span class="op">$</span><span class="va">data</span>, <span class="va">bbMed</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Response `medpolish`: dropped attributes names; prolfqua uses the numeric values only.</span>
 <span class="r-in"><span><span class="va">tmpMed</span> <span class="op">&lt;-</span> <span class="fu">plot_estimate</span><span class="op">(</span><span class="va">lfq</span>, <span class="va">lfq_med</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="st">"ggplot"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">tmpMed</span><span class="op">$</span><span class="va">plots</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
