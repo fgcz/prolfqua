@@ -264,7 +264,22 @@ StrategyRLM <- R6::R6Class(
   private = list(
     control_defaults = function() list(maxit = 20, acc = 1e-4),
     fit = function(x) {
-      MASS::rlm(self$formula, data = x, method = "M", maxit = self$control$maxit, acc = self$control$acc)
+      ls <- stats::lm(self$formula, data = x)
+      response <- stats::model.response(stats::model.frame(ls))
+      if (!.zero_residual_variance(stats::sigma(ls), mean(response))) {
+        return(MASS::rlm(self$formula, data = x, method = "M", maxit = self$control$maxit, acc = self$control$acc))
+      }
+      # A constant or noiseless response has no robust scale: rlm's IRLS divides residuals of floating-point
+      # noise by a scale that can underflow to zero, and on some platforms all weights and coefficients turn
+      # NA. Fit rlm to an all-zero response (exact zero scale) and carry over the least-squares estimates.
+      zero <- x
+      zero[[deparse(self$formula[[2]])]] <- 0
+      fit <- MASS::rlm(self$formula, data = zero, method = "M", maxit = self$control$maxit, acc = self$control$acc)
+      fit$coefficients <- stats::coef(ls)
+      fit$fitted.values <- stats::fitted(ls)
+      fit$residuals <- stats::residuals(ls)
+      fit$model <- ls$model
+      fit
     }
   )
 )

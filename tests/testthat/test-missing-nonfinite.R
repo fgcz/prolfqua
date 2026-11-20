@@ -252,3 +252,13 @@ test_that("simulators with with_missing = FALSE give complete data with positive
     expect_equal(joined$abundance.na, joined$abundance.complete, label = name)
   }
 })
+
+test_that("rlm on a constant or noiseless response gives the least-squares estimates with zero scale", {
+  d <- data.frame(group_ = rep(c("A", "B", "Ctrl"), each = 4))
+  for (y in list(rep(20, 12), ifelse(d$group_ == "A", 22, 20))) {
+    d$abundance <- y
+    fit <- strategy_rlm("abundance ~ group_")$model_fun(d)
+    expect_equal(fit$s, 0)
+    expect_equal(stats::coef(fit), stats::coef(stats::lm(abundance ~ group_, d)))
+  }
+})
