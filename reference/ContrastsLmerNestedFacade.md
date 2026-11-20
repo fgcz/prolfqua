@@ -138,10 +138,12 @@ Inherited methods
 - [`ContrastsInterface$get_contrast_sides()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-get_contrast_sides)
 - [`ContrastsInterface$get_ora()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-get_ora)
 - [`ContrastsInterface$get_rank()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-get_rank)
+- [`ContrastsFacadeBase$.recorded_provenance()`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.html#method-.recorded_provenance)
 - [`ContrastsFacadeBase$get_Plotter()`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.html#method-get_Plotter)
 - [`ContrastsFacadeBase$get_config()`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.html#method-get_config)
 - [`ContrastsFacadeBase$get_contrasts()`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.html#method-get_contrasts)
 - [`ContrastsFacadeBase$get_missing()`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.html#method-get_missing)
+- [`ContrastsFacadeBase$provenance()`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.html#method-provenance)
 - [`ContrastsFacadeBase$to_wide()`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.html#method-to_wide)
 
 ------------------------------------------------------------------------
@@ -209,14 +211,11 @@ fa <- ContrastsLmerNestedFacade$new(lfqdata, "~ group_", contrasts)
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
-#> Warning: There were 4 warnings in `dplyr::mutate()`.
-#> The first warning was:
-#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
-#>   pb)`.
-#> ℹ In group 2: `protein_Id = "7cbcrd~5725"`.
-#> Caused by warning:
-#> ! grouping factors must have > 1 sampled level
-#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
+#> Warning: fit (Model): 4 fits failed (e.g. 7cbcrd~5725, 9VUkAq~4703, CGzoYe~2147, DoWup2~5896): Error: grouping factors must have > 1 sampled level
+#> See $provenance().
+#> fit (Model): 5 singular fits (e.g. 0EfVhX~0087, Fl4JiV~8625, HvIpHG~9079, JcKVfU~9653, SGIVBl~5782): coefficients not estimable or fewer than 2 residual df
+#> fit (Model): 32 missing responses dropped (e.g. 0EfVhX~0087, BEJI92~5282, Fl4JiV~8625, HvIpHG~9079, SGIVBl~5782): NA response (missing observation) left out of the fit
+#> See $provenance().
 head(fa$get_contrasts())
 #> # A tibble: 6 × 16
 #>   modelName   estimate_type protein_Id  contrast       diff avgAbd

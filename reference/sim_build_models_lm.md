@@ -110,9 +110,14 @@ Other modelling:
 ``` r
 modi <- sim_build_models_lm(model = "interaction", weight_missing = 1)
 #> creating sampleName from file_name column
+#> fit (Model): 59 missing responses dropped (e.g. 0EfVhX~0087, 7cbcrd~5725, 9VUkAq~4703, BEJI92~5282, CGzoYe~2147, ...): NA response (missing observation) left out of the fit
+#> See $provenance().
 stopifnot(dim(modi$model_df) == c(10,9))
+#> Error: dim(modi$model_df) == c(10, 9) are not all TRUE
 mod2 <- sim_build_models_lm(model = "parallel2", weight_missing = 1)
 #> creating sampleName from file_name column
+#> fit (Model): 59 missing responses dropped (e.g. 0EfVhX~0087, 7cbcrd~5725, 9VUkAq~4703, BEJI92~5282, CGzoYe~2147, ...): NA response (missing observation) left out of the fit
+#> See $provenance().
 mod2$model_df$linear_model[[1]]
 #> 
 #> Call:
@@ -124,6 +129,11 @@ mod2$model_df$linear_model[[1]]
 #> 
 mod3 <- sim_build_models_lm(model = "parallel3", weight_missing = 1)
 #> creating sampleName from file_name column
+#> fit (Model): 2 singular fits (e.g. BEJI92~5282, Fl4JiV~8625): coefficients not estimable or fewer than 2 residual df
+#> fit (Model): 45 missing responses dropped (e.g. 0EfVhX~0087, 7cbcrd~5725, 9VUkAq~4703, BEJI92~5282, DoWup2~5896, ...): NA response (missing observation) left out of the fit
+#> See $provenance().
 modf <- sim_build_models_lm(model = "factors", weight_missing = 1)
 #> creating sampleName from file_name column
+#> fit (Model): 59 missing responses dropped (e.g. 0EfVhX~0087, 7cbcrd~5725, 9VUkAq~4703, BEJI92~5282, CGzoYe~2147, ...): NA response (missing observation) left out of the fit
+#> See $provenance().
 ```

@@ -14,7 +14,10 @@ values are Missing Completely At Random (MCAR) or Missing At Random
 proteomics, is not modelled. When low intensities are missing, fold
 changes of down-regulated proteins shrink toward zero; LOD imputation
 (the `_impute` methods) caps estimates at the LOD and does not remove
-this bias. MNAR can also inflate false discovery rates.
+this bias. MNAR can also inflate false discovery rates. How `NA`, zero
+and non-finite intensities are treated is described in
+[`prolfqua-package`](https://fgcz.github.io/prolfqua/reference/prolfqua-package.md),
+section "Missing and non-finite values".
 
 ## See also
 
@@ -41,6 +44,10 @@ Other LFQData:
 ### Public methods
 
 - [`LFQData$new()`](#method-LFQData-initialize)
+
+- [`LFQData$provenance()`](#method-LFQData-provenance)
+
+- [`LFQData$get_provenance_log()`](#method-LFQData-get_provenance_log)
 
 - [`LFQData$set_data()`](#method-LFQData-set_data)
 
@@ -124,7 +131,7 @@ initialize
 
 #### Usage
 
-    LFQData$new(data, config, prefix = "ms_", setup = FALSE)
+    LFQData$new(data, config, prefix = "ms_", setup = FALSE, provenance = NULL)
 
 #### Arguments
 
@@ -145,6 +152,42 @@ initialize
   is data setup needed, default = FALSE, if TRUE, calls
   [`setup_analysis`](https://fgcz.github.io/prolfqua/reference/setup_analysis.md)
   on data first.
+
+- `provenance`:
+
+  internal: record of an LFQData this one continues (the same data
+  transformed or subset); a copy is kept. NULL starts a new record.
+
+------------------------------------------------------------------------
+
+### `LFQData$provenance()`
+
+problems and dropped items recorded for this data: values set to NA,
+rows, features or proteins removed
+
+#### Usage
+
+    LFQData$provenance()
+
+#### Returns
+
+tibble with columns step, event, n, ids (list), reason, failure,
+response
+
+------------------------------------------------------------------------
+
+### `LFQData$get_provenance_log()`
+
+internal: the record this data continues, passed to `LFQData$new()` for
+derived data
+
+#### Usage
+
+    LFQData$get_provenance_log()
+
+#### Returns
+
+Provenance object
 
 ------------------------------------------------------------------------
 
@@ -729,8 +772,9 @@ istar <- sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata$filter_proteins_by_peptide_count()
-#> removing protein_Id with fewer than 2 peptide_Id
 #> Column added : nr_peptide_Id_IN_protein_Id
+#> filter_proteins_by_peptide_count: 4 protein_Id removed (e.g. 7cbcrd~5725, 9VUkAq~4703, CGzoYe~2147, DoWup2~5896): fewer than 2 peptide_Id
+#> See $provenance().
 tmp <- lfqdata$data_wide()
 testthat::expect_equal(nrow(tmp$data) , nrow(tmp$rowdata))
 testthat::expect_equal(ncol(tmp$data) , nrow(tmp$annotation) + ncol(tmp$rowdata))

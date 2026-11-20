@@ -222,7 +222,7 @@ sessionInfo()
     ## [10] vctrs_0.7.3           tools_4.6.2           generics_0.1.4       
     ## [13] stats4_4.6.2          parallel_4.6.2        tibble_3.3.1         
     ## [16] cluster_2.1.8.3       pkgconfig_2.0.3       RColorBrewer_1.1-3   
-    ## [19] S4Vectors_0.50.3      S7_0.2.2              desc_1.4.3           
+    ## [19] S4Vectors_0.50.3      S7_1.0.0              desc_1.4.3           
     ## [22] lifecycle_1.0.5       compiler_4.6.2        farver_2.1.2         
     ## [25] stringr_1.6.0         textshaping_1.0.5     progress_1.2.3       
     ## [28] statmod_1.5.2         codetools_0.2-20      ComplexHeatmap_2.28.0

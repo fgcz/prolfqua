@@ -143,6 +143,8 @@ Inherited methods
 - [`ModelInterface$coef_histogram()`](https://fgcz.github.io/prolfqua/reference/ModelInterface.html#method-coef_histogram)
 - [`ModelInterface$coef_pairs()`](https://fgcz.github.io/prolfqua/reference/ModelInterface.html#method-coef_pairs)
 - [`ModelInterface$coef_volcano()`](https://fgcz.github.io/prolfqua/reference/ModelInterface.html#method-coef_volcano)
+- [`ModelInterface$get_provenance_log()`](https://fgcz.github.io/prolfqua/reference/ModelInterface.html#method-get_provenance_log)
+- [`ModelInterface$provenance()`](https://fgcz.github.io/prolfqua/reference/ModelInterface.html#method-provenance)
 
 ------------------------------------------------------------------------
 
@@ -241,41 +243,39 @@ mod <- prolfqua::build_model(
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
-#> Warning: There were 7 warnings in `dplyr::mutate()`.
-#> The first warning was:
-#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
-#>   pb)`.
-#> ℹ In group 1: `protein_Id = "0EfVhX~5954"`.
-#> Caused by warning:
-#> ! grouping factors must have > 1 sampled level
-#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 6 remaining warnings.
+#> Warning: fit (f_condtion_r_peptide): 7 fits failed (e.g. 0EfVhX~5954, 7cbcrd~8305, CGzoYe~2857, Fl4JiV~7526, JV3Z7t~2956, ...): Error: grouping factors must have > 1 sampled level
+#> See $provenance().
+#> fit (f_condtion_r_peptide): 4 singular fits (e.g. BEJI92~9143, HC8K98~4958, HvIpHG~4015, R2i6w7~0288): coefficients not estimable or fewer than 2 residual df
+#> fit (f_condtion_r_peptide): 102 missing responses dropped (e.g. 0m5WN4~1448, 9VUkAq~4562, At886V~3296, BEJI92~9143, CtOJ9t~2837, ...): NA response (missing observation) left out of the fit
+#> See $provenance().
 
 mod$model_df
-#> # A tibble: 20 × 9
+#> # A tibble: 20 × 10
 #> # Groups:   protein_Id [20]
-#>    protein_Id data     linear_model has_model_fit isSingular df.residual   sigma
-#>    <chr>      <list>   <list>       <lgl>         <lgl>            <dbl>   <dbl>
-#>  1 0EfVhX~59… <tibble> <chr [1]>    FALSE         NA                  NA NA     
-#>  2 0m5WN4~14… <tibble> <lmrMdLmT>   TRUE          FALSE               15  0.120 
-#>  3 7cbcrd~83… <tibble> <chr [1]>    FALSE         NA                  NA NA     
-#>  4 9VUkAq~45… <tibble> <lmrMdLmT>   TRUE          FALSE              156  0.203 
-#>  5 At886V~32… <tibble> <lmrMdLmT>   TRUE          FALSE               51  0.118 
-#>  6 BEJI92~91… <tibble> <lmrMdLmT>   TRUE          TRUE                39  0.460 
-#>  7 CGzoYe~28… <tibble> <chr [1]>    FALSE         NA                  NA NA     
-#>  8 CtOJ9t~28… <tibble> <lmrMdLmT>   TRUE          FALSE               54  0.123 
-#>  9 DoWup2~29… <tibble> <lmrMdLmT>   TRUE          FALSE               75  0.239 
-#> 10 DuwH7n~34… <tibble> <lmrMdLmT>   TRUE          FALSE               28  0.215 
-#> 11 Fl4JiV~75… <tibble> <chr [1]>    FALSE         NA                  NA NA     
-#> 12 HC8K98~49… <tibble> <lmrMdLmT>   TRUE          TRUE                15  0.222 
-#> 13 HvIpHG~40… <tibble> <lmrMdLmT>   TRUE          TRUE                18  0.158 
-#> 14 I1Jk2Z~08… <tibble> <lmrMdLmT>   TRUE          FALSE               79  0.189 
-#> 15 JV3Z7t~29… <tibble> <chr [1]>    FALSE         NA                  NA NA     
-#> 16 JcKVfU~08… <tibble> <chr [1]>    FALSE         NA                  NA NA     
-#> 17 JfvT8X~27… <tibble> <lmrMdLmT>   TRUE          FALSE              121  0.210 
-#> 18 R2i6w7~02… <tibble> <lmrMdLmT>   TRUE          TRUE                15  0.124 
-#> 19 SGIVBl~95… <tibble> <lmrMdLmT>   TRUE          FALSE               19  0.0997
-#> 20 r2J0Eh~26… <tibble> <chr [1]>    FALSE         NA                  NA NA     
-#> # ℹ 2 more variables: nr_coef <int>, nr_coef_not_NA <int>
+#>    protein_Id  data     linear_model fit_warnings has_model_fit isSingular
+#>    <chr>       <list>   <list>       <list>       <lgl>         <lgl>     
+#>  1 0EfVhX~5954 <tibble> <chr [1]>    <chr [0]>    FALSE         NA        
+#>  2 0m5WN4~1448 <tibble> <lmrMdLmT>   <chr [0]>    TRUE          FALSE     
+#>  3 7cbcrd~8305 <tibble> <chr [1]>    <chr [0]>    FALSE         NA        
+#>  4 9VUkAq~4562 <tibble> <lmrMdLmT>   <chr [0]>    TRUE          FALSE     
+#>  5 At886V~3296 <tibble> <lmrMdLmT>   <chr [0]>    TRUE          FALSE     
+#>  6 BEJI92~9143 <tibble> <lmrMdLmT>   <chr [0]>    TRUE          TRUE      
+#>  7 CGzoYe~2857 <tibble> <chr [1]>    <chr [0]>    FALSE         NA        
+#>  8 CtOJ9t~2837 <tibble> <lmrMdLmT>   <chr [0]>    TRUE          FALSE     
+#>  9 DoWup2~2934 <tibble> <lmrMdLmT>   <chr [0]>    TRUE          FALSE     
+#> 10 DuwH7n~3402 <tibble> <lmrMdLmT>   <chr [0]>    TRUE          FALSE     
+#> 11 Fl4JiV~7526 <tibble> <chr [1]>    <chr [0]>    FALSE         NA        
+#> 12 HC8K98~4958 <tibble> <lmrMdLmT>   <chr [0]>    TRUE          TRUE      
+#> 13 HvIpHG~4015 <tibble> <lmrMdLmT>   <chr [0]>    TRUE          TRUE      
+#> 14 I1Jk2Z~0821 <tibble> <lmrMdLmT>   <chr [0]>    TRUE          FALSE     
+#> 15 JV3Z7t~2956 <tibble> <chr [1]>    <chr [0]>    FALSE         NA        
+#> 16 JcKVfU~0815 <tibble> <chr [1]>    <chr [0]>    FALSE         NA        
+#> 17 JfvT8X~2727 <tibble> <lmrMdLmT>   <chr [0]>    TRUE          FALSE     
+#> 18 R2i6w7~0288 <tibble> <lmrMdLmT>   <chr [0]>    TRUE          TRUE      
+#> 19 SGIVBl~9558 <tibble> <lmrMdLmT>   <chr [0]>    TRUE          FALSE     
+#> 20 r2J0Eh~2687 <tibble> <chr [1]>    <chr [0]>    FALSE         NA        
+#> # ℹ 4 more variables: df.residual <dbl>, sigma <dbl>, nr_coef <int>,
+#> #   nr_coef_not_NA <int>
 aovtable  <- mod$get_anova()
 mod$get_coefficients()
 #> # A tibble: 39 × 9

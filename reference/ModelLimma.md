@@ -186,6 +186,8 @@ Inherited methods
 - [`ModelInterface$coef_histogram()`](https://fgcz.github.io/prolfqua/reference/ModelInterface.html#method-coef_histogram)
 - [`ModelInterface$coef_pairs()`](https://fgcz.github.io/prolfqua/reference/ModelInterface.html#method-coef_pairs)
 - [`ModelInterface$coef_volcano()`](https://fgcz.github.io/prolfqua/reference/ModelInterface.html#method-coef_volcano)
+- [`ModelInterface$get_provenance_log()`](https://fgcz.github.io/prolfqua/reference/ModelInterface.html#method-get_provenance_log)
+- [`ModelInterface$provenance()`](https://fgcz.github.io/prolfqua/reference/ModelInterface.html#method-provenance)
 
 ------------------------------------------------------------------------
 
@@ -308,7 +310,9 @@ lProt <- LFQData$new(istar$data, istar$config)
 lProt$rename_response("transformedIntensity")
 strat <- strategy_limma("transformedIntensity ~ group_")
 mod <- build_model_limma(lProt, strat)
-#> Warning: Partial NA coefficients for 1 probe(s)
+#> fit (limma): 1 singular fits (e.g. VUnZ6o~1614): coefficients not estimable (Partial NA coefficients)
+#> fit (limma): 82 missing responses dropped (e.g. 0EfVhX~7161, 0m5WN4~3543, 7QuTub~5556, 7cbcrd~0495, 9VUkAq~8655, ...): NA response (missing observation) left out of the fit
+#> See $provenance().
 
 coeffs <- mod$get_coefficients()
 head(coeffs)

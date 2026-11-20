@@ -233,10 +233,12 @@ impute.</p></dd>
 <li><p><a href="#method-ModelLimma-get_coefficients"><code>ModelLimma$get_coefficients()</code></a></p></li>
 <li><p><a href="#method-ModelLimma-get_anova"><code>ModelLimma$get_anova()</code></a></p></li>
 <li><p><a href="#method-ModelLimma-clone"><code>ModelLimma$clone()</code></a></p></li>
-</ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="anova_histogram"><a href="ModelInterface.html#method-anova_histogram"><code>ModelInterface$anova_histogram()</code></a></span></li>
+</ul></div><p><details><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="anova_histogram"><a href="ModelInterface.html#method-anova_histogram"><code>ModelInterface$anova_histogram()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="coef_histogram"><a href="ModelInterface.html#method-coef_histogram"><code>ModelInterface$coef_histogram()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="coef_pairs"><a href="ModelInterface.html#method-coef_pairs"><code>ModelInterface$coef_pairs()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="coef_volcano"><a href="ModelInterface.html#method-coef_volcano"><code>ModelInterface$coef_volcano()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="get_provenance_log"><a href="ModelInterface.html#method-get_provenance_log"><code>ModelInterface$get_provenance_log()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ModelInterface" data-id="provenance"><a href="ModelInterface.html#method-provenance"><code>ModelInterface$provenance()</code></a></span></li>
 </ul></details></p><hr><a id="method-ModelLimma-initialize"></a><div class="section">
 <h3 id="modellimma-new-"><code>ModelLimma$new()</code><a class="anchor" aria-label="anchor" href="#modellimma-new-"></a></h3>
 <p>initialize ModelLimma</p><div class="section">
@@ -347,7 +349,9 @@ impute.</p></dd>
 <span class="r-in"><span><span class="va">lProt</span><span class="op">$</span><span class="fu">rename_response</span><span class="op">(</span><span class="st">"transformedIntensity"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">strat</span> <span class="op">&lt;-</span> <span class="fu"><a href="strategy_limma.html">strategy_limma</a></span><span class="op">(</span><span class="st">"transformedIntensity ~ group_"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="build_model_limma.html">build_model_limma</a></span><span class="op">(</span><span class="va">lProt</span>, <span class="va">strat</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Partial NA coefficients for 1 probe(s)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> fit (limma): 1 singular fits (e.g. VUnZ6o~1614): coefficients not estimable (Partial NA coefficients)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> fit (limma): 82 missing responses dropped (e.g. 0EfVhX~7161, 0m5WN4~3543, 7QuTub~5556, 7cbcrd~0495, 9VUkAq~8655, ...): NA response (missing observation) left out of the fit</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> See $provenance().</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">coeffs</span> <span class="op">&lt;-</span> <span class="va">mod</span><span class="op">$</span><span class="fu">get_coefficients</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">coeffs</span><span class="op">)</span></span></span>

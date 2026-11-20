@@ -211,6 +211,8 @@ lfqdata$rename_response("transformedIntensity")
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 
 fa_lm    <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "lm")
+#> fit (Model): 34 missing responses dropped (e.g. 0m5WN4~1448, 9VUkAq~4562, At886V~3296, BEJI92~9143, CtOJ9t~2837, ...): NA response (missing observation) left out of the fit
+#> See $provenance().
 head(fa_lm$get_contrasts())
 #> # A tibble: 6 × 16
 #>   modelName estimate_type protein_Id  contrast     diff avgAbd
@@ -226,6 +228,8 @@ head(fa_lm$get_contrasts())
 #> #   conf.high <dbl>, sigma <dbl>, FDR <dbl>
 
 fa_limma <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "limma")
+#> fit (limma): 34 missing responses dropped (e.g. 0m5WN4~1448, 9VUkAq~4562, At886V~3296, BEJI92~9143, CtOJ9t~2837, ...): NA response (missing observation) left out of the fit
+#> See $provenance().
 head(fa_limma$get_contrasts())
 #> # A tibble: 6 × 16
 #>   modelName estimate_type protein_Id  contrast     diff    FDR
@@ -241,6 +245,8 @@ head(fa_limma$get_contrasts())
 #> #   conf.low <dbl>, conf.high <dbl>, avgAbd <dbl>
 
 fa_deqms <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "deqms")
+#> fit (Model): 34 missing responses dropped (e.g. 0m5WN4~1448, 9VUkAq~4562, At886V~3296, BEJI92~9143, CtOJ9t~2837, ...): NA response (missing observation) left out of the fit
+#> See $provenance().
 head(fa_deqms$get_contrasts())
 #> # A tibble: 6 × 16
 #>   modelName estimate_type contrast  protein_Id     diff avgAbd
@@ -272,14 +278,11 @@ fa_lmer <- build_contrast_analysis(
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
-#> Warning: There were 4 warnings in `dplyr::mutate()`.
-#> The first warning was:
-#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
-#>   pb)`.
-#> ℹ In group 2: `protein_Id = "7cbcrd~5725"`.
-#> Caused by warning:
-#> ! grouping factors must have > 1 sampled level
-#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
+#> Warning: fit (Model): 4 fits failed (e.g. 7cbcrd~5725, 9VUkAq~4703, CGzoYe~2147, DoWup2~5896): Error: grouping factors must have > 1 sampled level
+#> See $provenance().
+#> fit (Model): 5 singular fits (e.g. 0EfVhX~0087, Fl4JiV~8625, HvIpHG~9079, JcKVfU~9653, SGIVBl~5782): coefficients not estimable or fewer than 2 residual df
+#> fit (Model): 32 missing responses dropped (e.g. 0EfVhX~0087, BEJI92~5282, Fl4JiV~8625, HvIpHG~9079, SGIVBl~5782): NA response (missing observation) left out of the fit
+#> See $provenance().
 head(fa_lmer$get_contrasts())
 #> # A tibble: 6 × 16
 #>   modelName   estimate_type protein_Id  contrast       diff avgAbd
@@ -295,6 +298,8 @@ head(fa_lmer$get_contrasts())
 #> #   conf.high <dbl>, sigma <dbl>, FDR <dbl>
 
 fa_ropeca <- build_contrast_analysis(lfqdata_pep, "~ group_", contrasts, method = "ropeca_nested")
+#> fit (Model): 36 missing responses dropped (e.g. 0EfVhX~0087~ITLb4x1q, 0EfVhX~0087~ahQLlQY7, 0EfVhX~0087~dJkdz7so, 7cbcrd~5725~D5dQ4nKk, 9VUkAq~4703~eIC06D7g, ...): NA response (missing observation) left out of the fit
+#> See $provenance().
 head(fa_ropeca$get_contrasts())
 #> # A tibble: 6 × 14
 #> # Groups:   contrast [1]

@@ -230,28 +230,22 @@
 <span class="r-in"><span><span class="va">modCB</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="build_model.html">build_model</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">pMerged</span>,</span></span>
 <span class="r-in"><span>  <span class="va">formula_condition_and_Batches</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There were 12 warnings in `dplyr::mutate()`.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> The first warning was:</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   pb)`.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In group 49: `protein_Id = "G01Esv~7982"`.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning:</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> contrasts can be applied only to factors with 2 or more levels</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Run `dplyr::last_dplyr_warnings()` to see the 11 remaining warnings.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>fit (Model): 12 fits failed (e.g. G01Esv~7982, HAAYQO~5909, LMQBev~7768, N1vPxG~0817, a0UeCf~0004, ...): Error in `contrasts&lt;-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]): contrasts can be applied only to factors with 2 or more levels</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> See $provenance().</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> fit (Model): 13 singular fits (e.g. Br6sVH~3679, ESsn24~7142, HvIpHG~5437, J4wNKf~3190, OOEm0O~6680, ...): coefficients not estimable or fewer than 2 residual df</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> fit (Model): 925 missing responses dropped (e.g. 0ZHbvZ~4125, 0lCgkE~2864, 0m5WN4~1168, 0vgFfT~5498, 1HZ2jt~5236, ...): NA response (missing observation) left out of the fit</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> See $provenance().</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">formula_condition</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="strategy.html">strategy_lm</a></span><span class="op">(</span><span class="st">"abundance ~ Treatment"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">modC</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="build_model.html">build_model</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">pMerged</span>,</span></span>
 <span class="r-in"><span>  <span class="va">formula_condition</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There were 8 warnings in `dplyr::mutate()`.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> The first warning was:</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   pb)`.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In group 78: `protein_Id = "N1vPxG~0817"`.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning:</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> contrasts can be applied only to factors with 2 or more levels</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Run `dplyr::last_dplyr_warnings()` to see the 7 remaining warnings.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>fit (Model): 8 fits failed (e.g. N1vPxG~0817, a0UeCf~0004, cp9zgr~5124, guMc2e~7211, h9LKdP~0538, ...): Error in `contrasts&lt;-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]): contrasts can be applied only to factors with 2 or more levels</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> See $provenance().</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> fit (Model): 9 singular fits (e.g. Br6sVH~3679, G01Esv~7982, HAAYQO~5909, J4wNKf~3190, ZI2MGy~3165, ...): coefficients not estimable or fewer than 2 residual df</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> fit (Model): 976 missing responses dropped (e.g. 0ZHbvZ~4125, 0lCgkE~2864, 0m5WN4~1168, 0vgFfT~5498, 1HZ2jt~5236, ...): NA response (missing observation) left out of the fit</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> See $provenance().</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">LR_test</span><span class="op">(</span><span class="va">modCB</span><span class="op">$</span><span class="va">model_df</span>, <span class="st">"modCB"</span>, <span class="va">modC</span><span class="op">$</span><span class="va">model_df</span>, <span class="st">"modB"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">$</span><span class="va">likelihood_ratio_test.pValue</span><span class="op">)</span></span></span>

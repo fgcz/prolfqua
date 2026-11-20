@@ -304,9 +304,15 @@
 - [`nr_obs_sample()`](https://fgcz.github.io/prolfqua/reference/nr_obs_sample.md)
   : Sum of observed children per hierarchy unit and sample
 
+- [`null_split_check()`](https://fgcz.github.io/prolfqua/reference/null_split_check.md)
+  : Null-split calibration check of normalization and model
+
 - [`pivot_model_contrasts_to_wide()`](https://fgcz.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md)
   : pivot model contrasts matrix to wide format produced by
   \`contrasts_linfct\` and ...
+
+- [`pooled_variance_explained()`](https://fgcz.github.io/prolfqua/reference/pooled_variance_explained.md)
+  : Variance explained by each term, pooled over features
 
 - [`power_fdr_prior_n()`](https://fgcz.github.io/prolfqua/reference/power_fdr_prior_n.md)
   : Plan sample size from a pilot variance prior and a planned effect
@@ -373,6 +379,9 @@
 
 - [`summarize_stats_factors()`](https://fgcz.github.io/prolfqua/reference/summarize_stats_factors.md)
   : compute var sd etc for all factor levels
+
+- [`summarize_variance_explained()`](https://fgcz.github.io/prolfqua/reference/summarize_variance_explained.md)
+  : Variance explained by the design, per feature
 
 - [`table_facade()`](https://fgcz.github.io/prolfqua/reference/table_facade.md)
   : table facade to easily switch implementations

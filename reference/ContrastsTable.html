@@ -315,6 +315,8 @@ result columns; default <code>NULL</code> builds an LM-flavoured one on demand</
 <span class="r-in"><span><span class="va">Contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aC"</span> <span class="op">=</span> <span class="st">"group_A - group_Ctrl"</span>,</span></span>
 <span class="r-in"><span><span class="st">"bC"</span> <span class="op">=</span> <span class="st">"group_B - group_Ctrl"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">fa</span> <span class="op">&lt;-</span> <span class="va"><a href="ContrastsLMFacade.html">ContrastsLMFacade</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lfqdata</span>, <span class="st">"~ group_"</span>, <span class="va">Contrasts</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> fit (Model): 39 missing responses dropped (e.g. 0m5WN4~6730, 7QuTub~6175, 9VUkAq~3402, DuwH7n~2082, FVUJxd~9571, ...): NA response (missing observation) left out of the fit</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> See $provenance().</span>
 <span class="r-in"><span><span class="va">ctr</span> <span class="op">&lt;-</span> <span class="va">fa</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">fa</span><span class="op">$</span><span class="va">contrast</span><span class="op">$</span><span class="va">subject_id</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "protein_Id"</span>

@@ -1,0 +1,109 @@
+# Variance explained by the design, per feature
+
+Fits a least-squares model to every feature of a log-transformed
+[LFQData](https://fgcz.github.io/prolfqua/reference/LFQData.md) and
+splits each feature's variance with its ANOVA table. Use it to check a
+normalization: a good normalization lowers the within-group variance
+more than the overall variance, so the share explained by the design,
+the model R², rises.
+
+## Usage
+
+``` r
+summarize_variance_explained(lfqdata, modelstr = NULL)
+```
+
+## Arguments
+
+- lfqdata:
+
+  a log-transformed
+  [LFQData](https://fgcz.github.io/prolfqua/reference/LFQData.md)
+  object.
+
+- modelstr:
+
+  model formula string, as in
+  [`strategy_lm()`](https://fgcz.github.io/prolfqua/reference/strategy.md).
+  `NULL` (default) uses the full factorial of
+  `lfqdata$relevant_factor_keys()`, for example
+  `"log2_abundance ~ Treatment * Background"`.
+
+## Value
+
+A tibble with one row per feature and ANOVA term, residuals included:
+the feature keys, `factor`, `Df`, `Sum.Sq`, `SS_total` (the feature's
+total sum of squares), `eta2` (`Sum.Sq / SS_total`) and `R2` (the
+feature's model R², `1 - SS_residual / SS_total`, repeated on each of
+its rows).
+
+## Details
+
+One model is fitted per lowest-level feature (all hierarchy keys and the
+isotope label), the grouping of
+[`summarize_stats()`](https://fgcz.github.io/prolfqua/reference/summarize_stats.md).
+Missing responses are omitted within each fit. Only full-rank fits with
+more than one residual degree of freedom are kept, the set returned by
+[`get_complete_model_fit()`](https://fgcz.github.io/prolfqua/reference/get_complete_model_fit.md),
+so all features share the same terms; a message reports how many
+features were left out.
+
+Read the model R² first. The ANOVA uses sequential (type I) sums of
+squares: when a feature is unbalanced, for example through missing
+values, the shares of the individual factors depend on the order of the
+terms in `modelstr`. R² does not.
+
+Without any effect R² is positive on average: E\[R²\] = p / (n - 1) for
+p model degrees of freedom and n observed values. Compare normalizations
+of the same samples with the same missing values; imputation changes n.
+
+Use R² as a check of a normalization, not as a criterion to pick the
+normalization with the highest value: that choice favours the group
+differences tested afterwards.
+
+## See also
+
+[`pooled_variance_explained()`](https://fgcz.github.io/prolfqua/reference/pooled_variance_explained.md)
+
+Other stats:
+[`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
+[`compute_pooled()`](https://fgcz.github.io/prolfqua/reference/pooled_var.md),
+[`fdr_sig_level()`](https://fgcz.github.io/prolfqua/reference/fdr_sig_level.md),
+[`lfq_power_t_test_proteins()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_proteins.md),
+[`lfq_power_t_test_quantiles_V2()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_quantiles_V2.md),
+[`null_split_check()`](https://fgcz.github.io/prolfqua/reference/null_split_check.md),
+[`plot_stat_density()`](https://fgcz.github.io/prolfqua/reference/plot_stat_density.md),
+[`plot_stat_density_median()`](https://fgcz.github.io/prolfqua/reference/plot_stat_density_median.md),
+[`plot_stat_violin()`](https://fgcz.github.io/prolfqua/reference/plot_stat_violin.md),
+[`plot_stat_violin_median()`](https://fgcz.github.io/prolfqua/reference/plot_stat_violin_median.md),
+[`plot_stdv_vs_mean()`](https://fgcz.github.io/prolfqua/reference/plot_stdv_vs_mean.md),
+[`pooled_variance_explained()`](https://fgcz.github.io/prolfqua/reference/pooled_variance_explained.md),
+[`power_fdr_prior_n()`](https://fgcz.github.io/prolfqua/reference/power_fdr_prior_n.md),
+[`summarize_stats()`](https://fgcz.github.io/prolfqua/reference/summarize_stats.md)
+
+## Examples
+
+``` r
+bb <- prolfqua::sim_lfq_data_protein_config(Nprot = 20)
+#> creating sampleName from file_name column
+lfqdata <- LFQData$new(bb$data, bb$config)
+# the simulated intensities are already on the log2 scale
+lfqdata$is_transformed(TRUE)
+ve <- summarize_variance_explained(lfqdata)
+#> fit (Model): 34 missing responses dropped (e.g. 0m5WN4~1448~light, 9VUkAq~4562~light, At886V~3296~light, BEJI92~9143~light, CtOJ9t~2837~light, ...): NA response (missing observation) left out of the fit
+#> See $provenance().
+head(ve)
+#> # A tibble: 6 × 8
+#>   protein_Id  isotopeLabel factor       Df Sum.Sq SS_total  eta2    R2
+#>   <chr>       <chr>        <chr>     <int>  <dbl>    <dbl> <dbl> <dbl>
+#> 1 0EfVhX~5954 light        group_        2 53.0      76.3  0.694 0.694
+#> 2 0EfVhX~5954 light        Residuals     9 23.3      76.3  0.306 0.694
+#> 3 0m5WN4~1448 light        group_        2  0.892     4.48 0.199 0.199
+#> 4 0m5WN4~1448 light        Residuals     5  3.59      4.48 0.801 0.199
+#> 5 7cbcrd~8305 light        group_        2 19.1      25.0  0.765 0.765
+#> 6 7cbcrd~8305 light        Residuals     9  5.89     25.0  0.235 0.765
+pooled_variance_explained(ve)
+#>      factor     eta2
+#> 1    group_ 0.681619
+#> 2 Residuals 0.318381
+```

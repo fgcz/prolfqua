@@ -411,4 +411,4 @@ sessionInfo()
     ## [45] glue_1.8.1         Rcpp_1.1.2         statmod_1.5.2      systemfonts_1.3.3 
     ## [49] xfun_0.62          tibble_3.3.1       tidyselect_1.2.1   knitr_1.52        
     ## [53] farver_2.1.2       htmltools_0.5.9    labeling_0.4.3     rmarkdown_2.32    
-    ## [57] compiler_4.6.2     prettyunits_1.2.0  S7_0.2.2
+    ## [57] compiler_4.6.2     prettyunits_1.2.0  S7_1.0.0

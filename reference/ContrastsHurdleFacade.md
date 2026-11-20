@@ -238,9 +238,12 @@ lfq_peptide <- LFQData$new(istar$data, istar$config)
 lfq_peptide <- lfq_peptide$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance
 lfq_protein <- lfq_peptide$get_Aggregator()$aggregate()
-#> Warning: medpolish() did not converge in 10 iterations
+#> Warning: aggregate (medpolish): 1 subjects with estimation warning (e.g. 4JK499~3111): medpolish() did not converge in 10 iterations
+#> See $provenance().
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 intensity <- build_contrast_analysis(lfq_protein, "~ group_", contrasts, method = "lm_impute")
+#> fit (ModelImputed): 20 missing responses dropped (e.g. 0GRprF~7339, 4JK499~3111, CibL2O~2149, quTD7H~9280, xpDUdv~6137): NA response (missing observation) left out of the fit
+#> See $provenance().
 detection <- build_contrast_analysis(lfq_peptide, "~ group_", contrasts, method = "binomial_nested")
 hurdle <- ContrastsHurdleFacade$new(intensity, detection)
 res <- hurdle$get_contrasts()

@@ -329,6 +329,8 @@ mod <- build_model(
   strategy_lm("abundance ~ group_"),
   subject_id = config$hierarchy_keys_depth()
 )
+#> fit (Model): 110 missing responses dropped (e.g. 0m5WN4~1448~UwJbtbRY, 0m5WN4~1448~wpHqGLYB, 7cbcrd~8305~O9LMQBev, 9VUkAq~4562~6mb5eKpF, 9VUkAq~4562~AYQOqCVO, ...): NA response (missing observation) left out of the fit
+#> See $provenance().
 contrasts <- c("AvsCtrl" = "group_A - group_Ctrl")
 peptide_contrasts <- ContrastsModerated$new(Contrasts$new(mod, contrasts))
 ropeca2 <- ContrastsROPECAV2$new(peptide_contrasts, rho = 0.2)

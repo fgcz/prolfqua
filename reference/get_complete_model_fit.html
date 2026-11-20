@@ -160,14 +160,11 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> boundary (singular) fit: see help('isSingular')</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There were 4 warnings in `dplyr::mutate()`.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> The first warning was:</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   pb)`.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In group 2: `protein_Id = "7cbcrd~5725"`.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning:</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> grouping factors must have &gt; 1 sampled level</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>fit (Model): 4 fits failed (e.g. 7cbcrd~5725, 9VUkAq~4703, CGzoYe~2147, DoWup2~5896): Error: grouping factors must have &gt; 1 sampled level</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> See $provenance().</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> fit (Model): 3 singular fits (e.g. HvIpHG~9079, JcKVfU~9653, SGIVBl~5782): coefficients not estimable or fewer than 2 residual df</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> fit (Model): 115 missing responses dropped (e.g. 0EfVhX~0087, BEJI92~5282, Fl4JiV~8625, HvIpHG~9079, JcKVfU~9653, ...): NA response (missing observation) left out of the fit</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> See $provenance().</span>
 <span class="r-in"><span><span class="va">cfits</span> <span class="op">&lt;-</span> <span class="fu">get_complete_model_fit</span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">model_df</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">cfits</span><span class="op">)</span> <span class="op">==</span> <span class="fl">6</span><span class="op">)</span></span></span>
 </code></pre></div>

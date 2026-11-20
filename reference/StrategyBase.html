@@ -96,6 +96,7 @@ fit(x) method and overrides only the methods that differ."></head><body>
 <li><p><a href="#method-StrategyBase-contrast_fun"><code>StrategyBase$contrast_fun()</code></a></p></li>
 <li><p><a href="#method-StrategyBase-df_residual"><code>StrategyBase$df_residual()</code></a></p></li>
 <li><p><a href="#method-StrategyBase-sigma"><code>StrategyBase$sigma()</code></a></p></li>
+<li><p><a href="#method-StrategyBase-zero_residual_variance"><code>StrategyBase$zero_residual_variance()</code></a></p></li>
 <li><p><a href="#method-StrategyBase-clone"><code>StrategyBase$clone()</code></a></p></li>
 </ul></div><p></p><hr><a id="method-StrategyBase-initialize"></a><div class="section">
 <h3 id="strategybase-new-"><code>StrategyBase$new()</code><a class="anchor" aria-label="anchor" href="#strategybase-new-"></a></h3>
@@ -199,13 +200,33 @@ fit(x) method and overrides only the methods that differ."></head><body>
 
 </div>
 
+<p></p><hr><a id="method-StrategyBase-zero_residual_variance"></a><div class="section">
+<h3 id="strategybase-zero-residual-variance-"><code>StrategyBase$zero_residual_variance()</code><a class="anchor" aria-label="anchor" href="#strategybase-zero-residual-variance-"></a></h3>
+<p>Flag residual scales indistinguishable from zero (constant or noiseless response); their
+  tests are set to NA</p><div class="section">
+<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">StrategyBase</span><span class="op">$</span><span class="fu">zero_residual_variance</span><span class="op">(</span><span class="va">sigma</span>, <span class="va">scale</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>sigma</code></dt>
+<dd><p>residual scales, one per contrast row</p></dd>
+
+      <dt><code>scale</code></dt>
+<dd><p>response level of the same rows (average abundance)</p></dd>
+
+
+</dl><p></p></div>
+</div>
+
+</div>
+
 <p></p><hr><a id="method-StrategyBase-clone"></a><div class="section">
 <h3 id="strategybase-clone-"><code>StrategyBase$clone()</code><a class="anchor" aria-label="anchor" href="#strategybase-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
+<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">StrategyBase</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
+<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 

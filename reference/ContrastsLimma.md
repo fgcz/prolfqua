@@ -285,7 +285,9 @@ lProt$rename_response("transformedIntensity")
 
 strat <- strategy_limma("transformedIntensity ~ group_")
 mod_limma <- build_model_limma(lProt, strat)
-#> Warning: Partial NA coefficients for 1 probe(s)
+#> fit (limma): 1 singular fits (e.g. VUnZ6o~1614): coefficients not estimable (Partial NA coefficients)
+#> fit (limma): 82 missing responses dropped (e.g. 0EfVhX~7161, 0m5WN4~3543, 7QuTub~5556, 7cbcrd~0495, 9VUkAq~8655, ...): NA response (missing observation) left out of the fit
+#> See $provenance().
 
 Contr <- c("dil.b_vs_a" = "group_A - group_Ctrl")
 contr_limma <- ContrastsLimma$new(mod_limma, Contr)
@@ -308,6 +310,9 @@ stopifnot(all(c("diff", "FDR", "p.value", "statistic") %in% colnames(res)))
 # Compare with prolfqua's own pipeline
 modelFunction <- strategy_lm("transformedIntensity ~ group_")
 mod <- build_model(lProt, modelFunction)
+#> fit (Model): 1 singular fits (e.g. VUnZ6o~1614): coefficients not estimable or fewer than 2 residual df
+#> fit (Model): 82 missing responses dropped (e.g. 0EfVhX~7161, 0m5WN4~3543, 7QuTub~5556, 7cbcrd~0495, 9VUkAq~8655, ...): NA response (missing observation) left out of the fit
+#> See $provenance().
 contr_prolfqua <- Contrasts$new(mod, Contr)
 res_prolfqua <- contr_prolfqua$get_contrasts()
 
@@ -339,5 +344,8 @@ head(wide)
 # merge_contrasts_results works
 Contr2 <- c("dil.b_vs_a" = "group_A - group_Ctrl")
 imp <- ContrastsLMImputeFacade$new(lProt, "~ group_", Contr2)$contrast
+#> fit (ModelImputed): 1 refit at the limit of detection (e.g. VUnZ6o~1614): fit failed, singular or missing a group; missing responses imputed at the LOD
+#> fit (ModelImputed): 73 missing responses dropped (e.g. 0EfVhX~7161, 0m5WN4~3543, 7QuTub~5556, 7cbcrd~0495, 9VUkAq~8655, ...): NA response (missing observation) left out of the fit
+#> See $provenance().
 merged_res <- merge_contrasts_results(contr_limma, imp)
 ```

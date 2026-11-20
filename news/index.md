@@ -4,6 +4,40 @@
 
 ### New features
 
+- Provenance: `LFQData`, models and analyses record the problems and
+  dropped items that happen in them, read with `$provenance()`: values
+  set to `NA` (`remove_small_intensities()`, zeros in log transforms),
+  removed rows, features and proteins (`remove_decoys()`,
+  `remove_contaminants()`,
+  [`filter_proteins_by_peptide_count()`](https://fgcz.github.io/prolfqua/reference/filter_proteins_by_peptide_count.md)),
+  estimation warnings in aggregation, failed, warned, singular and
+  LOD-refit fits, missing responses dropped per fit, and the subjects
+  absent from the contrasts with the reason. Each step reports its new
+  entries in one message or, for failures, one warning;
+  [`print()`](https://rdrr.io/r/base/print.html) and
+  [`summary()`](https://rdrr.io/r/base/summary.html) of an analysis show
+  a one-line provenance summary.
+
+- [`null_split_check()`](https://fgcz.github.io/prolfqua/reference/null_split_check.md)
+  checks the calibration of normalization and model together: it splits
+  the samples within each group at random into two pseudo-groups, tests
+  them against each other with any
+  [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
+  method, and returns per split the share of p \< 0.05 and p \< 0.01,
+  the number of FDR \< 0.05 hits and the Kolmogorov-Smirnov distance
+  from uniform, with the sample assignment and the contrasts. No feature
+  differs between pseudo-groups, so a calibrated pipeline gives about 5%
+  of p \< 0.05 and no FDR hits.
+
+- [`summarize_variance_explained()`](https://fgcz.github.io/prolfqua/reference/summarize_variance_explained.md)
+  fits a least-squares model per feature of a log-transformed `LFQData`
+  (default: the full factorial of its factors) and returns each term’s
+  share of the feature’s variance (eta²) and the model R².
+  [`pooled_variance_explained()`](https://fgcz.github.io/prolfqua/reference/pooled_variance_explained.md)
+  pools the sums of squares over features; on complete features its R²
+  equals the Euclidean PERMANOVA R². Use them to check that a
+  normalization lowers within-group variance more than overall variance.
+
 - `LFQDataTransformer$subtract_sample_offsets()` applies caller-supplied
   log2 offsets by sample ID and stores the adjusted intensities in a new
   response column.
@@ -137,8 +171,46 @@
   limit-of-detection refit no longer warns “essentially perfect fit” or
   “non-finite value supplied by optim”, and the `limma` variants no
   longer warn “Partial NA coefficients” for the proteins they then
-  refit. Results are unchanged. A failed per-protein fit is reported as
-  a warning of class `prolfqua_fit_failed`.
+  refit. Results are unchanged.
+
+- Missing and non-finite values:
+  [`log()`](https://rdrr.io/r/base/Log.html),
+  [`log2()`](https://rdrr.io/r/base/Log.html) and
+  [`log10()`](https://rdrr.io/r/base/Log.html) transforms turn zero
+  intensities (not detected) into `NA` with a message, instead of `-Inf`
+  with a warning. Fitting and aggregation stop with a classed error on
+  `Inf`, `-Inf` or `NaN` intensities
+  (`prolfqua_error_nonfinite_response`), on `NA` in hierarchy, factor or
+  sample columns (`prolfqua_error_missing_key`), and on inputs without
+  rows; before, such a protein failed to fit and vanished from the
+  contrasts behind a warning.
+  [`which_missing()`](https://fgcz.github.io/prolfqua/reference/which_missing.md)
+  rejects input containing `NA`. The policy is described in
+  [`?prolfqua`](https://fgcz.github.io/prolfqua/reference/prolfqua-package.md)
+  and the Modelling methods vignette.
+
+- Zero residual variance: a subject with a constant or noiseless
+  response (e.g. all intensities equal, or identical within each group)
+  keeps its `diff`, but its standard error, statistic, p-value and
+  confidence limits are `NA`, with one `prolfqua_zero_variance` warning
+  per contrast table. Before, these tests divided floating-point noise
+  by noise (an rlm p-value of 1e-17 for a constant protein), and the
+  near-zero variances shrank the moderation prior of all other proteins.
+  Applies to lm, rlm, rfit, lmer and the limma and DEqMS methods;
+  detection models keep their dispersion floor.
+
+- Failed fits and warnings raised while fitting (e.g. `rlm`, `lmer` or
+  Firth not converging) or aggregating (`rlm`, `medpolish`) are reported
+  once per step as one warning of class `prolfqua_fit_failed` naming the
+  subjects and reasons, instead of one warning per protein. The
+  per-protein lmer contrast warnings are part of the single
+  `contrasts_linfct` warning. limma’s “Partial NA coefficients” warning
+  is replaced by a “singular fits” entry in the model’s provenance.
+  [`transform_work_intensity()`](https://fgcz.github.io/prolfqua/reference/transform_work_intensity.md)
+  returns the rows whose zeros became `NA` (`zeros`) instead of sending
+  a message;
+  [`estimate_intensity()`](https://fgcz.github.io/prolfqua/reference/estimate_intensity.md)
+  returns per-subject warnings (`failures`) instead of raising them.
 
 - [`sim_lfq_data_2factor_config()`](https://fgcz.github.io/prolfqua/reference/sim_lfq_data_2factor_config.md)
   no longer warns “Unknown or uninitialised column: `nrPeptides`”.
@@ -150,6 +222,27 @@
   Installation is from Bioconductor first.
 
 ### Bug fixes
+
+- [`get_complete_model_fit()`](https://fgcz.github.io/prolfqua/reference/get_complete_model_fit.md),
+  and with it `Model$get_anova()`, `Model$get_coefficients()` and the
+  coefficient and ANOVA plots, now leaves out fits with fewer
+  coefficients than the full design, for example a protein with one
+  group entirely missing. Before, every fit counted as complete, so
+  these tables also listed such proteins, whose coefficients referred to
+  another reference level. Limit-of-detection imputation is unchanged.
+
+- [`moderated_p_limma()`](https://fgcz.github.io/prolfqua/reference/moderated_p_limma.md):
+  when all variances are equal, one missing residual df no longer makes
+  the prior df, and with it every moderated p-value, `NA`; the fallback
+  prior df counts only rows with a variance.
+
+- [`sim_lfq_data_peptide_config()`](https://fgcz.github.io/prolfqua/reference/sim_lfq_data_peptide_config.md),
+  [`sim_lfq_data_protein_config()`](https://fgcz.github.io/prolfqua/reference/sim_lfq_data_protein_config.md)
+  and
+  [`sim_lfq_data_2factor_config()`](https://fgcz.github.io/prolfqua/reference/sim_lfq_data_2factor_config.md)
+  with `with_missing = FALSE` return complete data with positive peptide
+  counts; before, intensities chosen as missing were kept with a peptide
+  count of 0, which gave them fitting weight 0.
 
 - The introductory and Modelling methods vignettes no longer fail when
   `R CMD check --no-build-vignettes` runs their code: the factory figure

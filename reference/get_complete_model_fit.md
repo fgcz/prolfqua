@@ -108,14 +108,11 @@ x <- sim_build_models_lmer(model = "factors", Nprot = 10)
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
-#> Warning: There were 4 warnings in `dplyr::mutate()`.
-#> The first warning was:
-#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
-#>   pb)`.
-#> ℹ In group 2: `protein_Id = "7cbcrd~5725"`.
-#> Caused by warning:
-#> ! grouping factors must have > 1 sampled level
-#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
+#> Warning: fit (Model): 4 fits failed (e.g. 7cbcrd~5725, 9VUkAq~4703, CGzoYe~2147, DoWup2~5896): Error: grouping factors must have > 1 sampled level
+#> See $provenance().
+#> fit (Model): 3 singular fits (e.g. HvIpHG~9079, JcKVfU~9653, SGIVBl~5782): coefficients not estimable or fewer than 2 residual df
+#> fit (Model): 115 missing responses dropped (e.g. 0EfVhX~0087, BEJI92~5282, Fl4JiV~8625, HvIpHG~9079, JcKVfU~9653, ...): NA response (missing observation) left out of the fit
+#> See $provenance().
 cfits <- get_complete_model_fit(x$model_df)
 stopifnot(nrow(cfits) == 6)
 ```

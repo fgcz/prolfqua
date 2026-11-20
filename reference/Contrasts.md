@@ -299,14 +299,11 @@ mod <- build_model(
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
-#> Warning: There were 4 warnings in `dplyr::mutate()`.
-#> The first warning was:
-#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
-#>   pb)`.
-#> ℹ In group 2: `protein_Id = "7cbcrd~5725"`.
-#> Caused by warning:
-#> ! grouping factors must have > 1 sampled level
-#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
+#> Warning: fit (Model): 4 fits failed (e.g. 7cbcrd~5725, 9VUkAq~4703, CGzoYe~2147, DoWup2~5896): Error: grouping factors must have > 1 sampled level
+#> See $provenance().
+#> fit (Model): 5 singular fits (e.g. 0EfVhX~0087, Fl4JiV~8625, HvIpHG~9079, JcKVfU~9653, SGIVBl~5782): coefficients not estimable or fewer than 2 residual df
+#> fit (Model): 32 missing responses dropped (e.g. 0EfVhX~0087, BEJI92~5282, Fl4JiV~8625, HvIpHG~9079, SGIVBl~5782): NA response (missing observation) left out of the fit
+#> See $provenance().
 
 ref_lfc <- data.frame(
   `(Intercept)` = c(0, 0, 0),
@@ -349,6 +346,8 @@ mod <- build_model(
   modelFunction,
   subject_id = config$hierarchy_keys_depth()
 )
+#> fit (Model): 36 missing responses dropped (e.g. 0EfVhX~0087, 7cbcrd~5725, 9VUkAq~4703, BEJI92~5282, CGzoYe~2147, ...): NA response (missing observation) left out of the fit
+#> See $provenance().
 contrastX <- prolfqua::Contrasts$new(mod, Contr)
 y <- contrastX$get_linfct(avg = FALSE)
 stopifnot(all(ref_lfc == y))

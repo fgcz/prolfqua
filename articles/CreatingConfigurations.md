@@ -268,7 +268,7 @@ sessionInfo()
     ## [49] xfun_0.62           tibble_3.3.1        tidyselect_1.2.1   
     ## [52] knitr_1.52          farver_2.1.2        htmltools_0.5.9    
     ## [55] rmarkdown_2.32      labeling_0.4.3      compiler_4.6.2     
-    ## [58] S7_0.2.2
+    ## [58] S7_1.0.0
 
 ## References
 

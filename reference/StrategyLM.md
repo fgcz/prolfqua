@@ -128,6 +128,7 @@ Inherited methods
 - [`StrategyBase$isSingular()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-isSingular)
 - [`StrategyBase$model_fun()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-model_fun)
 - [`StrategyBase$sigma()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-sigma)
+- [`StrategyBase$zero_residual_variance()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-zero_residual_variance)
 
 ------------------------------------------------------------------------
 
@@ -176,7 +177,7 @@ The objects of this class are cloneable with this method.
 strat <- StrategyLM$new("Intensity ~ condition", model_name = "parallel design")
 strat$formula
 #> Intensity ~ condition
-#> <environment: 0x59fec1185ea8>
+#> <environment: 0x636fdba9b7a0>
 strat$weights
 #> NULL
 ```

@@ -171,6 +171,7 @@
 <url><loc>https://fgcz.github.io/prolfqua/reference/nr_children_experiment.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/nr_features_experiment.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/nr_obs_sample.html</loc></url>
+<url><loc>https://fgcz.github.io/prolfqua/reference/null_split_check.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/pairs_smooth.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/panel_cor.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.html</loc></url>
@@ -192,6 +193,7 @@
 <url><loc>https://fgcz.github.io/prolfqua/reference/plot_stat_violin_median.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/plot_stdv_vs_mean.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/pooled_var.html</loc></url>
+<url><loc>https://fgcz.github.io/prolfqua/reference/pooled_variance_explained.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/power_fdr_prior_n.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/prolfqua-package.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/prolfqua_analysis_methods.html</loc></url>
@@ -224,6 +226,7 @@
 <url><loc>https://fgcz.github.io/prolfqua/reference/summarize_hierarchy.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/summarize_stats.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/summarize_stats_factors.html</loc></url>
+<url><loc>https://fgcz.github.io/prolfqua/reference/summarize_variance_explained.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/summary_ROPECA_median_p_scaled.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/table_facade.html</loc></url>
 <url><loc>https://fgcz.github.io/prolfqua/reference/table_factors.html</loc></url>

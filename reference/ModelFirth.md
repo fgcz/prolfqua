@@ -141,6 +141,8 @@ Inherited methods
 - [`ModelInterface$coef_histogram()`](https://fgcz.github.io/prolfqua/reference/ModelInterface.html#method-coef_histogram)
 - [`ModelInterface$coef_pairs()`](https://fgcz.github.io/prolfqua/reference/ModelInterface.html#method-coef_pairs)
 - [`ModelInterface$coef_volcano()`](https://fgcz.github.io/prolfqua/reference/ModelInterface.html#method-coef_volcano)
+- [`ModelInterface$get_provenance_log()`](https://fgcz.github.io/prolfqua/reference/ModelInterface.html#method-get_provenance_log)
+- [`ModelInterface$provenance()`](https://fgcz.github.io/prolfqua/reference/ModelInterface.html#method-provenance)
 
 ------------------------------------------------------------------------
 

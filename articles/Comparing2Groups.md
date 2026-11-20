@@ -414,7 +414,7 @@ sessionInfo()
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] tidyselect_1.2.1      viridisLite_0.4.3     farver_2.1.2         
-    ##  [4] S7_0.2.2              fastmap_1.2.0         promises_1.5.0       
+    ##  [4] S7_1.0.0              fastmap_1.2.0         promises_1.5.0       
     ##  [7] digest_0.6.39         mime_0.13             lifecycle_1.0.5      
     ## [10] cluster_2.1.8.3       statmod_1.5.2         magrittr_2.0.5       
     ## [13] compiler_4.6.2        progress_1.2.3        rlang_1.3.0          

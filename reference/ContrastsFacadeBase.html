@@ -230,6 +230,8 @@ the inner contrast classes.</p>
 <li><p><a href="#method-ContrastsFacadeBase-get_missing"><code>ContrastsFacadeBase$get_missing()</code></a></p></li>
 <li><p><a href="#method-ContrastsFacadeBase-get_Plotter"><code>ContrastsFacadeBase$get_Plotter()</code></a></p></li>
 <li><p><a href="#method-ContrastsFacadeBase-to_wide"><code>ContrastsFacadeBase$to_wide()</code></a></p></li>
+<li><p><a href="#method-ContrastsFacadeBase-provenance"><code>ContrastsFacadeBase$provenance()</code></a></p></li>
+<li><p><a href="#method-ContrastsFacadeBase-.recorded_provenance"><code>ContrastsFacadeBase$.recorded_provenance()</code></a></p></li>
 <li><p><a href="#method-ContrastsFacadeBase-clone"><code>ContrastsFacadeBase$clone()</code></a></p></li>
 </ul></div><p><details><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="column_description"><a href="ContrastsInterface.html#method-column_description"><code>ContrastsInterface$column_description()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="contrast_summary_table"><a href="ContrastsInterface.html#method-contrast_summary_table"><code>ContrastsInterface$contrast_summary_table()</code></a></span></li>
@@ -305,10 +307,37 @@ the inner contrast classes.</p>
 
 </div>
 
+<p></p><hr><a id="method-ContrastsFacadeBase-provenance"></a><div class="section">
+<h3 id="contrastsfacadebase-provenance-"><code>ContrastsFacadeBase$provenance()</code><a class="anchor" aria-label="anchor" href="#contrastsfacadebase-provenance-"></a></h3>
+<p>problems and dropped items of this analysis, read from the input data, the aggregated data
+  (<code>hurdle_nested</code>, <code>limpa_nested</code>) and the model(s), plus the subjects absent from the contrasts
+  with the reason</p><div class="section">
+<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsFacadeBase</span><span class="op">$</span><span class="fu">provenance</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
+<p>tibble with columns source, step, event, n, ids (list), reason, failure, response</p>
+</div>
+
+</div>
+
+<p></p><hr><a id="method-ContrastsFacadeBase-.recorded_provenance"></a><div class="section">
+<h3 id="contrastsfacadebase-recorded-provenance-"><code>ContrastsFacadeBase$.recorded_provenance()</code><a class="anchor" aria-label="anchor" href="#contrastsfacadebase-recorded-provenance-"></a></h3>
+<p>internal: the entries recorded in the input data, the aggregated data and the model(s),
+  without evaluating contrasts (used by <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code>)</p><div class="section">
+<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsFacadeBase</span><span class="op">$</span><span class="fu">.recorded_provenance</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
+<p>tibble as <code>provenance()</code>, without the absent subjects</p>
+</div>
+
+</div>
+
 <p></p><hr><a id="method-ContrastsFacadeBase-clone"></a><div class="section">
 <h3 id="contrastsfacadebase-clone-"><code>ContrastsFacadeBase$clone()</code><a class="anchor" aria-label="anchor" href="#contrastsfacadebase-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContrastsFacadeBase</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>

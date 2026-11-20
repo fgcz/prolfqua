@@ -273,21 +273,22 @@ ctr$get_contrast_sides()
 #> 2 AvsCtrl  group_A group_Ctrl
 ctr$get_linfct()
 #> $model_df
-#> # A tibble: 10 × 10
+#> # A tibble: 10 × 11
 #> # Groups:   protein_Id [10]
-#>    protein_Id  data     linear_model has_model_fit isSingular df.residual sigma
-#>    <chr>       <list>   <list>       <lgl>         <lgl>            <dbl> <dbl>
-#>  1 0EfVhX~0087 <tibble> <logistf>    TRUE          FALSE                9     1
-#>  2 7cbcrd~5725 <tibble> <logistf>    TRUE          FALSE                9     1
-#>  3 9VUkAq~4703 <tibble> <logistf>    TRUE          FALSE                9     1
-#>  4 BEJI92~5282 <tibble> <logistf>    TRUE          FALSE                9     1
-#>  5 CGzoYe~2147 <tibble> <logistf>    TRUE          FALSE                9     1
-#>  6 DoWup2~5896 <tibble> <logistf>    TRUE          FALSE                9     1
-#>  7 Fl4JiV~8625 <tibble> <logistf>    TRUE          FALSE                9     1
-#>  8 HvIpHG~9079 <tibble> <logistf>    TRUE          FALSE                9     1
-#>  9 JcKVfU~9653 <tibble> <logistf>    TRUE          FALSE                9     1
-#> 10 SGIVBl~5782 <tibble> <logistf>    TRUE          FALSE                9     1
-#> # ℹ 3 more variables: nr_coef <int>, nr_coef_not_NA <int>, linfct <list>
+#>    protein_Id  data     linear_model fit_warnings has_model_fit isSingular
+#>    <chr>       <list>   <list>       <list>       <lgl>         <lgl>     
+#>  1 0EfVhX~0087 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
+#>  2 7cbcrd~5725 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
+#>  3 9VUkAq~4703 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
+#>  4 BEJI92~5282 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
+#>  5 CGzoYe~2147 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
+#>  6 DoWup2~5896 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
+#>  7 Fl4JiV~8625 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
+#>  8 HvIpHG~9079 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
+#>  9 JcKVfU~9653 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
+#> 10 SGIVBl~5782 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
+#> # ℹ 5 more variables: df.residual <dbl>, sigma <dbl>, nr_coef <int>,
+#> #   nr_coef_not_NA <int>, linfct <list>
 #> 
 #> $model_name
 #> [1] "logistf"
@@ -306,6 +307,7 @@ ctr$get_linfct()
 #>     model_fun: function (x, pb) 
 #>     model_name: logistf
 #>     sigma: function (model) 
+#>     zero_residual_variance: function (sigma, scale) 
 #>   Private:
 #>     fit: function (DFT) 
 #>     prepare: function (x) 

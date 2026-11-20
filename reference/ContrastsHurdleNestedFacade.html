@@ -194,10 +194,12 @@ fitted models are <code>facade$contrast$intensity$model</code> and
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_contrast_sides"><a href="ContrastsInterface.html#method-get_contrast_sides"><code>ContrastsInterface$get_contrast_sides()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_ora"><a href="ContrastsInterface.html#method-get_ora"><code>ContrastsInterface$get_ora()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_rank"><a href="ContrastsInterface.html#method-get_rank"><code>ContrastsInterface$get_rank()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id=".recorded_provenance"><a href="ContrastsFacadeBase.html#method-.recorded_provenance"><code>ContrastsFacadeBase$.recorded_provenance()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="get_Plotter"><a href="ContrastsFacadeBase.html#method-get_Plotter"><code>ContrastsFacadeBase$get_Plotter()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="get_config"><a href="ContrastsFacadeBase.html#method-get_config"><code>ContrastsFacadeBase$get_config()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="get_contrasts"><a href="ContrastsFacadeBase.html#method-get_contrasts"><code>ContrastsFacadeBase$get_contrasts()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="get_missing"><a href="ContrastsFacadeBase.html#method-get_missing"><code>ContrastsFacadeBase$get_missing()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="provenance"><a href="ContrastsFacadeBase.html#method-provenance"><code>ContrastsFacadeBase$provenance()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="to_wide"><a href="ContrastsFacadeBase.html#method-to_wide"><code>ContrastsFacadeBase$to_wide()</code></a></span></li>
 </ul></details></p><hr><a id="method-ContrastsHurdleNestedFacade-initialize"></a><div class="section">
 <h3 id="contrastshurdlenestedfacade-new-"><code>ContrastsHurdleNestedFacade$new()</code><a class="anchor" aria-label="anchor" href="#contrastshurdlenestedfacade-new-"></a></h3>
@@ -252,7 +254,10 @@ fitted models are <code>facade$contrast$intensity$model</code> and
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : log2_abundance</span>
 <span class="r-in"><span><span class="va">contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A_vs_Ctrl"</span> <span class="op">=</span> <span class="st">"group_A - group_Ctrl"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">facade</span> <span class="op">&lt;-</span> <span class="fu"><a href="build_contrast_analysis.html">build_contrast_analysis</a></span><span class="op">(</span><span class="va">lfq_peptide</span>, <span class="st">"~ group_"</span>, <span class="va">contrasts</span>, method <span class="op">=</span> <span class="st">"hurdle_nested"</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>medpolish() did not converge in 10 iterations</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>aggregate (medpolish): 1 subjects with estimation warning (e.g. 4JK499~3111): medpolish() did not converge in 10 iterations</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> See $provenance().</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> fit (ModelImputed): 20 missing responses dropped (e.g. 0GRprF~7339, 4JK499~3111, CibL2O~2149, quTD7H~9280, xpDUdv~6137): NA response (missing observation) left out of the fit</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> See $provenance().</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">facade</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 24</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   modelName     estimate_type protein_Id  contrast     diff avgAbd</span>

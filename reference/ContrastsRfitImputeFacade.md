@@ -162,10 +162,12 @@ Inherited methods
 - [`ContrastsInterface$get_contrast_sides()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-get_contrast_sides)
 - [`ContrastsInterface$get_ora()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-get_ora)
 - [`ContrastsInterface$get_rank()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-get_rank)
+- [`ContrastsFacadeBase$.recorded_provenance()`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.html#method-.recorded_provenance)
 - [`ContrastsFacadeBase$get_Plotter()`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.html#method-get_Plotter)
 - [`ContrastsFacadeBase$get_config()`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.html#method-get_config)
 - [`ContrastsFacadeBase$get_contrasts()`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.html#method-get_contrasts)
 - [`ContrastsFacadeBase$get_missing()`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.html#method-get_missing)
+- [`ContrastsFacadeBase$provenance()`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.html#method-provenance)
 - [`ContrastsFacadeBase$to_wide()`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.html#method-to_wide)
 
 ------------------------------------------------------------------------
@@ -238,14 +240,9 @@ lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata$rename_response("transformedIntensity")
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 fa <- ContrastsRfitImputeFacade$new(lfqdata, "~ group_", contrasts)
-#> Warning: There were 2 warnings in `dplyr::mutate()`.
-#> The first warning was:
-#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
-#>   pb)`.
-#> ℹ In group 20: `protein_Id = "LlQY7I~3486"`.
-#> Caused by warning in `sqrt()`:
-#> ! NaNs produced
-#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 1 remaining warning.
+#> fit (rfitImputed): 6 refit at the limit of detection (e.g. DuwH7n~2082, HvIpHG~1448, JcKVfU~4958, JfvT8X~6972, LlQY7I~3486, ...): fit failed, singular or missing a group; missing responses imputed at the LOD
+#> fit (rfitImputed): 44 missing responses dropped (e.g. 0m5WN4~6730, 7QuTub~6175, 7cbcrd~2687, 9VUkAq~3402, BEJI92~2727, ...): NA response (missing observation) left out of the fit
+#> See $provenance().
 head(fa$get_contrasts())
 #> # A tibble: 6 × 16
 #>   modelName   estimate_type protein_Id  contrast     diff avgAbd

@@ -283,6 +283,9 @@ modelFunction <-
 mod <- build_model(
  lProt,
  modelFunction)
+#> fit (Model): 1 singular fits (e.g. VUnZ6o~1614): coefficients not estimable or fewer than 2 residual df
+#> fit (Model): 82 missing responses dropped (e.g. 0EfVhX~7161, 0m5WN4~3543, 7QuTub~5556, 7cbcrd~0495, 9VUkAq~8655, ...): NA response (missing observation) left out of the fit
+#> See $provenance().
 
 Contr <- c("dil.b_vs_a" = "group_A - group_Ctrl")
 contrast <- prolfqua::Contrasts$new(mod, Contr)
@@ -302,6 +305,9 @@ stopifnot(all(c("diff", "p.value", "FDR", "sigma") %in% colnames(bb)))
 
 # Merge with LOD-imputed refits for proteins the plain lm cannot estimate
 imp <- ContrastsLMImputeFacade$new(lProt, "~ group_", Contr)$contrast
+#> fit (ModelImputed): 1 refit at the limit of detection (e.g. VUnZ6o~1614): fit failed, singular or missing a group; missing responses imputed at the LOD
+#> fit (ModelImputed): 73 missing responses dropped (e.g. 0EfVhX~7161, 0m5WN4~3543, 7QuTub~5556, 7cbcrd~0495, 9VUkAq~8655, ...): NA response (missing observation) left out of the fit
+#> See $provenance().
 merged <- merge_contrasts_results(deqms, imp)
 #> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  7.3328e-17)
 

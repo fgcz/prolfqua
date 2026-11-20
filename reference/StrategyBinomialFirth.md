@@ -37,6 +37,7 @@ Inherited methods
 - [`StrategyBase$isSingular()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-isSingular)
 - [`StrategyBase$model_fun()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-model_fun)
 - [`StrategyBase$sigma()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-sigma)
+- [`StrategyBinomial$zero_residual_variance()`](https://fgcz.github.io/prolfqua/reference/StrategyBinomial.html#method-zero_residual_variance)
 
 ------------------------------------------------------------------------
 

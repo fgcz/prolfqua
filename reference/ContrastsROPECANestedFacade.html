@@ -188,8 +188,10 @@ subject_id strictly below the protein hierarchy).</p>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_contrast_sides"><a href="ContrastsInterface.html#method-get_contrast_sides"><code>ContrastsInterface$get_contrast_sides()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_ora"><a href="ContrastsInterface.html#method-get_ora"><code>ContrastsInterface$get_ora()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsInterface" data-id="get_rank"><a href="ContrastsInterface.html#method-get_rank"><code>ContrastsInterface$get_rank()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id=".recorded_provenance"><a href="ContrastsFacadeBase.html#method-.recorded_provenance"><code>ContrastsFacadeBase$.recorded_provenance()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="get_config"><a href="ContrastsFacadeBase.html#method-get_config"><code>ContrastsFacadeBase$get_config()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="get_missing"><a href="ContrastsFacadeBase.html#method-get_missing"><code>ContrastsFacadeBase$get_missing()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="ContrastsFacadeBase" data-id="provenance"><a href="ContrastsFacadeBase.html#method-provenance"><code>ContrastsFacadeBase$provenance()</code></a></span></li>
 </ul></details></p><hr><a id="method-ContrastsROPECANestedFacade-initialize"></a><div class="section">
 <h3 id="contrastsropecanestedfacade-new-"><code>ContrastsROPECANestedFacade$new()</code><a class="anchor" aria-label="anchor" href="#contrastsropecanestedfacade-new-"></a></h3>
 <p>initialize</p><div class="section">
@@ -302,6 +304,8 @@ subject_id strictly below the protein hierarchy).</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Column added : log2_abundance</span>
 <span class="r-in"><span><span class="va">contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A_vs_Ctrl"</span> <span class="op">=</span> <span class="st">"group_A - group_Ctrl"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">fa</span> <span class="op">&lt;-</span> <span class="va">ContrastsROPECANestedFacade</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lfqdata</span>, <span class="st">"~ group_"</span>, <span class="va">contrasts</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> fit (Model): 36 missing responses dropped (e.g. 0EfVhX~0087~ITLb4x1q, 0EfVhX~0087~ahQLlQY7, 0EfVhX~0087~dJkdz7so, 7cbcrd~5725~D5dQ4nKk, 9VUkAq~4703~eIC06D7g, ...): NA response (missing observation) left out of the fit</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> See $provenance().</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fa</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 14</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   contrast [1]</span></span>

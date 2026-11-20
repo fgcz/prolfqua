@@ -46,6 +46,8 @@ An R6 class generator.
 
 - [`StrategyBase$sigma()`](#method-StrategyBase-sigma)
 
+- [`StrategyBase$zero_residual_variance()`](#method-StrategyBase-zero_residual_variance)
+
 - [`StrategyBase$clone()`](#method-StrategyBase-clone)
 
 ------------------------------------------------------------------------
@@ -153,6 +155,27 @@ Get residual standard error
 - `model`:
 
   fitted model
+
+------------------------------------------------------------------------
+
+### `StrategyBase$zero_residual_variance()`
+
+Flag residual scales indistinguishable from zero (constant or noiseless
+response); their tests are set to NA
+
+#### Usage
+
+    StrategyBase$zero_residual_variance(sigma, scale)
+
+#### Arguments
+
+- `sigma`:
+
+  residual scales, one per contrast row
+
+- `scale`:
+
+  response level of the same rows (average abundance)
 
 ------------------------------------------------------------------------
 

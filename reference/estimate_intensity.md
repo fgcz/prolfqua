@@ -21,7 +21,10 @@ estimate_intensity(lfqdata, method = c("medpolish", "rlm"))
 
 ## Value
 
-returns list with data (data.frame) and config (AnalysisConfiguration)
+returns list with data (data.frame), config (AnalysisConfiguration) and
+failures (tibble with the subject \`id\` and \`warning\` text of every
+warning raised while estimating one subject; the warnings are not
+re-raised)
 
 ## See also
 
@@ -41,8 +44,6 @@ lfq <- lfq$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance
 bbMed <- estimate_intensity(lfq, method = "medpolish")
 bbRob <- estimate_intensity(lfq, method = "rlm")
-#> Warning: 'rlm' failed to converge in 20 steps
-#> Warning: 'rlm' failed to converge in 20 steps
 nrow(bbMed$data)
 #> [1] 116
 nrow(bbRob$data)

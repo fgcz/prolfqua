@@ -160,6 +160,9 @@ istar <- sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0.5)
 lfqdata <- LFQData$new(istar$data, istar$config)
 strat <- strategy_lm(paste(lfqdata$response(), "~ group_"))
 mod <- build_model_impute(lfqdata, strat)
+#> fit (ModelImputed): 6 refit at the limit of detection (e.g. DuwH7n~2082, HvIpHG~1448, JcKVfU~4958, JfvT8X~6972, LlQY7I~3486, ...): fit failed, singular or missing a group; missing responses imputed at the LOD
+#> fit (ModelImputed): 44 missing responses dropped (e.g. 0m5WN4~6730, 7QuTub~6175, 7cbcrd~2687, 9VUkAq~3402, BEJI92~2727, ...): NA response (missing observation) left out of the fit
+#> See $provenance().
 res <- impute_from_model(mod, lfqdata)
 table(res$summary$route)
 #> 

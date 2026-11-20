@@ -345,6 +345,36 @@ differences in how often a protein or its peptides are observed. The
 simulated data has few missing values, so they find little.</p>
 </div>
 <div class="section level2">
+<h2 id="missing-values">Missing values<a class="anchor" aria-label="anchor" href="#missing-values"></a>
+</h2>
+<p>An <code>NA</code> intensity is a missing observation, and the method
+decides what happens to it:</p>
+<ul>
+<li>dropped in each per-protein fit: <code>lm</code>, <code>rlm</code>,
+<code>rfit</code>, <code>limma</code>, <code>limma_voom</code>,
+<code>deqms</code>, <code>lmer_nested</code>,
+<code>ropeca_nested</code>
+</li>
+<li>imputed at the limit of detection where a whole group is missing:
+the <code>_impute</code> methods</li>
+<li>modelled as detection: <code>firth</code>,
+<code>binomial_nested</code>, <code>binomial_firth_nested</code>, and
+<code>hurdle_nested</code> together with the intensities</li>
+<li>filled from the fitted models after the analysis:
+<code><a href="../reference/impute_from_model.html">impute_from_model()</a></code>
+</li>
+</ul>
+<p>The <code><a href="https://rdrr.io/r/base/Log.html" class="external-link">log2()</a></code> transform turns zero intensities, which mean
+“not detected”, into <code>NA</code>. <code>Inf</code>,
+<code>-Inf</code> and <code>NaN</code> intensities, and <code>NA</code>
+in protein, peptide, group or sample columns, stop the analysis with a
+classed error.</p>
+<p>What happened on the way is recorded: <code>$provenance()</code> of
+the analysis lists the values set to <code>NA</code>, removed rows,
+failed or singular fits, missing responses dropped per fit, and the
+proteins absent from a contrast with the reason.</p>
+</div>
+<div class="section level2">
 <h2 id="one-protein-all-methods">One protein, all methods<a class="anchor" aria-label="anchor" href="#one-protein-all-methods"></a>
 </h2>
 <p>All methods return the same columns. Here is the protein with the
@@ -492,10 +522,11 @@ protein is detected in every sample, so the detection models report
 <h2 id="inspecting-a-fitted-analysis">Inspecting a fitted analysis<a class="anchor" aria-label="anchor" href="#inspecting-a-fitted-analysis"></a>
 </h2>
 <p>The fitted analysis supports standard R methods. <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code>
-gives the model specification, fit counts and a coefficient preview
-without calculating contrasts. <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> evaluates the
-contrasts and counts estimated, missing and significant results; the
-significance defaults are FDR &lt; 0.05 and absolute effect &gt; 1.</p>
+gives the model specification, fit counts, a one-line provenance summary
+and a coefficient preview without calculating contrasts.
+<code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> evaluates the contrasts and counts estimated,
+missing and significant results; the significance defaults are FDR &lt;
+0.05 and absolute effect &gt; 1.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">analysis</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_contrast_analysis.html">build_contrast_analysis</a></span><span class="op">(</span><span class="va">lfq_protein</span>, <span class="st">"~ group_"</span>, <span class="va">contrasts</span>, method <span class="op">=</span> <span class="st">"lm"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">analysis</span><span class="op">)</span></span>
@@ -507,6 +538,7 @@ significance defaults are FDR &lt; 0.05 and absolute effect &gt; 1.</p>
 <span><span class="co">#&gt;   subjects fitted failed singular imputed</span></span>
 <span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>       20     20      0        0       0</span></span>
+<span><span class="co">#&gt; Provenance: 0 failure and 1 other entries; see $provenance() </span></span>
 <span><span class="co">#&gt; Coefficient preview:</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 5</span></span></span>
 <span><span class="co">#&gt;   protein_Id  term        estimate std.error    df</span></span>
@@ -528,6 +560,12 @@ significance defaults are FDR &lt; 0.05 and absolute effect &gt; 1.</p>
 <span><span class="co">#&gt;   contrast  estimated missing significant    up  down median_sigma median_df</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> A_vs_Ctrl        20       0           0     0     0       0.070<span style="text-decoration: underline;">1</span>      12.2</span></span>
+<span><span class="co">#&gt; Provenance: 0 failure and 1 other entries; see $provenance()</span></span>
+<span><span class="va">analysis</span><span class="op">$</span><span class="fu">provenance</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 8</span></span></span>
+<span><span class="co">#&gt;   source step        event                       n ids   reason failure response</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lis&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> model  fit (Model) missing responses drop…    22 <span style="color: #949494;">&lt;chr&gt;</span> NA re… FALSE   <span style="color: #BB0000;">NA</span></span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">analysis</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 5</span></span></span>
 <span><span class="co">#&gt;   protein_Id  term        estimate std.error    df</span></span>
@@ -560,7 +598,7 @@ significance defaults are FDR &lt; 0.05 and absolute effect &gt; 1.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 2kfAGV~3196 group_Ctrl   -<span style="color: #BB0000;">0.215</span>     0.045<span style="text-decoration: underline;">3</span>     8  -<span style="color: #BB0000;">0.320</span>   -<span style="color: #BB0000;">0.111</span></span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">formula</a></span><span class="op">(</span><span class="va">analysis</span><span class="op">)</span></span>
 <span><span class="co">#&gt; medpolish ~ group_</span></span>
-<span><span class="co">#&gt; &lt;environment: 0x566debf08618&gt;</span></span>
+<span><span class="co">#&gt; &lt;environment: 0x626ea9003298&gt;</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/nobs.html" class="external-link">nobs</a></span><span class="op">(</span><span class="va">analysis</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 2</span></span></span>
 <span><span class="co">#&gt;   protein_Id   nobs</span></span>
@@ -669,7 +707,7 @@ observation counts, fitted values and residuals.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
 <span><span class="co">#&gt;  [1] tidyselect_1.2.1       dplyr_1.2.1            farver_2.1.2          </span></span>
-<span><span class="co">#&gt;  [4] S7_0.2.2               fastmap_1.2.0          rpart_4.1.27          </span></span>
+<span><span class="co">#&gt;  [4] S7_1.0.0               fastmap_1.2.0          rpart_4.1.27          </span></span>
 <span><span class="co">#&gt;  [7] digest_0.6.39          lifecycle_1.0.5        Rfit_0.27.0           </span></span>
 <span><span class="co">#&gt; [10] survival_3.8-12        statmod_1.5.2          magrittr_2.0.5        </span></span>
 <span><span class="co">#&gt; [13] compiler_4.6.2         rlang_1.3.0            sass_0.4.10           </span></span>

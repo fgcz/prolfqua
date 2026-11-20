@@ -76,6 +76,43 @@
 
 </dl></div>
     <div class="section level2">
+    <h2 id="missing-and-non-finite-values">Missing and non-finite values<a class="anchor" aria-label="anchor" href="#missing-and-non-finite-values"></a></h2>
+
+
+<p>An `NA` intensity is a missing observation. The `method` argument of
+<code><a href="build_contrast_analysis.html">build_contrast_analysis</a></code> decides how missing observations are
+handled: dropped per fit (e.g. `lm`, `limma`), imputed at the limit of
+detection (the `_impute` methods), or modelled as detection (`firth`,
+`binomial_nested`, `hurdle_nested`); <code><a href="impute_from_model.html">impute_from_model</a></code> fills
+them from fitted models. The `log`, `log2` and `log10` transforms turn zero
+intensities (not detected) into `NA`. Fitting and aggregation stop with a
+classed error on `Inf`, `-Inf` or `NaN` intensities
+(`prolfqua_error_nonfinite_response`), on `NA` in hierarchy, factor or sample
+columns (`prolfqua_error_missing_key`), and on inputs without rows
+(`prolfqua_error_bad_argument`). A subject whose residual variance is zero
+(constant or noiseless response) keeps its estimated difference, but its
+test statistics are `NA`, with a `prolfqua_zero_variance` warning, and it is
+left out of the variance moderation prior.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="provenance">Provenance<a class="anchor" aria-label="anchor" href="#provenance"></a></h2>
+
+
+<p>Each <code>LFQData</code>, model and analysis records the problems and dropped
+items that happen in it; <code>$provenance()</code> returns them as a table (step,
+event, count, IDs, reason). Recorded are values set to `NA`
+(<code>remove_small_intensities()</code>, zeros in log transforms), removed rows,
+features and proteins (<code>remove_decoys()</code>, <code>remove_contaminants()</code>,
+<code><a href="filter_proteins_by_peptide_count.html">filter_proteins_by_peptide_count()</a></code>), estimation warnings in
+aggregation (e.g. `rlm` not converging), failed, warned, singular and
+LOD-refit fits, missing responses dropped per fit and, for an analysis, the
+subjects absent from the contrasts with the reason. Each step reports its
+new entries once: failures as one warning of class `prolfqua_fit_failed`,
+everything else as one `prolfqua_message`, which `prolfqua.verbose = FALSE`
+silences. Derived data (transformed, subset, rows removed) continues the
+record of its input; aggregated data and models start their own.</p>
+    </div>
+    <div class="section level2">
     <h2 id="lifecycle">Lifecycle<a class="anchor" aria-label="anchor" href="#lifecycle"></a></h2>
 
 

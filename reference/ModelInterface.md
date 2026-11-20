@@ -10,6 +10,10 @@ An R6 class generator.
 
 ### Public methods
 
+- [`ModelInterface$provenance()`](#method-ModelInterface-provenance)
+
+- [`ModelInterface$get_provenance_log()`](#method-ModelInterface-get_provenance_log)
+
 - [`ModelInterface$get_coefficients()`](#method-ModelInterface-get_coefficients)
 
 - [`ModelInterface$get_anova()`](#method-ModelInterface-get_anova)
@@ -23,6 +27,37 @@ An R6 class generator.
 - [`ModelInterface$anova_histogram()`](#method-ModelInterface-anova_histogram)
 
 - [`ModelInterface$clone()`](#method-ModelInterface-clone)
+
+------------------------------------------------------------------------
+
+### `ModelInterface$provenance()`
+
+problems recorded while fitting: failed fits, fit warnings (e.g.
+non-convergence), singular fits, fits refit at the limit of detection,
+missing responses dropped
+
+#### Usage
+
+    ModelInterface$provenance()
+
+#### Returns
+
+tibble with columns step, event, n, ids (list), reason, failure,
+response
+
+------------------------------------------------------------------------
+
+### `ModelInterface$get_provenance_log()`
+
+internal: the model's provenance record
+
+#### Usage
+
+    ModelInterface$get_provenance_log()
+
+#### Returns
+
+Provenance object
 
 ------------------------------------------------------------------------
 

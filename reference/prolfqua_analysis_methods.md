@@ -236,6 +236,7 @@ print(analysis)
 #>   subjects fitted failed singular imputed
 #>      <int>  <int>  <int>    <int>   <int>
 #> 1       10     10      0        0       0
+#> Provenance: 0 failure and 0 other entries; see $provenance() 
 #> Coefficient preview:
 #> # A tibble: 6 × 5
 #>   protein_Id  term        estimate std.error    df
@@ -257,6 +258,7 @@ summary(analysis)
 #>   contrast  estimated missing significant    up  down median_sigma median_df
 #>   <chr>         <int>   <int>       <int> <int> <int>        <dbl>     <dbl>
 #> 1 A_vs_Ctrl        10       0           0     0     0         1.65      13.4
+#> Provenance: 0 failure and 0 other entries; see $provenance() 
 head(stats::coef(analysis))
 #> # A tibble: 6 × 5
 #>   protein_Id  term        estimate std.error    df
@@ -289,7 +291,7 @@ head(stats::confint(analysis))
 #> 6 2kfAGV~7674 group_Ctrl     0.123     0.863     9    -1.83      2.07
 stats::formula(analysis)
 #> abundance ~ group_
-#> <environment: 0x59fea9fca848>
+#> <environment: 0x636fc148bd80>
 head(stats::nobs(analysis))
 #> # A tibble: 6 × 2
 #>   protein_Id   nobs

@@ -124,6 +124,31 @@ The detection models (`firth`, `binomial_nested`,
 peptides are observed. The simulated data has few missing values, so
 they find little.
 
+## Missing values
+
+An `NA` intensity is a missing observation, and the method decides what
+happens to it:
+
+- dropped in each per-protein fit: `lm`, `rlm`, `rfit`, `limma`,
+  `limma_voom`, `deqms`, `lmer_nested`, `ropeca_nested`
+- imputed at the limit of detection where a whole group is missing: the
+  `_impute` methods
+- modelled as detection: `firth`, `binomial_nested`,
+  `binomial_firth_nested`, and `hurdle_nested` together with the
+  intensities
+- filled from the fitted models after the analysis:
+  [`impute_from_model()`](https://fgcz.github.io/prolfqua/reference/impute_from_model.md)
+
+The [`log2()`](https://rdrr.io/r/base/Log.html) transform turns zero
+intensities, which mean “not detected”, into `NA`. `Inf`, `-Inf` and
+`NaN` intensities, and `NA` in protein, peptide, group or sample
+columns, stop the analysis with a classed error.
+
+What happened on the way is recorded: `$provenance()` of the analysis
+lists the values set to `NA`, removed rows, failed or singular fits,
+missing responses dropped per fit, and the proteins absent from a
+contrast with the reason.
+
 ## One protein, all methods
 
 All methods return the same columns. Here is the protein with the
@@ -165,9 +190,10 @@ knitr::kable(one, digits = 3)
 
 The fitted analysis supports standard R methods.
 [`print()`](https://rdrr.io/r/base/print.html) gives the model
-specification, fit counts and a coefficient preview without calculating
-contrasts. [`summary()`](https://rdrr.io/r/base/summary.html) evaluates
-the contrasts and counts estimated, missing and significant results; the
+specification, fit counts, a one-line provenance summary and a
+coefficient preview without calculating contrasts.
+[`summary()`](https://rdrr.io/r/base/summary.html) evaluates the
+contrasts and counts estimated, missing and significant results; the
 significance defaults are FDR \< 0.05 and absolute effect \> 1.
 
 ``` r
@@ -181,6 +207,7 @@ print(analysis)
 #>   subjects fitted failed singular imputed
 #>      <int>  <int>  <int>    <int>   <int>
 #> 1       20     20      0        0       0
+#> Provenance: 0 failure and 1 other entries; see $provenance() 
 #> Coefficient preview:
 #> # A tibble: 6 × 5
 #>   protein_Id  term        estimate std.error    df
@@ -202,6 +229,12 @@ summary(analysis)
 #>   contrast  estimated missing significant    up  down median_sigma median_df
 #>   <chr>         <int>   <int>       <int> <int> <int>        <dbl>     <dbl>
 #> 1 A_vs_Ctrl        20       0           0     0     0       0.0701      12.2
+#> Provenance: 0 failure and 1 other entries; see $provenance()
+analysis$provenance()
+#> # A tibble: 1 × 8
+#>   source step        event                       n ids   reason failure response
+#>   <chr>  <chr>       <chr>                   <int> <lis> <chr>  <lgl>   <chr>   
+#> 1 model  fit (Model) missing responses drop…    22 <chr> NA re… FALSE   NA
 head(coef(analysis))
 #> # A tibble: 6 × 5
 #>   protein_Id  term        estimate std.error    df
@@ -234,7 +267,7 @@ head(confint(analysis))
 #> 6 2kfAGV~3196 group_Ctrl   -0.215     0.0453     8  -0.320   -0.111
 formula(analysis)
 #> medpolish ~ group_
-#> <environment: 0x566debf08618>
+#> <environment: 0x626ea9003298>
 head(nobs(analysis))
 #> # A tibble: 6 × 2
 #>   protein_Id   nobs
@@ -351,7 +384,7 @@ sessionInfo()
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] tidyselect_1.2.1       dplyr_1.2.1            farver_2.1.2          
-#>  [4] S7_0.2.2               fastmap_1.2.0          rpart_4.1.27          
+#>  [4] S7_1.0.0               fastmap_1.2.0          rpart_4.1.27          
 #>  [7] digest_0.6.39          lifecycle_1.0.5        Rfit_0.27.0           
 #> [10] survival_3.8-12        statmod_1.5.2          magrittr_2.0.5        
 #> [13] compiler_4.6.2         rlang_1.3.0            sass_0.4.10           

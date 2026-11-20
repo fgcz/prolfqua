@@ -132,10 +132,12 @@ Inherited methods
 - [`ContrastsInterface$get_contrast_sides()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-get_contrast_sides)
 - [`ContrastsInterface$get_ora()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-get_ora)
 - [`ContrastsInterface$get_rank()`](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.html#method-get_rank)
+- [`ContrastsFacadeBase$.recorded_provenance()`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.html#method-.recorded_provenance)
 - [`ContrastsFacadeBase$get_Plotter()`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.html#method-get_Plotter)
 - [`ContrastsFacadeBase$get_config()`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.html#method-get_config)
 - [`ContrastsFacadeBase$get_contrasts()`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.html#method-get_contrasts)
 - [`ContrastsFacadeBase$get_missing()`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.html#method-get_missing)
+- [`ContrastsFacadeBase$provenance()`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.html#method-provenance)
 - [`ContrastsFacadeBase$to_wide()`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.html#method-to_wide)
 
 ------------------------------------------------------------------------
@@ -192,7 +194,10 @@ lfq_peptide <- lfq_peptide$get_Transformer()$log2()$lfq
 #> Column added : log2_abundance
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 facade <- build_contrast_analysis(lfq_peptide, "~ group_", contrasts, method = "hurdle_nested")
-#> Warning: medpolish() did not converge in 10 iterations
+#> Warning: aggregate (medpolish): 1 subjects with estimation warning (e.g. 4JK499~3111): medpolish() did not converge in 10 iterations
+#> See $provenance().
+#> fit (ModelImputed): 20 missing responses dropped (e.g. 0GRprF~7339, 4JK499~3111, CibL2O~2149, quTD7H~9280, xpDUdv~6137): NA response (missing observation) left out of the fit
+#> See $provenance().
 head(facade$get_contrasts())
 #> # A tibble: 6 × 24
 #>   modelName     estimate_type protein_Id  contrast     diff avgAbd

@@ -688,7 +688,7 @@ sessionInfo()
     ## [1] ggplot2_4.0.4  dplyr_1.2.1    prolfqua_1.9.4
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] tidyselect_1.2.1       farver_2.1.2           S7_0.2.2              
+    ##  [1] tidyselect_1.2.1       farver_2.1.2           S7_1.0.0              
     ##  [4] fastmap_1.2.0          digest_0.6.39          rpart_4.1.27          
     ##  [7] lifecycle_1.0.5        survival_3.8-12        Rfit_0.27.0           
     ## [10] statmod_1.5.2          magrittr_2.0.5         compiler_4.6.2        

@@ -128,14 +128,11 @@ mod <- prolfqua::build_model(
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
-#> Warning: There were 7 warnings in `dplyr::mutate()`.
-#> The first warning was:
-#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
-#>   pb)`.
-#> ℹ In group 1: `protein_Id = "0EfVhX~5954"`.
-#> Caused by warning:
-#> ! grouping factors must have > 1 sampled level
-#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 6 remaining warnings.
+#> Warning: fit (Model): 7 fits failed (e.g. 0EfVhX~5954, 7cbcrd~8305, CGzoYe~2857, Fl4JiV~7526, JV3Z7t~2956, ...): Error: grouping factors must have > 1 sampled level
+#> See $provenance().
+#> fit (Model): 13 singular fits (e.g. 0m5WN4~1448, 9VUkAq~4562, At886V~3296, BEJI92~9143, CtOJ9t~2837, ...): coefficients not estimable or fewer than 2 residual df
+#> fit (Model): 62 missing responses dropped (e.g. 0m5WN4~1448, 9VUkAq~4562, At886V~3296, BEJI92~9143, CtOJ9t~2837, ...): NA response (missing observation) left out of the fit
+#> See $provenance().
 res <- model_summary(mod)
 stopifnot(is.list(res))
 stopifnot(all(c("exists", "isSingular") %in% names(res)))

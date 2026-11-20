@@ -27,6 +27,8 @@ An R6 class generator.
 
 - [`StrategyBinomial$new()`](#method-StrategyBinomial-initialize)
 
+- [`StrategyBinomial$zero_residual_variance()`](#method-StrategyBinomial-zero_residual_variance)
+
 - [`StrategyBinomial$clone()`](#method-StrategyBinomial-clone)
 
 Inherited methods
@@ -66,6 +68,28 @@ scale used by [`vcov()`](https://rdrr.io/r/stats/vcov.html).
 - `model_name`:
 
   model identity
+
+------------------------------------------------------------------------
+
+### `StrategyBinomial$zero_residual_variance()`
+
+Never flags: a zero Pearson dispersion (identical detection pattern
+within groups) is bounded below by the binomial variance
+(`binomial_bound`), which keeps the test defined
+
+#### Usage
+
+    StrategyBinomial$zero_residual_variance(sigma, scale)
+
+#### Arguments
+
+- `sigma`:
+
+  Pearson residual scales
+
+- `scale`:
+
+  unused
 
 ------------------------------------------------------------------------
 

@@ -173,14 +173,11 @@ mod <- prolfqua::build_model(
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
-#> Warning: There were 6 warnings in `dplyr::mutate()`.
-#> The first warning was:
-#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
-#>   pb)`.
-#> ℹ In group 1: `protein_Id = "0GRprF~7339"`.
-#> Caused by warning:
-#> ! grouping factors must have > 1 sampled level
-#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 5 remaining warnings.
+#> Warning: fit (f_condtion_r_peptide): 6 fits failed (e.g. 0GRprF~7339, AZPG26~9461, NNASGK~6205, quTD7H~9280, tCZCHm~5708, ...): Error: grouping factors must have > 1 sampled level
+#> See $provenance().
+#> fit (f_condtion_r_peptide): 14 singular fits (e.g. 4JK499~3111, 7IZdVV~6818, AoNKbb~3497, CibL2O~2149, EnbuYk~7811, ...): coefficients not estimable or fewer than 2 residual df
+#> fit (f_condtion_r_peptide): 54 missing responses dropped (e.g. 4JK499~3111, 7IZdVV~6818, CibL2O~2149, EnbuYk~7811, JnEDsz~4232, ...): NA response (missing observation) left out of the fit
+#> See $provenance().
 aovtable <- mod$get_anova()
 
 mod <- prolfqua::build_model(
@@ -201,14 +198,11 @@ mod <- prolfqua::build_model(
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
 #> boundary (singular) fit: see help('isSingular')
-#> Warning: There were 6 warnings in `dplyr::mutate()`.
-#> The first warning was:
-#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
-#>   pb)`.
-#> ℹ In group 1: `protein_Id = "0GRprF~7339"`.
-#> Caused by warning:
-#> ! grouping factors must have > 1 sampled level
-#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 5 remaining warnings.
+#> Warning: fit (f_condtion_r_peptide): 6 fits failed (e.g. 0GRprF~7339, AZPG26~9461, NNASGK~6205, quTD7H~9280, tCZCHm~5708, ...): Error: grouping factors must have > 1 sampled level
+#> See $provenance().
+#> fit (f_condtion_r_peptide): 14 singular fits (e.g. 4JK499~3111, 7IZdVV~6818, AoNKbb~3497, CibL2O~2149, EnbuYk~7811, ...): coefficients not estimable or fewer than 2 residual df
+#> fit (f_condtion_r_peptide): 54 missing responses dropped (e.g. 4JK499~3111, 7IZdVV~6818, CibL2O~2149, EnbuYk~7811, JnEDsz~4232, ...): NA response (missing observation) left out of the fit
+#> See $provenance().
 model_summary(mod)
 #> $exists
 #> 

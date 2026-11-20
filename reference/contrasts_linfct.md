@@ -18,6 +18,8 @@ contrasts_linfct(
 ``` r
 modelSummary_A <- sim_build_models_lm()
 #> creating sampleName from file_name column
+#> fit (Model): 59 missing responses dropped (e.g. 0EfVhX~0087, 7cbcrd~5725, 9VUkAq~4703, BEJI92~5282, CGzoYe~2147, ...): NA response (missing observation) left out of the fit
+#> See $provenance().
 m <- get_complete_model_fit(modelSummary_A$model_df)
 
 linfct <- linfct_from_model(m$linear_model[[1]], as_list = FALSE)

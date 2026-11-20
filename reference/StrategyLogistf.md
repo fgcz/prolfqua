@@ -123,6 +123,7 @@ Inherited methods
 - [`StrategyBase$contrast_fun()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-contrast_fun)
 - [`StrategyBase$isSingular()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-isSingular)
 - [`StrategyBase$model_fun()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-model_fun)
+- [`StrategyBase$zero_residual_variance()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-zero_residual_variance)
 
 ------------------------------------------------------------------------
 
@@ -198,5 +199,5 @@ The objects of this class are cloneable with this method.
 strat <- StrategyLogistf$new("bin_resp ~ condition")
 strat$formula
 #> bin_resp ~ condition
-#> <environment: 0x59fec8933888>
+#> <environment: 0x636fdbcce088>
 ```

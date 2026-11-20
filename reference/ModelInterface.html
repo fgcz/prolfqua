@@ -65,20 +65,47 @@
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
-<p></p><ul><li><p><a href="#method-ModelInterface-get_coefficients"><code>ModelInterface$get_coefficients()</code></a></p></li>
+<p></p><ul><li><p><a href="#method-ModelInterface-provenance"><code>ModelInterface$provenance()</code></a></p></li>
+<li><p><a href="#method-ModelInterface-get_provenance_log"><code>ModelInterface$get_provenance_log()</code></a></p></li>
+<li><p><a href="#method-ModelInterface-get_coefficients"><code>ModelInterface$get_coefficients()</code></a></p></li>
 <li><p><a href="#method-ModelInterface-get_anova"><code>ModelInterface$get_anova()</code></a></p></li>
 <li><p><a href="#method-ModelInterface-coef_histogram"><code>ModelInterface$coef_histogram()</code></a></p></li>
 <li><p><a href="#method-ModelInterface-coef_volcano"><code>ModelInterface$coef_volcano()</code></a></p></li>
 <li><p><a href="#method-ModelInterface-coef_pairs"><code>ModelInterface$coef_pairs()</code></a></p></li>
 <li><p><a href="#method-ModelInterface-anova_histogram"><code>ModelInterface$anova_histogram()</code></a></p></li>
 <li><p><a href="#method-ModelInterface-clone"><code>ModelInterface$clone()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-ModelInterface-get_coefficients"></a><div class="section">
-<h3 id="modelinterface-get-coefficients-"><code>ModelInterface$get_coefficients()</code><a class="anchor" aria-label="anchor" href="#modelinterface-get-coefficients-"></a></h3>
-<p>return model coefficients</p><div class="section">
+</ul></div><p></p><hr><a id="method-ModelInterface-provenance"></a><div class="section">
+<h3 id="modelinterface-provenance-"><code>ModelInterface$provenance()</code><a class="anchor" aria-label="anchor" href="#modelinterface-provenance-"></a></h3>
+<p>problems recorded while fitting: failed fits, fit warnings (e.g. non-convergence), singular fits, fits refit
+at the limit of detection, missing responses dropped</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ModelInterface</span><span class="op">$</span><span class="fu">get_coefficients</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ModelInterface</span><span class="op">$</span><span class="fu">provenance</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
+<p>tibble with columns step, event, n, ids (list), reason, failure, response</p>
+</div>
+
+</div>
+
+<p></p><hr><a id="method-ModelInterface-get_provenance_log"></a><div class="section">
+<h3 id="modelinterface-get-provenance-log-"><code>ModelInterface$get_provenance_log()</code><a class="anchor" aria-label="anchor" href="#modelinterface-get-provenance-log-"></a></h3>
+<p>internal: the model's provenance record</p><div class="section">
+<h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ModelInterface</span><span class="op">$</span><span class="fu">get_provenance_log</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
+<p>Provenance object</p>
+</div>
+
+</div>
+
+<p></p><hr><a id="method-ModelInterface-get_coefficients"></a><div class="section">
+<h3 id="modelinterface-get-coefficients-"><code>ModelInterface$get_coefficients()</code><a class="anchor" aria-label="anchor" href="#modelinterface-get-coefficients-"></a></h3>
+<p>return model coefficients</p><div class="section">
+<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ModelInterface</span><span class="op">$</span><span class="fu">get_coefficients</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p>data.frame</p>
 </div>
 
@@ -87,10 +114,10 @@
 <p></p><hr><a id="method-ModelInterface-get_anova"></a><div class="section">
 <h3 id="modelinterface-get-anova-"><code>ModelInterface$get_anova()</code><a class="anchor" aria-label="anchor" href="#modelinterface-get-anova-"></a></h3>
 <p>perform ANOVA analysis</p><div class="section">
-<h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
+<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ModelInterface</span><span class="op">$</span><span class="fu">get_anova</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
+<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
 <p>data.frame</p>
 </div>
 
@@ -99,10 +126,10 @@
 <p></p><hr><a id="method-ModelInterface-coef_histogram"></a><div class="section">
 <h3 id="modelinterface-coef-histogram-"><code>ModelInterface$coef_histogram()</code><a class="anchor" aria-label="anchor" href="#modelinterface-coef-histogram-"></a></h3>
 <p>histogram of coefficient p-values</p><div class="section">
-<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
+<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ModelInterface</span><span class="op">$</span><span class="fu">coef_histogram</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
+<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p>list with <code>plot</code> (ggplot) and file <code>name</code></p>
 </div>
 
@@ -111,10 +138,10 @@
 <p></p><hr><a id="method-ModelInterface-coef_volcano"></a><div class="section">
 <h3 id="modelinterface-coef-volcano-"><code>ModelInterface$coef_volcano()</code><a class="anchor" aria-label="anchor" href="#modelinterface-coef-volcano-"></a></h3>
 <p>volcano plot of non-intercept coefficients</p><div class="section">
-<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
+<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ModelInterface</span><span class="op">$</span><span class="fu">coef_volcano</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
 <p>list with <code>plot</code> (ggplot) and file <code>name</code></p>
 </div>
 
@@ -123,10 +150,10 @@
 <p></p><hr><a id="method-ModelInterface-coef_pairs"></a><div class="section">
 <h3 id="modelinterface-coef-pairs-"><code>ModelInterface$coef_pairs()</code><a class="anchor" aria-label="anchor" href="#modelinterface-coef-pairs-"></a></h3>
 <p>coefficient estimates in wide format, one column per coefficient, for a pairs plot</p><div class="section">
-<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ModelInterface</span><span class="op">$</span><span class="fu">coef_pairs</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
+<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
 <p>list with <code>plot</code> (data.frame) and file <code>name</code></p>
 </div>
 
@@ -135,7 +162,7 @@
 <p></p><hr><a id="method-ModelInterface-anova_histogram"></a><div class="section">
 <h3 id="modelinterface-anova-histogram-"><code>ModelInterface$anova_histogram()</code><a class="anchor" aria-label="anchor" href="#modelinterface-anova-histogram-"></a></h3>
 <p>histogram of ANOVA p-values or FDR</p><div class="section">
-<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ModelInterface</span><span class="op">$</span><span class="fu">anova_histogram</span><span class="op">(</span>what <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"p.value"</span>, <span class="st">"FDR"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
@@ -145,7 +172,7 @@
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
+<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
 <p>list with <code>plot</code> (ggplot) and file <code>name</code></p>
 </div>
 
@@ -154,7 +181,7 @@
 <p></p><hr><a id="method-ModelInterface-clone"></a><div class="section">
 <h3 id="modelinterface-clone-"><code>ModelInterface$clone()</code><a class="anchor" aria-label="anchor" href="#modelinterface-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
+<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ModelInterface</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>

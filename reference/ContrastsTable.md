@@ -278,6 +278,8 @@ lfqdata$rename_response("transformedIntensity")
 Contrasts <- c("aC" = "group_A - group_Ctrl",
 "bC" = "group_B - group_Ctrl")
 fa <- ContrastsLMFacade$new(lfqdata, "~ group_", Contrasts)
+#> fit (Model): 39 missing responses dropped (e.g. 0m5WN4~6730, 7QuTub~6175, 9VUkAq~3402, DuwH7n~2082, FVUJxd~9571, ...): NA response (missing observation) left out of the fit
+#> See $provenance().
 ctr <- fa$get_contrasts()
 fa$contrast$subject_id
 #> [1] "protein_Id"

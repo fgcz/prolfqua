@@ -28,7 +28,15 @@ transform_work_intensity(pdata, response, .func, .funcname = NULL)
 
 ## Value
 
-list with \`data\` (data.frame) and \`colname\` (new column name)
+list with \`data\` (data.frame), \`colname\` (new column name) and
+\`zeros\` (logical, rows whose zero intensity became \`NA\`)
+
+## Details
+
+For \`log\`, \`log2\` and \`log10\`, zero intensities mean "not
+detected" and become \`NA\`; LFQData records them in its provenance.
+Negative intensities give \`NaN\` with a warning, which fitting and
+aggregation then reject.
 
 ## Examples
 

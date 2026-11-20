@@ -121,6 +121,7 @@ Inherited methods
 - [`StrategyBase$initialize()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-initialize)
 - [`StrategyBase$model_fun()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-model_fun)
 - [`StrategyBase$sigma()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-sigma)
+- [`StrategyBase$zero_residual_variance()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-zero_residual_variance)
 
 ------------------------------------------------------------------------
 
@@ -182,14 +183,8 @@ istar$set_data(istar$data_long() |> dplyr::group_by(protein_Id) |>
 strat <- StrategyLmer$new("abundanceC ~ group_ + (1|peptide_Id)",
   model_name = "random_example")
 mod <- build_model(istar, strat)
-#> Warning: There were 4 warnings in `dplyr::mutate()`.
-#> The first warning was:
-#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
-#>   pb)`.
-#> ℹ In group 2: `protein_Id = "7cbcrd~5725"`.
-#> Caused by warning:
-#> ! grouping factors must have > 1 sampled level
-#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 3 remaining warnings.
+#> Warning: fit (random_example): 4 fits failed (e.g. 7cbcrd~5725, 9VUkAq~4703, CGzoYe~2147, DoWup2~5896): Error: grouping factors must have > 1 sampled level
+#> See $provenance().
 sum(mod$model_df$has_model_fit)
 #> [1] 6
 ```

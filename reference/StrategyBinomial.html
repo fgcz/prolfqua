@@ -87,6 +87,7 @@ to Firth's bias-reducing penalty.</p>
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 <p></p><ul><li><p><a href="#method-StrategyBinomial-initialize"><code>StrategyBinomial$new()</code></a></p></li>
+<li><p><a href="#method-StrategyBinomial-zero_residual_variance"><code>StrategyBinomial$zero_residual_variance()</code></a></p></li>
 <li><p><a href="#method-StrategyBinomial-clone"><code>StrategyBinomial$clone()</code></a></p></li>
 </ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="contrast_fun"><a href="StrategyBase.html#method-contrast_fun"><code>StrategyBase$contrast_fun()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="df_residual"><a href="StrategyBase.html#method-df_residual"><code>StrategyBase$df_residual()</code></a></span></li>
@@ -121,13 +122,33 @@ to Firth's bias-reducing penalty.</p>
 
 </div>
 
+<p></p><hr><a id="method-StrategyBinomial-zero_residual_variance"></a><div class="section">
+<h3 id="strategybinomial-zero-residual-variance-"><code>StrategyBinomial$zero_residual_variance()</code><a class="anchor" aria-label="anchor" href="#strategybinomial-zero-residual-variance-"></a></h3>
+<p>Never flags: a zero Pearson dispersion (identical detection pattern within groups) is bounded
+  below by the binomial variance (<code>binomial_bound</code>), which keeps the test defined</p><div class="section">
+<h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">StrategyBinomial</span><span class="op">$</span><span class="fu">zero_residual_variance</span><span class="op">(</span><span class="va">sigma</span>, <span class="va">scale</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>sigma</code></dt>
+<dd><p>Pearson residual scales</p></dd>
+
+      <dt><code>scale</code></dt>
+<dd><p>unused</p></dd>
+
+
+</dl><p></p></div>
+</div>
+
+</div>
+
 <p></p><hr><a id="method-StrategyBinomial-clone"></a><div class="section">
 <h3 id="strategybinomial-clone-"><code>StrategyBinomial$clone()</code><a class="anchor" aria-label="anchor" href="#strategybinomial-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
+<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">StrategyBinomial</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
+<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 

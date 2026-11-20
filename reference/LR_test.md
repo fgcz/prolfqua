@@ -177,28 +177,22 @@ formula_condition_and_Batches <-
 modCB <- prolfqua::build_model(
   pMerged,
   formula_condition_and_Batches)
-#> Warning: There were 12 warnings in `dplyr::mutate()`.
-#> The first warning was:
-#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
-#>   pb)`.
-#> ℹ In group 49: `protein_Id = "G01Esv~7982"`.
-#> Caused by warning:
-#> ! contrasts can be applied only to factors with 2 or more levels
-#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 11 remaining warnings.
+#> Warning: fit (Model): 12 fits failed (e.g. G01Esv~7982, HAAYQO~5909, LMQBev~7768, N1vPxG~0817, a0UeCf~0004, ...): Error in `contrasts<-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]): contrasts can be applied only to factors with 2 or more levels
+#> See $provenance().
+#> fit (Model): 13 singular fits (e.g. Br6sVH~3679, ESsn24~7142, HvIpHG~5437, J4wNKf~3190, OOEm0O~6680, ...): coefficients not estimable or fewer than 2 residual df
+#> fit (Model): 925 missing responses dropped (e.g. 0ZHbvZ~4125, 0lCgkE~2864, 0m5WN4~1168, 0vgFfT~5498, 1HZ2jt~5236, ...): NA response (missing observation) left out of the fit
+#> See $provenance().
 
 formula_condition <-
   prolfqua::strategy_lm("abundance ~ Treatment")
 modC <- prolfqua::build_model(
   pMerged,
   formula_condition)
-#> Warning: There were 8 warnings in `dplyr::mutate()`.
-#> The first warning was:
-#> ℹ In argument: `linear_model = purrr::map(data, model_strategy$model_fun, pb =
-#>   pb)`.
-#> ℹ In group 78: `protein_Id = "N1vPxG~0817"`.
-#> Caused by warning:
-#> ! contrasts can be applied only to factors with 2 or more levels
-#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 7 remaining warnings.
+#> Warning: fit (Model): 8 fits failed (e.g. N1vPxG~0817, a0UeCf~0004, cp9zgr~5124, guMc2e~7211, h9LKdP~0538, ...): Error in `contrasts<-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]): contrasts can be applied only to factors with 2 or more levels
+#> See $provenance().
+#> fit (Model): 9 singular fits (e.g. Br6sVH~3679, G01Esv~7982, HAAYQO~5909, J4wNKf~3190, ZI2MGy~3165, ...): coefficients not estimable or fewer than 2 residual df
+#> fit (Model): 976 missing responses dropped (e.g. 0ZHbvZ~4125, 0lCgkE~2864, 0m5WN4~1168, 0vgFfT~5498, 1HZ2jt~5236, ...): NA response (missing observation) left out of the fit
+#> See $provenance().
 
 tmp <- LR_test(modCB$model_df, "modCB", modC$model_df, "modB")
 hist(tmp$likelihood_ratio_test.pValue)

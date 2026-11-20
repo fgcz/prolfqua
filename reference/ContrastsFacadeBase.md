@@ -156,6 +156,10 @@ Other modelling:
 
 - [`ContrastsFacadeBase$to_wide()`](#method-ContrastsFacadeBase-to_wide)
 
+- [`ContrastsFacadeBase$provenance()`](#method-ContrastsFacadeBase-provenance)
+
+- [`ContrastsFacadeBase$.recorded_provenance()`](#method-ContrastsFacadeBase-.recorded_provenance)
+
 - [`ContrastsFacadeBase$clone()`](#method-ContrastsFacadeBase-clone)
 
 Inherited methods
@@ -238,6 +242,39 @@ convert results to wide format
 - `...`:
 
   passed to the inner contrast object's to_wide
+
+------------------------------------------------------------------------
+
+### `ContrastsFacadeBase$provenance()`
+
+problems and dropped items of this analysis, read from the input data,
+the aggregated data (`hurdle_nested`, `limpa_nested`) and the model(s),
+plus the subjects absent from the contrasts with the reason
+
+#### Usage
+
+    ContrastsFacadeBase$provenance()
+
+#### Returns
+
+tibble with columns source, step, event, n, ids (list), reason, failure,
+response
+
+------------------------------------------------------------------------
+
+### `ContrastsFacadeBase$.recorded_provenance()`
+
+internal: the entries recorded in the input data, the aggregated data
+and the model(s), without evaluating contrasts (used by
+[`print()`](https://rdrr.io/r/base/print.html))
+
+#### Usage
+
+    ContrastsFacadeBase$.recorded_provenance()
+
+#### Returns
+
+tibble as `provenance()`, without the absent subjects
 
 ------------------------------------------------------------------------
 
