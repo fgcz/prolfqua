@@ -681,6 +681,9 @@ is_contaminant <- function(ids, pattern = NULL) {
 #' @param zero logical, rows with zero residual variance
 #' @param subject_id columns identifying the modelled subjects
 #' @noRd
+#' @srrstats {RE2.4b} A perfect fit of response to predictors shows as zero residual variance of a subject; it is
+#'   detected per subject, because the response differs per protein, and gives a `prolfqua_zero_variance` warning
+#'   with the test statistics set to NA (test-missing-nonfinite.R).
 .na_zero_variance <- function(contrast_result, zero, subject_id) {
   if (!any(zero)) {
     return(contrast_result)

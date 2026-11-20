@@ -11,8 +11,6 @@
 #'   TODO/prolfqua/TODO_ropensci_compliance.md section 5.
 #' @srrstats {RE2.2} Missing predictors (hierarchy, factor and sample keys) raise; missing responses are dropped per fit
 #'   or imputed, and `impute_from_model()` generates values for missing responses from models fitted without them.
-#' @srrstatsTODO {RE2.4b} no check for perfect predictor-response fit (sigma = 0); deferred follow-up:
-#'   TODO/prolfqua/TODO_ropensci_compliance.md section 5.
 #' @srrstats {RE3.2} Convergence defaults are documented with their reasons in strategy_rlm(), strategy_lmer(),
 #'   strategy_binomial(), strategy_binomial_firth(), strategy_logistf(), strategy_rfit() and estimate_intensity():
 #'   the criteria are relative (rlm, glm, rfit, medpolish on the log2 scale) or in log odds (Firth).

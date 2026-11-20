@@ -9,6 +9,17 @@ An R6 class generator.
 \description{
 Decorate LFQData with Methods for transforming Intensities
 }
+\section{Centring and contrasts}{
+
+Centring is an explicit transformation step, never applied by a model. `robscale()` and `robscale_subset()`
+centre each sample at its median (and scale by its MAD); `preserve_mean = TRUE` adds the overall mean back, so
+abundances stay on the original level, `FALSE` centres them at zero. `center_to_reference()` and
+`subtract_sample_offsets()` shift each sample by one offset. A per-sample shift moves every feature of that
+sample by the same amount: a contrast between groups changes by the difference of the mean offsets of the groups,
+and a shift common to all samples (such as `preserve_mean`) changes the average abundance (`avgAbd`) but not the
+contrast estimates, standard errors or p-values.
+}
+
 \examples{
 
 istar <- sim_lfq_data_peptide_config(Nprot = 50)
@@ -190,7 +201,8 @@ transformed a second time. `TRUE` forces log transformation}
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{preserve_mean}}{should original mean value be preserved TRUE, if FALSE then center at zero}
+      \item{\code{preserve_mean}}{should original mean value be preserved TRUE, if FALSE then center at zero; changes the
+average abundance, not the contrasts (see section "Centring and contrasts")}
       \item{\code{colname}}{new name of transformed column}
     }
     \if{html}{\out{</div>}}

@@ -92,8 +92,17 @@
 #'
 #' @srrstats {G2.16} Log transforms turn zeros into NA and warn on negatives; Inf, -Inf and NaN responses raise a
 #'   classed error before every fit and aggregation. Limit: no option to ignore or remove non-finite values, by design.
-#' @srrstatsTODO {RE2.3} Transformer centering is explicit; limit: its inferential effect on contrasts lacks
-#'   documentation/tests.
+#' @section Centring and contrasts:
+#' Centring is an explicit transformation step, never applied by a model. `robscale()` and `robscale_subset()`
+#' centre each sample at its median (and scale by its MAD); `preserve_mean = TRUE` adds the overall mean back, so
+#' abundances stay on the original level, `FALSE` centres them at zero. `center_to_reference()` and
+#' `subtract_sample_offsets()` shift each sample by one offset. A per-sample shift moves every feature of that
+#' sample by the same amount: a contrast between groups changes by the difference of the mean offsets of the groups,
+#' and a shift common to all samples (such as `preserve_mean`) changes the average abundance (`avgAbd`) but not the
+#' contrast estimates, standard errors or p-values.
+#' @srrstats {RE2.3} Centring is available through explicit transformer parameters (`preserve_mean`, reference
+#'   subsets, sample offsets); its effect on contrasts is documented in the section "Centring and contrasts" and
+#'   tested in test-centring.R.
 LFQDataTransformer <- R6::R6Class(
   "LFQDataTransformer",
   public = list(
@@ -123,7 +132,8 @@ LFQDataTransformer <- R6::R6Class(
     #' @description
     #' robust scale data
     #' @param colname new name of transformed column
-    #' @param preserve_mean should original mean value be preserved TRUE, if FALSE then center at zero
+    #' @param preserve_mean should original mean value be preserved TRUE, if FALSE then center at zero; changes the
+    #'   average abundance, not the contrasts (see section "Centring and contrasts")
     #' @return LFQDataTransformer (self)
     robscale = function(preserve_mean = TRUE, colname = "transformedIntensity") {
       res <- self$robscale_subset(self$lfq, preserve_mean = preserve_mean, colname = colname)
