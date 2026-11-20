@@ -363,6 +363,7 @@ plot.ContrastsFacadeBase <- function(x, type = c("fitted", "volcano", "ma"), sub
   observed$subject <- do.call(paste, c(observed[keys], sep = " / "))
   means$subject <- do.call(paste, c(means[keys], sep = " / "))
   ggplot2::ggplot(observed, ggplot2::aes(x = .data$group, y = .data$response)) +
+    theme_prolfqua(grid = TRUE) +
     ggplot2::geom_point(position = ggplot2::position_jitter(width = 0.15, height = 0, seed = 1), alpha = 0.5) +
     ggplot2::geom_pointrange(
       data = means,

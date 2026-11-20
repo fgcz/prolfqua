@@ -1,3 +1,36 @@
+#' Prism-style ggplot theme used by all prolfqua plots
+#'
+#' White panel, black axis lines and outward ticks, bold axis titles, bold facet labels on a light grey strip,
+#' legend without box. Add it to your own ggplots to match the look of prolfqua figures.
+#' @param grid add faint major gridlines, for plots read against reference values (scatter, density)
+#' @param base_size base font size
+#' @return a ggplot2 theme
+#' @export
+#' @family plotting
+#' @examples
+#' ggplot2::ggplot(mtcars, ggplot2::aes(wt, mpg)) +
+#'   ggplot2::geom_point() +
+#'   theme_prolfqua(grid = TRUE)
+theme_prolfqua <- function(grid = FALSE, base_size = 12) {
+  th <- ggplot2::theme_classic(base_size = base_size) +
+    ggplot2::theme(
+      axis.line = ggplot2::element_line(colour = "black", linewidth = 0.6),
+      axis.ticks = ggplot2::element_line(colour = "black", linewidth = 0.6),
+      axis.ticks.length = ggplot2::unit(4, "pt"),
+      axis.text = ggplot2::element_text(colour = "black"),
+      axis.title = ggplot2::element_text(face = "bold"),
+      strip.text = ggplot2::element_text(face = "bold"),
+      strip.background = ggplot2::element_rect(fill = "grey92", colour = NA),
+      legend.background = ggplot2::element_blank(),
+      legend.key = ggplot2::element_blank(),
+      legend.title = ggplot2::element_text(face = "plain")
+    )
+  if (grid) {
+    th <- th + ggplot2::theme(panel.grid.major = ggplot2::element_line(colour = "grey90", linewidth = 0.3))
+  }
+  th
+}
+
 #' Decide whether sample counts allow a readable legend
 #' @param pdata long-format measurement table
 #' @param sample_name column identifying samples
@@ -247,6 +280,7 @@
 #'
 plot_intensity_distribution_violin <- function(pdata, sample_name, response, is_transformed = FALSE) {
   p <- ggplot(pdata, aes(x = .data[[sample_name]], y = .data[[response]])) +
+    theme_prolfqua() +
     geom_violin() +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
     stat_summary(fun = median, geom = "point", size = 1, color = "black")
@@ -301,6 +335,7 @@ plot_intensity_distribution_density <- function(
       group = .data[[sample_name]]
     )
   ) +
+    theme_prolfqua(grid = TRUE) +
     geom_line(stat = "density")
   if (!is_transformed) {
     p <- p + scale_x_continuous(trans = "log10")
@@ -392,6 +427,7 @@ plot_hierarchies_boxplot <- function(
   pdata$size <- ifelse(pdata[[nr_children_col]] == 0, 2, pdata[[nr_children_col]])
   pdata[[nr_children_col]] <- as.factor(pdata[[nr_children_col]])
   p <- ggplot(pdata, aes(x = .data[["interaction"]], y = .data[[response]])) +
+    theme_prolfqua() +
     theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
     ggtitle(title)
   if (lil > 1) {
@@ -873,6 +909,7 @@ plot_pca <- function(matrix, annotation, sample_name, factor_keys, PC = c(1, 2),
     xx,
     aes(x = !!sym(pc_x), y = !!sym(pc_y), color = !!sym(factor_keys[1]), text = !!sym(sample_name))
   ) +
+    theme_prolfqua(grid = TRUE) +
     labs(
       x = paste0(pc_x, " (", round(variance_explained[PC[1]]), "% variance)"),
       y = paste0(pc_y, " (", round(variance_explained[PC[2]]), "% variance)")

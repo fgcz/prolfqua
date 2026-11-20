@@ -37,7 +37,7 @@ plot_hierarchies_line_default <- function(
     data,
     aes(x = .data[[sample]], y = .data[[intensity]], group = .data[[fragment]], color = .data[[peptide]])
   )
-  p <- p + points + lines
+  p <- p + theme_prolfqua(grid = TRUE) + points + lines
   p <- p + facet_grid(as.formula(sprintf("~%s", paste(factor, collapse = " + "))), scales = "free_x")
   p <- p + ggtitle(protein_name)
   p <- p + theme(axis.text.x = element_text(angle = 90, hjust = 1), legend.position = "top")
@@ -127,7 +127,7 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
     tidyr::pivot_wider(names_from = all_of(sample_name), values_from = all_of(response))
   mat <- as.matrix(wide[, vapply(wide, is.numeric, logical(1))])
   X <- medpolish(mat, na.rm = TRUE, trace.iter = FALSE, maxiter = control$maxiter, eps = control$eps)
-  tibble(!!sample_name := names(X$col), medpolish = X$col + X$overall)
+  tibble(!!sample_name := names(X$col), medpolish = unname(X$col + X$overall))
 }
 
 #' Estimate protein intensities by robust peptide regression
@@ -194,7 +194,7 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
     data$residuals <- fit$residuals
     usamples <- unique(data[[samples]])
     coef_names <- paste0(samples, usamples)
-    lmrob <- tibble(!!samples := usamples, lmrob = fit$coefficients[coef_names])
+    lmrob <- tibble(!!samples := usamples, lmrob = unname(fit$coefficients[coef_names]))
 
     sumdata <- data |>
       select(-!!sym(feature)) |>

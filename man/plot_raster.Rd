@@ -70,6 +70,7 @@ Other plotting:
 \code{\link[=plot_na_heatmap]{plot_na_heatmap()}},
 \code{\link[=plot_pca]{plot_pca()}},
 \code{\link[=plot_sample_correlation]{plot_sample_correlation()}},
+\code{\link[=theme_prolfqua]{theme_prolfqua()}},
 \code{\link[=upset_interaction_missing_stats]{upset_interaction_missing_stats()}},
 \code{\link[=upset_missing_stats]{upset_missing_stats()}}
 }

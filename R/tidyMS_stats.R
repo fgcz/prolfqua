@@ -284,6 +284,7 @@ plot_stat_density <- function(pdata, factor_key, stat = c("CV", "meanAbundance",
   stat <- match.arg(stat)
   ggstat <- match.arg(ggstat)
   p <- ggplot(pdata, aes(x = .data[[stat]], colour = .data[[factor_key]])) +
+    theme_prolfqua(grid = TRUE) +
     geom_line(stat = ggstat)
   return(p)
 }
@@ -316,6 +317,7 @@ plot_stat_density_median <- function(
   top50 <- pdata |>
     dplyr::mutate(top = ifelse(meanAbundance > median(meanAbundance, na.rm = TRUE), "top 50", "bottom 50"))
   p <- ggplot(top50, aes(x = .data[[stat]], colour = .data$top)) +
+    theme_prolfqua(grid = TRUE) +
     geom_line(stat = ggstat) +
     facet_wrap(factor_key)
   return(p)
@@ -342,6 +344,7 @@ plot_stat_violin <- function(pdata, factor_keys_depth, stat = c("CV", "meanAbund
   stat <- match.arg(stat)
   pdata <- pdata |> tidyr::unite("groups", dplyr::all_of(factor_keys_depth))
   p <- ggplot(pdata, aes(x = .data$groups, y = .data[[stat]])) +
+    theme_prolfqua() +
     geom_violin() +
     ggplot2::stat_summary(fun = median, geom = "point", size = 1, color = "black")
   return(p)
@@ -373,6 +376,7 @@ plot_stat_violin_median <- function(pdata, factor_key, stat = c("CV", "meanAbund
     dplyr::mutate(top = ifelse(meanAbundance > median(meanAbundance, na.rm = TRUE), "top 50", "bottom 50"))
 
   p <- ggplot(top50, aes(x = .data[[factor_key]], y = .data[[stat]])) +
+    theme_prolfqua() +
     geom_violin() +
     stat_summary(fun = median.quartile, geom = "point", shape = 3) +
     stat_summary(fun = median, geom = "point", shape = 1) +
@@ -407,6 +411,7 @@ plot_stdv_vs_mean <- function(pdata, factor_keys_depth, size = 2000) {
     dplyr::ungroup()
 
   p <- ggplot(pdata, aes(x = meanAbundance, y = sd)) +
+    theme_prolfqua(grid = TRUE) +
     geom_point() +
     geom_smooth(method = "loess") +
     facet_wrap(factor_keys_depth, nrow = 1) +

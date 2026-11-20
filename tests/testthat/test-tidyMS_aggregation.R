@@ -200,3 +200,14 @@ test_that("rlm aggregation ignores an unused level of a factor feature column", 
   estimated <- prolfqua:::.rlm_estimate(as_factor, "response", "feature", "samples")
   expect_equal(unname(estimated$lmrob), unname(expected$lmrob))
 })
+
+test_that("medpolish and rlm aggregation return unnamed estimates, so LFQData drops no attributes", {
+  dd <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10)
+  lfq <- prolfqua::LFQData$new(dd$data, dd$config)
+  lfq <- suppressMessages(lfq$get_Transformer()$log2()$lfq)
+  for (method in c("medpolish", "rlm")) {
+    res <- suppressWarnings(suppressMessages(prolfqua::estimate_intensity(lfq, method = method)))
+    response <- res$config$get_response()
+    expect_null(attributes(res$data[[response]]), info = method)
+  }
+})

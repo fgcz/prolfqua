@@ -152,6 +152,7 @@ missigness_histogram <- function(lfqdata, showempty = FALSE, factors = lfqdata$r
     missing_percent,
     ggplot2::aes(x = !!sym(mean_abundance), fill = .data$nrNAs, colour = .data$nrNAs)
   ) +
+    theme_prolfqua() +
     ggplot2::geom_density(alpha = alpha, position = "identity") +
     ggplot2::facet_grid(as.formula(formula)) +
     ggplot2::theme(axis.text.x = element_text(angle = 90, hjust = 1))
@@ -194,6 +195,7 @@ missingness_per_condition_cumsum <- function(lfqdata, factors = lfqdata$relevant
 
   nudgeval <- mean(res$cumulative_sum) * 0.05
   p <- ggplot(res, aes(x = .data$nrNAs, y = .data$cumulative_sum)) +
+    theme_prolfqua() +
     geom_bar(stat = "identity", color = "black", fill = "white") +
     geom_text(aes(label = .data$cumulative_sum), nudge_y = nudgeval, angle = -45) +
     facet_grid(as.formula(formula))
@@ -230,6 +232,7 @@ missingness_per_condition <- function(lfqdata, factors = lfqdata$relevant_factor
   nudgeval <- max(xx[[hierarchy_key]]) * 0.05
 
   p <- ggplot(xx, aes(x = .data$nrNAs, y = .data[[hierarchy_key]])) +
+    theme_prolfqua() +
     geom_bar(stat = "identity", color = "black", fill = "white") +
     geom_text(aes(label = !!sym(hierarchy_key)), nudge_y = nudgeval, angle = 45) +
     facet_grid(as.formula(formula))

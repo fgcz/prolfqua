@@ -29,6 +29,22 @@ test_that("plot() of LFQData shows the response distribution per sample", {
   expect_true(inherits(p$layers[[1]]$geom, "GeomViolin"))
 })
 
+test_that("default plots use the prolfqua theme, with gridlines only on fitted-value plots", {
+  withr::local_options(prolfqua.verbose = FALSE)
+  lfq <- eda_fixture()
+  protein <- suppressWarnings(lfq$get_Aggregator()$aggregate())
+  fit <- build_contrast_analysis(protein, "~ group_", c(AvsC = "group_A - group_Ctrl"), "lm")
+  themed <- function(p) {
+    th <- p$theme
+    expect_identical(ggplot2::calc_element("panel.background", th)$fill, "white")
+    expect_identical(ggplot2::calc_element("axis.line.x", th)$colour, "black")
+    expect_identical(ggplot2::calc_element("axis.title.x", th)$face, "bold")
+    inherits(ggplot2::calc_element("panel.grid.major.x", th), "element_line")
+  }
+  expect_false(themed(plot(lfq)))
+  expect_true(themed(plot(fit)))
+})
+
 #' @srrstats {EA5.3} Summary tables are tibbles, whose printed header states the class of each column (`<int>`,
 #'   `<dbl>`, `<chr>`); tested for the analysis summary.
 #' @noRd

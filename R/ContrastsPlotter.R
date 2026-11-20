@@ -154,6 +154,7 @@ ContrastsPlotter <- R6::R6Class(
       re[2] <- ceiling(re[2])
 
       fig <- ggplot(private$.contrast_df, aes(x = !!sym(self$diff))) +
+        theme_prolfqua() +
         geom_histogram(breaks = seq(from = re[1], to = re[2], by = binwidth)) +
         geom_vline(
           aes(xintercept = median(!!sym(self$diff), na.rm = TRUE)), # Ignore NA values for mean
@@ -275,6 +276,7 @@ ContrastsPlotter <- R6::R6Class(
         summary_counts <- group_by(filt, !!sym(self$contrast), !!sym(self$model_name)) |>
           dplyr::summarize(n = n())
         p <- ggplot(summary_counts, aes(x = !!sym(self$contrast), y = n, fill = !!sym(self$model_name))) +
+          theme_prolfqua() +
           geom_bar(position = "stack", stat = "identity")
         bar_results[[score_name]] <- list(plot = p, summary = summary_counts)
       }
@@ -353,6 +355,7 @@ ContrastsPlotter <- R6::R6Class(
       score <- score$score
       plot <- private$.contrast_df |>
         ggplot(aes(x = !!sym(score))) +
+        theme_prolfqua() +
         geom_histogram(breaks = breaks) +
         facet_wrap(vars(!!sym(self$contrast)))
       return(plot)
@@ -362,6 +365,7 @@ ContrastsPlotter <- R6::R6Class(
         x,
         aes(x = !!sym(avg.abundance), y = !!sym(diff), text = !!sym("subject_id"), colour = !!sym(colour))
       ) +
+        theme_prolfqua(grid = TRUE) +
         geom_point(alpha = 0.5) +
         scale_colour_manual(values = .contrast_colour_values(colour)) +
         facet_wrap(vars(!!sym(contrast)))
@@ -385,6 +389,7 @@ ContrastsPlotter <- R6::R6Class(
           x,
           aes(x = !!sym(self$diff), y = !!sym(score), text = !!sym("subject_id"), colour = !!sym(colour))
         ) +
+          theme_prolfqua(grid = TRUE) +
           scale_colour_manual(values = .contrast_colour_values(colour)) +
           geom_point(alpha = 0.5) +
           facet_wrap(vars(!!sym(self$contrast))) +

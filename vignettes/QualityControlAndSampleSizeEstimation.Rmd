@@ -206,7 +206,8 @@ The table summarises visually how many samples are needed for different expected
 sampleSize |>
   ggplot2::ggplot(ggplot2::aes(x = factor(probs) , y = N)) +
   ggplot2::facet_wrap(~delta) +
-  ggplot2::geom_bar(stat = "identity")
+  ggplot2::geom_bar(stat = "identity") +
+  prolfqua::theme_prolfqua()
 
 ```
 
@@ -230,7 +231,8 @@ prolfqua::table_facade(x[1:7,], caption = "Sample size for each protein")
 x |> ggplot2::ggplot(ggplot2::aes(x = N)) +
   ggplot2::geom_histogram() +
   ggplot2::facet_wrap(~delta) +
-  ggplot2::xlim(0,100)
+  ggplot2::xlim(0,100) +
+  prolfqua::theme_prolfqua()
 ```
 
 ## Sample-size planning with an FDR target
@@ -262,7 +264,8 @@ pilot_plan[c("N", "power_achieved", "var_prior", "df_prior", "n_features_used")]
 ggplot2::ggplot(pilot_plan$power_curve, ggplot2::aes(n, power)) +
   ggplot2::geom_line() +
   ggplot2::geom_hline(yintercept = 0.8, linetype = "dashed") +
-  ggplot2::labs(x = "Samples per group", y = "Average power")
+  ggplot2::labs(x = "Samples per group", y = "Average power") +
+  prolfqua::theme_prolfqua(grid = TRUE)
 ```
 
 These calculations assume a balanced two-group design, equal within-group variances, independent effect and variance priors, and independent tests (or an adequate approximation under weak dependence). They use ordinary t-test degrees of freedom, so sample sizes are conservative relative to a moderated test under the same model. The fixed significance threshold gives the FDR planning bound once the target power is reached; lower-power points on the curve need not meet it. The specified FDR is a planning expectation under these assumptions, not a guarantee for each realized experiment.

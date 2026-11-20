@@ -51,6 +51,7 @@ ModelInterface <- R6::R6Class(
     #' @return list with \code{plot} (ggplot) and file \code{name}
     coef_histogram = function() {
       histogram_coeff <- ggplot(private$coef_table(), aes(x = !!sym(private$coef_pvalue), group = factor)) +
+        theme_prolfqua() +
         geom_histogram(breaks = seq(0, 1, by = 0.05)) +
         facet_wrap(~factor)
       list(plot = histogram_coeff, name = paste0("Coef_Histogram_", self$model_name, ".pdf"))
@@ -87,6 +88,7 @@ ModelInterface <- R6::R6Class(
     anova_histogram = function(what = c("p.value", "FDR")) {
       what <- match.arg(what)
       histogram_anova <- ggplot(self$get_anova(), aes(x = !!sym(what), group = factor)) +
+        theme_prolfqua() +
         geom_histogram(breaks = seq(0, 1, by = 0.05)) +
         facet_wrap(~factor)
       list(plot = histogram_anova, name = paste0("Anova_p.values_", self$model_name, ".pdf"))

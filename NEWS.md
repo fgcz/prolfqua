@@ -31,6 +31,7 @@
 
 ## Behaviour changes
 
+- All ggplot figures have a new default look in the style of GraphPad Prism: white background, black axis lines with outward ticks, bold axis titles, bold facet labels on a light grey strip. Volcano, MA, score, fitted-value, PCA, density and SD-versus-mean plots keep faint gridlines; histograms, bar charts, boxplots and violins have none. Add any ggplot2 theme to override, or add the new `theme_prolfqua()` to your own ggplots to match.
 - `setup_analysis()` announces each transformation it applies with a `prolfqua_message`: source columns united into one key, non-character factor columns converted to character labels, unconfigured columns dropped, and rows with NA response added for absent feature and sample combinations. Its help lists every step and how to avoid it.
 - `build_contrast_analysis()` checks before fitting that the fixed-effect design is of full rank across samples (aliased factors, empty interaction cells) and stops with `prolfqua_error_collinear_design` naming the aliased coefficients; such designs used to fail later with unrelated errors.
 - Fitting and aggregation reject data with more than one row per sample and hierarchy key (`prolfqua_error_duplicate_keys`), also when the `LFQData` was created without `setup_analysis()`.
@@ -58,6 +59,7 @@
 
 ## Bug fixes
 
+- `medpolish` and `rlm` aggregation no longer report "Response `medpolish`: dropped attributes names" (or `lmrob`): the estimates are returned as plain numeric values.
 - `rlm` aggregation (`get_Aggregator("rlm")`) removed estimable design columns when a sample or peptide column was a factor with an unused level, and then silently used per-sample means for that protein. It now drops unused levels and removes only aliased columns. Data set up with `setup_analysis()` (character columns) is not affected.
 - `LFQDataPlotter$write_pdf()` and `$write_boxplots()` no longer append `.pdf` to a file name that already ends in `.pdf`.
 - `get_complete_model_fit()`, and with it `Model$get_anova()`, `Model$get_coefficients()` and the coefficient and ANOVA plots, now leaves out fits with fewer coefficients than the full design, for example a protein with one group entirely missing. Before, every fit counted as complete, so these tables also listed such proteins, whose coefficients referred to another reference level. Limit-of-detection imputation is unchanged.

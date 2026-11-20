@@ -225,6 +225,7 @@ multigroup_volcano <- function(
     data,
     aes(x = .data[[effect]], y = !!rlang::parse_expr(colname))
   ) +
+    theme_prolfqua(grid = TRUE) +
     geom_point(alpha = 0.5)
   if (!is.null(colour)) {
     p <- p + aes(color = .data[[colour]])
