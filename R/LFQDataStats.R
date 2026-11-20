@@ -23,11 +23,8 @@
 #'   stopifnot("ggplot" %in% class(x$violin()))
 #'   stopifnot("ggplot" %in% class(x$violin_median()))
 #'   stopifnot("ggplot" %in% class(x$stdv_vs_mean(size = 400)))
-#'   if(!x$lfq$is_transformed()){
-#'     stopifnot(is.null(x$power_t_test()))
-#'     stopifnot(is.null(x$power_t_test_quantiles()))
-#'     stopifnot(is.null(x$power_fdr_pilot(delta_mean = 0.1)))
-#'   } else {
+#'   # the power methods need transformed data and raise an error otherwise
+#'   if (x$lfq$is_transformed()) {
 #'     stopifnot(is.list(x$power_fdr_pilot(delta_mean = 0.1, max_n = 20)))
 #'   }
 #' }
@@ -217,8 +214,10 @@ LFQDataStats <- R6::R6Class(
       sig.level = 0.05
     ) {
       if (!self$lfq$is_transformed()) {
-        warning("power_t_test_quantiles requires transformed data; aborting.")
-        return()
+        abort_bad_argument(
+          "lfqdata",
+          "be transformed, e.g. with `get_Transformer()$log2()`, before `power_t_test_quantiles()`"
+        )
       }
       res <- self$stats_quantiles(probs)
       res <- lfq_power_t_test_quantiles_V2(res$long, delta = delta, power = power, sig.level = sig.level)
@@ -235,8 +234,7 @@ LFQDataStats <- R6::R6Class(
       sig.level = 0.05
     ) {
       if (!self$lfq$is_transformed()) {
-        warning("power_t_test requires transformed data; aborting.")
-        return()
+        abort_bad_argument("lfqdata", "be transformed, e.g. with `get_Transformer()$log2()`, before `power_t_test()`")
       }
 
       res <- prolfqua::lfq_power_t_test_proteins(
@@ -253,7 +251,7 @@ LFQDataStats <- R6::R6Class(
     #' variances; see [power_fdr_prior_n()] for assumptions and returned values.
     #' Grouping and feature identities follow the current LFQData configuration,
     #' regardless of the `stats` mode used to construct this decorator.
-    #' Untransformed data emit a warning and return `NULL`.
+    #' Untransformed data raise an error.
     #' @param delta_mean planned mean difference among non-null features, on the transformed response scale
     #' @param delta_se standard deviation of true non-null differences, not an estimated mean's standard error
     #' @param fdr target false discovery rate
@@ -263,8 +261,10 @@ LFQDataStats <- R6::R6Class(
     #' @return The list returned by [power_fdr_prior_n()].
     power_fdr_pilot = function(delta_mean, delta_se = 0, fdr = 0.05, power = 0.8, pi0 = 0.95, max_n = 100) {
       if (!self$lfq$is_transformed()) {
-        warning("power_fdr_pilot requires transformed data; aborting.")
-        return(NULL)
+        abort_bad_argument(
+          "lfqdata",
+          "be transformed, e.g. with `get_Transformer()$log2()`, before `power_fdr_pilot()`"
+        )
       }
       pooled <- poolvar(summarize_stats(self$lfq), self$lfq$get_config())
       if (!any(is.finite(pooled$df) & pooled$df > 0)) {

@@ -206,3 +206,11 @@ test_that("variance-prior FDR sample sizes agree with stable ssize.fdr cases", {
     expect_lte(abs(actual$N - unname(reference$ssize[1, "ssize"])), 1)
   }
 })
+
+test_that("power methods error on untransformed data", {
+  x <- sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  stats <- LFQData$new(x$data, x$config)$get_Stats()
+  expect_error(stats$power_t_test_quantiles(), "power_t_test_quantiles", class = "prolfqua_error_bad_argument")
+  expect_error(stats$power_t_test(), "power_t_test", class = "prolfqua_error_bad_argument")
+  expect_error(stats$power_fdr_pilot(delta_mean = 0.1), "power_fdr_pilot", class = "prolfqua_error_bad_argument")
+})

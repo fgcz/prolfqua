@@ -25,11 +25,8 @@ runallfuncs <- function(x){
   stopifnot("ggplot" \%in\% class(x$violin()))
   stopifnot("ggplot" \%in\% class(x$violin_median()))
   stopifnot("ggplot" \%in\% class(x$stdv_vs_mean(size = 400)))
-  if(!x$lfq$is_transformed()){
-    stopifnot(is.null(x$power_t_test()))
-    stopifnot(is.null(x$power_t_test_quantiles()))
-    stopifnot(is.null(x$power_fdr_pilot(delta_mean = 0.1)))
-  } else {
+  # the power methods need transformed data and raise an error otherwise
+  if (x$lfq$is_transformed()) {
     stopifnot(is.list(x$power_fdr_pilot(delta_mean = 0.1, max_n = 20)))
   }
 }
@@ -343,7 +340,7 @@ information}
 variances; see \code{\link[=power_fdr_prior_n]{power_fdr_prior_n()}} for assumptions and returned values.
 Grouping and feature identities follow the current LFQData configuration,
 regardless of the \code{stats} mode used to construct this decorator.
-Untransformed data emit a warning and return \code{NULL}.
+Untransformed data raise an error.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{LFQDataStats$power_fdr_pilot(
