@@ -123,7 +123,7 @@ fdr_sig_level <- function(fdr = 0.05, pi0 = 0.95, power = 0.8) {
       rate = df_prior * var_prior / 2
     )
   }
-  effects <- if (delta_se == 0) {
+  effects <- if (.is_zero(delta_se)) {
     delta_mean
   } else {
     stats::qnorm((seq_len(512L) - 0.5) / 512L, mean = delta_mean, sd = delta_se)

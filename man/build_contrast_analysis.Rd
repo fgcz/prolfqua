@@ -94,6 +94,28 @@ The formula is translated into a design matrix with R's current
   this run emitted convergence warnings. Reproduction code and environment
   details are in \code{srr/benchmark-runtime.R} in the source repository.
 }
+\section{Prior art}{
+
+\itemize{
+  \item Improvements on existing R implementations, applied per protein behind one interface:
+    \code{lm} (stats), \code{rlm} (MASS), \code{rfit} (Rfit), \code{limma} and \code{limma_voom} (limma),
+    \code{deqms} (DEqMS), \code{limpa} and \code{limpa_nested} (limpa), \code{lmer_nested} (lme4, lmerTest),
+    \code{firth} (logistf).
+  \item Reimplementation in R of a published method: \code{ropeca_nested}, ROPECA (Suomi and Elo 2017,
+    Bioconductor package PECA), on peptide-level models of any design.
+  \item First implementations of new methods: the \code{_impute} methods (\code{lm_impute},
+    \code{rfit_impute}, \code{limma_impute}, \code{limma_voom_impute}), which refit groups without
+    observations at the limit of detection with a borrowed variance (Wolski et al. 2023);
+    \code{ropecaV2_nested}, a median peptide z-score with a correlation-aware null; \code{binomial_nested} and
+    \code{binomial_firth_nested}, per-protein models of peptide detection.
+  \item \code{hurdle_nested} combines the intensity and detection tests as msqrob2's
+    \code{hypothesisTestHurdle} does, on prolfqua's own components.
+}
+The Comparing methods article on the package website compares these
+implementations on one dataset. Comparisons with MSstats, msqrob2 and proDA are in the companion package
+prolfquabenchmark.
+}
+
 \examples{
 \dontshow{if (requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 istar <- sim_lfq_data_protein_config(Nprot = 20)

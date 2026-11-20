@@ -705,3 +705,15 @@ is_contaminant <- function(ids, pattern = NULL) {
   )
   contrast_result
 }
+
+#' Is a double zero within a tolerance
+#' @param x numeric vector
+#' @param tolerance absolute tolerance
+#' @return logical vector, FALSE for NA
+#' @noRd
+#' @srrstats {G3.0} Doubles are compared with tolerances (`.is_zero()`, `all.equal()`, the zero-variance threshold),
+#'   rank decisions use the QR rank, counts are integer-valued. Exception: an intensity of exactly 0 is the
+#'   "not detected" value written by quantification software and is matched exactly (test-utilities-float.R).
+.is_zero <- function(x, tolerance = sqrt(.Machine$double.eps)) {
+  !is.na(x) & abs(x) <= tolerance
+}

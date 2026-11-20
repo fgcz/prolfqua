@@ -7,8 +7,6 @@
 #' @srrstatsVerbose TRUE
 #' @srrstatsTODO {G2.11} Validate/preprocess such columns intentionally and test the promised behavior; deferred
 #'   follow-up: TODO/prolfqua/TODO_ropensci_compliance.md section 5.
-#' @srrstatsTODO {G3.1a} Add and document a covariance-policy API if accepted in a later design; deferred follow-up:
-#'   TODO/prolfqua/TODO_ropensci_compliance.md section 5.
 #' @srrstats {RE2.2} Missing predictors (hierarchy, factor and sample keys) raise; missing responses are dropped per fit
 #'   or imputed, and `impute_from_model()` generates values for missing responses from models fitted without them.
 #' @srrstats {RE3.2} Convergence defaults are documented with their reasons in strategy_rlm(), strategy_lmer(),

@@ -204,7 +204,7 @@ The Spearman correlation among all samples
 is computed. Then the euclidean distance is used to compute the distances.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{LFQDataPlotter$heatmap_cor(max_sample_label_chars = 20)}
+    \preformatted{LFQDataPlotter$heatmap_cor(max_sample_label_chars = 20, method = "pearson")}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
@@ -212,6 +212,7 @@ is computed. Then the euclidean distance is used to compute the distances.
     \describe{
       \item{\code{max_sample_label_chars}}{maximum displayed sample label length.
 Labels keep their suffix because sample prefixes are often shared.}
+      \item{\code{method}}{correlation method or function, see \code{\link{plot_heatmap_cor}}}
     }
     \if{html}{\out{</div>}}
   }
@@ -395,7 +396,14 @@ display.}
   plot of sample correlations
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{LFQDataPlotter$sample_correlation()}
+    \preformatted{LFQDataPlotter$sample_correlation(method = "pearson")}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{method}}{correlation method or function, see \code{\link{plot_heatmap_cor}}}
+    }
     \if{html}{\out{</div>}}
   }
   \subsection{Returns}{

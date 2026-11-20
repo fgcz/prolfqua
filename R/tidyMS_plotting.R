@@ -151,7 +151,7 @@
 #' @noRd
 .abundance_col_fun <- function(matrix) {
   m <- max(abs(matrix), na.rm = TRUE)
-  if (!is.finite(m) || m == 0) {
+  if (!is.finite(m) || .is_zero(m)) {
     m <- 1
   }
   circlize::colorRamp2(c(-m, 0, m), c("#2166AC", "#F7F7F7", "#B2182B"))
@@ -313,6 +313,7 @@ plot_intensity_distribution_density <- function(
 
 #' visualize correlation among samples
 #' @param matrix numeric matrix — wide-format intensity data (samples as columns)
+#' @param method correlation method, as for [plot_heatmap_cor()]
 #' @param ... passed to [corrplot::corrplot.mixed()], e.g. `tl.cex` and `number.cex` for text size (default 1)
 #'
 #' @export
@@ -324,8 +325,8 @@ plot_intensity_distribution_density <- function(
 #' lfq <- LFQData$new(istar$data, istar$config)
 #' lfq <- lfq$get_Transformer()$log2()$lfq
 #' plot_sample_correlation(lfq$data_wide(as.matrix = TRUE)$data)
-plot_sample_correlation <- function(matrix, ...) {
-  M <- cor(matrix, use = "pairwise.complete.obs")
+plot_sample_correlation <- function(matrix, method = "pearson", ...) {
+  M <- .sample_correlation(matrix, method)
   # up to 12 samples the lower panel shows the correlation values, otherwise pies (corrplot defaults otherwise)
   numbers <- nrow(M) <= 12
   res <- corrplot::corrplot.mixed(
@@ -484,6 +485,26 @@ plot_hierarchies_boxplot_df <- function(
 }
 
 
+#' Sample-by-sample correlation matrix
+#' @param matrix numeric feature-by-sample matrix
+#' @param method a stats::cor() method name or a function of the matrix returning a correlation matrix
+#' @noRd
+#' @srrstats {G3.1, G3.1a} Sample correlations accept any `stats::cor()` method or a user function (examples of
+#'   `plot_heatmap_cor()`; test-plotting_functions.R). Coefficient covariances come from the estimator of the chosen
+#'   `build_contrast_analysis()` method (least squares, M-estimation, rank-based, mixed, moderated, Firth) and are
+#'   returned by `vcov()`.
+.sample_correlation <- function(matrix, method) {
+  if (is.function(method)) {
+    result <- method(matrix)
+    if (!is.matrix(result) || !is.numeric(result) || !identical(dim(result), rep(ncol(matrix), 2L))) {
+      abort_bad_argument("method", "return a numeric sample-by-sample matrix when it is a function")
+    }
+    return(result)
+  }
+  method <- .arg_match_prolfqua(method, c("pearson", "spearman", "kendall"), "method")
+  stats::cor(matrix, use = "pairwise.complete.obs", method = method)
+}
+
 #' plot correlation heatmap with annotations
 #'
 #' @param matrix numeric matrix — wide-format intensity data
@@ -494,6 +515,8 @@ plot_hierarchies_boxplot_df <- function(
 #' @param color color palette
 #' @param max_sample_label_chars maximum displayed sample label length. Labels
 #'   keep their suffix because sample prefixes are often shared.
+#' @param method correlation method: `"pearson"` (default), `"spearman"` or `"kendall"` for [stats::cor()] on
+#'   pairwise complete observations, or a function of the matrix returning a sample-by-sample correlation matrix
 #' @param ... passed to [ComplexHeatmap::Heatmap()]
 #' @export
 #' @keywords internal
@@ -509,6 +532,11 @@ plot_hierarchies_boxplot_df <- function(
 #' pheat_map <- plot_heatmap_cor(wide$data, wide$annotation,
 #'   lfq$factor_keys(), lfq$sample_name(), R2 = TRUE)
 #' stopifnot(methods::is(pheat_map, "Heatmap"))
+#' # rank correlation, or any function returning a correlation matrix
+#' spearman <- plot_heatmap_cor(wide$data, wide$annotation,
+#'   lfq$factor_keys(), lfq$sample_name(), method = "spearman")
+#' complete <- plot_heatmap_cor(wide$data, wide$annotation,
+#'   lfq$factor_keys(), lfq$sample_name(), method = function(x) stats::cor(x, use = "complete.obs"))
 #'
 plot_heatmap_cor <- function(
   matrix,
@@ -518,10 +546,11 @@ plot_heatmap_cor <- function(
   R2 = FALSE,
   color = colorRampPalette(c("white", "red"))(1024),
   max_sample_label_chars = 20,
+  method = "pearson",
   ...
 ) {
   rlang::check_installed(c("ComplexHeatmap", "circlize"), reason = "for heatmaps.")
-  cres <- cor(matrix, use = "pa")
+  cres <- .sample_correlation(matrix, method)
   if (R2) {
     cres <- cres^2
   }

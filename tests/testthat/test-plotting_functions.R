@@ -601,3 +601,18 @@ test_that("PDF writers append .pdf only when the name lacks it", {
   expect_identical(basename(pl$write_boxplots(out_dir, "boxes.pdf")), "boxes.pdf")
   expect_false(any(grepl("\\.pdf\\.pdf$", list.files(out_dir), ignore.case = TRUE)))
 })
+
+test_that("sample correlations accept a cor() method or a function", {
+  m <- matrix(c(1, 2, 3, 4, 2, 4, 5, 9, 4, 3, 2, 1), ncol = 3)
+  expect_equal(prolfqua:::.sample_correlation(m, "pearson"), stats::cor(m))
+  expect_equal(prolfqua:::.sample_correlation(m, "spearman"), stats::cor(m, method = "spearman"))
+  custom <- function(x) stats::cor(x, method = "kendall")
+  expect_equal(prolfqua:::.sample_correlation(m, custom), stats::cor(m, method = "kendall"))
+  expect_error(prolfqua:::.sample_correlation(m, "robust"), class = "prolfqua_error_bad_argument")
+  expect_error(prolfqua:::.sample_correlation(m, function(x) 1), class = "prolfqua_error_bad_argument")
+  skip_if_not_installed("ComplexHeatmap")
+  skip_if_not_installed("circlize")
+  istar <- sim_lfq_data_protein_config(Nprot = 10, with_missing = FALSE)
+  pl <- LFQData$new(istar$data, istar$config)$get_Plotter()
+  expect_true(methods::is(pl$heatmap_cor(method = "spearman"), "Heatmap"))
+})

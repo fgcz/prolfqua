@@ -449,7 +449,7 @@ robust_scale <- function(data, dim = 2, preserve_mean = FALSE) {
 #' @noRd
 .apply_robscales <- function(data, scales, preserve_mean, dim, zero_mad_warning) {
   data <- sweep(data, dim, scales$medians, "-")
-  if (any(scales$mads == 0)) {
+  if (any(.is_zero(scales$mads))) {
     warning(zero_mad_warning)
   } else {
     data <- sweep(data, dim, scales$mads / mean(scales$mads), "/")

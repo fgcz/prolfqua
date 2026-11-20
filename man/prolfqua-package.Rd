@@ -16,6 +16,14 @@ similar software: quality control, normalization, aggregation, differential
 expression and sample size estimation.
 }
 
+\section{Benchmarks}{
+
+The performance claims of Wolski et al. (2023, J Proteome Res), comparing
+prolfqua's methods with MSstats, msqrob2 and proDA on benchmark datasets, are
+reproduced by the vignettes of the companion package prolfquabenchmark
+(\url{https://prolfqua.github.io/prolfquabenchmark/}).
+}
+
 \section{Options}{
 
 \describe{

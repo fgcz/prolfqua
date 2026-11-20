@@ -12,6 +12,7 @@ plot_heatmap_cor(
   R2 = FALSE,
   color = colorRampPalette(c("white", "red"))(1024),
   max_sample_label_chars = 20,
+  method = "pearson",
   ...
 )
 }
@@ -31,6 +32,9 @@ plot_heatmap_cor(
 \item{max_sample_label_chars}{maximum displayed sample label length. Labels
 keep their suffix because sample prefixes are often shared.}
 
+\item{method}{correlation method: `"pearson"` (default), `"spearman"` or `"kendall"` for [stats::cor()] on
+pairwise complete observations, or a function of the matrix returning a sample-by-sample correlation matrix}
+
 \item{...}{passed to [ComplexHeatmap::Heatmap()]}
 }
 \description{
@@ -48,6 +52,11 @@ stopifnot(methods::is(pheat_map, "Heatmap"))
 pheat_map <- plot_heatmap_cor(wide$data, wide$annotation,
   lfq$factor_keys(), lfq$sample_name(), R2 = TRUE)
 stopifnot(methods::is(pheat_map, "Heatmap"))
+# rank correlation, or any function returning a correlation matrix
+spearman <- plot_heatmap_cor(wide$data, wide$annotation,
+  lfq$factor_keys(), lfq$sample_name(), method = "spearman")
+complete <- plot_heatmap_cor(wide$data, wide$annotation,
+  lfq$factor_keys(), lfq$sample_name(), method = function(x) stats::cor(x, use = "complete.obs"))
 \dontshow{\}) # examplesIf}
 }
 \seealso{

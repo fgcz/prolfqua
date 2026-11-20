@@ -77,6 +77,25 @@
 #'   missingness and mixed-model convergence affect cost. Some mixed fits in
 #'   this run emitted convergence warnings. Reproduction code and environment
 #'   details are in \code{srr/benchmark-runtime.R} in the source repository.
+#' @section Prior art:
+#' \itemize{
+#'   \item Improvements on existing R implementations, applied per protein behind one interface:
+#'     \code{lm} (stats), \code{rlm} (MASS), \code{rfit} (Rfit), \code{limma} and \code{limma_voom} (limma),
+#'     \code{deqms} (DEqMS), \code{limpa} and \code{limpa_nested} (limpa), \code{lmer_nested} (lme4, lmerTest),
+#'     \code{firth} (logistf).
+#'   \item Reimplementation in R of a published method: \code{ropeca_nested}, ROPECA (Suomi and Elo 2017,
+#'     Bioconductor package PECA), on peptide-level models of any design.
+#'   \item First implementations of new methods: the \code{_impute} methods (\code{lm_impute},
+#'     \code{rfit_impute}, \code{limma_impute}, \code{limma_voom_impute}), which refit groups without
+#'     observations at the limit of detection with a borrowed variance (Wolski et al. 2023);
+#'     \code{ropecaV2_nested}, a median peptide z-score with a correlation-aware null; \code{binomial_nested} and
+#'     \code{binomial_firth_nested}, per-protein models of peptide detection.
+#'   \item \code{hurdle_nested} combines the intensity and detection tests as msqrob2's
+#'     \code{hypothesisTestHurdle} does, on prolfqua's own components.
+#' }
+#' The Comparing methods article on the package website compares these
+#' implementations on one dataset. Comparisons with MSstats, msqrob2 and proDA are in the companion package
+#' prolfquabenchmark.
 #' @return a facade object of the class registered for \code{method}, see
 #'   \code{\link{lookup_facade}}.
 #' @export
@@ -115,8 +134,11 @@
 #'
 #' fa_firth <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "firth")
 #' head(fa_firth$get_contrasts())
-#' @srrstatsTODO {G1.1} The builder lists inherited methods; per-algorithm novelty classifications are incomplete.
-#' @srrstatsTODO {G1.6} The article compares facades; limit: comparisons with alternative R packages remain external.
+#' @srrstats {G1.1} Section "Prior art" classifies every method as improvement on an R implementation,
+#'   reimplementation in R, or first implementation of a new method.
+#' @srrstats {G1.6} The ComparingMethods article compares implementations from other R packages (limma, DEqMS, limpa,
+#'   MASS, Rfit, lme4, logistf) wrapped by prolfqua on one dataset; MSstats, msqrob2 and proDA comparisons are in
+#'   prolfquabenchmark.
 #' @srrstatsTODO {G2.1a} The builder documents LFQData, formula strings and named contrasts; limit: types are not
 #'   exhaustive API-wide.
 #' @srrstats {G2.3b} Builder help explicitly requires case-sensitive method keys and column names.

@@ -2,6 +2,7 @@
 
 ## New features
 
+- `plot_heatmap_cor()`, `plot_sample_correlation()` and the plotter's `$heatmap_cor()` and `$sample_correlation()` take `method`: a `stats::cor()` method (`"pearson"`, `"spearman"`, `"kendall"`) or a function returning a sample correlation matrix.
 - `predict()` on fitted analyses returns predictions for any combination of subject and group (default: every subject in every input sample, including samples with missing responses), on the fitting scale. Groups absent from a subject's fit are predicted from the limit-of-detection refit of the `_impute` methods and are `NA` otherwise; ROPECA predicts per peptide, mixed models at population level, detection models as probabilities, and hurdle analyses per component.
 - `LFQData` prints a summary (samples, response and whether it is transformed, hierarchy counts, samples per factor level, response range, missing responses, provenance), and `plot()` on an `LFQData` shows the response distribution per sample.
 - `digits` controls the significant digits of numbers printed by `print()` of `LFQData`, of fitted analyses and of their `summary()` (default 3), and of `contrast_summary_table(digits = )`.

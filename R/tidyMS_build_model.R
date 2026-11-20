@@ -589,7 +589,6 @@ df.residual.imputed_model <- function(object, ...) {
 #'   mod_no_missing$model_df, method = "vcov")
 #' stopifnot(borrowed_v$method == "vcov")
 #' stopifnot(is.matrix(borrowed_v$vcov))
-#' @srrstatsTODO {G3.1} Imputation can borrow sigma or vcov; limit: there is no arbitrary covariance-function argument.
 compute_borrowed_variance <- function(
   model_df,
   method = c("sigma", "vcov"),

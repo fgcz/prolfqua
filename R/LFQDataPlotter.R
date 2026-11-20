@@ -171,16 +171,18 @@ LFQDataPlotter <- R6::R6Class(
     #'
     #' @param max_sample_label_chars maximum displayed sample label length.
     #'   Labels keep their suffix because sample prefixes are often shared.
+    #' @param method correlation method or function, see \code{\link{plot_heatmap_cor}}
     #' @return ComplexHeatmap::Heatmap
     #'
-    heatmap_cor = function(max_sample_label_chars = 20) {
+    heatmap_cor = function(max_sample_label_chars = 20, method = "pearson") {
       wide <- self$lfq$data_wide(as.matrix = TRUE)
       fig <- prolfqua::plot_heatmap_cor(
         wide$data,
         wide$annotation,
         self$lfq$factor_keys(),
         self$lfq$sample_name(),
-        max_sample_label_chars = max_sample_label_chars
+        max_sample_label_chars = max_sample_label_chars,
+        method = method
       )
       return(fig)
     },
@@ -303,9 +305,10 @@ LFQDataPlotter <- R6::R6Class(
     },
     #' @description
     #' plot of sample correlations
+    #' @param method correlation method or function, see \code{\link{plot_heatmap_cor}}
     #' @return NULL
-    sample_correlation = function() {
-      prolfqua::plot_sample_correlation(self$lfq$data_wide(as.matrix = TRUE)$data)
+    sample_correlation = function(method = "pearson") {
+      prolfqua::plot_sample_correlation(self$lfq$data_wide(as.matrix = TRUE)$data, method = method)
     },
     #' @description
     #' upset plot based on presence absence information

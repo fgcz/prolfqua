@@ -11,7 +11,7 @@
 #' @noRd
 .ropeca_standard_columns <- function(res, subject_id, all = FALSE) {
   res <- dplyr::rename(res, p.value = "beta.based.significance", FDR = "FDR.beta.based.significance")
-  res$std.error <- ifelse(res$statistic != 0, res$diff / res$statistic, NA_real_)
+  res$std.error <- ifelse(.is_zero(res$statistic), NA_real_, res$diff / res$statistic)
   res$sigma <- res$mad.estimate
   res$df <- res$n_not_na
   prqt <- stats::qt(0.975, df = pmax(res$df, 1))
@@ -415,7 +415,7 @@ ContrastsROPECA <- R6::R6Class(
     )
   res$p.value <- .ropeca_v2_pvalue(res$median_z, res$n_peptides, rho)
   res$statistic <- sign(res$median_z) * stats::qnorm(res$p.value / 2, lower.tail = FALSE)
-  res$std.error <- ifelse(res$statistic != 0, abs(res$diff / res$statistic), NA_real_)
+  res$std.error <- ifelse(.is_zero(res$statistic), NA_real_, abs(res$diff / res$statistic))
   res$df <- Inf
   res$conf.low <- res$diff - stats::qnorm(0.975) * res$std.error
   res$conf.high <- res$diff + stats::qnorm(0.975) * res$std.error

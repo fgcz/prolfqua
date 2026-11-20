@@ -3,6 +3,11 @@
 #' peptide intensities quantified with MaxQuant, DIA-NN, Spectronaut, FragPipe or
 #' similar software: quality control, normalization, aggregation, differential
 #' expression and sample size estimation.
+#' @section Benchmarks:
+#' The performance claims of Wolski et al. (2023, J Proteome Res), comparing
+#' prolfqua's methods with MSstats, msqrob2 and proDA on benchmark datasets, are
+#' reproduced by the vignettes of the companion package prolfquabenchmark
+#' (\url{https://prolfqua.github.io/prolfquabenchmark/}).
 #' @section Options:
 #' \describe{
 #'   \item{`prolfqua.verbose`}{`TRUE` (default) or `FALSE`. With `FALSE`,
@@ -127,6 +132,7 @@
 #' @srrstats {G1.3} Package Glossary and column_description define workflow terms, test interpretation and
 #'   assumptions.
 #' @srrstats {G1.4} The exported API is documented with roxygen2, including R6 methods.
-#' @srrstatsTODO {G1.5} Paper workflow examples are included; limit: full performance reproduction is in
-#'   prolfquabenchmark.
+#' @srrstats {G1.5} Section "Benchmarks" names prolfquabenchmark as the code reproducing the performance claims of
+#'   Wolski et al. (2023). Limit: that code lives in a companion package, because it depends on MSstats, msqrob2 and
+#'   proDA, which prolfqua does not need.
 "_PACKAGE"
