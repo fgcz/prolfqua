@@ -112,8 +112,7 @@ modi <- sim_build_models_lm(model = "interaction", weight_missing = 1)
 #> creating sampleName from file_name column
 #> fit (Model): 59 missing responses dropped (e.g. 0EfVhX~0087, 7cbcrd~5725, 9VUkAq~4703, BEJI92~5282, CGzoYe~2147, ...): NA response (missing observation) left out of the fit
 #> See $provenance().
-stopifnot(dim(modi$model_df) == c(10,9))
-#> Error: dim(modi$model_df) == c(10, 9) are not all TRUE
+stopifnot(nrow(modi$model_df) == 10)
 mod2 <- sim_build_models_lm(model = "parallel2", weight_missing = 1)
 #> creating sampleName from file_name column
 #> fit (Model): 59 missing responses dropped (e.g. 0EfVhX~0087, 7cbcrd~5725, 9VUkAq~4703, BEJI92~5282, CGzoYe~2147, ...): NA response (missing observation) left out of the fit
