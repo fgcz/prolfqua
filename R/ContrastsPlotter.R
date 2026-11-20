@@ -162,7 +162,7 @@ ContrastsPlotter <- R6::R6Class(
           linetype = "dashed",
           linewidth = 1
         ) +
-        geom_vline(xintercept = 0, col = "green", linewidth = 1) +
+        geom_vline(xintercept = 0, col = "grey40", linewidth = 1) +
         facet_wrap(vars(!!sym(self$contrast)))
 
       return(fig)

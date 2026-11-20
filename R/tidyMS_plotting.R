@@ -67,18 +67,17 @@
 # light gray for missing (NA) cells in ComplexHeatmap output
 .HEATMAP_NA_COL <- "#D3D3D3"
 
-#' ggplot2's default discrete colour palette, reproduced with base grDevices so
+#' Colour-blind safe discrete palette for factor levels
 #'
-#' heatmap annotations and PCA can share one colour per factor level without
-#' pulling in scales as a direct dependency. hcl(h, l = 65, c = 100) over evenly
-#' spaced hues is exactly what scales::hue_pal() returns.
+#' Okabe-Ito without black for up to 8 levels, viridis beyond; both stay distinguishable under the common forms of
+#' colour blindness.
 #' @param n number of colours in the returned palette
 #' @noRd
-.hue_palette <- function(n) {
-  if (n < 1) {
-    return(character(0))
+.factor_palette <- function(n) {
+  if (n > 8L) {
+    return(grDevices::hcl.colors(n, "viridis"))
   }
-  grDevices::hcl(h = seq(15, 375, length.out = n + 1), l = 65, c = 100)[seq_len(n)]
+  unname(grDevices::palette.colors(palette = "Okabe-Ito"))[-1L][seq_len(n)]
 }
 
 #' Deterministic level -> colour map for each (non-numeric) factor column, shared
@@ -97,7 +96,7 @@
       next
     }
     levs <- levels(factor(values))
-    cols[[key]] <- stats::setNames(.hue_palette(length(levs)), levs)
+    cols[[key]] <- stats::setNames(.factor_palette(length(levs)), levs)
   }
   cols
 }
@@ -145,7 +144,7 @@
   )
 }
 
-#' Green-black-red diverging color function centered at zero, for row z-scored
+#' Blue-white-red diverging colour function centred at zero (colour-blind safe), for row z-scored
 #'
 #' abundance heatmaps. The range is symmetric around zero based on the data.
 #' @param matrix numeric feature-by-sample matrix
@@ -155,7 +154,7 @@
   if (!is.finite(m) || m == 0) {
     m <- 1
   }
-  circlize::colorRamp2(c(-m, 0, m), c("green", "black", "red"))
+  circlize::colorRamp2(c(-m, 0, m), c("#2166AC", "#F7F7F7", "#B2182B"))
 }
 
 #' Compute pairwise heatmap distances from finite values
@@ -314,6 +313,7 @@ plot_intensity_distribution_density <- function(
 
 #' visualize correlation among samples
 #' @param matrix numeric matrix — wide-format intensity data (samples as columns)
+#' @param ... passed to [corrplot::corrplot.mixed()], e.g. `tl.cex` and `number.cex` for text size (default 1)
 #'
 #' @export
 #' @keywords internal
@@ -324,7 +324,7 @@ plot_intensity_distribution_density <- function(
 #' lfq <- LFQData$new(istar$data, istar$config)
 #' lfq <- lfq$get_Transformer()$log2()$lfq
 #' plot_sample_correlation(lfq$data_wide(as.matrix = TRUE)$data)
-plot_sample_correlation <- function(matrix) {
+plot_sample_correlation <- function(matrix, ...) {
   M <- cor(matrix, use = "pairwise.complete.obs")
   # up to 12 samples the lower panel shows the correlation values, otherwise pies (corrplot defaults otherwise)
   numbers <- nrow(M) <= 12
@@ -333,12 +333,11 @@ plot_sample_correlation <- function(matrix) {
     upper = "ellipse",
     lower = if (numbers) "number" else "pie",
     lower.col = if (numbers) "black",
-    tl.cex = 0.6,
-    number.cex = if (numbers) 0.7 else 1,
     diag = "u",
     tl.pos = "lt",
     tl.col = "black",
-    mar = c(2, 5, 5, 2)
+    mar = c(2, 5, 5, 2),
+    ...
   )
   invisible(res)
 }

@@ -26,10 +26,6 @@
 #' @srrstatsTODO {EA4.0} data.frame input returns tibble; untested; block H, TODO/prolfqua/PLAN_srr_block_H_eda.md.
 #' @srrstatsTODO {EA4.1} no digits/precision parameter; block H, TODO/prolfqua/PLAN_srr_block_H_eda.md.
 #' @srrstatsTODO {EA4.2} print/plot/summary for LFQData and facades; block H, TODO/prolfqua/PLAN_srr_block_H_eda.md.
-#' @srrstatsTODO {EA5.0} no accessibility consideration; block H, TODO/prolfqua/PLAN_srr_block_H_eda.md.
-#' @srrstatsTODO {EA5.0a} small label text by default; block H, TODO/prolfqua/PLAN_srr_block_H_eda.md.
-#' @srrstatsTODO {EA5.0b} colour-blind-unsafe defaults; block H, TODO/prolfqua/PLAN_srr_block_H_eda.md.
-#' @srrstatsTODO {EA5.1} overrides ignore accessibility; block H, TODO/prolfqua/PLAN_srr_block_H_eda.md.
 #' @srrstatsTODO {EA5.2} most output relies on default tibble formatting; block H,
 #'   TODO/prolfqua/PLAN_srr_block_H_eda.md.
 #' @srrstatsTODO {EA5.3} summary statistics do not state storage mode explicitly; block H,

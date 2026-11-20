@@ -13,7 +13,7 @@ multigroup_volcano(
   xintercept = c(-2, 2),
   yintercept = 0.05,
   label = NULL,
-  size = 1,
+  size = 3,
   segment.size = 0.3,
   segment.alpha = 0.3,
   scales = "fixed",
@@ -37,7 +37,7 @@ multigroup_volcano(
 
 \item{label}{column containing labels}
 
-\item{size}{controls size of text}
+\item{size}{label text size in mm (default 3, about 8.5 pt)}
 
 \item{segment.size}{controls size of lines}
 

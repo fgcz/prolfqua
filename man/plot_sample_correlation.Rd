@@ -4,10 +4,12 @@
 \alias{plot_sample_correlation}
 \title{visualize correlation among samples}
 \usage{
-plot_sample_correlation(matrix)
+plot_sample_correlation(matrix, ...)
 }
 \arguments{
 \item{matrix}{numeric matrix — wide-format intensity data (samples as columns)}
+
+\item{...}{passed to [corrplot::corrplot.mixed()], e.g. `tl.cex` and `number.cex` for text size (default 1)}
 }
 \description{
 visualize correlation among samples

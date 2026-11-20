@@ -97,7 +97,7 @@ get_uniprot_id_from_fasta_header <- function(df, idcolumn = "protein_Id") {
 #' @param xintercept fc thresholds
 #' @param yintercept significance threshold
 #' @param label column containing labels
-#' @param size controls size of text
+#' @param size label text size in mm (default 3, about 8.5 pt)
 #' @param segment.size controls size of lines
 #' @param segment.alpha controls visibility of lines
 #' @param scales parameter to ggplot2::facet_wrap
@@ -126,7 +126,7 @@ multigroup_volcano <- function(
   xintercept = c(-2, 2),
   yintercept = 0.05,
   label = NULL,
-  size = 1,
+  size = 3,
   segment.size = 0.3,
   segment.alpha = 0.3,
   scales = "fixed",
@@ -187,14 +187,14 @@ multigroup_volcano <- function(
   ifelse(values <= 0, zero_floor, values)
 }
 
-#' Choose colours for the contrast estimate types
+#' Choose colours for the contrast estimate types: black and Okabe-Ito, colour-blind safe
 #' @param colour estimate-type colour specification
 #' @noRd
 .contrast_colour_values <- function(colour) {
   if (identical(colour, "estimate_type")) {
-    return(c(observed = "black", lod_imputed = "green", missing_fallback = "blue"))
+    return(c(observed = "#000000", lod_imputed = "#E69F00", missing_fallback = "#0072B2"))
   }
-  c("black", "green", "blue", "red")
+  c("#000000", "#E69F00", "#0072B2", "#D55E00")
 }
 
 #' Draw one volcano panel per contrast with shared score definitions
@@ -423,7 +423,7 @@ table_facade <- function(df, caption, digits = getOption("digits"), kable = TRUE
   yintercept = 0.1,
   title_size = 25
 ) {
-  vline <- function(x = 0, color = "green") {
+  vline <- function(x = 0, color = "grey40") {
     list(
       type = "line",
       y0 = 0,

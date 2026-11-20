@@ -127,7 +127,7 @@ test_that("estimate types use stable colours across contrast plots", {
     cp$score_plot()$statistic
   )
 
-  expected <- c(observed = "black", lod_imputed = "green", missing_fallback = "blue")
+  expected <- c(observed = "#000000", lod_imputed = "#E69F00", missing_fallback = "#0072B2")
   for (plot in plots) {
     built <- ggplot2::ggplot_build(plot)
     colour_scale <- built$plot$scales$get_scales("colour")

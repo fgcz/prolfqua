@@ -359,16 +359,29 @@ test_that("LFQDataPlotter heatmaps retain all z-scoreable rows by default", {
   expect_identical(formals(LFQDataPlotter$public_methods$heatmap)$na_fraction, 1)
 })
 
-test_that("abundance color mapping spans green, black, and red", {
+#' @srrstats {EA5.0, EA5.0b} Default colours are colour-blind safe: blue-white-red abundance heatmaps, Okabe-Ito (or
+#'   viridis beyond 8 levels) for factor levels, black and Okabe-Ito for estimate types; tested here and in
+#'   test-ContrastsPlotter.R.
+#' @noRd
+NULL
+
+test_that("abundance colour mapping spans blue, white and red (no red-green contrast)", {
   skip_if_not_installed("ComplexHeatmap")
   skip_if_not_installed("circlize")
   col_fun <- prolfqua:::.abundance_col_fun(matrix(c(-2, 0, 2), nrow = 1))
   cols <- grDevices::col2rgb(col_fun(c(-2, 0, 2)))
+  expect_true(cols["blue", 1] > cols["red", 1] && cols["blue", 1] > cols["green", 1])
+  expect_true(all(cols[, 2] > 230))
+  expect_true(cols["red", 3] > cols["blue", 3] && cols["red", 3] > cols["green", 3])
+  expect_true(cols["green", 1] < 150 && cols["green", 3] < 150)
+})
 
-  # min -> green, center -> black, max -> red
-  expect_true(cols["green", 1] > 200 && cols["red", 1] < 50 && cols["blue", 1] < 50)
-  expect_true(all(cols[, 2] < 50))
-  expect_true(cols["red", 3] > 200 && cols["green", 3] < 50 && cols["blue", 3] < 50)
+test_that("factor colours are Okabe-Ito up to 8 levels and viridis beyond", {
+  okabe_ito <- unname(grDevices::palette.colors(palette = "Okabe-Ito"))[-1L]
+  expect_identical(prolfqua:::.factor_palette(3), okabe_ito[1:3])
+  expect_identical(prolfqua:::.factor_palette(8), okabe_ito)
+  expect_identical(prolfqua:::.factor_palette(9), grDevices::hcl.colors(9, "viridis"))
+  expect_length(prolfqua:::.factor_palette(0), 0L)
 })
 
 test_that("group colours are deterministic and shared across heatmap, na-heatmap, and PCA", {
@@ -552,4 +565,26 @@ test_that("default density and box plots work without plotly and ggbeeswarm", {
   boxplot <- pl$boxplots()$boxplot[[1]]
   expect_no_error(ggplot2::ggplot_build(boxplot))
   expect_true(any(vapply(boxplot$layers, function(l) inherits(l$position, "PositionJitterdodge"), logical(1))))
+})
+
+#' @srrstats {EA5.0a, EA5.1} Text sizes follow the ggplot2 and corrplot defaults; the remaining override, volcano
+#'   labels, defaults to 3 mm (about 8.5 pt) instead of 1 mm and stays an argument, as do corrplot `tl.cex` and
+#'   `number.cex` through `...`.
+#' @noRd
+NULL
+
+test_that("volcano labels and correlation plot text use readable default sizes", {
+  dat <- data.frame(
+    fc = c(-3, 3, 0.1),
+    p.adjust = c(0.001, 0.001, 0.9),
+    condition = "a",
+    colour = "observed",
+    name = c("x", "y", "z")
+  )
+  p <- multigroup_volcano(dat, colour = NULL, label = "name")
+  text_layer <- Filter(function(l) inherits(l$geom, "GeomTextRepel"), p$layers)
+  expect_length(text_layer, 1L)
+  expect_identical(text_layer[[1]]$aes_params$size, 3)
+  expect_false(any(c("tl.cex", "number.cex") %in% names(formals(plot_sample_correlation))))
+  expect_true("..." %in% names(formals(plot_sample_correlation)))
 })
