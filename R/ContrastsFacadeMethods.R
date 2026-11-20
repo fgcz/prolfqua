@@ -41,6 +41,9 @@
 #'   It uses backend covariance (borrowed for LOD refits) or, for matrix models,
 #'   the moderated variance times the inverse of the per-subject weighted design
 #'   crossproduct. Failed matrix fits are omitted.
+#'   `predict()` returns `newdata` with `prediction` on the fitting scale (probabilities for detection models;
+#'   mixed models at population level, without random effects) and `imputed` (the subject's fit is a
+#'   limit-of-detection refit). Hurdle results predict per component.
 #'   The fit status counts subjects that did not converge (`not_converged`); per subject, `converged` and
 #'   `iterations` are columns of the model table (`analysis$model$model_df`).
 #' @name prolfqua_analysis_methods
@@ -259,6 +262,33 @@ nobs.ContrastsFacadeBase <- function(object, ...) .model_nobs(object$model)
 fitted.ContrastsFacadeBase <- function(object, ...) {
   values <- .model_values(object$model, object$.lfqdata)
   values[, setdiff(names(values), "residual"), drop = FALSE]
+}
+
+#' @rdname prolfqua_analysis_methods
+#' @param newdata for `predict()`: data frame with the subject identifier and predictor columns; `NULL` (default)
+#'   predicts every subject in every sample of the analysis input, including samples with missing responses.
+#' @exportS3Method stats::predict
+#' @srrstats {RE4.16} `predict()` accepts any combination of subject and group, also groups absent from a subject's
+#'   fit: methods with a limit-of-detection refit (`_impute`) predict them from the refit, others give NA. Limit: a
+#'   group absent from the whole experiment has no coefficient. Tested in test-predict.R.
+predict.ContrastsFacadeBase <- function(object, newdata = NULL, ...) {
+  if (is.null(object$model)) {
+    .model_not_available()
+  }
+  subject_id <- object$model$subject_id
+  if (is.null(newdata)) {
+    input <- object$.lfqdata
+    subjects <- dplyr::distinct(input$data_long()[, subject_id, drop = FALSE])
+    newdata <- tidyr::crossing(subjects, .sample_template(input))
+  }
+  if (!is.data.frame(newdata)) {
+    abort_bad_argument("newdata", "be a data frame or NULL")
+  }
+  missing <- setdiff(subject_id, names(newdata))
+  if (length(missing) > 0L) {
+    abort_missing_columns(missing)
+  }
+  .model_predict(object$model, newdata)
 }
 
 #' @rdname prolfqua_analysis_methods

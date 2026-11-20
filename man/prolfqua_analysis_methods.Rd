@@ -11,6 +11,7 @@
 \alias{formula.ContrastsFacadeBase}
 \alias{nobs.ContrastsFacadeBase}
 \alias{fitted.ContrastsFacadeBase}
+\alias{predict.ContrastsFacadeBase}
 \alias{residuals.ContrastsFacadeBase}
 \alias{plot.ContrastsFacadeBase}
 \title{Inspect a fitted prolfqua analysis}
@@ -33,6 +34,8 @@
 
 \method{fitted}{ContrastsFacadeBase}(object, ...)
 
+\method{predict}{ContrastsFacadeBase}(object, newdata = NULL, ...)
+
 \method{residuals}{ContrastsFacadeBase}(object, ...)
 
 \method{plot}{ContrastsFacadeBase}(x, type = c("fitted", "volcano", "ma"), subject = NULL, level = 0.95, ...)
@@ -52,6 +55,9 @@ unused by the other methods.}
 \item{parm}{coefficient names or positive coefficient indices; omitted for all terms.}
 
 \item{level}{confidence level, strictly between zero and one.}
+
+\item{newdata}{for `predict()`: data frame with the subject identifier and predictor columns; `NULL` (default)
+predicts every subject in every sample of the analysis input, including samples with missing responses.}
 
 \item{type}{plot type: fitted responses (default), FDR volcano or MA.
 Hurdle analyses default to volcano because they have two models.}
@@ -90,6 +96,9 @@ analyses default to the volcano plot; request a component for fitted plots.
 It uses backend covariance (borrowed for LOD refits) or, for matrix models,
 the moderated variance times the inverse of the per-subject weighted design
 crossproduct. Failed matrix fits are omitted.
+\code{predict()} returns \code{newdata} with \code{prediction} on the fitting scale (probabilities for detection models;
+mixed models at population level, without random effects) and \code{imputed} (the subject's fit is a
+limit-of-detection refit). Hurdle results predict per component.
 The fit status counts subjects that did not converge (\code{not_converged}); per subject, \code{converged} and
 \code{iterations} are columns of the model table (\code{analysis$model$model_df}).
 }

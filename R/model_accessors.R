@@ -642,3 +642,142 @@
 #' @noRd
 #' @export
 .model_group_means.NULL <- function(model, subjects, level = 0.95) .model_not_available()
+
+# Prediction ----
+
+#' Factor levels a fit was estimated with
+#' @param fit a successful backend fit
+#' @noRd
+.fit_xlevels <- function(fit) {
+  if (!isS4(fit) && !is.null(fit$xlevels)) {
+    return(fit$xlevels)
+  }
+  stats::.getXlevels(stats::terms(fit), stats::model.frame(fit))
+}
+
+#' Predict rows whose factor levels the fit knows; NA for the others
+#' @param fit a successful backend fit
+#' @param newdata rows to predict
+#' @param predict_fun function(fit, newdata) returning predictions on the modelling scale
+#' @noRd
+.predict_known_levels <- function(fit, newdata, predict_fun) {
+  known <- rep(TRUE, nrow(newdata))
+  xlevels <- .fit_xlevels(fit)
+  for (variable in names(xlevels)) {
+    known <- known & as.character(newdata[[variable]]) %in% xlevels[[variable]]
+  }
+  prediction <- rep(NA_real_, nrow(newdata))
+  if (any(known)) {
+    prediction[known] <- as.numeric(predict_fun(fit, newdata[known, , drop = FALSE]))
+  }
+  prediction
+}
+
+#' Predicted responses of one subject's fit
+#' @param fit a successful backend fit
+#' @param newdata rows of one subject to predict
+#' @noRd
+.fit_predict <- function(fit, newdata) UseMethod(".fit_predict")
+
+#' @rdname dot-fit_predict
+#' @noRd
+#' @export
+.fit_predict.default <- function(fit, newdata) {
+  if (isS4(fit)) {
+    # mixed models: population-level prediction, so new random-effect levels (e.g. peptides) are allowed
+    return(.predict_known_levels(fit, newdata, function(f, d) stats::predict(f, newdata = d, re.form = NA)))
+  }
+  .predict_known_levels(fit, newdata, function(f, d) stats::predict(f, newdata = d))
+}
+
+#' @rdname dot-fit_predict
+#' @noRd
+#' @export
+.fit_predict.glm <- function(fit, newdata) {
+  .predict_known_levels(fit, newdata, function(f, d) stats::predict(f, newdata = d, type = "response"))
+}
+
+#' @rdname dot-fit_predict
+#' @noRd
+#' @export
+.fit_predict.logistf <- function(fit, newdata) {
+  .predict_known_levels(fit, newdata, function(f, d) stats::predict(f, newdata = d, type = "response"))
+}
+
+#' @rdname dot-fit_predict
+#' @noRd
+#' @export
+.fit_predict.rfit_prolfqua <- function(fit, newdata) {
+  .predict_known_levels(fit, newdata, function(f, d) {
+    design <- stats::model.matrix(stats::delete.response(f$terms), d, xlev = .fit_xlevels(f))
+    drop(design %*% stats::coef(f)[colnames(design)])
+  })
+}
+
+#' Predicted responses for new data across model subjects
+#' @param model a model adapter
+#' @param newdata rows with subject identifiers and predictor columns
+#' @noRd
+.model_predict <- function(model, newdata) UseMethod(".model_predict")
+
+#' Subject keys joined with "~"
+#' @param data data frame
+#' @param subject_id subject identifier columns
+#' @noRd
+.subject_key <- function(data, subject_id) {
+  do.call(paste, c(as.data.frame(data)[, subject_id, drop = FALSE], sep = "~"))
+}
+
+#' @rdname dot-model_predict
+#' @noRd
+#' @export
+.model_predict.Model <- function(model, newdata) {
+  fits <- .model_fits(model)
+  rows_by_subject <- split(seq_len(nrow(newdata)), .subject_key(newdata, model$subject_id))
+  fit_keys <- .subject_key(fits, model$subject_id)
+  prediction <- rep(NA_real_, nrow(newdata))
+  imputed <- rep(FALSE, nrow(newdata))
+  for (i in seq_len(nrow(fits))) {
+    rows <- rows_by_subject[[fit_keys[i]]]
+    if (is.null(rows)) {
+      next
+    }
+    prediction[rows] <- .fit_predict(fits$linear_model[[i]], newdata[rows, , drop = FALSE])
+    imputed[rows] <- isTRUE(fits[["imputed"]][i])
+  }
+  dplyr::mutate(newdata, prediction = prediction, imputed = imputed)
+}
+
+#' @rdname dot-model_predict
+#' @noRd
+#' @export
+.model_predict.ModelFirth <- function(model, newdata) .model_predict.Model(model, newdata)
+
+#' @rdname dot-model_predict
+#' @noRd
+#' @export
+.model_predict.ModelLimma <- function(model, newdata) {
+  dummy <- model$dummy_model
+  subject <- match(.subject_key(newdata, model$subject_id), .subject_key(model$rowdata, model$subject_id))
+  known <- !is.na(subject)
+  for (variable in names(dummy$xlevels)) {
+    known <- known & as.character(newdata[[variable]]) %in% dummy$xlevels[[variable]]
+  }
+  prediction <- rep(NA_real_, nrow(newdata))
+  if (any(known)) {
+    design <- stats::model.matrix(
+      stats::delete.response(stats::terms(dummy)),
+      newdata[known, , drop = FALSE],
+      xlev = dummy$xlevels
+    )
+    coefficients <- model$fit$coefficients[subject[known], colnames(design), drop = FALSE]
+    prediction[known] <- rowSums(design * coefficients)
+  }
+  imputed <- .matrix_imputed_subjects(model)[subject]
+  dplyr::mutate(newdata, prediction = prediction, imputed = !is.na(imputed) & imputed)
+}
+
+#' @rdname dot-model_predict
+#' @noRd
+#' @export
+.model_predict.NULL <- function(model, newdata) .model_not_available()

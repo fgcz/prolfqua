@@ -2,6 +2,7 @@
 
 ## New features
 
+- `predict()` on fitted analyses returns predictions for any combination of subject and group (default: every subject in every input sample, including samples with missing responses), on the fitting scale. Groups absent from a subject's fit are predicted from the limit-of-detection refit of the `_impute` methods and are `NA` otherwise; ROPECA predicts per peptide, mixed models at population level, detection models as probabilities, and hurdle analyses per component.
 - `LFQData` prints a summary (samples, response and whether it is transformed, hierarchy counts, samples per factor level, response range, missing responses, provenance), and `plot()` on an `LFQData` shows the response distribution per sample.
 - `digits` controls the significant digits of numbers printed by `print()` of `LFQData`, of fitted analyses and of their `summary()` (default 3), and of `contrast_summary_table(digits = )`.
 - Convergence controls: `strategy_rlm()`, `strategy_lmer()`, `strategy_binomial()`, `strategy_binomial_firth()`, `strategy_logistf()`, `strategy_rfit()`, the `medpolish` and `rlm` aggregators (`get_Aggregator(method, control = )`) and `estimate_intensity()` take a `control` list (iteration limit, tolerance), which `build_contrast_analysis(..., control = )` passes on, also for `firth`. Defaults are unchanged and documented with their reasons; unknown names raise `prolfqua_error_bad_argument`.
