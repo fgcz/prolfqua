@@ -319,7 +319,8 @@ LFQDataPlotter <- R6::R6Class(
     #' @description
     #' write boxplots to file
     #' @param path_qc path to write to
-    #' @param filename file to write into
+    #' @param filename file name; one ending in `.pdf` is used as given, otherwise `boxplot.pdf` is appended
+    #'   (default: the plotter prefix)
     #' @param width fig width
     #' @param height fig height
     #' @return path the file was written to (invisible)
@@ -327,7 +328,7 @@ LFQDataPlotter <- R6::R6Class(
       if (is.null(filename)) {
         filename <- self$prefix
       }
-      fpath <- file.path(path_qc, paste0(filename, "boxplot.pdf"))
+      fpath <- file.path(path_qc, if (.has_pdf_suffix(filename)) filename else paste0(filename, "boxplot.pdf"))
       bb <- self$boxplots()
 
       inform_prolfqua("writing ", fpath)
@@ -346,12 +347,12 @@ LFQDataPlotter <- R6::R6Class(
     #' write figure to pdf
     #' @param fig ggplot or ComplexHeatmap::Heatmap
     #' @param path_qc path to write to
-    #' @param fig_name name of figure (no extension)
+    #' @param fig_name name of figure; `.pdf` is appended unless it ends in `.pdf`
     #' @param width figure width
     #' @param height figure height
     #' @return path the file was written to
     write_pdf = function(fig, path_qc, fig_name, width = 7, height = 7) {
-      fpath <- file.path(path_qc, paste0(self$prefix, fig_name, ".pdf"))
+      fpath <- file.path(path_qc, paste0(self$prefix, fig_name, if (!.has_pdf_suffix(fig_name)) ".pdf"))
       inform_prolfqua("writing ", fpath)
       grDevices::pdf(fpath, width = width, height = height)
       pdf_dev <- grDevices::dev.cur()
@@ -361,3 +362,12 @@ LFQDataPlotter <- R6::R6Class(
     }
   )
 )
+
+#' Does a file name end in .pdf (any case)
+#' @param name file name
+#' @noRd
+#' @srrstats {G4.0} PDF writers append `.pdf` only to file names without it (`write_pdf()`, `write_boxplots()`;
+#'   test-plotting_functions.R).
+.has_pdf_suffix <- function(name) {
+  grepl("\\.pdf$", name, ignore.case = TRUE)
+}

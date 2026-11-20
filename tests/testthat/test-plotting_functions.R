@@ -588,3 +588,16 @@ test_that("volcano labels and correlation plot text use readable default sizes",
   expect_false(any(c("tl.cex", "number.cex") %in% names(formals(plot_sample_correlation))))
   expect_true("..." %in% names(formals(plot_sample_correlation)))
 })
+
+test_that("PDF writers append .pdf only when the name lacks it", {
+  withr::local_options(prolfqua.verbose = FALSE)
+  istar <- sim_lfq_data_protein_config(Nprot = 3, with_missing = FALSE)
+  pl <- LFQData$new(istar$data, istar$config)$get_Plotter()
+  out_dir <- withr::local_tempdir()
+  expect_identical(basename(pl$write_pdf(ggplot2::ggplot(), out_dir, "fig")), paste0(pl$prefix, "fig.pdf"))
+  expect_identical(basename(pl$write_pdf(ggplot2::ggplot(), out_dir, "fig.pdf")), paste0(pl$prefix, "fig.pdf"))
+  expect_identical(basename(pl$write_pdf(ggplot2::ggplot(), out_dir, "fig.PDF")), paste0(pl$prefix, "fig.PDF"))
+  expect_identical(basename(pl$write_boxplots(out_dir, "qc_")), "qc_boxplot.pdf")
+  expect_identical(basename(pl$write_boxplots(out_dir, "boxes.pdf")), "boxes.pdf")
+  expect_false(any(grepl("\\.pdf\\.pdf$", list.files(out_dir), ignore.case = TRUE)))
+})

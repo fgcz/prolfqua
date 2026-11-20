@@ -50,7 +50,6 @@
 #' stopifnot("ggplot" %in% class(res$FDR$plot))
 #' stopifnot("ggplot" %in%  class(cp$histogram_diff()))
 #'
-#' @srrstatsTODO {G4.0} Plot writers add PDF suffixes; limit: existing suffixes can be appended twice.
 ContrastsPlotter <- R6::R6Class(
   "ContrastsPlotter",
   public = list(
