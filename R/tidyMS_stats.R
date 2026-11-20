@@ -365,11 +365,6 @@ plot_stat_violin <- function(pdata, factor_keys_depth, stat = c("CV", "meanAbund
 #' plot_stat_violin_median(res, lfq$factor_keys()[1], stat = "meanAbundance")
 plot_stat_violin_median <- function(pdata, factor_key, stat = c("CV", "meanAbundance", "sd")) {
   stat <- match.arg(stat)
-  median.quartile <- function(x) {
-    out <- quantile(x, probs = c(0.25, 0.5, 0.75))
-    names(out) <- c("ymin", "y", "ymax")
-    return(out)
-  }
   pdata <- pdata |> dplyr::filter(!is.na(!!sym(stat)))
 
   top50 <- pdata |>
@@ -378,8 +373,12 @@ plot_stat_violin_median <- function(pdata, factor_key, stat = c("CV", "meanAbund
   p <- ggplot(top50, aes(x = .data[[factor_key]], y = .data[[stat]])) +
     theme_prolfqua() +
     geom_violin() +
-    stat_summary(fun = median.quartile, geom = "point", shape = 3) +
-    stat_summary(fun = median, geom = "point", shape = 1) +
+    stat_summary(
+      fun = stats::median,
+      fun.min = function(x) stats::quantile(x, 0.25),
+      fun.max = function(x) stats::quantile(x, 0.75),
+      geom = "pointrange"
+    ) +
     facet_wrap("top")
   return(p)
 }

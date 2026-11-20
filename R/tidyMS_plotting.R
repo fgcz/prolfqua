@@ -453,7 +453,7 @@ plot_hierarchies_boxplot <- function(
     p <- p +
       points +
       scale_shape_manual(values = shape_values) +
-      scale_size_continuous(range = range(pdata$size, na.rm = TRUE))
+      scale_size_continuous(range = c(1, 4))
   }
   if (show_mean) {
     p <- p + stat_summary(fun = mean, geom = "point", position = position_dodge(0.7), size = 3, shape = 3)

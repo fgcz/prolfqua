@@ -145,7 +145,6 @@ multigroup_volcano <- function(
     text = "label",
     scales = scales
   )
-  colname <- paste0("-log10(", significance, ")")
 
   if (!is.null(label)) {
     effect_values <- labeled_data[, effect]
@@ -159,7 +158,7 @@ multigroup_volcano <- function(
       p <- p +
         ggrepel::geom_text_repel(
           data = significant_subset,
-          aes(x = .data[[effect]], y = !!rlang::parse_expr(colname), label = .data$label),
+          aes(x = .data[[effect]], y = -log10(.data[[significance]]), label = .data$label),
           size = size,
           segment.size = segment.size,
           segment.alpha = segment.alpha
@@ -189,10 +188,15 @@ multigroup_volcano <- function(
 
 #' Choose colours for the contrast estimate types: black and Okabe-Ito, colour-blind safe
 #' @param colour estimate-type colour specification
+#' @param values values of the colour column; more than 4 levels get `.factor_palette()`
 #' @noRd
-.contrast_colour_values <- function(colour) {
+.contrast_colour_values <- function(colour, values = NULL) {
   if (identical(colour, "estimate_type")) {
     return(c(observed = "#000000", lod_imputed = "#E69F00", missing_fallback = "#0072B2"))
+  }
+  n_levels <- length(unique(stats::na.omit(values)))
+  if (n_levels > 4L) {
+    return(.factor_palette(n_levels))
   }
   c("#000000", "#E69F00", "#0072B2", "#D55E00")
 }
@@ -223,7 +227,7 @@ multigroup_volcano <- function(
   colname <- paste0("-log10(", significance, ")")
   p <- ggplot(
     data,
-    aes(x = .data[[effect]], y = !!rlang::parse_expr(colname))
+    aes(x = .data[[effect]], y = -log10(.data[[significance]]))
   ) +
     theme_prolfqua(grid = TRUE) +
     geom_point(alpha = 0.5)
@@ -235,13 +239,10 @@ multigroup_volcano <- function(
   }
   p <- p +
     scale_colour_manual(
-      values = .contrast_colour_values(colour)
+      values = .contrast_colour_values(colour, if (!is.null(colour)) data[[colour]])
     )
   p <- p +
-    facet_wrap(
-      as.formula(paste("~", contrast)),
-      scales = scales
-    ) +
+    facet_wrap(vars(.data[[contrast]]), scales = scales) +
     labs(y = colname)
   if (!is.null(xintercept)) {
     p <- p +

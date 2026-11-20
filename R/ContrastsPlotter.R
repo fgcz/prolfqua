@@ -153,11 +153,15 @@ ContrastsPlotter <- R6::R6Class(
       re[1] <- floor(re[1])
       re[2] <- ceiling(re[2])
 
+      medians <- private$.contrast_df |>
+        dplyr::group_by(!!sym(self$contrast)) |>
+        dplyr::summarise(median = median(!!sym(self$diff), na.rm = TRUE), .groups = "drop")
       fig <- ggplot(private$.contrast_df, aes(x = !!sym(self$diff))) +
         theme_prolfqua() +
         geom_histogram(breaks = seq(from = re[1], to = re[2], by = binwidth)) +
         geom_vline(
-          aes(xintercept = median(!!sym(self$diff), na.rm = TRUE)), # Ignore NA values for mean
+          data = medians,
+          aes(xintercept = .data$median),
           color = "red",
           linetype = "dashed",
           linewidth = 1
@@ -367,7 +371,7 @@ ContrastsPlotter <- R6::R6Class(
       ) +
         theme_prolfqua(grid = TRUE) +
         geom_point(alpha = 0.5) +
-        scale_colour_manual(values = .contrast_colour_values(colour)) +
+        scale_colour_manual(values = .contrast_colour_values(colour, x[[colour]])) +
         facet_wrap(vars(!!sym(contrast)))
       if (is.numeric(fc)) {
         p <- p + geom_hline(yintercept = c(-fc, fc), linetype = "dashed", colour = "red")
@@ -390,7 +394,7 @@ ContrastsPlotter <- R6::R6Class(
           aes(x = !!sym(self$diff), y = !!sym(score), text = !!sym("subject_id"), colour = !!sym(colour))
         ) +
           theme_prolfqua(grid = TRUE) +
-          scale_colour_manual(values = .contrast_colour_values(colour)) +
+          scale_colour_manual(values = .contrast_colour_values(colour, x[[colour]])) +
           geom_point(alpha = 0.5) +
           facet_wrap(vars(!!sym(self$contrast))) +
           geom_hline(yintercept = 0, colour = 1) +
