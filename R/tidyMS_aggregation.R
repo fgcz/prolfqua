@@ -140,7 +140,8 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
 .rlm_estimate <- function(pdata, response, feature, samples = "samples", control = .aggregation_control("rlm")) {
   data <- pdata |>
     select(all_of(c(samples, feature, response))) |>
-    na.omit()
+    na.omit() |>
+    droplevels()
   expname <- paste0("mean.", response)
 
   ## All branches hand off here so the output schema is identical: a single, fixed column order
@@ -182,17 +183,11 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
   contr.arg <- list("contr.sum")
   names(contr.arg) <- feature
   X <- model.matrix(formula, data = data, contrasts.arg = contr.arg)
-  ## MASS::rlm breaks on singular values.
-  ## check with base lm if singular values are present.
-  ## if so, these coefficients will be zero, remove this column from model matrix
-  ## rinse and repeat on reduced model-matrix untill no singular values are present
+  ## MASS::rlm breaks on aliased columns: keep the columns of full rank found by the pivoted QR of the
+  ## least-squares fit. .lm.fit() reports coefficients in pivoted order, so select by pivot and rank.
   y <- data[[response]]
-  repeat {
-    fit <- .lm.fit(X, y)
-    id <- fit$coefficients != 0
-    X <- X[, id, drop = FALSE]
-    if (all(id)) break
-  }
+  fit <- .lm.fit(X, y)
+  X <- X[, sort(fit$pivot[seq_len(fit$rank)]), drop = FALSE]
   ## Last step is always rlm if X > has some columns left
   if (ncol(X) > 0) {
     fit <- MASS::rlm(X, y, maxit = control$maxit, acc = control$acc)

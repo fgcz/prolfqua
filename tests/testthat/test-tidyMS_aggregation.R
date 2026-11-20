@@ -132,9 +132,17 @@ test_that(".rlm_estimate re-establishes every input sample in all branches", {
   expect_setequal(res_main$samples, letters[1:4])
 
   # stored problem cases for the robust summary
+  # dataset 69 has eight observations for four samples and five peptides: rlm stops at its iteration limit
   for (ds in c("data_checksummarizationrobust87", "data_checksummarizerobust69")) {
     x <- prolfqua::prolfqua_data(ds)
-    res <- prolfqua:::.rlm_estimate(x, "log2Area", "peptide_Id", "sampleName")
+    if (ds == "data_checksummarizerobust69") {
+      expect_warning(
+        res <- prolfqua:::.rlm_estimate(x, "log2Area", "peptide_Id", "sampleName"),
+        "failed to converge"
+      )
+    } else {
+      res <- prolfqua:::.rlm_estimate(x, "log2Area", "peptide_Id", "sampleName")
+    }
     expect_setequal(res$sampleName, unique(x$sampleName))
   }
 })
@@ -158,4 +166,37 @@ test_that("rlm and medpolish aggregation produce the same (protein, sample) rows
     expect_true(all(c("lmrob", "weights") %in% colnames(bbRob$data)))
     expect_true(bbRob$config$nr_children %in% colnames(bbRob$data))
   })
+})
+
+test_that("rlm aggregation removes only aliased columns (factor sample with an unused level)", {
+  set.seed(3)
+  grid <- expand.grid(feature = paste0("p", 1:4), samples = c("a", "b", "c"), stringsAsFactors = FALSE)
+  grid$response <- 10 +
+    match(grid$samples, c("a", "b", "c")) +
+    match(grid$feature, paste0("p", 1:4)) / 2 +
+    rnorm(nrow(grid), sd = 0.1)
+  as_factor <- grid
+  as_factor$samples <- factor(as_factor$samples, levels = c("a", "b", "unused", "c"))
+  expected <- prolfqua:::.rlm_estimate(grid, "response", "feature", "samples")
+  estimated <- prolfqua:::.rlm_estimate(as_factor, "response", "feature", "samples")
+  expect_equal(
+    unname(estimated$lmrob),
+    unname(expected$lmrob[match(as.character(estimated$samples), expected$samples)])
+  )
+  means <- tapply(grid$response, grid$samples, mean)
+  expect_false(isTRUE(all.equal(unname(estimated$lmrob), unname(means[as.character(estimated$samples)]))))
+})
+
+test_that("rlm aggregation ignores an unused level of a factor feature column", {
+  set.seed(4)
+  grid <- expand.grid(feature = paste0("p", 1:4), samples = c("a", "b", "c"), stringsAsFactors = FALSE)
+  grid$response <- 10 +
+    match(grid$samples, c("a", "b", "c")) +
+    match(grid$feature, paste0("p", 1:4)) / 2 +
+    rnorm(nrow(grid), sd = 0.1)
+  as_factor <- grid
+  as_factor$feature <- factor(as_factor$feature, levels = c("p1", "unused", "p2", "p3", "p4"))
+  expected <- prolfqua:::.rlm_estimate(grid, "response", "feature", "samples")
+  estimated <- prolfqua:::.rlm_estimate(as_factor, "response", "feature", "samples")
+  expect_equal(unname(estimated$lmrob), unname(expected$lmrob))
 })

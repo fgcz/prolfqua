@@ -58,6 +58,7 @@
 
 ## Bug fixes
 
+- `rlm` aggregation (`get_Aggregator("rlm")`) removed estimable design columns when a sample or peptide column was a factor with an unused level, and then silently used per-sample means for that protein. It now drops unused levels and removes only aliased columns. Data set up with `setup_analysis()` (character columns) is not affected.
 - `LFQDataPlotter$write_pdf()` and `$write_boxplots()` no longer append `.pdf` to a file name that already ends in `.pdf`.
 - `get_complete_model_fit()`, and with it `Model$get_anova()`, `Model$get_coefficients()` and the coefficient and ANOVA plots, now leaves out fits with fewer coefficients than the full design, for example a protein with one group entirely missing. Before, every fit counted as complete, so these tables also listed such proteins, whose coefficients referred to another reference level. Limit-of-detection imputation is unchanged.
 
