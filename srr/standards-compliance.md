@@ -12,11 +12,11 @@ The skill uses a different, prospective verdict: **Y** includes both implemented
 
 | Standards | Total | Met now | Partial | Not met | NA | Fully met / all | Potential Y / all |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| General | 68 | 38 | 24 | 2 | 4 | 38/68 = 55.9% | 64/68 = 94.1% |
-| Regression | 48 | 36 | 6 | 2 | 4 | 36/48 = 75.0% | 44/48 = 91.7% |
+| General | 68 | 40 | 22 | 2 | 4 | 40/68 = 58.8% | 64/68 = 94.1% |
+| Regression | 48 | 43 | 0 | 1 | 4 | 43/48 = 89.6% | 44/48 = 91.7% |
 | EDA | 34 | 30 | 0 | 0 | 4 | 30/34 = 88.2% | 30/34 = 88.2% |
 
-General and Regression have **74 fully met standards, 8 NA standards and 34 TODO standards (30 partial and 4 unmet)**; EDA adds 30 met and 4 NA (block H); block C (statistical tests) added 11, block D (missing and non-finite values) 9 met and 1 NA, provenance 4 (G2.14, G2.14b, RE3.0, RE3.1), block B 3 (RE3.2, RE3.3, RE4.7). All 116 canonical IDs are covered with consistent annotation statuses. Concurrent sample-offset work repeats G2.4e, so the raw current-tree srr output counts 48 met annotations; this assessment counts the 47 unique met IDs. The checked A2 source has one annotation per ID and reports 47. Pre-submission remains blocked by unfinished requirements; correcting the tags exposes that work rather than inflating the completed count.
+General and Regression have **83 fully met standards, 8 NA standards and 25 TODO standards (22 partial and 3 unmet)**; block F (design checks, 2026-11-20) added 9 (RE2.0, RE2.3, RE2.4, RE2.4a, RE2.4b, RE7.0, RE7.0a, G4.0, G2.9); EDA adds 30 met and 4 NA (block H); block C (statistical tests) added 11, block D (missing and non-finite values) 9 met and 1 NA, provenance 4 (G2.14, G2.14b, RE3.0, RE3.1), block B 3 (RE3.2, RE3.3, RE4.7). All 116 canonical IDs are covered with consistent annotation statuses. Concurrent sample-offset work repeats G2.4e, so the raw current-tree srr output counts 48 met annotations; this assessment counts the 47 unique met IDs. The checked A2 source has one annotation per ID and reports 47. Pre-submission remains blocked by unfinished requirements; correcting the tags exposes that work rather than inflating the completed count.
 
 ## General standards
 
