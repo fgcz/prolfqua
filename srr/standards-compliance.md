@@ -1,6 +1,6 @@
 # Statistical standards compliance: prolfqua 1.9.4
 
-Assessment date: 2026-11-17. The selected category is **Regression and Supervised Learning** (`regression`), alongside the mandatory General standards. The package fits regressions to proteomics features, computes contrasts and uncertainty, and adjusts for multiple testing. This assessment follows the requested `stats-standards-compliance` skill and the follow-up review with `package-standards` and `stats-standards`. No other category was requested or scored in this pass.
+Assessment date: 2026-11-17. The selected categories are **Regression and Supervised Learning** (`regression`) and, since 2026-11-20, **Exploratory Data Analysis** (`eda`), alongside the mandatory General standards. The package fits regressions to proteomics features, computes contrasts and uncertainty, and adjusts for multiple testing. This assessment follows the requested `stats-standards-compliance` skill and the follow-up review with `package-standards` and `stats-standards`. No other category was requested or scored in this pass.
 
 The canonical [checklist](srr-standards.md) contains 68 General and 48 Regression standards, downloaded through srr 1.1.0.9000 against standards version 0.3.0. Full source texts are [General](general.html) and [Regression](regression.html), obtained from the [rOpenSci review book](https://github.com/ropensci/statistical-software-review-book/tree/main/standards). All 116 IDs were assessed individually; the [assessment TSV](standards-assessment.tsv) records current status, potential verdict, evidence, gaps and tag location.
 
@@ -14,6 +14,7 @@ The skill uses a different, prospective verdict: **Y** includes both implemented
 |---|---:|---:|---:|---:|---:|---:|---:|
 | General | 68 | 38 | 24 | 2 | 4 | 38/68 = 55.9% | 64/68 = 94.1% |
 | Regression | 48 | 36 | 6 | 2 | 4 | 36/48 = 75.0% | 44/48 = 91.7% |
+| EDA | 34 | 13 | 10 | 7 | 4 | 13/34 = 38.2% | 30/34 = 88.2% |
 
 There are **74 fully met standards, 8 NA standards and 34 TODO standards (30 partial and 4 unmet)**; block C (statistical tests) added 11, block D (missing and non-finite values) 9 met and 1 NA, provenance 4 (G2.14, G2.14b, RE3.0, RE3.1), block B 3 (RE3.2, RE3.3, RE4.7). All 116 canonical IDs are covered with consistent annotation statuses. Concurrent sample-offset work repeats G2.4e, so the raw current-tree srr output counts 48 met annotations; this assessment counts the 47 unique met IDs. The checked A2 source has one annotation per ID and reports 47. Pre-submission remains blocked by unfinished requirements; correcting the tags exposes that work rather than inflating the completed count.
 
@@ -34,6 +35,17 @@ Feasible work still unfinished includes a complete public-argument audit, specia
 The package still delegates full publication-performance reproductions and alternative-package comparisons to the separate prolfquabenchmark repository (G1.5–G1.6). Runtime scaling measurements address RE5.0 and do not close G1.6. ROPECA V2 tests already check null calibration across peptide counts and recover within-protein correlation from noisy data. Broader noisy fold-change recovery, repeated-seed recovery, sample-size/power behavior, machine-epsilon perturbation tests and an extended-test framework remain feasible but unfinished. The deterministic Hurdle fixture removes seed luck from the test case; it does not establish G5.9b result stability.
 
 General NA reasons: **G5.4c** is inapplicable because prior implementations are available as executable references, so stored published values are not needed as substitutes. **G5.11/G5.11a** are inapplicable because the current tests use bundled or generated data and do not download extended-test assets. No entire General subsection is NA.
+
+## Exploratory Data Analysis (added 2026-11-20)
+
+EDA is the second category, tagged in [srr-stats-eda.R](../R/srr-stats-eda.R) from the [EDA standards](eda.Rmd). 13 met, 4 NA, 17 TODO; srr needs 17 met. Block H in TODO/prolfqua/PLAN_srr_block_H_eda.md closes the TODOs:
+
+- Plot accessibility: colour-blind-safe palettes, no fixed small text (EA5.0, EA5.0a, EA5.0b, EA5.1)
+- `print()`/`plot()` for LFQData, precision arguments, column types in summaries (EA4.1, EA4.2, EA5.2, EA5.3)
+- Duplicate keys at model entry, vectors with extra attributes, return types (EA2.1, EA2.6, EA4.0)
+- Audience statement, axis units, column-class and plot-property tests (EA1.0, EA5.5, EA6.0, EA6.0b, EA6.0d, EA6.1)
+
+NA: EA2.2b (class system instead of attributes), EA2.4 and EA2.5 (single long table, no multi-table input), EA5.6 (no bundled JavaScript).
 
 ## Regression and Supervised Learning
 

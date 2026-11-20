@@ -115,3 +115,37 @@ RE7.1a	RE	met	Y	already_done	Testing	Extended test: lm and limma fit noiseless d
 RE7.2	RE	met	Y	already_done	Testing	test-ContrastsFacades.R checks identifier conservation and renamed protein keys; test-LFQData.R checks hierarchy counts and wide/from-wide annotation alignment; test-impute_from_model.R checks observed values unchanged and all subject-by-sample rows present.	-	R/LFQData.R: LFQData
 RE7.3	RE	met	Y	already_done	Testing	The complete 20-method registry loop exercises documented coefficient, covariance, interval, formula, count, fitted-value, residual, summary and plot interfaces, including the classed hurdle exceptions.	-	tests/testthat/test-facade-methods.R: all-method registry loop
 RE7.4	RE	NA	NA	not_applicable	Testing	Forecast horizons and forecast error growth are outside the package public workflow, as for RE4.15.	-	R/srr-stats-standards.R: NA_standards
+EA1.0	EA	partial	Y	feasible_not_yet_done	Documentation	README/DESCRIPTION: FGCZ core-facility LFQ proteomics	target audience not stated explicitly	R/srr-stats-eda.R: EDA statistical software standards
+EA1.1	EA	met	Y	already_done	Documentation	DESCRIPTION; vignettes/prolfqua.Rmd: long-format MS LFQ data with protein/peptide hierarchy	None.	R/srr-stats-eda.R: EDA statistical software standards
+EA1.2	EA	met	Y	already_done	Documentation	QualityControlAndSampleSizeEstimation.Rmd Purpose (QC, CV, sample size)	None.	R/srr-stats-eda.R: EDA statistical software standards
+EA1.3	EA	met	Y	already_done	Documentation	@param per exported function names LFQData / AnalysisConfiguration / data.frame	required columns of data.frame inputs often unspecified	R/srr-stats-eda.R: EDA statistical software standards
+EA2.0	EA	met	Y	already_done	Input data	AnalysisConfiguration hierarchy, file_name, sample_name, factor keys act as index columns for joins	None.	R/srr-stats-eda.R: EDA statistical software standards
+EA2.1	EA	partial	Y	feasible_not_yet_done	Input data	setup_analysis aborts on duplicate key/sample (test-conditions.R:35); tidy_to_wide_config(row_keys) and lfqdata_from_wide check uniqueness (aaea39e8, a911b256)	LFQData$new(setup = FALSE, the default) skips the check	R/srr-stats-eda.R: EDA statistical software standards
+EA2.2	EA	met	Y	already_done	Input data	AnalysisConfiguration R6 class	None.	R/srr-stats-eda.R: EDA statistical software standards
+EA2.2a	EA	met	Y	already_done	Input data	AnalysisConfiguration.R:19	None.	R/srr-stats-eda.R: EDA statistical software standards
+EA2.2b	EA	NA	NA	not_applicable	Input data	EA2.2a (class system) used instead of attributes		R/srr-stats-eda.R: NA_standards
+EA2.3	EA	met	Y	already_done	Input data	all joins have explicit by= keys from config or arguments (fe94daed); get_missing keyed by configured contrast column (7dd31e5d); firth facade keeps non-protein_Id key (59325f9b)	some low-level functions still default subject_id to protein_Id	R/srr-stats-eda.R: EDA statistical software standards
+EA2.4	EA	NA	NA	not_applicable	Input data	single long table plus configuration; no multi-table input		R/srr-stats-eda.R: NA_standards
+EA2.5	EA	NA	NA	not_applicable	Input data	as EA2.4		R/srr-stats-eda.R: NA_standards
+EA2.6	EA	not_met	Y	feasible_not_yet_done	Input data	none	no handling/tests of vectors with extra attributes	R/srr-stats-eda.R: EDA statistical software standards
+EA3.0	EA	met	Y	already_done	Algorithms	one interface to 20 methods; LR_test across proteins; power_t_test across proteins (LFQDataStats.R:228)	None.	R/srr-stats-eda.R: EDA statistical software standards
+EA3.1	EA	met	Y	already_done	Algorithms	uniform output schema (ContrastsInterface column_description); merge_contrasts_results; ComparingMethods article	None.	R/srr-stats-eda.R: EDA statistical software standards
+EA4.0	EA	partial	Y	feasible_not_yet_done	Return results	LFQData methods return LFQData; data_wide(as.matrix)	data.frame input returns tibble; untested	R/srr-stats-eda.R: EDA statistical software standards
+EA4.1	EA	partial	Y	feasible_not_yet_done	Return results	contrast_summary_table(rounded = TRUE) uses signif(, 3)	no digits/precision parameter	R/srr-stats-eda.R: EDA statistical software standards
+EA4.2	EA	not_met	Y	feasible_not_yet_done	Return results	R6 default print; no plot() methods	print/plot/summary for LFQData and facades	R/srr-stats-eda.R: EDA statistical software standards
+EA5.0	EA	not_met	Y	feasible_not_yet_done	Visualization	ggplot2 defaults	no accessibility consideration	R/srr-stats-eda.R: EDA statistical software standards
+EA5.0a	EA	not_met	Y	feasible_not_yet_done	Visualization	ggplot2 default text; volcano labels size = 1 (utilities.R:91)	small label text by default	R/srr-stats-eda.R: EDA statistical software standards
+EA5.0b	EA	not_met	Y	feasible_not_yet_done	Visualization	green-black-red heatmap (tidyMS_plotting.R:117); green/red/blue estimate colours (utilities.R:150)	colour-blind-unsafe defaults	R/srr-stats-eda.R: EDA statistical software standards
+EA5.1	EA	not_met	Y	feasible_not_yet_done	Visualization	text size overrides (utilities.R:91; tidyMS_plotting.R:362)	overrides ignore accessibility	R/srr-stats-eda.R: EDA statistical software standards
+EA5.2	EA	partial	Y	feasible_not_yet_done	Visualization	signif() in contrast_summary_table; round() in PCA labels	most output relies on default tibble formatting	R/srr-stats-eda.R: EDA statistical software standards
+EA5.3	EA	partial	Y	feasible_not_yet_done	Visualization	summaries are tibbles; print shows column types	summary statistics do not state storage mode explicitly	R/srr-stats-eda.R: EDA statistical software standards
+EA5.4	EA	met	Y	already_done	Visualization	ggplot2 pretty breaks; PCA axis labels rounded (tidyMS_plotting.R:782-784)	None.	R/srr-stats-eda.R: EDA statistical software standards
+EA5.5	EA	partial	Y	feasible_not_yet_done	Visualization	axes labelled with response column name (e.g. log2_abundance)	no units on axes	R/srr-stats-eda.R: EDA statistical software standards
+EA5.6	EA	NA	NA	not_applicable	Visualization	no bundled JS libraries; plotly is a dependency		R/srr-stats-eda.R: NA_standards
+EA6.0	EA	partial	Y	feasible_not_yet_done	Testing	see EA6.0a-e	-	R/srr-stats-eda.R: EDA statistical software standards
+EA6.0a	EA	met	Y	already_done	Testing	about 170 expect_s3_class/expect_type expectations	None.	R/srr-stats-eda.R: EDA statistical software standards
+EA6.0b	EA	partial	Y	feasible_not_yet_done	Testing	26 nrow/ncol/dim expectations	many return values untested for dimensions	R/srr-stats-eda.R: EDA statistical software standards
+EA6.0c	EA	met	Y	already_done	Testing	column-name checks throughout (e.g. test-ContrastsFacades.R:34-38)	None.	R/srr-stats-eda.R: EDA statistical software standards
+EA6.0d	EA	not_met	Y	feasible_not_yet_done	Testing	none	tests of column classes/types	R/srr-stats-eda.R: EDA statistical software standards
+EA6.0e	EA	met	Y	already_done	Testing	expect_equal with explicit tolerance (e.g. test-Contrasts.R:72)	None.	R/srr-stats-eda.R: EDA statistical software standards
+EA6.1	EA	partial	Y	feasible_not_yet_done	Testing	plot properties tested (test-plotting_functions.R: legend, labels, colour mapping, clipping)	no vdiffr snapshots; most plots only class-checked	R/srr-stats-eda.R: EDA statistical software standards

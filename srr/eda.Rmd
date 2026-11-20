@@ -1,0 +1,312 @@
+<!-- Edit the .Rmd not the .md file -->
+
+## Exploratory Data Analysis and Summary Statistics {#standards-eda}
+
+Exploration is a part of all data analyses, and Exploratory Data Analysis (EDA)
+is not something that is entered into and exited from at some point prior to
+"real" analysis. Exploratory Analyses are also not strictly limited to *Data*,
+but may extend to exploration of *Models* of those data. The category could
+thus equally be termed, "*Exploratory Data and Model Analysis*", yet we opt to
+utilise the standard acronym of EDA in this document.
+
+Summary statistics are generally intended to aid data exploration, and software
+providing summary statistics is also considered here as a form of EDA software.
+For simplicity, both kinds of software are referred to throughout these
+standards as "EDA software", a phrase intended at all times to also encompass
+summary statistics software.
+
+The category of EDA is somewhat different to many other categories considered
+here. Primary differences include:
+
+- EDA software often has a strong focus upon visualization, which is a category
+  which we have otherwise explicitly excluded from the scope of the project at
+  the present stage.
+- The assessment of EDA software requires addressing more general questions
+  than software in most other categories, notably including the important
+  question of intended audience(s).
+
+Examples of EDA software include:
+
+1.  A package rejected by rOpenSci as out-of-scope,
+    [`gtsummary`](https://github.com/ddsjoberg/gtsummary), which provides,
+    "Presentation-ready data summary and analytic result tables."
+1. The [`smartEDA` package](https://github.com/daya6489/SmartEDA) (with
+   accompanying [JOSS
+   paper](https://joss.theoj.org/papers/10.21105/joss.01509)) "for automated
+   exploratory data analysis". The package, "automatically selects the
+   variables and performs the related descriptive statistics. Moreover, it also
+   analyzes the information value, the weight of evidence, custom tables,
+   summary statistics, and performs graphical techniques for both numeric and
+   categorical variables." This package is potentially as much a workflow
+   package as it is a statistical reporting package, and illustrates the
+   ambiguity between these two categories.
+2. The [`modeLLtest` package](https://github.com/ShanaScogin/modeLLtest) (with
+   accompanying [JOSS
+   paper](https://joss.theoj.org/papers/10.21105/joss.01542)) is "An R Package
+   for Unbiased Model Comparison using Cross Validation." Its main
+   functionality allows different statistical models to be compared, likely
+   implying that this represents a kind of meta package.
+3. The [`insight` package](https://github.com/easystats/insight) (with
+   accompanying [JOSS
+   paper](https://joss.theoj.org/papers/10.21105/joss.01412)) provides "a
+   unified interface to access information from model objects in R," with a
+   strong focus on unified and consistent reporting of statistical results.
+4. The [`arviz` software for python](https://github.com/arviz-devs/arviz) (with
+   accompanying [JOSS
+   paper](https://joss.theoj.org/papers/10.21105/joss.01143)) provides "a
+   unified library for exploratory analysis of Bayesian models in Python."
+5. The [`iRF` package](https://github.com/sumbose/iRF) (with accompanying [JOSS
+   paper](https://joss.theoj.org/papers/10.21105/joss.01077)) enables
+   "extracting interactions from random forests", yet also focusses primarily
+   on enabling interpretation of random forests through reporting on
+   interaction terms.
+
+Click on the following link to view a demonstration [Application of Exploratory
+Data Analysis Standards](https://hackmd.io/K8F1RIhdQeuZFqMnzdqNVw).
+
+Reflecting these considerations, the following standards are somewhat
+differently structured than equivalent standards developed to date for other
+categories, particularly through being more qualitative and abstract. In
+particular, while documentation is an important component of standards for all
+categories, clear and instructive documentation is of paramount importance for
+EDA Software, and so warrants its own sub-section within this document.
+
+### Documentation Standards
+
+The following refer to *Primary Documentation*, implying in main package
+`README` or vignette(s), and *Secondary Documentation*, implying function-level
+documentation.
+
+The *Primary Documentation* (`README` and/or vignette(s)) of EDA software
+should:
+
+- [**EA1.0**]{#EA1_0} *Identify one or more target audiences for whom the
+  software is intended*
+- [**EA1.1**]{#EA1_1} *Identify the kinds of data the software is capable of
+  analysing (see *Kinds of Data* below).*
+- [**EA1.2**]{#EA1_2} *Identify the kinds of questions the software is intended
+  to help explore.*
+
+Important distinctions between kinds of questions include whether they are
+inferential, predictive, associative, causal, or representative of other modes
+of statistical enquiry. The *Secondary Documentation* (within individual
+functions) of EDA software should:
+
+- [**EA1.3**]{#EA1_3} *Identify the kinds of data each function is intended to
+  accept as input*
+
+### Input Data
+
+A further primary difference of EDA software from that of our other categories
+is that input data for statistical software may be generally presumed of one or
+more specific types, whereas EDA software often accepts data of more general
+and varied types. EDA software should aim to accept and appropriately transform
+as many diverse kinds of input data as possible, through addressing the
+following standards, considered in terms of the two cases of input data in uni-
+and multi-variate form. All of the general standards for kinds of input (G2.0 -
+G2.12) apply to input data for EDA Software.
+
+#### Index Columns
+
+The following standards refer to an *index column*, which is understood to
+imply an explicitly named or identified column which can be used to provide a
+unique index index into any and all rows of that table. Index columns ensure
+the universal applicability of standard table join operations, such as those
+implemented via the [`dplyr` package](https://dplyr.tidyverse.org).
+
+- [**EA2.0**]{#EA2_0} *EDA Software which accepts standard tabular data and
+  implements or relies upon extensive table filter and join operations should
+  utilise an **index column** system*
+- [**EA2.1**]{#EA2_1} *All values in an index column must be unique, and this
+  uniqueness should be affirmed as a pre-processing step for all input data.*
+- [**EA2.2**]{#EA2_2} *Index columns should be explicitly identified, either:*
+    - [**EA2.2a**]{#EA2_2a} *by using an appropriate class system, or*
+    - [**EA2.2b**]{#EA2_2b} *through setting an `attribute` on a table, `x`, of
+      `attr(x, "index") <- <index_col_name>`.*
+
+For EDA software which either implements custom classes or explicitly sets
+attributes specifying index columns, these attributes should be used as the
+basis of all table join operations, and in particular:
+
+- [**EA2.3**]{#EA2_3} *Table join operations should not be based on any assumed
+  variable or column names*
+
+#### Multi-tabular input
+
+EDA software designed to accept multi-tabular input should:
+
+- [**EA2.4**]{#EA2_4} *Use and demand an explicit class system for such input
+  (for example, via the [`DM` package](https://github.com/krlmlr/dm)).*
+- [**EA2.5**]{#EA2_5} *Ensure all individual tables follow the above standards
+  for Index Columns*
+
+#### Classes and Sub-Classes
+
+*Classes* are understood here to be the classes define single input objects,
+while *Sub-Classes* refer to the class definitions of components of input
+objects (for example, of columns of an input `data.frame`). EDA software which
+is intended to receive input in general vector formats (see *Uni-variate Input*
+section of [*General Standards*](#general-standards)) should ensure that it
+complies with **G2.**, so that vector input is appropriately processed
+regardless of input class. An additional standard for EDA software is that,
+
+- [**EA2.6**]{#EA2_6} *Routines should appropriately process vector data
+  regardless of additional attributes*
+
+The following code illustrates some ways by which "metadata" defining classes
+and additional attributes associated with a standard vector object may by
+modified.
+
+``` r
+x <- 1:10
+class (x) <- "notvector"
+attr (x, "extra_attribute") <- "another attribute"
+attr (x, "vector attribute") <- runif (5)
+attributes (x)
+#> $class
+#> [1] "notvector"
+#> 
+#> $extra_attribute
+#> [1] "another attribute"
+#> 
+#> $`vector attribute`
+#> [1] 0.03521663 0.49418081 0.60129563 0.75804346 0.16073301
+```
+
+All statistical software should appropriately deal with such input
+data, as exemplified by the `storage.mode()`, `length()`, and `sum()` functions
+of the `base` package, which return the appropriate values regardless of
+redefinition of class or additional attributes.
+
+``` r
+storage.mode (x)
+#> [1] "integer"
+length (x)
+#> [1] 10
+sum (x)
+#> [1] 55
+storage.mode (sum (x))
+#> [1] "integer"
+```
+
+Tabular inputs in `data.frame` class may contain columns which are themselves
+defined by custom classes, and which possess additional attributes. The ability
+of software to accept such inputs is covered by the *Tabular Input* section of
+the [*General Standards*](#general-standards).
+
+### Analytic Algorithms
+
+EDA software will generally not directly implement what might be considered as
+statistical algorithms in their own right. Where algorithms are implemented,
+the following standards apply.
+
+- [**EA3.0**]{#EA3_0} *The algorithmic components of EDA Software should enable
+  automated extraction and/or reporting of statistics as some sufficiently
+  "meta" level (such as variable or model selection), for which previous or
+  reference implementations require manual intervention.*
+- [**EA3.1**]{#EA3_1} *EDA software should enable standardised comparison of
+  inputs, processes, models, or outputs which previous or reference
+  implementations otherwise only enable in some comparably unstandardised
+  form.*
+
+Both of these standards also relate to the following standards for output
+values, visualisation, and summary output.
+
+### Return Results / Output Data
+
+- [**EA4.0**]{#EA4_0} *EDA Software should ensure all return results have types
+  which are consistent with input types.*
+
+Examples of such compliance include ensuring that `sum`, `min`, or `max` values
+applied to `integer`-type vectors return `integer` values.
+
+- [**EA4.1**]{#EA4_1} *EDA Software should implement parameters to enable
+  explicit control of numeric precision*
+- [**EA4.2**]{#EA4_2} *The primary routines of EDA Software should return
+  objects for which default `print` and `plot` methods give sensible results.
+  Default `summary` methods may also be implemented.*
+
+### Visualization and Summary Output
+
+Visualization commonly represents one of the primary functions of EDA Software,
+and thus visualization output is given greater consideration in this category
+than in other categories in which visualization may nevertheless play an
+important role. In particular, one component of this sub-category is *Summary
+Output*, taken to refer to all forms of screen-based output beyond conventional
+graphical output, including tabular and other text-based forms. Standards for
+visualization itself are considered in the two primary sub-categories of static
+and dynamic visualization, where the latter includes interactive visualization.
+
+Prior to these individual sub-categories, we consider a few standards
+applicable to visualization in general, whether static or dynamic.
+
+- [**EA5.0**]{#EA5_0} *Graphical presentation in EDA software should be as
+  accessible as possible or practicable. In particular, EDA software should
+  consider accessibility in terms of:*
+    - [**EA5.0a**]{#EA5_0a} *Typeface sizes, which should default to sizes
+      which explicitly enhance accessibility*
+    - [**EA5.0b**]{#EA5_0b} *Default colour schemes, which should be carefully
+      constructed to ensure accessibility.*
+- [**EA5.1**]{#EA5_1} *Any explicit specifications of typefaces which override
+  default values provided through other packages (including the `graphics`
+  package) should consider accessibility*
+
+#### Summary and Screen-based Output
+
+- [**EA5.2**]{#EA5_2} *Screen-based output should never rely on default print
+  formatting of `numeric` types, rather should also use some version of
+  `round(., digits)`, `formatC`, `sprintf`, or similar functions for numeric
+  formatting according the parameter described in* **EA4.1**.
+- [**EA5.3**]{#EA5_3} *Column-based summary statistics should always indicate
+  the `storage.mode`, `class`, or equivalent defining attribute of each
+  column.*
+
+An example of compliance with the latter standard is the `print.tibble` method
+of the [`tibble` package](https://tibble.tidyverse.org).
+
+#### General Standards for Visualization (Static and Dynamic)
+
+- [**EA5.4**]{#EA5_4} *All visualisations should ensure values are rounded
+  sensibly (for example, via `pretty()` function).*
+- [**EA5.5**]{#EA5_5} *All visualisations should include units on all axes
+  where such are specified or otherwise obtainable from input data or other
+  routines.*
+
+#### Dynamic Visualization
+
+Dynamic visualization routines are commonly implemented as interfaces to
+`javascript` routines. Unless routines have been explicitly developed as an
+internal part of an R package, standards shall not be considered to apply to
+the code itself, rather only to decisions present as user-controlled parameters
+exposed within the R environment. That said, one standard may nevertheless be
+applied, which aims to maximise inter-operability between packages. 
+
+- [**EA5.6**]{#EA5_6} *Any packages which internally bundle libraries used for
+  dynamic visualization and which are also bundled in other, pre-existing
+  R packages, should explain the necessity and advantage of re-bundling that
+  library.*
+
+### Testing
+
+#### Return Values
+
+- [**EA6.0**]{#EA6_0} *Return values from all functions should be tested,
+  including tests for the following characteristics:*
+    - [**EA6.0a**]{#EA6_0a} *Classes and types of objects*
+    - [**EA6.0b**]{#EA6_0b} *Dimensions of tabular objects*
+    - [**EA6.0c**]{#EA6_0c} *Column names (or equivalent) of tabular objects*
+    - [**EA6.0d**]{#EA6_0d} *Classes or types of all columns contained within
+      `data.frame`-type tabular objects *
+    - [**EA6.0e**]{#EA6_0e} *Values of single-valued objects; for `numeric`
+      values either using `testthat::expect_equal()` or equivalent with
+      a defined value for the `tolerance` parameter, or using `round(...,
+      digits = x)` with some defined value of `x` prior to testing equality.*
+
+#### Graphical Output
+
+- [**EA6.1**]{#EA6_1} *The properties of graphical output from EDA software
+  should be explicitly tested, for example via the [`vdiffr`
+  package](https://github.com/r-lib/vdiffr) or equivalent.*
+
+Tests for graphical output are frequently only run as part of an extended test
+suite.
