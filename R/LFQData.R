@@ -112,6 +112,7 @@ LFQData <- R6::R6Class(
       } else {
         data
       }
+      private$.data <- .drop_response_attributes(private$.data, config$get_response())
       private$.config <- config$clone(deep = TRUE)
       self$prefix <- prefix
       private$.provenance <- if (is.null(provenance)) Provenance$new() else provenance$clone(deep = TRUE)
@@ -508,6 +509,28 @@ LFQData <- R6::R6Class(
     }
   )
 )
+
+#' Drop extra classes and attributes (AsIs, units, labels) from the response
+#' @param data long-format data
+#' @param response response column
+#' @noRd
+#' @srrstats {EA2.6} A response with extra classes or attributes (e.g. `I()`, units, labelled) becomes a plain
+#'   numeric vector at `LFQData$new()`, with a message, so transformations and models see the values only.
+.drop_response_attributes <- function(data, response) {
+  values <- data[[response]]
+  if (is.null(attributes(values))) {
+    return(data)
+  }
+  inform_prolfqua(
+    "Response `",
+    response,
+    "`: dropped attributes ",
+    toString(names(attributes(values))),
+    "; prolfqua uses the numeric values only."
+  )
+  data[[response]] <- as.numeric(values)
+  data
+}
 
 #' Plot an LFQData object
 #'

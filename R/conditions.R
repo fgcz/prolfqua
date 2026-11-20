@@ -161,10 +161,12 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
 
 #' Validate an LFQData before fitting or aggregation
 #'
-#' NA intensities are missing observations and pass. Zero rows, `Inf`, `-Inf` or `NaN` responses, and NA in the
-#' hierarchy, factor or sample key columns raise classed errors.
+#' NA intensities are missing observations and pass. Zero rows, `Inf`, `-Inf` or `NaN` responses, NA in the
+#' hierarchy, factor or sample key columns, and more than one row per sample and hierarchy key raise classed errors.
 #' @param lfqdata LFQData to check
 #' @noRd
+#' @srrstats {EA2.1} Sample, hierarchy and isotope keys must identify each row; `setup_analysis()` and every model and
+#'   aggregation entry (`.assert_model_input()`) check uniqueness and raise `prolfqua_error_duplicate_keys`.
 .assert_model_input <- function(lfqdata) {
   data <- lfqdata$data_long()
   if (nrow(data) == 0) {
@@ -199,7 +201,30 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
       class = "prolfqua_error_missing_key"
     )
   }
+  .assert_unique_keys(data, c(lfqdata$file_name(), lfqdata$hierarchy_keys(), lfqdata$isotope_label()))
   invisible(lfqdata)
+}
+
+#' Abort when key columns do not identify each row
+#' @param data long-format data
+#' @param keys sample, hierarchy and isotope key columns
+#' @noRd
+.assert_unique_keys <- function(data, keys) {
+  duplicated_rows <- duplicated(data[, keys, drop = FALSE])
+  if (!any(duplicated_rows)) {
+    return(invisible(data))
+  }
+  ids <- unique(do.call(paste, c(data[duplicated_rows, keys, drop = FALSE], sep = "~")))
+  abort_prolfqua(
+    "More than one row for ",
+    length(ids),
+    " combinations of ",
+    toString(paste0("`", keys, "`")),
+    ", e.g. ",
+    toString(utils::head(ids, 5)),
+    ". Each hierarchy key must be observed at most once per sample; aggregate or deduplicate the rows first.",
+    class = "prolfqua_error_duplicate_keys"
+  )
 }
 
 #' Validate simulator size and missingness weight

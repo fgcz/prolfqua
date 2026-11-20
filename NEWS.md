@@ -29,6 +29,8 @@
 
 ## Behaviour changes
 
+- Fitting and aggregation reject data with more than one row per sample and hierarchy key (`prolfqua_error_duplicate_keys`), also when the `LFQData` was created without `setup_analysis()`.
+- `LFQData$new()` drops extra classes and attributes (e.g. `I()`, units, labels) from the response column with a message; transformations and models use the plain numeric values.
 - Colour-blind safe default colours: abundance heatmaps use blue-white-red instead of green-black-red, factor levels in heatmap annotations and PCA use Okabe-Ito (viridis beyond 8 levels) instead of the ggplot2 hue palette, estimate types in volcano, MA and score plots use black, orange and blue instead of black, green and blue, and zero lines are grey instead of green.
 - Larger default text: `multigroup_volcano()` labels default to `size = 3` (was 1); `plot_sample_correlation()` uses the corrplot text sizes and passes `...` (e.g. `tl.cex`, `number.cex`) to `corrplot::corrplot.mixed()`.
 - `?prolfqua` and `?LFQData` state how violated assumptions affect estimates: outliers pull least-squares fits while `rlm` and `rfit` resist them, and missing low intensities shrink fold changes of down-regulated proteins toward zero, also with LOD imputation.

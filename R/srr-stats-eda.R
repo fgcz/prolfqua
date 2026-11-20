@@ -11,19 +11,14 @@
 #'   @param.
 #' @srrstats {EA2.0} AnalysisConfiguration names the index columns (hierarchy, file_name, sample_name, factors) used
 #'   for all joins and reshapes.
-#' @srrstatsTODO {EA2.1} LFQData$new(setup = FALSE, the default) skips the check; block H,
-#'   TODO/prolfqua/PLAN_srr_block_H_eda.md.
 #' @srrstats {EA2.2} Index columns are identified through the AnalysisConfiguration R6 class carried by every LFQData.
 #' @srrstats {EA2.2a} AnalysisConfiguration (R/AnalysisConfiguration.R) is the class system for index columns.
 #' @srrstats {EA2.3} Joins use explicit `by =` keys taken from the configuration or function arguments, never assumed
 #'   column names.
-#' @srrstatsTODO {EA2.6} no handling/tests of vectors with extra attributes; block H,
-#'   TODO/prolfqua/PLAN_srr_block_H_eda.md.
 #' @srrstats {EA3.0} build_contrast_analysis() runs one of about 20 methods on all proteins at once; LFQDataStats
 #'   reports variance, CV and sample size for all proteins.
 #' @srrstats {EA3.1} All facades return the same contrast schema (ContrastsInterface column descriptions);
 #'   merge_contrasts_results() and the ComparingMethods vignette compare methods.
-#' @srrstatsTODO {EA4.0} data.frame input returns tibble; untested; block H, TODO/prolfqua/PLAN_srr_block_H_eda.md.
 #' @srrstats {EA5.4} Axes use ggplot2 pretty breaks; PCA axis labels round the explained variance
 #'   (R/tidyMS_plotting.R).
 #' @srrstatsTODO {EA5.5} no units on axes; block H, TODO/prolfqua/PLAN_srr_block_H_eda.md.
