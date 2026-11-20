@@ -10,6 +10,7 @@
 #'   unused by the other methods.
 #' @param FDR_threshold false discovery rate threshold for significant contrasts.
 #' @param diff_threshold minimum absolute contrast effect for significance.
+#' @param digits significant digits of the numbers printed by `print()` (default 3).
 #' @return `print()` returns its input invisibly. `summary()` returns a list of
 #'   class `summary.ContrastsFacadeBase`, with method, formula, fit status and a
 #'   `per_contrast` table of estimated, missing, significant, up and down counts
@@ -105,7 +106,9 @@ NULL
 #' @rdname prolfqua_analysis_methods
 #' @exportS3Method base::print
 #' @srrstats {RE4.17} Printing shows the model specification, fit counts and coefficients without evaluating contrasts.
-print.ContrastsFacadeBase <- function(x, ...) {
+#' @srrstats {EA4.1, EA5.2} `print()` of analyses, their summaries and LFQData rounds printed numbers to `digits`
+#'   significant digits (default 3); `contrast_summary_table(digits = )` does the same for report tables.
+print.ContrastsFacadeBase <- function(x, digits = 3, ...) {
   cat("prolfqua analysis:", x$facade_name, "(", class(x)[1], ")\n")
   .print_analysis_formulas(.facade_formulas(x))
   cat("Contrasts:", paste(x$.contrast_names, collapse = ", "), "\n")
@@ -115,14 +118,24 @@ print.ContrastsFacadeBase <- function(x, ...) {
   cat(.provenance_line(x$.recorded_provenance()), "\n")
   if (is.null(x$model)) {
     cat("Intensity coefficient preview:\n")
-    print(.model_coef(x$contrast$intensity$model, n = 6L))
+    print(.signif_columns(.model_coef(x$contrast$intensity$model, n = 6L), digits))
     cat("Detection coefficient preview:\n")
-    print(.model_coef(x$contrast$detection$model, n = 6L))
+    print(.signif_columns(.model_coef(x$contrast$detection$model, n = 6L), digits))
   } else {
     cat("Coefficient preview:\n")
-    print(.model_coef(x$model, n = 6L))
+    print(.signif_columns(.model_coef(x$model, n = 6L), digits))
   }
   invisible(x)
+}
+
+#' Round the double columns of a table to significant digits for printing
+#' @param data data frame
+#' @param digits significant digits
+#' @noRd
+.signif_columns <- function(data, digits) {
+  doubles <- vapply(data, is.double, logical(1))
+  data[doubles] <- lapply(data[doubles], signif, digits = digits)
+  data
 }
 
 #' Median of an optional contrast statistic
@@ -172,11 +185,11 @@ summary.ContrastsFacadeBase <- function(object, FDR_threshold = 0.05, diff_thres
 
 #' @rdname prolfqua_analysis_methods
 #' @exportS3Method base::print
-print.summary.ContrastsFacadeBase <- function(x, ...) {
+print.summary.ContrastsFacadeBase <- function(x, digits = 3, ...) {
   cat("prolfqua analysis summary:", x$method, "\n")
   .print_analysis_formulas(x$formula)
   print(x$fit_status)
-  print(x$per_contrast)
+  print(.signif_columns(x$per_contrast, digits))
   cat(x$provenance, "\n")
   invisible(x)
 }

@@ -56,7 +56,8 @@ Other LFQData:
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},
 \code{\link[=LFQDataToSummarizedExperiment]{LFQDataToSummarizedExperiment()}},
-\code{\link[=lfqdata_from_wide]{lfqdata_from_wide()}}
+\code{\link[=lfqdata_from_wide]{lfqdata_from_wide()}},
+\code{\link[=plot.LFQData]{plot.LFQData()}}
 }
 \concept{LFQData}
 \section{Public fields}{

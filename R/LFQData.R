@@ -129,6 +129,41 @@ LFQData <- R6::R6Class(
       private$.provenance
     },
     #' @description
+    #' print samples, response, hierarchy counts, samples per factor level, missing responses and provenance
+    #' @param digits significant digits of printed numbers (default 3)
+    #' @param ... unused
+    #' @return self (invisible)
+    print = function(digits = 3, ...) {
+      data <- self$data_long()
+      response <- self$response()
+      samples <- self$factors()
+      keys <- self$hierarchy_keys()
+      levels <- vapply(seq_along(keys), function(i) nrow(unique(data[, keys[seq_len(i)], drop = FALSE])), integer(1))
+      n_missing <- sum(is.na(data[[response]]))
+      range <- range(data[[response]], na.rm = TRUE)
+      cat("LFQData:", nrow(samples), "samples\n")
+      cat("Response:", response, if (self$is_transformed()) "(transformed)" else "(not transformed)", "\n")
+      cat("Hierarchy:", paste(keys, levels, collapse = ", "), "\n")
+      for (key in self$relevant_factor_keys()) {
+        counts <- table(samples[[key]])
+        cat("Samples per ", key, ": ", paste(names(counts), counts, collapse = ", "), "\n", sep = "")
+      }
+      cat(
+        "Response range: ",
+        paste(trimws(formatC(range, digits = digits, format = "g")), collapse = " to "),
+        "; missing ",
+        n_missing,
+        " of ",
+        nrow(data),
+        " (",
+        trimws(formatC(100 * n_missing / nrow(data), digits = digits, format = "g")),
+        "%)\n",
+        sep = ""
+      )
+      cat(.provenance_line(self$provenance()), "\n")
+      invisible(self)
+    },
+    #' @description
     #' set data (replaces the internal data frame)
     #' @param new_data data.frame
     #' @return self (invisible)
@@ -473,6 +508,27 @@ LFQData <- R6::R6Class(
     }
   )
 )
+
+#' Plot an LFQData object
+#'
+#' Default plot: distribution of the response per sample (violin plot), on a log scale when the response is not
+#' transformed. Other plots are available from `x$get_Plotter()`.
+#' @param x LFQData object
+#' @param ... unused
+#' @return ggplot
+#' @family LFQData
+#' @exportS3Method graphics::plot
+#' @srrstats {EA4.2} LFQData has default `print()` (samples, response, hierarchy, factor levels, missing values,
+#'   provenance) and `plot()` (response distribution per sample); fitted analyses have `print()`, `summary()` and
+#'   `plot()`.
+#' @examples
+#' istar <- sim_lfq_data_peptide_config()
+#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' lfqdata
+#' plot(lfqdata)
+plot.LFQData <- function(x, ...) {
+  x$get_Plotter()$intensity_distribution_violin()
+}
 
 #' converts LFQData object to SummarizedExperiment
 #'

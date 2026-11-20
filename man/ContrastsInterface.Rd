@@ -247,14 +247,14 @@ small data.frame with canonical column names
 regardless of backend.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{ContrastsInterface$contrast_summary_table(rounded = TRUE)}
+    \preformatted{ContrastsInterface$contrast_summary_table(rounded = TRUE, digits = 3)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{rounded}}{if TRUE round numeric columns to 3 significant
-digits (matches the prolfquapp report convention)}
+      \item{\code{rounded}}{if TRUE round numeric columns to `digits` significant digits}
+      \item{\code{digits}}{significant digits when `rounded` (default 3, the prolfquapp report convention)}
     }
     \if{html}{\out{</div>}}
   }

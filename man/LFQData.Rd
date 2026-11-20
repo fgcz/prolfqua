@@ -62,7 +62,8 @@ Other LFQData:
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},
 \code{\link[=LFQDataToSummarizedExperiment]{LFQDataToSummarizedExperiment()}},
-\code{\link[=lfqdata_from_wide]{lfqdata_from_wide()}}
+\code{\link[=lfqdata_from_wide]{lfqdata_from_wide()}},
+\code{\link[=plot.LFQData]{plot.LFQData()}}
 }
 \concept{LFQData}
 \section{Public fields}{
@@ -78,6 +79,7 @@ Other LFQData:
     \item \href{#method-LFQData-initialize}{\code{LFQData$new()}}
     \item \href{#method-LFQData-provenance}{\code{LFQData$provenance()}}
     \item \href{#method-LFQData-get_provenance_log}{\code{LFQData$get_provenance_log()}}
+    \item \href{#method-LFQData-print}{\code{LFQData$print()}}
     \item \href{#method-LFQData-set_data}{\code{LFQData$set_data()}}
     \item \href{#method-LFQData-get_config}{\code{LFQData$get_config()}}
     \item \href{#method-LFQData-set_config_value}{\code{LFQData$set_config_value()}}
@@ -168,6 +170,29 @@ subset); a copy is kept. NULL starts a new record.}
   }
   \subsection{Returns}{
     Provenance object
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LFQData-print"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQData-print}{}}}
+\subsection{\code{LFQData$print()}}{
+  print samples, response, hierarchy counts, samples per factor level, missing responses and provenance
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQData$print(digits = 3, ...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{digits}}{significant digits of printed numbers (default 3)}
+      \item{\code{...}}{unused}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    self (invisible)
   }
 }
 

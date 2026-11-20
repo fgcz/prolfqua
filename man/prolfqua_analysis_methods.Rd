@@ -15,11 +15,11 @@
 \alias{plot.ContrastsFacadeBase}
 \title{Inspect a fitted prolfqua analysis}
 \usage{
-\method{print}{ContrastsFacadeBase}(x, ...)
+\method{print}{ContrastsFacadeBase}(x, digits = 3, ...)
 
 \method{summary}{ContrastsFacadeBase}(object, FDR_threshold = 0.05, diff_threshold = 1, ...)
 
-\method{print}{summary.ContrastsFacadeBase}(x, ...)
+\method{print}{summary.ContrastsFacadeBase}(x, digits = 3, ...)
 
 \method{coef}{ContrastsFacadeBase}(object, ...)
 
@@ -39,6 +39,8 @@
 }
 \arguments{
 \item{x, object}{a fitted analysis returned by \code{\link[=build_contrast_analysis]{build_contrast_analysis()}}.}
+
+\item{digits}{significant digits of the numbers printed by \code{print()} (default 3).}
 
 \item{...}{arguments passed to the volcano or MA plotter by \code{plot()};
 unused by the other methods.}

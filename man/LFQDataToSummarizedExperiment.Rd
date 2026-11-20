@@ -37,6 +37,7 @@ Other LFQData:
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},
-\code{\link[=lfqdata_from_wide]{lfqdata_from_wide()}}
+\code{\link[=lfqdata_from_wide]{lfqdata_from_wide()}},
+\code{\link[=plot.LFQData]{plot.LFQData()}}
 }
 \concept{LFQData}

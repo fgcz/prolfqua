@@ -24,12 +24,6 @@
 #' @srrstats {EA3.1} All facades return the same contrast schema (ContrastsInterface column descriptions);
 #'   merge_contrasts_results() and the ComparingMethods vignette compare methods.
 #' @srrstatsTODO {EA4.0} data.frame input returns tibble; untested; block H, TODO/prolfqua/PLAN_srr_block_H_eda.md.
-#' @srrstatsTODO {EA4.1} no digits/precision parameter; block H, TODO/prolfqua/PLAN_srr_block_H_eda.md.
-#' @srrstatsTODO {EA4.2} print/plot/summary for LFQData and facades; block H, TODO/prolfqua/PLAN_srr_block_H_eda.md.
-#' @srrstatsTODO {EA5.2} most output relies on default tibble formatting; block H,
-#'   TODO/prolfqua/PLAN_srr_block_H_eda.md.
-#' @srrstatsTODO {EA5.3} summary statistics do not state storage mode explicitly; block H,
-#'   TODO/prolfqua/PLAN_srr_block_H_eda.md.
 #' @srrstats {EA5.4} Axes use ggplot2 pretty breaks; PCA axis labels round the explained variance
 #'   (R/tidyMS_plotting.R).
 #' @srrstatsTODO {EA5.5} no units on axes; block H, TODO/prolfqua/PLAN_srr_block_H_eda.md.

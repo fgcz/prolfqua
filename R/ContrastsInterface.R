@@ -172,9 +172,9 @@ ContrastsInterface <- R6::R6Class(
     #' small data.frame with canonical column names
     #' \code{contrast}, \code{effect}, \code{score}, \code{fdr}
     #' regardless of backend.
-    #' @param rounded if TRUE round numeric columns to 3 significant
-    #'   digits (matches the prolfquapp report convention)
-    contrast_summary_table = function(rounded = TRUE) {
+    #' @param rounded if TRUE round numeric columns to `digits` significant digits
+    #' @param digits significant digits when `rounded` (default 3, the prolfquapp report convention)
+    contrast_summary_table = function(rounded = TRUE, digits = 3) {
       contrasts <- self$get_contrasts()
       cfg <- self$get_config()
       contrast_col <- cfg$contrast_col
@@ -191,7 +191,7 @@ ContrastsInterface <- R6::R6Class(
       )
       if (isTRUE(rounded)) {
         numeric_cols <- c("effect", "score", "fdr")
-        res[numeric_cols] <- lapply(res[numeric_cols], function(x) if (is.numeric(x)) signif(x, 3) else x)
+        res[numeric_cols] <- lapply(res[numeric_cols], function(x) if (is.numeric(x)) signif(x, digits) else x)
       }
       res
     },
