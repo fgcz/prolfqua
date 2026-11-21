@@ -16,15 +16,15 @@ nr_obs_sample(
 \arguments{
 \item{data}{data.frame}
 
-\item{response}{character — intensity column name}
+\item{response}{character - intensity column name}
 
-\item{hierarchy_keys_depth}{character vector — hierarchy columns at current depth}
+\item{hierarchy_keys_depth}{character vector - hierarchy columns at current depth}
 
-\item{file_name}{character — file name column}
+\item{file_name}{character - file name column}
 
-\item{nr_children_col}{character — nr_children column name}
+\item{nr_children_col}{character - nr_children column name}
 
-\item{new_child}{character — output column name}
+\item{new_child}{character - output column name}
 }
 \value{
 The computed result.

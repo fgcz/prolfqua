@@ -14,7 +14,7 @@ plot_stat_density_median(
 \arguments{
 \item{pdata}{data.frame with statistics}
 
-\item{factor_key}{character — factor column name for faceting}
+\item{factor_key}{character - factor column name for faceting}
 
 \item{stat}{sd, mean or CV}
 

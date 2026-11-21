@@ -14,9 +14,9 @@ aggregation using \code{limpa::dpcQuantByRow}.
 
 The output LFQData contains three value columns:
 \itemize{
-\item intensity (\code{"limpa"}) — protein-level log-expression (complete, no NAs)
-\item standard error (in \code{config$opt_se}) — per-protein, per-sample posterior SEs
-\item observation count (in \code{config$nr_children}) — number of observed precursors
+\item intensity (\code{"limpa"}) - protein-level log-expression (complete, no NAs)
+\item standard error (in \code{config$opt_se}) - per-protein, per-sample posterior SEs
+\item observation count (in \code{config$nr_children}) - number of observed precursors
 }
 }
 \examples{

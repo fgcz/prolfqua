@@ -17,13 +17,13 @@ uses the full factorial of \code{lfqdata$relevant_factor_keys()}, for example
 A tibble with one row per feature and ANOVA term, residuals included:
 the feature keys, \code{factor}, \code{Df}, \code{Sum.Sq}, \code{SS_total} (the feature's total
 sum of squares), \code{eta2} (\code{Sum.Sq / SS_total}) and \code{R2} (the feature's model
-R², \code{1 - SS_residual / SS_total}, repeated on each of its rows).
+R^2, \code{1 - SS_residual / SS_total}, repeated on each of its rows).
 }
 \description{
 Fits a least-squares model to every feature of a log-transformed \link{LFQData}
 and splits each feature's variance with its ANOVA table. Use it to check a
 normalization: a good normalization lowers the within-group variance more than
-the overall variance, so the share explained by the design, the model R²,
+the overall variance, so the share explained by the design, the model R^2,
 rises.
 }
 \details{
@@ -34,16 +34,16 @@ degree of freedom are kept, the set returned by \code{\link[=get_complete_model_
 so all features share the same terms; a message reports how many features
 were left out.
 
-Read the model R² first. The ANOVA uses sequential (type I) sums of squares:
+Read the model R^2 first. The ANOVA uses sequential (type I) sums of squares:
 when a feature is unbalanced, for example through missing values, the shares
 of the individual factors depend on the order of the terms in \code{modelstr}.
-R² does not.
+R^2 does not.
 
-Without any effect R² is positive on average: E[R²] = p / (n - 1) for p
+Without any effect R^2 is positive on average: E[R^2] = p / (n - 1) for p
 model degrees of freedom and n observed values. Compare normalizations of the
 same samples with the same missing values; imputation changes n.
 
-Use R² as a check of a normalization, not as a criterion to pick the
+Use R^2 as a check of a normalization, not as a criterion to pick the
 normalization with the highest value: that choice favours the group
 differences tested afterwards.
 }

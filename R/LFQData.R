@@ -184,7 +184,7 @@ LFQData <- R6::R6Class(
     },
     #' @description
     #' set a config field value
-    #' @param field character — field name
+    #' @param field character - field name
     #' @param value the value to set
     set_config_value = function(field, value) {
       private$.config[[field]] <- value
@@ -194,7 +194,7 @@ LFQData <- R6::R6Class(
     #' @description
     #' get deep copy
     get_copy = function() {
-      return(self$clone(deep = TRUE))
+      self$clone(deep = TRUE)
     },
     #' @description
     #' can the data be aggregated, i.e. is there a hierarchy level below the
@@ -217,7 +217,7 @@ LFQData <- R6::R6Class(
       } else {
         withr::with_seed(seed, sample_data())
       }
-      return(LFQData$new(subset, self$get_config(), provenance = private$.provenance))
+      LFQData$new(subset, self$get_config(), provenance = private$.provenance)
     },
     #' @description
     #' get subset of data
@@ -228,12 +228,12 @@ LFQData <- R6::R6Class(
         abort_missing_columns(self$subject_id(), data_nm = "x")
       }
       subset <- inner_join(x, self$data_long(), by = colnames(x), relationship = "one-to-many")
-      return(LFQData$new(subset, self$get_config(), provenance = private$.provenance))
+      LFQData$new(subset, self$get_config(), provenance = private$.provenance)
     },
     #' @description
     #' get subject ID columns
     subject_id = function() {
-      return(private$.config$hierarchy_keys_depth())
+      private$.config$hierarchy_keys_depth()
     },
     #' @description
     #' is data transformed
@@ -335,7 +335,7 @@ LFQData <- R6::R6Class(
     },
     #' @description
     #' proportion of modelling-level keys (subject_id, e.g. protein or peptide by
-    #' `hierarchy_depth`) that are decoys — an empirical-FDR / target-decoy QC
+    #' `hierarchy_depth`) that are decoys - an empirical-FDR / target-decoy QC
     #' signal. Decoy status derives from the top-level hierarchy id (protein_Id).
     #' @return numeric in \[0, 1\]
     decoy_proportion = function() {
@@ -365,7 +365,7 @@ LFQData <- R6::R6Class(
       }
       wide <- prolfqua::tidy_to_wide_config(self, as.matrix = as.matrix, value = value %||% self$response())
       wide$config <- cfg$clone(deep = TRUE)
-      return(wide)
+      wide
     },
     #' @description
     #' Annotation table
@@ -378,7 +378,7 @@ LFQData <- R6::R6Class(
     hierarchy = function() {
       hk <- self$relevant_hierarchy_keys()
       hkdf <- self$data_long() |> select(all_of(hk)) |> distinct()
-      return(hkdf)
+      hkdf
     },
     #' @description
     #' name of response variable
@@ -473,13 +473,13 @@ LFQData <- R6::R6Class(
     #' get Plotter
     #' @return LFQDataPlotter
     get_Plotter = function() {
-      return(LFQDataPlotter$new(self, self$prefix))
+      LFQDataPlotter$new(self, self$prefix)
     },
     #' @description
     #' get Summariser
     #' @return LFQDataSummarizer
     get_Summariser = function() {
-      return(LFQDataSummariser$new(self))
+      LFQDataSummariser$new(self)
     },
     #' @description
     #' Get \code{\link{LFQDataStats}}. For more details see \code{\link{LFQDataStats}}.
@@ -487,13 +487,13 @@ LFQData <- R6::R6Class(
     #' @return LFQDataStats
     get_Stats = function(stats = c("everything", "interaction", "all")) {
       stats <- match.arg(stats)
-      return(LFQDataStats$new(self, stats = stats))
+      LFQDataStats$new(self, stats = stats)
     },
     #' @description
     #' get Stats
     #' @return LFQDataTransformer
     get_Transformer = function() {
-      return(LFQDataTransformer$new(self))
+      LFQDataTransformer$new(self)
     },
     #' @description
     #' get Aggregator

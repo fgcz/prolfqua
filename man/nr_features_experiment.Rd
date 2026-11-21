@@ -14,11 +14,11 @@ nr_features_experiment(
 \arguments{
 \item{data}{data.frame}
 
-\item{hierarchy_keys}{character vector — all hierarchy column names}
+\item{hierarchy_keys}{character vector - all hierarchy column names}
 
-\item{hierarchy_keys_depth}{character vector — hierarchy columns at current depth}
+\item{hierarchy_keys_depth}{character vector - hierarchy columns at current depth}
 
-\item{name_nr_child}{character — output column name}
+\item{name_nr_child}{character - output column name}
 }
 \value{
 The computed result.

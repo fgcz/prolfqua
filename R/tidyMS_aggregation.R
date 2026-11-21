@@ -44,7 +44,7 @@ plot_hierarchies_line_default <- function(
   if (log_y) {
     p <- p + scale_y_log10()
   }
-  return(p)
+  p
 }
 
 #' Plot peptide intensities of protein as a function of the sample and factor
@@ -95,7 +95,7 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
     log_y = !lfqdata$is_transformed(),
     show.legend = show.legend
   )
-  return(res)
+  res
 }
 
 
@@ -217,7 +217,7 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
       dplyr::summarize(!!expname := mean(!!sym(response)), lmrob = mean(!!sym(response)), .groups = "drop")
     res$weights <- 1
   }
-  return(finalize(res))
+  finalize(res)
 }
 
 #' Count measured children per parent and sample after aggregation
@@ -254,7 +254,7 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
     relationship = "many-to-one"
   )
   newconfig$nr_children <- new_child
-  return(list(data = result, config = newconfig))
+  list(data = result, config = newconfig)
 }
 
 #' Aggregates e.g. protein abundances from peptide abundances
@@ -341,7 +341,7 @@ estimate_intensity <- function(lfqdata, method = c("medpolish", "rlm"), control 
 
   result <- .add_nr_children(data, unnested, hkeysd, fname, response, nrc, newconfig)
   result$failures <- dplyr::bind_rows(tibble::tibble(id = character(0), warning = character(0)), failures)
-  return(result)
+  result
 }
 
 
@@ -402,7 +402,7 @@ plot_estimate <- function(lfqdata, lfqdata_agg, show.legend = FALSE) {
   }
   xnested_all$plots <- plots
 
-  return(xnested_all)
+  xnested_all
 }
 
 
@@ -463,7 +463,7 @@ aggregate_intensity_top_n <- function(ranked_data, lfqdata, .func, N = 3) {
     hierarchy = config$hierarchy[seq_len(config$hierarchy_depth)]
   )
 
-  return(.add_nr_children(
+  .add_nr_children(
     ranked_data,
     sum_top_intensities,
     lfqdata$relevant_hierarchy_keys(),
@@ -471,7 +471,7 @@ aggregate_intensity_top_n <- function(ranked_data, lfqdata, .func, N = 3) {
     lfqdata$response(),
     lfqdata$nr_children_col(),
     newconfig
-  ))
+  )
 }
 
 
@@ -482,11 +482,11 @@ aggregate_intensity_top_n <- function(ranked_data, lfqdata, .func, N = 3) {
 #' each protein intensity of a sample. Counts per sample, observed values only.
 #'
 #' @param data data.frame
-#' @param response character — intensity column name
-#' @param hierarchy_keys_depth character vector — hierarchy columns at current depth
-#' @param file_name character — file name column
-#' @param nr_children_col character — nr_children column name
-#' @param new_child character — output column name
+#' @param response character - intensity column name
+#' @param hierarchy_keys_depth character vector - hierarchy columns at current depth
+#' @param file_name character - file name column
+#' @param nr_children_col character - nr_children column name
+#' @param new_child character - output column name
 #' @return The computed result.
 #' @export
 #' @family hierarchy counting
@@ -518,7 +518,7 @@ nr_obs_sample <- function(
   nr_children <- data |>
     group_by(!!!rlang::syms(c(hierarchy_keys_depth, file_name))) |>
     summarize(!!new_child := sum(!!sym(nr_children_col), na.rm = TRUE), .groups = "drop")
-  return(nr_children)
+  nr_children
 }
 
 
@@ -528,11 +528,11 @@ nr_obs_sample <- function(
 #' Counts experiment-wide, observed values only.
 #'
 #' @param data data.frame
-#' @param response character — intensity column name
-#' @param hierarchy_keys_depth character vector — hierarchy columns at current depth
-#' @param file_name character — file name column
-#' @param nr_children_col character — nr_children column name
-#' @param name_nr_child character — output column name
+#' @param response character - intensity column name
+#' @param hierarchy_keys_depth character vector - hierarchy columns at current depth
+#' @param file_name character - file name column
+#' @param nr_children_col character - nr_children column name
+#' @param name_nr_child character - output column name
 #' @return The computed result.
 #' @export
 #' @family hierarchy counting
@@ -574,9 +574,9 @@ nr_children_experiment <- function(
 #' whether observed or not.
 #'
 #' @param data data.frame
-#' @param hierarchy_keys character vector — all hierarchy column names
-#' @param hierarchy_keys_depth character vector — hierarchy columns at current depth
-#' @param name_nr_child character — output column name
+#' @param hierarchy_keys character vector - all hierarchy column names
+#' @param hierarchy_keys_depth character vector - hierarchy columns at current depth
+#' @param name_nr_child character - output column name
 #' @return The computed result.
 #' @export
 #' @family hierarchy counting
@@ -594,8 +594,8 @@ nr_features_experiment <- function(data, hierarchy_keys, hierarchy_keys_depth, n
 # Summarize Intensities by Intensity or NAs ----
 #' Rank precursors or peptides by intensity
 #' @param pdata data.frame
-#' @param response character — intensity column name
-#' @param hierarchy_keys character vector — all hierarchy column names
+#' @param response character - intensity column name
+#' @param hierarchy_keys character vector - all hierarchy column names
 #' @return data.frame
 #' @export
 #' @keywords internal
@@ -620,7 +620,7 @@ rank_peptide_by_intensity <- function(pdata, response, hierarchy_keys) {
   pdata <- dplyr::inner_join(pdata, ranked, by = hierarchy_keys, relationship = "many-to-one")
 
   inform_prolfqua("Columns added : ", summary_column, " ", rank_column)
-  return(pdata)
+  pdata
 }
 
 

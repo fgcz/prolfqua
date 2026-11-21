@@ -55,13 +55,13 @@ LFQDataSummariser <- R6::R6Class(
     #' @param nr_children get summary for 1,2 or more number of children
     plot_hierarchy_counts_sample = function(nr_children = 1) {
       hcs <- HierarchyCountsSample$new(self$lfq$data_long(), self$lfq$get_config(), nr_children = nr_children)
-      return(hcs$plot())
+      hcs$plot()
     },
     #' @description
     #' missing per condition and protein
     interaction_missing_stats = function() {
       x2 <- prolfqua::summarize_stats_factors(self$lfq)
-      return(x2)
+      x2
     },
     #' @description
     #' upset plot with missing information per protein and condition
@@ -70,7 +70,7 @@ LFQDataSummariser <- R6::R6Class(
       rlang::check_installed("UpSetR", reason = "for UpSet plots.")
       pups <- upset_interaction_missing_stats(self$lfq, tr = tr)
       res <- UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
-      return(res)
+      res
     },
     #' @description
     #' missing stats per condition
@@ -113,7 +113,7 @@ LFQDataSummariser <- R6::R6Class(
           percent_prot = id / max(id) * 100
         ) |>
         dplyr::ungroup()
-      return(res)
+      res
     }
   )
 )

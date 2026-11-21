@@ -111,7 +111,7 @@ LFQDataPlotter <- R6::R6Class(
         max_rownames_chars = max_rownames_chars,
         max_sample_label_chars = max_sample_label_chars
       )
-      return(fig)
+      fig
     },
     #' @description
     #'
@@ -160,7 +160,7 @@ LFQDataPlotter <- R6::R6Class(
         max_rownames_chars = max_rownames_chars,
         max_sample_label_chars = max_sample_label_chars
       )
-      return(fig)
+      fig
     },
     #' @description
     #' heatmap of sample correlations.
@@ -185,7 +185,7 @@ LFQDataPlotter <- R6::R6Class(
         max_sample_label_chars = max_sample_label_chars,
         method = method
       )
-      return(fig)
+      fig
     },
     #' @description
     #' PCA plot
@@ -211,7 +211,7 @@ LFQDataPlotter <- R6::R6Class(
         add_txt = add_txt,
         nudge = nudge
       )
-      return(fig)
+      fig
     },
     #' @description
     #' pca plot
@@ -221,7 +221,7 @@ LFQDataPlotter <- R6::R6Class(
     pca_plotly = function(PC = c(1, 2), add_txt = FALSE) {
       rlang::check_installed("plotly", reason = "for interactive plots.")
       fig <- plotly::ggplotly(self$pca(add_txt = add_txt), tooltip = self$lfq$sample_name())
-      return(fig)
+      fig
     },
     #' @description
     #' boxplots for all proteins
@@ -237,7 +237,7 @@ LFQDataPlotter <- R6::R6Class(
         hierarchy = rhk,
         facet_grid_on = fg
       )
-      return(bb)
+      bb
     },
     #' @description
     #' histogram of intensities given number of missing in conditions
@@ -325,7 +325,7 @@ LFQDataPlotter <- R6::R6Class(
       rlang::check_installed("UpSetR", reason = "for UpSet plots.")
       pups <- prolfqua::upset_missing_stats(self$lfq)
       res <- UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
-      return(res)
+      res
     },
     #' @description
     #' write boxplots to file
@@ -378,7 +378,7 @@ LFQDataPlotter <- R6::R6Class(
 #' @param name file name
 #' @noRd
 #' @srrstats {G4.0} PDF writers append `.pdf` only to file names without it (`write_pdf()`, `write_boxplots()`;
-#'   test-plotting_functions.R).
+#'   test-tidyMS_plotting.R).
 .has_pdf_suffix <- function(name) {
   grepl("\\.pdf$", name, ignore.case = TRUE)
 }

@@ -13,7 +13,7 @@ find_d0_deqms <- function(mean_myfct) {
     return(Inf)
   }
   d0 <- 2 * limma::trigammaInverse(mean_myfct)
-  return(max(d0, 0.1))
+  max(d0, 0.1)
 }
 
 
@@ -53,7 +53,7 @@ moderated_p_deqms <- function(mm, count_col, df = "df", estimate = "diff", loess
   # Handle edge cases: remove NAs/Infs for fitting
   ok <- is.finite(logvar) & is.finite(log2count) & is.finite(df_res) & df_res > 0
   if (sum(ok) < 4) {
-    # Too few observations for LOESS — fall back to standard limma moderation
+    # Too few observations for LOESS - fall back to standard limma moderation
     return(moderated_p_limma(mm, df = df, estimate = estimate, confint = confint))
   }
 
@@ -117,7 +117,7 @@ moderated_p_deqms <- function(mm, count_col, df = "df", estimate = "diff", loess
   mm$moderated.conf.low <- conf_low
   mm$moderated.conf.high <- conf_high
 
-  return(mm)
+  mm
 }
 
 
@@ -219,7 +219,7 @@ moderated_p_deqms_long <- function(mm, count_col, group_by_col = "contrast", est
     warning(msg, call. = FALSE)
   }
 
-  return(xx)
+  xx
 }
 
 
@@ -385,7 +385,7 @@ ContrastsModeratedDEqMS <- R6::R6Class(
       # unchanged; the DEqMS moderation is described in the methods text.
       .stop_if_missing_columns(contrast_result, super$column_description()$column_name, "return contrasts")
 
-      return(contrast_result)
+      contrast_result
     }
   ),
   private = list(

@@ -53,7 +53,7 @@ parse_contrast_sides <- function(contrasts) {
     position_index <- grep(paste0("\\b", names(non_intercept_coeffs)[i], "\\b"), inter)
     coeff_matrix[position_index, i + 1] <- 1
   }
-  return(list(coeff_matrix = coeff_matrix, coeffs = coeffs))
+  list(coeff_matrix = coeff_matrix, coeffs = coeffs)
 }
 
 
@@ -137,7 +137,7 @@ linfct_from_model <- function(m, as_list = TRUE) {
   res <- list(linfct_factors = linfct_factors, linfct_interactions = sorted_coeff_matrix)
 
   if (as_list) {
-    return(res)
+    res
   } else {
     do.call(rbind, res)
   }
@@ -231,13 +231,13 @@ linfct_matrix_contrasts <- function(linfct, contrasts, p.message = FALSE) {
       )
       warning(msg, call. = FALSE)
     }
-    return(res)
+    res
   }
 
   res <- make_contrasts(df, contrasts)
   res <- tibble::column_to_rownames(res, "interaction")
   res <- t(res)
-  return(res)
+  res
 }
 
 # Computing contrasts helpers -----
@@ -290,7 +290,7 @@ linfct_matrix_contrasts <- function(linfct, contrasts, p.message = FALSE) {
     conf.high = conf.high,
     stringsAsFactors = FALSE
   )
-  return(res)
+  res
 }
 
 #' Compute contrasts for possibly incomplete models
@@ -352,7 +352,7 @@ compute_contrast <- function(m, linfct, confint = 0.95) {
     }
   }
   res <- dplyr::bind_rows(res)
-  return(res)
+  res
 }
 
 #' Compute contrasts of a mixed-effects model with lmerTest
@@ -407,7 +407,7 @@ compute_lmer_contrast <- function(model, linfct, ddf = c("Satterthwaite", "Kenwa
       conf.low = "lower",
       conf.high = "upper"
     )
-  return(res)
+  res
 }
 
 # computing contrast ----
@@ -444,7 +444,7 @@ pivot_model_contrasts_to_wide <- function(
       values_from = dplyr::all_of(columns),
       names_glue = paste0("{.value}.{", contrast, "}")
     )
-  return(res)
+  res
 }
 #' Compute group averages or contrasts for each model
 #'
@@ -522,5 +522,5 @@ contrasts_linfct <- function(models, linfct, subject_id = "protein_Id", contrast
 
     dplyr::distinct()
   contrasts <- dplyr::inner_join(contrasts, model_infos, by = subject_id, relationship = "many-to-one")
-  return(ungroup(contrasts))
+  ungroup(contrasts)
 }

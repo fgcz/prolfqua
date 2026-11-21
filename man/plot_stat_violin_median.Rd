@@ -13,7 +13,7 @@ plot_stat_violin_median(
 \arguments{
 \item{pdata}{data.frame with statistics}
 
-\item{factor_key}{character — factor column name for x-axis}
+\item{factor_key}{character - factor column name for x-axis}
 
 \item{stat}{either CV, mean or sd}
 }

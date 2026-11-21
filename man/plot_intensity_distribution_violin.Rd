@@ -24,11 +24,11 @@ plot_intensity_distribution_density(
 \arguments{
 \item{pdata}{data.frame}
 
-\item{sample_name}{character — sample column name}
+\item{sample_name}{character - sample column name}
 
-\item{response}{character — intensity column name}
+\item{response}{character - intensity column name}
 
-\item{is_transformed}{logical — is intensity log-transformed?}
+\item{is_transformed}{logical - is intensity log-transformed?}
 
 \item{legend}{show legend. If \code{NA}, hide automatically when the number of
 samples is larger than \code{max_legend_samples}.}

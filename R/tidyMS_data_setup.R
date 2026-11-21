@@ -339,7 +339,7 @@ setup_analysis <- function(data, configuration, debug = FALSE) {
       " rows with NA response for feature and sample combinations absent from the input."
     )
   }
-  return(data)
+  data
 }
 
 #' Separates hierarchy columns into starting columns
@@ -375,7 +375,7 @@ separate_hierarchy <- function(data, config) {
         dplyr::relocate(dplyr::all_of(hkey), .before = dplyr::all_of(config$hierarchy[[hkey]][1]))
     }
   }
-  return(data)
+  data
 }
 
 #' Internal implementation for complete_cases (used by setup_analysis before LFQData exists)
@@ -394,7 +394,7 @@ separate_hierarchy <- function(data, config) {
     tidyr::nesting(!!!syms(fkeys)),
     tidyr::nesting(!!!syms(hkeys))
   )
-  return(res)
+  res
 }
 
 #' Complete cases
@@ -430,7 +430,7 @@ complete_cases <- function(lfqdata) {
 #' Sample subset of proteins/peptides/precursors
 #' @param size size of sample
 #' @param pdata tidy table
-#' @param hierarchy_keys_depth character vector — hierarchy columns at current depth
+#' @param hierarchy_keys_depth character vector - hierarchy columns at current depth
 #' @return a tibble with all rows of `pdata` for `size` randomly drawn hierarchy elements
 #' @export
 #' @keywords internal
@@ -443,7 +443,7 @@ complete_cases <- function(lfqdata) {
 sample_subset <- function(size, pdata, hierarchy_keys_depth) {
   hkdf <- pdata |> select(all_of(hierarchy_keys_depth)) |> distinct() |> dplyr::slice_sample(n = size)
   sdata <- inner_join(hkdf, pdata, by = hierarchy_keys_depth, relationship = "one-to-many")
-  return(sdata)
+  sdata
 }
 
 #' Count the children of each parent in the hierarchy

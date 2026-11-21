@@ -23,7 +23,7 @@
 encode_bin_resp <- function(lfqdata, name = "bin_resp") {
   pdata <- lfqdata$data_long()
   pdata[[name]] <- as.integer(!is.na(pdata[[lfqdata$response()]]))
-  return(pdata)
+  pdata
 }
 
 # Functions - Missingness ----
@@ -210,7 +210,7 @@ missingness_per_condition_cumsum <- function(lfqdata, factors = lfqdata$relevant
     facet_grid(as.formula(formula))
 
   res <- res |> tidyr::pivot_wider(names_from = "nrNAs", values_from = "cumulative_sum")
-  return(list(data = res, figure = p))
+  list(data = res, figure = p)
 }
 
 #' Summarize missing in condition as barplot
@@ -249,7 +249,7 @@ missingness_per_condition <- function(lfqdata, factors = lfqdata$relevant_factor
     facet_grid(as.formula(formula))
   xx <- tidyr::pivot_wider(xx, names_from = "nrNAs", values_from = dplyr::all_of(hierarchy_key))
 
-  return(list(data = xx, figure = p))
+  list(data = xx, figure = p)
 }
 
 
@@ -279,7 +279,7 @@ upset_interaction_missing_stats <- function(lfqdata, tr = 2) {
   hl <- length(lfqdata$hierarchy_keys())
   nr_missing[, -seq_len(hl)][nr_missing[, -seq_len(hl)] < tr] <- 0
   nr_missing[, -seq_len(hl)][nr_missing[, -seq_len(hl)] >= tr] <- 1
-  return(list(data = as.data.frame(nr_missing), nsets = ncol(nr_missing) - hl))
+  list(data = as.data.frame(nr_missing), nsets = ncol(nr_missing) - hl)
 }
 
 #' Prepare data for an UpSetR plot of all samples
@@ -312,5 +312,5 @@ upset_missing_stats <- function(lfqdata) {
       values_from = !!rlang::sym("isThere")
     )
   res <- list(data = as.data.frame(pups2), nsets = ncol(pups2) - length(lfqdata$hierarchy_keys()))
-  return(res)
+  res
 }

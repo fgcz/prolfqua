@@ -145,7 +145,7 @@ LM-flavoured default on demand if a subclass has not set one.
 \if{html}{\out{<a id="method-ContrastsInterface-get_missing"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsInterface-get_missing}{}}}
 \subsection{\code{ContrastsInterface$get_missing()}}{
-  get protein × contrast pairs that could not be estimated.
+  get protein x contrast pairs that could not be estimated.
 Returns a data.frame with hierarchy columns and contrast, or 0 rows.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
@@ -186,7 +186,7 @@ pick from the config}
 \if{html}{\out{<a id="method-ContrastsInterface-get_ora"></a>}}
 \if{latex}{\out{\hypertarget{method-ContrastsInterface-get_ora}{}}}
 \subsection{\code{ContrastsInterface$get_ora()}}{
-  get ORA input table — features passing the FDR and absolute
+  get ORA input table - features passing the FDR and absolute
 effect-size threshold in the requested direction.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}

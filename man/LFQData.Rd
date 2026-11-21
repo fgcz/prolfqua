@@ -246,7 +246,7 @@ subset); a copy is kept. NULL starts a new record.}
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{field}}{character — field name}
+      \item{\code{field}}{character - field name}
       \item{\code{value}}{the value to set}
     }
     \if{html}{\out{</div>}}
@@ -450,7 +450,7 @@ protein_Id, is a contaminant). Detection uses the configured
 \if{latex}{\out{\hypertarget{method-LFQData-decoy_proportion}{}}}
 \subsection{\code{LFQData$decoy_proportion()}}{
   proportion of modelling-level keys (subject_id, e.g. protein or peptide by
-\code{hierarchy_depth}) that are decoys — an empirical-FDR / target-decoy QC
+\code{hierarchy_depth}) that are decoys - an empirical-FDR / target-decoy QC
 signal. Decoy status derives from the top-level hierarchy id (protein_Id).
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}

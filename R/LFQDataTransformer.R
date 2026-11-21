@@ -329,7 +329,7 @@ transform_work_intensity <- function(pdata, response, .func, .funcname = NULL) {
       !!sym(newcol) := .func(!!sym(response))
     )
   inform_prolfqua("Column added : ", newcol)
-  return(list(data = pdata, colname = newcol, zeros = zeros))
+  list(data = pdata, colname = newcol, zeros = zeros)
 }
 
 #' Takes matrix of responses and converts into tibble
@@ -383,7 +383,7 @@ response_matrix_as_tibble <- function(pdata, value, config, data = NULL, sep = "
       relationship = "one-to-one"
     )
   }
-  return(pdata)
+  pdata
 }
 
 #' Compute medians and MADs of a matrix along one margin
@@ -393,7 +393,7 @@ response_matrix_as_tibble <- function(pdata, value, config, data = NULL, sep = "
   medians <- apply(data, dim, median, na.rm = TRUE)
   data <- sweep(data, dim, medians, "-")
   mads <- apply(data, dim, mad, na.rm = TRUE)
-  return(list(medians = medians, mads = mads))
+  list(medians = medians, mads = mads)
 }
 
 #' Compute the median and MAD of each sample
@@ -418,7 +418,7 @@ response_matrix_as_tibble <- function(pdata, value, config, data = NULL, sep = "
 get_robscales <- function(lfqdata) {
   data <- tidy_to_wide_config(lfqdata, as.matrix = TRUE)$data
   scales <- .get_robscales(data)
-  return(scales)
+  scales
 }
 
 
@@ -497,7 +497,7 @@ apply_to_response_matrix <- function(lfqdata, .func, .funcname = NULL) {
     lfqdata$get_config(),
     lfqdata$data_long()
   )
-  return(list(data = data, colname = colname))
+  list(data = data, colname = colname)
 }
 
 #' Scale data using a subset of the data
@@ -538,7 +538,7 @@ scale_with_subset <- function(lfqdata, lfqsubset, preserve_mean = FALSE, colname
   if (!is.null(colname)) {
     data <- dplyr::rename(data, !!colname := !!scaled_name)
   }
-  return(list(data = data, scales = scales, colname = colname %||% scaled_name))
+  list(data = data, scales = scales, colname = colname %||% scaled_name)
 }
 
 
@@ -571,7 +571,7 @@ center_to_reference <- function(
       centered_abundance_by_median = .data[[abundance_column]] - reference_median
     ) |>
     dplyr::select(-reference_mean, -reference_median) # Remove the temporary column
-  return(normalized_df)
+  normalized_df
 }
 
 #' Center data to a reference subset

@@ -15,13 +15,13 @@ summarize_hierarchy(
 \arguments{
 \item{pdata}{data.frame}
 
-\item{hierarchy_keys}{character vector — all hierarchy column names}
+\item{hierarchy_keys}{character vector - all hierarchy column names}
 
-\item{isotope_label}{character — isotope label column name}
+\item{isotope_label}{character - isotope label column name}
 
-\item{hierarchy}{character vector — hierarchy level to group by (default hierarchy_keys)}
+\item{hierarchy}{character vector - hierarchy level to group by (default hierarchy_keys)}
 
-\item{factors}{character vector — factor columns to include}
+\item{factors}{character vector - factor columns to include}
 }
 \value{
 a tibble with one row per combination of the \code{factors} and \code{hierarchy} columns and, for each other

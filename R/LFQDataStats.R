@@ -139,7 +139,7 @@ LFQDataStats <- R6::R6Class(
           c("nrReplicates", "nrMeasured", "sd", "var", "meanAbundance", "medianAbundance", "CV")
         )
       )
-      return(res)
+      res
     },
     #' @description
     #' Determine CV or sd for the quantiles
@@ -151,7 +151,7 @@ LFQDataStats <- R6::R6Class(
         stats = self$stat,
         probs = probs
       )
-      return(res)
+      res
     },
     #' @description
     #' plots density or ecdf
@@ -220,7 +220,7 @@ LFQDataStats <- R6::R6Class(
       }
       res <- self$stats_quantiles(probs)
       res <- lfq_power_t_test_quantiles(res$long, delta = delta, power = power, sig.level = sig.level)
-      return(res)
+      res
     },
     #' @description
     #' compute sample for each protein
@@ -243,7 +243,7 @@ LFQDataStats <- R6::R6Class(
         sig.level = sig.level,
         min.n = 1.5
       )
-      return(res)
+      res
     },
     #' @description
     #' Plan balanced two-group sample size from pooled within-group pilot

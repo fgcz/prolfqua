@@ -18,13 +18,13 @@ plot_raster(
 )
 }
 \arguments{
-\item{matrix}{numeric matrix — wide-format intensity data}
+\item{matrix}{numeric matrix - wide-format intensity data}
 
-\item{annotation}{data.frame — sample annotation}
+\item{annotation}{data.frame - sample annotation}
 
-\item{factor_keys}{character vector — factor column names for annotation}
+\item{factor_keys}{character vector - factor column names for annotation}
 
-\item{sample_name}{character — sample name column}
+\item{sample_name}{character - sample name column}
 
 \item{arrange}{either mean or var}
 

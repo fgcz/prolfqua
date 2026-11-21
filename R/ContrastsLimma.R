@@ -784,7 +784,7 @@ ModelLimma <- R6::R6Class(
         res_list[[j]] <- df_j
       }
       result <- dplyr::bind_rows(res_list)
-      return(result)
+      result
     },
     #' @description
     #' return anova table (F-test per protein across all non-intercept coefficients)
@@ -812,7 +812,7 @@ ModelLimma <- R6::R6Class(
       result$factor <- terms_tested
 
       result <- self$p.adjust(result, column = "p.value", group_by_col = "factor")
-      return(dplyr::ungroup(result))
+      dplyr::ungroup(result)
     }
   ),
   private = list(
@@ -922,7 +922,7 @@ ContrastsLimma <- R6::R6Class(
     #' @param avg logical, also compute avgAbd linfct
     get_linfct = function(global = TRUE, avg = TRUE) {
       linfct <- .linfct(self$model$dummy_model, self$contrasts, avg = avg)
-      return(linfct)
+      linfct
     },
     #' @description
     #' get table with contrast estimates via limma pipeline
@@ -1021,7 +1021,7 @@ ContrastsLimma <- R6::R6Class(
       self$contrast_result <- contrast_result
 
       .stop_if_missing_columns(contrast_result, super$column_description()$column_name, "return contrasts")
-      return(contrast_result)
+      contrast_result
     }
   )
 )

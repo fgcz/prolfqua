@@ -15,13 +15,13 @@ plot_pca(
 )
 }
 \arguments{
-\item{matrix}{numeric matrix — wide-format intensity data}
+\item{matrix}{numeric matrix - wide-format intensity data}
 
-\item{annotation}{data.frame — sample annotation}
+\item{annotation}{data.frame - sample annotation}
 
-\item{sample_name}{character — sample name column}
+\item{sample_name}{character - sample name column}
 
-\item{factor_keys}{character vector — factor column names (first for color, second for shape)}
+\item{factor_keys}{character vector - factor column names (first for color, second for shape)}
 
 \item{PC}{which principal components to plot}
 

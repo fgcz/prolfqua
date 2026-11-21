@@ -9,9 +9,9 @@ rank_peptide_by_intensity(pdata, response, hierarchy_keys)
 \arguments{
 \item{pdata}{data.frame}
 
-\item{response}{character — intensity column name}
+\item{response}{character - intensity column name}
 
-\item{hierarchy_keys}{character vector — all hierarchy column names}
+\item{hierarchy_keys}{character vector - all hierarchy column names}
 }
 \value{
 data.frame

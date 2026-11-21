@@ -85,7 +85,7 @@ get_uniprot_id_from_fasta_header <- function(df, idcolumn = "protein_Id") {
     warning("No SwissProt (sp) or TrEMBL (tr) IDs were extracted.")
     res <- df
   }
-  return(res)
+  res
 }
 
 #' Volcano plot for multiple contrasts
@@ -166,7 +166,7 @@ multigroup_volcano <- function(
         )
     }
   }
-  return(p)
+  p
 }
 
 #' Bound significance scores away from zero before log transformation
@@ -263,7 +263,7 @@ multigroup_volcano <- function(
       )
   }
 
-  return(p)
+  p
 }
 
 
@@ -476,7 +476,7 @@ table_facade <- function(df, caption, digits = getOption("digits"), kable = TRUE
       xanchor = "left",
       font = list(size = title_size)
     )
-  return(p2)
+  p2
 }
 
 #' Interactive volcano plots with plotly
@@ -551,7 +551,7 @@ volcano_plotly <- function(
     yintercept = yintercept,
     title_size = title_size
   )
-  return(xd)
+  xd
 }
 
 
@@ -567,7 +567,7 @@ volcano_plotly <- function(
 prolfqua_data <- function(datastr, package = "prolfqua") {
   e <- new.env(parent = emptyenv())
   data(list = datastr, package = package, envir = e)
-  return(e[[datastr]])
+  e[[datastr]]
 }
 
 
@@ -602,7 +602,7 @@ make_interaction_column <- function(data, columns, sep = ".") {
   colnames(intr) <- paste0("interaction_", columns)
   colname <- "interaction"
   data <- data |> dplyr::mutate(!!colname := interaction(intr, sep = sep))
-  return(data)
+  data
 }
 
 

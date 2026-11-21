@@ -61,13 +61,13 @@ poolvar <- function(res1, config) {
   resp$data <- NULL
   resp <- bind_cols(resp, pooled)
   resp <- resp |> mutate(!!config$factor_keys()[1] := "pooled")
-  return(resp)
+  resp
 }
 
 #' Compute mean, sd, and CV for all Peptides, or proteins, for all interactions and all samples.
 #'
 #' @param lfqdata [LFQData] object with the data and its configuration
-#' @param factor_key character vector — factor columns to group by (default: relevant_factor_keys)
+#' @param factor_key character vector - factor columns to group by (default: relevant_factor_keys)
 #' @return `summarize_stats()`: a tibble with one row per hierarchy element, isotope label and level of
 #'   `factor_key`, with the columns `nrReplicates`, `nrMeasured`, `nrNAs`, `sd`, `var`, `meanAbundance`,
 #'   `medianAbundance`, `CV` (untransformed data only) and `interaction`.
@@ -117,7 +117,7 @@ summarize_stats <- function(lfqdata, factor_key = lfqdata$relevant_factor_keys()
   } else {
     hierarchy_factor <- prolfqua::make_interaction_column(hierarchy_factor, columns = factor_key, sep = ":")
   }
-  return(hierarchy_factor)
+  hierarchy_factor
 }
 
 
@@ -142,7 +142,7 @@ summarize_stats_factors <- function(lfqdata) {
 
 #' summarize stats output (compute quantiles)
 #' @param stats_res result of running `summarize_stats`
-#' @param factor_keys_depth character vector — factor columns at current depth
+#' @param factor_keys_depth character vector - factor columns at current depth
 #' @param stats summarize either sd or CV
 #' @param probs for which quantiles 10, 20 etc.
 #' @return `summarize_stats_quantiles()`: a list with `long`, a tibble with one row per factor level and quantile
@@ -188,7 +188,7 @@ summarize_stats_quantiles <- function(
 
   xx <- sd_quantile_res2 |> tidyr::unite("interaction", dplyr::all_of(factor_keys_depth))
   wide <- xx |> tidyr::pivot_wider(names_from = "interaction", values_from = "quantiles")
-  return(list(long = sd_quantile_res2, wide = wide))
+  list(long = sd_quantile_res2, wide = wide)
 }
 
 
@@ -274,7 +274,7 @@ lfq_power_t_test_proteins <- function(stats_res, delta = c(0.59, 1, 2), power = 
 
 #' Plot the density or ECDF of sd, mean or CV
 #' @param pdata data.frame with statistics
-#' @param factor_key character — factor column name for colouring
+#' @param factor_key character - factor column name for colouring
 #' @param stat sd, mean or CV
 #' @param ggstat either density or ecdf
 #' @return a ggplot object with one density or ECDF line of `stat` per level of `factor_key`
@@ -296,11 +296,11 @@ plot_stat_density <- function(pdata, factor_key, stat = c("CV", "meanAbundance",
   p <- ggplot(pdata, aes(x = .data[[stat]], colour = .data[[factor_key]])) +
     theme_prolfqua(grid = TRUE) +
     geom_line(stat = ggstat)
-  return(p)
+  p
 }
 #' Plot the density or ECDF of sd, mean or CV for intensities below and above the median
 #' @param pdata data.frame with statistics
-#' @param factor_key character — factor column name for faceting
+#' @param factor_key character - factor column name for faceting
 #' @param stat sd, mean or CV
 #' @param ggstat either density or ecdf
 #' @return a ggplot object with density or ECDF lines of `stat` for features above and below the median mean
@@ -332,13 +332,13 @@ plot_stat_density_median <- function(
     theme_prolfqua(grid = TRUE) +
     geom_line(stat = ggstat) +
     facet_wrap(factor_key)
-  return(p)
+  p
 }
 
 #' Violin plot of sd, CV or mean
 #'
 #' @param pdata data.frame with statistics
-#' @param factor_keys_depth character vector — factor columns for grouping
+#' @param factor_keys_depth character vector - factor columns for grouping
 #' @param stat either CV, mean or sd
 #' @return a ggplot object with one violin of `stat` per combination of factor levels, with the median marked
 #' @export
@@ -360,11 +360,11 @@ plot_stat_violin <- function(pdata, factor_keys_depth, stat = c("CV", "meanAbund
     theme_prolfqua() +
     geom_violin(linewidth = 0.3) +
     ggplot2::stat_summary(fun = median, geom = "point", size = 1, color = "black")
-  return(p)
+  p
 }
 #' Violin plot of sd, CV or mean for intensities below and above the median
 #' @param pdata data.frame with statistics
-#' @param factor_key character — factor column name for x-axis
+#' @param factor_key character - factor column name for x-axis
 #' @param stat either CV, mean or sd
 #' @return a ggplot object with violins of `stat` per level of `factor_key` and the median and interquartile range
 #'   marked, faceted into features below and above the median mean intensity
@@ -395,12 +395,12 @@ plot_stat_violin_median <- function(pdata, factor_key, stat = c("CV", "meanAbund
       geom = "pointrange"
     ) +
     facet_wrap("top")
-  return(p)
+  p
 }
 
 #' Plot standard deviation against mean to assess variance stability
 #' @param pdata data.frame with statistics
-#' @param factor_keys_depth character vector — factor columns for faceting
+#' @param factor_keys_depth character vector - factor columns for faceting
 #' @param size how many points to sample (since scatter plot to slow for all)
 #' @return a ggplot scatter plot of `sd` against `meanAbundance` with a loess fit, one facet per combination of
 #'   factor levels
@@ -432,5 +432,5 @@ plot_stdv_vs_mean <- function(pdata, factor_keys_depth, size = 2000) {
     geom_smooth(method = "loess", formula = y ~ x) +
     facet_wrap(factor_keys_depth, nrow = 1) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1))
-  return(p)
+  p
 }

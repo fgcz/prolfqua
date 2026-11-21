@@ -98,7 +98,7 @@ ContrastsTable <- R6::R6Class(
         histogram = histogram,
         score = score
       )
-      return(res)
+      res
     }
   )
 )

@@ -99,7 +99,7 @@ Model <- R6::R6Class(
       model_coeff <- model_coeff |>
         dplyr::select(!!!syms(self$subject_id), !!sym("Coeffs_model"), isSingular, nr_coef)
       model_coeff <- tidyr::unnest(model_coeff, cols = c(Coeffs_model))
-      return(model_coeff)
+      model_coeff
     },
     #' @description
     #' return anova table
@@ -123,7 +123,7 @@ Model <- R6::R6Class(
       model_anova <- self$p.adjust(model_anova, column = self$model_strategy$anova_df$col_pval, group_by_col = "factor")
 
       model_anova <- model_anova |> dplyr::rename(p.value = !!sym(self$model_strategy$anova_df$col_pval))
-      return(dplyr::ungroup(model_anova))
+      dplyr::ungroup(model_anova)
     }
   )
 )

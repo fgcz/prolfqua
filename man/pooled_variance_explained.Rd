@@ -16,8 +16,8 @@ the order of the ANOVA table, residuals included.
 \description{
 Sums the sums of squares of \code{\link[=summarize_variance_explained]{summarize_variance_explained()}} over features.
 For each term the result is \code{sum(Sum.Sq) / sum(SS_total)}; one minus the
-share of the residuals is the pooled R². On features without missing values
-the pooled R² equals the PERMANOVA R² with Euclidean distances between
+share of the residuals is the pooled R^2. On features without missing values
+the pooled R^2 equals the PERMANOVA R^2 with Euclidean distances between
 samples. Features with a large total variance weigh more than in the median
 of the per-feature \code{R2}.
 }
@@ -28,7 +28,7 @@ lfqdata <- LFQData$new(bb$data, bb$config)
 lfqdata$is_transformed(TRUE)
 pooled <- pooled_variance_explained(summarize_variance_explained(lfqdata))
 pooled
-# pooled R²
+# pooled R^2
 1 - pooled$eta2[pooled$factor == "Residuals"]
 }
 \seealso{

@@ -8,7 +8,7 @@
   for (i in seq_len(N)) {
     random_string[i] <- paste(sample(digits, str_length, replace = TRUE), collapse = "")
   }
-  return(random_string)
+  random_string
 }
 
 
@@ -125,7 +125,7 @@ sim_lfq_data <- function(
     )
   peptide_abundances <- peptide_abundances |>
     tidyr::unite("sample", group, Replicate, remove = FALSE)
-  return(peptide_abundances)
+  peptide_abundances
 }
 
 
@@ -150,7 +150,7 @@ which_missing <- function(x, weight_missing = 0.2) {
   }
 
   missing_values <- vapply(missing_prop, samplemiss, logical(1))
-  return(missing_values)
+  missing_values
 }
 
 #' Evaluates code with a fixed seed, or with the current RNG state when seed is NULL.

@@ -13,7 +13,7 @@
     contrast <- c(contrast, cntr_avg)
   }
   linfct_a <- linfct_matrix_contrasts(linfct, contrast)
-  return(linfct_a)
+  linfct_a
 }
 
 #' Construct the contrasts estimable from one partial model
@@ -276,7 +276,7 @@ Contrasts <- R6::R6Class(
       }
       res <- .select_wald_columns(self$contrast_result, all)
       .stop_if_missing_columns(res, super$column_description()$column_name, "return contrasts")
-      return(res)
+      res
     }
   ),
   private = list(

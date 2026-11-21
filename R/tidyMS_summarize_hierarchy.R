@@ -2,9 +2,9 @@
 
 #' Table of distinct factors (sample annotation)
 #' @param pdata data.frame
-#' @param file_name character — file name column
-#' @param sample_name character — sample name column
-#' @param factor_keys character vector — factor column names
+#' @param file_name character - file name column
+#' @param sample_name character - sample name column
+#' @param factor_keys character vector - factor column names
 #' @return a tibble with the distinct combinations of the file name, sample name and factor columns, sorted by
 #'   sample name
 #'
@@ -25,15 +25,15 @@ table_factors <- function(pdata, file_name, sample_name, factor_keys) {
     dplyr::select(dplyr::all_of(c(file_name, sample_name, factor_keys))) |>
     dplyr::distinct() |>
     arrange(!!sym(sample_name))
-  return(factors_table)
+  factors_table
 }
 
 #' Table of distinct factors with group sizes
 #' @param pdata data.frame
-#' @param file_name character — file name column
-#' @param sample_name character — sample name column
-#' @param factor_keys character vector — all factor column names
-#' @param factor_keys_depth character vector — factor columns at current depth
+#' @param file_name character - file name column
+#' @param sample_name character - sample name column
+#' @param factor_keys character vector - all factor column names
+#' @param factor_keys_depth character vector - factor columns at current depth
 #' @return a tibble with one row per combination of the `factor_keys_depth` levels and a column `n` with the
 #'   number of samples
 #'
@@ -53,7 +53,7 @@ table_factors_size <- function(pdata, file_name, sample_name, factor_keys, facto
   xx <- xx |>
     dplyr::group_by(dplyr::across(dplyr::all_of(factor_keys_depth))) |>
     dplyr::summarize(n = dplyr::n())
-  return(xx)
+  xx
 }
 
 # Functions - summarize hierarchies
@@ -64,8 +64,8 @@ table_factors_size <- function(pdata, file_name, sample_name, factor_keys, facto
 #' isotope label over the whole dataset, whether observed or not.
 #'
 #' @param pdata data.frame
-#' @param hierarchy_keys character vector — all hierarchy column names
-#' @param isotope_label character — isotope label column name
+#' @param hierarchy_keys character vector - all hierarchy column names
+#' @param isotope_label character - isotope label column name
 #' @return a tibble with one row per isotope label and one column per hierarchy key holding the number of distinct
 #'   elements
 #' @export
@@ -88,7 +88,7 @@ hierarchy_counts <- function(pdata, hierarchy_keys, isotope_label = "isotopeLabe
   res <- pdata |>
     dplyr::group_by(across(all_of(isotope_label))) |>
     dplyr::summarise(across(all_of(hierarchy_keys), n_distinct))
-  return(res)
+  res
 }
 
 #' Count distinct elements for each level of hierarchy per sample
@@ -169,10 +169,10 @@ HierarchyCountsSample <- R6::R6Class(
 #' @family summary
 #' @family hierarchy counting
 #' @param pdata data.frame
-#' @param hierarchy_keys character vector — all hierarchy column names
-#' @param isotope_label character — isotope label column name
-#' @param hierarchy character vector — hierarchy level to group by (default hierarchy_keys)
-#' @param factors character vector — factor columns to include
+#' @param hierarchy_keys character vector - all hierarchy column names
+#' @param isotope_label character - isotope label column name
+#' @param hierarchy character vector - hierarchy level to group by (default hierarchy_keys)
+#' @param factors character vector - factor columns to include
 #' @return a tibble with one row per combination of the `factors` and `hierarchy` columns and, for each other
 #'   hierarchy level and the isotope label, a column `<level>_n` with the number of its distinct entries
 #'
@@ -202,5 +202,5 @@ summarize_hierarchy <- function(
       across(all_of(base::setdiff(all_hierarchy, hierarchy)), list(n = dplyr::n_distinct)),
       .groups = "drop"
     )
-  return(x3)
+  x3
 }

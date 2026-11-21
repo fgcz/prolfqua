@@ -48,7 +48,7 @@ MissingHelpers <- R6::R6Class(
           LFQData$new(self$data, self$config)
         )
       }
-      return(self$stats)
+      self$stats
     },
     #' @description
     #' determine limit of detection
@@ -61,7 +61,7 @@ MissingHelpers <- R6::R6Class(
       if (is.null(private$.lod_cache)) {
         private$.lod_cache <- .lod_from_group_stats(self$get_stats(), self$prob)
       }
-      return(private$.lod_cache)
+      private$.lod_cache
     }
   ),
   private = list(

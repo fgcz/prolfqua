@@ -14,7 +14,7 @@ plot_stat_density(
 \arguments{
 \item{pdata}{data.frame with statistics}
 
-\item{factor_key}{character — factor column name for colouring}
+\item{factor_key}{character - factor column name for colouring}
 
 \item{stat}{sd, mean or CV}
 

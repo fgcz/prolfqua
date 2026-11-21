@@ -72,7 +72,7 @@ ContrastsInterface <- R6::R6Class(
       )
     },
     #' @description
-    #' get protein × contrast pairs that could not be estimated.
+    #' get protein x contrast pairs that could not be estimated.
     #' Returns a data.frame with hierarchy columns and contrast, or 0 rows.
     get_missing = function() {
       abort_prolfqua("`get_missing()` is not implemented for this class.")
@@ -113,10 +113,10 @@ ContrastsInterface <- R6::R6Class(
           score = dplyr::all_of(score_col_internal)
         ) |>
         dplyr::filter(!is.na(.data$score))
-      return(rank_table)
+      rank_table
     },
     #' @description
-    #' get ORA input table — features passing the FDR and absolute
+    #' get ORA input table - features passing the FDR and absolute
     #' effect-size threshold in the requested direction.
     #' @param up if TRUE return positive effects, otherwise negative effects
     #' @param FDR_threshold false discovery rate threshold
@@ -136,7 +136,7 @@ ContrastsInterface <- R6::R6Class(
           direction * contrasts[[effect_col]] > diff_threshold &
           !is.na(contrasts[[effect_col]]),
       ]
-      return(ora)
+      ora
     },
     #' @description
     #' Filter contrast rows that pass the FDR and effect-size threshold.
@@ -223,7 +223,7 @@ ContrastsInterface <- R6::R6Class(
         "sigma" = "residual standard deviation of linear model (needed for empirical Bayes variance shrinkage)."
       )
       description <- data.frame(column_name = names(description), description = description)
-      return(description)
+      description
     }
   ),
   private = list(
@@ -339,5 +339,5 @@ merge_contrasts_results <- function(prefer, add, model_name = "mergedModel") {
   )
   more <- ContrastsTable$new(more, subject_id = prefer$subject_id, model_name = add_model_name)
   same <- ContrastsTable$new(same, subject_id = prefer$subject_id, model_name = add_model_name)
-  return(list(merged = merged, more = more, same = same))
+  list(merged = merged, more = more, same = same)
 }

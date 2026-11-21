@@ -174,7 +174,7 @@ ContrastsROPECA <- R6::R6Class(
         )
       }
 
-      return(res)
+      res
     },
     #' @description
     #' get \code{\link{ContrastsPlotter}}
@@ -193,7 +193,7 @@ ContrastsROPECA <- R6::R6Class(
           list(score = "FDR.beta.based.significance", breaks = seq(0, 1, by = 0.05))
         )
       )
-      return(res)
+      res
     },
     #' @description convert to wide format
     #' @param columns value column default beta.based.significance
@@ -206,7 +206,7 @@ ContrastsROPECA <- R6::R6Class(
         columns = c("diff", columns),
         contrast = "contrast"
       )
-      return(contrasts_wide)
+      contrasts_wide
     }
   )
 )

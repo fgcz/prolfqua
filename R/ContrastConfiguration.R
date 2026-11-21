@@ -170,5 +170,5 @@ list_to_contrast_configuration <- function(dd) {
   for (i in names(dd)) {
     config[[i]] <- dd[[i]]
   }
-  return(config)
+  config
 }

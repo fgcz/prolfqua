@@ -9,7 +9,7 @@ plot_stdv_vs_mean(pdata, factor_keys_depth, size = 2000)
 \arguments{
 \item{pdata}{data.frame with statistics}
 
-\item{factor_keys_depth}{character vector — factor columns for faceting}
+\item{factor_keys_depth}{character vector - factor columns for faceting}
 
 \item{size}{how many points to sample (since scatter plot to slow for all)}
 }

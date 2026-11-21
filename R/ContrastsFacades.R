@@ -70,7 +70,7 @@
   }
 }
 
-#' Compute protein × contrast pairs present in input but absent from output.
+#' Compute protein x contrast pairs present in input but absent from output.
 #'
 #' Returns a data.frame with hierarchy columns + `contrast_col`, or 0 rows if nothing missing.
 #' @param lfqdata [LFQData] object with the data and its configuration
@@ -331,7 +331,7 @@ ContrastsLimmaVoomImputeFacade <- R6::R6Class(
 #'
 #' For nested (peptide/precursor) input that should be rolled up to proteins
 #' via limpa's DPC quantification, use \code{\link{ContrastsLimpaNestedFacade}}
-#' instead — that facade owns the \code{\link{AggregateLimpa}} pre-step.
+#' instead - that facade owns the \code{\link{AggregateLimpa}} pre-step.
 #'
 #' @return An R6 class generator.
 #' @export
@@ -751,7 +751,7 @@ ContrastsDEqMSVoomFacade <- R6::R6Class(
     #' @param ... passed to \code{\link{strategy_limma}} (e.g. trend, robust)
     initialize = function(lfqdata, modelstr, contrasts, span = 0.5, plot = FALSE, ...) {
       full_formula <- private$.setup(lfqdata, contrasts, "deqms_voom", modelstr)
-      # No external weights — vooma handles mean-variance only
+      # No external weights - vooma handles mean-variance only
       strat <- strategy_limma(full_formula, weights = NULL, ...)
       self$model <- build_model_limma_voom(lfqdata, strat, span = span, plot = plot)
       # eBayes = FALSE: DEqMS replaces eBayes moderation

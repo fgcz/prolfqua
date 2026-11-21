@@ -2,7 +2,7 @@
 #'
 #' Analysis Configuration
 #' @description
-#' Analysis Configuration — holds all table annotations, hierarchy
+#' Analysis Configuration - holds all table annotations, hierarchy
 #' definitions, factor definitions, and analysis parameters in a single
 #' flat object.
 #'
@@ -89,34 +89,34 @@ AnalysisConfiguration <- R6::R6Class(
     #' @description
     #' Get name of working intensity column
     get_response = function() {
-      return(tail(self$work_intensity, n = 1))
+      tail(self$work_intensity, n = 1)
     },
     #' @description
     #' Remove last name in array of working intensity column names
     pop_response = function() {
       res <- self$work_intensity[length(self$work_intensity)]
       self$work_intensity <- self$work_intensity[-length(self$work_intensity)]
-      return(res)
+      res
     },
 
     #' @description
     #' Get factor keys
     #' @return array with keys
     factor_keys = function() {
-      return(names(self$factors))
+      names(self$factors)
     },
     #' @description
     #' Get factor keys till factorDepth
     factor_keys_depth = function() {
       res <- head(self$factors, n = self$factor_depth)
-      return(names(res))
+      names(res)
     },
 
     #' @description
     #' get hierarchy keys
     #' @return array of column names
     hierarchy_keys = function() {
-      return(names(self$hierarchy))
+      names(self$hierarchy)
     },
 
     #' @description
@@ -140,7 +140,7 @@ AnalysisConfiguration <- R6::R6Class(
         self$sample_name,
         self$norm_value
       )
-      return(id_vars)
+      id_vars
     },
     #' @description
     #' get names of columns containing observations e.g. (intensity, qValue, mz or rt)
@@ -154,14 +154,14 @@ AnalysisConfiguration <- R6::R6Class(
         self$opt_se,
         self$nr_children
       )
-      return(value_vars)
+      value_vars
     },
     #' @description
     #' get names of columns with sample annotations
     #'
     annotation_vars = function() {
       annotation_vars <- c(self$file_name, self$sample_name, self$factor_keys(), self$norm_value)
-      return(annotation_vars)
+      annotation_vars
     }
   )
 )
@@ -214,7 +214,7 @@ list_to_analysis_configuration <- function(dd) {
   if (!is.null(dd$sep)) {
     config$sep <- dd$sep
   }
-  return(config)
+  config
 }
 
 
@@ -238,7 +238,7 @@ make_reduced_hierarchy_config <- function(config, work_intensity, hierarchy) {
   new_config <- config$clone(deep = TRUE)
   new_config$hierarchy <- hierarchy
   new_config$work_intensity <- work_intensity
-  return(new_config)
+  new_config
 }
 
 
@@ -267,5 +267,5 @@ r6_extract_values <- function(r6class) {
       res[[i]] <- val
     }
   }
-  return(res)
+  res
 }

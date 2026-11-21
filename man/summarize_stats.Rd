@@ -17,11 +17,11 @@ summarize_stats_quantiles(
 \arguments{
 \item{lfqdata}{\link{LFQData} object with the data and its configuration}
 
-\item{factor_key}{character vector — factor columns to group by (default: relevant_factor_keys)}
+\item{factor_key}{character vector - factor columns to group by (default: relevant_factor_keys)}
 
 \item{stats_res}{result of running \code{summarize_stats}}
 
-\item{factor_keys_depth}{character vector — factor columns at current depth}
+\item{factor_keys_depth}{character vector - factor columns at current depth}
 
 \item{stats}{summarize either sd or CV}
 

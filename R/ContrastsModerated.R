@@ -114,7 +114,7 @@ ContrastsModerated <- R6::R6Class(
       # not in the per-row model identity.
       .stop_if_missing_columns(contrast_result, super$column_description()$column_name, "return contrasts")
 
-      return(contrast_result)
+      contrast_result
     }
   ),
   private = list(

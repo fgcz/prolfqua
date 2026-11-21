@@ -141,7 +141,7 @@ sim_build_models_logistf <- function(
     istar,
     model_function
   )
-  return(mod)
+  mod
 }
 
 

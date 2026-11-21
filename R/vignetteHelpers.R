@@ -41,5 +41,5 @@ script_copy_helper_vec <-
       }
     }
     inform_prolfqua(sprintf("your working directory now should contain: %d new files:", length(res)))
-    return(res)
+    res
   }

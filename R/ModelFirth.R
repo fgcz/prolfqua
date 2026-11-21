@@ -77,7 +77,7 @@ ModelFirth <- R6::R6Class(
           c("Estimate", "se(coef)", paste(c("lower", "upper"), 1 - object$alpha), "Chisq", "p", "method")
         )
         out <- data.frame(factor = row.names(out), out)
-        return(out)
+        out
       }
 
       model_coeff <- .model_fits(self) |>
@@ -85,13 +85,13 @@ ModelFirth <- R6::R6Class(
       model_coeff <- model_coeff |>
         dplyr::select(!!!syms(self$subject_id), !!sym("Coeffs_model"), isSingular, nr_coef)
       model_coeff <- tidyr::unnest(model_coeff, cols = c(Coeffs_model))
-      return(model_coeff)
+      model_coeff
     },
     #' @description
     #' return anova table
     get_anova = function() {
       warning("`get_anova()` is not implemented for Firth models; returning `NULL`.")
-      return(NULL)
+      NULL
     },
     #' @description
     #' histogram of ANOVA results
@@ -99,7 +99,7 @@ ModelFirth <- R6::R6Class(
     anova_histogram = function(what = "p.value") {
       what <- .arg_match_prolfqua(what, c("p.value", "FDR"), "what")
       warning("`anova_histogram()` is not implemented for Firth models; returning `NULL`.")
-      return(NULL)
+      NULL
     }
   ),
   private = list(

@@ -21,7 +21,7 @@ imputation-aware DF correction.
 
 For nested (peptide/precursor) input that should be rolled up to proteins
 via limpa's DPC quantification, use \code{\link{ContrastsLimpaNestedFacade}}
-instead — that facade owns the \code{\link{AggregateLimpa}} pre-step.
+instead - that facade owns the \code{\link{AggregateLimpa}} pre-step.
 }
 \examples{
 istar <- prolfqua::sim_lfq_data_peptide_config()

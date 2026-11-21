@@ -266,9 +266,9 @@ theme_prolfqua <- function(grid = FALSE, base_size = 12) {
 
 #' Visualize intensity distributions
 #' @param pdata data.frame
-#' @param sample_name character — sample column name
-#' @param response character — intensity column name
-#' @param is_transformed logical — is intensity log-transformed?
+#' @param sample_name character - sample column name
+#' @param response character - intensity column name
+#' @param is_transformed logical - is intensity log-transformed?
 #' @return `plot_intensity_distribution_violin()`: a ggplot object with one violin of the intensities per sample
 #'   and the median marked.
 #'
@@ -292,14 +292,14 @@ plot_intensity_distribution_violin <- function(pdata, sample_name, response, is_
   if (!is_transformed) {
     p <- p + scale_y_log10()
   }
-  return(p)
+  p
 }
 
 #' visualize intensity distributions
 #' @param pdata data.frame
-#' @param sample_name character — sample column name
-#' @param response character — intensity column name
-#' @param is_transformed logical — is intensity log-transformed?
+#' @param sample_name character - sample column name
+#' @param response character - intensity column name
+#' @param is_transformed logical - is intensity log-transformed?
 #' @param legend show legend. If `NA`, hide automatically when the number of
 #'   samples is larger than `max_legend_samples`.
 #' @param max_legend_samples maximum number of samples for automatic legend
@@ -350,11 +350,11 @@ plot_intensity_distribution_density <- function(
   if (!.show_sample_legend(pdata, sample_name, legend, max_legend_samples)) {
     p <- p + ggplot2::guides(colour = "none")
   }
-  return(p)
+  p
 }
 
 #' Visualize correlation among samples
-#' @param matrix numeric matrix — wide-format intensity data (samples as columns)
+#' @param matrix numeric matrix - wide-format intensity data (samples as columns)
 #' @param method correlation method, as for [plot_heatmap_cor()]
 #' @param ... passed to [corrplot::corrplot.mixed()], e.g. `tl.cex` and `number.cex` for text size (default 1)
 #' @return invisibly, the list returned by [corrplot::corrplot.mixed()] with the correlation matrix `corr` and the
@@ -481,7 +481,7 @@ plot_hierarchies_boxplot <- function(
   if (!is.null(facet_grid_on) && (facet_grid_on %in% colnames(pdata))) {
     p <- p + facet_grid(formula(paste0("~", facet_grid_on)))
   }
-  return(p)
+  p
 }
 
 
@@ -530,7 +530,7 @@ plot_hierarchies_boxplot_df <- function(
         pb = pb
       )
     )
-  return(dplyr::select(figs, all_of(c(newcol, "boxplot"))))
+  dplyr::select(figs, all_of(c(newcol, "boxplot")))
 }
 
 
@@ -539,7 +539,7 @@ plot_hierarchies_boxplot_df <- function(
 #' @param method a stats::cor() method name or a function of the matrix returning a correlation matrix
 #' @noRd
 #' @srrstats {G3.1, G3.1a} Sample correlations accept any `stats::cor()` method or a user function (examples of
-#'   `plot_heatmap_cor()`; test-plotting_functions.R). Coefficient covariances come from the estimator of the chosen
+#'   `plot_heatmap_cor()`; test-tidyMS_plotting.R). Coefficient covariances come from the estimator of the chosen
 #'   `build_contrast_analysis()` method (least squares, M-estimation, rank-based, mixed, moderated, Firth) and are
 #'   returned by `vcov()`.
 .sample_correlation <- function(matrix, method) {
@@ -556,11 +556,11 @@ plot_hierarchies_boxplot_df <- function(
 
 #' Plot a sample correlation heatmap with annotations
 #'
-#' @param matrix numeric matrix — wide-format intensity data
-#' @param annotation data.frame — sample annotation
-#' @param factor_keys character vector — factor column names for annotation
-#' @param sample_name character — sample name column
-#' @param R2 logical — plot R-squared instead of correlation
+#' @param matrix numeric matrix - wide-format intensity data
+#' @param annotation data.frame - sample annotation
+#' @param factor_keys character vector - factor column names for annotation
+#' @param sample_name character - sample name column
+#' @param R2 logical - plot R-squared instead of correlation
 #' @param color color palette
 #' @param max_sample_label_chars maximum displayed sample label length. Labels
 #'   keep their suffix because sample prefixes are often shared.
@@ -625,10 +625,10 @@ plot_heatmap_cor <- function(
 
 #' Plot a row z-score heatmap with annotations
 #'
-#' @param matrix numeric matrix — wide-format intensity data
-#' @param annotation data.frame — sample annotation
-#' @param factor_keys character vector — factor column names for annotation
-#' @param sample_name character — sample name column
+#' @param matrix numeric matrix - wide-format intensity data
+#' @param annotation data.frame - sample annotation
+#' @param factor_keys character vector - factor column names for annotation
+#' @param sample_name character - sample name column
 #' @param na_fraction maximum fraction of missing values per row. Rows that
 #'   cannot be meaningfully z-scored are always removed.
 #' @param show_rownames if TRUE shows row names, default FALSE
@@ -693,10 +693,10 @@ plot_heatmap <- function(
 
 
 #' Plot a heatmap without clustering (use to show NAs)
-#' @param matrix numeric matrix — wide-format intensity data
-#' @param annotation data.frame — sample annotation
-#' @param factor_keys character vector — factor column names for annotation
-#' @param sample_name character — sample name column
+#' @param matrix numeric matrix - wide-format intensity data
+#' @param annotation data.frame - sample annotation
+#' @param factor_keys character vector - factor column names for annotation
+#' @param sample_name character - sample name column
 #' @param arrange either mean or var
 #' @param not_na if true than arrange by nr of NA's first and then by arrange
 #' @param show_rownames logical, show row names in heatmap
@@ -763,10 +763,10 @@ plot_raster <- function(
 
 
 #' Plot a heatmap of missing values
-#' @param matrix numeric matrix — wide-format intensity data
-#' @param annotation data.frame — sample annotation
-#' @param factor_keys character vector — factor column names for annotation
-#' @param sample_name character — sample name column
+#' @param matrix numeric matrix - wide-format intensity data
+#' @param annotation data.frame - sample annotation
+#' @param factor_keys character vector - factor column names for annotation
+#' @param sample_name character - sample name column
 #' @param limitrows max rows to display
 #' @param distance distance method for clustering
 #' @return a ComplexHeatmap `Heatmap` object marking the missing values of the rows that have any; `NULL` if fewer
@@ -816,18 +816,18 @@ plot_na_heatmap <- function(matrix, annotation, factor_keys, sample_name, limitr
       use_raster = FALSE,
       show_heatmap_legend = FALSE
     )
-    return(resclust)
+    resclust
   } else {
-    return(NULL)
+    NULL
   }
 }
 
 
 #' Plot a principal component analysis of the samples
-#' @param matrix numeric matrix — wide-format intensity data
-#' @param annotation data.frame — sample annotation
-#' @param sample_name character — sample name column
-#' @param factor_keys character vector — factor column names (first for color, second for shape)
+#' @param matrix numeric matrix - wide-format intensity data
+#' @param annotation data.frame - sample annotation
+#' @param sample_name character - sample name column
+#' @param factor_keys character vector - factor column names (first for color, second for shape)
 #' @param PC which principal components to plot
 #' @param add_txt show sample labels
 #' @param nudge label nudge distance
@@ -854,7 +854,7 @@ plot_pca <- function(matrix, annotation, sample_name, factor_keys, PC = c(1, 2),
   impute_hint <- "missing values first, e.g. AggregateLimpa$new(lfqdata, impute_only = TRUE)$aggregate()."
 
   # Duplicated sample names become duplicated row names after transpose and
-  # cause a cartesian expansion in the join below — error early instead.
+  # cause a cartesian expansion in the join below - error early instead.
   dup_samples <- unique(colnames(matrix)[duplicated(colnames(matrix))])
   if (length(dup_samples) > 0) {
     abort_prolfqua(sprintf("PCA: duplicated sample names are not allowed: %s.", toString(dup_samples)))
@@ -960,5 +960,5 @@ plot_pca <- function(matrix, annotation, sample_name, factor_keys, PC = c(1, 2),
   if (!is.na(sh)) {
     x <- x + ggplot2::scale_shape_manual(values = .PCA_SHAPES)
   }
-  return(x)
+  x
 }

@@ -165,7 +165,7 @@ Concrete config factories (e.g. `create_config_Skyline()`, `create_config_Spectr
 - `test-ContrastsModeratedDEqMS.R` — DEqMS moderation and facade
 - `test-ContrastsPlotter.R` — Contrast visualization
 - `test-ImputeModel.R` — LOD imputation with borrowed covariance
-- `test-plotting_functions.R` — Low-level plots
+- `test-tidyMS_plotting.R` — Low-level plots
 - `test-tidyconfig_functions.R` — Configuration and utilities
 - `test-tidyMS_contrasts.R` — `linfct_matrix_contrasts` and `contrasts_linfct` edge cases
 

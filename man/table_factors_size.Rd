@@ -15,13 +15,13 @@ table_factors_size(
 \arguments{
 \item{pdata}{data.frame}
 
-\item{file_name}{character — file name column}
+\item{file_name}{character - file name column}
 
-\item{sample_name}{character — sample name column}
+\item{sample_name}{character - sample name column}
 
-\item{factor_keys}{character vector — all factor column names}
+\item{factor_keys}{character vector - all factor column names}
 
-\item{factor_keys_depth}{character vector — factor columns at current depth}
+\item{factor_keys_depth}{character vector - factor columns at current depth}
 }
 \value{
 a tibble with one row per combination of the \code{factor_keys_depth} levels and a column \code{n} with the

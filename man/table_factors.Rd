@@ -9,11 +9,11 @@ table_factors(pdata, file_name, sample_name, factor_keys)
 \arguments{
 \item{pdata}{data.frame}
 
-\item{file_name}{character — file name column}
+\item{file_name}{character - file name column}
 
-\item{sample_name}{character — sample name column}
+\item{sample_name}{character - sample name column}
 
-\item{factor_keys}{character vector — factor column names}
+\item{factor_keys}{character vector - factor column names}
 }
 \value{
 a tibble with the distinct combinations of the file name, sample name and factor columns, sorted by

@@ -142,7 +142,7 @@ ContrastsPlotter <- R6::R6Class(
           fig <- private$.histogram(score = spec)
           res[[spec$score]] <- fig
         }
-        return(res)
+        res
       }
     },
     #' @description
@@ -169,7 +169,7 @@ ContrastsPlotter <- R6::R6Class(
         geom_vline(xintercept = 0, col = "grey40", linewidth = 1) +
         facet_wrap(vars(!!sym(self$contrast)))
 
-      return(fig)
+      fig
     },
     #' @description
     #' volcano plots (fold change vs FDR)
@@ -259,7 +259,7 @@ ContrastsPlotter <- R6::R6Class(
           legend = legend
         )
       }
-      return(res)
+      res
     },
     #' @description
     #' shows the number of significant proteins per contrasts
@@ -285,7 +285,7 @@ ContrastsPlotter <- R6::R6Class(
           scale_fill_manual(values = .factor_palette(dplyr::n_distinct(summary_counts[[self$model_name]])))
         bar_results[[score_name]] <- list(plot = p, summary = summary_counts)
       }
-      return(bar_results)
+      bar_results
     }
   ),
   private = list(
@@ -346,7 +346,7 @@ ContrastsPlotter <- R6::R6Class(
         }
         fig[[plot_name]] <- p
       }
-      return(fig)
+      fig
     },
     .histogram = function(score) {
       breaks <- score$breaks
@@ -363,7 +363,7 @@ ContrastsPlotter <- R6::R6Class(
         theme_prolfqua() +
         geom_histogram(breaks = breaks) +
         facet_wrap(vars(!!sym(self$contrast)))
-      return(plot)
+      plot
     },
     .ma_plot = function(x, avg.abundance, diff, contrast, fc, colour = NULL, legend = TRUE) {
       p <- ggplot(
@@ -381,7 +381,7 @@ ContrastsPlotter <- R6::R6Class(
       if (!legend) {
         p <- p + guides(colour = "none")
       }
-      return(p)
+      p
     },
     .score_plot = function(x, scores, colour, legend = TRUE) {
       fig <- list()
@@ -411,7 +411,7 @@ ContrastsPlotter <- R6::R6Class(
         }
         fig[[score]] <- p
       }
-      return(fig)
+      fig
     }
   )
 )

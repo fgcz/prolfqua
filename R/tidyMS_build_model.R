@@ -68,7 +68,7 @@ lr_test <- function(
     plot_lrt_diagnostics(likelihood_ratio_test_result, model_name, model_name_int, path)
   }
 
-  return(likelihood_ratio_test_result)
+  likelihood_ratio_test_result
 }
 
 #' Write LRT diagnostic plots to PDF
@@ -167,12 +167,12 @@ build_model <- function(
     }
   }
   modelling_result <- model_analyse(nested_data, model_strategy, model_name = model_name, subject_id = subject_id)
-  return(Model$new(
+  Model$new(
     model_df = modelling_result$model_df,
     model_strategy = model_strategy,
     model_name = modelling_result$model_name,
     subject_id = subject_id
-  ))
+  )
 }
 
 
@@ -467,7 +467,7 @@ model_summary <- function(mod) {
   res <- list()
   res$exists <- table(mod$model_df$has_model_fit)
   res$isSingular <- table(mod$model_df$isSingular)
-  return(res)
+  res
 }
 
 
@@ -484,9 +484,9 @@ model_summary <- function(mod) {
     if (length(p_value_col) == 0 || nrow(res) < 2) {
       return(NA_real_)
     }
-    return(as.numeric(res[[p_value_col[1]]][2]))
+    as.numeric(res[[p_value_col[1]]][2])
   } else {
-    return(NA_real_)
+    NA_real_
   }
 }
 
@@ -653,7 +653,7 @@ compute_borrowed_variance <- function(
   borrowed_vcov <- apply(vcov_array, c(1, 2), stats::median)
   dimnames(borrowed_vcov) <- ref_names
 
-  return(list(vcov = borrowed_vcov, sigma = borrowed_sigma, df = borrowed_df, method = "vcov"))
+  list(vcov = borrowed_vcov, sigma = borrowed_sigma, df = borrowed_df, method = "vcov")
 }
 
 
@@ -723,7 +723,7 @@ impute_refit_singular <- function(
     )
   }
 
-  # Bulk-assign to avoid per-element copy-on-modify (O(n²) → O(n))
+  # Bulk-assign to avoid per-element copy-on-modify (O(n^2) -> O(n))
   succeeded <- !vapply(results, is.null, logical(1))
   idx <- impute_idx[succeeded]
   results <- results[succeeded]
@@ -753,7 +753,7 @@ impute_refit_singular <- function(
     model_df$iterations[idx] <- vapply(convergence, `[[`, integer(1), "iterations")
   }
 
-  return(model_df)
+  model_df
 }
 
 #' Impute and refit a single protein's model
@@ -879,7 +879,7 @@ get_complete_model_fit <- function(complete_models) {
     dplyr::filter(.data$nr_coef_not_NA == max_coef) |>
     dplyr::arrange(dplyr::desc(.data$nr_coef_not_NA))
   complete_models <- complete_models |> dplyr::filter(df.residual > 1)
-  return(complete_models)
+  complete_models
 }
 
 #' Fit one model per subject with a modelling strategy
@@ -960,7 +960,7 @@ model_analyse <- function(
   model_proteins$converged <- per_fit(purrr::map2_lgl, function(m) .fit_convergence(m)$converged, NA)
   model_proteins$iterations <- per_fit(purrr::map2_int, function(m) .fit_convergence(m)$iterations, NA_integer_)
 
-  return(list(model_df = model_proteins, model_name = model_name))
+  list(model_df = model_proteins, model_name = model_name)
 }
 
 

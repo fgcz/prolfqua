@@ -84,7 +84,7 @@ tidy_to_wide_config <- function(
     rownames(res_mat) <- names
     res <- res_mat
   }
-  return(list(data = res, annotation = ids, rowdata = rowdata))
+  list(data = res, annotation = ids, rowdata = rowdata)
 }
 
 #' Input checks of lfqdata_from_wide(): `values` is a named list of matrices of one shape.

@@ -7,7 +7,7 @@
 plot_sample_correlation(matrix, method = "pearson", ...)
 }
 \arguments{
-\item{matrix}{numeric matrix — wide-format intensity data (samples as columns)}
+\item{matrix}{numeric matrix - wide-format intensity data (samples as columns)}
 
 \item{method}{correlation method, as for \code{\link[=plot_heatmap_cor]{plot_heatmap_cor()}}}
 

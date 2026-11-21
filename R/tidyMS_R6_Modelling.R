@@ -338,7 +338,7 @@ AnovaExtractor <- R6::R6Class(
       x <- anova(x, test = self$test)
       colnames(x) <- make.names(colnames(x))
       x <- data.frame(factor = rownames(x), x)
-      return(x)
+      x
     }
   )
 )

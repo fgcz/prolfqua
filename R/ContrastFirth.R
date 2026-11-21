@@ -76,7 +76,7 @@ ContrastsFirth <- R6::R6Class(
       models <- self$models$models
       models$model_df <- .filter_fitted_firth_models(models$model_df)
       models$model_df$linfct <- .linfct_per_model(models$model_df, self$contrasts, avg, "firth linfct")
-      return(models)
+      models
     },
     #' @description
     #' get table with contrast estimates
@@ -99,7 +99,7 @@ ContrastsFirth <- R6::R6Class(
       }
       res <- .select_wald_columns(self$contrast_result, all)
       .stop_if_missing_columns(res, super$column_description()$column_name, "return contrasts")
-      return(res)
+      res
     }
   )
 )

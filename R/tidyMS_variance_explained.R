@@ -3,7 +3,7 @@
 #' Fits a least-squares model to every feature of a log-transformed [LFQData]
 #' and splits each feature's variance with its ANOVA table. Use it to check a
 #' normalization: a good normalization lowers the within-group variance more than
-#' the overall variance, so the share explained by the design, the model R²,
+#' the overall variance, so the share explained by the design, the model R^2,
 #' rises.
 #'
 #' @param lfqdata a log-transformed [LFQData] object.
@@ -13,7 +13,7 @@
 #' @return A tibble with one row per feature and ANOVA term, residuals included:
 #'   the feature keys, `factor`, `Df`, `Sum.Sq`, `SS_total` (the feature's total
 #'   sum of squares), `eta2` (`Sum.Sq / SS_total`) and `R2` (the feature's model
-#'   R², `1 - SS_residual / SS_total`, repeated on each of its rows).
+#'   R^2, `1 - SS_residual / SS_total`, repeated on each of its rows).
 #' @details
 #' One model is fitted per lowest-level feature (all hierarchy keys and the
 #' isotope label), the grouping of [summarize_stats()]. Missing responses are
@@ -22,19 +22,19 @@
 #' so all features share the same terms; a message reports how many features
 #' were left out.
 #'
-#' Read the model R² first. The ANOVA uses sequential (type I) sums of squares:
+#' Read the model R^2 first. The ANOVA uses sequential (type I) sums of squares:
 #' when a feature is unbalanced, for example through missing values, the shares
 #' of the individual factors depend on the order of the terms in `modelstr`.
-#' R² does not.
+#' R^2 does not.
 #'
-#' Without any effect R² is positive on average: E\[R²\] = p / (n - 1) for p
+#' Without any effect R^2 is positive on average: E\[R^2\] = p / (n - 1) for p
 #' model degrees of freedom and n observed values. Compare normalizations of the
 #' same samples with the same missing values; imputation changes n.
 #'
-#' Use R² as a check of a normalization, not as a criterion to pick the
+#' Use R^2 as a check of a normalization, not as a criterion to pick the
 #' normalization with the highest value: that choice favours the group
 #' differences tested afterwards.
-#' @srrstats {RE4.11} summarize_variance_explained returns per-feature model R² and per-term eta² as goodness-of-fit
+#' @srrstats {RE4.11} summarize_variance_explained returns per-feature model R^2 and per-term eta^2 as goodness-of-fit
 #'   statistics.
 #' @seealso [pooled_variance_explained()]
 #' @family stats
@@ -108,8 +108,8 @@ summarize_variance_explained <- function(lfqdata, modelstr = NULL) {
 #'
 #' Sums the sums of squares of [summarize_variance_explained()] over features.
 #' For each term the result is `sum(Sum.Sq) / sum(SS_total)`; one minus the
-#' share of the residuals is the pooled R². On features without missing values
-#' the pooled R² equals the PERMANOVA R² with Euclidean distances between
+#' share of the residuals is the pooled R^2. On features without missing values
+#' the pooled R^2 equals the PERMANOVA R^2 with Euclidean distances between
 #' samples. Features with a large total variance weigh more than in the median
 #' of the per-feature `R2`.
 #'
@@ -126,7 +126,7 @@ summarize_variance_explained <- function(lfqdata, modelstr = NULL) {
 #' lfqdata$is_transformed(TRUE)
 #' pooled <- pooled_variance_explained(summarize_variance_explained(lfqdata))
 #' pooled
-#' # pooled R²
+#' # pooled R^2
 #' 1 - pooled$eta2[pooled$factor == "Residuals"]
 pooled_variance_explained <- function(x) {
   missing_cols <- setdiff(c("factor", "Sum.Sq", "SS_total"), names(x))

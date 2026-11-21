@@ -168,7 +168,7 @@ adjust_p_values <- function(
   grouped_df <- contrast_df |>
     dplyr::group_by(across(all_of(group_by_col)))
   adjusted_df <- dplyr::mutate(grouped_df, !!newname := p.adjust(!!sym(column), method = "BH"))
-  return(dplyr::ungroup(adjusted_df))
+  dplyr::ungroup(adjusted_df)
 }
 
 
@@ -303,5 +303,5 @@ summary_ropeca_median_p_scaled <- function(
       n.beta = pmin(.data$n_not_na, max.n),
       isSingular = FALSE
     )
-  return(ungroup(summarized.protein))
+  ungroup(summarized.protein)
 }

@@ -9,9 +9,9 @@ hierarchy_counts(pdata, hierarchy_keys, isotope_label = "isotopeLabel")
 \arguments{
 \item{pdata}{data.frame}
 
-\item{hierarchy_keys}{character vector — all hierarchy column names}
+\item{hierarchy_keys}{character vector - all hierarchy column names}
 
-\item{isotope_label}{character — isotope label column name}
+\item{isotope_label}{character - isotope label column name}
 }
 \value{
 a tibble with one row per isotope label and one column per hierarchy key holding the number of distinct

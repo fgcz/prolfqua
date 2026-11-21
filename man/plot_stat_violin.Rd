@@ -13,7 +13,7 @@ plot_stat_violin(
 \arguments{
 \item{pdata}{data.frame with statistics}
 
-\item{factor_keys_depth}{character vector — factor columns for grouping}
+\item{factor_keys_depth}{character vector - factor columns for grouping}
 
 \item{stat}{either CV, mean or sd}
 }
