@@ -281,7 +281,8 @@ ContrastsPlotter <- R6::R6Class(
           dplyr::summarize(n = n(), .groups = "drop")
         p <- ggplot(summary_counts, aes(x = !!sym(self$contrast), y = n, fill = !!sym(self$model_name))) +
           theme_prolfqua() +
-          geom_bar(position = "stack", stat = "identity")
+          geom_col(position = "stack") +
+          scale_fill_manual(values = .factor_palette(dplyr::n_distinct(summary_counts[[self$model_name]])))
         bar_results[[score_name]] <- list(plot = p, summary = summary_counts)
       }
       return(bar_results)
@@ -370,7 +371,7 @@ ContrastsPlotter <- R6::R6Class(
         aes(x = !!sym(avg.abundance), y = !!sym(diff), text = !!sym("subject_id"), colour = !!sym(colour))
       ) +
         theme_prolfqua(grid = TRUE) +
-        geom_point(alpha = 0.5) +
+        geom_point(alpha = 0.3, size = 0.8) +
         scale_colour_manual(values = .contrast_colour_values(colour, x[[colour]])) +
         facet_wrap(vars(!!sym(contrast)))
       if (is.numeric(fc)) {
@@ -395,14 +396,14 @@ ContrastsPlotter <- R6::R6Class(
         ) +
           theme_prolfqua(grid = TRUE) +
           scale_colour_manual(values = .contrast_colour_values(colour, x[[colour]])) +
-          geom_point(alpha = 0.5) +
+          geom_point(alpha = 0.3, size = 0.8) +
           facet_wrap(vars(!!sym(self$contrast))) +
-          geom_hline(yintercept = 0, colour = 1) +
-          geom_vline(xintercept = 0, colour = 1) +
-          geom_hline(yintercept = ylims, colour = 2, linetype = "dashed")
+          geom_hline(yintercept = 0, colour = "black") +
+          geom_vline(xintercept = 0, colour = "black") +
+          geom_hline(yintercept = ylims, colour = "red", linetype = "dashed")
 
         if (is.numeric(xlim)) {
-          p <- p + geom_vline(xintercept = c(-xlim, xlim), colour = 2, linetype = "dashed")
+          p <- p + geom_vline(xintercept = c(-xlim, xlim), colour = "red", linetype = "dashed")
         }
 
         if (!legend) {

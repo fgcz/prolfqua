@@ -197,7 +197,7 @@ missingness_per_condition_cumsum <- function(lfqdata, factors = lfqdata$relevant
   nudgeval <- mean(res$cumulative_sum) * 0.05
   p <- ggplot(res, aes(x = .data$nrNAs, y = .data$cumulative_sum)) +
     theme_prolfqua() +
-    geom_bar(stat = "identity", color = "black", fill = "white") +
+    geom_col(color = "black", fill = "white") +
     geom_text(aes(label = .data$cumulative_sum), nudge_y = nudgeval, angle = -45) +
     facet_grid(as.formula(formula))
 
@@ -234,7 +234,7 @@ missingness_per_condition <- function(lfqdata, factors = lfqdata$relevant_factor
 
   p <- ggplot(xx, aes(x = .data$nrNAs, y = .data[[hierarchy_key]])) +
     theme_prolfqua() +
-    geom_bar(stat = "identity", color = "black", fill = "white") +
+    geom_col(color = "black", fill = "white") +
     geom_text(aes(label = !!sym(hierarchy_key)), nudge_y = nudgeval, angle = 45) +
     facet_grid(as.formula(formula))
   xx <- tidyr::pivot_wider(xx, names_from = "nrNAs", values_from = dplyr::all_of(hierarchy_key))

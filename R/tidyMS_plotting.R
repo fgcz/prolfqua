@@ -100,6 +100,9 @@ theme_prolfqua <- function(grid = FALSE, base_size = 12) {
 # light gray for missing (NA) cells in ComplexHeatmap output
 .HEATMAP_NA_COL <- "#D3D3D3"
 
+# point shapes for a second PCA factor: filled first, then hollow, then line shapes
+.PCA_SHAPES <- c(16, 17, 15, 18, 1, 2, 0, 5, 6, 3, 4, 8, 7, 9, 10, 12, 13, 11, 14)
+
 #' Colour-blind safe discrete palette for factor levels
 #'
 #' Okabe-Ito without black for up to 8 levels, viridis beyond; both stay distinguishable under the common forms of
@@ -884,6 +887,16 @@ plot_pca <- function(matrix, annotation, sample_name, factor_keys, PC = c(1, 2),
   xx <- inner_join(annotation, xx, by = sample_name, relationship = "many-to-one")
 
   sh <- factor_keys[2]
+  if (!is.na(sh) && length(unique(stats::na.omit(xx[[sh]]))) > length(.PCA_SHAPES)) {
+    inform_prolfqua(
+      "plot_pca: `",
+      sh,
+      "` has more than ",
+      length(.PCA_SHAPES),
+      " levels; points are not shaped by it."
+    )
+    sh <- NA
+  }
   point <- (if (!is.na(sh)) {
     geom_point(aes(shape = !!sym(sh)))
   } else {
@@ -926,7 +939,7 @@ plot_pca <- function(matrix, annotation, sample_name, factor_keys, PC = c(1, 2),
     x <- x + ggplot2::scale_colour_manual(values = color_palette)
   }
   if (!is.na(sh)) {
-    x <- x + ggplot2::scale_shape_manual(values = seq_along(unique(xx[[sh]])))
+    x <- x + ggplot2::scale_shape_manual(values = .PCA_SHAPES)
   }
   return(x)
 }

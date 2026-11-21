@@ -230,7 +230,7 @@ multigroup_volcano <- function(
     aes(x = .data[[effect]], y = -log10(.data[[significance]]))
   ) +
     theme_prolfqua(grid = TRUE) +
-    geom_point(alpha = 0.5)
+    geom_point(alpha = 0.3, size = 0.8)
   if (!is.null(colour)) {
     p <- p + aes(color = .data[[colour]])
   }

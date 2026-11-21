@@ -5,6 +5,7 @@
 - prolfqua now requires dplyr >= 1.1.0, ggplot2 >= 3.4.0 and purrr >= 1.0.0; earlier versions lacked functions prolfqua already called.
 - Error messages state the problem in their first line ("`method` must be one of ...", "Can't find column `x` in `data`.") and name the function you called instead of prolfqua's internal checker. Condition classes are unchanged; about 30 error and warning messages were reworded.
 - Joins inside prolfqua check that their lookup keys are unique: a duplicated subject, contrast or sample key in an input (for instance two rows for one protein and contrast passed to `merge_contrasts_results()`) raises an error instead of silently multiplying rows.
+- Plots: volcano, MA and score plots draw smaller, more transparent points, so dense regions stay readable; `ContrastsPlotter$barplot_threshold()` fills bars with the colour-blind safe palette; score-plot reference lines are black and red regardless of the global `palette()`. `plot_pca()` shapes the second factor with 19 distinguishable shapes and, when that factor has more levels, drops the shape mapping with a message; before, factors with more than 25 levels drew invalid shapes or no points.
 
 # prolfqua 1.9.4
 

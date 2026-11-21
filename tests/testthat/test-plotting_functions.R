@@ -616,3 +616,21 @@ test_that("sample correlations accept a cor() method or a function", {
   pl <- LFQData$new(istar$data, istar$config)$get_Plotter()
   expect_true(methods::is(pl$heatmap_cor(method = "spearman"), "Heatmap"))
 })
+
+test_that("plot_pca draws only valid shapes for a second factor with many levels (review B10)", {
+  n <- 30
+  annot <- data.frame(
+    sample = paste0("s", seq_len(n)),
+    group = rep(c("A", "B"), n / 2),
+    subject = paste0("p", seq_len(n))
+  )
+  m <- withr::with_seed(1, matrix(rnorm(20 * n), nrow = 20, dimnames = list(NULL, annot$sample)))
+  p <- plot_pca(m, annot, "sample", c("group", "subject"))
+  shapes <- ggplot2::layer_data(p, 1)$shape
+  expect_true(is.null(shapes) || all(shapes %in% 0:25))
+
+  few <- annot[1:6, ]
+  few$subject <- rep(c("p1", "p2", "p3"), 2)
+  p <- plot_pca(m[, few$sample], few, "sample", c("group", "subject"))
+  expect_setequal(unique(ggplot2::layer_data(p, 1)$shape), c(16, 17, 15))
+})

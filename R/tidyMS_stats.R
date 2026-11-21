@@ -412,7 +412,7 @@ plot_stdv_vs_mean <- function(pdata, factor_keys_depth, size = 2000) {
   p <- ggplot(pdata, aes(x = meanAbundance, y = sd)) +
     theme_prolfqua(grid = TRUE) +
     geom_point() +
-    geom_smooth(method = "loess") +
+    geom_smooth(method = "loess", formula = y ~ x) +
     facet_wrap(factor_keys_depth, nrow = 1) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1))
   return(p)

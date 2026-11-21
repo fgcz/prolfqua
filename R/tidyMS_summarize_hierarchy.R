@@ -143,7 +143,7 @@ HierarchyCountsSample <- R6::R6Class(
       nudgeval <- -mean(long$nr) * 0.05
       ggplot2::ggplot(long, ggplot2::aes(x = !!rlang::sym(self$.configuration$sample_name), y = .data$nr)) +
         theme_prolfqua() +
-        ggplot2::geom_bar(stat = "identity", position = "dodge", colour = "black", fill = "white") +
+        ggplot2::geom_col(colour = "black", fill = "white") +
         ggplot2::facet_wrap(~key, scales = "free_y", ncol = 1) +
         ggplot2::geom_text(ggplot2::aes(label = .data$nr), nudge_y = nudgeval, angle = 65) +
         ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1))
