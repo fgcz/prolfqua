@@ -25,7 +25,7 @@
     dplyr::mutate(undetected = .data$available - .data$detected)
 
   if (!isTRUE(all(counts$detected >= 0L) && all(counts$undetected >= 0L))) {
-    abort_prolfqua("internal error: negative detection counts")
+    abort_prolfqua("Internal error: detection counts are negative.")
   }
   counts
 }
@@ -111,10 +111,10 @@ StrategyBinomial <- R6::R6Class(
         control = do.call(stats::glm.control, private$glm_control())
       )
       if (anyNA(stats::coef(model)) || model$rank < length(stats::coef(model))) {
-        abort_prolfqua("binomial design is rank-deficient")
+        abort_prolfqua("The binomial design is rank-deficient.")
       }
       if (stats::df.residual(model) < 2L) {
-        abort_prolfqua("binomial model requires at least two residual degrees of freedom")
+        abort_prolfqua("The binomial model needs at least two residual degrees of freedom.")
       }
       model
     }
@@ -196,7 +196,7 @@ StrategyBinomialFirth <- R6::R6Class(
         weight <- trials * stats::fitted(model) * (1 - stats::fitted(model))
         hat <- weight * rowSums((design %*% solve(crossprod(design, weight * design))) * design)
       }
-      abort_prolfqua("Firth iteration did not converge")
+      abort_prolfqua("The Firth iteration did not converge.")
     }
   )
 )

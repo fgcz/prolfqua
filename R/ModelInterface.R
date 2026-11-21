@@ -38,13 +38,13 @@ ModelInterface <- R6::R6Class(
     #' return model coefficients
     #' @return data.frame
     get_coefficients = function() {
-      abort_prolfqua("get_coefficients not implemented")
+      abort_prolfqua("`get_coefficients()` is not implemented for this class.")
     },
     #' @description
     #' perform ANOVA analysis
     #' @return data.frame
     get_anova = function() {
-      abort_prolfqua("get_anova not implemented")
+      abort_prolfqua("`get_anova()` is not implemented for this class.")
     },
     #' @description
     #' histogram of coefficient p-values

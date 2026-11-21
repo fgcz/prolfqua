@@ -184,7 +184,7 @@ test_that("borrow_method vcov works", {
       contrasts,
       borrow_method = "vcov"
     ),
-    "falling back to sigma"
+    "using the sigma method instead"
   )
   res <- fa$get_contrasts()
   expect_s3_class(res, "data.frame")

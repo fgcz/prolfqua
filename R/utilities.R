@@ -82,7 +82,7 @@ get_uniprot_id_from_fasta_header <- function(df, idcolumn = "protein_Id") {
   if (nrow(map) > 0) {
     res <- dplyr::right_join(map, df, by = idcolumn)
   } else {
-    warning("No SwissProt (sp) or Trembl (tr) id's were extracted.")
+    warning("No SwissProt (sp) or TrEMBL (tr) IDs were extracted.")
     res <- df
   }
   return(res)

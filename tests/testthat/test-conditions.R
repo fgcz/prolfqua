@@ -316,7 +316,7 @@ test_that("contrast calculation rejects an all-zero coefficient vector", {
   zero <- matrix(0, nrow = 1, ncol = length(stats::coef(model)), dimnames = list("zero", names(stats::coef(model))))
   expect_error(
     compute_contrast(model, zero),
-    regexp = "linfct columns do not match the model coefficients",
+    regexp = "`linfct` columns do not match the model coefficients",
     class = "prolfqua_error"
   )
 })
@@ -438,4 +438,35 @@ test_that("limpa requires a configured child count column", {
     build_model_limpa(LFQData$new(x$data, x$config), strategy_limpa("abundance ~ group_")),
     class = "prolfqua_error_invalid_configuration"
   )
+})
+
+test_that("error helpers name the calling function in the header, not themselves (review B2)", {
+  user_fn <- function(x) prolfqua:::abort_bad_argument("x", "be numeric", not = "a string")
+  cnd <- rlang::catch_cnd(user_fn(1))
+  expect_s3_class(cnd, "prolfqua_error_bad_argument")
+  expect_identical(rlang::call_name(cnd$call), "user_fn")
+  expect_match(conditionMessage(cnd), "`x` must be numeric.", fixed = TRUE)
+  expect_match(conditionMessage(cnd), "You supplied a string.", fixed = TRUE)
+
+  user_cols <- function(df) prolfqua:::abort_missing_columns(c("a", "b"), "df")
+  cnd <- rlang::catch_cnd(user_cols(1))
+  expect_s3_class(cnd, "prolfqua_error_missing_column")
+  expect_identical(rlang::call_name(cnd$call), "user_cols")
+  expect_match(conditionMessage(cnd), "Can't find columns `a`, `b` in `df`.", fixed = TRUE)
+
+  user_config <- function(config) prolfqua:::abort_invalid_config("`config` must name a sample column.")
+  cnd <- rlang::catch_cnd(user_config(1))
+  expect_s3_class(cnd, "prolfqua_error_invalid_configuration")
+  expect_identical(rlang::call_name(cnd$call), "user_config")
+
+  # internal checkers forward their caller, also from inside a tryCatch() handler
+  user_formula <- function(modelstr) prolfqua:::.as_model_formula(modelstr)
+  expect_identical(rlang::call_name(rlang::catch_cnd(user_formula(1))$call), "user_formula")
+  user_choice <- function(method) prolfqua:::.arg_match_prolfqua(method, c("lm", "limma"), "method")
+  cnd <- rlang::catch_cnd(user_choice("lmm"))
+  expect_identical(rlang::call_name(cnd$call), "user_choice")
+  expect_match(conditionMessage(cnd), "`method` must be one of \"lm\", \"limma\".", fixed = TRUE)
+
+  cnd <- rlang::catch_cnd(sim_lfq_data_peptide_config(Nprot = -1))
+  expect_identical(rlang::call_name(cnd$call), "sim_lfq_data_peptide_config")
 })

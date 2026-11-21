@@ -26,14 +26,14 @@ test_that("setup_analysis stops on duplicate observations per key", {
   dup <- dplyr::bind_rows(fx$data, fx$data[1, , drop = FALSE])
 
   # before the fix this warned and returned the count table instead of erroring
-  expect_error(prolfqua::setup_analysis(dup, fx$config), "more than ONE")
+  expect_error(prolfqua::setup_analysis(dup, fx$config), "more than one observation")
 })
 
 test_that("setup_analysis(debug = TRUE) returns the count table for inspection", {
   fx <- .dup_setup_fixture()
   dup <- dplyr::bind_rows(fx$data, fx$data[1, , drop = FALSE])
 
-  expect_warning(res <- prolfqua::setup_analysis(dup, fx$config, debug = TRUE), "more than ONE")
+  expect_warning(res <- prolfqua::setup_analysis(dup, fx$config, debug = TRUE), "more than one observation")
   expect_true("n" %in% colnames(res))
   expect_gt(max(res$n), 1)
 })

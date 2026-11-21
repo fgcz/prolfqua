@@ -332,11 +332,11 @@ impute_from_model <- function(model, lfqdata) {
   is_lm <- vapply(fits, inherits, logical(1), what = "lm")
   if (!all(is_lm)) {
     abort_prolfqua(
-      "impute_from_model() needs lm fits, but model '",
+      "`impute_from_model()` needs lm fits, but model `",
       model$model_name,
-      "' has fits of class '",
+      "` has fits of class `",
       class(fits[[which(!is_lm)[1]]])[1],
-      "'."
+      "`."
     )
   }
   response <- lfqdata$response()
@@ -639,7 +639,7 @@ compute_borrowed_variance <- function(
       logical(1)
     ))
     if (!names_ok) {
-      warning("vcov coefficient names differ across successful fits; falling back to sigma method.")
+      warning("Coefficient names of `vcov()` differ across successful fits; using the sigma method instead.")
       return(list(sigma = borrowed_sigma, df = borrowed_df, method = "sigma"))
     }
   }

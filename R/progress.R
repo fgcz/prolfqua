@@ -148,5 +148,5 @@
   if (identical(reporter, "message")) {
     return(.throttled_reporter(total, label))
   }
-  abort_prolfqua("unknown prolfqua.progress reporter: use NULL, a function(i, total, label), or 'message'")
+  abort_prolfqua("Option `prolfqua.progress` must be `NULL`, a function(i, total, label) or \"message\".")
 }

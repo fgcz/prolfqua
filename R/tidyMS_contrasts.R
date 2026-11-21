@@ -326,7 +326,7 @@ compute_contrast <- function(m, linfct, confint = 0.95) {
         !isTRUE(all.equal(colnames(linfct_v_red), colnames(Sigma.hat_red))) ||
           !isTRUE(all.equal(colnames(linfct_v_red), names(coef_red)))
       ) {
-        abort_prolfqua("internal error: linfct columns do not match the model coefficients")
+        abort_prolfqua("Internal error: `linfct` columns do not match the model coefficients.")
       }
       res[[i]] <- .compute_contrast(m, linfct_v_red, coef = coef_red, Sigma.hat = Sigma.hat_red, confint = confint)
     } else {
@@ -377,11 +377,11 @@ compute_lmer_contrast <- function(model, linfct, ddf = c("Satterthwaite", "Kenwa
     # `lmerTest::contest()` indexes `1:nrow(L)`, so an empty matrix reaches
     # `L[1, ]` and aborts the whole run with "subscript out of bounds".
     # Nothing is estimable here, so report it like a rank-deficient model.
-    warning("No estimable contrast for this model!")
+    warning("No estimable contrast for this model.")
     return(NA)
   }
   if (length(lme4::fixef(model)) != ncol(linfct)) {
-    warning("Model is rank deficient!")
+    warning("The model is rank-deficient.")
     return(NA) # catch rank defficient
   } else {
     res <- lmerTest::contest(model, linfct, joint = FALSE, confint = TRUE, ddf = ddf)
@@ -461,7 +461,7 @@ contrasts_linfct <- function(models, linfct, subject_id = "protein_Id", contrast
     linfct <- rep(list(linfct), nrow(models))
   }
   if (!is.list(linfct) || length(linfct) != nrow(models)) {
-    abort_prolfqua("linfct must be either a matrix or a list of length == nrow(models)")
+    abort_prolfqua("`linfct` must be a matrix or a list with one element per model.")
   }
 
   interaction_models <- vector(mode = "list", length = nrow(models))

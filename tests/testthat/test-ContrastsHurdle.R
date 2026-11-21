@@ -166,9 +166,9 @@ test_that("mismatched components raise errors", {
 
   renamed <- dplyr::rename(fx$binomial_firth_nested$get_contrasts(), protein = "protein_Id")
   other_subject <- ContrastsTable$new(renamed, subject_id = "protein", model_name = "binomial_firth_nested")
-  expect_error(new_hurdle(fx$lm, other_subject), "same subject_id")
+  expect_error(new_hurdle(fx$lm, other_subject), "same `subject_id`")
 
-  expect_error(new_hurdle(fx$lm, fx$lm_impute), "binomial_firth_nested facade")
+  expect_error(new_hurdle(fx$lm, fx$lm_impute), "`binomial_firth_nested` analysis")
 })
 
 test_that("hurdle_nested builds both components from peptide input", {

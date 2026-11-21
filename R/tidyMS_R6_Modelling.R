@@ -107,7 +107,7 @@ StrategyBase <- R6::R6Class(
     control_names = function() names(private$control_defaults()),
     # Input preparation that runs outside the error handler of model_fun().
     prepare = function(x) x,
-    fit = function(x) abort_prolfqua("fit is not implemented")
+    fit = function(x) abort_prolfqua("`fit()` is not implemented for this class.")
   )
 )
 

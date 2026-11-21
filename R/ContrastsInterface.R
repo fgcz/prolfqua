@@ -37,13 +37,13 @@ ContrastsInterface <- R6::R6Class(
     #' @description
     #' get table with sides of the contrast
     get_contrast_sides = function() {
-      abort_prolfqua("get_contrast_sides not implemented.")
+      abort_prolfqua("`get_contrast_sides()` is not implemented for this class.")
     },
     #' @description
     #' get table with contrast results (similar to limma topTable function)
     #' @param all return all columns (TRUE) or the standard ones (FALSE)
     get_contrasts = function(all = FALSE) {
-      abort_prolfqua("get_contrasts not implemented.")
+      abort_prolfqua("`get_contrasts()` is not implemented for this class.")
     },
     #' @description
     #' return \code{\link{ContrastsPlotter}} for the contrast results
@@ -75,7 +75,7 @@ ContrastsInterface <- R6::R6Class(
     #' get protein × contrast pairs that could not be estimated.
     #' Returns a data.frame with hierarchy columns and contrast, or 0 rows.
     get_missing = function() {
-      abort_prolfqua("get_missing not implemented.")
+      abort_prolfqua("`get_missing()` is not implemented for this class.")
     },
     #' @description
     #' get rank-list input table for enrichment tools.

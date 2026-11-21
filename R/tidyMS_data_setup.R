@@ -44,14 +44,13 @@
 #' @srrstats {G2.5} Setup documents and enforces character labels for both ordered and unordered predictor factors.
 .setup_factor_columns <- function(data, configuration) {
   if (length(configuration$factors) == 0) {
-    abort_invalid_config(
-      paste0(
-        "No factors (explanatory variables) specified in the AnalysisConfiguration.\n",
-        "Please use config$factors[\"Condition\"] = \"columnName\".\n",
-        "where Condition is the new name of the variable and\n",
-        "columnName is the name of the column containing the variable."
+    abort_invalid_config(c(
+      "The AnalysisConfiguration specifies no factors (explanatory variables).",
+      i = paste0(
+        "Set them with `config$factors[\"Condition\"] <- \"columnName\"`, where `Condition` names the variable ",
+        "and `columnName` is the data column holding it."
       )
-    )
+    ))
   }
 
   for (i in seq_along(configuration$factors)) {
@@ -181,7 +180,7 @@
 #' @noRd
 .setup_duplicate_message <- function(offending, configuration) {
   paste0(
-    "setup_analysis: there is more than ONE observation for ",
+    "setup_analysis: there is more than one observation for ",
     nrow(offending),
     " ",
     toString(configuration$hierarchy_keys()),

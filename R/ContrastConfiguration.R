@@ -163,7 +163,7 @@ list_to_ContrastConfiguration <- function(dd) {
   unknown <- setdiff(names(dd), fields)
   if (length(unknown) > 0) {
     abort_prolfqua(
-      "Not ContrastConfiguration fields: ",
+      "Unknown ContrastConfiguration fields: ",
       toString(unknown)
     )
   }

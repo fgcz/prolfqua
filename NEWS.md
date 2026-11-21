@@ -3,6 +3,7 @@
 ## Behaviour changes
 
 - prolfqua now requires dplyr >= 1.1.0, ggplot2 >= 3.4.0 and purrr >= 1.0.0; earlier versions lacked functions prolfqua already called.
+- Error messages state the problem in their first line ("`method` must be one of ...", "Can't find column `x` in `data`.") and name the function you called instead of prolfqua's internal checker. Condition classes are unchanged; about 30 error and warning messages were reworded.
 
 # prolfqua 1.9.4
 

@@ -33,11 +33,11 @@ script_copy_helper_vec <-
       dest_script <- file.path(workdir, basename(scripts))
       inform_prolfqua("copy ", src_script, " to ", dest_script)
       if (is.null(src_script)) {
-        warning(sprintf("could not copy script file. %s", dest_script), call. = FALSE)
+        warning(sprintf("Could not copy script file %s.", dest_script), call. = FALSE)
       } else if (file.copy(src_script, dest_script, overwrite = overwrite)) {
         res <- c(res, dest_script)
       } else {
-        warning(sprintf("could not copy script file. %s to %s", src_script, dest_script), call. = FALSE)
+        warning(sprintf("Could not copy script file %s to %s.", src_script, dest_script), call. = FALSE)
       }
     }
     inform_prolfqua(sprintf("your working directory now should contain: %d new files:", length(res)))

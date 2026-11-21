@@ -64,6 +64,6 @@ test_that("list_to_ContrastConfiguration restores roles and methods", {
   )
   expect_error(
     list_to_ContrastConfiguration(list(no_such_field = "x")),
-    "Not ContrastConfiguration fields"
+    "Unknown ContrastConfiguration fields"
   )
 })

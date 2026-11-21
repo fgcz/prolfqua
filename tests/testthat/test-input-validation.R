@@ -249,7 +249,7 @@ test_that("scalar selectors reject even the complete vector of allowed choices",
   expect_error(get_anova_df(c("F", "Chisq")), class = "prolfqua_error_bad_argument")
   model <- ModelFirth$new(list(model_df = data.frame()))
   expect_error(model$anova_histogram(c("p.value", "FDR")), class = "prolfqua_error_bad_argument")
-  expect_warning(expect_null(model$anova_histogram()), "ModelFirth\\$anova_histogram is not implemented")
+  expect_warning(expect_null(model$anova_histogram()), "`anova_histogram\\(\\)` is not implemented")
 })
 
 test_that("Firth histogram choices match exactly", {

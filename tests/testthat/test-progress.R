@@ -60,7 +60,7 @@ test_that("function reporter gets monotonic ticks reaching total with the label"
 })
 
 test_that("unknown reporter is rejected", {
-  expect_error(prolfqua:::.make_progress(3, reporter = "nope"), "unknown prolfqua.progress reporter")
+  expect_error(prolfqua:::.make_progress(3, reporter = "nope"), "prolfqua.progress")
 })
 
 test_that("'message' reporter emits a heartbeat in a non-interactive session", {

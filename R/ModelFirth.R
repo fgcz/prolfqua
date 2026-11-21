@@ -90,7 +90,7 @@ ModelFirth <- R6::R6Class(
     #' @description
     #' return anova table
     get_anova = function() {
-      warning("ModelFirth$get_anova is not implemented.")
+      warning("`get_anova()` is not implemented for Firth models; returning `NULL`.")
       return(NULL)
     },
     #' @description
@@ -98,7 +98,7 @@ ModelFirth <- R6::R6Class(
     #' @param what one case-sensitive choice: "p.value" (default) or "FDR".
     anova_histogram = function(what = "p.value") {
       what <- .arg_match_prolfqua(what, c("p.value", "FDR"), "what")
-      warning("ModelFirth$anova_histogram is not implemented.")
+      warning("`anova_histogram()` is not implemented for Firth models; returning `NULL`.")
       return(NULL)
     }
   ),

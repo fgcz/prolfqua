@@ -23,8 +23,7 @@
   child_keys <- setdiff(lfqdata$hierarchy_keys(), lfqdata$subject_id())
   if (length(child_keys) == 0) {
     abort_prolfqua(
-      "ContrastsLmerNestedFacade: cannot derive random effects - ",
-      "no child hierarchy below subject_id()."
+      "Can't derive random effects: there is no hierarchy level below `subject_id()`."
     )
   }
   deepest_child <- child_keys[length(child_keys)]

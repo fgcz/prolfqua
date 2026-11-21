@@ -166,7 +166,7 @@ LFQDataTransformer <- R6::R6Class(
         abort_bad_argument("lfqsubset", "have the same transformation state (is_transformed) as self")
       }
       if (!self$lfq$is_transformed()) {
-        warning("data should be log2 transformed")
+        warning("The data should be log2-transformed.")
       }
       self$lfq <- center_to_reference_cfg(self$lfq, lfqsubset)
       invisible(self)
@@ -227,7 +227,7 @@ LFQDataTransformer <- R6::R6Class(
     # `res` (list with data and colname) is a promise: the transformation only runs if it is applied
     .set_transformed = function(force, res, transformed = TRUE) {
       if (self$lfq$is_transformed() && !force) {
-        warning("data already transformed. If you still want to log2 tranform, set force = TRUE")
+        warning("The data are already transformed; set `force = TRUE` to log2-transform them again.")
         return(invisible(self))
       }
       cfg <- self$lfq$get_config()$clone(deep = TRUE)
@@ -312,11 +312,11 @@ transform_work_intensity <- function(pdata, response, .func, .funcname = NULL) {
     n_neg <- sum(vals < 0, na.rm = TRUE)
     if (n_neg > 0) {
       warning(
-        "log transform: ",
+        "Log transform: ",
         n_neg,
-        " negative values in '",
+        " negative values in `",
         response,
-        "' will produce NaN. Consider filtering or using asinh."
+        "` will produce NaN. Consider filtering or using asinh."
       )
     }
     # 0 means not detected: a missing observation, not -Inf.
@@ -434,7 +434,7 @@ robust_scale <- function(data, dim = 2, preserve_mean = FALSE) {
     .get_robscales(data, dim = dim),
     preserve_mean,
     dim,
-    "SKIPPING scaling step in robust_scale: one or more MAD values are zero."
+    "Skipping the scaling step in `robust_scale()`: one or more MAD values are zero."
   )
 }
 
@@ -525,7 +525,7 @@ scale_with_subset <- function(lfqdata, lfqsubset, preserve_mean = FALSE, colname
     scales,
     preserve_mean,
     2,
-    "SKIPPING scaling step in scale_with_subset function."
+    "Skipping the scaling step in `scale_with_subset()`: one or more MAD values are zero."
   )
   data <- response_matrix_as_tibble(mat, scaled_name, lfqdata$get_config(), lfqdata$data_long())
   if (!is.null(colname)) {

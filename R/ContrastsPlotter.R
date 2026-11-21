@@ -292,7 +292,7 @@ ContrastsPlotter <- R6::R6Class(
     .ma_fig = function(contrast_df, fc, colour, legend, rank, plotly_mode = FALSE) {
       if (is.null(contrast_df[[self$avg.abundance]])) {
         if (!plotly_mode) {
-          warning("no group_1 group_2 columns can't generate MA")
+          warning("Can't draw an MA plot without `group_1` and `group_2` columns.")
         }
         return(NULL)
       }

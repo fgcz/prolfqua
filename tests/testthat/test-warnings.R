@@ -24,7 +24,7 @@ test_that("log transforms warn before negative values become NaN", {
 test_that("repeated log transformation warns", {
   x <- sim_lfq_data_protein_config(Nprot = 5, seed = 42)
   trans <- LFQData$new(x$data, x$config)$get_Transformer()$log2()
-  expect_warning(trans$log2(), "data already transformed")
+  expect_warning(trans$log2(), "already transformed")
 })
 
 test_that("zero MAD warns and skips division by zero", {
@@ -35,7 +35,7 @@ test_that("zero MAD warns and skips division by zero", {
 test_that("centering raw data warns about the required log scale", {
   x <- sim_lfq_data_protein_config(Nprot = 5, seed = 42)
   lfq <- LFQData$new(x$data, x$config)
-  expect_warning(lfq$get_Transformer()$center_to_reference(lfq), "data should be log2 transformed")
+  expect_warning(lfq$get_Transformer()$center_to_reference(lfq), "should be log2-transformed")
 })
 
 test_that("median polish warns on raw intensities", {
@@ -74,22 +74,22 @@ test_that("single-row rasters warn with the plotting function name", {
 
 test_that("Firth ANOVA reports its unimplemented method", {
   model <- ModelFirth$new(list(model_df = data.frame()))
-  expect_warning(model$get_anova(), "ModelFirth\\$get_anova is not implemented")
+  expect_warning(model$get_anova(), "`get_anova\\(\\)` is not implemented")
 })
 
 test_that("Firth ANOVA histogram reports its unimplemented method", {
   model <- ModelFirth$new(list(model_df = data.frame()))
-  expect_warning(model$anova_histogram(), "ModelFirth\\$anova_histogram is not implemented")
+  expect_warning(model$anova_histogram(), "`anova_histogram\\(\\)` is not implemented")
 })
 
 test_that("copying an absent package script warns", {
-  expect_warning(script_copy_helper_vec("not-a-package-file", workdir = tempdir()), "could not copy script file")
+  expect_warning(script_copy_helper_vec("not-a-package-file", workdir = tempdir()), "Could not copy script file")
 })
 
 test_that("copying a script over an existing file without overwrite warns", {
   path <- withr::local_tempdir()
   file.create(file.path(path, "CITATION"))
-  expect_warning(script_copy_helper_vec("CITATION", workdir = path, overwrite = FALSE), "could not copy script file")
+  expect_warning(script_copy_helper_vec("CITATION", workdir = path, overwrite = FALSE), "Could not copy script file")
 })
 
 test_that("failed contrasts report how many proteins were dropped", {
@@ -104,7 +104,7 @@ test_that("mixed-model contrast dimension mismatches warn", {
   skip_if_not_installed("lmerTest")
   skip_if_not_installed("lme4")
   model <- lmerTest::lmer(Reaction ~ Days + (1 | Subject), data = lme4::sleepstudy)
-  expect_warning(compute_lmer_contrast(model, matrix(1, 1, 3)), "Model is rank deficient")
+  expect_warning(compute_lmer_contrast(model, matrix(1, 1, 3)), "rank-deficient")
 })
 
 test_that("empty mixed-model contrasts warn", {
@@ -134,7 +134,7 @@ test_that("heatmaps warn when every feature has zero variation", {
 
 test_that("MA plots warn when average abundance is unavailable", {
   table <- data.frame(protein_Id = "p1", contrast = "a", diff = 1, p.value = 0.1, FDR = 0.1, modelName = "lm")
-  expect_warning(ContrastsPlotter$new(table, "protein_Id")$ma_plot(), "can't generate MA")
+  expect_warning(ContrastsPlotter$new(table, "protein_Id")$ma_plot(), "Can't draw an MA plot")
 })
 
 test_that("limma ANOVA warns for an intercept-only model", {

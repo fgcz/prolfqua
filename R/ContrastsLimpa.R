@@ -107,7 +107,7 @@ build_model_limpa <- function(lfqdata, strategy, model_name = strategy$model_nam
   se_col <- lfqdata$get_config()$opt_se
   nr_col <- lfqdata$nr_children_col()
   if (!(length(nr_col) > 0 && nchar(nr_col) > 0)) {
-    abort_invalid_config("LFQData must have config$nr_children set")
+    abort_invalid_config("`lfqdata` must have `config$nr_children` set.")
   }
 
   setup <- .lfqdata_to_elist(lfqdata, strategy$formula)

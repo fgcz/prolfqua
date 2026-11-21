@@ -9,44 +9,48 @@
 #' @param must description of the requirement (e.g. "be a data frame")
 #' @param not optional description of the actual value
 #' @param parent optional parent condition to chain
+#' @param call the call shown in the error header; defaults to the caller
 #' @keywords internal
 #' @noRd
-abort_bad_argument <- function(arg, must, not = NULL, parent = NULL) {
-  msg <- c("Invalid argument.", x = sprintf("`%s` must %s.", arg, must))
+abort_bad_argument <- function(arg, must, not = NULL, parent = NULL, call = rlang::caller_env()) {
+  msg <- sprintf("`%s` must %s.", arg, must)
   if (!is.null(not)) {
-    msg <- c(msg, i = sprintf("Actual value: %s.", not))
+    msg <- c(msg, x = sprintf("You supplied %s.", not))
   }
   rlang::abort(
     msg,
     class = c("prolfqua_error_bad_argument", "prolfqua_error"),
-    parent = parent
+    parent = parent,
+    call = call
   )
 }
 
 #' Abort because required columns are missing from a data frame
 #' @param cols character vector of missing column names
 #' @param data_nm name to refer to the data frame by in the message
+#' @param call the call shown in the error header; defaults to the caller
 #' @keywords internal
 #' @noRd
-abort_missing_columns <- function(cols, data_nm = "data") {
+abort_missing_columns <- function(cols, data_nm = "data", call = rlang::caller_env()) {
   rlang::abort(
-    c(
-      "Required columns are missing.",
-      x = sprintf("Missing from `%s`: %s.", data_nm, toString(cols))
+    sprintf(
+      "Can't find %s %s in `%s`.",
+      if (length(cols) == 1L) "column" else "columns",
+      toString(paste0("`", cols, "`")),
+      data_nm
     ),
-    class = c("prolfqua_error_missing_column", "prolfqua_error_bad_argument", "prolfqua_error")
+    class = c("prolfqua_error_missing_column", "prolfqua_error_bad_argument", "prolfqua_error"),
+    call = call
   )
 }
 
 #' Abort because the AnalysisConfiguration is invalid
-#' @param msg one-line description of the problem
+#' @param msg one-sentence statement of the problem
+#' @param call the call shown in the error header; defaults to the caller
 #' @keywords internal
 #' @noRd
-abort_invalid_config <- function(msg) {
-  rlang::abort(
-    c("Invalid configuration.", x = msg),
-    class = c("prolfqua_error_invalid_configuration", "prolfqua_error")
-  )
+abort_invalid_config <- function(msg, call = rlang::caller_env()) {
+  rlang::abort(msg, class = c("prolfqua_error_invalid_configuration", "prolfqua_error"), call = call)
 }
 
 # Informative messages ----
@@ -82,42 +86,47 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
 #' @param arg character choice
 #' @param values allowed choices
 #' @param arg_nm argument name for the error
+#' @param call the call shown in the error header
 #' @noRd
 #' @srrstats {G1.4a} All 107 previously undocumented top-level internal functions now have roxygen and @noRd blocks.
 #' @srrstats {G2.3} Fixed choices are checked and builder help explicitly documents case sensitivity.
 #' @srrstats {G2.3a} Exact arg_match is used here; legacy fixed-choice selectors use match.arg.
-.arg_match_prolfqua <- function(arg, values, arg_nm) {
+.arg_match_prolfqua <- function(arg, values, arg_nm, call = rlang::caller_env()) {
   if (!is.character(arg) || length(arg) != 1L || is.na(arg)) {
-    abort_bad_argument(arg_nm, "be one character string")
+    abort_bad_argument(arg_nm, "be one character string", call = call)
   }
   tryCatch(
     rlang::arg_match(arg, values = values, error_arg = arg_nm),
-    error = function(e) abort_bad_argument(arg_nm, paste0("be one of: ", toString(values)), parent = e)
+    error = function(e) {
+      abort_bad_argument(arg_nm, paste0("be one of ", toString(paste0("\"", values, "\""))), parent = e, call = call)
+    }
   )
 }
 
 #' Parse a model formula with a classed argument error
 #' @param modelstr one formula string or a formula
+#' @param call the call shown in the error header
 #' @noRd
 #' @srrstatsTODO {G2.0} Formula and scalar lengths are checked here, and tidyMS_power_fdr.R checks all planning
 #'   input lengths; limit: not all exported controls have been audited.
 #' @srrstatsTODO {G2.6} Strategies accept formula objects and strings; limit: specialized vector classes are not fully
 #'   tested.
-.as_model_formula <- function(modelstr) {
+.as_model_formula <- function(modelstr, call = rlang::caller_env()) {
   is_string <- is.character(modelstr) && length(modelstr) == 1 && !is.na(modelstr) && grepl("~", modelstr, fixed = TRUE)
   if (!(inherits(modelstr, "formula") || is_string)) {
-    abort_bad_argument("modelstr", "be a formula or a single string containing `~`")
+    abort_bad_argument("modelstr", "be a formula or a single string containing `~`", call = call)
   }
   tryCatch(
     as.formula(modelstr),
-    error = function(e) abort_bad_argument("modelstr", "be a valid model formula", parent = e)
+    error = function(e) abort_bad_argument("modelstr", "be a valid model formula", parent = e, call = call)
   )
 }
 
 #' Require named contrast expressions
 #' @param contrasts named character vector
+#' @param call the call shown in the error header
 #' @noRd
-.assert_named_contrasts <- function(contrasts) {
+.assert_named_contrasts <- function(contrasts, call = rlang::caller_env()) {
   valid <- all(
     is.character(contrasts),
     length(contrasts) > 0,
@@ -127,13 +136,14 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
     all(nzchar(names(contrasts)))
   )
   if (!valid) {
-    abort_bad_argument("contrasts", "be a nonempty named character vector without missing values")
+    abort_bad_argument("contrasts", "be a nonempty named character vector without missing values", call = call)
   }
 }
 
 #' Validate the data and configured response at input boundaries
 #' @param data input data frame
 #' @param config AnalysisConfiguration
+#' @param call the call shown in the error header
 #' @noRd
 #' @srrstatsTODO {G2.1} LFQData/setup_analysis check data, configuration and response types; tidyMS_power_fdr.R
 #'   rejects non-real numeric inputs and matrices; limit: the API audit is incomplete.
@@ -143,19 +153,19 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
 #'   contract.
 #' @srrstats {G5.8} Tests cover invalid types, designs, sparse inputs, empty inputs, non-finite responses, NA keys and
 #'   all-NA or constant responses (test-input-validation.R, test-missing-nonfinite.R).
-.assert_response_data <- function(data, config) {
+.assert_response_data <- function(data, config, call = rlang::caller_env()) {
   if (!is.data.frame(data)) {
-    abort_bad_argument("data", "be a data frame")
+    abort_bad_argument("data", "be a data frame", call = call)
   }
   if (!inherits(config, "AnalysisConfiguration")) {
-    abort_invalid_config("`config` must be an AnalysisConfiguration.")
+    abort_invalid_config("`config` must be an AnalysisConfiguration.", call = call)
   }
   response <- config$get_response()
   if (length(response) != 1 || !response %in% names(data)) {
-    abort_missing_columns(response %||% "response")
+    abort_missing_columns(response %||% "response", call = call)
   }
   if (!is.numeric(data[[response]])) {
-    abort_bad_argument("response", paste0("be numeric (column `", response, "`)"))
+    abort_bad_argument("response", paste0("be numeric (column `", response, "`)"), call = call)
   }
 }
 
@@ -164,13 +174,14 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
 #' NA intensities are missing observations and pass. Zero rows, `Inf`, `-Inf` or `NaN` responses, NA in the
 #' hierarchy, factor or sample key columns, and more than one row per sample and hierarchy key raise classed errors.
 #' @param lfqdata LFQData to check
+#' @param call the call shown in the error header
 #' @noRd
 #' @srrstats {EA2.1} Sample, hierarchy and isotope keys must identify each row; `setup_analysis()` and every model and
 #'   aggregation entry (`.assert_model_input()`) check uniqueness and raise `prolfqua_error_duplicate_keys`.
-.assert_model_input <- function(lfqdata) {
+.assert_model_input <- function(lfqdata, call = rlang::caller_env()) {
   data <- lfqdata$data_long()
   if (nrow(data) == 0) {
-    abort_bad_argument("lfqdata", "have at least one row", not = "zero rows")
+    abort_bad_argument("lfqdata", "have at least one row", not = "zero rows", call = call)
   }
   response <- lfqdata$response()
   values <- data[[response]]
@@ -187,7 +198,8 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
       " subjects, e.g. ",
       toString(utils::head(subjects, 5)),
       ". Remove or replace them before modelling; NA marks a missing observation.",
-      class = "prolfqua_error_nonfinite_response"
+      class = "prolfqua_error_nonfinite_response",
+      call = call
     )
   }
   keys <- unique(c(lfqdata$file_name(), lfqdata$sample_name(), lfqdata$factor_keys(), lfqdata$hierarchy_keys()))
@@ -198,10 +210,11 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
       "Key columns contain NA: ",
       toString(paste0("`", names(bad), "` (", bad, ")")),
       ". Every row needs hierarchy, factor and sample values.",
-      class = "prolfqua_error_missing_key"
+      class = "prolfqua_error_missing_key",
+      call = call
     )
   }
-  .assert_unique_keys(data, c(lfqdata$file_name(), lfqdata$hierarchy_keys(), lfqdata$isotope_label()))
+  .assert_unique_keys(data, c(lfqdata$file_name(), lfqdata$hierarchy_keys(), lfqdata$isotope_label()), call = call)
   invisible(lfqdata)
 }
 
@@ -212,10 +225,11 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
 #' fitting instead (failed fit, listed by `get_missing()`).
 #' @param lfqdata LFQData to fit
 #' @param modelstr right-hand-side model formula string
+#' @param call the call shown in the error header
 #' @noRd
 #' @srrstats {RE2.4, RE2.4a} Before fitting, every analysis checks that the fixed-effect design over the samples is of
 #'   full rank and raises `prolfqua_error_collinear_design` naming the aliased coefficients (test-design-checks.R).
-.assert_full_rank_design <- function(lfqdata, modelstr) {
+.assert_full_rank_design <- function(lfqdata, modelstr, call = rlang::caller_env()) {
   model_terms <- stats::terms(stats::as.formula(modelstr))
   labels <- attr(model_terms, "term.labels")
   labels <- labels[!grepl("|", labels, fixed = TRUE)]
@@ -237,7 +251,8 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
       toString(paste0("`", aliased, "`")),
       " are linear combinations of the other columns (collinear or empty factor combinations). ",
       "Remove or merge the aliased factors.",
-      class = "prolfqua_error_collinear_design"
+      class = "prolfqua_error_collinear_design",
+      call = call
     )
   }
   invisible(lfqdata)
@@ -246,8 +261,9 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
 #' Abort when key columns do not identify each row
 #' @param data long-format data
 #' @param keys sample, hierarchy and isotope key columns
+#' @param call the call shown in the error header
 #' @noRd
-.assert_unique_keys <- function(data, keys) {
+.assert_unique_keys <- function(data, keys, call = rlang::caller_env()) {
   duplicated_rows <- duplicated(data[, keys, drop = FALSE])
   if (!any(duplicated_rows)) {
     return(invisible(data))
@@ -261,22 +277,24 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
     ", e.g. ",
     toString(utils::head(ids, 5)),
     ". Each hierarchy key must be observed at most once per sample; aggregate or deduplicate the rows first.",
-    class = "prolfqua_error_duplicate_keys"
+    class = "prolfqua_error_duplicate_keys",
+    call = call
   )
 }
 
 #' Validate simulator size and missingness weight
 #' @param Nprot positive whole number of proteins
 #' @param weight_missing one number in [0, 1]
+#' @param call the call shown in the error header
 #' @noRd
 #' @srrstatsTODO {G2.2} Scalar simulation arguments are enforced; limit: some thresholds and weights still need length
 #'   checks.
-.assert_simulation_args <- function(Nprot, weight_missing) {
+.assert_simulation_args <- function(Nprot, weight_missing, call = rlang::caller_env()) {
   if (!.is_finite_number(Nprot) || !all(Nprot > 0, Nprot == floor(Nprot))) {
-    abort_bad_argument("Nprot", "be one positive whole number")
+    abort_bad_argument("Nprot", "be one positive whole number", call = call)
   }
   if (!.is_finite_number(weight_missing) || !all(weight_missing >= 0, weight_missing <= 1)) {
-    abort_bad_argument("weight_missing", "be one finite number in [0, 1]")
+    abort_bad_argument("weight_missing", "be one finite number in [0, 1]", call = call)
   }
 }
 
@@ -293,18 +311,20 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
 #' @param control named list of controls given by the user
 #' @param defaults named list of default controls (may be empty when the backend's own defaults apply)
 #' @param allowed names the backend accepts
+#' @param call the call shown in the error header
 #' @return the merged named list
 #' @noRd
-.merge_control <- function(control, defaults, allowed = names(defaults)) {
+.merge_control <- function(control, defaults, allowed = names(defaults), call = rlang::caller_env()) {
   if (!is.list(control) || (length(control) > 0L && (is.null(names(control)) || any(names(control) == "")))) {
-    abort_bad_argument("control", "be a named list")
+    abort_bad_argument("control", "be a named list", call = call)
   }
   unknown <- setdiff(names(control), allowed)
   if (length(unknown) > 0L) {
     abort_bad_argument(
       "control",
       paste0("only name ", if (length(allowed) > 0L) toString(allowed) else "nothing (no convergence controls)"),
-      not = toString(unknown)
+      not = toString(unknown),
+      call = call
     )
   }
   utils::modifyList(defaults, control)
