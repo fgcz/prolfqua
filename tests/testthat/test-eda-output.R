@@ -1,7 +1,7 @@
 # Default print and plot methods, numeric precision of printed output (srr EDA standards).
 
 eda_fixture <- function() {
-  sim <- sim_lfq_data_peptide_config(Nprot = 5, seed = 42)
+  sim <- sim_lfq_data_peptide_config(n_proteins = 5, seed = 42)
   suppressMessages(LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq)
 }
 
@@ -83,7 +83,7 @@ test_that("duplicate sample and hierarchy keys are rejected at model and aggrega
 
 test_that("a response with extra attributes is used as plain numeric values", {
   withr::local_options(prolfqua.verbose = TRUE)
-  sim <- sim_lfq_data_peptide_config(Nprot = 5, seed = 42)
+  sim <- sim_lfq_data_peptide_config(n_proteins = 5, seed = 42)
   plain <- LFQData$new(sim$data, sim$config)
   for (wrap in list(I, function(x) structure(x, label = "Intensity", units = "counts"))) {
     data <- sim$data
@@ -104,7 +104,7 @@ NULL
 
 test_that("return types follow the input: data frames in, data frames and double responses out", {
   withr::local_options(prolfqua.verbose = FALSE)
-  sim <- sim_lfq_data_peptide_config(Nprot = 5, seed = 42)
+  sim <- sim_lfq_data_peptide_config(n_proteins = 5, seed = 42)
   lfq <- LFQData$new(as.data.frame(sim$data), sim$config)
   expect_s3_class(lfq$data_long(), "data.frame")
   log2 <- lfq$get_Transformer()$log2()$lfq

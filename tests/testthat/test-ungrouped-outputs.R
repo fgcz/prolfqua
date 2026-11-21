@@ -2,7 +2,7 @@
 # per group without asking for it.
 
 .ungrouped_lfq <- function() {
-  istar <- sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE, seed = 1)
+  istar <- sim_lfq_data_peptide_config(n_proteins = 10, with_missing = TRUE, seed = 1)
   LFQData$new(istar$data, istar$config)
 }
 

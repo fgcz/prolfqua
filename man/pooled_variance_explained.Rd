@@ -22,7 +22,7 @@ samples. Features with a large total variance weigh more than in the median
 of the per-feature \code{R2}.
 }
 \examples{
-bb <- prolfqua::sim_lfq_data_2factor_config(Nprot = 20)
+bb <- prolfqua::sim_lfq_data_2factor_config(n_proteins = 20)
 bb$config$factor_depth <- 2
 lfqdata <- LFQData$new(bb$data, bb$config)
 lfqdata$is_transformed(TRUE)
@@ -39,7 +39,7 @@ Other stats:
 \code{\link[=compute_pooled]{compute_pooled()}},
 \code{\link[=fdr_sig_level]{fdr_sig_level()}},
 \code{\link[=lfq_power_t_test_proteins]{lfq_power_t_test_proteins()}},
-\code{\link[=lfq_power_t_test_quantiles_V2]{lfq_power_t_test_quantiles_V2()}},
+\code{\link[=lfq_power_t_test_quantiles]{lfq_power_t_test_quantiles()}},
 \code{\link[=null_split_check]{null_split_check()}},
 \code{\link[=plot_stat_density]{plot_stat_density()}},
 \code{\link[=plot_stat_density_median]{plot_stat_density_median()}},

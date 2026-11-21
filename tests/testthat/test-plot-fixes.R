@@ -1,7 +1,7 @@
 # Plot correctness: per-panel summaries, colour scales, non-syntactic column names, point sizes.
 
 .plot_fix_contrasts <- function() {
-  istar <- sim_lfq_data_peptide_config(Nprot = 20, with_missing = FALSE, seed = 1)
+  istar <- sim_lfq_data_peptide_config(n_proteins = 20, with_missing = FALSE, seed = 1)
   lfq <- LFQData$new(istar$data, istar$config)$get_Transformer()$log2()$lfq
   agg <- lfq$get_Aggregator()
   agg$aggregate()
@@ -59,7 +59,7 @@ test_that("volcano accepts a non-syntactic significance column", {
 })
 
 test_that("plot_stat_violin_median() shows median and quartiles as one point range", {
-  istar <- sim_lfq_data_peptide_config(Nprot = 20, with_missing = FALSE, seed = 1)
+  istar <- sim_lfq_data_peptide_config(n_proteins = 20, with_missing = FALSE, seed = 1)
   lfq <- LFQData$new(istar$data, istar$config)
   stats <- lfq$get_Stats()$stats()
   p <- plot_stat_violin_median(stats, "group_", stat = "meanAbundance")
@@ -70,7 +70,7 @@ test_that("plot_stat_violin_median() shows median and quartiles as one point ran
 })
 
 test_that("beeswarm point sizes stay within 1 to 4 mm for large child counts", {
-  istar <- sim_lfq_data_peptide_config(Nprot = 5, with_missing = FALSE, seed = 1)
+  istar <- sim_lfq_data_peptide_config(n_proteins = 5, with_missing = FALSE, seed = 1)
   lfq <- LFQData$new(istar$data, istar$config)
   pdata <- lfq$data_long()[lfq$data_long()$protein_Id == lfq$data_long()$protein_Id[1], ]
   pdata[[lfq$nr_children_col()]] <- rep(c(1, 40), length.out = nrow(pdata))

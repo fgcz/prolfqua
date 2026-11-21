@@ -1,7 +1,7 @@
 # build_contrast_analysis drops decoys before the fit only when opted in.
 
-make_data_with_decoys <- function(n_decoy = 5, Nprot = 30) {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = Nprot)
+make_data_with_decoys <- function(n_decoy = 5, n_proteins = 30) {
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = n_proteins)
   data <- istar$data
   config <- istar$config
   top <- config$hierarchy_keys()[1]

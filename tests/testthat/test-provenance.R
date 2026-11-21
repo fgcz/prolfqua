@@ -1,7 +1,7 @@
 # Provenance: each object records the problems and dropped items that happen in it; one summary per step.
 
-prov_peptide <- function(Nprot = 10, seed = 42) {
-  sim <- sim_lfq_data_peptide_config(Nprot = Nprot, with_missing = FALSE, seed = seed)
+prov_peptide <- function(n_proteins = 10, seed = 42) {
+  sim <- sim_lfq_data_peptide_config(n_proteins = n_proteins, with_missing = FALSE, seed = seed)
   LFQData$new(sim$data, sim$config)
 }
 
@@ -106,7 +106,7 @@ test_that("prolfqua.verbose = FALSE silences the provenance message, not the rec
 })
 
 test_that("rlm aggregation gives one warning naming the non-converged proteins and records them", {
-  sim <- sim_lfq_data_peptide_config(Nprot = 20, seed = 42)
+  sim <- sim_lfq_data_peptide_config(n_proteins = 20, seed = 42)
   withr::local_options(prolfqua.verbose = FALSE)
   lfq <- LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq
   n_warnings <- 0L
@@ -128,7 +128,7 @@ test_that("rlm aggregation gives one warning naming the non-converged proteins a
 
 # protein-level data where the first protein is observed in group Ctrl only
 prov_one_group <- function() {
-  sim <- sim_lfq_data_protein_config(Nprot = 10, with_missing = FALSE, seed = 42)
+  sim <- sim_lfq_data_protein_config(n_proteins = 10, with_missing = FALSE, seed = 42)
   data <- sim$data
   target <- unique(data$protein_Id)[1]
   data$abundance[data$protein_Id == target & data$group_ != "Ctrl"] <- NA
@@ -200,7 +200,7 @@ test_that("limma records non-estimable coefficients as singular fits; lm_impute 
 
 test_that("rlm non-convergence and lmer failures each give one warning for the fitting step", {
   withr::local_options(prolfqua.verbose = FALSE)
-  sim <- sim_lfq_data_peptide_config(Nprot = 20, seed = 42)
+  sim <- sim_lfq_data_peptide_config(n_proteins = 20, seed = 42)
   peptide <- LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq
   protein <- suppressWarnings(peptide$get_Aggregator()$aggregate())
   rlm <- prov_fit_warnings(build_contrast_analysis(protein, "~ group_", c(AvsC = "group_A - group_Ctrl"), "rlm"))
@@ -233,7 +233,7 @@ test_that("an analysis lists a protein observed in one group only as absent, wit
 })
 
 test_that("an analysis reads the input data record, e.g. zeros set to NA by log2", {
-  sim <- sim_lfq_data_protein_config(Nprot = 10, with_missing = FALSE, seed = 42)
+  sim <- sim_lfq_data_protein_config(n_proteins = 10, with_missing = FALSE, seed = 42)
   sim$data$abundance[1:2] <- 0
   withr::local_options(prolfqua.verbose = FALSE)
   lfq <- LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq
@@ -246,7 +246,7 @@ test_that("an analysis reads the input data record, e.g. zeros set to NA by log2
 })
 
 test_that("hurdle_nested reads the input, the aggregated data and both component models", {
-  sim <- sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.4, seed = 42)
+  sim <- sim_lfq_data_peptide_config(n_proteins = 20, weight_missing = 0.4, seed = 42)
   withr::local_options(prolfqua.verbose = FALSE)
   lfq <- LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq
   facade <- suppressWarnings(build_contrast_analysis(

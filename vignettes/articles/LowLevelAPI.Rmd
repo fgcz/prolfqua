@@ -27,7 +27,7 @@ This article runs the steps by hand for the `lm` method. Use them to inspect the
 
 ```{r data}
 library(prolfqua)
-sim <- sim_lfq_data_protein_config(Nprot = 100, seed = 1234)
+sim <- sim_lfq_data_protein_config(n_proteins = 100, seed = 1234)
 lfq <- LFQData$new(sim$data, sim$config)
 contrasts <- c(AvsC = "group_A - group_Ctrl", BvsC = "group_B - group_Ctrl")
 ```

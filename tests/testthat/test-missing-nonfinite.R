@@ -2,7 +2,7 @@
 # empty inputs raise classed errors before fitting or aggregation; log transforms turn 0 (not detected) into NA.
 
 md_peptide <- function(with_missing = TRUE) {
-  sim <- sim_lfq_data_peptide_config(Nprot = 10, with_missing = with_missing, seed = 42)
+  sim <- sim_lfq_data_peptide_config(n_proteins = 10, with_missing = with_missing, seed = 42)
   LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq
 }
 
@@ -67,7 +67,7 @@ test_that("an input without rows raises", {
 })
 
 test_that("a zero intensity becomes NA after the log transform and keeps its protein", {
-  sim <- sim_lfq_data_peptide_config(Nprot = 10, with_missing = FALSE, seed = 42)
+  sim <- sim_lfq_data_peptide_config(n_proteins = 10, with_missing = FALSE, seed = 42)
   sim$data[[sim$config$get_response()]][1] <- 0
   expect_message(
     peptide <- LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq,
@@ -234,9 +234,9 @@ test_that("which_missing rejects NA input", {
 
 test_that("simulators with with_missing = FALSE give complete data with positive peptide counts", {
   sims <- list(
-    peptide = function(m) sim_lfq_data_peptide_config(Nprot = 10, with_missing = m, seed = 42),
-    protein = function(m) sim_lfq_data_protein_config(Nprot = 10, with_missing = m, seed = 42),
-    two_factor = function(m) sim_lfq_data_2factor_config(Nprot = 10, with_missing = m, seed = 42)
+    peptide = function(m) sim_lfq_data_peptide_config(n_proteins = 10, with_missing = m, seed = 42),
+    protein = function(m) sim_lfq_data_protein_config(n_proteins = 10, with_missing = m, seed = 42),
+    two_factor = function(m) sim_lfq_data_2factor_config(n_proteins = 10, with_missing = m, seed = 42)
   )
   for (name in names(sims)) {
     complete <- sims[[name]](FALSE)

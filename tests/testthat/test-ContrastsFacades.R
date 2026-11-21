@@ -1,8 +1,8 @@
 ## Tests for ContrastsFacades and build_contrast_analysis
 
 # Shared test data (peptide-level, used for lm / limma / ropeca)
-make_peptide_lfqdata <- function(Nprot = 30) {
-  istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = Nprot, with_missing = FALSE, seed = 42)
+make_peptide_lfqdata <- function(n_proteins = 30) {
+  istar <- prolfqua::sim_lfq_data_peptide_config(n_proteins = n_proteins, with_missing = FALSE, seed = 42)
 
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   lfqdata <- lfqdata$get_Transformer()$log2()$lfq
@@ -15,8 +15,8 @@ make_peptide_lfqdata <- function(Nprot = 30) {
 }
 
 # Protein-level data with nrPeptides (used for deqms)
-make_protein_lfqdata <- function(Nprot = 30) {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = Nprot, seed = 42)
+make_protein_lfqdata <- function(n_proteins = 30) {
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = n_proteins, seed = 42)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   lfqdata$rename_response("transformedIntensity")
   list(lfqdata = lfqdata, raw = istar)
@@ -222,7 +222,7 @@ test_that("ropecaV2_nested is registered and returns the standard schema", {
 
 test_that("ropecaV2_nested handles missing values and two-factor contrasts", {
   muffle_warnings_matching(one_group_warning, expr = {
-    istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.8, seed = 11)
+    istar <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 20, weight_missing = 0.8, seed = 11)
     istar$data <- istar$data |>
       dplyr::mutate(
         Treatment = dplyr::if_else(.data$group_ == "B", "B", "A"),
@@ -311,7 +311,7 @@ test_that("firth_nested is not a method", {
 })
 
 test_that("detection preparation completes sparse LFQData before encoding missingness", {
-  istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 1, seed = 2)
+  istar <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 20, weight_missing = 1, seed = 2)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   response <- lfqdata$response()
 
@@ -355,7 +355,7 @@ test_that("aggregated facades error on peptide-level LFQData", {
 test_that("get_missing returns non-empty for data with missing groups", {
   muffle_warnings_matching(partial_na_warning, expr = {
     # Simulate with missingness so some proteins can't be estimated
-    istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 80, seed = 42)
+    istar <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 80, seed = 42)
 
     lfq_peptide <- prolfqua::LFQData$new(istar$data, istar$config)
     lfq_peptide <- lfq_peptide$get_Transformer()$log2()$lfq
@@ -453,7 +453,7 @@ test_that("a contrast naming a group without samples is a typed error", {
 
 test_that("the firth facade keeps a protein key not named protein_Id", {
   skip_if_not_installed("logistf")
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 20, weight_missing = 0.5, seed = 42)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 20, weight_missing = 0.5, seed = 42)
   data <- dplyr::rename(istar$data, prot = "protein_Id")
   config <- istar$config$clone(deep = TRUE)
   names(config$hierarchy) <- "prot"

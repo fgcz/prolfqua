@@ -40,7 +40,7 @@
 #' @family stats
 #' @export
 #' @examples
-#' bb <- prolfqua::sim_lfq_data_protein_config(Nprot = 20)
+#' bb <- prolfqua::sim_lfq_data_protein_config(n_proteins = 20)
 #' lfqdata <- LFQData$new(bb$data, bb$config)
 #' # the simulated intensities are already on the log2 scale
 #' lfqdata$is_transformed(TRUE)
@@ -120,7 +120,7 @@ summarize_variance_explained <- function(lfqdata, modelstr = NULL) {
 #' @family stats
 #' @export
 #' @examples
-#' bb <- prolfqua::sim_lfq_data_2factor_config(Nprot = 20)
+#' bb <- prolfqua::sim_lfq_data_2factor_config(n_proteins = 20)
 #' bb$config$factor_depth <- 2
 #' lfqdata <- LFQData$new(bb$data, bb$config)
 #' lfqdata$is_transformed(TRUE)

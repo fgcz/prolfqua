@@ -7,7 +7,7 @@
 NULL
 
 aliased_protein_data <- function() {
-  sim <- sim_lfq_data_protein_config(Nprot = 5, with_missing = FALSE, seed = 42)
+  sim <- sim_lfq_data_protein_config(n_proteins = 5, with_missing = FALSE, seed = 42)
   data <- sim$data
   data$batch <- c(A = "x", B = "y", Ctrl = "z")[data$group_]
   sim$config$factors[["batch"]] <- "batch"
@@ -31,7 +31,7 @@ test_that("a factor aliased with another is rejected for every aggregated method
 
 test_that("nested methods check the fixed effects only", {
   withr::local_options(prolfqua.verbose = FALSE)
-  sim <- sim_lfq_data_peptide_config(Nprot = 5, with_missing = FALSE, seed = 42)
+  sim <- sim_lfq_data_peptide_config(n_proteins = 5, with_missing = FALSE, seed = 42)
   data <- sim$data
   data$batch <- c(A = "x", B = "y", Ctrl = "z")[data$group_]
   sim$config$factors[["batch"]] <- "batch"
@@ -55,7 +55,7 @@ test_that("nested methods check the fixed effects only", {
 
 test_that("an interaction cell without samples is rejected; a complete two-factor design is accepted", {
   withr::local_options(prolfqua.verbose = FALSE)
-  sim <- sim_lfq_data_2factor_config(Nprot = 5, with_missing = FALSE)
+  sim <- sim_lfq_data_2factor_config(n_proteins = 5, with_missing = FALSE)
   lfq <- LFQData$new(sim$data, sim$config)
   contrasts <- c(TB_vs_A = "TreatmentB - TreatmentA")
   expect_no_error(build_contrast_analysis(lfq, "~ Treatment * Background", contrasts, "lm"))

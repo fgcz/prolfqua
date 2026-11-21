@@ -236,7 +236,7 @@ moderated_p_deqms_long <- function(mm, count_col, group_by_col = "contrast", est
 #' @family modelling
 #' @examples
 #'
-#' istar <- sim_lfq_data_protein_config(Nprot = 50)
+#' istar <- sim_lfq_data_protein_config(n_proteins = 50)
 #' protIntensity <- istar$data
 #' config <- istar$config
 #'

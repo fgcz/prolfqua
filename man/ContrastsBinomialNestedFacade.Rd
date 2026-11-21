@@ -20,7 +20,7 @@ bias-reducing penalty. Empirical-Bayes dispersion moderation uses
 below by one.
 }
 \examples{
-istar <- sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.5, seed = 3)
+istar <- sim_lfq_data_peptide_config(n_proteins = 20, weight_missing = 0.5, seed = 3)
 lfqdata <- LFQData$new(istar$data, istar$config)
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 facade <- ContrastsBinomialNestedFacade$new(lfqdata, "~ group_", contrasts)

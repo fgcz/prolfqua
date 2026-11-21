@@ -20,7 +20,7 @@ a tibble with all rows of \code{pdata} for \code{size} randomly drawn hierarchy 
 Sample subset of proteins/peptides/precursors
 }
 \examples{
-bb <- sim_lfq_data_peptide_config(Nprot = 5)
+bb <- sim_lfq_data_peptide_config(n_proteins = 5)
 subset <- sample_subset(2, bb$data, bb$config$hierarchy_keys_depth())
 length(unique(subset[[bb$config$hierarchy_keys_depth()[1]]]))
 }
@@ -29,11 +29,11 @@ Other configuration:
 \code{\link{AnalysisConfiguration}},
 \code{\link{ContrastConfiguration}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link[=R6_extract_values]{R6_extract_values()}},
 \code{\link[=complete_cases]{complete_cases()}},
-\code{\link[=list_to_ContrastConfiguration]{list_to_ContrastConfiguration()}},
+\code{\link[=list_to_contrast_configuration]{list_to_contrast_configuration()}},
 \code{\link[=make_interaction_column]{make_interaction_column()}},
 \code{\link[=make_reduced_hierarchy_config]{make_reduced_hierarchy_config()}},
+\code{\link[=r6_extract_values]{r6_extract_values()}},
 \code{\link[=separate_hierarchy]{separate_hierarchy()}},
 \code{\link[=setup_analysis]{setup_analysis()}},
 \code{\link[=table_factors]{table_factors()}},

@@ -94,7 +94,7 @@ test_that("rename_response and the is_transformed setter return the object", {
 })
 
 test_that("remove_small_intensities re-establishes explicit missing rows", {
-  istar_missing <- sim_lfq_data_peptide_config(Nprot = 5, weight_missing = 1, seed = 1)
+  istar_missing <- sim_lfq_data_peptide_config(n_proteins = 5, weight_missing = 1, seed = 1)
   lfq_missing <- LFQData$new(istar_missing$data, istar_missing$config)
 
   filtered <- lfq_missing$get_copy()
@@ -345,15 +345,15 @@ test_that("get_Aggregator offers limpa", {
   expect_error(lfq_log2$get_Aggregator("nope"), class = "prolfqua_error_bad_argument")
 })
 
-test_that("LFQDataToSummarizedExperiment returns a SummarizedExperiment", {
+test_that("lfqdata_to_summarized_experiment returns a SummarizedExperiment", {
   skip_if_not_installed("SummarizedExperiment")
-  se <- LFQDataToSummarizedExperiment(lfqdata)
+  se <- lfqdata_to_summarized_experiment(lfqdata)
   expect_s4_class(se, "SummarizedExperiment")
   expect_equal(ncol(se), nrow(lfqdata$data_wide()$annotation))
 })
 
 test_that("lfqdata_from_wide inverts tidy_to_wide_config", {
-  istar <- sim_lfq_data_peptide_config(Nprot = 10)
+  istar <- sim_lfq_data_peptide_config(n_proteins = 10)
   lfq <- LFQData$new(istar$data, istar$config)
   wide <- tidy_to_wide_config(lfq, as.matrix = TRUE)
   nr <- tidy_to_wide_config(lfq, as.matrix = TRUE, value = lfq$nr_children_col())

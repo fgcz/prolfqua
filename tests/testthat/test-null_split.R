@@ -1,7 +1,7 @@
 # null_split_check()
 
-.ns_lfq <- function(Nprot = 30, with_missing = FALSE) {
-  bb <- sim_lfq_data_protein_config(Nprot = Nprot, with_missing = with_missing)
+.ns_lfq <- function(n_proteins = 30, with_missing = FALSE) {
+  bb <- sim_lfq_data_protein_config(n_proteins = n_proteins, with_missing = with_missing)
   lfq <- LFQData$new(bb$data, bb$config)
   lfq$is_transformed(TRUE)
   lfq
@@ -81,7 +81,7 @@ test_that("invalid strata and splits raise", {
 })
 
 test_that("p-values of a no-effect simulation are roughly calibrated", {
-  lfq <- .ns_lfq(Nprot = 200)
+  lfq <- .ns_lfq(n_proteins = 200)
   res <- null_split_check(lfq, method = "limma", n_splits = 10, seed = 7)
   expect_lt(stats::median(res$p_below_0.05), 0.15)
   expect_lt(stats::median(res$n_FDR_below_0.05), 5)

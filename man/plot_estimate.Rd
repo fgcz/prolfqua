@@ -36,7 +36,7 @@ stopifnot("ggplot" \%in\% class(tmpMed$plots[[1]]))
 Other plotting:
 \code{\link{ContrastsPlotter}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link[=missigness_histogram]{missigness_histogram()}},
+\code{\link[=missingness_histogram]{missingness_histogram()}},
 \code{\link[=missingness_per_condition]{missingness_per_condition()}},
 \code{\link[=missingness_per_condition_cumsum]{missingness_per_condition_cumsum()}},
 \code{\link[=plot_heatmap]{plot_heatmap()}},

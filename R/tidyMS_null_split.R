@@ -42,7 +42,7 @@
 #' @family stats
 #' @export
 #' @examples
-#' bb <- sim_lfq_data_protein_config(Nprot = 50, with_missing = FALSE)
+#' bb <- sim_lfq_data_protein_config(n_proteins = 50, with_missing = FALSE)
 #' lfqdata <- LFQData$new(bb$data, bb$config)
 #' lfqdata$is_transformed(TRUE)
 #' res <- null_split_check(lfqdata, method = "limma", n_splits = 5, seed = 1)

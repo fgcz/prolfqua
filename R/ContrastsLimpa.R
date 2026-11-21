@@ -92,7 +92,7 @@ strategy_limpa <- function(modelstr, model_name = "limpa", trend = FALSE, robust
 #' @family modelling
 #' @examples
 #' if (requireNamespace("limpa", quietly = TRUE)) {
-#'   istar <- sim_lfq_data_peptide_config(Nprot = 10)
+#'   istar <- sim_lfq_data_peptide_config(n_proteins = 10)
 #'   lfq <- LFQData$new(istar$data, istar$config)
 #'   lfq <- lfq$get_Transformer()$log2()$lfq
 #'   lfq <- AggregateLimpa$new(lfq, "protein")$aggregate()

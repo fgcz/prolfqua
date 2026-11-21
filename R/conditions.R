@@ -283,15 +283,15 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
 }
 
 #' Validate simulator size and missingness weight
-#' @param Nprot positive whole number of proteins
+#' @param n_proteins positive whole number of proteins
 #' @param weight_missing one number in \[0, 1\]
 #' @param call the call shown in the error header
 #' @noRd
 #' @srrstatsTODO {G2.2} Scalar simulation arguments are enforced; limit: some thresholds and weights still need length
 #'   checks.
-.assert_simulation_args <- function(Nprot, weight_missing, call = rlang::caller_env()) {
-  if (!.is_finite_number(Nprot) || !all(Nprot > 0, Nprot == floor(Nprot))) {
-    abort_bad_argument("Nprot", "be one positive whole number", call = call)
+.assert_simulation_args <- function(n_proteins, weight_missing, call = rlang::caller_env()) {
+  if (!.is_finite_number(n_proteins) || !all(n_proteins > 0, n_proteins == floor(n_proteins))) {
+    abort_bad_argument("n_proteins", "be one positive whole number", call = call)
   }
   if (!.is_finite_number(weight_missing) || !all(weight_missing >= 0, weight_missing <= 1)) {
     abort_bad_argument("weight_missing", "be one finite number in [0, 1]", call = call)

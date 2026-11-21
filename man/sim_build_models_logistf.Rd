@@ -6,10 +6,22 @@
 \usage{
 sim_build_models_logistf(
   model = c("parallel2", "parallel3", "factors", "interaction"),
-  Nprot = 10,
+  n_proteins = 10,
   with_missing = TRUE,
-  weight_missing = 1
+  weight_missing = 1,
+  Nprot
 )
+}
+\arguments{
+\item{model}{design: \code{"parallel2"}, \code{"parallel3"}, \code{"factors"} or \code{"interaction"}}
+
+\item{n_proteins}{number of simulated proteins}
+
+\item{with_missing}{include simulated missing measurements}
+
+\item{weight_missing}{weight controlling simulated missingness}
+
+\item{Nprot}{deprecated; use \code{n_proteins}}
 }
 \value{
 a \link{ModelFirth} object fitted with \code{\link[=build_model_logistf]{build_model_logistf()}}
@@ -60,7 +72,6 @@ Other modelling:
 \code{\link{ContrastsRfitImputeFacade}},
 \code{\link{ContrastsTable}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link[=LR_test]{LR_test()}},
 \code{\link{Model}},
 \code{\link{ModelFirth}},
 \code{\link{ModelLimma}},
@@ -96,6 +107,7 @@ Other modelling:
 \code{\link[=linfct_matrix_contrasts]{linfct_matrix_contrasts()}},
 \code{\link[=list_facades]{list_facades()}},
 \code{\link[=lookup_facade]{lookup_facade()}},
+\code{\link[=lr_test]{lr_test()}},
 \code{\link[=merge_contrasts_results]{merge_contrasts_results()}},
 \code{\link[=model_analyse]{model_analyse()}},
 \code{\link[=model_summary]{model_summary()}},
@@ -115,7 +127,7 @@ Other modelling:
 \code{\link[=strategy_limma]{strategy_limma()}},
 \code{\link[=strategy_limpa]{strategy_limpa()}},
 \code{\link[=strategy_logistf]{strategy_logistf()}},
-\code{\link[=summary_ROPECA_median_p_scaled]{summary_ROPECA_median_p_scaled()}},
+\code{\link[=summary_ropeca_median_p_scaled]{summary_ropeca_median_p_scaled()}},
 \code{\link[=vcov.rfit_prolfqua]{vcov.rfit_prolfqua()}}
 }
 \concept{modelling}

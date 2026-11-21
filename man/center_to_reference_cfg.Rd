@@ -20,7 +20,7 @@ takes the median of the lfqdareference per sample and subtracts it from a copy o
 \examples{
 # example code
 
-bb <- sim_lfq_data_peptide_config(Nprot = 100)
+bb <- sim_lfq_data_peptide_config(n_proteins = 100)
 x <- LFQData$new(bb$data, bb$config)
 xc <- x$get_copy()
 xc$set_data(xc$data_long() |> dplyr::filter(protein_Id == "0EfVhX~3967"))

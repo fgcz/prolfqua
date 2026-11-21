@@ -8,7 +8,7 @@
 #'
 #'
 #'
-#' istar <- sim_lfq_data_peptide_config(Nprot = 20)
+#' istar <- sim_lfq_data_peptide_config(n_proteins = 20)
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 #' model_name <- "f_condtion_r_peptide"

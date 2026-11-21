@@ -8,7 +8,7 @@
 #' @family modelling
 #' @examples
 #'
-#' istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30)
+#' istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 30)
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqdata$rename_response("transformedIntensity")
 #' Contrasts <- c("aC" = "group_A - group_Ctrl",
@@ -62,7 +62,7 @@ ContrastsTable <- R6::R6Class(
 
     #' @description
     #' get contrasts
-    #' @seealso \code{\link{summary_ROPECA_median_p_scaled}}
+    #' @seealso \code{\link{summary_ropeca_median_p_scaled}}
     #' @param all should all columns be returned (default FALSE)
     #' @param global use a global linear function (determined by get_linfct)
     get_contrasts = function(all = FALSE) {

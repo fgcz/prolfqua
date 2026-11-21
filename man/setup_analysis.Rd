@@ -53,7 +53,7 @@ rows with NA response, so every feature has a row in every sample.
 
 # Example with a normValue column (e.g., creatinine)
 set.seed(1234)
-data <- sim_lfq_data(Nprot = 10, PEPTIDE = TRUE, N = 4)
+data <- sim_lfq_data(n_proteins = 10, peptide = TRUE, n_per_group = 4)
 data$nr_children <- 1
 data$isotopeLabel <- "light"
 data$qValue <- 0
@@ -79,11 +79,11 @@ Other configuration:
 \code{\link{AnalysisConfiguration}},
 \code{\link{ContrastConfiguration}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link[=R6_extract_values]{R6_extract_values()}},
 \code{\link[=complete_cases]{complete_cases()}},
-\code{\link[=list_to_ContrastConfiguration]{list_to_ContrastConfiguration()}},
+\code{\link[=list_to_contrast_configuration]{list_to_contrast_configuration()}},
 \code{\link[=make_interaction_column]{make_interaction_column()}},
 \code{\link[=make_reduced_hierarchy_config]{make_reduced_hierarchy_config()}},
+\code{\link[=r6_extract_values]{r6_extract_values()}},
 \code{\link[=sample_subset]{sample_subset()}},
 \code{\link[=separate_hierarchy]{separate_hierarchy()}},
 \code{\link[=table_factors]{table_factors()}},

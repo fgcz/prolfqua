@@ -53,7 +53,7 @@
 #' stopifnot("plotly" %in%  class(lfqplotter$pca_plotly()))
 #' tmp <- lfqplotter$boxplots()
 #' stopifnot("ggplot" %in%  class(tmp$boxplot[[1]]))
-#' stopifnot("ggplot" %in% class(lfqplotter$missigness_histogram()))
+#' stopifnot("ggplot" %in% class(lfqplotter$missingness_histogram()))
 #'
 #' stopifnot(methods::is(lfqplotter$na_heatmap(), "Heatmap"))
 #' class(lfqplotter$intensity_distribution_density())
@@ -242,8 +242,15 @@ LFQDataPlotter <- R6::R6Class(
     #' @description
     #' histogram of intensities given number of missing in conditions
     #' @return ggplot
+    missingness_histogram = function() {
+      prolfqua::missingness_histogram(self$lfq)
+    },
+    #' @description
+    #' Deprecated; use `$missingness_histogram()`.
+    #' @return ggplot
     missigness_histogram = function() {
-      prolfqua::missigness_histogram(self$lfq)
+      .Deprecated(msg = "`missigness_histogram()` is deprecated; use `missingness_histogram()` instead.")
+      self$missingness_histogram()
     },
 
     #' @description

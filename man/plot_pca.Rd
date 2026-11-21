@@ -38,7 +38,7 @@ Plot a principal component analysis of the samples
 }
 \examples{
 
-istar <- sim_lfq_data_protein_config(with_missing = TRUE, weight_missing = .8, Nprot = 3000)
+istar <- sim_lfq_data_protein_config(with_missing = TRUE, weight_missing = .8, n_proteins = 3000)
 lfq <- LFQData$new(istar$data, istar$config)
 wide <- lfq$data_wide(as.matrix = TRUE)
 tmp <- plot_pca(wide$data, wide$annotation, lfq$sample_name(), lfq$factor_keys(),
@@ -52,7 +52,7 @@ stopifnot("ggplot" \%in\% class(tmp))
 Other plotting:
 \code{\link{ContrastsPlotter}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link[=missigness_histogram]{missigness_histogram()}},
+\code{\link[=missingness_histogram]{missingness_histogram()}},
 \code{\link[=missingness_per_condition]{missingness_per_condition()}},
 \code{\link[=missingness_per_condition_cumsum]{missingness_per_condition_cumsum()}},
 \code{\link[=plot_estimate]{plot_estimate()}},

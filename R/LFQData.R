@@ -570,10 +570,10 @@ plot.LFQData <- function(x, ...) {
 #' lfqdata <- LFQData$new(data, istar$config)
 #' lfqdata$data_wide()
 #' if(require("SummarizedExperiment")){
-#'    tmp <- LFQDataToSummarizedExperiment(lfqdata)
+#'    tmp <- lfqdata_to_summarized_experiment(lfqdata)
 #' }
 #'
-LFQDataToSummarizedExperiment <- function(lfqdata) {
+lfqdata_to_summarized_experiment <- function(lfqdata) {
   rlang::check_installed(c("SummarizedExperiment", "S4Vectors"), reason = "to build a SummarizedExperiment")
   wide <- lfqdata$data_wide(as.matrix = TRUE)
   ann <- data.frame(wide$annotation)

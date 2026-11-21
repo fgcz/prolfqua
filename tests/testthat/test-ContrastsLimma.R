@@ -8,7 +8,7 @@ test_that("strategy_limma returns StrategyLimma R6 object", {
 })
 
 test_that("build_model_limma returns ModelLimma", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 20)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 20)
   lProt <- prolfqua::LFQData$new(istar$data, istar$config)
   lProt$rename_response("transformedIntensity")
 
@@ -23,7 +23,7 @@ test_that("build_model_limma returns ModelLimma", {
 })
 
 test_that("ModelLimma$get_coefficients works", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 20)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 20)
   lProt <- prolfqua::LFQData$new(istar$data, istar$config)
   lProt$rename_response("transformedIntensity")
 
@@ -39,7 +39,7 @@ test_that("ModelLimma$get_coefficients works", {
 })
 
 test_that("ModelLimma$get_anova works", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 20)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 20)
   lProt <- prolfqua::LFQData$new(istar$data, istar$config)
   lProt$rename_response("transformedIntensity")
 
@@ -54,7 +54,7 @@ test_that("ModelLimma$get_anova works", {
 })
 
 test_that("ContrastsLimma produces valid results", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 50, weight_missing = 0)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 50, weight_missing = 0)
   lProt <- prolfqua::LFQData$new(istar$data, istar$config)
   lProt$rename_response("transformedIntensity")
 
@@ -99,7 +99,7 @@ test_that("ContrastsLimma produces valid results", {
 })
 
 test_that("ContrastsLimma exposes identical standard and raw pairs without eBayes", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 30, weight_missing = 0)
   lProt <- prolfqua::LFQData$new(istar$data, istar$config)
   lProt$rename_response("transformedIntensity")
   mod <- prolfqua::build_model_limma(
@@ -119,7 +119,7 @@ test_that("ContrastsLimma exposes identical standard and raw pairs without eBaye
 })
 
 test_that("ContrastsLimma fold changes match prolfqua lm", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 50, weight_missing = 0)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 50, weight_missing = 0)
   lProt <- prolfqua::LFQData$new(istar$data, istar$config)
   lProt$rename_response("transformedIntensity")
 
@@ -148,7 +148,7 @@ test_that("ContrastsLimma fold changes match prolfqua lm", {
 })
 
 test_that("limma_impute contrasts use annotation matched to matrix columns", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 8)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 8)
   data <- istar$data |>
     dplyr::mutate(
       abundance = dplyr::case_when(
@@ -185,7 +185,7 @@ test_that("limma_impute contrasts use annotation matched to matrix columns", {
 })
 
 test_that("ContrastsLimma get_Plotter works", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 30, weight_missing = 0)
   lProt <- prolfqua::LFQData$new(istar$data, istar$config)
   lProt$rename_response("transformedIntensity")
 
@@ -199,7 +199,7 @@ test_that("ContrastsLimma get_Plotter works", {
 })
 
 test_that("ContrastsLimma to_wide works", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 30, weight_missing = 0)
   lProt <- prolfqua::LFQData$new(istar$data, istar$config)
   lProt$rename_response("transformedIntensity")
 
@@ -214,7 +214,7 @@ test_that("ContrastsLimma to_wide works", {
 })
 
 test_that("ContrastsLimma get_contrast_sides works", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 20)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 20)
   lProt <- prolfqua::LFQData$new(istar$data, istar$config)
   lProt$rename_response("transformedIntensity")
 
@@ -229,7 +229,7 @@ test_that("ContrastsLimma get_contrast_sides works", {
 })
 
 test_that("merge_contrasts_results works with ContrastsLimma", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 50, weight_missing = 0.3)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 50, weight_missing = 0.3)
   lProt <- prolfqua::LFQData$new(istar$data, istar$config)
   lProt$rename_response("transformedIntensity")
 
@@ -249,7 +249,7 @@ test_that("merge_contrasts_results works with ContrastsLimma", {
 })
 
 test_that("ContrastsLimma works with multiple contrasts", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 30, weight_missing = 0)
   lProt <- prolfqua::LFQData$new(istar$data, istar$config)
   lProt$rename_response("transformedIntensity")
 
@@ -267,7 +267,7 @@ test_that("ContrastsLimma works with multiple contrasts", {
 })
 
 test_that("build_model_limma passes weights from column name", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 30, weight_missing = 0)
   lProt <- prolfqua::LFQData$new(istar$data, istar$config)
   lProt$rename_response("transformedIntensity")
 
@@ -312,7 +312,7 @@ test_that("build_model_limma passes weights from column name", {
 })
 
 test_that("ContrastsLimma works with 2-factor design", {
-  dd <- prolfqua::sim_lfq_data_2factor_config(Nprot = 30, with_missing = FALSE)
+  dd <- prolfqua::sim_lfq_data_2factor_config(n_proteins = 30, with_missing = FALSE)
   lProt <- prolfqua::LFQData$new(dd$data, dd$config)
   lProt$rename_response("transformedIntensity")
 
@@ -331,7 +331,7 @@ test_that("ContrastsLimma works with 2-factor design", {
 # --- build_model_limma_impute tests ---
 
 test_that("build_model_limma_impute recovers failed proteins", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 50, weight_missing = 0.5)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 50, weight_missing = 0.5)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   lfqdata$rename_response("transformedIntensity")
   strat <- prolfqua::strategy_limma("transformedIntensity ~ group_")
@@ -352,7 +352,7 @@ test_that("build_model_limma_impute recovers failed proteins", {
 })
 
 test_that("ContrastsLimmaImputeFacade end-to-end", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0.5)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 30, weight_missing = 0.5)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   lfqdata$rename_response("transformedIntensity")
   contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
@@ -372,7 +372,7 @@ test_that("ContrastsLimmaImputeFacade end-to-end", {
 })
 
 test_that("limma_impute fold changes match plain limma for non-imputed proteins", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 50, weight_missing = 0.3)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 50, weight_missing = 0.3)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   lfqdata$rename_response("transformedIntensity")
   contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
@@ -401,7 +401,7 @@ test_that("limma_impute fold changes match plain limma for non-imputed proteins"
 })
 
 test_that("build_contrast_analysis dispatches limma_impute", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 20, weight_missing = 0.3)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 20, weight_missing = 0.3)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   lfqdata$rename_response("transformedIntensity")
   contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
@@ -413,7 +413,7 @@ test_that("build_contrast_analysis dispatches limma_impute", {
 })
 
 test_that("df_method borrowed works for limma_impute", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0.5)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 30, weight_missing = 0.5)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   lfqdata$rename_response("transformedIntensity")
   contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
@@ -429,7 +429,7 @@ test_that("df_method borrowed works for limma_impute", {
 })
 
 test_that("df correction: imputed proteins do not use inflated df", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 50, weight_missing = 0.5)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 50, weight_missing = 0.5)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   lfqdata$rename_response("transformedIntensity")
   strat <- prolfqua::strategy_limma("transformedIntensity ~ group_")
@@ -462,7 +462,7 @@ test_that("df correction: imputed proteins do not use inflated df", {
 # ---- limma_voom tests ----
 
 test_that("build_model_limma_voom returns ModelLimma", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 20)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 20)
   lProt <- prolfqua::LFQData$new(istar$data, istar$config)
   lProt$rename_response("transformedIntensity")
 
@@ -476,7 +476,7 @@ test_that("build_model_limma_voom returns ModelLimma", {
 })
 
 test_that("build_model_limma_voom produces different weights than plain limma", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 30, weight_missing = 0)
   lProt <- prolfqua::LFQData$new(istar$data, istar$config)
   lProt$rename_response("transformedIntensity")
   contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
@@ -502,7 +502,7 @@ test_that("build_model_limma_voom produces different weights than plain limma", 
 })
 
 test_that("build_contrast_analysis dispatches limma_voom", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 20)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 20)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   lfqdata$rename_response("transformedIntensity")
   contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
@@ -515,7 +515,7 @@ test_that("build_contrast_analysis dispatches limma_voom", {
 })
 
 test_that("build_contrast_analysis dispatches limma_voom_impute", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0.5)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 30, weight_missing = 0.5)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   lfqdata$rename_response("transformedIntensity")
   contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
@@ -528,7 +528,7 @@ test_that("build_contrast_analysis dispatches limma_voom_impute", {
 })
 
 test_that("limma_voom_impute recovers more proteins than limma_voom", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 50, weight_missing = 0.5)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 50, weight_missing = 0.5)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   lfqdata$rename_response("transformedIntensity")
   contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
@@ -546,7 +546,7 @@ test_that("limma_voom_impute recovers more proteins than limma_voom", {
 })
 
 test_that("build_contrast_analysis dispatches deqms_voom", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 30)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   lfqdata$rename_response("transformedIntensity")
   contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
@@ -567,7 +567,7 @@ test_that("build_contrast_analysis dispatches deqms_voom", {
 })
 
 test_that("limma_voom with external weights (nr_children)", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 20)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 20)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   lfqdata$rename_response("transformedIntensity")
   contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
@@ -589,7 +589,7 @@ test_that("limma_impute flags LOD-rescued proteins via estimate_type", {
   # Same fixture as the lm_impute regression test in test-ImputeModel.R;
   # weight_missing = 0.5 guarantees some proteins have NA limma
   # coefficients, which build_model_limma_impute then refits at LOD.
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 50, weight_missing = 0.5, seed = 42)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 50, weight_missing = 0.5, seed = 42)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   lfqdata$rename_response("transformedIntensity")
   contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
@@ -621,7 +621,7 @@ test_that("limma_impute flags LOD-rescued proteins via estimate_type", {
 
 
 test_that("limma_voom_impute also flags LOD-rescued proteins", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 50, weight_missing = 0.5, seed = 42)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 50, weight_missing = 0.5, seed = 42)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   lfqdata$rename_response("transformedIntensity")
   contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
@@ -635,7 +635,7 @@ test_that("limma_voom_impute also flags LOD-rescued proteins", {
 
 test_that("limma_voom_impute returns an ordinary fit when no rows fail", {
   istar <- prolfqua::sim_lfq_data_protein_config(
-    Nprot = 30,
+    n_proteins = 30,
     weight_missing = 0,
     seed = 42
   )
@@ -657,7 +657,7 @@ test_that("limma_voom_impute returns an ordinary fit when no rows fail", {
 
 test_that("limma_voom_impute supports borrowed residual degrees of freedom", {
   istar <- prolfqua::sim_lfq_data_protein_config(
-    Nprot = 50,
+    n_proteins = 50,
     weight_missing = 0.5,
     seed = 42
   )
@@ -683,7 +683,7 @@ test_that("limma_voom_impute supports borrowed residual degrees of freedom", {
 })
 
 test_that("matrix models retain the inputs and weights used for their coefficients", {
-  sim <- sim_lfq_data_protein_config(Nprot = 20, weight_missing = 0, seed = 42)
+  sim <- sim_lfq_data_protein_config(n_proteins = 20, weight_missing = 0, seed = 42)
   lfq <- LFQData$new(sim$data, sim$config)
   for (method in c("limma", "limma_voom")) {
     facade <- build_contrast_analysis(lfq, "~ group_", c(A_vs_Ctrl = "group_A - group_Ctrl"), method)
@@ -697,7 +697,7 @@ test_that("matrix models retain the inputs and weights used for their coefficien
 })
 
 test_that("limma imputation retains rescued responses and the original observation mask", {
-  sim <- sim_lfq_data_protein_config(Nprot = 20, weight_missing = 0, seed = 42)
+  sim <- sim_lfq_data_protein_config(n_proteins = 20, weight_missing = 0, seed = 42)
   lfq <- LFQData$new(sim$data, sim$config)
   dat <- lfq$data_long()
   protein <- unique(dat$protein_Id)[1]
@@ -716,7 +716,7 @@ test_that("limma imputation retains rescued responses and the original observati
 })
 
 test_that("facades retain a snapshot independent of the caller", {
-  sim <- sim_lfq_data_protein_config(Nprot = 10, weight_missing = 0, seed = 42)
+  sim <- sim_lfq_data_protein_config(n_proteins = 10, weight_missing = 0, seed = 42)
   lfq <- LFQData$new(sim$data, sim$config)
   facade <- build_contrast_analysis(lfq, "~ group_", c(A_vs_Ctrl = "group_A - group_Ctrl"))
   before <- facade$.lfqdata$data_long()

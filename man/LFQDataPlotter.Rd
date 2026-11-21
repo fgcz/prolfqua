@@ -27,7 +27,7 @@ stopifnot("ggplot" \%in\% class(lfqplotter$pca()))
 stopifnot("plotly" \%in\%  class(lfqplotter$pca_plotly()))
 tmp <- lfqplotter$boxplots()
 stopifnot("ggplot" \%in\%  class(tmp$boxplot[[1]]))
-stopifnot("ggplot" \%in\% class(lfqplotter$missigness_histogram()))
+stopifnot("ggplot" \%in\% class(lfqplotter$missingness_histogram()))
 
 stopifnot(methods::is(lfqplotter$na_heatmap(), "Heatmap"))
 class(lfqplotter$intensity_distribution_density())
@@ -55,8 +55,8 @@ Other LFQData:
 \code{\link{LFQData}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},
-\code{\link[=LFQDataToSummarizedExperiment]{LFQDataToSummarizedExperiment()}},
 \code{\link[=lfqdata_from_wide]{lfqdata_from_wide()}},
+\code{\link[=lfqdata_to_summarized_experiment]{lfqdata_to_summarized_experiment()}},
 \code{\link[=plot.LFQData]{plot.LFQData()}}
 }
 \concept{LFQData}
@@ -79,6 +79,7 @@ Other LFQData:
     \item \href{#method-LFQDataPlotter-pca}{\code{LFQDataPlotter$pca()}}
     \item \href{#method-LFQDataPlotter-pca_plotly}{\code{LFQDataPlotter$pca_plotly()}}
     \item \href{#method-LFQDataPlotter-boxplots}{\code{LFQDataPlotter$boxplots()}}
+    \item \href{#method-LFQDataPlotter-missingness_histogram}{\code{LFQDataPlotter$missingness_histogram()}}
     \item \href{#method-LFQDataPlotter-missigness_histogram}{\code{LFQDataPlotter$missigness_histogram()}}
     \item \href{#method-LFQDataPlotter-na_heatmap}{\code{LFQDataPlotter$na_heatmap()}}
     \item \href{#method-LFQDataPlotter-intensity_distribution_density}{\code{LFQDataPlotter$intensity_distribution_density()}}
@@ -295,10 +296,25 @@ first, e.g. with \code{\link{AggregateLimpa}} in \code{impute_only} mode.
 }
 
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LFQDataPlotter-missingness_histogram"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataPlotter-missingness_histogram}{}}}
+\subsection{\code{LFQDataPlotter$missingness_histogram()}}{
+  histogram of intensities given number of missing in conditions
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataPlotter$missingness_histogram()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    ggplot
+  }
+}
+
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-LFQDataPlotter-missigness_histogram"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQDataPlotter-missigness_histogram}{}}}
 \subsection{\code{LFQDataPlotter$missigness_histogram()}}{
-  histogram of intensities given number of missing in conditions
+  Deprecated; use \verb{$missingness_histogram()}.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{LFQDataPlotter$missigness_histogram()}

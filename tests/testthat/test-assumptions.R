@@ -21,7 +21,7 @@ assumption_contrasts <- function(method, lfqdata) {
 test_that("outliers pull lm estimates while rlm and rfit resist them", {
   skip_if_not_installed("Rfit")
   for (seed in 1:3) {
-    sim <- sim_with_truth(Nprot = 200, N = 4, seed = seed)
+    sim <- sim_with_truth(n_proteins = 200, n_per_group = 4, seed = seed)
     data <- sim$lfqdata$data_long()
     # Shift 5% of the observations by 6 units, six residual standard deviations.
     outliers <- withr::with_seed(100 + seed, sample(nrow(data), round(0.05 * nrow(data))))
@@ -44,7 +44,7 @@ test_that("missing low intensities shrink fold changes of down-regulated protein
   attenuation <- numeric()
   imputed_bias <- numeric()
   for (seed in 1:5) {
-    sim <- sim_with_truth(Nprot = 200, N = 4, seed = seed)
+    sim <- sim_with_truth(n_proteins = 200, n_per_group = 4, seed = seed)
     data <- sim$lfqdata$data_long()
     # Missing not at random: the lowest 15% of all intensities are not observed.
     observed <- data[data$abundance > stats::quantile(data$abundance, 0.15), ]

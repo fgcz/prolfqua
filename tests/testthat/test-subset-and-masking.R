@@ -1,7 +1,7 @@
 # get_subset() needs a subject-id column; data columns must not shadow function arguments inside filter().
 
 .masking_lfq <- function() {
-  istar <- sim_lfq_data_peptide_config(Nprot = 10, with_missing = FALSE, seed = 1)
+  istar <- sim_lfq_data_peptide_config(n_proteins = 10, with_missing = FALSE, seed = 1)
   LFQData$new(istar$data, istar$config)
 }
 

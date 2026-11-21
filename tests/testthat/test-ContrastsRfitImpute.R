@@ -2,9 +2,9 @@
 ## (new_imputed_model on an rfit fit, build_model_impute with strategy_rfit,
 ##  ContrastsRfitImputeFacade, build_contrast_analysis dispatch, registry)
 
-make_protein_lfqdata_rfit_impute <- function(Nprot = 50, weight_missing = 0.5, seed = 42) {
+make_protein_lfqdata_rfit_impute <- function(n_proteins = 50, weight_missing = 0.5, seed = 42) {
   istar <- prolfqua::sim_lfq_data_protein_config(
-    Nprot = Nprot,
+    n_proteins = n_proteins,
     weight_missing = weight_missing,
     seed = seed
   )
@@ -158,7 +158,7 @@ test_that("rfit_impute is stable under LOD-created ties", {
     # many identical (tied) values whose rank order Rfit resolves with
     # ties.method = "first". Deterministic sample-row ordering must make the
     # facade reproducible across runs.
-    lfqdata <- make_protein_lfqdata_rfit_impute(Nprot = 40, weight_missing = 1, seed = 7)
+    lfqdata <- make_protein_lfqdata_rfit_impute(n_proteins = 40, weight_missing = 1, seed = 7)
     res1 <- prolfqua::ContrastsRfitImputeFacade$new(
       lfqdata,
       RFITIMP_MODELSTR,

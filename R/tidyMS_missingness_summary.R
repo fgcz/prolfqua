@@ -126,12 +126,12 @@ get_contrast <- function(data, hierarchy_keys, contrasts) {
 #'
 #' istar <- sim_lfq_data_peptide_config()
 #' lfq <- LFQData$new(istar$data, istar$config)
-#' pl <- missigness_histogram(lfq, showempty = FALSE)
+#' pl <- missingness_histogram(lfq, showempty = FALSE)
 #' stopifnot("ggplot" %in% class(pl))
-#' pl <- missigness_histogram(lfq, showempty = TRUE)
+#' pl <- missingness_histogram(lfq, showempty = TRUE)
 #' stopifnot("ggplot" %in% class(pl))
 #'
-missigness_histogram <- function(lfqdata, showempty = FALSE, factors = lfqdata$relevant_factor_keys(), alpha = 0.1) {
+missingness_histogram <- function(lfqdata, showempty = FALSE, factors = lfqdata$relevant_factor_keys(), alpha = 0.1) {
   missing_percent <- summarize_stats(lfqdata, factor_key = factors)
   missing_percent <- missing_percent |>
     dplyr::ungroup() |>

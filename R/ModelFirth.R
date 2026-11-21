@@ -4,7 +4,7 @@
 #' @export
 #' @family modelling
 #' @examplesIf requireNamespace("logistf", quietly = TRUE)
-#' istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE,
+#' istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 10, with_missing = TRUE,
 #'   weight_missing = 0.5, seed = 3)
 #' istar$data <- prolfqua::encode_bin_resp(LFQData$new(istar$data, istar$config))
 #' istar$config$bin_resp <- "bin_resp"

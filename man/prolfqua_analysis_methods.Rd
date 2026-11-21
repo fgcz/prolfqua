@@ -109,7 +109,7 @@ without computing contrasts. Summaries evaluate the contrasts and report counts 
 FDR and absolute effect thresholds.
 }
 \examples{
-sim <- sim_lfq_data_protein_config(Nprot = 10, weight_missing = 0, seed = 42)
+sim <- sim_lfq_data_protein_config(n_proteins = 10, weight_missing = 0, seed = 42)
 lfq <- LFQData$new(sim$data, sim$config)
 analysis <- build_contrast_analysis(lfq, "~ group_", c(A_vs_Ctrl = "group_A - group_Ctrl"))
 print(analysis)
@@ -157,7 +157,6 @@ Other modelling:
 \code{\link{ContrastsRfitImputeFacade}},
 \code{\link{ContrastsTable}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link[=LR_test]{LR_test()}},
 \code{\link{Model}},
 \code{\link{ModelFirth}},
 \code{\link{ModelLimma}},
@@ -193,6 +192,7 @@ Other modelling:
 \code{\link[=linfct_matrix_contrasts]{linfct_matrix_contrasts()}},
 \code{\link[=list_facades]{list_facades()}},
 \code{\link[=lookup_facade]{lookup_facade()}},
+\code{\link[=lr_test]{lr_test()}},
 \code{\link[=merge_contrasts_results]{merge_contrasts_results()}},
 \code{\link[=model_analyse]{model_analyse()}},
 \code{\link[=model_summary]{model_summary()}},
@@ -212,7 +212,7 @@ Other modelling:
 \code{\link[=strategy_limma]{strategy_limma()}},
 \code{\link[=strategy_limpa]{strategy_limpa()}},
 \code{\link[=strategy_logistf]{strategy_logistf()}},
-\code{\link[=summary_ROPECA_median_p_scaled]{summary_ROPECA_median_p_scaled()}},
+\code{\link[=summary_ropeca_median_p_scaled]{summary_ropeca_median_p_scaled()}},
 \code{\link[=vcov.rfit_prolfqua]{vcov.rfit_prolfqua()}}
 }
 \concept{modelling}

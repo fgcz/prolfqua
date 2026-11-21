@@ -7,7 +7,7 @@
 #'
 #' @examples
 #'
-#' istar <- sim_lfq_data_peptide_config(Nprot = 50)
+#' istar <- sim_lfq_data_peptide_config(n_proteins = 50)
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #'
 #' lfqcopy <- lfqdata$get_copy()
@@ -476,7 +476,7 @@ robust_scale <- function(data, dim = 2, preserve_mean = FALSE) {
 #' @family preprocessing
 #' @examples
 #'
-#' bb <- sim_lfq_data_peptide_config(Nprot = 100)
+#' bb <- sim_lfq_data_peptide_config(n_proteins = 100)
 #' lfqdata <- LFQData$new(bb$data, bb$config)
 #' res <- apply_to_response_matrix(lfqdata, .func = base::scale)
 #' stopifnot("abundance_base..scale" %in% colnames(res$data))
@@ -514,7 +514,7 @@ apply_to_response_matrix <- function(lfqdata, .func, .funcname = NULL) {
 #' @return list with data, scales, and colname
 #' @examples
 #'
-#' bb <- sim_lfq_data_peptide_config(Nprot = 100)
+#' bb <- sim_lfq_data_peptide_config(n_proteins = 100)
 #' lfqdata <- LFQData$new(bb$data, bb$config)
 #' lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 #' s1 <- get_robscales(lfqdata)
@@ -584,7 +584,7 @@ center_to_reference <- function(
 #' @examples
 #' # example code
 #'
-#' bb <- sim_lfq_data_peptide_config(Nprot = 100)
+#' bb <- sim_lfq_data_peptide_config(n_proteins = 100)
 #' x <- LFQData$new(bb$data, bb$config)
 #' xc <- x$get_copy()
 #' xc$set_data(xc$data_long() |> dplyr::filter(protein_Id == "0EfVhX~3967"))

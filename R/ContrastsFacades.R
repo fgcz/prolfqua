@@ -158,7 +158,7 @@ ContrastsLimmaFacade <- R6::R6Class(
 #' @export
 #' @family modelling
 #' @examples
-#' istar <- sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0.5)
+#' istar <- sim_lfq_data_protein_config(n_proteins = 30, weight_missing = 0.5)
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqdata$rename_response("transformedIntensity")
 #' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
@@ -263,7 +263,7 @@ ContrastsLimmaVoomFacade <- R6::R6Class(
 #' @export
 #' @family modelling
 #' @examples
-#' istar <- sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0.5)
+#' istar <- sim_lfq_data_protein_config(n_proteins = 30, weight_missing = 0.5)
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqdata$rename_response("transformedIntensity")
 #' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
@@ -505,7 +505,7 @@ ContrastsRfitFacade <- R6::R6Class(
 #' @export
 #' @family modelling
 #' @examples
-#' istar <- sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0.5)
+#' istar <- sim_lfq_data_protein_config(n_proteins = 30, weight_missing = 0.5)
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqdata$rename_response("transformedIntensity")
 #' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
@@ -590,7 +590,7 @@ ContrastsLMImputeFacade <- R6::R6Class(
 #' @seealso \code{\link{ContrastsLMImputeFacade}}, \code{\link{ContrastsRfitFacade}},
 #'   \code{\link{build_model_impute}}
 #' @examples
-#' istar <- sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0.5)
+#' istar <- sim_lfq_data_protein_config(n_proteins = 30, weight_missing = 0.5)
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqdata$rename_response("transformedIntensity")
 #' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
@@ -647,7 +647,7 @@ ContrastsRfitImputeFacade <- R6::R6Class(
 #' @export
 #' @family modelling
 #' @examplesIf requireNamespace("logistf", quietly = TRUE)
-#' istar <- sim_lfq_data_protein_config(Nprot = 20, weight_missing = 0.5)
+#' istar <- sim_lfq_data_protein_config(n_proteins = 20, weight_missing = 0.5)
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 #' fa <- ContrastsFirthFacade$new(lfqdata, "~ group_", contrasts)
@@ -683,7 +683,7 @@ ContrastsFirthFacade <- R6::R6Class(
 #' @export
 #' @family modelling
 #' @examples
-#' istar <- sim_lfq_data_protein_config(Nprot = 50)
+#' istar <- sim_lfq_data_protein_config(n_proteins = 50)
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqdata$rename_response("transformedIntensity")
 #' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
@@ -731,7 +731,7 @@ ContrastsDEqMSFacade <- R6::R6Class(
 #' @export
 #' @family modelling
 #' @examples
-#' istar <- sim_lfq_data_protein_config(Nprot = 50)
+#' istar <- sim_lfq_data_protein_config(n_proteins = 50)
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqdata$rename_response("transformedIntensity")
 #' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")

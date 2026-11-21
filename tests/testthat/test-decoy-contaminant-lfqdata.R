@@ -1,7 +1,7 @@
 # Quant-side decoy / contaminant handling on LFQData.
 
 make_lfq_with_prefixes <- function(decoy = character(), cont = character()) {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 20)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 20)
   data <- istar$data
   config <- istar$config
   top <- config$hierarchy_keys()[1]

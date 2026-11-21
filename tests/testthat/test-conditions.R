@@ -9,7 +9,7 @@
 # Typed error conditions raised at prolfqua's public boundaries.
 
 test_that("setup_analysis aborts (typed) when the file_name column is missing", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 5, seed = 42)
   cfg <- istar$config$clone(deep = TRUE)
   cfg$file_name <- "column_that_does_not_exist"
 
@@ -67,7 +67,7 @@ test_that("setup_analysis aborts (typed) on duplicate hierarchy-key / sample com
 })
 
 test_that("LFQData$set_data rejects a non-data-frame (typed)", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 5, seed = 42)
   lfq <- prolfqua::LFQData$new(istar$data, istar$config)
 
   expect_error(
@@ -77,7 +77,7 @@ test_that("LFQData$set_data rejects a non-data-frame (typed)", {
 })
 
 test_that("LFQData$set_data enforces the configured schema (typed)", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 5, seed = 42)
   lfq <- prolfqua::LFQData$new(istar$data, istar$config)
 
   expect_error(
@@ -87,7 +87,7 @@ test_that("LFQData$set_data enforces the configured schema (typed)", {
 })
 
 test_that("build_contrast_analysis aborts (typed) on an unknown method", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 5, seed = 42)
   lfq <- prolfqua::LFQData$new(istar$data, istar$config)
   lfq$rename_response("transformedIntensity")
   contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
@@ -99,7 +99,7 @@ test_that("build_contrast_analysis aborts (typed) on an unknown method", {
 })
 
 test_that("LFQData$get_Aggregator aborts (typed) on an unknown method", {
-  istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 5, seed = 42)
+  istar <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 5, seed = 42)
   lfq <- prolfqua::LFQData$new(istar$data, istar$config)
 
   expect_error(
@@ -109,7 +109,7 @@ test_that("LFQData$get_Aggregator aborts (typed) on an unknown method", {
 })
 
 test_that("aggregating single-level hierarchy aborts (typed)", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 5, seed = 42)
   lfq <- prolfqua::LFQData$new(istar$data, istar$config)
 
   expect_error(
@@ -119,7 +119,7 @@ test_that("aggregating single-level hierarchy aborts (typed)", {
 })
 
 test_that("center_to_reference aborts (typed) on mismatched transformation state", {
-  istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 5, seed = 42)
+  istar <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 5, seed = 42)
   lfq <- prolfqua::LFQData$new(istar$data, istar$config)
   ref <- lfq$get_copy()
   ref <- ref$get_Transformer()$log2()$lfq
@@ -131,7 +131,7 @@ test_that("center_to_reference aborts (typed) on mismatched transformation state
 })
 
 test_that("informative messages carry class prolfqua_message", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 5, seed = 42)
   lfq <- prolfqua::LFQData$new(istar$data, istar$config)
 
   expect_message(
@@ -142,7 +142,7 @@ test_that("informative messages carry class prolfqua_message", {
 })
 
 test_that("options(prolfqua.verbose = FALSE) silences informative messages", {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 5, seed = 42)
   lfq <- prolfqua::LFQData$new(istar$data, istar$config)
   withr::local_options(prolfqua.verbose = FALSE)
 
@@ -170,24 +170,24 @@ test_that("plot_pca rejects a PC argument of the wrong length", {
 })
 
 test_that("LFQData$data_wide rejects an unknown response value", {
-  x <- sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  x <- sim_lfq_data_protein_config(n_proteins = 5, seed = 42)
   expect_error(LFQData$new(x$data, x$config)$data_wide(value = "absent"), class = "prolfqua_error_bad_argument")
 })
 
 test_that("aggregators reject input at the deepest hierarchy level", {
-  x <- sim_lfq_data_peptide_config(Nprot = 5, seed = 42)
+  x <- sim_lfq_data_peptide_config(n_proteins = 5, seed = 42)
   x$config$hierarchy_depth <- 2
   expect_error(LFQData$new(x$data, x$config)$get_Aggregator(), class = "prolfqua_error_bad_argument")
 })
 
 test_that("aggregator plotting requires an aggregation result", {
-  x <- sim_lfq_data_peptide_config(Nprot = 5, seed = 42)
+  x <- sim_lfq_data_peptide_config(n_proteins = 5, seed = 42)
   lfq <- LFQData$new(x$data, x$config)$get_Transformer()$log2()$lfq
   expect_error(lfq$get_Aggregator()$plot(), class = "prolfqua_error_bad_argument")
 })
 
 test_that("setup requires a file-name configuration", {
-  x <- sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  x <- sim_lfq_data_protein_config(n_proteins = 5, seed = 42)
   x$config$file_name <- NULL
   expect_error(setup_analysis(x$data, x$config), class = "prolfqua_error_invalid_configuration")
 })
@@ -245,7 +245,7 @@ test_that("wide annotation must match matrix column names uniquely", {
 })
 
 test_that("contrast configuration rejects unknown fields", {
-  expect_error(list_to_ContrastConfiguration(list(unknown_field = 1)), class = "prolfqua_error")
+  expect_error(list_to_contrast_configuration(list(unknown_field = 1)), class = "prolfqua_error")
 })
 
 test_that("abstract model methods fail with classed errors", {
@@ -322,7 +322,7 @@ test_that("contrast calculation rejects an all-zero coefficient vector", {
 })
 
 test_that("imputation rejects different subject identifiers", {
-  x <- sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  x <- sim_lfq_data_protein_config(n_proteins = 5, seed = 42)
   lfq <- LFQData$new(x$data, x$config)
   model <- build_model(lfq, strategy_lm("abundance ~ group_"))
   model$subject_id <- "other"
@@ -330,7 +330,7 @@ test_that("imputation rejects different subject identifiers", {
 })
 
 test_that("imputation rejects non-lm fits", {
-  x <- sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  x <- sim_lfq_data_protein_config(n_proteins = 5, seed = 42)
   lfq <- LFQData$new(x$data, x$config)
   model <- build_model(lfq, strategy_lm("abundance ~ group_"))
   model$model_df$linear_model[[1]] <- list(unsupported = TRUE)
@@ -338,7 +338,7 @@ test_that("imputation rejects non-lm fits", {
 })
 
 test_that("imputation rejects mismatched responses", {
-  x <- sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  x <- sim_lfq_data_protein_config(n_proteins = 5, seed = 42)
   lfq <- LFQData$new(x$data, x$config)
   model <- build_model(lfq, strategy_lm("abundance ~ group_"))
   lfq$rename_response("other")
@@ -346,7 +346,7 @@ test_that("imputation rejects mismatched responses", {
 })
 
 test_that("imputation requires one fitted-model row for every input subject", {
-  x <- sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  x <- sim_lfq_data_protein_config(n_proteins = 5, seed = 42)
   lfq <- LFQData$new(x$data, x$config)
   model <- build_model(lfq, strategy_lm("abundance ~ group_"))
   model$model_df <- model$model_df[-1, ]
@@ -358,7 +358,7 @@ test_that("unknown progress reporters carry the package error class", {
 })
 
 test_that("limma rejects unsupported weights specifications", {
-  x <- sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  x <- sim_lfq_data_protein_config(n_proteins = 5, seed = 42)
   expect_error(
     build_model_limma(LFQData$new(x$data, x$config), strategy_limma("abundance ~ group_", weights = list(1))),
     class = "prolfqua_error_bad_argument"
@@ -382,7 +382,7 @@ test_that("detection count summaries reject non-LFQData input", {
 })
 
 test_that("detection count summaries reject negative detection counts", {
-  x <- sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  x <- sim_lfq_data_protein_config(n_proteins = 5, seed = 42)
   x$data$bin_resp <- -1
   x$config$bin_resp <- "bin_resp"
   expect_error(.summarize_detection_counts(LFQData$new(x$data, x$config)), class = "prolfqua_error")
@@ -426,13 +426,13 @@ test_that("original ROPECA rejects aggregated contrasts", {
 })
 
 test_that("nested mixed models require a child hierarchy for automatic random effects", {
-  x <- sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  x <- sim_lfq_data_protein_config(n_proteins = 5, seed = 42)
   expect_error(.augment_lmer_nested_modelstr("~ group_", LFQData$new(x$data, x$config)), class = "prolfqua_error")
 })
 
 test_that("limpa requires a configured child count column", {
   skip_if_not_installed("limpa")
-  x <- sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  x <- sim_lfq_data_protein_config(n_proteins = 5, seed = 42)
   x$config$nr_children <- NULL
   expect_error(
     build_model_limpa(LFQData$new(x$data, x$config), strategy_limpa("abundance ~ group_")),
@@ -467,6 +467,6 @@ test_that("error helpers name the calling function in the header, not themselves
   expect_identical(rlang::call_name(cnd$call), "user_choice")
   expect_match(conditionMessage(cnd), "`method` must be one of \"lm\", \"limma\".", fixed = TRUE)
 
-  cnd <- rlang::catch_cnd(sim_lfq_data_peptide_config(Nprot = -1))
+  cnd <- rlang::catch_cnd(sim_lfq_data_peptide_config(n_proteins = -1))
   expect_identical(rlang::call_name(cnd$call), "sim_lfq_data_peptide_config")
 })

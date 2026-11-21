@@ -32,7 +32,7 @@ test_that("strategy_limpa returns StrategyLimpa R6 object", {
 
 test_that("AggregateLimpa produces protein-level LFQData with SE and n_obs", {
   skip_if_not_installed("limpa")
-  istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20)
+  istar <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 20)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 
@@ -77,7 +77,7 @@ test_that("AggregateLimpa produces protein-level LFQData with SE and n_obs", {
 
 test_that("AggregateLimpa impute_only mode preserves hierarchy", {
   skip_if_not_installed("limpa")
-  istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20)
+  istar <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 20)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 
@@ -100,7 +100,7 @@ test_that("AggregateLimpa impute_only mode preserves hierarchy", {
 
 test_that("build_model_limpa returns ModelLimma", {
   skip_if_not_installed("limpa")
-  istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20)
+  istar <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 20)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 
@@ -126,7 +126,7 @@ test_that("build_model_limpa returns ModelLimma", {
 
 test_that("ContrastsLimma works with limpa ModelLimma", {
   skip_if_not_installed("limpa")
-  istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 30)
+  istar <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 30)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 
@@ -150,7 +150,7 @@ test_that("ContrastsLimma works with limpa ModelLimma", {
 
 test_that("ContrastsLimpaFacade end-to-end", {
   skip_if_not_installed("limpa")
-  istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 30)
+  istar <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 30)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 
@@ -181,7 +181,7 @@ test_that("ContrastsLimpaFacade end-to-end", {
 
 test_that("build_contrast_analysis with method='limpa' works", {
   skip_if_not_installed("limpa")
-  istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 30)
+  istar <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 30)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 
@@ -200,7 +200,7 @@ test_that("build_contrast_analysis with method='limpa' works", {
 
 test_that("ContrastsLimpaNestedFacade end-to-end (precursor input)", {
   skip_if_not_installed("limpa")
-  istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 30)
+  istar <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 30)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 
@@ -220,7 +220,7 @@ test_that("ContrastsLimpaNestedFacade end-to-end (precursor input)", {
 
 test_that("build_contrast_analysis with method='limpa_nested' works", {
   skip_if_not_installed("limpa")
-  istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 30)
+  istar <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 30)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 
@@ -238,7 +238,7 @@ test_that("ContrastsLimpaFacade accepts aggregated LFQData without opt_se", {
   # As an "aggregated"-level facade, limpa operates on whatever the normal
   # aggregation pipeline produced. opt_se is optional: when absent (e.g.
   # medpolish-aggregated input), vooma is fit without an SE predictor.
-  istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20)
+  istar <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 20)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   lfqdata <- lfqdata$get_Transformer()$log2()$lfq
   agg <- prolfqua::AggregateMedpolish$new(lfqdata, "protein")$aggregate()

@@ -7,12 +7,12 @@
 #' @return An R6 class generator.
 #' @export
 #' @examples
-#' dd <- prolfqua::sim_lfq_data_protein_config(Nprot = 100,weight_missing = 1)
+#' dd <- prolfqua::sim_lfq_data_protein_config(n_proteins = 100,weight_missing = 1)
 #' mh <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.8)
 #' xx <- mh$get_stats()
 #' xx <- mh$get_lod()
 #'
-#' dd <- prolfqua::sim_lfq_data_2factor_config(Nprot = 100,weight_missing = 0.1)
+#' dd <- prolfqua::sim_lfq_data_2factor_config(n_proteins = 100,weight_missing = 0.1)
 #' mh <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.8)
 #' mh$get_stats()$interaction |> table()
 #' mh$get_lod()

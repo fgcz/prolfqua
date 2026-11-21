@@ -35,7 +35,7 @@ expect_recovery <- function(method, seeds, N = 4) {
   stats <- do.call(
     rbind,
     lapply(seeds, function(seed) {
-      sim <- sim_with_truth(Nprot = 200, N = N, seed = seed, counts = grepl("deqms", method))
+      sim <- sim_with_truth(n_proteins = 200, n_per_group = N, seed = seed, counts = grepl("deqms", method))
       recovery_stats(with_truth(fit_contrasts(method, sim$lfqdata), sim$truth))
     })
   )
@@ -70,7 +70,7 @@ rmse_by_group_size <- function(method, sizes, seeds) {
       mean(vapply(
         seeds,
         function(seed) {
-          sim <- sim_with_truth(Nprot = 200, N = N, seed = seed)
+          sim <- sim_with_truth(n_proteins = 200, n_per_group = N, seed = seed)
           mean(recovery_stats(with_truth(fit_contrasts(method, sim$lfqdata), sim$truth))$rmse)
         },
         numeric(1)
@@ -118,7 +118,7 @@ test_that("nested methods recover the simulated peptide-level differences (exten
     stats <- do.call(
       rbind,
       lapply(1:20, function(seed) {
-        sim <- sim_with_truth(Nprot = 100, N = 4, seed = seed, peptide = TRUE)
+        sim <- sim_with_truth(n_proteins = 100, n_per_group = 4, seed = seed, peptide = TRUE)
         recovery_stats(with_truth(fit_contrasts(method, sim$lfqdata, spec$modelstr), sim$truth, spec$truth))
       })
     )

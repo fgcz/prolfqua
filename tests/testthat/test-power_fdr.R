@@ -146,7 +146,7 @@ test_that("small prior df quadrature agrees with integrated normal-mixture power
 })
 
 test_that("LFQData pilot planning pools observed within-group variances", {
-  sim <- sim_lfq_data_protein_config(Nprot = 20, seed = 42)
+  sim <- sim_lfq_data_protein_config(n_proteins = 20, seed = 42)
   lfq <- LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq
   pooled <- poolvar(summarize_stats(lfq), lfq$get_config())
   expected <- power_fdr_prior_n(pooled$var, pooled$df, delta_mean = 0.1, max_n = 30)
@@ -208,7 +208,7 @@ test_that("variance-prior FDR sample sizes agree with stable ssize.fdr cases", {
 })
 
 test_that("power methods error on untransformed data", {
-  x <- sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  x <- sim_lfq_data_protein_config(n_proteins = 5, seed = 42)
   stats <- LFQData$new(x$data, x$config)$get_Stats()
   expect_error(stats$power_t_test_quantiles(), "power_t_test_quantiles", class = "prolfqua_error_bad_argument")
   expect_error(stats$power_t_test(), "power_t_test", class = "prolfqua_error_bad_argument")

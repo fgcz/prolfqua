@@ -23,7 +23,7 @@ this should reduce the overall variance.
 }
 \examples{
 
-bb <- sim_lfq_data_peptide_config(Nprot = 100)
+bb <- sim_lfq_data_peptide_config(n_proteins = 100)
 lfqdata <- LFQData$new(bb$data, bb$config)
 lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 s1 <- get_robscales(lfqdata)

@@ -4,7 +4,7 @@ test_that("Contrasts (Wald test)", {
   skip_if_not_installed("lme4")
   skip_if_not_installed("lmerTest")
   muffle_warnings_matching(single_peptide_warning, expr = {
-    istar <- sim_lfq_data_peptide_config(Nprot = 20)
+    istar <- sim_lfq_data_peptide_config(n_proteins = 20)
     config <- istar$config
 
     modelFunction <-
@@ -56,7 +56,7 @@ test_that("Contrasts (Wald test)", {
 })
 
 test_that("ContrastsModerated", {
-  istar <- sim_lfq_data_protein_config(Nprot = 20)
+  istar <- sim_lfq_data_protein_config(n_proteins = 20)
   lProt <- LFQData$new(istar$data, istar$config)
   lProt$rename_response("transformedIntensity")
 
@@ -93,7 +93,7 @@ test_that("ContrastsModerated", {
 })
 
 test_that("ContrastsROPECA", {
-  istar <- sim_lfq_data_peptide_config(Nprot = 20)
+  istar <- sim_lfq_data_peptide_config(n_proteins = 20)
   config <- istar$config$clone(deep = TRUE)
   config$hierarchy_depth <- 2
 
@@ -121,7 +121,7 @@ test_that("ContrastsROPECA", {
   expect_s3_class(ropeca$get_contrast_sides(), "data.frame")
 })
 
-test_that("summary_ROPECA_median_p_scaled counts only peptides with a p-value", {
+test_that("summary_ropeca_median_p_scaled counts only peptides with a p-value", {
   peptides <- data.frame(
     contrast = "c1",
     protein_Id = "P1",
@@ -130,7 +130,7 @@ test_that("summary_ROPECA_median_p_scaled counts only peptides with a p-value", 
     p.value = c(0.01, 0.02, NA),
     avgAbd = 20
   )
-  res <- summary_ROPECA_median_p_scaled(peptides, estimate = "diff", p.value = "p.value")
+  res <- summary_ropeca_median_p_scaled(peptides, estimate = "diff", p.value = "p.value")
   expect_equal(res$n, 3)
   expect_equal(res$n_not_na, 2)
   expect_equal(res$beta.based.significance, get_p_values_pbeta(res$median.p.value, 2))
@@ -138,7 +138,7 @@ test_that("summary_ROPECA_median_p_scaled counts only peptides with a p-value", 
 
 test_that("ContrastsTable (passive container)", {
   # Build a contrast result to feed into ContrastsTable
-  istar <- sim_lfq_data_protein_config(Nprot = 20, weight_missing = 0.4)
+  istar <- sim_lfq_data_protein_config(n_proteins = 20, weight_missing = 0.4)
   lProt <- LFQData$new(istar$data, istar$config)
   lProt$rename_response("transformedIntensity")
 
@@ -233,7 +233,7 @@ test_that("merge_contrasts_results labels rows when both inputs share a model na
 
 test_that("ContrastsFirth and ContrastsFirthFacade", {
   skip_if_not_installed("logistf")
-  istar <- sim_lfq_data_protein_config(Nprot = 20, with_missing = TRUE, weight_missing = 0.5, seed = 9)
+  istar <- sim_lfq_data_protein_config(n_proteins = 20, with_missing = TRUE, weight_missing = 0.5, seed = 9)
   lfqdata <- LFQData$new(istar$data, istar$config)
   Contr <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 
@@ -260,7 +260,7 @@ test_that("ContrastsFirth and ContrastsFirthFacade", {
 
 test_that("ContrastsFirth$get_linfct does not mutate the shared model", {
   skip_if_not_installed("logistf")
-  istar <- sim_lfq_data_protein_config(Nprot = 20, with_missing = TRUE, weight_missing = 0.5, seed = 9)
+  istar <- sim_lfq_data_protein_config(n_proteins = 20, with_missing = TRUE, weight_missing = 0.5, seed = 9)
   lfqdata <- LFQData$new(istar$data, istar$config)
   Contr <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
   mod <- build_model_glm_protein(lfqdata, "~ group_")
@@ -281,7 +281,7 @@ test_that("ContrastsFirth$get_linfct does not mutate the shared model", {
 
 test_that("ContrastsFirth drops failed logistf fits before contrasts", {
   skip_if_not_installed("logistf")
-  istar <- sim_lfq_data_protein_config(Nprot = 20, with_missing = TRUE, weight_missing = 0.5, seed = 9)
+  istar <- sim_lfq_data_protein_config(n_proteins = 20, with_missing = TRUE, weight_missing = 0.5, seed = 9)
   lfqdata <- LFQData$new(istar$data, istar$config)
   Contr <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 

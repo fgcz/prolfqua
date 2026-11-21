@@ -21,24 +21,24 @@ test_that("pattern_decoys / pattern_contaminants default to NULL and round-trip"
   expect_null(config$pattern_contaminants)
 
   # NULL (unset) round-trip: absent from extracted list, restored as default NULL
-  vals <- R6_extract_values(config)
+  vals <- r6_extract_values(config)
   expect_false("pattern_decoys" %in% names(vals))
-  rebuilt <- list_to_AnalysisConfiguration(vals)
+  rebuilt <- list_to_analysis_configuration(vals)
   expect_null(rebuilt$pattern_decoys)
   expect_null(rebuilt$pattern_contaminants)
 
   # configured patterns survive an extract -> reconstruct round-trip
   config$pattern_decoys <- "^shuffled_"
   config$pattern_contaminants <- "^KERATIN_"
-  vals2 <- R6_extract_values(config)
+  vals2 <- r6_extract_values(config)
   expect_identical(vals2$pattern_decoys, "^shuffled_")
   expect_identical(vals2$pattern_contaminants, "^KERATIN_")
-  rebuilt2 <- list_to_AnalysisConfiguration(vals2)
+  rebuilt2 <- list_to_analysis_configuration(vals2)
   expect_identical(rebuilt2$pattern_decoys, "^shuffled_")
   expect_identical(rebuilt2$pattern_contaminants, "^KERATIN_")
 })
 
-test_that("list_to_ContrastConfiguration restores roles and methods", {
+test_that("list_to_contrast_configuration restores roles and methods", {
   cfg <- ContrastConfiguration$new(
     subject_id = "protein_Id",
     contrast_col = "Bait",
@@ -49,21 +49,21 @@ test_that("list_to_ContrastConfiguration restores roles and methods", {
     significance_directional = TRUE
   )
 
-  vals <- R6_extract_values(cfg)
-  rebuilt <- list_to_ContrastConfiguration(vals)
+  vals <- r6_extract_values(cfg)
+  rebuilt <- list_to_contrast_configuration(vals)
 
-  expect_identical(R6_extract_values(rebuilt), vals)
-  # R6_extract_values drops the methods; the reconstruction brings them back.
+  expect_identical(r6_extract_values(rebuilt), vals)
+  # r6_extract_values drops the methods; the reconstruction brings them back.
   expect_false(rebuilt$has_pvalue())
   expect_true(rebuilt$significance_directional)
   expect_true(ContrastConfiguration$new()$has_pvalue())
   # An unset field keeps the schema default rather than becoming NULL.
   expect_identical(
-    list_to_ContrastConfiguration(list())$fdr_col,
+    list_to_contrast_configuration(list())$fdr_col,
     ContrastConfiguration$new()$fdr_col
   )
   expect_error(
-    list_to_ContrastConfiguration(list(no_such_field = "x")),
+    list_to_contrast_configuration(list(no_such_field = "x")),
     "Unknown ContrastConfiguration fields"
   )
 })

@@ -24,7 +24,7 @@ Combinations giving a significance level outside (0, 1) are rejected.
 Convert a target false discovery rate and average power into the per-test
 significance level used by an ordinary two-sided t-test. Pass the result to
 \code{\link[stats:power.t.test]{stats::power.t.test()}}, \code{\link[=lfq_power_t_test_proteins]{lfq_power_t_test_proteins()}}, or
-\code{\link[=lfq_power_t_test_quantiles_V2]{lfq_power_t_test_quantiles_V2()}}.
+\code{\link[=lfq_power_t_test_quantiles]{lfq_power_t_test_quantiles()}}.
 }
 \details{
 The Jung/Liu--Hwang planning relationship assumes independent tests
@@ -51,7 +51,7 @@ Other stats:
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
 \code{\link[=compute_pooled]{compute_pooled()}},
 \code{\link[=lfq_power_t_test_proteins]{lfq_power_t_test_proteins()}},
-\code{\link[=lfq_power_t_test_quantiles_V2]{lfq_power_t_test_quantiles_V2()}},
+\code{\link[=lfq_power_t_test_quantiles]{lfq_power_t_test_quantiles()}},
 \code{\link[=null_split_check]{null_split_check()}},
 \code{\link[=plot_stat_density]{plot_stat_density()}},
 \code{\link[=plot_stat_density_median]{plot_stat_density_median()}},

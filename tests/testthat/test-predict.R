@@ -1,7 +1,7 @@
 # predict() on fitted analyses: new combinations of subject and group (srr RE4.16).
 
 predict_fixture <- function() {
-  sim <- sim_lfq_data_protein_config(Nprot = 6, with_missing = FALSE, seed = 1)
+  sim <- sim_lfq_data_protein_config(n_proteins = 6, with_missing = FALSE, seed = 1)
   LFQData$new(sim$data, sim$config)
 }
 
@@ -29,7 +29,7 @@ test_that("predict() reproduces fitted values on observed cells", {
 
 test_that("nested methods predict per subject of their model", {
   withr::local_options(prolfqua.verbose = FALSE)
-  sim <- sim_lfq_data_peptide_config(Nprot = 5, with_missing = FALSE, seed = 1)
+  sim <- sim_lfq_data_peptide_config(n_proteins = 5, with_missing = FALSE, seed = 1)
   peptide <- suppressMessages(LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq)
   contrasts <- c(AvsC = "group_A - group_Ctrl")
   ropeca <- build_contrast_analysis(peptide, "~ group_", contrasts, "ropeca_nested")

@@ -59,7 +59,7 @@
 #' runallfuncs(lfqstats)
 #'
 #' # Group size 1
-#' bb <- prolfqua::sim_lfq_data_peptide_config(N=1)
+#' bb <- prolfqua::sim_lfq_data_peptide_config(n_per_group = 1)
 #' lfq1 <- LFQData$new(bb$data, bb$config)
 #' table_factors_size(lfq1$data_long(), lfq1$file_name(),
 #'   lfq1$sample_name(), lfq1$factor_keys(), lfq1$relevant_factor_keys())
@@ -219,7 +219,7 @@ LFQDataStats <- R6::R6Class(
         )
       }
       res <- self$stats_quantiles(probs)
-      res <- lfq_power_t_test_quantiles_V2(res$long, delta = delta, power = power, sig.level = sig.level)
+      res <- lfq_power_t_test_quantiles(res$long, delta = delta, power = power, sig.level = sig.level)
       return(res)
     },
     #' @description

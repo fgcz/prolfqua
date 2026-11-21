@@ -22,7 +22,7 @@ test_that("log transforms warn before negative values become NaN", {
 })
 
 test_that("repeated log transformation warns", {
-  x <- sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  x <- sim_lfq_data_protein_config(n_proteins = 5, seed = 42)
   trans <- LFQData$new(x$data, x$config)$get_Transformer()$log2()
   expect_warning(trans$log2(), "already transformed")
 })
@@ -33,23 +33,23 @@ test_that("zero MAD warns and skips division by zero", {
 })
 
 test_that("centering raw data warns about the required log scale", {
-  x <- sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  x <- sim_lfq_data_protein_config(n_proteins = 5, seed = 42)
   lfq <- LFQData$new(x$data, x$config)
   expect_warning(lfq$get_Transformer()$center_to_reference(lfq), "should be log2-transformed")
 })
 
 test_that("median polish warns on raw intensities", {
-  x <- sim_lfq_data_peptide_config(Nprot = 5, seed = 42)
+  x <- sim_lfq_data_peptide_config(n_proteins = 5, seed = 42)
   expect_warning(LFQData$new(x$data, x$config)$get_Aggregator("medpolish"), "medpolish works best")
 })
 
 test_that("robust aggregation warns on raw intensities", {
-  x <- sim_lfq_data_peptide_config(Nprot = 5, seed = 42)
+  x <- sim_lfq_data_peptide_config(n_proteins = 5, seed = 42)
   expect_warning(LFQData$new(x$data, x$config)$get_Aggregator("rlm"), "Robust regression works best")
 })
 
 test_that("top-N aggregation warns on transformed intensities", {
-  x <- sim_lfq_data_peptide_config(Nprot = 5, seed = 42)
+  x <- sim_lfq_data_peptide_config(n_proteins = 5, seed = 42)
   lfq <- LFQData$new(x$data, x$config)$get_Transformer()$log2()$lfq
   expect_warning(lfq$get_Aggregator("topN"), "top N works with raw data")
 })
@@ -138,7 +138,7 @@ test_that("MA plots warn when average abundance is unavailable", {
 })
 
 test_that("limma ANOVA warns for an intercept-only model", {
-  x <- sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  x <- sim_lfq_data_protein_config(n_proteins = 5, seed = 42)
   model <- build_model_limma(LFQData$new(x$data, x$config), strategy_limma("abundance ~ 1"))
   expect_warning(model$get_anova(), "No non-intercept coefficients for ANOVA")
 })

@@ -838,7 +838,7 @@ plot_na_heatmap <- function(matrix, annotation, factor_keys, sample_name, limitr
 #' @family plotting
 #' @examples
 #'
-#' istar <- sim_lfq_data_protein_config(with_missing = TRUE, weight_missing = .8, Nprot = 3000)
+#' istar <- sim_lfq_data_protein_config(with_missing = TRUE, weight_missing = .8, n_proteins = 3000)
 #' lfq <- LFQData$new(istar$data, istar$config)
 #' wide <- lfq$data_wide(as.matrix = TRUE)
 #' tmp <- plot_pca(wide$data, wide$annotation, lfq$sample_name(), lfq$factor_keys(),

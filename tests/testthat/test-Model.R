@@ -41,7 +41,7 @@ for (method in c("rlm", "rfit")) {
 
 test_that("Firth coefficient tables skip failed fits", {
   skip_if_not_installed("logistf")
-  sim <- sim_lfq_data_protein_config(Nprot = 5, weight_missing = 0.5, seed = 3)
+  sim <- sim_lfq_data_protein_config(n_proteins = 5, weight_missing = 0.5, seed = 3)
   model <- build_model_glm_protein(LFQData$new(sim$data, sim$config), "~ group_")
   before <- model$get_coefficients()
   failed <- model$models$model_df$protein_Id[1]
@@ -51,7 +51,7 @@ test_that("Firth coefficient tables skip failed fits", {
 })
 
 test_that("Model (lm strategy)", {
-  istar <- sim_lfq_data_peptide_config(Nprot = 20)
+  istar <- sim_lfq_data_peptide_config(n_proteins = 20)
   config <- istar$config
 
   modelFunction <- strategy_lm("abundance ~ group_")
@@ -94,7 +94,7 @@ test_that("Model (lm strategy)", {
 })
 
 test_that("get_complete_model_fit drops fits with fewer coefficients than the full design", {
-  bb <- sim_lfq_data_protein_config(Nprot = 10, with_missing = FALSE)
+  bb <- sim_lfq_data_protein_config(n_proteins = 10, with_missing = FALSE)
   first <- unique(bb$data$protein_Id)[1]
   bb$data$abundance[bb$data$protein_Id == first & bb$data$group_ == "A"] <- NA
   mod <- build_model(bb$data, strategy_lm("abundance ~ group_"), subject_id = bb$config$hierarchy_keys())
@@ -134,7 +134,7 @@ test_that("sigma.rlm returns the weighted residual scale", {
 })
 
 test_that("Model (lm strategy with weights)", {
-  istar <- sim_lfq_data_peptide_config(Nprot = 20)
+  istar <- sim_lfq_data_peptide_config(n_proteins = 20)
   config <- istar$config
 
   # Add a weight column with non-uniform weights
@@ -169,7 +169,7 @@ test_that("Model (lm strategy with weights)", {
 })
 
 test_that("build_model_logistf requires aggregated input", {
-  istar <- sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE, weight_missing = 0.5, seed = 3)
+  istar <- sim_lfq_data_peptide_config(n_proteins = 10, with_missing = TRUE, weight_missing = 0.5, seed = 3)
   lfq <- LFQData$new(istar$data, istar$config)
   lfq$set_data(encode_bin_resp(lfq))
   lfq$set_config_value("bin_resp", "bin_resp")
@@ -178,7 +178,7 @@ test_that("build_model_logistf requires aggregated input", {
 
 test_that("ModelFirth", {
   skip_if_not_installed("logistf")
-  istar <- sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE, weight_missing = 0.5, seed = 3)
+  istar <- sim_lfq_data_protein_config(n_proteins = 10, with_missing = TRUE, weight_missing = 0.5, seed = 3)
   lfq <- LFQData$new(istar$data, istar$config)
   lfq$set_data(encode_bin_resp(lfq))
   lfq$set_config_value("bin_resp", "bin_resp")
@@ -216,7 +216,7 @@ test_that("StrategyLogistf avoids coefficient-wise profile likelihood fits", {
 
 test_that("build_model_glm_protein returns ModelFirth", {
   skip_if_not_installed("logistf")
-  prot <- sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE, weight_missing = 0.5, seed = 7)
+  prot <- sim_lfq_data_protein_config(n_proteins = 10, with_missing = TRUE, weight_missing = 0.5, seed = 7)
   prot_lfq <- LFQData$new(prot$data, prot$config)
   prot_mod <- build_model_glm_protein(prot_lfq, "~ group_")
   expect_true(inherits(prot_mod, "ModelFirth"))

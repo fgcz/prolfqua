@@ -3,7 +3,7 @@
 #' Convert a target false discovery rate and average power into the per-test
 #' significance level used by an ordinary two-sided t-test. Pass the result to
 #' [stats::power.t.test()], [lfq_power_t_test_proteins()], or
-#' [lfq_power_t_test_quantiles_V2()].
+#' [lfq_power_t_test_quantiles()].
 #'
 #' @param fdr one target false discovery rate, strictly between zero and one.
 #' @param pi0 one assumed proportion of truly null features, strictly between

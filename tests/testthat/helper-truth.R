@@ -22,8 +22,8 @@ RECOVERY_CONTRASTS <- c(A_vs_Ctrl = "group_A - group_Ctrl", B_vs_Ctrl = "group_B
   diffs
 }
 
-sim_with_truth <- function(Nprot = 200, N = 4, seed = 1, peptide = FALSE, counts = FALSE) {
-  raw <- withr::with_seed(seed, sim_lfq_data(Nprot = Nprot, N = N, PEPTIDE = peptide))
+sim_with_truth <- function(n_proteins = 200, n_per_group = 4, seed = 1, peptide = FALSE, counts = FALSE) {
+  raw <- withr::with_seed(seed, sim_lfq_data(n_proteins = n_proteins, n_per_group = n_per_group, peptide = peptide))
   protein_id <- paste(raw$proteinID, raw$idtype2, sep = "~")
   # counts = TRUE uses the simulated peptide counts as child counts (needed by deqms)
   raw$nr_children <- if (counts) raw$nrPeptides else 1

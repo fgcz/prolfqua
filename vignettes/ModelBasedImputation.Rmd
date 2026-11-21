@@ -22,7 +22,7 @@ Heatmaps, PCA and clustering need a complete data matrix. Label-free data are no
 ```{r simulate}
 library(prolfqua)
 library(ggplot2)
-sim <- sim_lfq_data_protein_config(Nprot = 100, weight_missing = 0.5, seed = 1234)
+sim <- sim_lfq_data_protein_config(n_proteins = 100, weight_missing = 0.5, seed = 1234)
 lfq <- LFQData$new(sim$data, sim$config)
 
 wide <- lfq$data_wide(as.matrix = TRUE)$data

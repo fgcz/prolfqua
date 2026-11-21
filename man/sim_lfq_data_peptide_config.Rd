@@ -5,15 +5,17 @@
 \title{Simulate data, protein and peptide, with config}
 \usage{
 sim_lfq_data_peptide_config(
-  Nprot = 10,
+  n_proteins = 10,
   with_missing = TRUE,
   weight_missing = 0.2,
   seed = 1234,
-  N = 4
+  n_per_group = 4,
+  Nprot,
+  N
 )
 }
 \arguments{
-\item{Nprot}{one positive whole number of proteins to simulate}
+\item{n_proteins}{one positive whole number of proteins to simulate}
 
 \item{with_missing}{add missing values, default TRUE}
 
@@ -21,7 +23,9 @@ sim_lfq_data_peptide_config(
 
 \item{seed}{seed for reproducibility, if NULL no seed is set.}
 
-\item{N}{number of replicates per group}
+\item{n_per_group}{number of replicates per group}
+
+\item{Nprot, N}{deprecated; use \code{n_proteins} and \code{n_per_group}}
 }
 \value{
 A list containing simulated data and an analysis configuration.

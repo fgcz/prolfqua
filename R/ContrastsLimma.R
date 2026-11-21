@@ -503,7 +503,7 @@ compute_borrowed_variance_limma <- function(fit) {
 #' @family modelling
 #' @examples
 #'
-#' istar <- sim_lfq_data_protein_config(Nprot = 50)
+#' istar <- sim_lfq_data_protein_config(n_proteins = 50)
 #' lProt <- LFQData$new(istar$data, istar$config)
 #' lProt$rename_response("transformedIntensity")
 #'
@@ -544,7 +544,7 @@ build_model_limma <- function(lfqdata, strategy, model_name = strategy$model_nam
 #' @export
 #' @family modelling
 #' @examples
-#' istar <- sim_lfq_data_protein_config(Nprot = 50, weight_missing = 0.5)
+#' istar <- sim_lfq_data_protein_config(n_proteins = 50, weight_missing = 0.5)
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqdata$rename_response("transformedIntensity")
 #'
@@ -588,7 +588,7 @@ build_model_limma_impute <- function(
 #' @family modelling
 #' @examples
 #'
-#' istar <- sim_lfq_data_protein_config(Nprot = 50)
+#' istar <- sim_lfq_data_protein_config(n_proteins = 50)
 #' lProt <- LFQData$new(istar$data, istar$config)
 #' lProt$rename_response("transformedIntensity")
 #'
@@ -629,7 +629,7 @@ build_model_limma_voom <- function(
 #' @export
 #' @family modelling
 #' @examples
-#' istar <- sim_lfq_data_protein_config(Nprot = 50, weight_missing = 0.5)
+#' istar <- sim_lfq_data_protein_config(n_proteins = 50, weight_missing = 0.5)
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqdata$rename_response("transformedIntensity")
 #'
@@ -664,7 +664,7 @@ build_model_limma_voom_impute <- function(
 #' @family modelling
 #' @examples
 #'
-#' istar <- sim_lfq_data_protein_config(Nprot = 50)
+#' istar <- sim_lfq_data_protein_config(n_proteins = 50)
 #' lProt <- LFQData$new(istar$data, istar$config)
 #' lProt$rename_response("transformedIntensity")
 #' strat <- strategy_limma("transformedIntensity ~ group_")
@@ -836,7 +836,7 @@ ModelLimma <- R6::R6Class(
 #' @family modelling
 #' @examples
 #'
-#' istar <- sim_lfq_data_protein_config(Nprot = 50)
+#' istar <- sim_lfq_data_protein_config(n_proteins = 50)
 #' lProt <- LFQData$new(istar$data, istar$config)
 #' lProt$rename_response("transformedIntensity")
 #'

@@ -137,7 +137,7 @@ ContrastConfiguration <- R6::R6Class(
 
 #' Rebuild a ContrastConfiguration from a list
 #'
-#' Round-trip partner of \code{\link{R6_extract_values}}, which keeps the
+#' Round-trip partner of \code{\link{r6_extract_values}}, which keeps the
 #' fields but drops the methods. Use it to restore the column-role mapping
 #' from a serialized result artifact (e.g. `SummarizedExperiment` metadata
 #' or an AnnData `uns` entry) so consumers can call \code{has_pvalue()} and
@@ -153,13 +153,13 @@ ContrastConfiguration <- R6::R6Class(
 #'   contrast_col = "Bait",
 #'   pvalue_col = NA_character_
 #' )
-#' values <- R6_extract_values(cfg)
-#' restored <- list_to_ContrastConfiguration(values)
-#' stopifnot(all.equal(R6_extract_values(restored), values))
+#' values <- r6_extract_values(cfg)
+#' restored <- list_to_contrast_configuration(values)
+#' stopifnot(all.equal(r6_extract_values(restored), values))
 #' restored$has_pvalue()
-list_to_ContrastConfiguration <- function(dd) {
+list_to_contrast_configuration <- function(dd) {
   config <- ContrastConfiguration$new()
-  fields <- names(R6_extract_values(config))
+  fields <- names(r6_extract_values(config))
   unknown <- setdiff(names(dd), fields)
   if (length(unknown) > 0) {
     abort_prolfqua(

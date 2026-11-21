@@ -504,7 +504,7 @@ test_that("heatmap keeps only the top_n most variable features", {
 }
 
 test_that("write_pdf keeps the caller's graphics devices", {
-  istar <- sim_lfq_data_peptide_config(Nprot = 5)
+  istar <- sim_lfq_data_peptide_config(n_proteins = 5)
   pl <- LFQData$new(istar$data, istar$config)$get_Plotter()
   out_dir <- withr::local_tempdir()
   before <- .open_caller_device()
@@ -516,7 +516,7 @@ test_that("write_pdf keeps the caller's graphics devices", {
 
 test_that("write_boxplots and write_plots close their device when rendering fails", {
   local_mocked_bindings(.render_plot_to_device = function(x) stop("boom"))
-  istar <- sim_lfq_data_peptide_config(Nprot = 5)
+  istar <- sim_lfq_data_peptide_config(n_proteins = 5)
   lfq <- LFQData$new(istar$data, istar$config)
   out_dir <- withr::local_tempdir()
   agg <- lfq$get_Transformer()$log2()$lfq$get_Aggregator("medpolish")
@@ -532,14 +532,14 @@ test_that("write_boxplots and write_plots close their device when rendering fail
   expect_equal(grDevices::dev.cur(), before$cur)
 })
 
-test_that("LR_test with a path keeps the caller's graphics devices", {
-  d <- sim_lfq_data_2factor_config(Nprot = 10, with_missing = FALSE)
+test_that("lr_test with a path keeps the caller's graphics devices", {
+  d <- sim_lfq_data_2factor_config(n_proteins = 10, with_missing = FALSE)
   lfq <- LFQData$new(d$data, d$config)
   mod_full <- build_model(lfq, strategy_lm("abundance ~ Treatment + Background"))
   mod_reduced <- build_model(lfq, strategy_lm("abundance ~ Treatment"))
   out_dir <- withr::local_tempdir()
   before <- .open_caller_device()
-  LR_test(mod_full$model_df, "full", mod_reduced$model_df, "reduced", path = out_dir)
+  lr_test(mod_full$model_df, "full", mod_reduced$model_df, "reduced", path = out_dir)
   expect_true(length(list.files(out_dir, pattern = "^hist_LRT_")) == 1)
   expect_equal(grDevices::dev.cur(), before$cur)
   expect_equal(grDevices::dev.list(), before$list)
@@ -556,7 +556,7 @@ test_that("plot_lrt_diagnostics closes its device when plotting fails", {
 
 test_that("default density and box plots work without plotly and ggbeeswarm", {
   local_mocked_bindings(.has_package = function(pkg) FALSE)
-  istar <- sim_lfq_data_peptide_config(Nprot = 10, with_missing = FALSE, seed = 1)
+  istar <- sim_lfq_data_peptide_config(n_proteins = 10, with_missing = FALSE, seed = 1)
   lfq <- LFQData$new(istar$data, istar$config)
   pl <- lfq$get_Plotter()
   density <- pl$intensity_distribution_density()
@@ -591,7 +591,7 @@ test_that("volcano labels and correlation plot text use readable default sizes",
 
 test_that("PDF writers append .pdf only when the name lacks it", {
   withr::local_options(prolfqua.verbose = FALSE)
-  istar <- sim_lfq_data_protein_config(Nprot = 3, with_missing = FALSE)
+  istar <- sim_lfq_data_protein_config(n_proteins = 3, with_missing = FALSE)
   pl <- LFQData$new(istar$data, istar$config)$get_Plotter()
   out_dir <- withr::local_tempdir()
   expect_identical(basename(pl$write_pdf(ggplot2::ggplot(), out_dir, "fig")), paste0(pl$prefix, "fig.pdf"))
@@ -612,7 +612,7 @@ test_that("sample correlations accept a cor() method or a function", {
   expect_error(prolfqua:::.sample_correlation(m, function(x) 1), class = "prolfqua_error_bad_argument")
   skip_if_not_installed("ComplexHeatmap")
   skip_if_not_installed("circlize")
-  istar <- sim_lfq_data_protein_config(Nprot = 10, with_missing = FALSE)
+  istar <- sim_lfq_data_protein_config(n_proteins = 10, with_missing = FALSE)
   pl <- LFQData$new(istar$data, istar$config)$get_Plotter()
   expect_true(methods::is(pl$heatmap_cor(method = "spearman"), "Heatmap"))
 })

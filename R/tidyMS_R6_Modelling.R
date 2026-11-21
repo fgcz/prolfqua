@@ -120,7 +120,7 @@ StrategyBase <- R6::R6Class(
 #' @export
 #' @family modelling
 #' @examplesIf requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)
-#' istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = FALSE)
+#' istar <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 10, with_missing = FALSE)
 #' istar <- prolfqua::LFQData$new(istar$data, istar$config)
 #' istar$set_data(istar$data_long() |> dplyr::group_by(protein_Id) |>
 #'   dplyr::mutate(abundanceC = abundance - mean(abundance)) |> dplyr::ungroup())

@@ -20,6 +20,6 @@ path the file was written to (invisible)
 }
 \description{
 Writes a histogram of p-values and an empirical CDF to a PDF file.
-Called by \code{\link{LR_test}} when \code{path} is non-NULL.
+Called by \code{\link{lr_test}} when \code{path} is non-NULL.
 }
 \keyword{internal}

@@ -65,7 +65,7 @@ moderation and imputation behave differently than in the real comparison;
 calibration carries over, power does not.
 }
 \examples{
-bb <- sim_lfq_data_protein_config(Nprot = 50, with_missing = FALSE)
+bb <- sim_lfq_data_protein_config(n_proteins = 50, with_missing = FALSE)
 lfqdata <- LFQData$new(bb$data, bb$config)
 lfqdata$is_transformed(TRUE)
 res <- null_split_check(lfqdata, method = "limma", n_splits = 5, seed = 1)
@@ -79,7 +79,7 @@ Other stats:
 \code{\link[=compute_pooled]{compute_pooled()}},
 \code{\link[=fdr_sig_level]{fdr_sig_level()}},
 \code{\link[=lfq_power_t_test_proteins]{lfq_power_t_test_proteins()}},
-\code{\link[=lfq_power_t_test_quantiles_V2]{lfq_power_t_test_quantiles_V2()}},
+\code{\link[=lfq_power_t_test_quantiles]{lfq_power_t_test_quantiles()}},
 \code{\link[=plot_stat_density]{plot_stat_density()}},
 \code{\link[=plot_stat_density_median]{plot_stat_density_median()}},
 \code{\link[=plot_stat_violin]{plot_stat_violin()}},

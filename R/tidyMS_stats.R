@@ -233,13 +233,13 @@ summarize_stats_quantiles <- function(
 #' lfq <- LFQData$new(bb1$data, bb1$config)
 #' stats_res <- summarize_stats(lfq)
 #' xx <- summarize_stats_quantiles(stats_res, lfq$relevant_factor_keys(), probs = c(0.5, 0.8))
-#' bbb <- lfq_power_t_test_quantiles_V2(xx$long)
+#' bbb <- lfq_power_t_test_quantiles(xx$long)
 #' bbb <- dplyr::bind_rows(bbb)
 #' summary <- bbb |>
 #'  dplyr::select( -N_exact, -quantiles, -sdtrimmed ) |>
 #'  tidyr::pivot_wider(names_from = delta, values_from = N)
 #'
-lfq_power_t_test_quantiles_V2 <-
+lfq_power_t_test_quantiles <-
   function(quantile_sd, delta = c(0.59, 1, 2), power = 0.8, sig.level = 0.05, min.n = 1.5) {
     res <- lapply(delta, function(d) {
       dplyr::bind_cols(quantile_sd, .power_t_test_n(quantile_sd$quantiles, d, power, sig.level, min.n), delta = d)

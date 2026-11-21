@@ -1,7 +1,7 @@
 # setup raw (pre-setup_analysis) peptide data + matching config
 .dup_setup_fixture <- function() {
   set.seed(1234)
-  data <- prolfqua::sim_lfq_data(Nprot = 5, N = 3, PEPTIDE = TRUE)
+  data <- prolfqua::sim_lfq_data(n_proteins = 5, n_per_group = 3, peptide = TRUE)
   data$nr_children <- 1
   data$isotopeLabel <- "light"
   data$qValue <- 0
@@ -73,9 +73,9 @@ test_that("setup_analysis works when sample_name and file_name are the same colu
 
 test_that("sim_lfq_data respects the mean_prot argument", {
   set.seed(42)
-  low <- prolfqua::sim_lfq_data(Nprot = 50, N = 3, mean_prot = 20)
+  low <- prolfqua::sim_lfq_data(n_proteins = 50, n_per_group = 3, mean_prot = 20)
   set.seed(42)
-  high <- prolfqua::sim_lfq_data(Nprot = 50, N = 3, mean_prot = 200)
+  high <- prolfqua::sim_lfq_data(n_proteins = 50, n_per_group = 3, mean_prot = 200)
   # higher mean_prot must shift abundances up; previously log(20) was hardcoded
   expect_gt(mean(high$abundance, na.rm = TRUE), mean(low$abundance, na.rm = TRUE))
 })

@@ -4,7 +4,7 @@ test_that("ContrastsPlotter produces correct plot types", {
   skip_if_not_installed("lme4")
   skip_if_not_installed("lmerTest")
   muffle_warnings_matching(single_peptide_warning, expr = {
-    istar <- sim_lfq_data_peptide_config(Nprot = 20)
+    istar <- sim_lfq_data_peptide_config(n_proteins = 20)
     config <- istar$config
 
     modelFunction <- strategy_lmer(

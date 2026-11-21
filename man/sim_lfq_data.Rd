@@ -5,20 +5,23 @@
 \title{Simulate protein-level data with two groups}
 \usage{
 sim_lfq_data(
-  Nprot = 20,
-  N = 4,
+  n_proteins = 20,
+  n_per_group = 4,
   fc = list(A = c(D = -2, U = 2, N = 0), B = c(D = 1, U = -4)),
   prop = list(A = c(D = 10, U = 10), B = c(D = 5, U = 20)),
   mean_prot = 20,
   sdlog = log(1.2),
   probability_of_success = 0.3,
-  PEPTIDE = FALSE
+  peptide = FALSE,
+  Nprot,
+  N,
+  PEPTIDE
 )
 }
 \arguments{
-\item{Nprot}{number of proteins}
+\item{n_proteins}{number of proteins}
 
-\item{N}{group size}
+\item{n_per_group}{group size}
 
 \item{fc}{D - down regulation N - matrix,  U -  regulation}
 
@@ -30,7 +33,9 @@ sim_lfq_data(
 
 \item{probability_of_success}{probability of success for the geometric distribution of peptide counts}
 
-\item{PEPTIDE}{if TRUE, simulate peptide-level data; if FALSE, protein-level}
+\item{peptide}{if TRUE, simulate peptide-level data; if FALSE, protein-level}
+
+\item{Nprot, N, PEPTIDE}{deprecated; use \code{n_proteins}, \code{n_per_group} and \code{peptide}}
 }
 \value{
 A data frame containing simulated LFQ data.
@@ -40,8 +45,8 @@ Simulate protein-level data with two groups
 }
 \examples{
 
-res <- sim_lfq_data(Nprot = 10)
-res <- sim_lfq_data(Nprot = 10, PEPTIDE = TRUE)
-res <- sim_lfq_data(Nprot = 10, N=4)
+res <- sim_lfq_data(n_proteins = 10)
+res <- sim_lfq_data(n_proteins = 10, peptide = TRUE)
+res <- sim_lfq_data(n_proteins = 10, n_per_group = 4)
 
 }

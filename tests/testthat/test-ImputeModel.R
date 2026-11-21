@@ -41,7 +41,7 @@ test_that("imputed_model S3 dispatch works", {
 
 
 test_that("build_model_impute recovers singular proteins", {
-  istar <- sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0.5, seed = 42)
+  istar <- sim_lfq_data_protein_config(n_proteins = 30, weight_missing = 0.5, seed = 42)
   lfqdata <- LFQData$new(istar$data, istar$config)
   lfqdata$rename_response("transformedIntensity")
 
@@ -67,7 +67,7 @@ test_that("build_model_impute recovers singular proteins", {
 
 
 test_that("Contrasts work on imputed model", {
-  istar <- sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0.5, seed = 42)
+  istar <- sim_lfq_data_protein_config(n_proteins = 30, weight_missing = 0.5, seed = 42)
   lfqdata <- LFQData$new(istar$data, istar$config)
   lfqdata$rename_response("transformedIntensity")
 
@@ -91,7 +91,7 @@ test_that("LOD-imputed proteins are flagged via estimate_type", {
     # leave those proteins with NA estimates; with build_model_impute,
     # they fit successfully but should be tagged so consumers can tell
     # rescued rows from clean ones.
-    istar <- sim_lfq_data_protein_config(Nprot = 50, weight_missing = 0.5, seed = 42)
+    istar <- sim_lfq_data_protein_config(n_proteins = 50, weight_missing = 0.5, seed = 42)
     lfqdata <- LFQData$new(istar$data, istar$config)
     lfqdata$rename_response("transformedIntensity")
     strat <- strategy_lm(paste(lfqdata$response(), "~ group_"))
@@ -127,7 +127,7 @@ test_that("LOD-imputed proteins are flagged via estimate_type", {
 
 test_that("lm_impute facade surfaces LOD-rescued rows via estimate_type", {
   muffle_warnings_matching(one_group_warning, expr = {
-    istar <- sim_lfq_data_protein_config(Nprot = 50, weight_missing = 0.5, seed = 42)
+    istar <- sim_lfq_data_protein_config(n_proteins = 50, weight_missing = 0.5, seed = 42)
     lfqdata <- LFQData$new(istar$data, istar$config)
     lfqdata$rename_response("transformedIntensity")
     contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
@@ -144,7 +144,7 @@ test_that("lm_impute facade surfaces LOD-rescued rows via estimate_type", {
 
 
 test_that("ContrastsLMImputeFacade works end-to-end", {
-  istar <- sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0.5, seed = 42)
+  istar <- sim_lfq_data_protein_config(n_proteins = 30, weight_missing = 0.5, seed = 42)
   lfqdata <- LFQData$new(istar$data, istar$config)
   lfqdata$rename_response("transformedIntensity")
 
@@ -170,7 +170,7 @@ test_that("ContrastsLMImputeFacade works end-to-end", {
 
 
 test_that("borrow_method vcov works", {
-  istar <- sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0.5, seed = 42)
+  istar <- sim_lfq_data_protein_config(n_proteins = 30, weight_missing = 0.5, seed = 42)
   lfqdata <- LFQData$new(istar$data, istar$config)
   lfqdata$rename_response("transformedIntensity")
 
@@ -193,7 +193,7 @@ test_that("borrow_method vcov works", {
 
 
 test_that("compute_borrowed_variance keeps fits missing a whole group as donors", {
-  bb <- sim_lfq_data_protein_config(Nprot = 10, with_missing = FALSE)
+  bb <- sim_lfq_data_protein_config(n_proteins = 10, with_missing = FALSE)
   first <- unique(bb$data$protein_Id)[1]
   bb$data$abundance[bb$data$protein_Id == first & bb$data$group_ == "A"] <- NA
   mod <- build_model(bb$data, strategy_lm("abundance ~ group_"), subject_id = "protein_Id")
@@ -205,7 +205,7 @@ test_that("compute_borrowed_variance keeps fits missing a whole group as donors"
 
 
 test_that("df_method borrowed works", {
-  istar <- sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0.5, seed = 42)
+  istar <- sim_lfq_data_protein_config(n_proteins = 30, weight_missing = 0.5, seed = 42)
   lfqdata <- LFQData$new(istar$data, istar$config)
   lfqdata$rename_response("transformedIntensity")
 
@@ -223,7 +223,7 @@ test_that("df_method borrowed works", {
 })
 
 test_that("imputed fits identify observed and completed rows", {
-  sim <- sim_lfq_data_protein_config(Nprot = 12, weight_missing = 0, seed = 42)
+  sim <- sim_lfq_data_protein_config(n_proteins = 12, weight_missing = 0, seed = 42)
   lfq <- LFQData$new(sim$data, sim$config)
   dat <- lfq$data_long()
   protein <- unique(dat$protein_Id)[1]

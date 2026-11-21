@@ -5,15 +5,16 @@
 \title{Simulate data, protein, with config}
 \usage{
 sim_lfq_data_protein_config(
-  Nprot = 10,
+  n_proteins = 10,
   with_missing = TRUE,
   weight_missing = 0.2,
   seed = 1234,
-  paired = FALSE
+  paired = FALSE,
+  Nprot
 )
 }
 \arguments{
-\item{Nprot}{one positive whole number of proteins to simulate}
+\item{n_proteins}{one positive whole number of proteins to simulate}
 
 \item{with_missing}{add missing values, default TRUE}
 
@@ -22,6 +23,8 @@ sim_lfq_data_protein_config(
 \item{seed}{seed for reproducibility, if NULL no seed is set.}
 
 \item{paired}{if TRUE, add a paired subject factor to the design}
+
+\item{Nprot}{deprecated; use \code{n_proteins}}
 }
 \value{
 A list containing simulated data and an analysis configuration.

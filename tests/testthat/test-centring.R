@@ -1,7 +1,7 @@
 # Effect of centring on contrasts (srr RE2.3).
 
 centring_fixture <- function() {
-  sim <- sim_lfq_data_protein_config(Nprot = 10, with_missing = FALSE, seed = 42)
+  sim <- sim_lfq_data_protein_config(n_proteins = 10, with_missing = FALSE, seed = 42)
   suppressMessages(LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq)
 }
 

@@ -7,7 +7,7 @@
 #' @family plotting
 #' @examplesIf requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)
 #'
-#' istar <- sim_lfq_data_peptide_config(Nprot = 20)
+#' istar <- sim_lfq_data_peptide_config(n_proteins = 20)
 #' model_name <- "Model"
 #' modelFunction <-
 #'   strategy_lmer("abundance  ~ group_ + (1 | peptide_Id) + (1|sample)",

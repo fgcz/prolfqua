@@ -13,7 +13,7 @@ to determine differential protein-level expression.
 }
 \examples{
 
-istar <- prolfqua::sim_lfq_data_peptide_config(Nprot=20)
+istar <- prolfqua::sim_lfq_data_peptide_config(n_proteins=20)
 istar_data <- istar$data
 modelFunction <-
   strategy_lm("abundance  ~ group_")
@@ -48,7 +48,7 @@ mod <- build_model(
 
 }
 \seealso{
-\code{\link{summary_ROPECA_median_p_scaled}}
+\code{\link{summary_ropeca_median_p_scaled}}
 
 Other modelling:
 \code{\link{AnovaExtractor}},
@@ -81,7 +81,6 @@ Other modelling:
 \code{\link{ContrastsRfitImputeFacade}},
 \code{\link{ContrastsTable}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link[=LR_test]{LR_test()}},
 \code{\link{Model}},
 \code{\link{ModelFirth}},
 \code{\link{ModelLimma}},
@@ -117,6 +116,7 @@ Other modelling:
 \code{\link[=linfct_matrix_contrasts]{linfct_matrix_contrasts()}},
 \code{\link[=list_facades]{list_facades()}},
 \code{\link[=lookup_facade]{lookup_facade()}},
+\code{\link[=lr_test]{lr_test()}},
 \code{\link[=merge_contrasts_results]{merge_contrasts_results()}},
 \code{\link[=model_analyse]{model_analyse()}},
 \code{\link[=model_summary]{model_summary()}},
@@ -137,7 +137,7 @@ Other modelling:
 \code{\link[=strategy_limma]{strategy_limma()}},
 \code{\link[=strategy_limpa]{strategy_limpa()}},
 \code{\link[=strategy_logistf]{strategy_logistf()}},
-\code{\link[=summary_ROPECA_median_p_scaled]{summary_ROPECA_median_p_scaled()}},
+\code{\link[=summary_ropeca_median_p_scaled]{summary_ropeca_median_p_scaled()}},
 \code{\link[=vcov.rfit_prolfqua]{vcov.rfit_prolfqua()}}
 }
 \concept{modelling}

@@ -22,7 +22,7 @@ contrast estimates, standard errors or p-values.
 
 \examples{
 
-istar <- sim_lfq_data_peptide_config(Nprot = 50)
+istar <- sim_lfq_data_peptide_config(n_proteins = 50)
 lfqdata <- LFQData$new(istar$data, istar$config)
 
 lfqcopy <- lfqdata$get_copy()

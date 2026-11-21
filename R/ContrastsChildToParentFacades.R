@@ -270,7 +270,7 @@ ContrastsROPECAV2NestedFacade <- R6::R6Class(
 #' @return An R6 class generator.
 #' @export
 #' @examples
-#' istar <- sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.5, seed = 3)
+#' istar <- sim_lfq_data_peptide_config(n_proteins = 20, weight_missing = 0.5, seed = 3)
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 #' facade <- ContrastsBinomialNestedFacade$new(lfqdata, "~ group_", contrasts)
@@ -317,7 +317,7 @@ ContrastsBinomialNestedFacade <- R6::R6Class(
 #' @return An R6 class generator.
 #' @export
 #' @examples
-#' istar <- sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.5, seed = 3)
+#' istar <- sim_lfq_data_peptide_config(n_proteins = 20, weight_missing = 0.5, seed = 3)
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 #' facade <- ContrastsBinomialFirthNestedFacade$new(lfqdata, "~ group_", contrasts)
@@ -394,7 +394,7 @@ ContrastsBinomialFirthNestedFacade <- R6::R6Class(
 #' @family modelling
 #' @examples
 #' if (requireNamespace("limpa", quietly = TRUE)) {
-#'   istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10)
+#'   istar <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 10)
 #'   lfqdata <- LFQData$new(istar$data, istar$config)
 #'   lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 #'   contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")

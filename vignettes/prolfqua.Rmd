@@ -82,7 +82,7 @@ We simulate peptide-level intensities for 100 proteins measured in three groups 
 
 ```{r simulate}
 library(prolfqua)
-istar <- sim_lfq_data_peptide_config(Nprot = 100, seed = 1234)
+istar <- sim_lfq_data_peptide_config(n_proteins = 100, seed = 1234)
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata$factors() |> head()
 ```

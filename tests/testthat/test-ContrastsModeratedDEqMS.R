@@ -20,7 +20,7 @@ test_that("find_d0_deqms returns sensible values", {
 })
 
 test_that("moderated_p_deqms works on simulated data", {
-  istar <- sim_lfq_data_protein_config(Nprot = 50)
+  istar <- sim_lfq_data_protein_config(n_proteins = 50)
   lProt <- LFQData$new(istar$data, istar$config)
   lProt$rename_response("transformedIntensity")
 
@@ -67,7 +67,7 @@ test_that("moderated_p_deqms works on simulated data", {
 })
 
 test_that("ContrastsModeratedDEqMS works end-to-end", {
-  istar <- sim_lfq_data_protein_config(Nprot = 50)
+  istar <- sim_lfq_data_protein_config(n_proteins = 50)
   lProt <- LFQData$new(istar$data, istar$config)
   lProt$rename_response("transformedIntensity")
 
@@ -131,7 +131,7 @@ test_that("ContrastsModeratedDEqMS works end-to-end", {
 })
 
 test_that("ContrastsModeratedDEqMS works with multiple contrasts", {
-  istar <- sim_lfq_data_protein_config(Nprot = 30)
+  istar <- sim_lfq_data_protein_config(n_proteins = 30)
   lProt <- LFQData$new(istar$data, istar$config)
   lProt$rename_response("transformedIntensity")
 
@@ -158,7 +158,7 @@ test_that("ContrastsModeratedDEqMS works with multiple contrasts", {
 })
 
 test_that("merge_contrasts_results works with ContrastsModeratedDEqMS", {
-  istar <- sim_lfq_data_protein_config(Nprot = 50, weight_missing = 0.4)
+  istar <- sim_lfq_data_protein_config(n_proteins = 50, weight_missing = 0.4)
   lProt <- LFQData$new(istar$data, istar$config)
   lProt$rename_response("transformedIntensity")
 
@@ -189,7 +189,7 @@ test_that("merge_contrasts_results works with ContrastsModeratedDEqMS", {
 })
 
 test_that("ContrastsModeratedDEqMS volcano renders", {
-  istar <- sim_lfq_data_protein_config(Nprot = 30)
+  istar <- sim_lfq_data_protein_config(n_proteins = 30)
   lProt <- LFQData$new(istar$data, istar$config)
   lProt$rename_response("transformedIntensity")
 

@@ -260,7 +260,7 @@
 #'
 #' # Example with a normValue column (e.g., creatinine)
 #' set.seed(1234)
-#' data <- sim_lfq_data(Nprot = 10, PEPTIDE = TRUE, N = 4)
+#' data <- sim_lfq_data(n_proteins = 10, peptide = TRUE, n_per_group = 4)
 #' data$nr_children <- 1
 #' data$isotopeLabel <- "light"
 #' data$qValue <- 0
@@ -437,7 +437,7 @@ complete_cases <- function(lfqdata) {
 #' @family configuration
 #'
 #' @examples
-#' bb <- sim_lfq_data_peptide_config(Nprot = 5)
+#' bb <- sim_lfq_data_peptide_config(n_proteins = 5)
 #' subset <- sample_subset(2, bb$data, bb$config$hierarchy_keys_depth())
 #' length(unique(subset[[bb$config$hierarchy_keys_depth()[1]]]))
 sample_subset <- function(size, pdata, hierarchy_keys_depth) {

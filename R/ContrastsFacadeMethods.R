@@ -49,7 +49,7 @@
 #' @name prolfqua_analysis_methods
 #' @family modelling
 #' @examples
-#' sim <- sim_lfq_data_protein_config(Nprot = 10, weight_missing = 0, seed = 42)
+#' sim <- sim_lfq_data_protein_config(n_proteins = 10, weight_missing = 0, seed = 42)
 #' lfq <- LFQData$new(sim$data, sim$config)
 #' analysis <- build_contrast_analysis(lfq, "~ group_", c(A_vs_Ctrl = "group_A - group_Ctrl"))
 #' print(analysis)

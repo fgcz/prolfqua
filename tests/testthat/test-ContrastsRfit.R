@@ -1,8 +1,8 @@
 ## Tests for the Rfit rank-based regression backend
 ## (StrategyRfit, S3 glue, ContrastsRfitFacade, build_contrast_analysis dispatch)
 
-make_protein_lfqdata_rfit <- function(Nprot = 30) {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = Nprot, seed = 42)
+make_protein_lfqdata_rfit <- function(n_proteins = 30) {
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = n_proteins, seed = 42)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   lfqdata$rename_response("transformedIntensity")
   lfqdata
@@ -120,7 +120,7 @@ test_that("rfit facade is registered as needs = 'same'", {
 
 test_that("rfit handles per-protein rank deficiency without crashing", {
   skip_if_not_installed("Rfit")
-  istar <- prolfqua::sim_lfq_data_2factor_config(Nprot = 8, with_missing = FALSE)
+  istar <- prolfqua::sim_lfq_data_2factor_config(n_proteins = 8, with_missing = FALSE)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   # Drop the Treatment=B / Background=Z cell for half the proteins. Those
   # proteins are rank-deficient on the interaction term — lm fills NA; rfit
@@ -182,7 +182,7 @@ test_that("rfit restores names when it falls back to the null model", {
 
 test_that("rfit handles a two-factor design with interactions", {
   skip_if_not_installed("Rfit")
-  istar <- prolfqua::sim_lfq_data_2factor_config(Nprot = 12, with_missing = FALSE)
+  istar <- prolfqua::sim_lfq_data_2factor_config(n_proteins = 12, with_missing = FALSE)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   contrasts <- c("TB_vs_A" = "TreatmentB - TreatmentA", "BgZ_vs_X" = "BackgroundZ - BackgroundX")
   fa <- prolfqua::ContrastsRfitFacade$new(lfqdata, "~ Treatment * Background", contrasts)

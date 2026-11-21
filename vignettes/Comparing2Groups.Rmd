@@ -33,7 +33,7 @@ library(prolfqua)
 `sim_lfq_data_protein_config()` simulates protein abundances in long format, one row per protein and sample, and returns them together with a matching `AnalysisConfiguration`. To read your own data, see the article [Importing your data](https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html).
 
 ```{r LoadDataAndConfigure}
-xx <- prolfqua::sim_lfq_data_protein_config(Nprot = 100, weight_missing = 0.5)
+xx <- prolfqua::sim_lfq_data_protein_config(n_proteins = 100, weight_missing = 0.5)
 xx
 ```
 
@@ -71,7 +71,7 @@ lfqdata$get_Summariser()$plot_missingness_per_group()
 ```
 
 ```{r missignessHistogram, fig.cap="Intensity distribution of proteins depending on # of missing values"}
-lfqplotter$missigness_histogram()
+lfqplotter$missingness_histogram()
 ```
 
 ### Computing standard deviations, mean and CV.

@@ -103,7 +103,7 @@
 #'   are documented; preceding user transformations retain their input columns.
 #' @family modelling
 #' @examplesIf requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)
-#' istar <- sim_lfq_data_protein_config(Nprot = 20)
+#' istar <- sim_lfq_data_protein_config(n_proteins = 20)
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqdata$rename_response("transformedIntensity")
 #' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")

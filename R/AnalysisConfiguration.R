@@ -168,7 +168,7 @@ AnalysisConfiguration <- R6::R6Class(
 
 
 #' Reconstruct a configuration from minimal YAML
-#' @param dd list with table and parameter elements as produced by R6_extract_values
+#' @param dd list with table and parameter elements as produced by r6_extract_values
 #' @return The computed result.
 #' @export
 #' @examples
@@ -185,11 +185,11 @@ AnalysisConfiguration <- R6::R6Class(
 #' DEAconfig$ident_q_value <- "annotation_QValue"
 #' DEAconfig$set_response("Area")
 #' DEAconfig$isotope_label <- "Isotope.Label"
-#' configList <- prolfqua::R6_extract_values(DEAconfig)
+#' configList <- prolfqua::r6_extract_values(DEAconfig)
 #' stopifnot(class(configList) == "list")
-#' config <- list_to_AnalysisConfiguration(configList)
-#' all.equal(prolfqua::R6_extract_values(config), configList)
-list_to_AnalysisConfiguration <- function(dd) {
+#' config <- list_to_analysis_configuration(configList)
+#' all.equal(prolfqua::r6_extract_values(config), configList)
+list_to_analysis_configuration <- function(dd) {
   config <- AnalysisConfiguration$new()
   if (!is.null(dd$table)) {
     # Old nested format (backwards compat)
@@ -250,9 +250,9 @@ make_reduced_hierarchy_config <- function(config, work_intensity, hierarchy) {
 #' @export
 #' @examples
 #' bb <- sim_lfq_data_peptide_config()
-#' values <- R6_extract_values(bb$config)
+#' values <- r6_extract_values(bb$config)
 #' names(values)
-R6_extract_values <- function(r6class) {
+r6_extract_values <- function(r6class) {
   tmp <- vapply(r6class, function(x) class(x)[1], character(1))
   slots <- tmp[!tmp %in% c("environment", "function")]
   res <- list()
@@ -262,7 +262,7 @@ R6_extract_values <- function(r6class) {
       if (identical(val, r6class)) {
         next
       }
-      res[[i]] <- R6_extract_values(val)
+      res[[i]] <- r6_extract_values(val)
     } else {
       res[[i]] <- val
     }

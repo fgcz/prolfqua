@@ -33,7 +33,7 @@ NOISE_PACKAGES <- list(
 )
 
 noise_case_input <- function(method, perturb = FALSE) {
-  sim <- sim_lfq_data_peptide_config(Nprot = 20, seed = 42)
+  sim <- sim_lfq_data_peptide_config(n_proteins = 20, seed = 42)
   data <- sim$data
   if (perturb) {
     response <- sim$config$get_response()

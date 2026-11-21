@@ -1,8 +1,8 @@
 ## Tests for the injectable progress reporter (.make_progress + wiring)
 
 # Aggregated protein-level data (the "aggregated" facades, e.g. lm, need this).
-make_progress_protein_data <- function(Nprot = 30) {
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = Nprot, seed = 42)
+make_progress_protein_data <- function(n_proteins = 30) {
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = n_proteins, seed = 42)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   lfqdata$rename_response("transformedIntensity")
   lfqdata
@@ -88,7 +88,7 @@ test_that("prolfqua.progress callback fires through build_contrast_analysis (lm)
 
 test_that("firth pass labels appear in progress output (firth)", {
   skip_if_not_installed("logistf")
-  istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 30, with_missing = TRUE, weight_missing = 0.5, seed = 42)
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 30, with_missing = TRUE, weight_missing = 0.5, seed = 42)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   rec <- make_recorder()
   withr::local_options(prolfqua.progress = rec$callback)

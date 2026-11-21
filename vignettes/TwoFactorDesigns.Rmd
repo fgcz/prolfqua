@@ -36,10 +36,10 @@ specification. See `ContrastFacades.Rmd` for the one-factor introduction.
 
 ```{r simulate_two_factor_subgroups}
 dd <- sim_lfq_data_2factor_config(
-  Nprot = 80,
+  n_proteins = 80,
   with_missing = TRUE,
   weight_missing = 1,
-  PEPTIDE = TRUE,
+  peptide = TRUE,
   seed = 7
 )
 

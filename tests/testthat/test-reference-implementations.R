@@ -68,7 +68,7 @@ test_that("two-factor lm marginal and cell contrasts equal stats::lm on ToothGro
 })
 
 test_that("limma contrasts equal lmFit, contrasts.fit and eBayes", {
-  sim <- sim_with_truth(Nprot = 60, seed = 11)
+  sim <- sim_with_truth(n_proteins = 60, seed = 11)
   res <- build_contrast_analysis(sim$lfqdata, "~ group_", RECOVERY_CONTRASTS, "limma")$get_contrasts()
   long <- sim$lfqdata$data_long()
   wide <- tidyr::pivot_wider(long, id_cols = "protein_Id", names_from = "sampleName", values_from = "abundance")
@@ -94,7 +94,7 @@ test_that("limma contrasts equal lmFit, contrasts.fit and eBayes", {
 test_that("lmer contrasts equal lmerTest::contest on a directly fitted model", {
   skip_if_not_installed("lme4")
   skip_if_not_installed("lmerTest")
-  sim <- sim_with_truth(Nprot = 20, seed = 5, peptide = TRUE)
+  sim <- sim_with_truth(n_proteins = 20, seed = 5, peptide = TRUE)
   long <- sim$lfqdata$data_long()
   counts <- table(unique(long[, c("protein_Id", "peptide_Id")])$protein_Id)
   protein <- names(counts)[which.max(counts)]
@@ -112,7 +112,7 @@ test_that("lmer contrasts equal lmerTest::contest on a directly fitted model", {
 })
 
 test_that("rlm and rfit coefficients equal MASS::rlm and Rfit::rfit", {
-  sim <- sim_with_truth(Nprot = 10, seed = 3)
+  sim <- sim_with_truth(n_proteins = 10, seed = 3)
   rlm_model <- muffle_warnings_matching(
     build_model(sim$lfqdata, strategy_rlm("abundance ~ group_")),
     rlm_convergence_warning

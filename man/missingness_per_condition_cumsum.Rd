@@ -34,7 +34,7 @@ stopifnot(ncol(res$data) >= 6)
 Other plotting:
 \code{\link{ContrastsPlotter}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link[=missigness_histogram]{missigness_histogram()}},
+\code{\link[=missingness_histogram]{missingness_histogram()}},
 \code{\link[=missingness_per_condition]{missingness_per_condition()}},
 \code{\link[=plot_estimate]{plot_estimate()}},
 \code{\link[=plot_heatmap]{plot_heatmap()}},
@@ -52,7 +52,7 @@ Other plotting:
 
 Other imputation:
 \code{\link[=get_contrast]{get_contrast()}},
-\code{\link[=missigness_histogram]{missigness_histogram()}},
+\code{\link[=missingness_histogram]{missingness_histogram()}},
 \code{\link[=missingness_per_condition]{missingness_per_condition()}},
 \code{\link[=upset_interaction_missing_stats]{upset_interaction_missing_stats()}},
 \code{\link[=upset_missing_stats]{upset_missing_stats()}}

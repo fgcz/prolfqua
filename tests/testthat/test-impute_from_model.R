@@ -1,5 +1,5 @@
-make_complete_lfqdata <- function(Nprot = 10, paired = FALSE) {
-  istar <- sim_lfq_data_protein_config(Nprot = Nprot, with_missing = FALSE, paired = paired, seed = 42)
+make_complete_lfqdata <- function(n_proteins = 10, paired = FALSE) {
+  istar <- sim_lfq_data_protein_config(n_proteins = n_proteins, with_missing = FALSE, paired = paired, seed = 42)
   LFQData$new(istar$data, istar$config)
 }
 
@@ -117,7 +117,7 @@ test_that("a subject missing a whole pair is refitted at the LOD and its pair ce
 })
 
 test_that("the weighted lm_impute facade model fills rows absent from the long table", {
-  istar <- sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0.5, seed = 7)
+  istar <- sim_lfq_data_protein_config(n_proteins = 30, weight_missing = 0.5, seed = 7)
   data <- istar$data[!is.na(istar$data$abundance), ]
   lfq <- LFQData$new(data, istar$config)
   facade <- ContrastsLMImputeFacade$new(lfq, "~ group_", c(AvsCtrl = "group_A - group_Ctrl"))
@@ -132,7 +132,7 @@ test_that("the weighted lm_impute facade model fills rows absent from the long t
 })
 
 test_that("observed values are unchanged and every subject x sample row is present", {
-  istar <- sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0.5, seed = 42)
+  istar <- sim_lfq_data_protein_config(n_proteins = 30, weight_missing = 0.5, seed = 42)
   lfq <- LFQData$new(istar$data, istar$config)
   data <- lfq$data_long()
   lfq <- LFQData$new(data[!is.na(data$abundance) | seq_len(nrow(data)) %% 2 == 0, ], lfq$get_config())

@@ -1,5 +1,5 @@
 hurdle_components_fixture <- function() {
-  istar <- sim_lfq_data_peptide_config(Nprot = 60, weight_missing = 0.6, seed = 7)
+  istar <- sim_lfq_data_peptide_config(n_proteins = 60, weight_missing = 0.6, seed = 7)
   # Keep complete proteins for the intensity-only test, and make three partially
   # detected proteins absent from A regardless of the simulator's random draw.
   candidates <- istar$data |>
@@ -130,7 +130,7 @@ test_that("all intensity x detection pairings return the contrast schema", {
 })
 
 test_that("hurdle supports a two-factor design", {
-  istar <- sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.8, seed = 11)
+  istar <- sim_lfq_data_peptide_config(n_proteins = 20, weight_missing = 0.8, seed = 11)
   istar$data <- istar$data |>
     dplyr::mutate(
       Treatment = dplyr::if_else(.data$group_ == "B", "B", "A"),

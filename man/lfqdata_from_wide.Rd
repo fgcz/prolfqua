@@ -48,7 +48,7 @@ Other LFQData:
 \code{\link{LFQDataPlotter}},
 \code{\link{LFQDataStats}},
 \code{\link{LFQDataSummariser}},
-\code{\link[=LFQDataToSummarizedExperiment]{LFQDataToSummarizedExperiment()}},
+\code{\link[=lfqdata_to_summarized_experiment]{lfqdata_to_summarized_experiment()}},
 \code{\link[=plot.LFQData]{plot.LFQData()}}
 }
 \concept{LFQData}

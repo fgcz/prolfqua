@@ -4,7 +4,7 @@
 #' @noRd
 
 validation_fixture <- function() {
-  x <- sim_lfq_data_protein_config(Nprot = 5, seed = 42)
+  x <- sim_lfq_data_protein_config(n_proteins = 5, seed = 42)
   list(
     data = x$data,
     config = x$config,
@@ -198,7 +198,7 @@ test_that("moderation requires a contrast object", {
 test_that("simulators require a positive whole number of proteins", {
   for (simulator in list(sim_lfq_data_protein_config, sim_lfq_data_peptide_config, sim_lfq_data_2factor_config)) {
     for (n in list(0, -1, 1.5, NA_real_, Inf, c(1, 2), "5")) {
-      expect_error(simulator(Nprot = n), class = "prolfqua_error_bad_argument")
+      expect_error(simulator(n_proteins = n), class = "prolfqua_error_bad_argument")
     }
   }
 })

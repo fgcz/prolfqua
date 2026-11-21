@@ -21,7 +21,7 @@ Apply function requiring a matrix to tidy table
 }
 \examples{
 
-bb <- sim_lfq_data_peptide_config(Nprot = 100)
+bb <- sim_lfq_data_peptide_config(n_proteins = 100)
 lfqdata <- LFQData$new(bb$data, bb$config)
 res <- apply_to_response_matrix(lfqdata, .func = base::scale)
 stopifnot("abundance_base..scale" \%in\% colnames(res$data))

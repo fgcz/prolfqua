@@ -32,7 +32,7 @@
 #' @export
 #' @family modelling
 #' @examples
-#' istar <- sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.5, seed = 3)
+#' istar <- sim_lfq_data_peptide_config(n_proteins = 20, weight_missing = 0.5, seed = 3)
 #' lfq_peptide <- LFQData$new(istar$data, istar$config)
 #' lfq_peptide <- lfq_peptide$get_Transformer()$log2()$lfq
 #' lfq_protein <- lfq_peptide$get_Aggregator()$aggregate()
@@ -183,7 +183,7 @@ ContrastsHurdleFacade <- R6::R6Class(
 #' @export
 #' @family modelling
 #' @examples
-#' istar <- sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.5, seed = 3)
+#' istar <- sim_lfq_data_peptide_config(n_proteins = 20, weight_missing = 0.5, seed = 3)
 #' lfq_peptide <- LFQData$new(istar$data, istar$config)
 #' lfq_peptide <- lfq_peptide$get_Transformer()$log2()$lfq
 #' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")

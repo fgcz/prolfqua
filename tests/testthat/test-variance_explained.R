@@ -21,7 +21,7 @@
 }
 
 test_that("one factor: R2 equals lm R-squared per feature, with missing values", {
-  bb <- prolfqua::sim_lfq_data_protein_config(Nprot = 30)
+  bb <- prolfqua::sim_lfq_data_protein_config(n_proteins = 30)
   lfq <- .ve_lfq(bb$data, bb$config)
   ve <- suppressMessages(summarize_variance_explained(lfq))
   expect_setequal(unique(ve$factor), c("group_", "Residuals"))
@@ -30,7 +30,7 @@ test_that("one factor: R2 equals lm R-squared per feature, with missing values",
 })
 
 test_that("two factors: default formula is the factorial; R2 equals the one-way eta2 over cells", {
-  bb <- prolfqua::sim_lfq_data_2factor_config(Nprot = 30)
+  bb <- prolfqua::sim_lfq_data_2factor_config(n_proteins = 30)
   bb$config$factor_depth <- 2
   lfq <- .ve_lfq(bb$data, bb$config)
   ve <- suppressMessages(summarize_variance_explained(lfq))
@@ -42,7 +42,7 @@ test_that("two factors: default formula is the factorial; R2 equals the one-way 
 })
 
 test_that("sums of squares add up and shares lie in [0, 1]", {
-  bb <- prolfqua::sim_lfq_data_2factor_config(Nprot = 30)
+  bb <- prolfqua::sim_lfq_data_2factor_config(n_proteins = 30)
   bb$config$factor_depth <- 2
   ve <- suppressMessages(summarize_variance_explained(.ve_lfq(bb$data, bb$config)))
   total <- tapply(ve$Sum.Sq, ve$protein_Id, sum)
@@ -52,7 +52,7 @@ test_that("sums of squares add up and shares lie in [0, 1]", {
 })
 
 test_that("pooled R2 equals PERMANOVA R2 with Euclidean distances on complete features", {
-  bb <- prolfqua::sim_lfq_data_protein_config(Nprot = 30, with_missing = FALSE)
+  bb <- prolfqua::sim_lfq_data_protein_config(n_proteins = 30, with_missing = FALSE)
   lfq <- .ve_lfq(bb$data, bb$config)
   pooled <- pooled_variance_explained(summarize_variance_explained(lfq))
   r2_pooled <- 1 - pooled$eta2[pooled$factor == "Residuals"]
@@ -79,7 +79,7 @@ test_that("pooled R2 equals PERMANOVA R2 with Euclidean distances on complete fe
 })
 
 test_that("peptide-level data is fitted per peptide, not pooled per protein", {
-  bb <- prolfqua::sim_lfq_data_peptide_config(Nprot = 5)
+  bb <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 5)
   lfq <- .ve_lfq(bb$data, bb$config)
   ve <- suppressMessages(summarize_variance_explained(lfq))
   expect_true(all(lfq$hierarchy_keys() %in% names(ve)))
@@ -91,7 +91,7 @@ test_that("peptide-level data is fitted per peptide, not pooled per protein", {
 })
 
 test_that("a custom modelstr is used", {
-  bb <- prolfqua::sim_lfq_data_2factor_config(Nprot = 10)
+  bb <- prolfqua::sim_lfq_data_2factor_config(n_proteins = 10)
   bb$config$factor_depth <- 2
   lfq <- .ve_lfq(bb$data, bb$config)
   fk <- lfq$relevant_factor_keys()
@@ -100,7 +100,7 @@ test_that("a custom modelstr is used", {
 })
 
 test_that("features without a usable fit are left out with a message", {
-  bb <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = FALSE)
+  bb <- prolfqua::sim_lfq_data_protein_config(n_proteins = 10, with_missing = FALSE)
   first <- bb$data$protein_Id == unique(bb$data$protein_Id)[1] & bb$data$group_ == "A"
   bb$data$abundance[first] <- NA
   lfq <- .ve_lfq(bb$data, bb$config)
@@ -109,7 +109,7 @@ test_that("features without a usable fit are left out with a message", {
 })
 
 test_that("untransformed data and saturated models stop", {
-  bb <- prolfqua::sim_lfq_data_protein_config(Nprot = 5, with_missing = FALSE)
+  bb <- prolfqua::sim_lfq_data_protein_config(n_proteins = 5, with_missing = FALSE)
   expect_error(
     summarize_variance_explained(LFQData$new(bb$data, bb$config)),
     class = "prolfqua_error_bad_argument"
@@ -127,7 +127,7 @@ test_that("pooled_variance_explained requires the columns of summarize_variance_
 })
 
 test_that("R2 rises after removing per-sample shifts", {
-  bb <- prolfqua::sim_lfq_data_protein_config(Nprot = 30, with_missing = FALSE)
+  bb <- prolfqua::sim_lfq_data_protein_config(n_proteins = 30, with_missing = FALSE)
   set.seed(1)
   samples <- unique(bb$data$sampleName)
   shift <- stats::setNames(stats::rnorm(length(samples), sd = 1), samples)

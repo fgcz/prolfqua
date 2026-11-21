@@ -202,7 +202,7 @@ test_that("rlm aggregation ignores an unused level of a factor feature column", 
 })
 
 test_that("medpolish and rlm aggregation return unnamed estimates, so LFQData drops no attributes", {
-  dd <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10)
+  dd <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 10)
   lfq <- prolfqua::LFQData$new(dd$data, dd$config)
   lfq <- suppressMessages(lfq$get_Transformer()$log2()$lfq)
   for (method in c("medpolish", "rlm")) {

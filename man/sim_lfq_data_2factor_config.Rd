@@ -5,26 +5,31 @@
 \title{Simulate data, protein, with config with 2 factors Treatment and Background}
 \usage{
 sim_lfq_data_2factor_config(
-  Nprot = 10,
+  n_proteins = 10,
   with_missing = TRUE,
   weight_missing = 0.2,
-  PEPTIDE = FALSE,
+  peptide = FALSE,
   seed = 1234,
-  TWO = TRUE
+  two_factor = TRUE,
+  Nprot,
+  PEPTIDE,
+  TWO
 )
 }
 \arguments{
-\item{Nprot}{one positive whole number of proteins to simulate}
+\item{n_proteins}{one positive whole number of proteins to simulate}
 
 \item{with_missing}{add missing values, default TRUE}
 
 \item{weight_missing}{one number in [0, 1]; greater weight means more missingness}
 
-\item{PEPTIDE}{if TRUE, simulate peptide-level data; if FALSE, protein-level}
+\item{peptide}{if TRUE, simulate peptide-level data; if FALSE, protein-level}
 
 \item{seed}{seed for reproducibility, if NULL no seed is set.}
 
-\item{TWO}{use two factors for modelling}
+\item{two_factor}{if TRUE, model \code{Treatment} and \code{Background} as two factors; if FALSE, as one combined factor}
+
+\item{Nprot, PEPTIDE, TWO}{deprecated; use \code{n_proteins}, \code{peptide} and \code{two_factor}}
 }
 \value{
 A list containing simulated data and an analysis configuration.
@@ -33,14 +38,14 @@ A list containing simulated data and an analysis configuration.
 Simulate data, protein, with config with 2 factors Treatment and Background
 }
 \examples{
-x <- sim_lfq_data_2factor_config(PEPTIDE= FALSE)
+x <- sim_lfq_data_2factor_config(peptide = FALSE)
 dim(x$data)
 stopifnot("data.frame" \%in\% class(x$data))
 stopifnot("AnalysisConfiguration" \%in\% class(x$config))
-x <- sim_lfq_data_2factor_config(PEPTIDE = TRUE)
+x <- sim_lfq_data_2factor_config(peptide = TRUE)
 
 head(x$data)
-x <- sim_lfq_data_2factor_config(PEPTIDE = TRUE, TWO = TRUE)
+x <- sim_lfq_data_2factor_config(peptide = TRUE, two_factor = TRUE)
 names(x)
 nrow(x$data) > 10
 x$data$Treatment |> table()

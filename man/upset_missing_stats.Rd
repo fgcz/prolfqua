@@ -28,7 +28,7 @@ UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
 Other plotting:
 \code{\link{ContrastsPlotter}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link[=missigness_histogram]{missigness_histogram()}},
+\code{\link[=missingness_histogram]{missingness_histogram()}},
 \code{\link[=missingness_per_condition]{missingness_per_condition()}},
 \code{\link[=missingness_per_condition_cumsum]{missingness_per_condition_cumsum()}},
 \code{\link[=plot_estimate]{plot_estimate()}},
@@ -46,7 +46,7 @@ Other plotting:
 
 Other imputation:
 \code{\link[=get_contrast]{get_contrast()}},
-\code{\link[=missigness_histogram]{missigness_histogram()}},
+\code{\link[=missingness_histogram]{missingness_histogram()}},
 \code{\link[=missingness_per_condition]{missingness_per_condition()}},
 \code{\link[=missingness_per_condition_cumsum]{missingness_per_condition_cumsum()}},
 \code{\link[=upset_interaction_missing_stats]{upset_interaction_missing_stats()}}

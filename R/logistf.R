@@ -27,7 +27,7 @@
 #' @family modelling
 #' @examplesIf requireNamespace("logistf", quietly = TRUE)
 #' istar <- sim_lfq_data_protein_config(
-#'   Nprot = 10, with_missing = TRUE, weight_missing = 0.5, seed = 3)
+#'   n_proteins = 10, with_missing = TRUE, weight_missing = 0.5, seed = 3)
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' mod <- build_model_glm_protein(lfqdata, "~ group_")
 #' head(mod$get_coefficients())
@@ -51,7 +51,7 @@ build_model_glm_protein <- function(lfqdata, modelstr, control = list()) {
 #' @family modelling
 #' @keywords internal
 #' @examplesIf requireNamespace("logistf", quietly = TRUE)
-#' istar <- prolfqua::sim_lfq_data_protein_config(Nprot = 10, with_missing = TRUE,
+#' istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 10, with_missing = TRUE,
 #'   weight_missing = 0.5, seed = 3)
 #' istar$data <- prolfqua::encode_bin_resp(LFQData$new(istar$data, istar$config))
 #' istar$config$bin_resp <- "bin_resp"
@@ -84,6 +84,7 @@ build_model_logistf <- function(data, formula, control = list()) {
 
 
 #' Build Firth logistic models on simulated data for testing
+#' @inheritParams sim_build_models_lm
 #' @return a [ModelFirth] object fitted with [build_model_logistf()]
 #' @family modelling
 #' @export
@@ -98,20 +99,24 @@ build_model_logistf <- function(data, formula, control = list()) {
 
 sim_build_models_logistf <- function(
   model = c("parallel2", "parallel3", "factors", "interaction"),
-  Nprot = 10,
+  n_proteins = 10,
   with_missing = TRUE,
-  weight_missing = 1
+  weight_missing = 1,
+  Nprot
 ) {
+  if (!missing(Nprot)) {
+    n_proteins <- .deprecate_arg("Nprot", "n_proteins", Nprot)
+  }
   model <- match.arg(model)
   if (model != "parallel3") {
     istar <- prolfqua::sim_lfq_data_2factor_config(
-      Nprot = Nprot,
+      n_proteins = n_proteins,
       with_missing = with_missing,
       weight_missing = weight_missing
     )
   } else {
     istar <- prolfqua::sim_lfq_data_protein_config(
-      Nprot = Nprot,
+      n_proteins = n_proteins,
       with_missing = with_missing,
       weight_missing = weight_missing
     )
@@ -208,7 +213,7 @@ StrategyLogistf <- R6::R6Class(
 #' tmp <- strategy_logistf("bin_resp ~ condition", model_name = "parallel design")
 #' tmp$formula
 #'
-#' istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
+#' istar <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 10, with_missing = TRUE,
 #'   weight_missing = 0.5, seed = 3)
 #' istar$data <- encode_bin_resp(LFQData$new(istar$data, istar$config))
 #' istar$config$bin_resp <- "bin_resp"

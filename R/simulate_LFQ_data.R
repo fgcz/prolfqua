@@ -15,42 +15,55 @@
 #' Simulate protein-level data with two groups
 #' @return A data frame containing simulated LFQ data.
 #' @export
-#' @param Nprot number of proteins
-#' @param N group size
+#' @param n_proteins number of proteins
+#' @param n_per_group group size
 #' @param fc D - down regulation N - matrix,  U -  regulation
 #' @param prop proportion of down (D), up (U) and not regulated (N)
 #' @param mean_prot mean protein abundance on the natural scale
 #' @param sdlog standard deviation of the log-normal abundance distribution
 #' @param probability_of_success probability of success for the geometric distribution of peptide counts
-#' @param PEPTIDE if TRUE, simulate peptide-level data; if FALSE, protein-level
+#' @param peptide if TRUE, simulate peptide-level data; if FALSE, protein-level
+#' @param Nprot,N,PEPTIDE deprecated; use `n_proteins`, `n_per_group` and `peptide`
 #' @examples
 #'
-#' res <- sim_lfq_data(Nprot = 10)
-#' res <- sim_lfq_data(Nprot = 10, PEPTIDE = TRUE)
-#' res <- sim_lfq_data(Nprot = 10, N=4)
+#' res <- sim_lfq_data(n_proteins = 10)
+#' res <- sim_lfq_data(n_proteins = 10, peptide = TRUE)
+#' res <- sim_lfq_data(n_proteins = 10, n_per_group = 4)
 #'
 sim_lfq_data <- function(
-  Nprot = 20,
-  N = 4,
+  n_proteins = 20,
+  n_per_group = 4,
   fc = list(A = c(D = -2, U = 2, N = 0), B = c(D = 1, U = -4)),
   prop = list(A = c(D = 10, U = 10), B = c(D = 5, U = 20)),
   mean_prot = 20,
   sdlog = log(1.2),
   probability_of_success = 0.3,
-  PEPTIDE = FALSE
+  peptide = FALSE,
+  Nprot,
+  N,
+  PEPTIDE
 ) {
-  proteins <- stringi::stri_rand_strings(Nprot, 6)
-  idtype2 <- .generate_random_string(Nprot, 4)
+  if (!missing(Nprot)) {
+    n_proteins <- .deprecate_arg("Nprot", "n_proteins", Nprot)
+  }
+  if (!missing(N)) {
+    n_per_group <- .deprecate_arg("N", "n_per_group", N)
+  }
+  if (!missing(PEPTIDE)) {
+    peptide <- .deprecate_arg("PEPTIDE", "peptide", PEPTIDE)
+  }
+  proteins <- stringi::stri_rand_strings(n_proteins, 6)
+  idtype2 <- .generate_random_string(n_proteins, 4)
   # simulate number of peptides per protein
-  nrpeptides <- rgeom(n = Nprot, probability_of_success) + 1
+  nrpeptides <- rgeom(n = n_proteins, probability_of_success) + 1
 
   prot <- data.frame(
     proteinID = proteins,
     idtype2 = idtype2,
     nrPeptides = nrpeptides,
-    average_prot_abundance = rlnorm(Nprot, log(mean_prot), sdlog = sdlog),
+    average_prot_abundance = rlnorm(n_proteins, log(mean_prot), sdlog = sdlog),
     mean_Ctrl = 0,
-    N_Ctrl = N,
+    N_Ctrl = n_per_group,
     sd = 1
   )
 
@@ -65,15 +78,15 @@ sim_lfq_data <- function(
       propx["N"] <- 100 - sum(propx)
     }
 
-    FC <- rep(fcx, ceiling(propx / 100 * Nprot)) |> head(n = Nprot)
+    FC <- rep(fcx, ceiling(propx / 100 * n_proteins)) |> head(n = n_proteins)
 
     # add regulation to group A.
     group_mean <- paste0("mean_", name)
     group_size <- paste0("N_", name)
-    prot <- prot |> dplyr::mutate(!!group_mean := FC, !!group_size := N)
+    prot <- prot |> dplyr::mutate(!!group_mean := FC, !!group_size := n_per_group)
   }
 
-  if (PEPTIDE) {
+  if (peptide) {
     # add row for each protein
     peptide_df <- prot |> tidyr::uncount(nrPeptides)
     # create peptide ids
@@ -89,12 +102,12 @@ sim_lfq_data <- function(
   peptide_df2 <- peptide_df2 |> tidyr::pivot_wider(names_from = "what", values_from = mean)
 
   nrpep <- nrow(peptide_df2)
-  sampled_data <- matrix(nrow = nrpep, ncol = N)
+  sampled_data <- matrix(nrow = nrpep, ncol = n_per_group)
   colnames(sampled_data) <- paste0("V", seq_len(ncol(sampled_data)))
 
   peptide_df2$average_prot_abundance <- peptide_df2$average_prot_abundance - peptide_df2$mean
   means <- peptide_df2$average_prot_abundance
-  if (PEPTIDE) {
+  if (peptide) {
     peptide_df2$avg_peptide_abd <- rlnorm(nrpep, meanlog = log(means), sdlog = sdlog)
     means <- peptide_df2$avg_peptide_abd
   }
@@ -173,11 +186,12 @@ which_missing <- function(x, weight_missing = 0.2) {
 
 
 #' Simulate data, protein and peptide, with config
-#' @param Nprot one positive whole number of proteins to simulate
+#' @param n_proteins one positive whole number of proteins to simulate
 #' @param with_missing add missing values, default TRUE
 #' @param weight_missing one number in \[0, 1\]; greater weight means more missingness
 #' @param seed seed for reproducibility, if NULL no seed is set.
-#' @param N number of replicates per group
+#' @param n_per_group number of replicates per group
+#' @param Nprot,N deprecated; use `n_proteins` and `n_per_group`
 #' @return A list containing simulated data and an analysis configuration.
 #' @export
 #' @examples
@@ -186,15 +200,23 @@ which_missing <- function(x, weight_missing = 0.2) {
 #' stopifnot("data.frame" %in% class(x$data))
 #' stopifnot("AnalysisConfiguration" %in% class(x$config))
 sim_lfq_data_peptide_config <- function(
-  Nprot = 10,
+  n_proteins = 10,
   with_missing = TRUE,
   weight_missing = 0.2,
   seed = 1234,
-  N = 4
+  n_per_group = 4,
+  Nprot,
+  N
 ) {
-  .assert_simulation_args(Nprot, weight_missing)
+  if (!missing(Nprot)) {
+    n_proteins <- .deprecate_arg("Nprot", "n_proteins", Nprot)
+  }
+  if (!missing(N)) {
+    n_per_group <- .deprecate_arg("N", "n_per_group", N)
+  }
+  .assert_simulation_args(n_proteins, weight_missing)
   .with_sim_seed(seed, {
-    data <- sim_lfq_data(Nprot = Nprot, PEPTIDE = TRUE, N = N)
+    data <- sim_lfq_data(n_proteins = n_proteins, peptide = TRUE, n_per_group = n_per_group)
 
     data$nr_children <- 1
     if (with_missing) {
@@ -204,11 +226,12 @@ sim_lfq_data_peptide_config <- function(
   })
 }
 #' Simulate data, protein, with config
-#' @param Nprot one positive whole number of proteins to simulate
+#' @param n_proteins one positive whole number of proteins to simulate
 #' @param with_missing add missing values, default TRUE
 #' @param weight_missing one number in \[0, 1\]; greater weight means more missingness
 #' @param seed seed for reproducibility, if NULL no seed is set.
 #' @param paired if TRUE, add a paired subject factor to the design
+#' @param Nprot deprecated; use `n_proteins`
 #' @return A list containing simulated data and an analysis configuration.
 #' @export
 #' @examples
@@ -224,20 +247,24 @@ sim_lfq_data_peptide_config <- function(
 #' stopifnot(nrow(xp$data) == nrow(x$data))
 #' @srrstatsTODO {G2.0a} Simulator scalar sizes and missingness ranges are documented; limit: not all API multiplicities
 #'   are.
-#' @srrstatsTODO {G2.4a} Nprot is validated as a whole number; limit: other public count/size arguments are not all
+#' @srrstatsTODO {G2.4a} n_proteins is validated as a whole number; limit: other public count/size arguments are not all
 #'   validated.
 #' @srrstats {G5.1} Documented simulators and bundled datasets are publicly available for tests and examples.
 #' @srrstats {G5.5} Simulators use explicit reproducible seeds and restore the calling RNG state.
 sim_lfq_data_protein_config <- function(
-  Nprot = 10,
+  n_proteins = 10,
   with_missing = TRUE,
   weight_missing = 0.2,
   seed = 1234,
-  paired = FALSE
+  paired = FALSE,
+  Nprot
 ) {
-  .assert_simulation_args(Nprot, weight_missing)
+  if (!missing(Nprot)) {
+    n_proteins <- .deprecate_arg("Nprot", "n_proteins", Nprot)
+  }
+  .assert_simulation_args(n_proteins, weight_missing)
   .with_sim_seed(seed, {
-    data <- sim_lfq_data(Nprot = Nprot, PEPTIDE = FALSE)
+    data <- sim_lfq_data(n_proteins = n_proteins, peptide = FALSE)
     if (paired) {
       annot <- data |> select(sample, group) |> distinct()
       annot <- annot |>
@@ -257,39 +284,52 @@ sim_lfq_data_protein_config <- function(
 
 
 #' Simulate data, protein, with config with 2 factors Treatment and Background
-#' @param Nprot one positive whole number of proteins to simulate
+#' @param n_proteins one positive whole number of proteins to simulate
 #' @param with_missing add missing values, default TRUE
 #' @param weight_missing one number in \[0, 1\]; greater weight means more missingness
-#' @param PEPTIDE if TRUE, simulate peptide-level data; if FALSE, protein-level
+#' @param peptide if TRUE, simulate peptide-level data; if FALSE, protein-level
 #' @param seed seed for reproducibility, if NULL no seed is set.
-#' @param TWO use two factors for modelling
+#' @param two_factor if TRUE, model `Treatment` and `Background` as two factors; if FALSE, as one combined factor
+#' @param Nprot,PEPTIDE,TWO deprecated; use `n_proteins`, `peptide` and `two_factor`
 #' @return A list containing simulated data and an analysis configuration.
 #' @export
 #' @examples
-#' x <- sim_lfq_data_2factor_config(PEPTIDE= FALSE)
+#' x <- sim_lfq_data_2factor_config(peptide = FALSE)
 #' dim(x$data)
 #' stopifnot("data.frame" %in% class(x$data))
 #' stopifnot("AnalysisConfiguration" %in% class(x$config))
-#' x <- sim_lfq_data_2factor_config(PEPTIDE = TRUE)
+#' x <- sim_lfq_data_2factor_config(peptide = TRUE)
 #'
 #' head(x$data)
-#' x <- sim_lfq_data_2factor_config(PEPTIDE = TRUE, TWO = TRUE)
+#' x <- sim_lfq_data_2factor_config(peptide = TRUE, two_factor = TRUE)
 #' names(x)
 #' nrow(x$data) > 10
 #' x$data$Treatment |> table()
 sim_lfq_data_2factor_config <- function(
-  Nprot = 10,
+  n_proteins = 10,
   with_missing = TRUE,
   weight_missing = 0.2,
-  PEPTIDE = FALSE,
+  peptide = FALSE,
   seed = 1234,
-  TWO = TRUE
+  two_factor = TRUE,
+  Nprot,
+  PEPTIDE,
+  TWO
 ) {
-  .assert_simulation_args(Nprot, weight_missing)
+  if (!missing(Nprot)) {
+    n_proteins <- .deprecate_arg("Nprot", "n_proteins", Nprot)
+  }
+  if (!missing(PEPTIDE)) {
+    peptide <- .deprecate_arg("PEPTIDE", "peptide", PEPTIDE)
+  }
+  if (!missing(TWO)) {
+    two_factor <- .deprecate_arg("TWO", "two_factor", TWO)
+  }
+  .assert_simulation_args(n_proteins, weight_missing)
   .with_sim_seed(seed, {
     res <- sim_lfq_data(
-      Nprot = Nprot,
-      PEPTIDE = PEPTIDE,
+      n_proteins = n_proteins,
+      peptide = peptide,
       fc = list(A = c(D = -2, U = 2, N = 0), B = c(D = 1, U = -4), C = c(D = -1, U = -4)),
       prop = list(A = c(D = 10, U = 10), B = c(D = 5, U = 20), C = c(D = 15, U = 25))
     )
@@ -302,40 +342,40 @@ sim_lfq_data_2factor_config <- function(
     if (with_missing) {
       data <- data[!which_missing(data$abundance, weight_missing = weight_missing), ]
     }
-    if (TWO) {
+    if (two_factor) {
       factors <- list(Treatment = "Treatment", Background = "Background")
     } else {
       data <- data |> tidyr::unite(Group, c("Treatment", "Background"))
       factors <- list(Group = "Group")
     }
-    .sim_setup(data, factors, peptide = PEPTIDE, nr_children = "nrPeptides", factor_depth = if (TWO) 2 else 1)
+    .sim_setup(data, factors, peptide = peptide, nr_children = "nrPeptides", factor_depth = if (two_factor) 2 else 1)
   })
 }
 
 
 #' Shared body of sim_build_models_lm() and sim_build_models_lmer(). mixed = TRUE simulates peptides, adds the random
 #'
-#' effects (1|peptide_Id) + (1|sampleName) and fits with strategy_lmer(); its "parallel3" data ignores Nprot,
+#' effects (1|peptide_Id) + (1|sampleName) and fits with strategy_lmer(); its "parallel3" data ignores n_proteins,
 #' with_missing and weight_missing.
 #' @param model model or model specification used by the operation
-#' @param Nprot number of simulated proteins
+#' @param n_proteins number of simulated proteins
 #' @param with_missing include simulated missing measurements
 #' @param weight_missing weight controlling simulated missingness
 #' @param mixed fit a nested mixed model rather than an aggregated linear model
 #' @noRd
-.sim_build_models <- function(model, Nprot, with_missing, weight_missing, mixed) {
+.sim_build_models <- function(model, n_proteins, with_missing, weight_missing, mixed) {
   if (model != "parallel3") {
     istar <- prolfqua::sim_lfq_data_2factor_config(
-      Nprot = Nprot,
+      n_proteins = n_proteins,
       with_missing = with_missing,
-      PEPTIDE = mixed,
+      peptide = mixed,
       weight_missing = weight_missing
     )
   } else if (mixed) {
     istar <- prolfqua::sim_lfq_data_peptide_config()
   } else {
     istar <- prolfqua::sim_lfq_data_protein_config(
-      Nprot = Nprot,
+      n_proteins = n_proteins,
       with_missing = with_missing,
       weight_missing = weight_missing
     )
@@ -355,6 +395,11 @@ sim_lfq_data_2factor_config <- function(
 }
 
 #' Build linear models on simulated data for testing
+#' @param model design: `"parallel2"`, `"parallel3"`, `"factors"` or `"interaction"`
+#' @param n_proteins number of simulated proteins
+#' @param with_missing include simulated missing measurements
+#' @param weight_missing weight controlling simulated missingness
+#' @param Nprot deprecated; use `n_proteins`
 #' @return a [Model] object with one linear model per simulated protein, fitted with [build_model()]
 #' @family modelling
 #' @export
@@ -369,14 +414,19 @@ sim_lfq_data_2factor_config <- function(
 #'
 sim_build_models_lm <- function(
   model = c("parallel2", "parallel3", "factors", "interaction"),
-  Nprot = 10,
+  n_proteins = 10,
   with_missing = TRUE,
-  weight_missing = 1
+  weight_missing = 1,
+  Nprot
 ) {
-  .sim_build_models(match.arg(model), Nprot, with_missing, weight_missing, mixed = FALSE)
+  if (!missing(Nprot)) {
+    n_proteins <- .deprecate_arg("Nprot", "n_proteins", Nprot)
+  }
+  .sim_build_models(match.arg(model), n_proteins, with_missing, weight_missing, mixed = FALSE)
 }
 
 #' Build mixed-effects models on simulated data for testing
+#' @inheritParams sim_build_models_lm
 #' @return a [Model] object with one mixed-effects model per simulated protein, fitted with [build_model()]
 #' @family modelling
 #' @export
@@ -393,11 +443,15 @@ sim_build_models_lm <- function(
 #'
 sim_build_models_lmer <- function(
   model = c("parallel2", "parallel3", "factors", "interaction"),
-  Nprot = 10,
+  n_proteins = 10,
   with_missing = TRUE,
-  weight_missing = 1
+  weight_missing = 1,
+  Nprot
 ) {
-  .sim_build_models(match.arg(model), Nprot, with_missing, weight_missing, mixed = TRUE)
+  if (!missing(Nprot)) {
+    n_proteins <- .deprecate_arg("Nprot", "n_proteins", Nprot)
+  }
+  .sim_build_models(match.arg(model), n_proteins, with_missing, weight_missing, mixed = TRUE)
 }
 
 
@@ -414,7 +468,7 @@ sim_build_models_lmer <- function(
 #' m2 <- sim_make_model_lmer("parallel2")
 #' m3 <- sim_make_model_lmer("parallel3")
 sim_make_model_lm <- function(model = c("parallel2", "parallel3", "factors", "interaction")) {
-  sim_build_models_lm(model = match.arg(model), Nprot = 1, with_missing = FALSE)$model_df$linear_model[[1]]
+  sim_build_models_lm(model = match.arg(model), n_proteins = 1, with_missing = FALSE)$model_df$linear_model[[1]]
 }
 
 
@@ -428,7 +482,7 @@ sim_make_model_lm <- function(model = c("parallel2", "parallel3", "factors", "in
 #' mi <- sim_make_model_lmer("interaction")
 #'
 sim_make_model_lmer <- function(model = c("parallel2", "parallel3", "factors", "interaction")) {
-  model_df <- sim_build_models_lmer(model = match.arg(model), Nprot = 10, with_missing = FALSE)$model_df
+  model_df <- sim_build_models_lmer(model = match.arg(model), n_proteins = 10, with_missing = FALSE)$model_df
   # first protein with a successful fit (isSingular is NA where the fit failed)
   model_df$linear_model[!is.na(model_df$isSingular)][[1]]
 }

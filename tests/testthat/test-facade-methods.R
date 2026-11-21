@@ -1,5 +1,5 @@
 facade_methods_input <- function() {
-  sim <- sim_lfq_data_protein_config(Nprot = 12, weight_missing = 0, seed = 42)
+  sim <- sim_lfq_data_protein_config(n_proteins = 12, weight_missing = 0, seed = 42)
   LFQData$new(sim$data, sim$config)
 }
 
@@ -148,7 +148,7 @@ test_that("summary counts agree with the existing contrast interface", {
 })
 
 test_that("hurdle printing and summaries describe both component models", {
-  sim <- sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.4, seed = 42)
+  sim <- sim_lfq_data_peptide_config(n_proteins = 20, weight_missing = 0.4, seed = 42)
   lfq <- LFQData$new(sim$data, sim$config)
   lfq <- lfq$get_Transformer()$log2()$lfq
   facade <- muffle_limma_zero_variance(facade_methods_fit("hurdle_nested", lfq))
@@ -191,7 +191,7 @@ test_that("public coefficient accessors preserve limma estimates and rfit counts
 })
 
 test_that("a hurdle result has no single coefficient table or formula", {
-  sim <- sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.4, seed = 42)
+  sim <- sim_lfq_data_peptide_config(n_proteins = 20, weight_missing = 0.4, seed = 42)
   lfq <- LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq
   facade <- muffle_limma_zero_variance(facade_methods_fit("hurdle_nested", lfq))
   for (method in list(stats::coef, stats::confint, stats::formula, stats::nobs)) {
@@ -254,7 +254,7 @@ test_that("matrix residuals remain aligned when observed cells are missing", {
 })
 
 test_that("analysis plots return visible ggplots across model families", {
-  sim <- sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.4, seed = 42)
+  sim <- sim_lfq_data_peptide_config(n_proteins = 20, weight_missing = 0.4, seed = 42)
   peptide <- LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq
   for (method in c("lm", "limma", "ropeca_nested", "hurdle_nested")) {
     input <- if (lookup_facade(method)$needs == "nested") peptide else facade_methods_input()
@@ -286,7 +286,7 @@ facade_fixture_warnings <- paste(
 )
 
 facade_method_case <- function(method) {
-  sim <- sim_lfq_data_peptide_config(Nprot = 20, seed = 42)
+  sim <- sim_lfq_data_peptide_config(n_proteins = 20, seed = 42)
   peptide <- LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq
   if (method == "limpa") {
     input <- AggregateLimpa$new(peptide, "protein")$aggregate()

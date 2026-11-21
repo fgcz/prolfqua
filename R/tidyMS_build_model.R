@@ -10,7 +10,7 @@
 #' @param path default NULL, set to a directory if you need to write diagnostic plots.
 #' @examples
 #' data_2Factor <- prolfqua::sim_lfq_data_2factor_config(
-#'  Nprot = 200,
+#'  n_proteins = 200,
 #'  with_missing = TRUE,
 #'  weight_missing = 1)
 #'
@@ -31,10 +31,10 @@
 #'   pMerged,
 #'   formula_condition)
 #'
-#' tmp <- LR_test(modCB$model_df, "modCB", modC$model_df, "modB")
+#' tmp <- lr_test(modCB$model_df, "modCB", modC$model_df, "modB")
 #' hist(tmp$likelihood_ratio_test.pValue)
 #'
-LR_test <- function(
+lr_test <- function(
   complete_models,
   model_name,
   complete_models_int,
@@ -74,7 +74,7 @@ LR_test <- function(
 #' Write LRT diagnostic plots to PDF
 #'
 #' Writes a histogram of p-values and an empirical CDF to a PDF file.
-#' Called by \code{\link{LR_test}} when \code{path} is non-NULL.
+#' Called by \code{\link{lr_test}} when \code{path} is non-NULL.
 #'
 #' @param result tibble with a \code{likelihood_ratio_test.pValue} column
 #' @param model_name name of the full model
@@ -110,9 +110,9 @@ plot_lrt_diagnostics <- function(result, model_name, model_name_int, path) {
 #'
 #' @export
 #' @examplesIf requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)
-#' D <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.1)
+#' D <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 20, weight_missing = 0.1)
 #' D$data$abundance |> is.na() |> sum()
-#' D <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.1, seed =3)
+#' D <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 20, weight_missing = 0.1, seed =3)
 #' D$data$abundance |> is.na() |> sum()
 #' model_name <- "f_condtion_r_peptide"
 #' formula_randomPeptide <-
@@ -200,7 +200,7 @@ build_model <- function(
 #' @seealso \code{\link{build_model}}, \code{\link{impute_refit_singular}}
 #' @export
 #' @examples
-#' istar <- sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0.5)
+#' istar <- sim_lfq_data_protein_config(n_proteins = 30, weight_missing = 0.5)
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqdata$rename_response("transformedIntensity")
 #' strat <- strategy_lm(paste(lfqdata$response(), "~ group_"))
@@ -309,7 +309,7 @@ build_model_impute <- function(
 #' @seealso \code{\link{build_model_impute}}
 #' @export
 #' @examples
-#' istar <- sim_lfq_data_protein_config(Nprot = 30, weight_missing = 0.5)
+#' istar <- sim_lfq_data_protein_config(n_proteins = 30, weight_missing = 0.5)
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' strat <- strategy_lm(paste(lfqdata$response(), "~ group_"))
 #' mod <- build_model_impute(lfqdata, strat)
@@ -456,7 +456,7 @@ impute_from_model <- function(model, lfqdata) {
 #' @family modelling
 #' @export
 #' @examplesIf requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)
-#' D <- prolfqua::sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.1)
+#' D <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 20, weight_missing = 0.1)
 #' formula_rp <- strategy_lmer("abundance ~ group_ + (1 | peptide_Id) + (1 | sampleName)")
 #' mod <- prolfqua::build_model(
 #'   LFQData$new(D$data, D$config), formula_rp)
@@ -587,7 +587,7 @@ df.residual.imputed_model <- function(object, ...) {
 #' # Vcov method: element-wise median vcov from donors.
 #' # Falls back to sigma if donor models have misaligned coefficient names.
 #' mod_no_missing <- sim_build_models_lm(model = "parallel3",
-#'   Nprot = 10, with_missing = FALSE)
+#'   n_proteins = 10, with_missing = FALSE)
 #' borrowed_v <- prolfqua:::compute_borrowed_variance(
 #'   mod_no_missing$model_df, method = "vcov")
 #' stopifnot(borrowed_v$method == "vcov")
@@ -868,7 +868,7 @@ impute_refit_singular <- function(
 #' @family modelling
 #' @export
 #' @examplesIf requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)
-#' x <- sim_build_models_lmer(model = "factors", Nprot = 10)
+#' x <- sim_build_models_lmer(model = "factors", n_proteins = 10)
 #' cfits <- get_complete_model_fit(x$model_df)
 #' stopifnot(nrow(cfits) == 6)
 get_complete_model_fit <- function(complete_models) {

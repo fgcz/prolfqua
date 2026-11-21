@@ -7,7 +7,7 @@
 NULL
 
 conv_protein <- function() {
-  sim <- sim_lfq_data_peptide_config(Nprot = 10, with_missing = FALSE, seed = 42)
+  sim <- sim_lfq_data_peptide_config(n_proteins = 10, with_missing = FALSE, seed = 42)
   peptide <- LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq
   list(peptide = peptide, protein = suppressWarnings(peptide$get_Aggregator()$aggregate()))
 }
@@ -117,7 +117,7 @@ test_that("model tables record convergence and iterations per subject", {
 
 test_that("binomial and Firth detection models record glm and Firth iterations", {
   withr::local_options(prolfqua.verbose = FALSE)
-  sim <- sim_lfq_data_peptide_config(Nprot = 10, weight_missing = 0.4, seed = 42)
+  sim <- sim_lfq_data_peptide_config(n_proteins = 10, weight_missing = 0.4, seed = 42)
   peptide <- LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq
   contrasts <- c(AvsC = "group_A - group_Ctrl")
   for (method in c("binomial_nested", "binomial_firth_nested")) {

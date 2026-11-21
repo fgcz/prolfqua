@@ -1,5 +1,5 @@
 test_that("binomial counts reuse the completed Firth missingness representation", {
-  istar <- sim_lfq_data_peptide_config(Nprot = 12, weight_missing = 1, seed = 5)
+  istar <- sim_lfq_data_peptide_config(n_proteins = 12, weight_missing = 1, seed = 5)
   lfqdata <- LFQData$new(istar$data, istar$config)
   response <- lfqdata$response()
 
@@ -198,7 +198,7 @@ test_that("moderated_p_limma variance floor keeps the prior df of rows above the
 })
 
 test_that("binomial_nested facade reuses generic model and contrast interfaces", {
-  istar <- sim_lfq_data_peptide_config(Nprot = 30, weight_missing = 0.7, seed = 9)
+  istar <- sim_lfq_data_peptide_config(n_proteins = 30, weight_missing = 0.7, seed = 9)
   lfqdata <- LFQData$new(istar$data, istar$config)
   contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 
@@ -250,7 +250,7 @@ test_that("binomial_nested facade reuses generic model and contrast interfaces",
 })
 
 test_that("binomial_nested supports multifactor contrasts and rejects aggregated input", {
-  istar <- sim_lfq_data_peptide_config(Nprot = 20, weight_missing = 0.8, seed = 11)
+  istar <- sim_lfq_data_peptide_config(n_proteins = 20, weight_missing = 0.8, seed = 11)
   istar$data <- istar$data |>
     dplyr::mutate(
       Treatment = dplyr::if_else(.data$group_ == "B", "B", "A"),
@@ -278,7 +278,7 @@ test_that("binomial_nested supports multifactor contrasts and rejects aggregated
   expect_true(nrow(result) > 0)
   expect_setequal(unique(result$contrast), names(contrasts))
 
-  protein <- sim_lfq_data_protein_config(Nprot = 10, seed = 4)
+  protein <- sim_lfq_data_protein_config(n_proteins = 10, seed = 4)
   protein_lfq <- LFQData$new(protein$data, protein$config)
   expect_error(
     ContrastsBinomialNestedFacade$new(protein_lfq, "~ group_", c("A_vs_Ctrl" = "group_A - group_Ctrl")),
@@ -336,7 +336,7 @@ test_that("strategy_binomial_firth matches logistf on the expanded binary rows",
 })
 
 test_that("binomial_firth_nested facade takes its residual df from the samples", {
-  istar <- sim_lfq_data_peptide_config(Nprot = 30, weight_missing = 0.7, seed = 9)
+  istar <- sim_lfq_data_peptide_config(n_proteins = 30, weight_missing = 0.7, seed = 9)
   lfqdata <- LFQData$new(istar$data, istar$config)
   contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 
@@ -372,7 +372,7 @@ test_that("binomial_firth_nested facade takes its residual df from the samples",
   expect_equal(registry_entry$class, "ContrastsBinomialFirthNestedFacade")
   expect_equal(registry_entry$needs, "nested")
 
-  protein <- sim_lfq_data_protein_config(Nprot = 10, seed = 4)
+  protein <- sim_lfq_data_protein_config(n_proteins = 10, seed = 4)
   protein_lfq <- LFQData$new(protein$data, protein$config)
   expect_error(
     ContrastsBinomialFirthNestedFacade$new(protein_lfq, "~ group_", contrasts),
