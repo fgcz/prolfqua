@@ -22,6 +22,9 @@
 #' * `PEPTIDE`: use `peptide`
 #' * `TWO`: use `two_factor`
 #'
+#' Arguments of [volcano_plotly()] and [multigroup_volcano()]:
+#' * `.data`: use `data`
+#'
 #' @param ... passed to the replacement function
 #' @return the value of the replacement function
 #' @name prolfqua-deprecated

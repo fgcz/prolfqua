@@ -5,7 +5,7 @@
 \title{Volcano plot for multiple contrasts}
 \usage{
 multigroup_volcano(
-  .data,
+  data,
   effect = "fc",
   significance = "p.adjust",
   contrast = "condition",
@@ -17,11 +17,12 @@ multigroup_volcano(
   segment.size = 0.3,
   segment.alpha = 0.3,
   scales = "fixed",
-  max_nr_significant_text = 20
+  max_nr_significant_text = 20,
+  .data
 )
 }
 \arguments{
-\item{.data}{data in long format}
+\item{data}{data in long format}
 
 \item{effect}{column containing effect sizes}
 
@@ -46,6 +47,8 @@ multigroup_volcano(
 \item{scales}{parameter to ggplot2::facet_wrap}
 
 \item{max_nr_significant_text}{maximum number of significant labels to display}
+
+\item{.data}{deprecated; use \code{data}}
 }
 \value{
 a ggplot object with one volcano panel per contrast; if \code{label} is given, significant points are labelled

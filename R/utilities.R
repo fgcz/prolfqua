@@ -89,7 +89,7 @@ get_uniprot_id_from_fasta_header <- function(df, idcolumn = "protein_Id") {
 }
 
 #' Volcano plot for multiple contrasts
-#' @param .data data in long format
+#' @param data data in long format
 #' @param effect column containing effect sizes
 #' @param significance column containing p-values, q.values etc
 #' @param contrast column with contrast
@@ -102,6 +102,7 @@ get_uniprot_id_from_fasta_header <- function(df, idcolumn = "protein_Id") {
 #' @param segment.alpha controls visibility of lines
 #' @param scales parameter to ggplot2::facet_wrap
 #' @param max_nr_significant_text maximum number of significant labels to display
+#' @param .data deprecated; use `data`
 #' @return a ggplot object with one volcano panel per contrast; if `label` is given, significant points are labelled
 #' @export
 #' @keywords internal
@@ -119,7 +120,7 @@ get_uniprot_id_from_fasta_header <- function(df, idcolumn = "protein_Id") {
 #' label="Name",
 #' max_nr_significant_text = 300)
 multigroup_volcano <- function(
-  .data,
+  data,
   effect = "fc",
   significance = "p.adjust",
   contrast = "condition",
@@ -131,9 +132,13 @@ multigroup_volcano <- function(
   segment.size = 0.3,
   segment.alpha = 0.3,
   scales = "fixed",
-  max_nr_significant_text = 20
+  max_nr_significant_text = 20,
+  .data
 ) {
-  labeled_data <- tidyr::unite(.data, "label", dplyr::all_of(label))
+  if (!missing(.data)) {
+    data <- .deprecate_arg(".data", "data", .data)
+  }
+  labeled_data <- tidyr::unite(data, "label", dplyr::all_of(label))
 
   p <- .multigroup_volcano(
     labeled_data,
@@ -480,7 +485,7 @@ table_facade <- function(df, caption, digits = getOption("digits"), kable = TRUE
 }
 
 #' Interactive volcano plots with plotly
-#' @param .data data frame
+#' @param data data frame
 #' @param effect effect size x-axis
 #' @param significance significance
 #' @param contrast column with contrast labels
@@ -494,6 +499,7 @@ table_facade <- function(df, caption, digits = getOption("digits"), kable = TRUE
 #'   with the smallest positive observed value in the same score column.
 #' @param title_size font size of the subplot title annotation
 #' @param group crosstalk group name for linked brushing
+#' @param .data deprecated; use `data`
 #' @return The requested plot, table, or transformed object.
 #' @export
 #' @examplesIf requireNamespace("plotly", quietly = TRUE) && requireNamespace("crosstalk", quietly = TRUE)
@@ -508,7 +514,7 @@ table_facade <- function(df, caption, digits = getOption("digits"), kable = TRUE
 #' bc |> plotly::subplot()
 #'
 volcano_plotly <- function(
-  .data,
+  data,
   effect = "fc",
   significance = "BFDR",
   contrast = "condition",
@@ -519,22 +525,26 @@ volcano_plotly <- function(
   yintercept = 0.1,
   minsignificance = NULL,
   title_size = 25,
-  group = "BB"
+  group = "BB",
+  .data
 ) {
+  if (!missing(.data)) {
+    data <- .deprecate_arg(".data", "data", .data)
+  }
   rlang::check_installed(c("plotly", "crosstalk"), reason = "for volcano_plotly().")
-  .data[[significance]] <- .floor_significance_values(.data[[significance]], minsignificance)
+  data[[significance]] <- .floor_significance_values(data[[significance]], minsignificance)
 
-  xx <- .data |>
+  xx <- data |>
     dplyr::group_by(dplyr::across(dplyr::all_of(contrast))) |>
     tidyr::nest()
 
   makeshared <- function(x, proteinID = "Prey") {
     crosstalk::SharedData$new(x, as.formula(paste0("~", proteinID)), group = group)
   }
-  xx <- dplyr::mutate(xx, shared_data = purrr::map(data, makeshared, proteinID = proteinID))
+  xx <- dplyr::mutate(xx, shared_data = purrr::map(.data$data, makeshared, proteinID = proteinID))
 
-  x_annot <- min(.data[[effect]], na.rm = TRUE)
-  y_annot <- min(.data[[significance]], na.rm = TRUE)
+  x_annot <- min(data[[effect]], na.rm = TRUE)
+  y_annot <- min(data[[significance]], na.rm = TRUE)
 
   xd <- purrr::map2(
     xx$shared_data,

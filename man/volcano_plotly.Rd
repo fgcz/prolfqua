@@ -5,7 +5,7 @@
 \title{Interactive volcano plots with plotly}
 \usage{
 volcano_plotly(
-  .data,
+  data,
   effect = "fc",
   significance = "BFDR",
   contrast = "condition",
@@ -16,11 +16,12 @@ volcano_plotly(
   yintercept = 0.1,
   minsignificance = NULL,
   title_size = 25,
-  group = "BB"
+  group = "BB",
+  .data
 )
 }
 \arguments{
-\item{.data}{data frame}
+\item{data}{data frame}
 
 \item{effect}{effect size x-axis}
 
@@ -45,6 +46,8 @@ with the smallest positive observed value in the same score column.}
 \item{title_size}{font size of the subplot title annotation}
 
 \item{group}{crosstalk group name for linked brushing}
+
+\item{.data}{deprecated; use \code{data}}
 }
 \value{
 The requested plot, table, or transformed object.

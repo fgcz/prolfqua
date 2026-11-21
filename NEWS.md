@@ -19,6 +19,7 @@
 
 - Renamed to snake_case: `lfqdata_to_summarized_experiment()` (was `LFQDataToSummarizedExperiment()`), `lr_test()` (`LR_test()`), `lfq_power_t_test_quantiles()` (`lfq_power_t_test_quantiles_V2()`), `r6_extract_values()` (`R6_extract_values()`), `list_to_analysis_configuration()` (`list_to_AnalysisConfiguration()`), `list_to_contrast_configuration()` (`list_to_ContrastConfiguration()`), `summary_ropeca_median_p_scaled()` (`summary_ROPECA_median_p_scaled()`), and the misspelt `missigness_histogram()` and `LFQDataPlotter$missigness_histogram()` to `missingness_histogram()`. The old names still work and warn; see `?"prolfqua-deprecated"`.
 - Simulator arguments renamed: `Nprot` to `n_proteins`, `N` to `n_per_group`, `PEPTIDE` to `peptide`, `TWO` to `two_factor` in `sim_lfq_data()`, `sim_lfq_data_peptide_config()`, `sim_lfq_data_protein_config()`, `sim_lfq_data_2factor_config()` and `sim_build_models_lm()`, `_lmer()`, `_logistf()`. The old arguments still work and warn.
+- `volcano_plotly()` and `multigroup_volcano()` take their data as `data`; `.data`, which shadowed the tidy-eval pronoun, still works and warns.
 
 ## Documentation
 

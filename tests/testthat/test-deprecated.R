@@ -61,3 +61,28 @@ test_that("deprecated simulator arguments warn and give the same data as the new
   )
   expect_identical(old$data, sim_lfq_data_2factor_config(n_proteins = 5, peptide = TRUE, two_factor = FALSE)$data)
 })
+
+test_that("volcano functions take `data`; `.data` warns and gives the same plot", {
+  d <- withr::with_seed(
+    1,
+    data.frame(
+      fc = rnorm(40),
+      BFDR = runif(40),
+      condition = rep(c("A", "B"), 20),
+      Prey = paste0("P", 1:40),
+      modelName = "m",
+      colour = "x",
+      name = paste0("n", 1:40)
+    )
+  )
+  expect_warning(old <- multigroup_volcano(.data = d, significance = "BFDR", label = "name"), "deprecated")
+  new <- multigroup_volcano(data = d, significance = "BFDR", label = "name")
+  expect_identical(ggplot2::layer_data(old, 1), ggplot2::layer_data(new, 1))
+
+  skip_if_not_installed("plotly")
+  skip_if_not_installed("crosstalk")
+  expect_warning(old <- volcano_plotly(.data = d), "deprecated")
+  new <- volcano_plotly(d)
+  expect_length(old, length(new))
+  expect_equal(plotly::plotly_build(old[[1]])$x$data[[1]]$x, plotly::plotly_build(new[[1]])$x$data[[1]]$x)
+})

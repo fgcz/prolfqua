@@ -61,5 +61,10 @@ Simulator arguments of \code{\link[=sim_lfq_data]{sim_lfq_data()}}, \code{\link[
 \item \code{PEPTIDE}: use \code{peptide}
 \item \code{TWO}: use \code{two_factor}
 }
+
+Arguments of \code{\link[=volcano_plotly]{volcano_plotly()}} and \code{\link[=multigroup_volcano]{multigroup_volcano()}}:
+\itemize{
+\item \code{.data}: use \code{data}
+}
 }
 \keyword{internal}
