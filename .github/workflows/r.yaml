@@ -40,6 +40,10 @@ jobs:
 
       - name: Code coverage
         if: success()
+        # The upload depends on the Codecov service; its failures must not fail the package check.
+        continue-on-error: true
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         run: covr::codecov(type = "all", token = Sys.getenv('CODECOV_TOKEN'))
         shell: Rscript {0}
 
