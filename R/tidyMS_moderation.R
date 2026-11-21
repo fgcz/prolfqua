@@ -68,7 +68,7 @@ moderated_p_limma <- function(
     dplyr::mutate(
       moderated.std.error = .data$std.error * sqrt(.data$moderated.var.post) / .data$sigma,
       moderated.statistic = .data$statistic * .data$sigma / sqrt(.data$moderated.var.post),
-      moderated.df.total = !!sym(df) + .data$moderated.df.prior,
+      moderated.df.total = .data[[df]] + .data$moderated.df.prior,
       moderated.p.value = 2 * pt(abs(.data$moderated.statistic), df = .data$moderated.df.total, lower.tail = FALSE)
     )
 
@@ -172,7 +172,7 @@ adjust_p_values <- function(
 ) {
   grouped_df <- contrast_df |>
     dplyr::group_by(across(all_of(group_by_col)))
-  adjusted_df <- dplyr::mutate(grouped_df, !!newname := p.adjust(!!sym(column), method = "BH"))
+  adjusted_df <- dplyr::mutate(grouped_df, !!newname := p.adjust(.data[[column]], method = "BH"))
   dplyr::ungroup(adjusted_df)
 }
 
@@ -288,7 +288,7 @@ summary_ropeca_median_p_scaled <- function(
 ) {
   contrasts_data <- contrasts_data |>
     dplyr::mutate(
-      scaled.p = ifelse(!!sym(estimate) > 0, 1 - !!sym(p.value), !!sym(p.value) - 1)
+      scaled.p = ifelse(.data[[estimate]] > 0, 1 - .data[[p.value]], .data[[p.value]] - 1)
     )
 
   summarized.protein <- contrasts_data |>
@@ -296,9 +296,9 @@ summary_ropeca_median_p_scaled <- function(
     dplyr::summarize(
       n = dplyr::n(),
       n_not_na = sum(!is.na(.data$scaled.p)),
-      mad.estimate = mad(!!sym(estimate), na.rm = TRUE),
-      estimate = median(!!sym(estimate), na.rm = TRUE),
-      statistic = median(!!sym(statistic), na.rm = TRUE),
+      mad.estimate = mad(.data[[estimate]], na.rm = TRUE),
+      estimate = median(.data[[estimate]], na.rm = TRUE),
+      statistic = median(.data[[statistic]], na.rm = TRUE),
       median.p.scaled = median(.data$scaled.p, na.rm = TRUE),
       avgAbd = median(.data$avgAbd, na.rm = TRUE)
     )

@@ -515,7 +515,7 @@ plot_hierarchies_boxplot_df <- function(
 ) {
   xnested <- pdata |> dplyr::group_by(across(all_of(hierarchy))) |> tidyr::nest()
   newcol <- paste(hierarchy, collapse = "+")
-  xnested <- xnested |> tidyr::unite(!!sym(newcol), all_of(hierarchy))
+  xnested <- xnested |> tidyr::unite(!!newcol, all_of(hierarchy))
 
   pb <- .make_progress(nrow(xnested))
 
@@ -523,7 +523,7 @@ plot_hierarchies_boxplot_df <- function(
     dplyr::mutate(
       boxplot = map2(
         data,
-        !!sym(newcol),
+        .data[[newcol]],
         plot_hierarchies_boxplot,
         lfqdata = lfqdata,
         facet_grid_on = facet_grid_on,
@@ -917,13 +917,13 @@ plot_pca <- function(matrix, annotation, sample_name, factor_keys, PC = c(1, 2),
     sh <- NA
   }
   point <- (if (!is.na(sh)) {
-    geom_point(aes(shape = !!sym(sh)))
+    geom_point(aes(shape = .data[[sh]]))
   } else {
     geom_point()
   })
 
   text <- ggrepel::geom_text_repel(
-    aes(label = !!sym(sample_name)),
+    aes(label = .data[[sample_name]]),
     min.segment.length = 0,
     box.padding = 0.35,
     point.padding = 0.25,
@@ -939,7 +939,7 @@ plot_pca <- function(matrix, annotation, sample_name, factor_keys, PC = c(1, 2),
   color_palette <- .factor_annotation_colors(annotation, factor_keys[1])[[factor_keys[1]]]
   x <- ggplot(
     xx,
-    aes(x = !!sym(pc_x), y = !!sym(pc_y), color = !!sym(factor_keys[1]), text = !!sym(sample_name))
+    aes(x = .data[[pc_x]], y = .data[[pc_y]], color = .data[[factor_keys[1]]], text = .data[[sample_name]])
   ) +
     theme_prolfqua(grid = TRUE) +
     labs(

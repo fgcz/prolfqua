@@ -96,17 +96,17 @@ poolvar <- function(res1, config) {
 #' stats <- summarize_stats(lfq2, factor_key = NULL)
 #' stopifnot(nrow(stats) == 10)
 summarize_stats <- function(lfqdata, factor_key = lfqdata$relevant_factor_keys()) {
-  intsym <- sym(lfqdata$response())
+  resp <- lfqdata$response()
   hierarchy_factor <- lfqdata$data_long() |>
-    dplyr::group_by(!!!syms(c(lfqdata$hierarchy_keys(), lfqdata$isotope_label(), factor_key))) |>
+    dplyr::group_by(dplyr::across(all_of(c(lfqdata$hierarchy_keys(), lfqdata$isotope_label(), factor_key)))) |>
     dplyr::summarize(
       nrReplicates = dplyr::n(),
-      nrMeasured = sum(!is.na(!!intsym)),
-      nrNAs = sum(is.na(!!intsym)),
-      sd = stats::sd(!!intsym, na.rm = TRUE),
-      var = stats::var(!!intsym, na.rm = TRUE),
-      meanAbundance = mean(!!intsym, na.rm = TRUE),
-      medianAbundance = median(!!intsym, na.rm = TRUE),
+      nrMeasured = sum(!is.na(.data[[resp]])),
+      nrNAs = sum(is.na(.data[[resp]])),
+      sd = stats::sd(.data[[resp]], na.rm = TRUE),
+      var = stats::var(.data[[resp]], na.rm = TRUE),
+      meanAbundance = mean(.data[[resp]], na.rm = TRUE),
+      medianAbundance = median(.data[[resp]], na.rm = TRUE),
       .groups = "drop"
     ) |>
     dplyr::mutate(dplyr::across(all_of(factor_key), as.character))
@@ -320,7 +320,7 @@ plot_stat_density_median <- function(
 ) {
   stat <- match.arg(stat)
   ggstat <- match.arg(ggstat)
-  pdata <- pdata |> dplyr::filter(!is.na(!!sym(stat)))
+  pdata <- pdata |> dplyr::filter(!is.na(.data[[stat]]))
   top50 <- pdata |>
     dplyr::mutate(top = ifelse(meanAbundance > median(meanAbundance, na.rm = TRUE), "top 50", "bottom 50"))
   p <- ggplot(top50, aes(x = .data[[stat]], colour = .data$top)) +
@@ -375,7 +375,7 @@ plot_stat_violin <- function(pdata, factor_keys_depth, stat = c("CV", "meanAbund
 #' plot_stat_violin_median(res, lfq$factor_keys()[1], stat = "meanAbundance")
 plot_stat_violin_median <- function(pdata, factor_key, stat = c("CV", "meanAbundance", "sd")) {
   stat <- match.arg(stat)
-  pdata <- pdata |> dplyr::filter(!is.na(!!sym(stat)))
+  pdata <- pdata |> dplyr::filter(!is.na(.data[[stat]]))
 
   top50 <- pdata |>
     dplyr::mutate(top = ifelse(meanAbundance > median(meanAbundance, na.rm = TRUE), "top 50", "bottom 50"))

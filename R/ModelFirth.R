@@ -81,9 +81,9 @@ ModelFirth <- R6::R6Class(
       }
 
       model_coeff <- .model_fits(self) |>
-        dplyr::mutate(!!"Coeffs_model" := purrr::map(!!sym(lmermodel), .coef_df))
+        dplyr::mutate(Coeffs_model = purrr::map(.data[[lmermodel]], .coef_df))
       model_coeff <- model_coeff |>
-        dplyr::select(!!!syms(self$subject_id), !!sym("Coeffs_model"), isSingular, nr_coef)
+        dplyr::select(dplyr::all_of(self$subject_id), "Coeffs_model", isSingular, nr_coef)
       model_coeff <- tidyr::unnest(model_coeff, cols = c(Coeffs_model))
       model_coeff
     },

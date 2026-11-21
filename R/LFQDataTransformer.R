@@ -326,7 +326,7 @@ transform_work_intensity <- function(pdata, response, .func, .funcname = NULL) {
 
   pdata <- pdata |>
     dplyr::mutate(
-      !!sym(newcol) := .func(!!sym(response))
+      !!newcol := .func(.data[[response]])
     )
   inform_prolfqua("Column added : ", newcol)
   list(data = pdata, colname = newcol, zeros = zeros)
@@ -542,7 +542,7 @@ scale_with_subset <- function(lfqdata, lfqsubset, preserve_mean = FALSE, colname
   )
   data <- response_matrix_as_tibble(mat, scaled_name, lfqdata$get_config(), lfqdata$data_long())
   if (!is.null(colname)) {
-    data <- dplyr::rename(data, !!colname := !!scaled_name)
+    data <- dplyr::rename(data, !!colname := dplyr::all_of(scaled_name))
   }
   list(data = data, scales = scales, colname = colname %||% scaled_name)
 }
@@ -562,7 +562,7 @@ center_to_reference <- function(
 ) {
   # Step 1: Calculate sample means for reference proteins
   sample_means <- df_reference |>
-    dplyr::group_by(!!rlang::sym(sample_name)) |>
+    dplyr::group_by(.data[[sample_name]]) |>
     dplyr::summarise(
       reference_mean = mean(.data[[abundance_column]], na.rm = TRUE),
       reference_median = median(.data[[abundance_column]], na.rm = TRUE),

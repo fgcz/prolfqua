@@ -325,7 +325,7 @@ ContrastsModeratedDEqMS <- R6::R6Class(
       # Aggregate count_df to one row per subject_id (max count)
       count_df <- count_df |>
         dplyr::group_by(dplyr::across(dplyr::all_of(Contrast$subject_id))) |>
-        dplyr::summarise(!!count_column := max(!!rlang::sym(count_column), na.rm = TRUE), .groups = "drop")
+        dplyr::summarise(!!count_column := max(.data[[count_column]], na.rm = TRUE), .groups = "drop")
       # Replace -Inf (from all-NA groups) with NA
       count_df[[count_column]][is.infinite(count_df[[count_column]])] <- NA
       self$count_df <- count_df

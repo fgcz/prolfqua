@@ -20,7 +20,7 @@
     .inform_united(configuration$hierarchy_keys()[i], configuration$hierarchy[[i]], configuration$sep)
     data <- tidyr::unite(
       data,
-      !!sym(configuration$hierarchy_keys()[i]),
+      !!configuration$hierarchy_keys()[i],
       dplyr::all_of(configuration$hierarchy[[i]]),
       remove = FALSE,
       sep = configuration$sep
@@ -58,7 +58,7 @@
       .inform_united(configuration$factor_keys()[i], configuration$factors[[i]], configuration$sep)
       data <- tidyr::unite(
         data,
-        !!sym(configuration$factor_keys()[i]),
+        !!configuration$factor_keys()[i],
         dplyr::all_of(configuration$factors[[i]]),
         remove = FALSE,
         sep = configuration$sep
@@ -79,7 +79,7 @@
       }
       data <- dplyr::mutate(
         data,
-        !!newname := as.character(!!sym(configuration$factors[[i]]))
+        !!newname := as.character(.data[[configuration$factors[[i]]]])
       )
     }
   }
@@ -165,11 +165,11 @@
 .setup_duplicate_counts <- function(data, configuration) {
   data |>
     group_by(
-      !!!syms(c(
+      across(all_of(c(
         configuration$file_name,
         configuration$hierarchy_keys(),
         configuration$isotope_label
-      ))
+      )))
     ) |>
     summarize(n = n(), .groups = "drop")
 }

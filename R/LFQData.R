@@ -254,7 +254,7 @@ LFQData <- R6::R6Class(
       response <- self$response()
       before <- self$data_long()
       small <- !is.na(before[[response]]) & before[[response]] < threshold
-      private$.data <- dplyr::filter(before, !!sym(response) >= .env$threshold)
+      private$.data <- dplyr::filter(before, .data[[response]] >= .env$threshold)
       features <- self$hierarchy_keys()
       removed <- setdiff(.key_ids(before, features), .key_ids(private$.data, features))
       private$.data <- prolfqua::complete_cases(self)
@@ -450,7 +450,7 @@ LFQData <- R6::R6Class(
       cfg <- self$get_config()
       old <- cfg$pop_response()
       cfg$set_response(newname)
-      private$.data <- self$data_long() |> dplyr::rename(!!newname := !!sym(old))
+      private$.data <- self$data_long() |> dplyr::rename(!!newname := dplyr::all_of(old))
       invisible(self)
     },
     #' @description

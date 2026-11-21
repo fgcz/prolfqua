@@ -154,9 +154,9 @@ ContrastsPlotter <- R6::R6Class(
       re[2] <- ceiling(re[2])
 
       medians <- private$.contrast_df |>
-        dplyr::group_by(!!sym(self$contrast)) |>
-        dplyr::summarise(median = median(!!sym(self$diff), na.rm = TRUE), .groups = "drop")
-      fig <- ggplot(private$.contrast_df, aes(x = !!sym(self$diff))) +
+        dplyr::group_by(.data[[self$contrast]]) |>
+        dplyr::summarise(median = median(.data[[self$diff]], na.rm = TRUE), .groups = "drop")
+      fig <- ggplot(private$.contrast_df, aes(x = .data[[self$diff]])) +
         theme_prolfqua() +
         geom_histogram(breaks = seq(from = re[1], to = re[2], by = binwidth)) +
         geom_vline(
@@ -167,7 +167,7 @@ ContrastsPlotter <- R6::R6Class(
           linewidth = 1
         ) +
         geom_vline(xintercept = 0, col = "grey40", linewidth = 1) +
-        facet_wrap(vars(!!sym(self$contrast)))
+        facet_wrap(vars(.data[[self$contrast]]))
 
       fig
     },
@@ -271,15 +271,15 @@ ContrastsPlotter <- R6::R6Class(
         score_threshold <- self$volcano_spec[[i]]$thresh
         filt <- dplyr::filter(
           private$.contrast_df,
-          !is.na(!!sym(score_name)),
-          !!sym(score_name) < score_threshold
+          !is.na(.data[[score_name]]),
+          .data[[score_name]] < score_threshold
         )
         if (is.numeric(self$fcthresh)) {
-          filt <- dplyr::filter(filt, abs(!!sym(self$diff)) > self$fcthresh)
+          filt <- dplyr::filter(filt, abs(.data[[self$diff]]) > self$fcthresh)
         }
-        summary_counts <- group_by(filt, !!sym(self$contrast), !!sym(self$model_name)) |>
+        summary_counts <- group_by(filt, .data[[self$contrast]], .data[[self$model_name]]) |>
           dplyr::summarize(n = n(), .groups = "drop")
-        p <- ggplot(summary_counts, aes(x = !!sym(self$contrast), y = n, fill = !!sym(self$model_name))) +
+        p <- ggplot(summary_counts, aes(x = .data[[self$contrast]], y = n, fill = .data[[self$model_name]])) +
           theme_prolfqua() +
           geom_col(position = "stack") +
           scale_fill_manual(values = .factor_palette(dplyr::n_distinct(summary_counts[[self$model_name]])))
@@ -301,8 +301,8 @@ ContrastsPlotter <- R6::R6Class(
       if (rank) {
         abundance_col <- paste0("rank_", self$avg.abundance)
         contrast_df <- contrast_df |>
-          dplyr::group_by(!!sym(self$contrast)) |>
-          dplyr::mutate(!!abundance_col := rank(!!sym(self$avg.abundance)))
+          dplyr::group_by(.data[[self$contrast]]) |>
+          dplyr::mutate(!!abundance_col := rank(.data[[self$avg.abundance]]))
       } else if (plotly_mode) {
         contrast_df <- contrast_df |> plotly::highlight_key(~subject_id, group = self$group)
       }
@@ -317,9 +317,9 @@ ContrastsPlotter <- R6::R6Class(
           plot_name <- column
         }
         contrasts2 <- private$.contrast_df |>
-          dplyr::filter(!is.na(!!sym(self$diff))) |>
-          dplyr::filter(!is.na(!!sym(column))) |>
-          dplyr::mutate(!!column := .floor_significance_values(!!sym(column), min_score))
+          dplyr::filter(!is.na(.data[[self$diff]])) |>
+          dplyr::filter(!is.na(.data[[column]])) |>
+          dplyr::mutate(!!column := .floor_significance_values(.data[[column]], min_score))
         if (plotly) {
           contrasts2 <- contrasts2 |> plotly::highlight_key(~subject_id, group = self$group)
         }
@@ -359,21 +359,21 @@ ContrastsPlotter <- R6::R6Class(
       }
       score <- score$score
       plot <- private$.contrast_df |>
-        ggplot(aes(x = !!sym(score))) +
+        ggplot(aes(x = .data[[score]])) +
         theme_prolfqua() +
         geom_histogram(breaks = breaks) +
-        facet_wrap(vars(!!sym(self$contrast)))
+        facet_wrap(vars(.data[[self$contrast]]))
       plot
     },
     .ma_plot = function(x, avg.abundance, diff, contrast, fc, colour = NULL, legend = TRUE) {
       p <- ggplot(
         x,
-        aes(x = !!sym(avg.abundance), y = !!sym(diff), text = !!sym("subject_id"), colour = !!sym(colour))
+        aes(x = .data[[avg.abundance]], y = .data[[diff]], text = .data$subject_id, colour = .data[[colour]])
       ) +
         theme_prolfqua(grid = TRUE) +
         geom_point(alpha = 0.3, size = 0.8) +
         scale_colour_manual(values = .contrast_colour_values(colour, x[[colour]])) +
-        facet_wrap(vars(!!sym(contrast)))
+        facet_wrap(vars(.data[[contrast]]))
       if (is.numeric(fc)) {
         p <- p + geom_hline(yintercept = c(-fc, fc), linetype = "dashed", colour = "red")
       }
@@ -392,12 +392,12 @@ ContrastsPlotter <- R6::R6Class(
         ylims <- c(sign(min(x[[score]], na.rm = TRUE)) * ylim, sign(max(x[[score]], na.rm = TRUE)) * ylim)
         p <- ggplot(
           x,
-          aes(x = !!sym(self$diff), y = !!sym(score), text = !!sym("subject_id"), colour = !!sym(colour))
+          aes(x = .data[[self$diff]], y = .data[[!!score]], text = .data$subject_id, colour = .data[[colour]])
         ) +
           theme_prolfqua(grid = TRUE) +
           scale_colour_manual(values = .contrast_colour_values(colour, x[[colour]])) +
           geom_point(alpha = 0.3, size = 0.8) +
-          facet_wrap(vars(!!sym(self$contrast))) +
+          facet_wrap(vars(.data[[self$contrast]])) +
           geom_hline(yintercept = 0, colour = "black") +
           geom_vline(xintercept = 0, colour = "black") +
           geom_hline(yintercept = ylims, colour = "red", linetype = "dashed")

@@ -44,8 +44,8 @@ lr_test <- function(
 ) {
   # Model Comparison
   reg <- dplyr::inner_join(
-    dplyr::select(complete_models, !!sym(subject_id), "linear_model"),
-    dplyr::select(complete_models_int, !!sym(subject_id), "linear_model"),
+    dplyr::select(complete_models, dplyr::all_of(subject_id), "linear_model"),
+    dplyr::select(complete_models_int, dplyr::all_of(subject_id), "linear_model"),
     by = subject_id,
     relationship = "one-to-one"
   )
@@ -53,13 +53,13 @@ lr_test <- function(
   reg <- reg |>
     dplyr::mutate(
       modelComparisonLikelihoodRatioTest = map2(
-        !!sym("linear_model.x"),
-        !!sym("linear_model.y"),
+        .data$linear_model.x,
+        .data$linear_model.y,
         .likelihood_ratio_test
       )
     )
   likelihood_ratio_test_result <- reg |>
-    dplyr::select(!!sym(subject_id), dplyr::all_of("modelComparisonLikelihoodRatioTest")) |>
+    dplyr::select(dplyr::all_of(subject_id), dplyr::all_of("modelComparisonLikelihoodRatioTest")) |>
     tidyr::unnest(cols = "modelComparisonLikelihoodRatioTest")
   likelihood_ratio_test_result <- likelihood_ratio_test_result |>
     dplyr::rename(likelihood_ratio_test.pValue = "modelComparisonLikelihoodRatioTest")
@@ -369,7 +369,7 @@ impute_from_model <- function(model, lfqdata) {
     dplyr::left_join(data, by = c(row_keys, colnames(sample_template)), relationship = "one-to-many")
 
   per_subject <- completed |>
-    dplyr::group_by(!!!syms(subject_id)) |>
+    dplyr::group_by(dplyr::across(dplyr::all_of(subject_id))) |>
     tidyr::nest() |>
     dplyr::ungroup() |>
     dplyr::left_join(fit_table, by = subject_id, relationship = "one-to-one")
@@ -936,7 +936,7 @@ model_analyse <- function(
   progress = getOption("prolfqua.progress", NULL)
 ) {
   nested_proteins <- pepIntensity |>
-    dplyr::group_by(!!!syms(subject_id)) |>
+    dplyr::group_by(dplyr::across(dplyr::all_of(subject_id))) |>
     tidyr::nest()
 
   # The strategy `model_fun()`s tick `pb` at fit *start* (their existing

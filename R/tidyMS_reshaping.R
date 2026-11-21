@@ -79,7 +79,7 @@ tidy_to_wide_config <- function(
   if (as.matrix) {
     res_mat <- as.matrix(dplyr::select(res, -dplyr::all_of(row_keys)))
     names <- rowdata |>
-      tidyr::unite("newID", !!!dplyr::syms(row_keys), sep = sep) |>
+      tidyr::unite("newID", dplyr::all_of(row_keys), sep = sep) |>
       dplyr::pull("newID")
     rownames(res_mat) <- names
     res <- res_mat

@@ -363,7 +363,6 @@ importFrom(purrr,
 importFrom(rlang,
   ":=",
   .data,
-  sym,
   syms
 )
 importFrom(stats,

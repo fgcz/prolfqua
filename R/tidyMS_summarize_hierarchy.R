@@ -24,7 +24,7 @@ table_factors <- function(pdata, file_name, sample_name, factor_keys) {
   factors_table <- pdata |>
     dplyr::select(dplyr::all_of(c(file_name, sample_name, factor_keys))) |>
     dplyr::distinct() |>
-    arrange(!!sym(sample_name))
+    arrange(.data[[sample_name]])
   factors_table
 }
 
@@ -121,8 +121,8 @@ HierarchyCountsSample <- R6::R6Class(
       hierarchy <- configuration$hierarchy_keys()
       self$.summary <- pdata |>
         dplyr::filter(
-          !is.na(!!rlang::sym(configuration$get_response())),
-          !!rlang::sym(configuration$nr_children) >= .env$nr_children
+          !is.na(.data[[configuration$get_response()]]),
+          .data[[configuration$nr_children]] >= .env$nr_children
         ) |>
         dplyr::group_by(across(all_of(c(configuration$isotope_label, configuration$sample_name)))) |>
         dplyr::summarise(across(all_of(hierarchy), dplyr::n_distinct), .groups = "drop")
@@ -147,7 +147,7 @@ HierarchyCountsSample <- R6::R6Class(
         return(NULL)
       }
       nudgeval <- -mean(long$nr) * 0.05
-      ggplot2::ggplot(long, ggplot2::aes(x = !!rlang::sym(self$.configuration$sample_name), y = .data$nr)) +
+      ggplot2::ggplot(long, ggplot2::aes(x = .data[[self$.configuration$sample_name]], y = .data$nr)) +
         theme_prolfqua() +
         ggplot2::geom_col(colour = "black", fill = "white") +
         ggplot2::facet_wrap(~key, scales = "free_y", ncol = 1) +

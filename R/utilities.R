@@ -62,7 +62,7 @@ get_uniprot_id_from_fasta_header <- function(df, idcolumn = "protein_Id") {
   map <- df |>
     dplyr::select(dplyr::all_of(idcolumn)) |>
     distinct() |>
-    dplyr::filter(grepl(pattern = "^[a-z_]{2,7}\\|", !!sym(idcolumn))) |>
+    dplyr::filter(grepl(pattern = "^[a-z_]{2,7}\\|", .data[[idcolumn]])) |>
     tidyr::separate_wider_delim(
       dplyr::all_of(idcolumn),
       delim = "_",
@@ -525,7 +525,7 @@ volcano_plotly <- function(
   .data[[significance]] <- .floor_significance_values(.data[[significance]], minsignificance)
 
   xx <- .data |>
-    dplyr::group_by(!!dplyr::sym(contrast)) |>
+    dplyr::group_by(dplyr::across(dplyr::all_of(contrast))) |>
     tidyr::nest()
 
   makeshared <- function(x, proteinID = "Prey") {

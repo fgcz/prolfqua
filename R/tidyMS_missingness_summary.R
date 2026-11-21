@@ -153,11 +153,11 @@ missingness_histogram <- function(lfqdata, showempty = FALSE, factors = lfqdata$
   }
 
   mean_abundance <- paste0("mean_", lfqdata$response())
-  missing_percent <- dplyr::rename(missing_percent, !!sym(mean_abundance) := "meanAbundance")
+  missing_percent <- dplyr::rename(missing_percent, !!mean_abundance := "meanAbundance")
 
   p <- ggplot2::ggplot(
     missing_percent,
-    ggplot2::aes(x = !!sym(mean_abundance), fill = .data$nrNAs, colour = .data$nrNAs)
+    ggplot2::aes(x = .data[[mean_abundance]], fill = .data$nrNAs, colour = .data$nrNAs)
   ) +
     theme_prolfqua() +
     ggplot2::geom_density(alpha = alpha, position = "identity") +
@@ -233,14 +233,14 @@ missingness_per_condition <- function(lfqdata, factors = lfqdata$relevant_factor
   hierarchy_key <- paste0("nr_", hierarchy_key)
   xx <- missing_percent |>
     group_by(across(all_of(c(lfqdata$isotope_label(), factors, "nrNAs", "nrReplicates")))) |>
-    dplyr::summarize(!!sym(hierarchy_key) := n(), .groups = "drop")
+    dplyr::summarize(!!hierarchy_key := n(), .groups = "drop")
 
   nudgeval <- max(xx[[hierarchy_key]]) * 0.05
 
   p <- ggplot(xx, aes(x = .data$nrNAs, y = .data[[hierarchy_key]])) +
     theme_prolfqua() +
     geom_col(color = "black", fill = "white") +
-    geom_text(aes(label = !!sym(hierarchy_key)), nudge_y = nudgeval, angle = 45) +
+    geom_text(aes(label = .data[[hierarchy_key]]), nudge_y = nudgeval, angle = 45) +
     .isotope_by_factors_facet(lfqdata, factors)
   xx <- tidyr::pivot_wider(xx, names_from = "nrNAs", values_from = dplyr::all_of(hierarchy_key))
 
@@ -296,7 +296,7 @@ upset_missing_stats <- function(lfqdata) {
   data <- data |>
     dplyr::mutate(
       isThere = dplyr::case_when(
-        !is.na(!!rlang::sym(lfqdata$response())) ~ 1,
+        !is.na(.data[[lfqdata$response()]]) ~ 1,
         TRUE ~ 0
       )
     )

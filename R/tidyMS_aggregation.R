@@ -162,8 +162,8 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
   ## If there is only 1 peptide for all samples use the response of that peptide directly
   if (length(unique(data[[feature]])) == 1L) {
     per_sample <- data |>
-      dplyr::mutate(lmrob = !!sym(response), weights = 1) |>
-      rename(!!expname := !!sym(response))
+      dplyr::mutate(lmrob = .data[[response]], weights = 1) |>
+      rename(!!expname := all_of(response))
     return(finalize(per_sample))
   }
 
@@ -171,8 +171,8 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
   if (length(unique(data[[samples]])) == 1L) {
     per_sample <- data |>
       summarize(
-        lmrob = mean(!!sym(response)),
-        !!expname := mean(!!sym(response)),
+        lmrob = mean(.data[[response]]),
+        !!expname := mean(.data[[response]]),
         weights = 1,
         .by = all_of(samples)
       )
@@ -198,8 +198,8 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
     lmrob <- tibble(!!samples := usamples, lmrob = unname(fit$coefficients[coef_names]))
 
     sumdata <- data |>
-      select(-!!sym(feature)) |>
-      dplyr::summarize(!!expname := mean(!!sym(response)), weights = 1 / mean(residuals^2), .by = all_of(samples))
+      select(-all_of(feature)) |>
+      dplyr::summarize(!!expname := mean(.data[[response]]), weights = 1 / mean(residuals^2), .by = all_of(samples))
     if (any(is.infinite(sumdata$weights) | is.na(sumdata$weights) | sumdata$weights > 10e6)) {
       sumdata$weights <- 1
     }
@@ -210,8 +210,8 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
     }
   } else {
     res <- data |>
-      select(-!!sym(feature)) |>
-      dplyr::summarize(!!expname := mean(!!sym(response)), lmrob = mean(!!sym(response)), .by = all_of(samples))
+      select(-all_of(feature)) |>
+      dplyr::summarize(!!expname := mean(.data[[response]]), lmrob = mean(.data[[response]]), .by = all_of(samples))
     res$weights <- 1
   }
   finalize(res)
@@ -369,13 +369,13 @@ plot_estimate <- function(lfqdata, lfqdata_agg, show.legend = FALSE) {
   hkeysd <- lfqdata$relevant_hierarchy_keys()
 
   xnested <- lfqdata$data_long() |>
-    group_by(!!!syms(hkeysd)) |>
+    group_by(across(all_of(hkeysd))) |>
     nest()
-  xnested <- xnested |> tidyr::unite(hierarchy_id, !!!syms(hkeysd))
+  xnested <- xnested |> tidyr::unite(hierarchy_id, all_of(hkeysd))
   xnested_aggr <- lfqdata_agg$data_long() |>
-    group_by(!!!syms(lfqdata_agg$relevant_hierarchy_keys())) |>
+    group_by(across(all_of(lfqdata_agg$relevant_hierarchy_keys()))) |>
     nest_by(.key = "other")
-  xnested_aggr <- xnested_aggr |> tidyr::unite(hierarchy_id, !!!syms(hkeysd))
+  xnested_aggr <- xnested_aggr |> tidyr::unite(hierarchy_id, all_of(hkeysd))
   xnested_all <- inner_join(xnested, xnested_aggr, by = hierarchy_id, relationship = "one-to-one")
 
   plots <- vector(mode = "list", length = nrow(xnested_all))
@@ -436,7 +436,7 @@ aggregate_intensity_top_n <- function(ranked_data, lfqdata, .func, N = 3) {
   config <- lfqdata$get_config()$clone(deep = TRUE)
 
   top_intensities <-
-    ranked_data |> dplyr::filter(!!sym("srm_meanIntRank") <= .env$N)
+    ranked_data |> dplyr::filter(.data$srm_meanIntRank <= .env$N)
 
   top_intensities <- top_intensities |>
     dplyr::group_by(across(all_of(c(
@@ -448,9 +448,9 @@ aggregate_intensity_top_n <- function(ranked_data, lfqdata, .func, N = 3) {
     ))))
   sum_top_intensities <- top_intensities |>
     dplyr::summarize(
-      !!newcol := .func(!!sym(lfqdata$response())),
+      !!newcol := .func(.data[[lfqdata$response()]]),
       # an unknown q-value of a top feature leaves the aggregate's q-value unknown
-      ident_qValue = min(!!sym(config$ident_q_value), na.rm = FALSE),
+      ident_qValue = min(.data[[config$ident_q_value]], na.rm = FALSE),
       .groups = "drop"
     )
 
@@ -513,8 +513,8 @@ nr_obs_sample <- function(
 ) {
   data <- data[!is.na(data[[response]]), ]
   nr_children <- data |>
-    group_by(!!!rlang::syms(c(hierarchy_keys_depth, file_name))) |>
-    summarize(!!new_child := sum(!!sym(nr_children_col), na.rm = TRUE), .groups = "drop")
+    group_by(across(all_of(c(hierarchy_keys_depth, file_name)))) |>
+    summarize(!!new_child := sum(.data[[nr_children_col]], na.rm = TRUE), .groups = "drop")
   nr_children
 }
 
@@ -560,8 +560,8 @@ nr_children_experiment <- function(
   )
   # experiment-wide count = the largest per-sample count across all samples; counts are never NA
   per_sample |>
-    dplyr::group_by(!!!syms(hierarchy_keys_depth)) |>
-    dplyr::summarize(!!name_nr_child := max(!!sym(per_sample_col)), .groups = "drop")
+    dplyr::group_by(across(all_of(hierarchy_keys_depth))) |>
+    dplyr::summarize(!!name_nr_child := max(.data[[per_sample_col]]), .groups = "drop")
 }
 
 #' Count distinct child features per hierarchy unit
@@ -609,11 +609,11 @@ rank_peptide_by_intensity <- function(pdata, response, hierarchy_keys) {
   rank_column <- "srm_meanIntRank"
   # mean intensity of each precursor, ranked within its protein (hierarchy_keys[1])
   ranked <- pdata |>
-    dplyr::group_by(!!!syms(hierarchy_keys)) |>
-    dplyr::summarize(!!summary_column := mean(!!sym(response), na.rm = TRUE)) |>
-    dplyr::arrange(!!sym(hierarchy_keys[1])) |>
-    dplyr::group_by(!!sym(hierarchy_keys[1])) |>
-    dplyr::mutate(!!rank_column := min_rank(desc(!!sym(summary_column))))
+    dplyr::group_by(across(all_of(hierarchy_keys))) |>
+    dplyr::summarize(!!summary_column := mean(.data[[response]], na.rm = TRUE)) |>
+    dplyr::arrange(.data[[hierarchy_keys[1]]]) |>
+    dplyr::group_by(.data[[hierarchy_keys[1]]]) |>
+    dplyr::mutate(!!rank_column := min_rank(desc(.data[[summary_column]])))
   pdata <- dplyr::inner_join(pdata, ranked, by = hierarchy_keys, relationship = "many-to-one")
 
   inform_prolfqua("Columns added : ", summary_column, " ", rank_column)

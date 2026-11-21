@@ -95,9 +95,9 @@ Model <- R6::R6Class(
         )
       }
       model_coeff <- complete_models |>
-        dplyr::mutate(!!"Coeffs_model" := purrr::map(!!sym(lmermodel), .coef_df))
+        dplyr::mutate(Coeffs_model = purrr::map(.data[[lmermodel]], .coef_df))
       model_coeff <- model_coeff |>
-        dplyr::select(!!!syms(self$subject_id), !!sym("Coeffs_model"), isSingular, nr_coef)
+        dplyr::select(dplyr::all_of(self$subject_id), "Coeffs_model", isSingular, nr_coef)
       model_coeff <- tidyr::unnest(model_coeff, cols = c(Coeffs_model))
       model_coeff
     },
@@ -108,10 +108,10 @@ Model <- R6::R6Class(
       complete_models <- get_complete_model_fit(self$model_df)
 
       model_anova <- complete_models |>
-        dplyr::mutate(!!"Anova_model" := purrr::map(!!sym(lmermodel), self$model_strategy$anova_df$fun))
+        dplyr::mutate(Anova_model = purrr::map(.data[[lmermodel]], self$model_strategy$anova_df$fun))
 
       model_anova <- model_anova |>
-        dplyr::select(!!!syms(self$subject_id), !!sym("Anova_model"), isSingular, nr_coef)
+        dplyr::select(dplyr::all_of(self$subject_id), "Anova_model", isSingular, nr_coef)
       model_anova <- tidyr::unnest(model_anova, cols = c(Anova_model))
 
       model_anova <- model_anova |> dplyr::filter(factor != "Residuals")
@@ -122,7 +122,7 @@ Model <- R6::R6Class(
 
       model_anova <- self$p.adjust(model_anova, column = self$model_strategy$anova_df$col_pval, group_by_col = "factor")
 
-      model_anova <- model_anova |> dplyr::rename(p.value = !!sym(self$model_strategy$anova_df$col_pval))
+      model_anova <- model_anova |> dplyr::rename(p.value = dplyr::all_of(self$model_strategy$anova_df$col_pval))
       dplyr::ungroup(model_anova)
     }
   )

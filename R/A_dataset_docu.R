@@ -11,7 +11,7 @@
 #' @importFrom graphics abline pairs plot text
 #' @importFrom grDevices colorRampPalette dev.off pdf png rainbow
 #' @importFrom purrr map map2 map2_dbl map_lgl map_chr map_dbl reduce map_if map_int
-#' @importFrom rlang := sym syms .data
+#' @importFrom rlang := syms .data
 #' @importFrom stats as.formula cor
 #' @importFrom stats .lm.fit glm model.matrix residuals
 #' @importFrom tidyr nest nesting separate_rows unite unnest separate
