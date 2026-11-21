@@ -314,7 +314,7 @@ head(stats::confint(analysis))
 #> 6 2kfAGV~7674 group_Ctrl     0.123     0.863     9    -1.83      2.07
 stats::formula(analysis)
 #> abundance ~ group_
-#> <environment: 0x5aa21a37a428>
+#> <environment: 0x59a8f503aae0>
 head(stats::nobs(analysis))
 #> # A tibble: 6 × 2
 #>   protein_Id   nobs

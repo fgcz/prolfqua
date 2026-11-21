@@ -71,6 +71,7 @@
 <code><a href="../reference/summarize_stats.html">summarize_stats_quantiles()</a></code> (and <code>LFQDataStats$stats_quantiles()</code>) return <code>long</code> as an ungrouped tibble.</li>
 <li>
 <code><a href="../reference/summary_ropeca_median_p_scaled.html">summary_ropeca_median_p_scaled()</a></code> stops with an error when the <code>statistic</code> column is missing; before, it filled the summary’s <code>statistic</code> column with the column name.</li>
+<li>Hierarchy counts per sample (<code>HierarchyCountsSample</code>, <code>LFQDataSummariser$hierarchy_counts_sample()</code> and its plot) work without an <code>nr_children</code> column, counting every feature once, and stop with an error when <code>nr_children &gt; 1</code> is requested without that column.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="deprecated-1-9-5">Deprecated<a class="anchor" aria-label="anchor" href="#deprecated-1-9-5"></a></h3>

@@ -51,6 +51,10 @@
 - [`summary_ropeca_median_p_scaled()`](https://fgcz.github.io/prolfqua/reference/summary_ropeca_median_p_scaled.md)
   stops with an error when the `statistic` column is missing; before, it
   filled the summary’s `statistic` column with the column name.
+- Hierarchy counts per sample (`HierarchyCountsSample`,
+  `LFQDataSummariser$hierarchy_counts_sample()` and its plot) work
+  without an `nr_children` column, counting every feature once, and stop
+  with an error when `nr_children > 1` is requested without that column.
 
 ### Deprecated
 
