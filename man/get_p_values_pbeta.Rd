@@ -7,6 +7,10 @@
 get_p_values_pbeta(median.p.value, n.obs, max.n = 10)
 }
 \arguments{
+\item{median.p.value}{median of the peptide p-values of a protein}
+
+\item{n.obs}{number of peptides}
+
 \item{max.n}{limit number of peptides per protein.}
 }
 \value{

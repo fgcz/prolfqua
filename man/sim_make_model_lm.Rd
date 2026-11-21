@@ -8,6 +8,9 @@ sim_make_model_lm(
   model = c("parallel2", "parallel3", "factors", "interaction")
 )
 }
+\arguments{
+\item{model}{design: \code{"parallel2"}, \code{"parallel3"}, \code{"factors"} or \code{"interaction"}}
+}
 \value{
 an \code{lm} object fitted to one simulated protein
 }

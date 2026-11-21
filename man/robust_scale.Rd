@@ -6,6 +6,13 @@
 \usage{
 robust_scale(data, dim = 2, preserve_mean = FALSE)
 }
+\arguments{
+\item{data}{numeric matrix}
+
+\item{dim}{margin to scale: 2 scales each column (sample), 1 each row}
+
+\item{preserve_mean}{if TRUE, add the mean of the medians back}
+}
 \value{
 a matrix like \code{data}, centred by the median of each column (\code{dim = 2}) or row (\code{dim = 1}) and divided
 by its MAD relative to the mean MAD; only centred, with a warning, if a MAD is zero; with

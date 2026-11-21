@@ -11,6 +11,10 @@ poolvar(res1, config)
 }
 \arguments{
 \item{x}{data.frame}
+
+\item{res1}{per-group statistics from \code{\link[=summarize_stats]{summarize_stats()}}}
+
+\item{config}{AnalysisConfiguration of the data}
 }
 \value{
 data.frame

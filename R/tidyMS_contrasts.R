@@ -84,6 +84,7 @@ parse_contrast_sides <- function(contrasts) {
 #'   shows a complete \code{~ A * B} example. These helpers assume categorical
 #'   predictors and the usual intercept-based coding; they are not a general
 #'   marginal-means implementation for continuous predictors or arbitrary coding.
+#' @param as_list if TRUE, return the factor and interaction matrices as a list; if FALSE, as one matrix
 #' @param m linear model
 #' @return if `as_list = TRUE`, a list with the matrices `linfct_factors` (one row per factor level) and
 #'   `linfct_interactions` (one row per observed factor combination), each with one column per model coefficient;
@@ -450,6 +451,12 @@ pivot_model_contrasts_to_wide <- function(
 #'
 #' used in p2621, p2109
 #'
+#' @param models model table with one fit per subject in the column `linear_model`, e.g. the `model_df` of
+#'   [model_analyse()]
+#' @param linfct linear functions: a matrix with one row per contrast and one column per model coefficient, or
+#'   a list with one such matrix per model
+#' @param subject_id columns identifying a subject
+#' @param contrastfun function computing the contrasts of one fit, e.g. [compute_lmer_contrast()]
 #' @return a tibble with one row per subject and row of `linfct`, holding the `subject_id` columns, the columns
 #'   returned by `contrastfun`, and `isSingular`, `sigma.model` and `df.residual.model`; subjects whose contrasts
 #'   failed are dropped with a warning

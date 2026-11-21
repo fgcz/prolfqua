@@ -8,6 +8,8 @@ linfct_from_model(m, as_list = TRUE)
 }
 \arguments{
 \item{m}{linear model}
+
+\item{as_list}{if TRUE, return the factor and interaction matrices as a list; if FALSE, as one matrix}
 }
 \value{
 if \code{as_list = TRUE}, a list with the matrices \code{linfct_factors} (one row per factor level) and

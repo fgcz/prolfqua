@@ -1,6 +1,11 @@
 # Moderation and p-value adjustment ----
 
 #' Moderate p-values - limma approach
+#' @param contrast_df contrast table with the columns `sigma`, the residual degrees of freedom and the estimate
+#' @param df name of the residual degrees-of-freedom column
+#' @param estimate name of the effect-estimate column
+#' @param robust passed to [limma::squeezeVar()]: estimate the prior robustly
+#' @param confint confidence level of the moderated intervals
 #' @export
 #' @family modelling
 #' @keywords internal
@@ -175,6 +180,8 @@ adjust_p_values <- function(
 # ROPECA ----
 
 #' Protein p-value from the p-value of the median fold-change peptide
+#' @param median.p.value median of the peptide p-values of a protein
+#' @param n.obs number of peptides
 #' @param max.n limit number of peptides per protein.
 #' @return a numeric vector of p-values, the beta-distribution probability that the median of
 #'   `min(n.obs, max.n)` uniform p-values is at most `median.p.value`

@@ -43,6 +43,8 @@ compute_pooled <- function(x) {
 }
 
 #' pooled variance
+#' @param res1 per-group statistics from [summarize_stats()]
+#' @param config AnalysisConfiguration of the data
 #' @export
 #' @rdname pooled_var
 #' @keywords internal

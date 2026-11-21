@@ -11,6 +11,17 @@ contrasts_linfct(
   contrastfun = prolfqua::compute_lmer_contrast
 )
 }
+\arguments{
+\item{models}{model table with one fit per subject in the column \code{linear_model}, e.g. the \code{model_df} of
+\code{\link[=model_analyse]{model_analyse()}}}
+
+\item{linfct}{linear functions: a matrix with one row per contrast and one column per model coefficient, or
+a list with one such matrix per model}
+
+\item{subject_id}{columns identifying a subject}
+
+\item{contrastfun}{function computing the contrasts of one fit, e.g. \code{\link[=compute_lmer_contrast]{compute_lmer_contrast()}}}
+}
 \value{
 a tibble with one row per subject and row of \code{linfct}, holding the \code{subject_id} columns, the columns
 returned by \code{contrastfun}, and \code{isSingular}, \code{sigma.model} and \code{df.residual.model}; subjects whose contrasts

@@ -387,6 +387,8 @@ response_matrix_as_tibble <- function(pdata, value, config, data = NULL, sep = "
 }
 
 #' Compute medians and MADs of a matrix along one margin
+#' @param data numeric matrix, samples in columns
+#' @param dim margin to summarise: 2 for columns (samples), 1 for rows
 #' @keywords internal
 #'
 .get_robscales <- function(data, dim = 2) {
@@ -397,6 +399,7 @@ response_matrix_as_tibble <- function(pdata, value, config, data = NULL, sep = "
 }
 
 #' Compute the median and MAD of each sample
+#' @param lfqdata [LFQData] object with the data and its configuration
 #' @return a list with the numeric vectors `medians` and `mads`, with one element per sample
 #' @export
 #' @keywords internal
@@ -423,6 +426,9 @@ get_robscales <- function(lfqdata) {
 
 
 #' Robustly scale a matrix by medians and MADs
+#' @param data numeric matrix
+#' @param dim margin to scale: 2 scales each column (sample), 1 each row
+#' @param preserve_mean if TRUE, add the mean of the medians back
 #' @return a matrix like `data`, centred by the median of each column (`dim = 2`) or row (`dim = 1`) and divided
 #'   by its MAD relative to the mean MAD; only centred, with a warning, if a MAD is zero; with
 #'   `preserve_mean = TRUE` the mean of the medians is added back

@@ -8,6 +8,9 @@ sim_make_model_lmer(
   model = c("parallel2", "parallel3", "factors", "interaction")
 )
 }
+\arguments{
+\item{model}{design: \code{"parallel2"}, \code{"parallel3"}, \code{"factors"} or \code{"interaction"}}
+}
 \value{
 an \code{lmerModLmerTest} object, the first successful fit among ten simulated proteins
 }

@@ -456,6 +456,7 @@ sim_build_models_lmer <- function(
 
 
 #' Fit a linear model to simulated data for examples
+#' @param model design: `"parallel2"`, `"parallel3"`, `"factors"` or `"interaction"`
 #' @return an `lm` object fitted to one simulated protein
 #' @family modelling
 #' @export
@@ -473,6 +474,7 @@ sim_make_model_lm <- function(model = c("parallel2", "parallel3", "factors", "in
 
 
 #' Fit a mixed-effects model to simulated data for examples
+#' @param model design: `"parallel2"`, `"parallel3"`, `"factors"` or `"interaction"`
 #' @return an `lmerModLmerTest` object, the first successful fit among ten simulated proteins
 #' @family modelling
 #' @export

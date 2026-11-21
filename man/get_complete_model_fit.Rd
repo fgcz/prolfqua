@@ -6,6 +6,9 @@
 \usage{
 get_complete_model_fit(complete_models)
 }
+\arguments{
+\item{complete_models}{model table, the \code{model_df} of \code{\link[=model_analyse]{model_analyse()}}}
+}
 \value{
 the rows of \code{complete_models} that have a model fit, the maximal number of estimated coefficients and
 more than one residual degree of freedom

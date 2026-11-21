@@ -14,6 +14,14 @@ model_analyse(
 )
 }
 \arguments{
+\item{pepIntensity}{long-format data with one row per observation}
+
+\item{model_strategy}{modelling strategy, e.g. from \code{\link[=strategy_lm]{strategy_lm()}}}
+
+\item{subject_id}{columns identifying a subject; one model is fitted per subject}
+
+\item{model_name}{name stored with the fitted models}
+
 \item{label}{short label naming this fitting pass in progress output;
 defaults to \code{model_name}.}
 

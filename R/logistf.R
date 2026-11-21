@@ -91,9 +91,9 @@ build_model_logistf <- function(data, formula, control = list()) {
 #' @keywords internal
 #' @examplesIf requireNamespace("logistf", quietly = TRUE)
 #' modi <- sim_build_models_logistf(model = "interaction", weight_missing = 1)
-#' stopifnot(dim(modi$model_df) == c(10,9))
+#' stopifnot(nrow(modi$models$model_df) == 10)
 #' mod2 <- sim_build_models_logistf(model = "parallel2", weight_missing = 1)
-#' mod2$model_df$linear_model[[1]]
+#' mod2$models$model_df$linear_model[[1]]
 #' mod3 <- sim_build_models_logistf(model = "parallel3", weight_missing = 1)
 #' modf <- sim_build_models_logistf(model = "factors", weight_missing = 1)
 

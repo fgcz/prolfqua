@@ -871,6 +871,7 @@ impute_refit_singular <- function(
 # Fit the models to data ----
 
 #' Retrieve complete model fits
+#' @param complete_models model table, the `model_df` of [model_analyse()]
 #' @return the rows of `complete_models` that have a model fit, the maximal number of estimated coefficients and
 #'   more than one residual degree of freedom
 #' @keywords internal
@@ -895,6 +896,10 @@ get_complete_model_fit <- function(complete_models) {
 #'
 #' used in project p2901
 #'
+#' @param pepIntensity long-format data with one row per observation
+#' @param model_strategy modelling strategy, e.g. from [strategy_lm()]
+#' @param subject_id columns identifying a subject; one model is fitted per subject
+#' @param model_name name stored with the fitted models
 #' @param label short label naming this fitting pass in progress output;
 #'   defaults to `model_name`.
 #' @param progress progress reporter selector passed to [.make_progress()];

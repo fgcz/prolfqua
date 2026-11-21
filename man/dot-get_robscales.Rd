@@ -6,6 +6,11 @@
 \usage{
 .get_robscales(data, dim = 2)
 }
+\arguments{
+\item{data}{numeric matrix, samples in columns}
+
+\item{dim}{margin to summarise: 2 for columns (samples), 1 for rows}
+}
 \description{
 Compute medians and MADs of a matrix along one margin
 }

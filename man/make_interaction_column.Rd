@@ -6,6 +6,13 @@
 \usage{
 make_interaction_column(data, columns, sep = ".")
 }
+\arguments{
+\item{data}{data frame}
+
+\item{columns}{factor columns to combine}
+
+\item{sep}{separator between the levels in the combined labels}
+}
 \value{
 \code{data} with an added factor column \code{interaction} combining the values of \code{columns}, each prefixed with
 its column name and joined by \code{sep}

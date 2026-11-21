@@ -572,6 +572,9 @@ prolfqua_data <- function(datastr, package = "prolfqua") {
 
 
 #' Create an interaction column from factors
+#' @param data data frame
+#' @param columns factor columns to combine
+#' @param sep separator between the levels in the combined labels
 #' @return `data` with an added factor column `interaction` combining the values of `columns`, each prefixed with
 #'   its column name and joined by `sep`
 #' @export

@@ -6,6 +6,9 @@
 \usage{
 get_robscales(lfqdata)
 }
+\arguments{
+\item{lfqdata}{\link{LFQData} object with the data and its configuration}
+}
 \value{
 a list with the numeric vectors \code{medians} and \code{mads}, with one element per sample
 }

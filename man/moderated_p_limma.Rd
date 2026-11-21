@@ -14,6 +14,16 @@ moderated_p_limma(
 )
 }
 \arguments{
+\item{contrast_df}{contrast table with the columns \code{sigma}, the residual degrees of freedom and the estimate}
+
+\item{df}{name of the residual degrees-of-freedom column}
+
+\item{estimate}{name of the effect-estimate column}
+
+\item{robust}{passed to \code{\link[limma:squeezeVar]{limma::squeezeVar()}}: estimate the prior robustly}
+
+\item{confint}{confidence level of the moderated intervals}
+
 \item{variance_floor}{optional positive lower bound for posterior variances}
 }
 \value{
