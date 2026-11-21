@@ -245,7 +245,7 @@ sim_lfq_data_protein_config <- function(
         mutate(subject = row_number()) |>
         ungroup() |>
         mutate(subject = paste0("P", subject))
-      data <- inner_join(annot, data, by = c("group", "sample"))
+      data <- inner_join(annot, data, by = c("group", "sample"), relationship = "one-to-many")
     }
     if (with_missing) {
       data <- data[!which_missing(data$abundance, weight_missing = weight_missing), ]

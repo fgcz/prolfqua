@@ -508,6 +508,6 @@ contrasts_linfct <- function(models, linfct, subject_id = "protein_Id", contrast
     dplyr::select(all_of(c(subject_id, "isSingular", "sigma.model" = "sigma", "df.residual.model" = "df.residual"))) |>
 
     dplyr::distinct()
-  contrasts <- dplyr::inner_join(contrasts, model_infos, by = subject_id)
+  contrasts <- dplyr::inner_join(contrasts, model_infos, by = subject_id, relationship = "many-to-one")
   return(ungroup(contrasts))
 }

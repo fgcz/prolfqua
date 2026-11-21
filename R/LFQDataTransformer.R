@@ -377,7 +377,8 @@ response_matrix_as_tibble <- function(pdata, value, config, data = NULL, sep = "
     pdata <- dplyr::inner_join(
       data,
       pdata,
-      by = unique(c(config$hierarchy_keys(), config$isotope_label, config$sample_name))
+      by = unique(c(config$hierarchy_keys(), config$isotope_label, config$sample_name)),
+      relationship = "one-to-one"
     )
   }
   return(pdata)
@@ -557,7 +558,7 @@ center_to_reference <- function(
     )
   # Step 2: Join back to original data and subtract sample means
   normalized_df <-
-    dplyr::left_join(df, sample_means, by = sample_name) |>
+    dplyr::left_join(df, sample_means, by = sample_name, relationship = "many-to-one") |>
     dplyr::mutate(
       # Create normalized abundance column
       centered_abundance_by_mean = .data[[abundance_column]] - reference_mean,

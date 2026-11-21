@@ -46,7 +46,8 @@ LR_test <- function(
   reg <- dplyr::inner_join(
     dplyr::select(complete_models, !!sym(subject_id), "linear_model"),
     dplyr::select(complete_models_int, !!sym(subject_id), "linear_model"),
-    by = subject_id
+    by = subject_id,
+    relationship = "one-to-one"
   )
 
   reg <- reg |>
@@ -356,13 +357,13 @@ impute_from_model <- function(model, lfqdata) {
     dplyr::select(dplyr::all_of(row_keys)) |>
     dplyr::distinct() |>
     tidyr::crossing(sample_template) |>
-    dplyr::left_join(data, by = c(row_keys, colnames(sample_template)))
+    dplyr::left_join(data, by = c(row_keys, colnames(sample_template)), relationship = "one-to-many")
 
   per_subject <- completed |>
     dplyr::group_by(!!!syms(subject_id)) |>
     tidyr::nest() |>
     dplyr::ungroup() |>
-    dplyr::left_join(fit_table, by = subject_id)
+    dplyr::left_join(fit_table, by = subject_id, relationship = "one-to-one")
   if (anyNA(per_subject$has_model_fit)) {
     abort_prolfqua(
       "Model '",
@@ -782,7 +783,7 @@ impute_refit_singular <- function(
   n_observed <- sum(!is.na(dat[[response]]))
 
   # Complete data with all samples so missing groups get rows
-  dat <- dplyr::left_join(sample_template, dat, by = intersect(colnames(sample_template), colnames(dat)))
+  dat <- dplyr::left_join(sample_template, dat, by = colnames(sample_template), relationship = "one-to-many")
 
   # Fill nr_children with 1 for imputed rows (no observed peptides in missing group)
   if (!is.null(nr_children_col) && nr_children_col %in% colnames(dat)) {

@@ -881,7 +881,7 @@ plot_pca <- function(matrix, annotation, sample_name, factor_keys, PC = c(1, 2),
     ))
   }
 
-  xx <- inner_join(annotation, xx, by = sample_name)
+  xx <- inner_join(annotation, xx, by = sample_name, relationship = "many-to-one")
 
   sh <- factor_keys[2]
   point <- (if (!is.na(sh)) {

@@ -121,8 +121,12 @@ ContrastsHurdleFacade <- R6::R6Class(
           p.value.detection = "p.value",
           FDR.detection = "FDR"
         )
-      res <- dplyr::full_join(intensity, detection, by = by) |>
-        dplyr::left_join(.informative_detection(self$detection$.lfqdata), by = self$subject_id)
+      res <- dplyr::full_join(intensity, detection, by = by, relationship = "one-to-one") |>
+        dplyr::left_join(
+          .informative_detection(self$detection$.lfqdata),
+          by = self$subject_id,
+          relationship = "many-to-one"
+        )
 
       p_detection <- dplyr::if_else(res$.detection_informative, res$p.value.detection, NA_real_)
       log_p <- cbind(log(res$p.value.intensity), log(p_detection))

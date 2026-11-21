@@ -312,7 +312,8 @@ AggregateTopN <- R6::R6Class(
   long_data <- dplyr::left_join(
     long_data,
     wide$annotation,
-    by = intersect(colnames(long_data), colnames(wide$annotation))
+    by = c(config$sample_name, config$isotope_label),
+    relationship = "many-to-one"
   )
   newconfig$nr_children <- paste0("nr_children_", paste(newconfig$hierarchy_keys(), collapse = "_"))
   long_data[[newconfig$nr_children]] <- as.vector(t(elist$other$n.observations))

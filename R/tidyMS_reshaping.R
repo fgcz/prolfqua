@@ -184,19 +184,19 @@ lfqdata_from_wide <- function(values, rowdata, annotation, config, prefix = "ms"
   samples <- as.character(annotation[[sample_name]])
 
   long <- Reduce(
-    function(acc, one) dplyr::inner_join(acc, one, by = c(".row", sample_name)),
+    function(acc, one) dplyr::inner_join(acc, one, by = c(".row", sample_name), relationship = "one-to-one"),
     Map(.wide_matrix_to_long, values, names(values), sample_name)
   )
   rowdata <- tibble::as_tibble(rowdata)
   rowdata$.row <- seq_len(nrow(rowdata))
-  long <- dplyr::inner_join(rowdata, long, by = ".row")
+  long <- dplyr::inner_join(rowdata, long, by = ".row", relationship = "one-to-many")
   long$.row <- NULL
 
   annotation <- tibble::as_tibble(annotation)
   annotation[[sample_name]] <- samples
   # columns already taken from rowdata (e.g. the isotope label) are not joined twice
   annotation <- annotation[, c(sample_name, setdiff(colnames(annotation), colnames(long))), drop = FALSE]
-  long <- dplyr::inner_join(long, annotation, by = sample_name)
+  long <- dplyr::inner_join(long, annotation, by = sample_name, relationship = "many-to-one")
   if (!config$isotope_label %in% colnames(long)) {
     long[[config$isotope_label]] <- "light"
   }

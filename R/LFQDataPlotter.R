@@ -24,7 +24,8 @@
   ranked <- dplyr::left_join(
     wide$rowdata,
     dplyr::select(lfqstats$stats(), dplyr::all_of(c(keys, metric))),
-    by = keys
+    by = keys,
+    relationship = "one-to-one"
   )
   keep <- utils::head(order(ranked[[metric]], decreasing = TRUE, na.last = TRUE), top_n)
   mat[sort(keep), , drop = FALSE]

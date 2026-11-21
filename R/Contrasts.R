@@ -77,7 +77,7 @@
 
   avg_abd$contrast <- gsub("^avg_", "", avg_abd$contrast)
   avg_abd <- avg_abd |> dplyr::rename(avgAbd = "diff")
-  contrast_result <- left_join(differences, avg_abd, by = c(subject_id, "contrast"))
+  contrast_result <- left_join(differences, avg_abd, by = c(subject_id, "contrast"), relationship = "one-to-one")
   if (!is.null(zero_residual_variance)) {
     zero <- zero_residual_variance(contrast_result$sigma, contrast_result$avgAbd)
     contrast_result <- .na_zero_variance(contrast_result, zero, subject_id)
@@ -262,7 +262,8 @@ Contrasts <- R6::R6Class(
           contrast_result <- dplyr::left_join(
             contrast_result,
             imputed_lookup,
-            by = self$subject_id
+            by = self$subject_id,
+            relationship = "many-to-one"
           )
           estimate_type <- ifelse(
             !is.na(contrast_result$imputed) & contrast_result$imputed,

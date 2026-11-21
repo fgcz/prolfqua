@@ -109,7 +109,7 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
   xx <- data |>
     dplyr::select(dplyr::all_of(c(sample_name, factor_keys, file_name, isotope_label))) |>
     dplyr::distinct()
-  res <- dplyr::inner_join(xx, medpolishRes, by = sample_name)
+  res <- dplyr::inner_join(xx, medpolishRes, by = sample_name, relationship = "many-to-one")
   res
 }
 
@@ -154,7 +154,7 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
   finalize <- function(per_sample) {
     per_sample <- per_sample |>
       dplyr::select(all_of(c(samples, expname, "lmrob", "weights")))
-    dplyr::left_join(all_samples, per_sample, by = samples)
+    dplyr::left_join(all_samples, per_sample, by = samples, relationship = "one-to-many")
   }
 
   ## If there is only 1 peptide for all samples use the response of that peptide directly
@@ -204,7 +204,7 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
       sumdata$weights <- 1
     }
 
-    res <- inner_join(sumdata, lmrob, by = samples)
+    res <- inner_join(sumdata, lmrob, by = samples, relationship = "one-to-one")
     if (sum(is.na(res[[expname]])) < sum(is.na(res$lmrob))) {
       res$lmrob <- res[[expname]]
     }
@@ -245,7 +245,12 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
     nr_children_col,
     new_child = new_child
   )
-  result <- inner_join(aggregated_data, res_nr_children, by = c(hierarchy_keys_depth, file_name))
+  result <- inner_join(
+    aggregated_data,
+    res_nr_children,
+    by = c(hierarchy_keys_depth, file_name),
+    relationship = "many-to-one"
+  )
   newconfig$nr_children <- new_child
   return(list(data = result, config = newconfig))
 }
@@ -369,7 +374,7 @@ plot_estimate <- function(lfqdata, lfqdata_agg, show.legend = FALSE) {
     group_by(!!!syms(lfqdata_agg$relevant_hierarchy_keys())) |>
     nest_by(.key = "other")
   xnested_aggr <- xnested_aggr |> tidyr::unite(hierarchy_id, !!!syms(hkeysd))
-  xnested_all <- inner_join(xnested, xnested_aggr, by = hierarchy_id)
+  xnested_all <- inner_join(xnested, xnested_aggr, by = hierarchy_id, relationship = "one-to-one")
 
   plots <- vector(mode = "list", length = nrow(xnested_all))
   # protein estimate drawn on top of the peptide intensities
@@ -607,7 +612,7 @@ rank_peptide_by_intensity <- function(pdata, response, hierarchy_keys) {
     dplyr::arrange(!!sym(hierarchy_keys[1])) |>
     dplyr::group_by(!!sym(hierarchy_keys[1])) |>
     dplyr::mutate(!!rank_column := min_rank(desc(!!sym(summary_column))))
-  pdata <- dplyr::inner_join(pdata, ranked, by = hierarchy_keys)
+  pdata <- dplyr::inner_join(pdata, ranked, by = hierarchy_keys, relationship = "many-to-one")
 
   inform_prolfqua("Columns added : ", summary_column, " ", rank_column)
   return(pdata)

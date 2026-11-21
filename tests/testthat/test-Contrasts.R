@@ -314,3 +314,27 @@ test_that("compute_lmer_contrast reports an empty contrast matrix instead of fai
   expect_true(is.logical(res))
   expect_true(is.na(res))
 })
+
+test_that("merge_contrasts_results errors on duplicated subject-contrast rows instead of multiplying them (review B3)", {
+  prefer_df <- data.frame(
+    protein_Id = c("P1", "P2"),
+    contrast = "A_vs_B",
+    modelName = "prefer",
+    diff = c(1, 2),
+    p.value = c(0.01, 0.2),
+    FDR = c(0.02, 0.2),
+    statistic = c(3, NA)
+  )
+  add_df <- data.frame(
+    protein_Id = c("P1", "P1", "P2"),
+    contrast = "A_vs_B",
+    modelName = "add",
+    diff = c(1.1, 1.2, 2.1),
+    p.value = c(0.02, 0.02, 0.03),
+    FDR = c(0.03, 0.03, 0.04),
+    statistic = c(2.8, 2.7, 2.5)
+  )
+  prefer <- ContrastsTable$new(prefer_df, subject_id = "protein_Id", model_name = "prefer")
+  add <- ContrastsTable$new(add_df, subject_id = "protein_Id", model_name = "add")
+  expect_error(merge_contrasts_results(prefer, add), "must match at most 1 row")
+})

@@ -227,7 +227,7 @@ LFQData <- R6::R6Class(
       if (ncol(x) == 0L) {
         abort_missing_columns(self$subject_id(), data_nm = "x")
       }
-      subset <- inner_join(x, self$data_long(), by = colnames(x))
+      subset <- inner_join(x, self$data_long(), by = colnames(x), relationship = "one-to-many")
       return(LFQData$new(subset, self$get_config(), provenance = private$.provenance))
     },
     #' @description

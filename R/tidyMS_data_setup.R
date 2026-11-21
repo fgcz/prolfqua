@@ -437,7 +437,7 @@ complete_cases <- function(lfqdata) {
 #' length(unique(subset[[bb$config$hierarchy_keys_depth()[1]]]))
 sample_subset <- function(size, pdata, hierarchy_keys_depth) {
   hkdf <- pdata |> select(all_of(hierarchy_keys_depth)) |> distinct() |> sample_n(size = size)
-  sdata <- inner_join(hkdf, pdata, by = hierarchy_keys_depth)
+  sdata <- inner_join(hkdf, pdata, by = hierarchy_keys_depth, relationship = "one-to-many")
   return(sdata)
 }
 
@@ -504,6 +504,6 @@ filter_proteins_by_peptide_count <- function(
   }
   counts <- nr_B_in_A(pdata, parent, child)
   name <- setdiff(names(counts), parent)
-  data <- dplyr::inner_join(pdata, counts, by = parent)
+  data <- dplyr::inner_join(pdata, counts, by = parent, relationship = "many-to-one")
   list(data = dplyr::filter(data, .data[[name]] >= .env$threshold), name = name)
 }

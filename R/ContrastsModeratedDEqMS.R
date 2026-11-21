@@ -356,7 +356,8 @@ ContrastsModeratedDEqMS <- R6::R6Class(
       contrast_result <- dplyr::inner_join(
         contrast_result,
         self$count_df,
-        by = self$subject_id
+        by = self$subject_id,
+        relationship = "many-to-one"
       )
 
       # Ensure count >= 1 to avoid log2(0)
