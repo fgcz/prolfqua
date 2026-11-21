@@ -13,6 +13,10 @@ hierarchy_counts(pdata, hierarchy_keys, isotope_label = "isotopeLabel")
 
 \item{isotope_label}{character — isotope label column name}
 }
+\value{
+a tibble with one row per isotope label and one column per hierarchy key holding the number of distinct
+elements
+}
 \description{
 E.g. number of proteins, peptides, precursors in the dataset. Counts per
 isotope label over the whole dataset, whether observed or not.

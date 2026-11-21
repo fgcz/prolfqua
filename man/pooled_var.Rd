@@ -3,7 +3,7 @@
 \name{compute_pooled}
 \alias{compute_pooled}
 \alias{poolvar}
-\title{compute pooled variance}
+\title{Compute pooled variance}
 \usage{
 compute_pooled(x)
 

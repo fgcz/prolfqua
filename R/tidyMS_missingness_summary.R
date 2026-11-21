@@ -1,14 +1,16 @@
 #' Facet formula "isotope label ~ factor1 + factor2" used by the missingness plots.
-#' @param lfqdata LFQData containing the measurements and configuration
+#' @param lfqdata [LFQData] object with the data and its configuration
 #' @param factors named list of explanatory-variable columns
 #' @noRd
 .isotope_by_factors_formula <- function(lfqdata, factors) {
   paste(lfqdata$isotope_label(), "~", paste(factors, collapse = "+"))
 }
 
-#' convert to binary response
-#' @param lfqdata LFQData object
+#' Encode intensities as a binary detection response
+#' @param lfqdata [LFQData] object with the data and its configuration
 #' @param name column name for binary response
+#' @return a tibble of the long-format data with an added integer column `name`: 1 if the response is observed,
+#'   0 if it is `NA`
 #' @export
 #' @keywords internal
 #' @examples
@@ -45,8 +47,10 @@ encode_bin_resp <- function(lfqdata, name = "bin_resp") {
 #' @keywords internal
 #' @family imputation
 #' @param data data.frame
-#' @param data hierarchy_keys of Analysis Configuration
+#' @param hierarchy_keys hierarchy key columns of the AnalysisConfiguration
 #' @param contrasts list of contrasts to compute
+#' @return a tibble with one row per hierarchy element and contrast and columns of the `hierarchy_keys`,
+#'   `group_1`, `group_2`, `estimate`, `group_1_name`, `group_2_name` and `contrast`
 #' @export
 #' @examples
 #'
@@ -108,10 +112,12 @@ get_contrast <- function(data, hierarchy_keys, contrasts) {
 
 
 #' Histogram summarizing missingness
-#' @param lfqdata LFQData object
+#' @param lfqdata [LFQData] object with the data and its configuration
 #' @param showempty show empty values
 #' @param factors factor columns to use
 #' @param alpha transparency
+#' @return a ggplot object with density plots of the mean intensity per number of missing values, faceted by
+#'   factor levels
 #' @export
 #' @keywords internal
 #' @family plotting
@@ -163,9 +169,11 @@ missigness_histogram <- function(lfqdata, showempty = FALSE, factors = lfqdata$r
   p
 }
 
-#' cumulative sums of missing
-#' @param lfqdata LFQData object
+#' Cumulative counts of missing values per condition
+#' @param lfqdata [LFQData] object with the data and its configuration
 #' @param factors factor columns to use
+#' @return a list with `data`, a wide tibble with one row per condition and one column per number of missing
+#'   values holding the cumulative feature count, and `figure`, a ggplot bar chart of these counts
 #' @export
 #' @keywords internal
 #' @family plotting
@@ -206,8 +214,10 @@ missingness_per_condition_cumsum <- function(lfqdata, factors = lfqdata$relevant
 }
 
 #' Summarize missing in condition as barplot
-#' @param lfqdata LFQData object
+#' @param lfqdata [LFQData] object with the data and its configuration
 #' @param factors factor columns to use
+#' @return a list with `data`, a wide tibble with one row per condition and one column per number of missing
+#'   values holding the feature count, and `figure`, a ggplot bar chart of these counts
 #' @export
 #' @keywords internal
 #' @family plotting
@@ -249,7 +259,7 @@ missingness_per_condition <- function(lfqdata, factors = lfqdata$relevant_factor
 #' @export
 #' @family plotting
 #' @family imputation
-#' @param lfqdata LFQData object
+#' @param lfqdata [LFQData] object with the data and its configuration
 #' @param tr if less than tr observations in condition then missing
 #' @examplesIf requireNamespace("UpSetR", quietly = TRUE)
 #' istar <- sim_lfq_data_peptide_config()
@@ -272,9 +282,11 @@ upset_interaction_missing_stats <- function(lfqdata, tr = 2) {
   return(list(data = as.data.frame(nr_missing), nsets = ncol(nr_missing) - hl))
 }
 
-#' prepare dataframe for UpSetR plot for all samples
+#' Prepare data for an UpSetR plot of all samples
 #'
-#' @param lfqdata LFQData object
+#' @param lfqdata [LFQData] object with the data and its configuration
+#' @return a list with `data`, a data.frame with one row per hierarchy element and one 0/1 presence column per
+#'   sample, and `nsets`, the number of sample columns
 #' @export
 #' @keywords internal
 #' @family plotting

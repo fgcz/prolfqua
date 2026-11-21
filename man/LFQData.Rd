@@ -270,7 +270,7 @@ subset); a copy is kept. NULL starts a new record.}
 \if{latex}{\out{\hypertarget{method-LFQData-is_aggregatable}{}}}
 \subsection{\code{LFQData$is_aggregatable()}}{
   can the data be aggregated, i.e. is there a hierarchy level below the
-modelled one (`hierarchy_depth`)
+modelled one (\code{hierarchy_depth})
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{LFQData$is_aggregatable()}
@@ -380,10 +380,10 @@ modelled one (`hierarchy_depth`)
 \if{html}{\out{<a id="method-LFQData-filter_proteins_by_peptide_count"></a>}}
 \if{latex}{\out{\hypertarget{method-LFQData-filter_proteins_by_peptide_count}{}}}
 \subsection{\code{LFQData$filter_proteins_by_peptide_count()}}{
-  remove parents (e.g. proteins) with fewer than `threshold` distinct
+  remove parents (e.g. proteins) with fewer than \code{threshold} distinct
 children (e.g. peptides) and add the count as a column. By default the
 second hierarchy level is counted within the first, independent of
-`hierarchy_depth`; a hierarchy with one level is an error.
+\code{hierarchy_depth}; a hierarchy with one level is an error.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{LFQData$filter_proteins_by_peptide_count(
@@ -396,7 +396,7 @@ second hierarchy level is counted within the first, independent of
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{threshold}}{minimum number of children, default `config$min_peptides_protein`}
+      \item{\code{threshold}}{minimum number of children, default \code{config$min_peptides_protein}}
       \item{\code{parent}}{parent key column, default the first hierarchy key}
       \item{\code{child}}{child key column, default the second hierarchy key}
     }
@@ -413,7 +413,7 @@ second hierarchy level is counted within the first, independent of
 \subsection{\code{LFQData$remove_decoys()}}{
   remove decoy / reverse-database entries (rows whose top-level hierarchy id,
 e.g. protein_Id, is a decoy). Detection uses the configured
-`pattern_decoys` unioned with the built-in defaults (see
+\code{pattern_decoys} unioned with the built-in defaults (see
 \code{\link{is_decoy}}); decoys are always detectable even when no pattern
 is configured. Returns a new decoy-free LFQData (self is not modified).
   \subsection{Usage}{
@@ -432,7 +432,7 @@ is configured. Returns a new decoy-free LFQData (self is not modified).
 \subsection{\code{LFQData$remove_contaminants()}}{
   remove contaminant entries (rows whose top-level hierarchy id, e.g.
 protein_Id, is a contaminant). Detection uses the configured
-`pattern_contaminants` unioned with the built-in defaults (see
+\code{pattern_contaminants} unioned with the built-in defaults (see
 \code{\link{is_contaminant}}). Returns a new contaminant-free LFQData
 (self is not modified).
   \subsection{Usage}{
@@ -450,7 +450,7 @@ protein_Id, is a contaminant). Detection uses the configured
 \if{latex}{\out{\hypertarget{method-LFQData-decoy_proportion}{}}}
 \subsection{\code{LFQData$decoy_proportion()}}{
   proportion of modelling-level keys (subject_id, e.g. protein or peptide by
-`hierarchy_depth`) that are decoys — an empirical-FDR / target-decoy QC
+\code{hierarchy_depth}) that are decoys — an empirical-FDR / target-decoy QC
 signal. Decoy status derives from the top-level hierarchy id (protein_Id).
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}

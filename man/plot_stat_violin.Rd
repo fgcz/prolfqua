@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_stats.R
 \name{plot_stat_violin}
 \alias{plot_stat_violin}
-\title{plot Violin plot of sd CV or mean}
+\title{Violin plot of sd, CV or mean}
 \usage{
 plot_stat_violin(
   pdata,
@@ -17,8 +17,11 @@ plot_stat_violin(
 
 \item{stat}{either CV, mean or sd}
 }
+\value{
+a ggplot object with one violin of \code{stat} per combination of factor levels, with the median marked
+}
 \description{
-plot Violin plot of sd CV or mean
+Violin plot of sd, CV or mean
 }
 \examples{
 

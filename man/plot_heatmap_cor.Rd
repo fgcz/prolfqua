@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_plotting.R
 \name{plot_heatmap_cor}
 \alias{plot_heatmap_cor}
-\title{plot correlation heatmap with annotations}
+\title{Plot a sample correlation heatmap with annotations}
 \usage{
 plot_heatmap_cor(
   matrix,
@@ -32,13 +32,16 @@ plot_heatmap_cor(
 \item{max_sample_label_chars}{maximum displayed sample label length. Labels
 keep their suffix because sample prefixes are often shared.}
 
-\item{method}{correlation method: `"pearson"` (default), `"spearman"` or `"kendall"` for [stats::cor()] on
+\item{method}{correlation method: \code{"pearson"} (default), \code{"spearman"} or \code{"kendall"} for \code{\link[stats:cor]{stats::cor()}} on
 pairwise complete observations, or a function of the matrix returning a sample-by-sample correlation matrix}
 
-\item{...}{passed to [ComplexHeatmap::Heatmap()]}
+\item{...}{passed to \code{\link[ComplexHeatmap:Heatmap]{ComplexHeatmap::Heatmap()}}}
+}
+\value{
+invisibly, a ComplexHeatmap \code{Heatmap} object of the clustered sample correlations (or R^2 values)
 }
 \description{
-plot correlation heatmap with annotations
+Plot a sample correlation heatmap with annotations
 }
 \examples{
 \dontshow{if (requireNamespace("ComplexHeatmap", quietly = TRUE) && requireNamespace("circlize", quietly = TRUE)) withAutoprint(\{ # examplesIf}

@@ -2,18 +2,18 @@
 % Please edit documentation in R/tidyMS_stats.R
 \name{summarize_stats_factors}
 \alias{summarize_stats_factors}
-\title{compute var sd etc for all factor levels}
+\title{Compute variance, sd and related statistics for all factor levels}
 \usage{
 summarize_stats_factors(lfqdata)
 }
 \arguments{
-\item{lfqdata}{LFQData object}
+\item{lfqdata}{\link{LFQData} object with the data and its configuration}
 }
 \value{
 The computed result.
 }
 \description{
-compute var sd etc for all factor levels
+Compute variance, sd and related statistics for all factor levels
 }
 \examples{
 res2 <- prolfqua::sim_lfq_data_2factor_config()

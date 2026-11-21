@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_reshaping.R
 \name{tidy_to_wide_config}
 \alias{tidy_to_wide_config}
-\title{transform long to wide}
+\title{Transform long to wide format}
 \usage{
 tidy_to_wide_config(
   lfqdata,
@@ -14,7 +14,7 @@ tidy_to_wide_config(
 )
 }
 \arguments{
-\item{lfqdata}{LFQData object}
+\item{lfqdata}{\link{LFQData} object with the data and its configuration}
 
 \item{as.matrix}{if TRUE return matrix, otherwise data.frame}
 
@@ -32,7 +32,7 @@ sample; e.g. drop the isotope label only for single-label data.}
 list with data, rowdata, and annotation (colData)
 }
 \description{
-transform long to wide
+Transform long to wide format
 }
 \examples{
 

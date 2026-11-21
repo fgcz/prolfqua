@@ -9,6 +9,10 @@ model_summary(mod)
 \arguments{
 \item{mod}{model table see \code{\link{build_model}}}
 }
+\value{
+a list with the tables \code{exists} (counts of subjects with and without a model fit) and \code{isSingular}
+(counts of singular and non-singular fits)
+}
 \description{
 Summarize modelling and error reporting
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_plotting.R
 \name{plot_hierarchies_boxplot_df}
 \alias{plot_hierarchies_boxplot_df}
-\title{generates peptide level plots for all Proteins}
+\title{Generate feature-level boxplots for all proteins}
 \usage{
 plot_hierarchies_boxplot_df(
   pdata,
@@ -14,14 +14,18 @@ plot_hierarchies_boxplot_df(
 \arguments{
 \item{pdata}{data.frame}
 
-\item{lfqdata}{LFQData object}
+\item{lfqdata}{\link{LFQData} object with the data and its configuration}
 
 \item{hierarchy}{e.g. protein_Id default relevant_hierarchy_keys}
 
 \item{facet_grid_on}{default NULL}
 }
+\value{
+a tibble with one row per element of \code{hierarchy}, a column (named after the \code{hierarchy} columns joined
+by \code{+}) identifying it, and a list column \code{boxplot} of ggplot objects made by \code{\link[=plot_hierarchies_boxplot]{plot_hierarchies_boxplot()}}
+}
 \description{
-generates peptide level plots for all Proteins
+Generate feature-level boxplots for all proteins
 }
 \examples{
 

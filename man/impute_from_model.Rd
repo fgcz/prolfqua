@@ -15,9 +15,9 @@ response and subject_id)}
 }
 \value{
 list with \code{lfqdata}, a new \code{\link{LFQData}} holding every
-  subject x sample row with missing responses filled, and \code{summary}, a
-  tibble with the subject_id columns and \code{n_observed}, \code{n_imputed}
-  and \code{route} per subject
+subject x sample row with missing responses filled, and \code{summary}, a
+tibble with the subject_id columns and \code{n_observed}, \code{n_imputed}
+and \code{route} per subject
 }
 \description{
 Completes the data to every subject x every sample and fills each missing
@@ -28,13 +28,13 @@ no noise.
 \details{
 Each subject gets one route, checked in this order:
 \describe{
-  \item{complete}{no missing cell.}
-  \item{lod_refit}{the subject was refitted at the LOD by
-    \code{\link{build_model_impute}} (\code{model_df$imputed}); that fit's
-    predictions fill the missing cells.}
-  \item{fitted}{the observed-data fit has no NA coefficient and knows every
-    factor level of the missing cells; its predictions fill them.}
-  \item{none}{no usable fit; the missing cells stay NA.}
+\item{complete}{no missing cell.}
+\item{lod_refit}{the subject was refitted at the LOD by
+\code{\link{build_model_impute}} (\code{model_df$imputed}); that fit's
+predictions fill the missing cells.}
+\item{fitted}{the observed-data fit has no NA coefficient and knows every
+factor level of the missing cells; its predictions fill them.}
+\item{none}{no usable fit; the missing cells stay NA.}
 }
 }
 \examples{

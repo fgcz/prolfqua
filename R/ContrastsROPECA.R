@@ -213,7 +213,7 @@ ContrastsROPECA <- R6::R6Class(
 
 # ROPECA V2 -----
 
-#' Gauss-Hermite rule for E[f(W)], W ~ N(0, 1), by the Golub-Welsch eigen
+#' Gauss-Hermite rule for E\[f(W)\], W ~ N(0, 1), by the Golub-Welsch eigen
 #'
 #' decomposition of the Jacobi matrix of the probabilists' Hermite polynomials.
 #' @param n number of Gauss-Hermite quadrature nodes
@@ -357,7 +357,7 @@ ContrastsROPECA <- R6::R6Class(
 #' Correlation of peptides within a protein, estimated once per dataset from the
 #'
 #' residuals of the peptide models, pooled over proteins with at least two
-#' peptides, clamped to [0, 0.95].
+#' peptides, clamped to \[0, 0.95\].
 #' @param model_df table with one fitted model and diagnostics per subject
 #' @param subject_id column names identifying the modelled subjects
 #' @param sample_col sample identifier column

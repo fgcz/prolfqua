@@ -23,6 +23,10 @@ table_factors_size(
 
 \item{factor_keys_depth}{character vector — factor columns at current depth}
 }
+\value{
+a tibble with one row per combination of the \code{factor_keys_depth} levels and a column \code{n} with the
+number of samples
+}
 \description{
 Table of distinct factors with group sizes
 }

@@ -31,7 +31,7 @@ LFQDataSummariser <- R6::R6Class(
     lfq = NULL,
     #' @description
     #' initialize
-    #' @param lfqdata LFQData
+    #' @param lfqdata [LFQData] object with the data and its configuration
     initialize = function(lfqdata) {
       self$lfq <- lfqdata$clone(deep = TRUE)
     },
@@ -42,16 +42,16 @@ LFQDataSummariser <- R6::R6Class(
     },
     #' @description
     #' number of elements at each level in every sample
-    #' @param value wide - wide format, long - long format, plot - ggplot
+    #' @param value `"wide"` (one column per hierarchy level) or `"long"` format
     #' @param nr_children get summary for 1,2 or more number of children
+    #' @return tibble of counts per sample and hierarchy level
     hierarchy_counts_sample = function(value = c("wide", "long"), nr_children = 1) {
       value <- match.arg(value)
       hcs <- HierarchyCountsSample$new(self$lfq$data_long(), self$lfq$get_config(), nr_children = nr_children)
-      if (value == "wide") return(hcs$wide()) else return(hcs$long())
+      if (value == "wide") hcs$wide() else hcs$long()
     },
     #' @description
     #' barplot showing number of elements at each level in every sample
-    #' @param value wide - wide format, long - long format, plot - ggplot
     #' @param nr_children get summary for 1,2 or more number of children
     plot_hierarchy_counts_sample = function(nr_children = 1) {
       hcs <- HierarchyCountsSample$new(self$lfq$data_long(), self$lfq$get_config(), nr_children = nr_children)

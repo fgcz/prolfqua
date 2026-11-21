@@ -2,12 +2,17 @@
 % Please edit documentation in R/LFQDataTransformer.R
 \name{robust_scale}
 \alias{robust_scale}
-\title{robust scale wrapper}
+\title{Robustly scale a matrix by medians and MADs}
 \usage{
 robust_scale(data, dim = 2, preserve_mean = FALSE)
 }
+\value{
+a matrix like \code{data}, centred by the median of each column (\code{dim = 2}) or row (\code{dim = 1}) and divided
+by its MAD relative to the mean MAD; only centred, with a warning, if a MAD is zero; with
+\code{preserve_mean = TRUE} the mean of the medians is added back
+}
 \description{
-robust scale wrapper
+Robustly scale a matrix by medians and MADs
 }
 \examples{
 mat <- matrix(c(1, 2, 3, 4, 10, 12), nrow = 3)

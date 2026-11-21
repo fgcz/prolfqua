@@ -11,30 +11,30 @@
 )
 }
 \arguments{
-\item{total}{number of iterations; `<= 0` yields a no-op reporter.}
+\item{total}{number of iterations; \verb{<= 0} yields a no-op reporter.}
 
 \item{label}{short label naming the pass (e.g. "firth multi-peptide").}
 
 \item{reporter}{reporter selector; see Details. Defaults to
-`getOption("prolfqua.progress", NULL)`.}
+\code{getOption("prolfqua.progress", NULL)}.}
 }
 \value{
-an object with a `$tick()` method.
+an object with a \verb{$tick()} method.
 }
 \description{
-Internal factory used by `model_analyse()` and the contrast loops. The
-returned object exposes `$tick(len = 1, tokens = list())`, the same contract
-as `progress::progress_bar`, so call sites are agnostic to which reporter
+Internal factory used by \code{model_analyse()} and the contrast loops. The
+returned object exposes \verb{$tick(len = 1, tokens = list())}, the same contract
+as \code{progress::progress_bar}, so call sites are agnostic to which reporter
 they received.
 }
 \details{
-The `reporter` argument (defaulting to the `prolfqua.progress` option)
+The \code{reporter} argument (defaulting to the \code{prolfqua.progress} option)
 selects the mode:
 \itemize{
-  \item `NULL` -- the legacy `progress::progress_bar` (terminal, unchanged).
-  \item a `function(i, total, label)` -- a throttled user callback, e.g. one
-    that calls `logger::log_info()`.
-  \item `"message"` -- a throttled `message()` heartbeat with elapsed/ETA.
+\item \code{NULL} -- the legacy \code{progress::progress_bar} (terminal, unchanged).
+\item a \verb{function(i, total, label)} -- a throttled user callback, e.g. one
+that calls \code{logger::log_info()}.
+\item \code{"message"} -- a throttled \code{message()} heartbeat with elapsed/ETA.
 }
 }
 \keyword{internal}

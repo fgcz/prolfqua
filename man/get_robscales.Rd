@@ -2,12 +2,15 @@
 % Please edit documentation in R/LFQDataTransformer.R
 \name{get_robscales}
 \alias{get_robscales}
-\title{compute median and standard deviation for each sample}
+\title{Compute the median and MAD of each sample}
 \usage{
 get_robscales(lfqdata)
 }
+\value{
+a list with the numeric vectors \code{medians} and \code{mads}, with one element per sample
+}
 \description{
-compute median and standard deviation for each sample
+Compute the median and MAD of each sample
 }
 \examples{
 

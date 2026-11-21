@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{panel_cor}
 \alias{panel_cor}
-\title{correlation panel for pairs plot function (used as default in pairs_smooth)}
+\title{Correlation panel for pairs plots (default lower panel of \code{pairs_smooth()})}
 \usage{
 panel_cor(x, y, digits = 2, ...)
 }
@@ -15,8 +15,12 @@ panel_cor(x, y, digits = 2, ...)
 
 \item{...}{not used}
 }
+\value{
+\code{NULL}, invisibly; called for its side effect of writing the correlation, R^2 and p-value into the
+current panel
+}
 \description{
-correlation panel for pairs plot function (used as default in pairs_smooth)
+Correlation panel for pairs plots (default lower panel of \code{pairs_smooth()})
 }
 \examples{
 graphics::plot(1:3, 1:3, type = "n")

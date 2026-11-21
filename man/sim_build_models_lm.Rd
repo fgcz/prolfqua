@@ -2,7 +2,7 @@
 % Please edit documentation in R/simulate_LFQ_data.R
 \name{sim_build_models_lm}
 \alias{sim_build_models_lm}
-\title{build dataframe with models for testing}
+\title{Build linear models on simulated data for testing}
 \usage{
 sim_build_models_lm(
   model = c("parallel2", "parallel3", "factors", "interaction"),
@@ -11,8 +11,11 @@ sim_build_models_lm(
   weight_missing = 1
 )
 }
+\value{
+a \link{Model} object with one linear model per simulated protein, fitted with \code{\link[=build_model]{build_model()}}
+}
 \description{
-build dataframe with models for testing
+Build linear models on simulated data for testing
 }
 \examples{
 modi <- sim_build_models_lm(model = "interaction", weight_missing = 1)

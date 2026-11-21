@@ -11,8 +11,8 @@ lookup_facade(name)
 }
 \value{
 Registry entry list with at least \code{class},
-  \code{needs}, \code{package}, \code{needs_saint_annotation}; or
-  \code{NULL} if no entry exists.
+\code{needs}, \code{package}, \code{needs_saint_annotation}; or
+\code{NULL} if no entry exists.
 }
 \description{
 Look up a contrast facade by short name

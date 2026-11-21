@@ -13,7 +13,7 @@ lfq_power_t_test_proteins(
 )
 }
 \arguments{
-\item{stats_res}{data.frame `summarize_stats` output}
+\item{stats_res}{data.frame \code{summarize_stats} output}
 
 \item{delta}{effect size you are interested in}
 
@@ -22,6 +22,10 @@ lfq_power_t_test_proteins(
 \item{sig.level}{P-Value}
 
 \item{min.n}{smallest n to determine}
+}
+\value{
+a tibble with one row per complete row of \code{stats_res} and value of \code{delta}, with the added columns
+\code{delta}, \code{N_exact} (samples per group needed) and \code{N} (rounded up)
 }
 \description{
 Compute theoretical sample sizes from factor level standard deviations

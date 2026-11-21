@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_stats.R
 \name{plot_stdv_vs_mean}
 \alias{plot_stdv_vs_mean}
-\title{plot stddev vs mean to asses stability of variance}
+\title{Plot standard deviation against mean to assess variance stability}
 \usage{
 plot_stdv_vs_mean(pdata, factor_keys_depth, size = 2000)
 }
@@ -13,8 +13,12 @@ plot_stdv_vs_mean(pdata, factor_keys_depth, size = 2000)
 
 \item{size}{how many points to sample (since scatter plot to slow for all)}
 }
+\value{
+a ggplot scatter plot of \code{sd} against \code{meanAbundance} with a loess fit, one facet per combination of
+factor levels
+}
 \description{
-plot stddev vs mean to asses stability of variance
+Plot standard deviation against mean to assess variance stability
 }
 \examples{
 

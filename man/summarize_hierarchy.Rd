@@ -23,10 +23,14 @@ summarize_hierarchy(
 
 \item{factors}{character vector — factor columns to include}
 }
+\value{
+a tibble with one row per combination of the \code{factors} and \code{hierarchy} columns and, for each other
+hierarchy level and the isotope label, a column \verb{<level>_n} with the number of its distinct entries
+}
 \description{
 E.g compute number of peptides for each protein: for each entry of
-`hierarchy` (and of `factors`), the number of distinct entries of the other
-hierarchy levels, in columns named `<level>_n`. Counts experiment-wide,
+\code{hierarchy} (and of \code{factors}), the number of distinct entries of the other
+hierarchy levels, in columns named \verb{<level>_n}. Counts experiment-wide,
 whether observed or not.
 }
 \examples{

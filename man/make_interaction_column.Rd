@@ -2,12 +2,16 @@
 % Please edit documentation in R/utilities.R
 \name{make_interaction_column}
 \alias{make_interaction_column}
-\title{create interaction column from factors}
+\title{Create an interaction column from factors}
 \usage{
 make_interaction_column(data, columns, sep = ".")
 }
+\value{
+\code{data} with an added factor column \code{interaction} combining the values of \code{columns}, each prefixed with
+its column name and joined by \code{sep}
+}
 \description{
-create interaction column from factors
+Create an interaction column from factors
 }
 \examples{
 xx <- data.frame(A = c("a","a","a"), B = c("d","d","e"))

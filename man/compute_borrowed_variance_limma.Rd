@@ -11,7 +11,7 @@ compute_borrowed_variance_limma(fit)
 }
 \value{
 list with \code{sigma} (median residual SD) and \code{df} (median
-  residual df) from successful proteins
+residual df) from successful proteins
 }
 \description{
 Extracts median sigma and df from proteins that fitted successfully

@@ -143,7 +143,7 @@ LFQDataTransformer <- R6::R6Class(
     #' log2 transform and robust scale data based on subset
     #' @param lfqsubset LFQData subset to use for normalization
     #' @param preserve_mean should original mean value be preserved TRUE, if FALSE then center at zero
-    #' @param colname - how to name the transformed intensities, default transformedIntensity
+    #' @param colname how to name the transformed intensities, default transformedIntensity
     #' @return LFQDataTransformer (self)
     #'
     robscale_subset = function(lfqsubset, preserve_mean = TRUE, colname = "transformed_abundance") {
@@ -339,6 +339,8 @@ transform_work_intensity <- function(pdata, response, .func, .funcname = NULL) {
 #' @param config AnalysisConfiguration (needed for column name mapping)
 #' @param data optional data.frame to join back to
 #' @param sep separator used to unite the hierarchy keys
+#' @return a long-format tibble with the hierarchy key, isotope label, sample name and `value` columns; if `data`
+#'   is given, `data` joined with these values
 #' @export
 #'
 #' @keywords internal
@@ -384,7 +386,7 @@ response_matrix_as_tibble <- function(pdata, value, config, data = NULL, sep = "
   return(pdata)
 }
 
-#' compute median and mad on matrix
+#' Compute medians and MADs of a matrix along one margin
 #' @keywords internal
 #'
 .get_robscales <- function(data, dim = 2) {
@@ -394,7 +396,8 @@ response_matrix_as_tibble <- function(pdata, value, config, data = NULL, sep = "
   return(list(medians = medians, mads = mads))
 }
 
-#' compute median and standard deviation for each sample
+#' Compute the median and MAD of each sample
+#' @return a list with the numeric vectors `medians` and `mads`, with one element per sample
 #' @export
 #' @keywords internal
 #' @family preprocessing
@@ -419,7 +422,10 @@ get_robscales <- function(lfqdata) {
 }
 
 
-#' robust scale wrapper
+#' Robustly scale a matrix by medians and MADs
+#' @return a matrix like `data`, centred by the median of each column (`dim = 2`) or row (`dim = 1`) and divided
+#'   by its MAD relative to the mean MAD; only centred, with a warning, if a MAD is zero; with
+#'   `preserve_mean = TRUE` the mean of the medians is added back
 #' @keywords internal
 #' @family preprocessing
 #' @export
@@ -461,7 +467,7 @@ robust_scale <- function(data, dim = 2, preserve_mean = FALSE) {
 
 #' Apply function requiring a matrix to tidy table
 #'
-#' @param lfqdata LFQData object
+#' @param lfqdata [LFQData] object with the data and its configuration
 #' @param .func function taking and returning a matrix
 #' @param .funcname name of function (used for creating new column)
 #' @return list with `data` (data.frame) and `colname` (new column name)
@@ -568,7 +574,7 @@ center_to_reference <- function(
   return(normalized_df)
 }
 
-#' center to reference
+#' Center data to a reference subset
 #'
 #' takes the median of the lfqdareference per sample and subtracts it from a copy of lfqdata
 #' @param lfqdata LFQData object containing the data to center

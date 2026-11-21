@@ -2,8 +2,7 @@
 % Please edit documentation in R/tidyMS_moderation.R
 \name{summary_ROPECA_median_p_scaled}
 \alias{summary_ROPECA_median_p_scaled}
-\title{compute protein level fold changes and p.values (using beta distribution)
-takes p-value of the scaled p-value}
+\title{Compute protein-level fold changes and p-values using the beta distribution}
 \usage{
 summary_ROPECA_median_p_scaled(
   contrasts_data,
@@ -34,7 +33,6 @@ summary_ROPECA_median_p_scaled(
 data.frame with columns
 }
 \description{
-compute protein level fold changes and p.values (using beta distribution)
 takes p-value of the scaled p-value
 }
 \examples{

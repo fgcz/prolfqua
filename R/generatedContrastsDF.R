@@ -1,4 +1,4 @@
-#' group label function
+#' Build group labels from two factor levels
 #' @param primary character, primary factor level
 #' @param secondary character, secondary factor level
 #' @return A character vector with combined group labels.
@@ -11,7 +11,7 @@ group_label <- function(primary, secondary) paste0("G_", primary, "_", secondary
 
 # Generic function to build pairwise contrasts for any two factors
 # Main effect contrasts (averaged across all secondary levels)
-#' main effects contrasts
+#' Main effects contrasts
 #' @param primary_levels character vector of primary factor levels
 #' @param secondary_levels character vector of secondary factor levels
 #' @return Contrast definitions or contrast results.

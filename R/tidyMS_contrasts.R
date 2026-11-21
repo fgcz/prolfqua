@@ -85,6 +85,9 @@ parse_contrast_sides <- function(contrasts) {
 #'   predictors and the usual intercept-based coding; they are not a general
 #'   marginal-means implementation for continuous predictors or arbitrary coding.
 #' @param m linear model
+#' @return if `as_list = TRUE`, a list with the matrices `linfct_factors` (one row per factor level) and
+#'   `linfct_interactions` (one row per observed factor combination), each with one column per model coefficient;
+#'   otherwise the two matrices bound by rows into a single matrix
 #' @family modelling
 #' @export
 #' @keywords internal
@@ -155,6 +158,7 @@ linfct_from_model <- function(m, as_list = TRUE) {
 #' @param linfct linear functions as created by linfct_from_model
 #' @param contrasts named character vector of contrasts to determine linear functions for
 #' @param p.message print messages default FALSE
+#' @return a matrix with one row per computable contrast and one column per model coefficient
 #'
 #' @family modelling
 #' @keywords internal
@@ -289,13 +293,16 @@ linfct_matrix_contrasts <- function(linfct, contrasts, p.message = FALSE) {
   return(res)
 }
 
-#' handles incomplete models
+#' Compute contrasts for possibly incomplete models
 #'
 #' only keeps non NA coefficients.
 #'
 #' @param m linear model generated using lm
 #' @param linfct linear function
 #' @param confint confidence interval default 0.95
+#' @return a data.frame with one row per row of `linfct` and columns `lhs`, `sigma`, `df`, `estimate`,
+#'   `std.error`, `statistic`, `p.value`, `conf.low` and `conf.high`; the estimates are `NA` for rows that use a
+#'   coefficient the model could not estimate
 #'
 #' @export
 #' @family modelling
@@ -348,10 +355,13 @@ compute_contrast <- function(m, linfct, confint = 0.95) {
   return(res)
 }
 
-#' applies contrast computation using lmerTest::contest function
+#' Compute contrasts of a mixed-effects model with lmerTest
 #' @param model mixed effects model
 #' @param linfct linear function
 #' @param ddf method to determine denominator degrees of freedom
+#' @return a tibble with one row per row of `linfct` and columns `lhs`, `estimate`, `std.error`, `df`,
+#'   `statistic`, `conf.low`, `conf.high`, `p.value` and `sigma`; `NA` (with a warning) if `linfct` has no rows or
+#'   the model is rank-deficient
 #' @family modelling
 #' @export
 #' @keywords internal
@@ -401,7 +411,7 @@ compute_lmer_contrast <- function(model, linfct, ddf = c("Satterthwaite", "Kenwa
 }
 
 # computing contrast ----
-#' pivot model contrasts matrix to wide format produced by `contrasts_linfct` and ...
+#' Pivot long-format model contrasts to wide format
 #' @return Contrast definitions or contrast results.
 #' @export
 #' @family modelling
@@ -436,10 +446,13 @@ pivot_model_contrasts_to_wide <- function(
     )
   return(res)
 }
-#' compute group averages
+#' Compute group averages or contrasts for each model
 #'
 #' used in p2621, p2109
 #'
+#' @return a tibble with one row per subject and row of `linfct`, holding the `subject_id` columns, the columns
+#'   returned by `contrastfun`, and `isSingular`, `sigma.model` and `df.residual.model`; subjects whose contrasts
+#'   failed are dropped with a warning
 #' @export
 #' @keywords internal
 #' @examples

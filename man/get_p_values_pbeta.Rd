@@ -2,15 +2,19 @@
 % Please edit documentation in R/tidyMS_moderation.R
 \name{get_p_values_pbeta}
 \alias{get_p_values_pbeta}
-\title{p-value of protein from p.value of the median fold change peptide.}
+\title{Protein p-value from the p-value of the median fold-change peptide}
 \usage{
 get_p_values_pbeta(median.p.value, n.obs, max.n = 10)
 }
 \arguments{
 \item{max.n}{limit number of peptides per protein.}
 }
+\value{
+a numeric vector of p-values, the beta-distribution probability that the median of
+\code{min(n.obs, max.n)} uniform p-values is at most \code{median.p.value}
+}
 \description{
-p-value of protein from p.value of the median fold change peptide.
+Protein p-value from the p-value of the median fold-change peptide
 }
 \examples{
 plot(get_p_values_pbeta(0.1,1:10,10), ylim=c(0,0.1))

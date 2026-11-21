@@ -9,7 +9,7 @@ aggregate_intensity_top_n(ranked_data, lfqdata, .func, N = 3)
 \arguments{
 \item{ranked_data}{data.frame with ranked peptides}
 
-\item{lfqdata}{LFQData object}
+\item{lfqdata}{\link{LFQData} object with the data and its configuration}
 
 \item{.func}{function to use for aggregation}
 

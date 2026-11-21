@@ -7,7 +7,7 @@
 \method{df.residual}{rfit_prolfqua}(object, ...)
 }
 \arguments{
-\item{object}{an `rfit_prolfqua` fit}
+\item{object}{an \code{rfit_prolfqua} fit}
 
 \item{...}{ignored}
 }

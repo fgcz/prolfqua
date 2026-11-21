@@ -2,7 +2,7 @@
 % Please edit documentation in R/LFQDataAggregator.R
 \name{AggregateRlm}
 \alias{AggregateRlm}
-\title{AggregateRlm}
+\title{Aggregate peptide intensities by robust linear regression}
 \value{
 An R6 class generator.
 }

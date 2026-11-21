@@ -2,7 +2,7 @@
 % Please edit documentation in R/simulate_LFQ_data.R
 \name{sim_lfq_data}
 \alias{sim_lfq_data}
-\title{simulate protein level data with two groups}
+\title{Simulate protein-level data with two groups}
 \usage{
 sim_lfq_data(
   Nprot = 20,
@@ -36,7 +36,7 @@ sim_lfq_data(
 A data frame containing simulated LFQ data.
 }
 \description{
-simulate protein level data with two groups
+Simulate protein-level data with two groups
 }
 \examples{
 

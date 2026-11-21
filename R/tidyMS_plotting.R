@@ -235,7 +235,7 @@ theme_prolfqua <- function(grid = FALSE, base_size = 12) {
 
 #' White-to-red color function for correlation heatmaps, ranging over the
 #'
-#' observed values (R-squared lives in [0, 1]).
+#' observed values (R-squared lives in \[0, 1\]).
 #' @param cres sample correlation matrix
 #' @param R2 show squared correlations
 #' @noRd
@@ -264,11 +264,13 @@ theme_prolfqua <- function(grid = FALSE, base_size = 12) {
   )
 }
 
-#' visualize intensity distributions
+#' Visualize intensity distributions
 #' @param pdata data.frame
 #' @param sample_name character — sample column name
 #' @param response character — intensity column name
 #' @param is_transformed logical — is intensity log-transformed?
+#' @return `plot_intensity_distribution_violin()`: a ggplot object with one violin of the intensities per sample
+#'   and the median marked.
 #'
 #' @export
 #'
@@ -302,6 +304,8 @@ plot_intensity_distribution_violin <- function(pdata, sample_name, response, is_
 #'   samples is larger than `max_legend_samples`.
 #' @param max_legend_samples maximum number of samples for automatic legend
 #'   display.
+#' @return `plot_intensity_distribution_density()`: a ggplot object with one density line of the intensities per
+#'   sample.
 #' @export
 #' @keywords internal
 #' @family plotting
@@ -349,10 +353,12 @@ plot_intensity_distribution_density <- function(
   return(p)
 }
 
-#' visualize correlation among samples
+#' Visualize correlation among samples
 #' @param matrix numeric matrix — wide-format intensity data (samples as columns)
 #' @param method correlation method, as for [plot_heatmap_cor()]
 #' @param ... passed to [corrplot::corrplot.mixed()], e.g. `tl.cex` and `number.cex` for text size (default 1)
+#' @return invisibly, the list returned by [corrplot::corrplot.mixed()] with the correlation matrix `corr` and the
+#'   cell positions `corrPos`; called for its side effect of drawing the plot
 #'
 #' @export
 #' @keywords internal
@@ -381,15 +387,17 @@ plot_sample_correlation <- function(matrix, method = "pearson", ...) {
   invisible(res)
 }
 
-#' plot peptides by factors and it's levels.
+#' Boxplot of feature intensities by factor levels
 #'
 #' @param pdata data.frame
 #' @param title name to show
-#' @param lfqdata LFQData object
+#' @param lfqdata [LFQData] object with the data and its configuration
 #' @param facet_grid_on on which variable to run facet_grid
 #' @param beeswarm use beeswarm default FALSE
 #' @param show_mean show mean values
 #' @param pb progress bar
+#' @return a ggplot object with boxplots of the intensities in `pdata` per combination of factor levels, optionally
+#'   with the individual points and the means
 #'
 #' @export
 #' @keywords internal
@@ -477,12 +485,14 @@ plot_hierarchies_boxplot <- function(
 }
 
 
-#' generates peptide level plots for all Proteins
+#' Generate feature-level boxplots for all proteins
 #' @export
 #' @param pdata data.frame
-#' @param lfqdata LFQData object
+#' @param lfqdata [LFQData] object with the data and its configuration
 #' @param hierarchy e.g. protein_Id default relevant_hierarchy_keys
 #' @param facet_grid_on default NULL
+#' @return a tibble with one row per element of `hierarchy`, a column (named after the `hierarchy` columns joined
+#'   by `+`) identifying it, and a list column `boxplot` of ggplot objects made by [plot_hierarchies_boxplot()]
 #' @family plotting
 #' @keywords internal
 #' @examples
@@ -544,7 +554,7 @@ plot_hierarchies_boxplot_df <- function(
   stats::cor(matrix, use = "pairwise.complete.obs", method = method)
 }
 
-#' plot correlation heatmap with annotations
+#' Plot a sample correlation heatmap with annotations
 #'
 #' @param matrix numeric matrix — wide-format intensity data
 #' @param annotation data.frame — sample annotation
@@ -557,6 +567,7 @@ plot_hierarchies_boxplot_df <- function(
 #' @param method correlation method: `"pearson"` (default), `"spearman"` or `"kendall"` for [stats::cor()] on
 #'   pairwise complete observations, or a function of the matrix returning a sample-by-sample correlation matrix
 #' @param ... passed to [ComplexHeatmap::Heatmap()]
+#' @return invisibly, a ComplexHeatmap `Heatmap` object of the clustered sample correlations (or R^2 values)
 #' @export
 #' @keywords internal
 #' @family plotting
@@ -612,7 +623,7 @@ plot_heatmap_cor <- function(
 }
 
 
-#' plot heatmap with annotations
+#' Plot a row z-score heatmap with annotations
 #'
 #' @param matrix numeric matrix — wide-format intensity data
 #' @param annotation data.frame — sample annotation
@@ -625,6 +636,8 @@ plot_heatmap_cor <- function(
 #' @param max_sample_label_chars maximum displayed sample label length. Labels
 #'   keep their suffix because sample prefixes are often shared.
 #' @param ... passed to [ComplexHeatmap::Heatmap()]
+#' @return invisibly, a ComplexHeatmap `Heatmap` object of the row z-scored data; `NULL` with a warning if
+#'   `matrix` has no rows or no row can be z-scored
 #' @export
 #' @keywords internal
 #' @family plotting
@@ -679,7 +692,7 @@ plot_heatmap <- function(
 }
 
 
-#' plot heatmap without any clustering (use to show NA's)
+#' Plot a heatmap without clustering (use to show NAs)
 #' @param matrix numeric matrix — wide-format intensity data
 #' @param annotation data.frame — sample annotation
 #' @param factor_keys character vector — factor column names for annotation
@@ -691,6 +704,8 @@ plot_heatmap <- function(
 #' @param max_sample_label_chars maximum displayed sample label length. Labels
 #'   keep their suffix because sample prefixes are often shared.
 #' @param ... additional arguments passed to [ComplexHeatmap::Heatmap()]
+#' @return invisibly, a ComplexHeatmap `Heatmap` object of the abundances with rows ordered by `arrange` and
+#'   unclustered columns; `NULL` with a warning if `matrix` has fewer than two rows
 #' @keywords internal
 #'
 #' @family plotting
@@ -747,13 +762,15 @@ plot_raster <- function(
 }
 
 
-#' plot heatmap of NA values
+#' Plot a heatmap of missing values
 #' @param matrix numeric matrix — wide-format intensity data
 #' @param annotation data.frame — sample annotation
 #' @param factor_keys character vector — factor column names for annotation
 #' @param sample_name character — sample name column
 #' @param limitrows max rows to display
 #' @param distance distance method for clustering
+#' @return a ComplexHeatmap `Heatmap` object marking the missing values of the rows that have any; `NULL` if fewer
+#'   than two such rows
 #' @export
 #' @keywords internal
 #' @family plotting
@@ -806,7 +823,7 @@ plot_na_heatmap <- function(matrix, annotation, factor_keys, sample_name, limitr
 }
 
 
-#' plot PCA
+#' Plot a principal component analysis of the samples
 #' @param matrix numeric matrix — wide-format intensity data
 #' @param annotation data.frame — sample annotation
 #' @param sample_name character — sample name column
@@ -814,6 +831,8 @@ plot_na_heatmap <- function(matrix, annotation, factor_keys, sample_name, limitr
 #' @param PC which principal components to plot
 #' @param add_txt show sample labels
 #' @param nudge label nudge distance
+#' @return a ggplot object of the sample scores on the principal components `PC`, coloured by the first and shaped
+#'   by the second of `factor_keys`
 #' @export
 #' @keywords internal
 #' @family plotting

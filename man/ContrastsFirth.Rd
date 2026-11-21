@@ -217,8 +217,8 @@ create Contrast
   }
   \subsection{Returns}{
     the linfct-annotated copy of the model container
-  (\code{model_df}, \code{strategy}); the shared input model is left
-  untouched.
+(\code{model_df}, \code{strategy}); the shared input model is left
+untouched.
   }
 }
 

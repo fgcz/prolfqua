@@ -168,7 +168,7 @@ Other modelling:
 \if{latex}{\out{\hypertarget{method-ContrastsFacadeBase-get_config}{}}}
 \subsection{\code{ContrastsFacadeBase$get_config()}}{
   get the \code{\link{ContrastConfiguration}}; defaults to
-  the inner contrast object's configuration
+the inner contrast object's configuration
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{ContrastsFacadeBase$get_config()}
@@ -250,8 +250,8 @@ Other modelling:
 \if{latex}{\out{\hypertarget{method-ContrastsFacadeBase-provenance}{}}}
 \subsection{\code{ContrastsFacadeBase$provenance()}}{
   problems and dropped items of this analysis, read from the input data, the aggregated data
-  (\code{hurdle_nested}, \code{limpa_nested}) and the model(s), plus the subjects absent from the contrasts
-  with the reason
+(\code{hurdle_nested}, \code{limpa_nested}) and the model(s), plus the subjects absent from the contrasts
+with the reason
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{ContrastsFacadeBase$provenance()}
@@ -267,7 +267,7 @@ Other modelling:
 \if{latex}{\out{\hypertarget{method-ContrastsFacadeBase-.recorded_provenance}{}}}
 \subsection{\code{ContrastsFacadeBase$.recorded_provenance()}}{
   internal: the entries recorded in the input data, the aggregated data and the model(s),
-  without evaluating contrasts (used by \code{print()})
+without evaluating contrasts (used by \code{print()})
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{ContrastsFacadeBase$.recorded_provenance()}

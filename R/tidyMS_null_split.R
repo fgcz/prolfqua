@@ -40,7 +40,6 @@
 #' calibration carries over, power does not.
 #' @seealso [build_contrast_analysis()]
 #' @family stats
-#' @md
 #' @export
 #' @examples
 #' bb <- sim_lfq_data_protein_config(Nprot = 50, with_missing = FALSE)

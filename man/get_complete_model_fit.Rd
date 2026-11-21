@@ -2,12 +2,16 @@
 % Please edit documentation in R/tidyMS_build_model.R
 \name{get_complete_model_fit}
 \alias{get_complete_model_fit}
-\title{retrieve complete models.}
+\title{Retrieve complete model fits}
 \usage{
 get_complete_model_fit(complete_models)
 }
+\value{
+the rows of \code{complete_models} that have a model fit, the maximal number of estimated coefficients and
+more than one residual degree of freedom
+}
 \description{
-retrieve complete models.
+Retrieve complete model fits
 }
 \examples{
 \dontshow{if (requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)) withAutoprint(\{ # examplesIf}

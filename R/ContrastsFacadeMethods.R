@@ -48,7 +48,6 @@
 #'   `iterations` are columns of the model table (`analysis$model$model_df`).
 #' @name prolfqua_analysis_methods
 #' @family modelling
-#' @md
 #' @examples
 #' sim <- sim_lfq_data_protein_config(Nprot = 10, weight_missing = 0, seed = 42)
 #' lfq <- LFQData$new(sim$data, sim$config)

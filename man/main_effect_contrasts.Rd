@@ -2,7 +2,7 @@
 % Please edit documentation in R/generatedContrastsDF.R
 \name{main_effect_contrasts}
 \alias{main_effect_contrasts}
-\title{main effects contrasts}
+\title{Main effects contrasts}
 \usage{
 main_effect_contrasts(primary_levels, secondary_levels)
 }
@@ -15,7 +15,7 @@ main_effect_contrasts(primary_levels, secondary_levels)
 Contrast definitions or contrast results.
 }
 \description{
-main effects contrasts
+Main effects contrasts
 }
 \examples{
 primary_levels <- c("MI", "MINOCAM")

@@ -17,6 +17,10 @@ response_matrix_as_tibble(pdata, value, config, data = NULL, sep = "~lfq~")
 
 \item{sep}{separator used to unite the hierarchy keys}
 }
+\value{
+a long-format tibble with the hierarchy key, isotope label, sample name and \code{value} columns; if \code{data}
+is given, \code{data} joined with these values
+}
 \description{
 Takes matrix of responses and converts into tibble
 }

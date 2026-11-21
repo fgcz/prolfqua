@@ -25,7 +25,7 @@ The computed result.
 }
 \description{
 Counts the number of distinct entries of the hierarchy levels below
-`hierarchy_keys_depth` (e.g. peptides per protein). Counts experiment-wide,
+\code{hierarchy_keys_depth} (e.g. peptides per protein). Counts experiment-wide,
 whether observed or not.
 }
 \examples{

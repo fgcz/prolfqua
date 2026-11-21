@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_contrasts.R
 \name{compute_lmer_contrast}
 \alias{compute_lmer_contrast}
-\title{applies contrast computation using lmerTest::contest function}
+\title{Compute contrasts of a mixed-effects model with lmerTest}
 \usage{
 compute_lmer_contrast(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger"))
 }
@@ -13,8 +13,13 @@ compute_lmer_contrast(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger"))
 
 \item{ddf}{method to determine denominator degrees of freedom}
 }
+\value{
+a tibble with one row per row of \code{linfct} and columns \code{lhs}, \code{estimate}, \code{std.error}, \code{df},
+\code{statistic}, \code{conf.low}, \code{conf.high}, \code{p.value} and \code{sigma}; \code{NA} (with a warning) if \code{linfct} has no rows or
+the model is rank-deficient
+}
 \description{
-applies contrast computation using lmerTest::contest function
+Compute contrasts of a mixed-effects model with lmerTest
 }
 \examples{
 \dontshow{if (requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)) withAutoprint(\{ # examplesIf}

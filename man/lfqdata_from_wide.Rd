@@ -8,26 +8,26 @@ lfqdata_from_wide(values, rowdata, annotation, config, prefix = "ms")
 }
 \arguments{
 \item{values}{a matrix (features in rows, samples in columns), stored under
-`config$get_response()`, or a named list of such matrices with identical
+\code{config$get_response()}, or a named list of such matrices with identical
 dimensions and column names; list names are the value columns}
 
 \item{rowdata}{data.frame with one row per matrix row and the hierarchy key
-columns; the isotope label column is optional and set to `"light"` if absent}
+columns; the isotope label column is optional and set to \code{"light"} if absent}
 
-\item{annotation}{data.frame with one row per sample: `config$sample_name`
+\item{annotation}{data.frame with one row per sample: \code{config$sample_name}
 plus the file name and factor columns}
 
 \item{config}{AnalysisConfiguration describing the result}
 
-\item{prefix}{prefix passed to [LFQData]}
+\item{prefix}{prefix passed to \link{LFQData}}
 }
 \value{
 LFQData
 }
 \description{
-The inverse of [tidy_to_wide_config()]: feature x sample matrices, their row
-annotation and their sample annotation back to long-format LFQData. Row `i`
-of every matrix belongs to row `i` of `rowdata`; matrix column names are the
+The inverse of \code{\link[=tidy_to_wide_config]{tidy_to_wide_config()}}: feature x sample matrices, their row
+annotation and their sample annotation back to long-format LFQData. Row \code{i}
+of every matrix belongs to row \code{i} of \code{rowdata}; matrix column names are the
 sample names.
 }
 \examples{

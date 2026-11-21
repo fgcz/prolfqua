@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{pairs_smooth}
 \alias{pairs_smooth}
-\title{smoothScatter pairs}
+\title{Pairs plot with smoothed scatter panels}
 \usage{
 pairs_smooth(data, legend = FALSE, ...)
 }
@@ -13,8 +13,11 @@ pairs_smooth(data, legend = FALSE, ...)
 
 \item{...}{params usually passed to pairs}
 }
+\value{
+\code{NULL}, invisibly; called for its side effect of drawing the pairs plot
+}
 \description{
-smoothScatter pairs
+Pairs plot with smoothed scatter panels
 }
 \examples{
 tmp = matrix(rep((1:100),times = 4) + rnorm(100*4,0,3),ncol=4)

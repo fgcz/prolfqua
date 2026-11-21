@@ -7,19 +7,19 @@
 estimate_intensity(lfqdata, method = c("medpolish", "rlm"), control = list())
 }
 \arguments{
-\item{lfqdata}{LFQData object}
+\item{lfqdata}{\link{LFQData} object with the data and its configuration}
 
-\item{method}{"medpolish" (Tukey's median polish, column `medpolish`) or "rlm" (robust regression with
-`MASS::rlm`, column `lmrob`)}
+\item{method}{"medpolish" (Tukey's median polish, column \code{medpolish}) or "rlm" (robust regression with
+\code{MASS::rlm}, column \code{lmrob})}
 
-\item{control}{convergence controls merged over the defaults. medpolish: `maxiter` (default 10) and `eps`
+\item{control}{convergence controls merged over the defaults. medpolish: \code{maxiter} (default 10) and \code{eps}
 (default 0.01, the change of the sum of absolute residuals that stops the polish, on the log2 scale of the
-input); rlm: `maxit` (default 20) and `acc` (default 1e-4, relative change of the IRLS residuals).}
+input); rlm: \code{maxit} (default 20) and \code{acc} (default 1e-4, relative change of the IRLS residuals).}
 }
 \value{
 returns list with data (data.frame), config (AnalysisConfiguration) and failures (tibble with the
-  subject `id` and `warning` text of every warning raised while estimating one subject; the warnings are not
-  re-raised)
+subject \code{id} and \code{warning} text of every warning raised while estimating one subject; the warnings are not
+re-raised)
 }
 \description{
 Aggregates e.g. protein abundances from peptide abundances

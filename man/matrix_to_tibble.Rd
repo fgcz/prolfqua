@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{matrix_to_tibble}
 \alias{matrix_to_tibble}
-\title{matrix or data.frame to tibble (taken from tidyquant)}
+\title{Convert a matrix or data.frame to a tibble (taken from tidyquant)}
 \usage{
 matrix_to_tibble(x, preserve_row_names = "row.names", ...)
 }
@@ -17,7 +17,7 @@ matrix_to_tibble(x, preserve_row_names = "row.names", ...)
 The computed result.
 }
 \description{
-matrix or data.frame to tibble (taken from tidyquant)
+Convert a matrix or data.frame to a tibble (taken from tidyquant)
 }
 \examples{
 x <- matrix(rnorm(20), ncol=4)

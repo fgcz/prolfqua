@@ -25,7 +25,6 @@
 #'   false discovery rate with application to microarray analysis.
 #'   Bioinformatics 23:739--746. \doi{10.1093/bioinformatics/btl664}.
 #' @family stats
-#' @md
 #' @export
 #' @examples
 #' alpha <- fdr_sig_level(fdr = 0.05, pi0 = 0.9, power = 0.8)
@@ -193,7 +192,6 @@ fdr_sig_level <- function(fdr = 0.05, pi0 = 0.95, power = 0.8) {
 #'   This function estimates the variance distribution, not effects or `pi0`.
 #' @inherit fdr_sig_level references
 #' @family stats
-#' @md
 #' @export
 #' @examples
 #' variances <- 0.01 * stats::qf((seq_len(200) - 0.5) / 200, df1 = 8, df2 = 10)

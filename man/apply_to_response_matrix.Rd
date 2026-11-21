@@ -7,14 +7,14 @@
 apply_to_response_matrix(lfqdata, .func, .funcname = NULL)
 }
 \arguments{
-\item{lfqdata}{LFQData object}
+\item{lfqdata}{\link{LFQData} object with the data and its configuration}
 
 \item{.func}{function taking and returning a matrix}
 
 \item{.funcname}{name of function (used for creating new column)}
 }
 \value{
-list with `data` (data.frame) and `colname` (new column name)
+list with \code{data} (data.frame) and \code{colname} (new column name)
 }
 \description{
 Apply function requiring a matrix to tidy table

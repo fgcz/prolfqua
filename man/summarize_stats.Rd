@@ -15,17 +15,25 @@ summarize_stats_quantiles(
 )
 }
 \arguments{
-\item{lfqdata}{LFQData object}
+\item{lfqdata}{\link{LFQData} object with the data and its configuration}
 
 \item{factor_key}{character vector — factor columns to group by (default: relevant_factor_keys)}
 
-\item{stats_res}{result of running `summarize_stats`}
+\item{stats_res}{result of running \code{summarize_stats}}
 
 \item{factor_keys_depth}{character vector — factor columns at current depth}
 
 \item{stats}{summarize either sd or CV}
 
 \item{probs}{for which quantiles 10, 20 etc.}
+}
+\value{
+\code{summarize_stats()}: a tibble with one row per hierarchy element, isotope label and level of
+\code{factor_key}, with the columns \code{nrReplicates}, \code{nrMeasured}, \code{nrNAs}, \code{sd}, \code{var}, \code{meanAbundance},
+\code{medianAbundance}, \code{CV} (untransformed data only) and \code{interaction}.
+
+\code{summarize_stats_quantiles()}: a list with \code{long}, a tibble with one row per factor level and quantile
+(columns \code{probs} and \code{quantiles}), and \code{wide}, the same quantiles with one column per factor level.
 }
 \description{
 Compute mean, sd, and CV for all Peptides, or proteins, for all interactions and all samples.

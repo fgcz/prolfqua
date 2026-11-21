@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_contrasts.R
 \name{compute_contrast}
 \alias{compute_contrast}
-\title{handles incomplete models}
+\title{Compute contrasts for possibly incomplete models}
 \usage{
 compute_contrast(m, linfct, confint = 0.95)
 }
@@ -12,6 +12,11 @@ compute_contrast(m, linfct, confint = 0.95)
 \item{linfct}{linear function}
 
 \item{confint}{confidence interval default 0.95}
+}
+\value{
+a data.frame with one row per row of \code{linfct} and columns \code{lhs}, \code{sigma}, \code{df}, \code{estimate},
+\code{std.error}, \code{statistic}, \code{p.value}, \code{conf.low} and \code{conf.high}; the estimates are \code{NA} for rows that use a
+coefficient the model could not estimate
 }
 \description{
 only keeps non NA coefficients.

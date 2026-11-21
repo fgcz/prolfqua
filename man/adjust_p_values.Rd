@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_moderation.R
 \name{adjust_p_values}
 \alias{adjust_p_values}
-\title{adjust columns}
+\title{Adjust p-values for multiple testing}
 \usage{
 adjust_p_values(
   contrast_df,
@@ -24,7 +24,7 @@ adjust_p_values(
 The computed result.
 }
 \description{
-adjust columns
+Adjust p-values for multiple testing
 }
 \examples{
 

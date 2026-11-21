@@ -9,7 +9,7 @@ An R6 class generator.
 \description{
 Provides wide, long, and plot views of hierarchy counts. Counts per sample
 and isotope label, observed values only (non-missing response and at least
-`nr_children` children).
+\code{nr_children} children).
 }
 \examples{
 bb <- sim_lfq_data_protein_config()

@@ -100,7 +100,7 @@ compute_borrowed_variance_limma <- function(fit) {
 #' formula, resolves the subject_id / isotopeLabel, and creates a dummy lm for
 #' linfct extraction.
 #'
-#' @param lfqdata an \code{\link{LFQData}} object
+#' @param lfqdata [LFQData] object with the data and its configuration
 #' @param formula a formula (with response and RHS)
 #' @return a list with components:
 #' \describe{
@@ -162,7 +162,7 @@ compute_borrowed_variance_limma <- function(fit) {
 #' Shared weight resolution logic for \code{build_model_limma*} functions.
 #' Handles character (column name in annotation or LFQData), matrix, or NULL.
 #'
-#' @param lfqdata an \code{\link{LFQData}} object
+#' @param lfqdata [LFQData] object with the data and its configuration
 #' @param strategy a strategy object with a \code{weights} field
 #' @param annotation the sample-level annotation data.frame
 #' @return a weight matrix, vector, or NULL
@@ -289,7 +289,7 @@ compute_borrowed_variance_limma <- function(fit) {
 #'
 #' expression matrix. With `impute = TRUE`, proteins with NA coefficients are refit on LOD-imputed data
 #' and get the variance borrowed from the successful fits.
-#' @param lfqdata LFQData containing the measurements and configuration
+#' @param lfqdata [LFQData] object with the data and its configuration
 #' @param strategy modelling strategy
 #' @param model_name model identity stored in output
 #' @param fit_fun function fitting an expression matrix on a design matrix
@@ -495,7 +495,7 @@ compute_borrowed_variance_limma <- function(fit) {
 #' pivots data to wide format, fits with \code{\link[limma]{lmFit}}, and returns
 #' a \code{\link{ModelLimma}} object.
 #'
-#' @param lfqdata an \code{\link{LFQData}} object
+#' @param lfqdata [LFQData] object with the data and its configuration
 #' @param strategy output of \code{\link{strategy_limma}}
 #' @param model_name name of model (default from strategy)
 #' @return a \code{\link{ModelLimma}} object

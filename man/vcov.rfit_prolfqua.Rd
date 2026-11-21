@@ -7,18 +7,18 @@
 \method{vcov}{rfit_prolfqua}(object, ...)
 }
 \arguments{
-\item{object}{an `rfit_prolfqua` fit}
+\item{object}{an \code{rfit_prolfqua} fit}
 
 \item{...}{passed to the next method}
 }
 \value{
 the rfit covariance matrix with row/column names set to the
-  coefficient names.
+coefficient names.
 }
 \description{
-`Rfit::vcov.rfit` returns an unnamed matrix; `compute_contrast()` indexes the
+\code{Rfit::vcov.rfit} returns an unnamed matrix; \code{compute_contrast()} indexes the
 covariance by coefficient name, so this method restores the dimnames from
-`coef()`.
+\code{coef()}.
 }
 \examples{
 fit <- strategy_rfit("Sepal.Length ~ Species")$model_fun(iris)

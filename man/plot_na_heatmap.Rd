@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_plotting.R
 \name{plot_na_heatmap}
 \alias{plot_na_heatmap}
-\title{plot heatmap of NA values}
+\title{Plot a heatmap of missing values}
 \usage{
 plot_na_heatmap(
   matrix,
@@ -26,8 +26,12 @@ plot_na_heatmap(
 
 \item{distance}{distance method for clustering}
 }
+\value{
+a ComplexHeatmap \code{Heatmap} object marking the missing values of the rows that have any; \code{NULL} if fewer
+than two such rows
+}
 \description{
-plot heatmap of NA values
+Plot a heatmap of missing values
 }
 \examples{
 \dontshow{if (requireNamespace("ComplexHeatmap", quietly = TRUE) && requireNamespace("circlize", quietly = TRUE)) withAutoprint(\{ # examplesIf}

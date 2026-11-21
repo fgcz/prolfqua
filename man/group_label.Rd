@@ -2,7 +2,7 @@
 % Please edit documentation in R/generatedContrastsDF.R
 \name{group_label}
 \alias{group_label}
-\title{group label function}
+\title{Build group labels from two factor levels}
 \usage{
 group_label(primary, secondary)
 }
@@ -15,7 +15,7 @@ group_label(primary, secondary)
 A character vector with combined group labels.
 }
 \description{
-group label function
+Build group labels from two factor levels
 }
 \examples{
 group_label("a", "b")

@@ -30,7 +30,7 @@ nr_obs_sample(
 The computed result.
 }
 \description{
-For each hierarchy unit and sample, sums the `nr_children_col` column over
+For each hierarchy unit and sample, sums the \code{nr_children_col} column over
 the rows with a non-missing response, e.g. the number of peptides behind
 each protein intensity of a sample. Counts per sample, observed values only.
 }

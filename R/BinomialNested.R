@@ -1,7 +1,7 @@
 # Binomial detection model ----
 
 #' Count detected and undetected child features per parent and sample
-#' @param lfqdata LFQData containing the measurements and configuration
+#' @param lfqdata [LFQData] object with the data and its configuration
 #' @noRd
 .summarize_detection_counts <- function(lfqdata) {
   if (!inherits(lfqdata, "LFQData")) {

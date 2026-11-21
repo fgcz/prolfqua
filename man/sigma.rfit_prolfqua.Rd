@@ -7,17 +7,17 @@
 \method{sigma}{rfit_prolfqua}(object, ...)
 }
 \arguments{
-\item{object}{an `rfit_prolfqua` fit}
+\item{object}{an \code{rfit_prolfqua} fit}
 
 \item{...}{ignored}
 }
 \value{
-the rank-based scale estimate `tauhat`.
+the rank-based scale estimate \code{tauhat}.
 }
 \description{
-Returns the rank-based scale `tauhat`. This stands in for the residual
-standard deviation of an `lm`; it does not affect the Wald std.error or
-p-value (those come from `vcov()`), but it is reported and used as the per-
+Returns the rank-based scale \code{tauhat}. This stands in for the residual
+standard deviation of an \code{lm}; it does not affect the Wald std.error or
+p-value (those come from \code{vcov()}), but it is reported and used as the per-
 protein variance estimate if results are passed to limma/eBayes moderation.
 }
 \examples{

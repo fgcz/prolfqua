@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_plotting.R
 \name{plot_pca}
 \alias{plot_pca}
-\title{plot PCA}
+\title{Plot a principal component analysis of the samples}
 \usage{
 plot_pca(
   matrix,
@@ -29,8 +29,12 @@ plot_pca(
 
 \item{nudge}{label nudge distance}
 }
+\value{
+a ggplot object of the sample scores on the principal components \code{PC}, coloured by the first and shaped
+by the second of \code{factor_keys}
+}
 \description{
-plot PCA
+Plot a principal component analysis of the samples
 }
 \examples{
 

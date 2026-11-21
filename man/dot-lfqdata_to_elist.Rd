@@ -7,21 +7,21 @@
 .lfqdata_to_elist(lfqdata, formula)
 }
 \arguments{
-\item{lfqdata}{an \code{\link{LFQData}} object}
+\item{lfqdata}{\link{LFQData} object with the data and its configuration}
 
 \item{formula}{a formula (with response and RHS)}
 }
 \value{
 a list with components:
 \describe{
-  \item{elist}{limma EList with \code{$E} = expression matrix}
-  \item{expr_matrix}{the expression matrix (same as \code{elist$E})}
-  \item{design}{the design matrix}
-  \item{annotation}{sample-level annotation data.frame}
-  \item{subject_id}{character vector of hierarchy keys (possibly including isotopeLabel)}
-  \item{rowdata}{data.frame with one row per feature, columns = subject_id}
-  \item{rhs_formula}{the RHS-only formula}
-  \item{dummy_model}{a dummy \code{lm} fitted on one complete row}
+\item{elist}{limma EList with \code{$E} = expression matrix}
+\item{expr_matrix}{the expression matrix (same as \code{elist$E})}
+\item{design}{the design matrix}
+\item{annotation}{sample-level annotation data.frame}
+\item{subject_id}{character vector of hierarchy keys (possibly including isotopeLabel)}
+\item{rowdata}{data.frame with one row per feature, columns = subject_id}
+\item{rhs_formula}{the RHS-only formula}
+\item{dummy_model}{a dummy \code{lm} fitted on one complete row}
 }
 }
 \description{

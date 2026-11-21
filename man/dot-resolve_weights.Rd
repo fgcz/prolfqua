@@ -7,7 +7,7 @@
 .resolve_weights(lfqdata, strategy, annotation)
 }
 \arguments{
-\item{lfqdata}{an \code{\link{LFQData}} object}
+\item{lfqdata}{\link{LFQData} object with the data and its configuration}
 
 \item{strategy}{a strategy object with a \code{weights} field}
 

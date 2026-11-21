@@ -1,5 +1,5 @@
 #' Complete LFQData and encode observed intensities as a binary response
-#' @param lfqdata LFQData containing the measurements and configuration
+#' @param lfqdata [LFQData] object with the data and its configuration
 #' @noRd
 .prepare_detection_lfqdata <- function(lfqdata) {
   if (!inherits(lfqdata, "LFQData")) {
@@ -39,13 +39,14 @@ build_model_glm_protein <- function(lfqdata, modelstr, control = list()) {
 }
 
 
-#' build_model_logistf
+#' Fit Firth logistic regression to binary detection data
 #'
 #' Fits Firth's logistic regression per subject to the binary detection
 #' response of aggregated data, one row per subject and sample.
 #' @param data aggregated LFQData with a binary detection response
 #' @param formula model formula with the binary response
 #' @param control convergence controls, see \code{\link{strategy_logistf}}
+#' @return a [ModelFirth] object holding one Firth logistic model per subject
 #' @export
 #' @family modelling
 #' @keywords internal
@@ -82,7 +83,8 @@ build_model_logistf <- function(data, formula, control = list()) {
 }
 
 
-#' build dataframe with models for testing
+#' Build Firth logistic models on simulated data for testing
+#' @return a [ModelFirth] object fitted with [build_model_logistf()]
 #' @family modelling
 #' @export
 #' @keywords internal

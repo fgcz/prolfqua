@@ -167,7 +167,7 @@ AnalysisConfiguration <- R6::R6Class(
 )
 
 
-#' read minimal yaml to reconstruct configuration
+#' Reconstruct a configuration from minimal YAML
 #' @param dd list with table and parameter elements as produced by R6_extract_values
 #' @return The computed result.
 #' @export

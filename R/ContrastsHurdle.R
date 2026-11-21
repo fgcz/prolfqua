@@ -214,7 +214,7 @@ ContrastsHurdleNestedFacade <- R6::R6Class(
 #' Subjects with at least one undetected child feature in some sample; detection
 #'
 #' carries no information for the others.
-#' @param lfqdata LFQData containing the measurements and configuration
+#' @param lfqdata [LFQData] object with the data and its configuration
 #' @noRd
 .informative_detection <- function(lfqdata) {
   .summarize_detection_counts(.prepare_detection_lfqdata(lfqdata)) |>

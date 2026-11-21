@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_stats.R
 \name{lfq_power_t_test_quantiles_V2}
 \alias{lfq_power_t_test_quantiles_V2}
-\title{estimate sample sizes}
+\title{Estimate sample sizes from standard deviation quantiles}
 \usage{
 lfq_power_t_test_quantiles_V2(
   quantile_sd,
@@ -13,7 +13,7 @@ lfq_power_t_test_quantiles_V2(
 )
 }
 \arguments{
-\item{quantile_sd}{output of `summarize_stats_quantiles`}
+\item{quantile_sd}{output of \code{summarize_stats_quantiles}}
 
 \item{delta}{effect size you are interested in}
 
@@ -23,8 +23,12 @@ lfq_power_t_test_quantiles_V2(
 
 \item{min.n}{smallest n to determine}
 }
+\value{
+a tibble with the rows of \code{quantile_sd} repeated for each \code{delta}, with the added columns \code{sdtrimmed}
+(the sd floored at the smallest sd resolvable with \code{min.n} samples), \code{N_exact}, \code{N} (rounded up) and \code{delta}
+}
 \description{
-estimate sample sizes
+Estimate sample sizes from standard deviation quantiles
 }
 \examples{
 

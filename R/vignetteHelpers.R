@@ -1,4 +1,4 @@
-#' find file stored in package
+#' Find a file stored in a package
 #' @return The computed result.
 #' @export
 #' @param packagename name of the R package
@@ -14,7 +14,7 @@ find_package_file <- function(packagename, file) {
   if (file.exists(src_script)) src_script
 }
 
-#' copy script files and other from a package to workdir
+#' Copy script and other files from a package to a working directory
 #' @param runscripts paths of the files relative to the package root (or \code{inst/})
 #' @param workdir directory to copy the files to
 #' @param packagename package to copy the files from

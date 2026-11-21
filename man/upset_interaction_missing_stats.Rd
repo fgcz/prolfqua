@@ -7,7 +7,7 @@
 upset_interaction_missing_stats(lfqdata, tr = 2)
 }
 \arguments{
-\item{lfqdata}{LFQData object}
+\item{lfqdata}{\link{LFQData} object with the data and its configuration}
 
 \item{tr}{if less than tr observations in condition then missing}
 }

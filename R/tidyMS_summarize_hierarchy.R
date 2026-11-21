@@ -5,6 +5,8 @@
 #' @param file_name character — file name column
 #' @param sample_name character — sample name column
 #' @param factor_keys character vector — factor column names
+#' @return a tibble with the distinct combinations of the file name, sample name and factor columns, sorted by
+#'   sample name
 #'
 #' @export
 #' @keywords internal
@@ -32,6 +34,8 @@ table_factors <- function(pdata, file_name, sample_name, factor_keys) {
 #' @param sample_name character — sample name column
 #' @param factor_keys character vector — all factor column names
 #' @param factor_keys_depth character vector — factor columns at current depth
+#' @return a tibble with one row per combination of the `factor_keys_depth` levels and a column `n` with the
+#'   number of samples
 #'
 #' @export
 #' @keywords internal
@@ -62,6 +66,8 @@ table_factors_size <- function(pdata, file_name, sample_name, factor_keys, facto
 #' @param pdata data.frame
 #' @param hierarchy_keys character vector — all hierarchy column names
 #' @param isotope_label character — isotope label column name
+#' @return a tibble with one row per isotope label and one column per hierarchy key holding the number of distinct
+#'   elements
 #' @export
 #' @keywords internal
 #' @family summary
@@ -167,6 +173,8 @@ HierarchyCountsSample <- R6::R6Class(
 #' @param isotope_label character — isotope label column name
 #' @param hierarchy character vector — hierarchy level to group by (default hierarchy_keys)
 #' @param factors character vector — factor columns to include
+#' @return a tibble with one row per combination of the `factors` and `hierarchy` columns and, for each other
+#'   hierarchy level and the isotope label, a column `<level>_n` with the number of its distinct entries
 #'
 #' @examples
 #'

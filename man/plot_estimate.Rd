@@ -13,6 +13,11 @@ plot_estimate(lfqdata, lfqdata_agg, show.legend = FALSE)
 
 \item{show.legend}{logical, show legend in plot}
 }
+\value{
+a tibble with one row per aggregated element and the columns \code{hierarchy_id}, \code{data} (the feature
+intensities), \code{other} (the aggregated intensities) and \code{plots} (ggplot objects of the feature intensities with
+the aggregate drawn in black)
+}
 \description{
 Plot feature data and result of aggregation
 }

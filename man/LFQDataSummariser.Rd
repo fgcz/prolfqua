@@ -84,7 +84,7 @@ Other LFQData:
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{lfqdata}}{LFQData}
+      \item{\code{lfqdata}}{\link{LFQData} object with the data and its configuration}
     }
     \if{html}{\out{</div>}}
   }
@@ -118,10 +118,13 @@ Other LFQData:
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{value}}{wide - wide format, long - long format, plot - ggplot}
+      \item{\code{value}}{\code{"wide"} (one column per hierarchy level) or \code{"long"} format}
       \item{\code{nr_children}}{get summary for 1,2 or more number of children}
     }
     \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    tibble of counts per sample and hierarchy level
   }
 }
 
@@ -139,7 +142,6 @@ Other LFQData:
     \if{html}{\out{<div class="arguments">}}
     \describe{
       \item{\code{nr_children}}{get summary for 1,2 or more number of children}
-      \item{\code{value}}{wide - wide format, long - long format, plot - ggplot}
     }
     \if{html}{\out{</div>}}
   }

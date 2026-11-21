@@ -5,16 +5,16 @@
 \alias{x5463yzwer453bbb}
 \title{Factor annotation of 36 samples}
 \format{
-A tibble with 36 rows and the columns `Relative Path`, `Name`,
-  `Group`, `factor_A`, `factor_B`.
+A tibble with 36 rows and the columns \verb{Relative Path}, \code{Name},
+\code{Group}, \code{factor_A}, \code{factor_B}.
 }
 \usage{
 x5463yzwer453bbb
 }
 \description{
-Sample annotation table with two factors (`factor_A`: MI / MINOCA,
-`factor_B`: sampling time T0 / T150 / T300), used to demonstrate how
-contrasts are derived from the factor levels. See `inst/script/README.md`
+Sample annotation table with two factors (\code{factor_A}: MI / MINOCA,
+\code{factor_B}: sampling time T0 / T150 / T300), used to demonstrate how
+contrasts are derived from the factor levels. See \code{inst/script/README.md}
 for its origin.
 }
 \seealso{

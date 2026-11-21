@@ -2,14 +2,17 @@
 % Please edit documentation in R/simulate_LFQ_data.R
 \name{sim_make_model_lmer}
 \alias{sim_make_model_lmer}
-\title{make interaction model for examples}
+\title{Fit a mixed-effects model to simulated data for examples}
 \usage{
 sim_make_model_lmer(
   model = c("parallel2", "parallel3", "factors", "interaction")
 )
 }
+\value{
+an \code{lmerModLmerTest} object, the first successful fit among ten simulated proteins
+}
 \description{
-make interaction model for examples
+Fit a mixed-effects model to simulated data for examples
 }
 \examples{
 \dontshow{if (requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)) withAutoprint(\{ # examplesIf}

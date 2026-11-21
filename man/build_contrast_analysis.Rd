@@ -7,7 +7,7 @@
 build_contrast_analysis(lfqdata, modelstr, contrasts, method = "lm", ...)
 }
 \arguments{
-\item{lfqdata}{an \code{\link{LFQData}} object}
+\item{lfqdata}{\link{LFQData} object with the data and its configuration}
 
 \item{modelstr}{one right-hand-side formula string without the response variable
 (e.g. \code{"~ group_"}). The response is taken automatically from
@@ -37,7 +37,7 @@ authoritative list is \code{names(\link{list_facades}())}. Defaults to
 }
 \value{
 a facade object of the class registered for \code{method}, see
-  \code{\link{lookup_facade}}.
+\code{\link{lookup_facade}}.
 }
 \description{
 The factory of prolfqua's modelling: \code{method} selects a facade class
@@ -55,61 +55,61 @@ report, usually aggregated proteins. \code{"limpa"} needs input aggregated
 with \code{\link{AggregateLimpa}}.
 
 The formula is translated into a design matrix with R's current
-  contrast options (normally treatment coding). Configured predictors are
-  categorical labels; their reference level is normally the first sorted
-  level. Each contrast expression combines group-level coefficient weights,
-  rather than referring directly to design-matrix coefficient names. For
-  example, \code{"group_A - group_Ctrl"} subtracts the control group mean
-  from the A group mean, including the reference coefficient as needed.
-  Interaction cell means are named with a colon and quoted with backticks
-  inside expressions. See the \emph{Under the hood} article for worked
-  one-factor and \code{~ A * B} design matrices and linear functions.
+contrast options (normally treatment coding). Configured predictors are
+categorical labels; their reference level is normally the first sorted
+level. Each contrast expression combines group-level coefficient weights,
+rather than referring directly to design-matrix coefficient names. For
+example, \code{"group_A - group_Ctrl"} subtracts the control group mean
+from the A group mean, including the reference coefficient as needed.
+Interaction cell means are named with a colon and quoted with backticks
+inside expressions. See the \emph{Under the hood} article for worked
+one-factor and \code{~ A * B} design matrices and linear functions.
 
-  Internally, \code{limpa_nested} and \code{hurdle_nested} aggregate child
-  features to proteins. Detection methods (\code{binomial_nested},
-  \code{binomial_firth_nested}, \code{firth}, and the detection component
-  of \code{hurdle_nested}) encode intensities as detected/not detected.
-  These aggregation and detection steps have no inverse. The analysis keeps
-  its input in \code{analysis$.lfqdata}; for aggregated input this is already
-  at the modelled hierarchy. \code{fitted()} and \code{residuals()} expose
-  the modelled observed responses (inspect each hurdle component separately).
-  Intensity effects are differences on the modelled scale, hence log2 fold
-  changes for log2 responses; detection effects are log odds ratios, with
-  fitted responses reported as probabilities. Transformations performed
-  before this call retain their input columns in LFQData; this call does not
-  record a transformation history or infer inverse transformations.
+Internally, \code{limpa_nested} and \code{hurdle_nested} aggregate child
+features to proteins. Detection methods (\code{binomial_nested},
+\code{binomial_firth_nested}, \code{firth}, and the detection component
+of \code{hurdle_nested}) encode intensities as detected/not detected.
+These aggregation and detection steps have no inverse. The analysis keeps
+its input in \code{analysis$.lfqdata}; for aggregated input this is already
+at the modelled hierarchy. \code{fitted()} and \code{residuals()} expose
+the modelled observed responses (inspect each hurdle component separately).
+Intensity effects are differences on the modelled scale, hence log2 fold
+changes for log2 responses; detection effects are log odds ratios, with
+fitted responses reported as probabilities. Transformations performed
+before this call retain their input columns in LFQData; this call does not
+record a transformation history or infer inverse transformations.
 
-  With a fixed design and fixed observations per protein, the per-protein
-  \code{lm} and \code{lmer_nested} fitting loops grow approximately linearly
-  with the number of proteins and run sequentially. \code{limma} fits the
-  expression matrix in one call and has lower per-protein overhead.
-  Single-run elapsed seconds for 500, 1000 and 2000 proteins were respectively
-  0.173, 0.288 and 0.592 for \code{lm}; 0.077, 0.043 and 0.050 for
-  \code{limma}; and 7.902, 15.314 and 29.667 for \code{lmer_nested}
-  (R 4.6.2, arm64 macOS, 12 samples, three peptides per protein for the
-  nested model, no missing responses). These timings cover facade
-  construction, including fitting, but exclude lazy contrast extraction.
-  They are illustrative timings, not guarantees: sample count, design width,
-  missingness and mixed-model convergence affect cost. Some mixed fits in
-  this run emitted convergence warnings. Reproduction code and environment
-  details are in \code{srr/benchmark-runtime.R} in the source repository.
+With a fixed design and fixed observations per protein, the per-protein
+\code{lm} and \code{lmer_nested} fitting loops grow approximately linearly
+with the number of proteins and run sequentially. \code{limma} fits the
+expression matrix in one call and has lower per-protein overhead.
+Single-run elapsed seconds for 500, 1000 and 2000 proteins were respectively
+0.173, 0.288 and 0.592 for \code{lm}; 0.077, 0.043 and 0.050 for
+\code{limma}; and 7.902, 15.314 and 29.667 for \code{lmer_nested}
+(R 4.6.2, arm64 macOS, 12 samples, three peptides per protein for the
+nested model, no missing responses). These timings cover facade
+construction, including fitting, but exclude lazy contrast extraction.
+They are illustrative timings, not guarantees: sample count, design width,
+missingness and mixed-model convergence affect cost. Some mixed fits in
+this run emitted convergence warnings. Reproduction code and environment
+details are in \code{srr/benchmark-runtime.R} in the source repository.
 }
 \section{Prior art}{
 
 \itemize{
-  \item Improvements on existing R implementations, applied per protein behind one interface:
-    \code{lm} (stats), \code{rlm} (MASS), \code{rfit} (Rfit), \code{limma} and \code{limma_voom} (limma),
-    \code{deqms} (DEqMS), \code{limpa} and \code{limpa_nested} (limpa), \code{lmer_nested} (lme4, lmerTest),
-    \code{firth} (logistf).
-  \item Reimplementation in R of a published method: \code{ropeca_nested}, ROPECA (Suomi and Elo 2017,
-    Bioconductor package PECA), on peptide-level models of any design.
-  \item First implementations of new methods: the \code{_impute} methods (\code{lm_impute},
-    \code{rfit_impute}, \code{limma_impute}, \code{limma_voom_impute}), which refit groups without
-    observations at the limit of detection with a borrowed variance (Wolski et al. 2023);
-    \code{ropecaV2_nested}, a median peptide z-score with a correlation-aware null; \code{binomial_nested} and
-    \code{binomial_firth_nested}, per-protein models of peptide detection.
-  \item \code{hurdle_nested} combines the intensity and detection tests as msqrob2's
-    \code{hypothesisTestHurdle} does, on prolfqua's own components.
+\item Improvements on existing R implementations, applied per protein behind one interface:
+\code{lm} (stats), \code{rlm} (MASS), \code{rfit} (Rfit), \code{limma} and \code{limma_voom} (limma),
+\code{deqms} (DEqMS), \code{limpa} and \code{limpa_nested} (limpa), \code{lmer_nested} (lme4, lmerTest),
+\code{firth} (logistf).
+\item Reimplementation in R of a published method: \code{ropeca_nested}, ROPECA (Suomi and Elo 2017,
+Bioconductor package PECA), on peptide-level models of any design.
+\item First implementations of new methods: the \code{_impute} methods (\code{lm_impute},
+\code{rfit_impute}, \code{limma_impute}, \code{limma_voom_impute}), which refit groups without
+observations at the limit of detection with a borrowed variance (Wolski et al. 2023);
+\code{ropecaV2_nested}, a median peptide z-score with a correlation-aware null; \code{binomial_nested} and
+\code{binomial_firth_nested}, per-protein models of peptide detection.
+\item \code{hurdle_nested} combines the intensity and detection tests as msqrob2's
+\code{hypothesisTestHurdle} does, on prolfqua's own components.
 }
 The Comparing methods article on the package website compares these
 implementations on one dataset. Comparisons with MSstats, msqrob2 and proDA are in the companion package

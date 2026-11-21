@@ -2,12 +2,12 @@
 % Please edit documentation in R/LFQData.R
 \name{LFQDataToSummarizedExperiment}
 \alias{LFQDataToSummarizedExperiment}
-\title{converts LFQData object to SummarizedExperiment}
+\title{Convert an LFQData object to a SummarizedExperiment}
 \usage{
 LFQDataToSummarizedExperiment(lfqdata)
 }
 \arguments{
-\item{lfqdata}{LFQData object}
+\item{lfqdata}{\link{LFQData} object with the data and its configuration}
 }
 \value{
 SummarizedExperiment (bioconductor)

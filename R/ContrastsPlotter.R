@@ -1,5 +1,5 @@
 # ContrastsPlotter ----
-#' plot contrasts
+#' Plot contrasts
 #'
 #' @return An R6 class generator.
 #' @export

@@ -2,7 +2,7 @@
 % Please edit documentation in R/logistf.R
 \name{build_model_logistf}
 \alias{build_model_logistf}
-\title{build_model_logistf}
+\title{Fit Firth logistic regression to binary detection data}
 \usage{
 build_model_logistf(data, formula, control = list())
 }
@@ -12,6 +12,9 @@ build_model_logistf(data, formula, control = list())
 \item{formula}{model formula with the binary response}
 
 \item{control}{convergence controls, see \code{\link{strategy_logistf}}}
+}
+\value{
+a \link{ModelFirth} object holding one Firth logistic model per subject
 }
 \description{
 Fits Firth's logistic regression per subject to the binary detection

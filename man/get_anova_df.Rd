@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_R6_Modelling.R
 \name{get_anova_df}
 \alias{get_anova_df}
-\title{anova returning dataframe}
+\title{Create an ANOVA extractor returning a data frame}
 \usage{
 get_anova_df(test = "F")
 }
@@ -14,7 +14,7 @@ The fitted model's ANOVA method must support the chosen test.}
 An \code{\link{AnovaExtractor}} object.
 }
 \description{
-anova returning dataframe
+Create an ANOVA extractor returning a data frame
 }
 \examples{
 x <- get_anova_df(test = "F")

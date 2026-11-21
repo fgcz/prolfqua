@@ -2,7 +2,7 @@
 % Please edit documentation in R/vignetteHelpers.R
 \name{script_copy_helper_vec}
 \alias{script_copy_helper_vec}
-\title{copy script files and other from a package to workdir}
+\title{Copy script and other files from a package to a working directory}
 \usage{
 script_copy_helper_vec(
   runscripts,
@@ -24,7 +24,7 @@ script_copy_helper_vec(
 paths of the copied files
 }
 \description{
-copy script files and other from a package to workdir
+Copy script and other files from a package to a working directory
 }
 \examples{
 copied <- script_copy_helper_vec("CITATION", workdir = tempdir())

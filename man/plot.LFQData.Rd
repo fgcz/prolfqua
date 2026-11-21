@@ -16,7 +16,7 @@ ggplot
 }
 \description{
 Default plot: distribution of the response per sample (violin plot), on a log scale when the response is not
-transformed. Other plots are available from `x$get_Plotter()`.
+transformed. Other plots are available from \code{x$get_Plotter()}.
 }
 \examples{
 istar <- sim_lfq_data_peptide_config()

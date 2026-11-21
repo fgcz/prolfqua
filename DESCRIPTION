@@ -85,7 +85,7 @@ Suggests:
     testthat,
     UpSetR,
     vsn
-Roxygen: list(r6 = TRUE, roclets = c("collate", "namespace", "rd", "srr::srr_stats_roclet"))
+Roxygen: list(markdown = TRUE, r6 = TRUE, roclets = c("collate", "namespace", "rd", "srr::srr_stats_roclet"))
 Depends: 
     R (>= 4.6)
 biocViews: MassSpectrometry, Proteomics, Metabolomics, Normalization, Preprocessing, QualityControl, FunctionalGenomics, Regression

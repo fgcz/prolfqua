@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_contrasts.R
 \name{contrasts_linfct}
 \alias{contrasts_linfct}
-\title{compute group averages}
+\title{Compute group averages or contrasts for each model}
 \usage{
 contrasts_linfct(
   models,
@@ -10,6 +10,11 @@ contrasts_linfct(
   subject_id = "protein_Id",
   contrastfun = prolfqua::compute_lmer_contrast
 )
+}
+\value{
+a tibble with one row per subject and row of \code{linfct}, holding the \code{subject_id} columns, the columns
+returned by \code{contrastfun}, and \code{isSingular}, \code{sigma.model} and \code{df.residual.model}; subjects whose contrasts
+failed are dropped with a warning
 }
 \description{
 used in p2621, p2109

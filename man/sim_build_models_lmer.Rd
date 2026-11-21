@@ -2,7 +2,7 @@
 % Please edit documentation in R/simulate_LFQ_data.R
 \name{sim_build_models_lmer}
 \alias{sim_build_models_lmer}
-\title{build lmer model from simulated data}
+\title{Build mixed-effects models on simulated data for testing}
 \usage{
 sim_build_models_lmer(
   model = c("parallel2", "parallel3", "factors", "interaction"),
@@ -11,8 +11,11 @@ sim_build_models_lmer(
   weight_missing = 1
 )
 }
+\value{
+a \link{Model} object with one mixed-effects model per simulated protein, fitted with \code{\link[=build_model]{build_model()}}
+}
 \description{
-build lmer model from simulated data
+Build mixed-effects models on simulated data for testing
 }
 \examples{
 \dontshow{if (requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)) withAutoprint(\{ # examplesIf}

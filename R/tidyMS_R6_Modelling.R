@@ -343,7 +343,7 @@ AnovaExtractor <- R6::R6Class(
   )
 )
 
-#' anova returning dataframe
+#' Create an ANOVA extractor returning a data frame
 #' @param test one case-sensitive test choice: "F", "Chisq", "LRT", "Rao" or "Cp".
 #'   The fitted model's ANOVA method must support the chosen test.
 #' @return An \code{\link{AnovaExtractor}} object.

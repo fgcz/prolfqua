@@ -5,8 +5,8 @@
 \alias{data_ionstar}
 \title{IonStar peptide-level example data}
 \format{
-An R6 object of class `IonstarData`; `$data` is a data frame with
-  26520 rows.
+An R6 object of class \code{IonstarData}; \verb{$data} is a data frame with
+26520 rows.
 }
 \source{
 PRIDE PXD003881
@@ -20,7 +20,7 @@ E. coli spike-in dilution series (dilutions a to e, 4 replicates each),
 processed with MaxQuant. An R6 object holding the data, its
 \code{\link{AnalysisConfiguration}}, and the methods \code{filtered()},
 \code{normalized()} and \code{subset_normalized()}. See
-`inst/script/README.md` for its origin.
+\code{inst/script/README.md} for its origin.
 }
 \seealso{
 Other data:

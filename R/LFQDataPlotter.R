@@ -7,7 +7,7 @@
 #' peptide-list / entrapment searches with tens of thousands of degenerate
 #' protein groups. `top_n = NULL` / non-finite keeps all features.
 #' Returns a subset of wide$data in the original row order.
-#' @param lfqdata LFQData containing the measurements and configuration
+#' @param lfqdata [LFQData] object with the data and its configuration
 #' @param wide wide-format data, row identifiers and sample annotations
 #' @param top_n maximum number of variable features to retain
 #' @noRd
@@ -75,7 +75,7 @@ LFQDataPlotter <- R6::R6Class(
     prefix = "",
     #' @description
     #' create LFQDataPlotter
-    #' @param lfqdata LFQData
+    #' @param lfqdata [LFQData] object with the data and its configuration
     #' @param prefix will be prepended to outputs written
     initialize = function(lfqdata, prefix = "ms_") {
       self$lfq <- lfqdata$clone(deep = TRUE)

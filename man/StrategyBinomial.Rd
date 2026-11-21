@@ -54,7 +54,7 @@ coefficients(fit)
 \if{latex}{\out{\hypertarget{method-StrategyBinomial-initialize}{}}}
 \subsection{\code{StrategyBinomial$new()}}{
   Create a quasibinomial count strategy. \code{sigma()} is the
-  Pearson residual scale used by \code{vcov()}.
+Pearson residual scale used by \code{vcov()}.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{StrategyBinomial$new(
@@ -83,7 +83,7 @@ coefficients(fit)
 \if{latex}{\out{\hypertarget{method-StrategyBinomial-zero_residual_variance}{}}}
 \subsection{\code{StrategyBinomial$zero_residual_variance()}}{
   Never flags: a zero Pearson dispersion (identical detection pattern within groups) is bounded
-  below by the binomial variance (\code{binomial_bound}), which keeps the test defined
+below by the binomial variance (\code{binomial_bound}), which keeps the test defined
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{StrategyBinomial$zero_residual_variance(sigma, scale)}

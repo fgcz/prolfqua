@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{multigroup_volcano}
 \alias{multigroup_volcano}
-\title{plot volcano given multiple contrasts}
+\title{Volcano plot for multiple contrasts}
 \usage{
 multigroup_volcano(
   .data,
@@ -47,8 +47,11 @@ multigroup_volcano(
 
 \item{max_nr_significant_text}{maximum number of significant labels to display}
 }
+\value{
+a ggplot object with one volcano panel per contrast; if \code{label} is given, significant points are labelled
+}
 \description{
-plot volcano given multiple contrasts
+Volcano plot for multiple contrasts
 }
 \examples{
 

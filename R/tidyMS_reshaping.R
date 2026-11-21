@@ -1,7 +1,7 @@
 # Intensities to wide ----
 
-#' transform long to wide
-#' @param lfqdata LFQData object
+#' Transform long to wide format
+#' @param lfqdata [LFQData] object with the data and its configuration
 #' @param as.matrix if TRUE return matrix, otherwise data.frame
 #' @param file_name if TRUE use file_name as column labels, otherwise sample_name
 #' @param sep separator for row IDs when as.matrix = TRUE

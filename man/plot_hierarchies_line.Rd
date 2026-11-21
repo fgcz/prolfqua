@@ -11,9 +11,13 @@ plot_hierarchies_line(res, protein_name, lfqdata, show.legend = FALSE)
 
 \item{protein_name}{title of plot}
 
-\item{lfqdata}{LFQData object}
+\item{lfqdata}{\link{LFQData} object with the data and its configuration}
 
 \item{show.legend}{logical, show legend in plot}
+}
+\value{
+a ggplot object with one line per feature across samples, coloured by peptide, faceted by factor
+levels and titled \code{protein_name}
 }
 \description{
 Plot peptide intensities of protein as a function of the sample and factor

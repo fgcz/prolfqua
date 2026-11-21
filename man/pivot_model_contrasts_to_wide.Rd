@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_contrasts.R
 \name{pivot_model_contrasts_to_wide}
 \alias{pivot_model_contrasts_to_wide}
-\title{pivot model contrasts matrix to wide format produced by `contrasts_linfct` and ...}
+\title{Pivot long-format model contrasts to wide format}
 \usage{
 pivot_model_contrasts_to_wide(
   model_interaction_contrasts,
@@ -24,7 +24,7 @@ pivot_model_contrasts_to_wide(
 Contrast definitions or contrast results.
 }
 \description{
-pivot model contrasts matrix to wide format produced by `contrasts_linfct` and ...
+Pivot long-format model contrasts to wide format
 }
 \examples{
 

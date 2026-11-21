@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{table_facade}
 \alias{table_facade}
-\title{table facade to easily switch implementations}
+\title{Table facade to easily switch implementations}
 \usage{
 table_facade(df, caption, digits = getOption("digits"), kable = TRUE)
 }
@@ -19,7 +19,7 @@ table_facade(df, caption, digits = getOption("digits"), kable = TRUE)
 The requested plot, table, or transformed object.
 }
 \description{
-table facade to easily switch implementations
+Table facade to easily switch implementations
 }
 \examples{
 table_facade(head(iris, 3), caption = "Iris preview")

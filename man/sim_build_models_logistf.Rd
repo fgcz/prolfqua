@@ -2,7 +2,7 @@
 % Please edit documentation in R/logistf.R
 \name{sim_build_models_logistf}
 \alias{sim_build_models_logistf}
-\title{build dataframe with models for testing}
+\title{Build Firth logistic models on simulated data for testing}
 \usage{
 sim_build_models_logistf(
   model = c("parallel2", "parallel3", "factors", "interaction"),
@@ -11,8 +11,11 @@ sim_build_models_logistf(
   weight_missing = 1
 )
 }
+\value{
+a \link{ModelFirth} object fitted with \code{\link[=build_model_logistf]{build_model_logistf()}}
+}
 \description{
-build dataframe with models for testing
+Build Firth logistic models on simulated data for testing
 }
 \examples{
 \dontshow{if (requireNamespace("logistf", quietly = TRUE)) withAutoprint(\{ # examplesIf}

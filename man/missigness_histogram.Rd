@@ -12,13 +12,17 @@ missigness_histogram(
 )
 }
 \arguments{
-\item{lfqdata}{LFQData object}
+\item{lfqdata}{\link{LFQData} object with the data and its configuration}
 
 \item{showempty}{show empty values}
 
 \item{factors}{factor columns to use}
 
 \item{alpha}{transparency}
+}
+\value{
+a ggplot object with density plots of the mean intensity per number of missing values, faceted by
+factor levels
 }
 \description{
 Histogram summarizing missingness

@@ -136,7 +136,7 @@ Other modelling:
 \if{latex}{\out{\hypertarget{method-StrategyRfit-initialize}{}}}
 \subsection{\code{StrategyRfit$new()}}{
   Create a new StrategyRfit. Residual df and scale come from
-  \code{df.residual()} and \code{sigma()} of the augmented fit.
+\code{df.residual()} and \code{sigma()} of the augmented fit.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{StrategyRfit$new(modelstr, model_name = "rfit", control = list())}

@@ -2,15 +2,19 @@
 % Please edit documentation in R/tidyMS_missingness_summary.R
 \name{upset_missing_stats}
 \alias{upset_missing_stats}
-\title{prepare dataframe for UpSetR plot for all samples}
+\title{Prepare data for an UpSetR plot of all samples}
 \usage{
 upset_missing_stats(lfqdata)
 }
 \arguments{
-\item{lfqdata}{LFQData object}
+\item{lfqdata}{\link{LFQData} object with the data and its configuration}
+}
+\value{
+a list with \code{data}, a data.frame with one row per hierarchy element and one 0/1 presence column per
+sample, and \code{nsets}, the number of sample columns
 }
 \description{
-prepare dataframe for UpSetR plot for all samples
+Prepare data for an UpSetR plot of all samples
 }
 \examples{
 \dontshow{if (requireNamespace("UpSetR", quietly = TRUE)) withAutoprint(\{ # examplesIf}

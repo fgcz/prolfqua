@@ -99,7 +99,7 @@ AggregatorBase <- R6::R6Class(
 )
 
 
-#' AggregateMedpolish
+#' Aggregate peptide intensities by median polish
 #'
 #' Aggregates peptide intensities to protein level using median polish.
 #' Works best with variance-stabilized (log-transformed) intensities.
@@ -158,7 +158,7 @@ AggregateMedpolish <- R6::R6Class(
 )
 
 
-#' AggregateRlm
+#' Aggregate peptide intensities by robust linear regression
 #'
 #' Aggregates peptide intensities to protein level using robust regression (rlm).
 #' Works best with variance-stabilized (log-transformed) intensities.
@@ -217,7 +217,7 @@ AggregateRlm <- R6::R6Class(
 )
 
 
-#' AggregateTopN
+#' Aggregate peptide intensities from the top N peptides
 #'
 #' Aggregates peptide intensities to protein level using top N peptides.
 #' Works with raw (untransformed) intensities.
@@ -335,7 +335,7 @@ AggregateTopN <- R6::R6Class(
 }
 
 
-#' AggregateLimpa
+#' Aggregate or impute intensities with limpa's DPC quantification
 #'
 #' Aggregates peptide/precursor intensities to protein level using limpa's
 #' probabilistic DPC-based quantification (\code{limpa::dpcQuant}).

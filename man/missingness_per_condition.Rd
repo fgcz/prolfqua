@@ -7,9 +7,13 @@
 missingness_per_condition(lfqdata, factors = lfqdata$relevant_factor_keys())
 }
 \arguments{
-\item{lfqdata}{LFQData object}
+\item{lfqdata}{\link{LFQData} object with the data and its configuration}
 
 \item{factors}{factor columns to use}
+}
+\value{
+a list with \code{data}, a wide tibble with one row per condition and one column per number of missing
+values holding the feature count, and \code{figure}, a ggplot bar chart of these counts
 }
 \description{
 Summarize missing in condition as barplot

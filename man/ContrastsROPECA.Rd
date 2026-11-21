@@ -8,8 +8,8 @@ An R6 class generator.
 }
 \description{
 ROPECA optimizes the reproducibility of statistical testing
- on peptide-level and aggregates the peptide-level changes
-  to determine differential protein-level expression.
+on peptide-level and aggregates the peptide-level changes
+to determine differential protein-level expression.
 }
 \examples{
 

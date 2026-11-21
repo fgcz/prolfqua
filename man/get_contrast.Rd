@@ -7,9 +7,15 @@
 get_contrast(data, hierarchy_keys, contrasts)
 }
 \arguments{
-\item{data}{hierarchy_keys of Analysis Configuration}
+\item{data}{data.frame}
+
+\item{hierarchy_keys}{hierarchy key columns of the AnalysisConfiguration}
 
 \item{contrasts}{list of contrasts to compute}
+}
+\value{
+a tibble with one row per hierarchy element and contrast and columns of the \code{hierarchy_keys},
+\code{group_1}, \code{group_2}, \code{estimate}, \code{group_1_name}, \code{group_2_name} and \code{contrast}
 }
 \description{
 Compute fold changes given Contrasts

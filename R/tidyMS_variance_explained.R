@@ -38,7 +38,6 @@
 #'   statistics.
 #' @seealso [pooled_variance_explained()]
 #' @family stats
-#' @md
 #' @export
 #' @examples
 #' bb <- prolfqua::sim_lfq_data_protein_config(Nprot = 20)
@@ -119,7 +118,6 @@ summarize_variance_explained <- function(lfqdata, modelstr = NULL) {
 #'   the order of the ANOVA table, residuals included.
 #' @seealso [summarize_variance_explained()]
 #' @family stats
-#' @md
 #' @export
 #' @examples
 #' bb <- prolfqua::sim_lfq_data_2factor_config(Nprot = 20)

@@ -2,17 +2,21 @@
 % Please edit documentation in R/tidyMS_missingness_summary.R
 \name{encode_bin_resp}
 \alias{encode_bin_resp}
-\title{convert to binary response}
+\title{Encode intensities as a binary detection response}
 \usage{
 encode_bin_resp(lfqdata, name = "bin_resp")
 }
 \arguments{
-\item{lfqdata}{LFQData object}
+\item{lfqdata}{\link{LFQData} object with the data and its configuration}
 
 \item{name}{column name for binary response}
 }
+\value{
+a tibble of the long-format data with an added integer column \code{name}: 1 if the response is observed,
+0 if it is \code{NA}
+}
 \description{
-convert to binary response
+Encode intensities as a binary detection response
 }
 \examples{
 

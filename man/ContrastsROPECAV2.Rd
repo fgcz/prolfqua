@@ -19,7 +19,7 @@ Each peptide t-statistic is converted to the standard normal score with the
 same tail probability. \code{diff} is the median peptide fold change,
 \code{statistic} the normal score with the protein's two-sided p-value,
 \code{std.error} = \code{|diff / statistic|}, \code{df} = \code{Inf}, and
-\code{conf.low}, \code{conf.high} the matching normal 95\% interval;
+\code{conf.low}, \code{conf.high} the matching normal 95\\% interval;
 \code{sigma} is the MAD of the peptide fold changes.
 }
 \examples{

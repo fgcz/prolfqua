@@ -2,7 +2,7 @@
 % Please edit documentation in R/LFQDataTransformer.R
 \name{center_to_reference_cfg}
 \alias{center_to_reference_cfg}
-\title{center to reference}
+\title{Center data to a reference subset}
 \usage{
 center_to_reference_cfg(lfqdata, lfqdareference)
 }

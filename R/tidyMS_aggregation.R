@@ -52,8 +52,10 @@ plot_hierarchies_line_default <- function(
 #' @export
 #' @param res data.frame
 #' @param protein_name title of plot
-#' @param lfqdata LFQData object
+#' @param lfqdata [LFQData] object with the data and its configuration
 #' @param show.legend logical, show legend in plot
+#' @return a ggplot object with one line per feature across samples, coloured by peptide, faceted by factor
+#'   levels and titled `protein_name`
 #' @family aggregation
 #' @family plotting
 #'
@@ -257,7 +259,7 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
 
 #' Aggregates e.g. protein abundances from peptide abundances
 #'
-#' @param lfqdata LFQData object
+#' @param lfqdata [LFQData] object with the data and its configuration
 #' @param method "medpolish" (Tukey's median polish, column `medpolish`) or "rlm" (robust regression with
 #'   `MASS::rlm`, column `lmrob`)
 #' @param control convergence controls merged over the defaults. medpolish: `maxiter` (default 10) and `eps`
@@ -348,6 +350,9 @@ estimate_intensity <- function(lfqdata, method = c("medpolish", "rlm"), control 
 #' @param lfqdata LFQData object (original data)
 #' @param lfqdata_agg LFQData object (aggregated data)
 #' @param show.legend logical, show legend in plot
+#' @return a tibble with one row per aggregated element and the columns `hierarchy_id`, `data` (the feature
+#'   intensities), `other` (the aggregated intensities) and `plots` (ggplot objects of the feature intensities with
+#'   the aggregate drawn in black)
 #' @family plotting
 #' @family aggregation
 #' @keywords internal
@@ -405,7 +410,7 @@ plot_estimate <- function(lfqdata, lfqdata_agg, show.legend = FALSE) {
 #'
 #' run \link{rank_peptide_by_intensity} first
 #' @param ranked_data data.frame with ranked peptides
-#' @param lfqdata LFQData object
+#' @param lfqdata [LFQData] object with the data and its configuration
 #' @param .func function to use for aggregation
 #' @param N default 3 top intensities.
 #' @return list with data and new reduced configuration (config)
@@ -587,7 +592,7 @@ nr_features_experiment <- function(data, hierarchy_keys, hierarchy_keys_depth, n
 }
 
 # Summarize Intensities by Intensity or NAs ----
-#' ranks precursor - peptide by intensity.
+#' Rank precursors or peptides by intensity
 #' @param pdata data.frame
 #' @param response character — intensity column name
 #' @param hierarchy_keys character vector — all hierarchy column names

@@ -7,7 +7,11 @@
 complete_cases(lfqdata)
 }
 \arguments{
-\item{lfqdata}{LFQData object}
+\item{lfqdata}{\link{LFQData} object with the data and its configuration}
+}
+\value{
+a tibble of the long-format data with one row for every combination of sample and hierarchy element;
+added rows have \code{NA} intensities
 }
 \description{
 The tidy table does not need to contain missing data.

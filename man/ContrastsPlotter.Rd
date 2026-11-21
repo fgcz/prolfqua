@@ -2,12 +2,12 @@
 % Please edit documentation in R/ContrastsPlotter.R
 \name{ContrastsPlotter}
 \alias{ContrastsPlotter}
-\title{plot contrasts}
+\title{Plot contrasts}
 \value{
 An R6 class generator.
 }
 \description{
-plot contrasts
+Plot contrasts
 }
 \examples{
 \dontshow{if (requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)) withAutoprint(\{ # examplesIf}

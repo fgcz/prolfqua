@@ -2,7 +2,7 @@
 % Please edit documentation in R/LFQDataAggregator.R
 \name{AggregateTopN}
 \alias{AggregateTopN}
-\title{AggregateTopN}
+\title{Aggregate peptide intensities from the top N peptides}
 \value{
 An R6 class generator.
 }

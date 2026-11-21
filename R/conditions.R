@@ -284,7 +284,7 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
 
 #' Validate simulator size and missingness weight
 #' @param Nprot positive whole number of proteins
-#' @param weight_missing one number in [0, 1]
+#' @param weight_missing one number in \[0, 1\]
 #' @param call the call shown in the error header
 #' @noRd
 #' @srrstatsTODO {G2.2} Scalar simulation arguments are enforced; limit: some thresholds and weights still need length

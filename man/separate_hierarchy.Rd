@@ -11,6 +11,10 @@ separate_hierarchy(data, config)
 
 \item{config}{AnalysisConfiguration}
 }
+\value{
+\code{data} with each hierarchy key at the current depth split at \code{config$sep} into its component columns,
+which are added after the key column
+}
 \description{
 Separates hierarchy columns into starting columns
 }

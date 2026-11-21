@@ -19,16 +19,16 @@ fits so it is not underestimated by the constant imputation.
 
 Differences from \code{\link{ContrastsLMImputeFacade}}:
 \itemize{
-  \item Covariance borrowing is \strong{vcov-only} (element-wise median of
-    the donors' full named covariance matrices). \code{rfit} exposes no
-    \code{lm}-style \code{cov.unscaled}, so the scalar-sigma borrowing mode
-    is not available and is not exposed.
-  \item Borrowing is \strong{fail-hard} (\code{on_misalign = "fail"}): if the
-    donor covariance matrices cannot be aligned by coefficient name, the
-    rescue is skipped and those proteins remain in \code{get_missing()}
-    rather than carrying an \code{lm}-specific approximation.
-  \item No observation weights (\code{rfit} has no \code{weights} argument),
-    matching plain \code{rfit}.
+\item Covariance borrowing is \strong{vcov-only} (element-wise median of
+the donors' full named covariance matrices). \code{rfit} exposes no
+\code{lm}-style \code{cov.unscaled}, so the scalar-sigma borrowing mode
+is not available and is not exposed.
+\item Borrowing is \strong{fail-hard} (\code{on_misalign = "fail"}): if the
+donor covariance matrices cannot be aligned by coefficient name, the
+rescue is skipped and those proteins remain in \code{get_missing()}
+rather than carrying an \code{lm}-specific approximation.
+\item No observation weights (\code{rfit} has no \code{weights} argument),
+matching plain \code{rfit}.
 }
 
 \code{modelName} is the facade key \code{"rfit_impute"}; rescued rows are
@@ -46,7 +46,7 @@ fa$to_wide()
 }
 \seealso{
 \code{\link{ContrastsLMImputeFacade}}, \code{\link{ContrastsRfitFacade}},
-  \code{\link{build_model_impute}}
+\code{\link{build_model_impute}}
 
 Other modelling:
 \code{\link{AnovaExtractor}},

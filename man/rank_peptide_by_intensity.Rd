@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_aggregation.R
 \name{rank_peptide_by_intensity}
 \alias{rank_peptide_by_intensity}
-\title{ranks precursor - peptide by intensity.}
+\title{Rank precursors or peptides by intensity}
 \usage{
 rank_peptide_by_intensity(pdata, response, hierarchy_keys)
 }
@@ -17,7 +17,7 @@ rank_peptide_by_intensity(pdata, response, hierarchy_keys)
 data.frame
 }
 \description{
-ranks precursor - peptide by intensity.
+Rank precursors or peptides by intensity
 }
 \examples{
 

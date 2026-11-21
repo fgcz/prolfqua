@@ -2,7 +2,7 @@
 % Please edit documentation in R/AnalysisConfiguration.R
 \name{list_to_AnalysisConfiguration}
 \alias{list_to_AnalysisConfiguration}
-\title{read minimal yaml to reconstruct configuration}
+\title{Reconstruct a configuration from minimal YAML}
 \usage{
 list_to_AnalysisConfiguration(dd)
 }
@@ -13,7 +13,7 @@ list_to_AnalysisConfiguration(dd)
 The computed result.
 }
 \description{
-read minimal yaml to reconstruct configuration
+Reconstruct a configuration from minimal YAML
 }
 \examples{
 

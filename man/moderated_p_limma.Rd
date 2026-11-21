@@ -16,6 +16,11 @@ moderated_p_limma(
 \arguments{
 \item{variance_floor}{optional positive lower bound for posterior variances}
 }
+\value{
+\code{contrast_df}, ungrouped, with the added columns \code{moderated.var.post}, \code{moderated.var.prior},
+\code{moderated.df.prior}, \code{moderated.std.error}, \code{moderated.statistic}, \code{moderated.df.total},
+\code{moderated.p.value}, \code{moderated.conf.low} and \code{moderated.conf.high}
+}
 \description{
 Moderate p-values - limma approach
 }

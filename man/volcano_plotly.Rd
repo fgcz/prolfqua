@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{volcano_plotly}
 \alias{volcano_plotly}
-\title{volcano plotly}
+\title{Interactive volcano plots with plotly}
 \usage{
 volcano_plotly(
   .data,
@@ -50,7 +50,7 @@ with the smallest positive observed value in the same score column.}
 The requested plot, table, or transformed object.
 }
 \description{
-volcano plotly
+Interactive volcano plots with plotly
 }
 \examples{
 \dontshow{if (requireNamespace("plotly", quietly = TRUE) && requireNamespace("crosstalk", quietly = TRUE)) withAutoprint(\{ # examplesIf}

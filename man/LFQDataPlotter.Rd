@@ -104,7 +104,7 @@ Other LFQData:
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{lfqdata}}{LFQData}
+      \item{\code{lfqdata}}{\link{LFQData} object with the data and its configuration}
       \item{\code{prefix}}{will be prepended to outputs written}
     }
     \if{html}{\out{</div>}}
@@ -440,7 +440,7 @@ display.}
     \if{html}{\out{<div class="arguments">}}
     \describe{
       \item{\code{path_qc}}{path to write to}
-      \item{\code{filename}}{file name; one ending in `.pdf` is used as given, otherwise `boxplot.pdf` is appended
+      \item{\code{filename}}{file name; one ending in \code{.pdf} is used as given, otherwise \code{boxplot.pdf} is appended
 (default: the plotter prefix)}
       \item{\code{width}}{fig width}
       \item{\code{height}}{fig height}
@@ -467,7 +467,7 @@ display.}
     \describe{
       \item{\code{fig}}{ggplot or ComplexHeatmap::Heatmap}
       \item{\code{path_qc}}{path to write to}
-      \item{\code{fig_name}}{name of figure; `.pdf` is appended unless it ends in `.pdf`}
+      \item{\code{fig_name}}{name of figure; \code{.pdf} is appended unless it ends in \code{.pdf}}
       \item{\code{width}}{figure width}
       \item{\code{height}}{figure height}
     }

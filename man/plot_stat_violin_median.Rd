@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_stats.R
 \name{plot_stat_violin_median}
 \alias{plot_stat_violin_median}
-\title{plot Violin plot of sd CV or mean given intensity lower or above median}
+\title{Violin plot of sd, CV or mean for intensities below and above the median}
 \usage{
 plot_stat_violin_median(
   pdata,
@@ -17,8 +17,12 @@ plot_stat_violin_median(
 
 \item{stat}{either CV, mean or sd}
 }
+\value{
+a ggplot object with violins of \code{stat} per level of \code{factor_key} and the median and interquartile range
+marked, faceted into features below and above the median mean intensity
+}
 \description{
-plot Violin plot of sd CV or mean given intensity lower or above median
+Violin plot of sd, CV or mean for intensities below and above the median
 }
 \examples{
 

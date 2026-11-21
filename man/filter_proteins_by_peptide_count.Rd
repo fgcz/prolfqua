@@ -13,7 +13,7 @@ filter_proteins_by_peptide_count(
 )
 }
 \arguments{
-\item{pdata}{data.frame in the long format of `config`}
+\item{pdata}{data.frame in the long format of \code{config}}
 
 \item{config}{AnalysisConfiguration}
 
@@ -21,18 +21,18 @@ filter_proteins_by_peptide_count(
 
 \item{child}{child key column, default the second hierarchy key}
 
-\item{threshold}{minimum number of children, default `config$min_peptides_protein`}
+\item{threshold}{minimum number of children, default \code{config$min_peptides_protein}}
 }
 \value{
-list with the filtered `data` and the `name` of the count column
+list with the filtered \code{data} and the \code{name} of the count column
 }
 \description{
-Keeps the rows of the `parent` entries (e.g. proteins) with at least
-`threshold` distinct `child` entries (e.g. peptides), counted by
-[nr_B_in_A()], and adds that count. By default it counts the second
-hierarchy level within the first, independent of `hierarchy_depth`. The
-package dataset `data_ionstar` calls it as `(pdata, config)` from its
-`filtered()` method.
+Keeps the rows of the \code{parent} entries (e.g. proteins) with at least
+\code{threshold} distinct \code{child} entries (e.g. peptides), counted by
+\code{\link[=nr_B_in_A]{nr_B_in_A()}}, and adds that count. By default it counts the second
+hierarchy level within the first, independent of \code{hierarchy_depth}. The
+package dataset \code{data_ionstar} calls it as \verb{(pdata, config)} from its
+\code{filtered()} method.
 }
 \examples{
 istar <- prolfqua::sim_lfq_data_peptide_config()

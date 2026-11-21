@@ -2,19 +2,23 @@
 % Please edit documentation in R/tidyMS_plotting.R
 \name{plot_sample_correlation}
 \alias{plot_sample_correlation}
-\title{visualize correlation among samples}
+\title{Visualize correlation among samples}
 \usage{
 plot_sample_correlation(matrix, method = "pearson", ...)
 }
 \arguments{
 \item{matrix}{numeric matrix — wide-format intensity data (samples as columns)}
 
-\item{method}{correlation method, as for [plot_heatmap_cor()]}
+\item{method}{correlation method, as for \code{\link[=plot_heatmap_cor]{plot_heatmap_cor()}}}
 
-\item{...}{passed to [corrplot::corrplot.mixed()], e.g. `tl.cex` and `number.cex` for text size (default 1)}
+\item{...}{passed to \code{\link[corrplot:corrplot.mixed]{corrplot::corrplot.mixed()}}, e.g. \code{tl.cex} and \code{number.cex} for text size (default 1)}
+}
+\value{
+invisibly, the list returned by \code{\link[corrplot:corrplot.mixed]{corrplot::corrplot.mixed()}} with the correlation matrix \code{corr} and the
+cell positions \code{corrPos}; called for its side effect of drawing the plot
 }
 \description{
-visualize correlation among samples
+Visualize correlation among samples
 }
 \examples{
 istar <- sim_lfq_data_peptide_config()

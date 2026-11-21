@@ -5,15 +5,15 @@
 \alias{data_checksummarizationrobust87}
 \title{Reference input for the robust summarisation check (87 percent)}
 \format{
-A data frame with 20 rows and the columns `log2Area`, `peptide_Id`,
-  `sampleName`.
+A data frame with 20 rows and the columns \code{log2Area}, \code{peptide_Id},
+\code{sampleName}.
 }
 \usage{
 data_checksummarizationrobust87
 }
 \description{
 log2 peptide areas of one protein, used by the tests of the robust
-(medpolish/rlm) protein summarisation. See `inst/script/README.md`.
+(medpolish/rlm) protein summarisation. See \code{inst/script/README.md}.
 }
 \seealso{
 Other data:

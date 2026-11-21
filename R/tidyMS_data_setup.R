@@ -348,6 +348,8 @@ setup_analysis <- function(data, configuration, debug = FALSE) {
 #' @export
 #' @param data data.frame
 #' @param config AnalysisConfiguration
+#' @return `data` with each hierarchy key at the current depth split at `config$sep` into its component columns,
+#'   which are added after the key column
 #' @family configuration
 #' @keywords internal
 #' @examples
@@ -401,7 +403,9 @@ separate_hierarchy <- function(data, config) {
 #' This function re-establishes the missing observations in a sample.
 #'
 #' @export
-#' @param lfqdata LFQData object
+#' @param lfqdata [LFQData] object with the data and its configuration
+#' @return a tibble of the long-format data with one row for every combination of sample and hierarchy element;
+#'   added rows have `NA` intensities
 #' @keywords internal
 #' @family configuration
 #' @examples
@@ -427,6 +431,7 @@ complete_cases <- function(lfqdata) {
 #' @param size size of sample
 #' @param pdata tidy table
 #' @param hierarchy_keys_depth character vector — hierarchy columns at current depth
+#' @return a tibble with all rows of `pdata` for `size` randomly drawn hierarchy elements
 #' @export
 #' @keywords internal
 #' @family configuration

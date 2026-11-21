@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_plotting.R
 \name{plot_raster}
 \alias{plot_raster}
-\title{plot heatmap without any clustering (use to show NA's)}
+\title{Plot a heatmap without clustering (use to show NAs)}
 \usage{
 plot_raster(
   matrix,
@@ -37,10 +37,14 @@ plot_raster(
 \item{max_sample_label_chars}{maximum displayed sample label length. Labels
 keep their suffix because sample prefixes are often shared.}
 
-\item{...}{additional arguments passed to [ComplexHeatmap::Heatmap()]}
+\item{...}{additional arguments passed to \code{\link[ComplexHeatmap:Heatmap]{ComplexHeatmap::Heatmap()}}}
+}
+\value{
+invisibly, a ComplexHeatmap \code{Heatmap} object of the abundances with rows ordered by \code{arrange} and
+unclustered columns; \code{NULL} with a warning if \code{matrix} has fewer than two rows
 }
 \description{
-plot heatmap without any clustering (use to show NA's)
+Plot a heatmap without clustering (use to show NAs)
 }
 \examples{
 \dontshow{if (requireNamespace("ComplexHeatmap", quietly = TRUE) && requireNamespace("circlize", quietly = TRUE)) withAutoprint(\{ # examplesIf}

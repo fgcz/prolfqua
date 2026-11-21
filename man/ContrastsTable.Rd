@@ -2,12 +2,12 @@
 % Please edit documentation in R/ContrastsTable.R
 \name{ContrastsTable}
 \alias{ContrastsTable}
-\title{holds results when contrasts are added.}
+\title{Hold results when contrasts are added}
 \value{
 An R6 class generator.
 }
 \description{
-holds results when contrasts are added.
+Hold results when contrasts are added
 }
 \examples{
 

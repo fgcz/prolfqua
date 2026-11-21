@@ -1,7 +1,7 @@
 # ContrastsTable -----
 
 #'
-#' holds results when contrasts are added.
+#' Hold results when contrasts are added
 #'
 #' @return An R6 class generator.
 #' @export

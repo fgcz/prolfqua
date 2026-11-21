@@ -2,7 +2,7 @@
 % Please edit documentation in R/LFQDataAggregator.R
 \name{AggregateMedpolish}
 \alias{AggregateMedpolish}
-\title{AggregateMedpolish}
+\title{Aggregate peptide intensities by median polish}
 \value{
 An R6 class generator.
 }

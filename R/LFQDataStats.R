@@ -6,7 +6,6 @@
 #'
 #' @export
 #' @family LFQData
-#' @md
 #' @examples
 #'
 #' # study variance of not normalized data
@@ -83,7 +82,7 @@ LFQDataStats <- R6::R6Class(
     statsdf = NULL,
     #' @description
     #' create analyse variances and CV
-    #' @param lfqdata LFQData object
+    #' @param lfqdata [LFQData] object with the data and its configuration
     #' @param stats if `interaction`, compute within-group stats; if `all`,
     #'   compute overall CV; if `pooled`, use pooled variance with grouping
     #'   information

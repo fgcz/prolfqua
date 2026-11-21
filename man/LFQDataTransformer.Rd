@@ -11,12 +11,12 @@ Decorate LFQData with Methods for transforming Intensities
 }
 \section{Centring and contrasts}{
 
-Centring is an explicit transformation step, never applied by a model. `robscale()` and `robscale_subset()`
-centre each sample at its median (and scale by its MAD); `preserve_mean = TRUE` adds the overall mean back, so
-abundances stay on the original level, `FALSE` centres them at zero. `center_to_reference()` and
-`subtract_sample_offsets()` shift each sample by one offset. A per-sample shift moves every feature of that
+Centring is an explicit transformation step, never applied by a model. \code{robscale()} and \code{robscale_subset()}
+centre each sample at its median (and scale by its MAD); \code{preserve_mean = TRUE} adds the overall mean back, so
+abundances stay on the original level, \code{FALSE} centres them at zero. \code{center_to_reference()} and
+\code{subtract_sample_offsets()} shift each sample by one offset. A per-sample shift moves every feature of that
 sample by the same amount: a contrast between groups changes by the difference of the mean offsets of the groups,
-and a shift common to all samples (such as `preserve_mean`) changes the average abundance (`avgAbd`) but not the
+and a shift common to all samples (such as \code{preserve_mean}) changes the average abundance (\code{avgAbd}) but not the
 contrast estimates, standard errors or p-values.
 }
 
@@ -160,8 +160,8 @@ tr$subtract_sample_offsets(offsets)
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{force}}{if `FALSE`, data already log2 transformed will not be
-transformed a second time. `TRUE` forces log transformation}
+      \item{\code{force}}{if \code{FALSE}, data already log2 transformed will not be
+transformed a second time. \code{TRUE} forces log transformation}
     }
     \if{html}{\out{</div>}}
   }
@@ -231,7 +231,7 @@ average abundance, not the contrasts (see section "Centring and contrasts")}
     \describe{
       \item{\code{lfqsubset}}{LFQData subset to use for normalization}
       \item{\code{preserve_mean}}{should original mean value be preserved TRUE, if FALSE then center at zero}
-      \item{\code{colname}}{- how to name the transformed intensities, default transformedIntensity}
+      \item{\code{colname}}{how to name the transformed intensities, default transformedIntensity}
     }
     \if{html}{\out{</div>}}
   }
@@ -331,8 +331,8 @@ Names must match the configured sample IDs exactly and may be in any order.}
     \if{html}{\out{<div class="arguments">}}
     \describe{
       \item{\code{.func}}{any function taking a matrix and returning a matrix
-(columns sample, rows feature, e.g. `base::scale()`), default
-`robust_scale`}
+(columns sample, rows feature, e.g. \code{base::scale()}), default
+\code{robust_scale}}
       \item{\code{force}}{transformation on data already transformed}
     }
     \if{html}{\out{</div>}}

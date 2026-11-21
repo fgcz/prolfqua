@@ -2,7 +2,7 @@
 % Please edit documentation in R/simulate_LFQ_data.R
 \name{which_missing}
 \alias{which_missing}
-\title{add missing values to x vector based on the values of x}
+\title{Draw missing values for an intensity vector based on its values}
 \usage{
 which_missing(x, weight_missing = 0.2)
 }
@@ -15,7 +15,7 @@ which_missing(x, weight_missing = 0.2)
 A logical vector indicating which values are missing.
 }
 \description{
-add missing values to x vector based on the values of x
+Draw missing values for an intensity vector based on its values
 }
 \examples{
 which_missing(2**rnorm(10,2,0.4))

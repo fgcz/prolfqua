@@ -253,8 +253,8 @@ regardless of backend.
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{rounded}}{if TRUE round numeric columns to `digits` significant digits}
-      \item{\code{digits}}{significant digits when `rounded` (default 3, the prolfquapp report convention)}
+      \item{\code{rounded}}{if TRUE round numeric columns to \code{digits} significant digits}
+      \item{\code{digits}}{significant digits when \code{rounded} (default 3, the prolfquapp report convention)}
     }
     \if{html}{\out{</div>}}
   }

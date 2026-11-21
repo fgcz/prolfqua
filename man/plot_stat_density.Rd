@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_stats.R
 \name{plot_stat_density}
 \alias{plot_stat_density}
-\title{plot density distribution or ecdf of sd, mean or CV}
+\title{Plot the density or ECDF of sd, mean or CV}
 \usage{
 plot_stat_density(
   pdata,
@@ -20,8 +20,11 @@ plot_stat_density(
 
 \item{ggstat}{either density or ecdf}
 }
+\value{
+a ggplot object with one density or ECDF line of \code{stat} per level of \code{factor_key}
+}
 \description{
-plot density distribution or ecdf of sd, mean or CV
+Plot the density or ECDF of sd, mean or CV
 }
 \examples{
 

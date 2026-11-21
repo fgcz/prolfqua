@@ -163,7 +163,7 @@ Other modelling:
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{lfqdata}}{LFQData object}
+      \item{\code{lfqdata}}{\link{LFQData} object with the data and its configuration}
       \item{\code{modelstr}}{model formula string (e.g. "~ group_")}
       \item{\code{contrasts}}{named character vector of contrasts}
       \item{\code{weights}}{column name for per-observation weights (default:

@@ -7,7 +7,7 @@
 build_model_limma(lfqdata, strategy, model_name = strategy$model_name)
 }
 \arguments{
-\item{lfqdata}{an \code{\link{LFQData}} object}
+\item{lfqdata}{\link{LFQData} object with the data and its configuration}
 
 \item{strategy}{output of \code{\link{strategy_limma}}}
 

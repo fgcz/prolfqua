@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_missingness_summary.R
 \name{missingness_per_condition_cumsum}
 \alias{missingness_per_condition_cumsum}
-\title{cumulative sums of missing}
+\title{Cumulative counts of missing values per condition}
 \usage{
 missingness_per_condition_cumsum(
   lfqdata,
@@ -10,12 +10,16 @@ missingness_per_condition_cumsum(
 )
 }
 \arguments{
-\item{lfqdata}{LFQData object}
+\item{lfqdata}{\link{LFQData} object with the data and its configuration}
 
 \item{factors}{factor columns to use}
 }
+\value{
+a list with \code{data}, a wide tibble with one row per condition and one column per number of missing
+values holding the cumulative feature count, and \code{figure}, a ggplot bar chart of these counts
+}
 \description{
-cumulative sums of missing
+Cumulative counts of missing values per condition
 }
 \examples{
 

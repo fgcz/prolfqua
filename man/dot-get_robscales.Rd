@@ -2,11 +2,11 @@
 % Please edit documentation in R/LFQDataTransformer.R
 \name{.get_robscales}
 \alias{.get_robscales}
-\title{compute median and mad on matrix}
+\title{Compute medians and MADs of a matrix along one margin}
 \usage{
 .get_robscales(data, dim = 2)
 }
 \description{
-compute median and mad on matrix
+Compute medians and MADs of a matrix along one margin
 }
 \keyword{internal}

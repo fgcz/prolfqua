@@ -7,6 +7,10 @@
 - Joins inside prolfqua check that their lookup keys are unique: a duplicated subject, contrast or sample key in an input (for instance two rows for one protein and contrast passed to `merge_contrasts_results()`) raises an error instead of silently multiplying rows.
 - Plots: volcano, MA and score plots draw smaller, more transparent points, so dense regions stay readable; `ContrastsPlotter$barplot_threshold()` fills bars with the colour-blind safe palette; score-plot reference lines are black and red regardless of the global `palette()`. `plot_pca()` shapes the second factor with 19 distinguishable shapes and, when that factor has more levels, drops the shape mapping with a message; before, factors with more than 25 levels drew invalid shapes or no points.
 
+## Documentation
+
+- Help pages render Markdown, so code and links that showed as literal backticks or brackets now format; every exported function documents its return value; titles are in sentence case and `lfqdata` arguments share one description.
+
 # prolfqua 1.9.4
 
 ## New features

@@ -88,7 +88,7 @@ get_uniprot_id_from_fasta_header <- function(df, idcolumn = "protein_Id") {
   return(res)
 }
 
-#' plot volcano given multiple contrasts
+#' Volcano plot for multiple contrasts
 #' @param .data data in long format
 #' @param effect column containing effect sizes
 #' @param significance column containing p-values, q.values etc
@@ -102,6 +102,7 @@ get_uniprot_id_from_fasta_header <- function(df, idcolumn = "protein_Id") {
 #' @param segment.alpha controls visibility of lines
 #' @param scales parameter to ggplot2::facet_wrap
 #' @param max_nr_significant_text maximum number of significant labels to display
+#' @return a ggplot object with one volcano panel per contrast; if `label` is given, significant points are labelled
 #' @export
 #' @keywords internal
 #' @family utilities
@@ -266,7 +267,7 @@ multigroup_volcano <- function(
 }
 
 
-#' matrix or data.frame to tibble (taken from tidyquant)
+#' Convert a matrix or data.frame to a tibble (taken from tidyquant)
 #'
 #' @param x a matrix
 #' @param preserve_row_names give name to rownames column, if NULL discard rownames
@@ -300,7 +301,7 @@ matrix_to_tibble <- function(x, preserve_row_names = "row.names", ...) {
   }
 }
 
-#' correlation panel for pairs plot function (used as default in pairs_smooth)
+#' Correlation panel for pairs plots (default lower panel of `pairs_smooth()`)
 #' @export
 #' @family utilities
 #' @keywords internal
@@ -308,6 +309,8 @@ matrix_to_tibble <- function(x, preserve_row_names = "row.names", ...) {
 #' @param y numeric data
 #' @param ... not used
 #' @param digits number of digits to display
+#' @return `NULL`, invisibly; called for its side effect of writing the correlation, R^2 and p-value into the
+#'   current panel
 #' @examples
 #' graphics::plot(1:3, 1:3, type = "n")
 #' panel_cor(1:3, 1:3)
@@ -339,10 +342,11 @@ panel_cor <- function(x, y, digits = 2, ...) {
   text(0.5, 0.3, txt2)
 }
 
-#' smoothScatter pairs
+#' Pairs plot with smoothed scatter panels
 #' @param data data matrix or data.frame as normally passed to pairs
 #' @param legend  add legend to plots
 #' @param ... params usually passed to pairs
+#' @return `NULL`, invisibly; called for its side effect of drawing the pairs plot
 #' @export
 #' @family utilities
 #' @keywords internal
@@ -380,7 +384,7 @@ pairs_smooth <- function(data, legend = FALSE, ...) {
 }
 
 
-#' table facade to easily switch implementations
+#' Table facade to easily switch implementations
 #' @return The requested plot, table, or transformed object.
 #' @export
 #' @family utilities
@@ -475,7 +479,7 @@ table_facade <- function(df, caption, digits = getOption("digits"), kable = TRUE
   return(p2)
 }
 
-#' volcano plotly
+#' Interactive volcano plots with plotly
 #' @param .data data frame
 #' @param effect effect size x-axis
 #' @param significance significance
@@ -551,7 +555,7 @@ volcano_plotly <- function(
 }
 
 
-#' load data from prolfqua
+#' Load a dataset from prolfqua
 #' @param datastr name of dataset
 #' @param package default prolfqua
 #' @return The computed result.
@@ -567,7 +571,9 @@ prolfqua_data <- function(datastr, package = "prolfqua") {
 }
 
 
-#' create interaction column from factors
+#' Create an interaction column from factors
+#' @return `data` with an added factor column `interaction` combining the values of `columns`, each prefixed with
+#'   its column name and joined by `sep`
 #' @export
 #' @keywords internal
 #' @family configuration

@@ -27,33 +27,33 @@ reproduced by the vignettes of the companion package prolfquabenchmark
 \section{Options}{
 
 \describe{
-  \item{`prolfqua.verbose`}{`TRUE` (default) or `FALSE`. With `FALSE`,
-    prolfqua prints no informative messages, such as columns added, rows
-    removed or files written. Warnings and errors are not affected. The
-    messages carry class `prolfqua_message`, so an application can route them
-    to its own log with `withCallingHandlers(prolfqua_message = ...)`.}
-  \item{`prolfqua.progress`}{Progress reporting while models and contrasts
-    are computed per protein: `NULL` (default) shows a terminal progress
-    bar, `"message"` a throttled message with elapsed time, and a
-    `function(i, total, label)` is called with the progress.}
+\item{\code{prolfqua.verbose}}{\code{TRUE} (default) or \code{FALSE}. With \code{FALSE},
+prolfqua prints no informative messages, such as columns added, rows
+removed or files written. Warnings and errors are not affected. The
+messages carry class \code{prolfqua_message}, so an application can route them
+to its own log with \code{withCallingHandlers(prolfqua_message = ...)}.}
+\item{\code{prolfqua.progress}}{Progress reporting while models and contrasts
+are computed per protein: \code{NULL} (default) shows a terminal progress
+bar, \code{"message"} a throttled message with elapsed time, and a
+\verb{function(i, total, label)} is called with the progress.}
 }
 }
 
 \section{Missing and non-finite values}{
 
-An `NA` intensity is a missing observation. The `method` argument of
+An \code{NA} intensity is a missing observation. The \code{method} argument of
 \code{\link{build_contrast_analysis}} decides how missing observations are
-handled: dropped per fit (e.g. `lm`, `limma`), imputed at the limit of
-detection (the `_impute` methods), or modelled as detection (`firth`,
-`binomial_nested`, `hurdle_nested`); \code{\link{impute_from_model}} fills
-them from fitted models. The `log`, `log2` and `log10` transforms turn zero
-intensities (not detected) into `NA`. Fitting and aggregation stop with a
-classed error on `Inf`, `-Inf` or `NaN` intensities
-(`prolfqua_error_nonfinite_response`), on `NA` in hierarchy, factor or sample
-columns (`prolfqua_error_missing_key`), and on inputs without rows
-(`prolfqua_error_bad_argument`). A subject whose residual variance is zero
+handled: dropped per fit (e.g. \code{lm}, \code{limma}), imputed at the limit of
+detection (the \verb{_impute} methods), or modelled as detection (\code{firth},
+\code{binomial_nested}, \code{hurdle_nested}); \code{\link{impute_from_model}} fills
+them from fitted models. The \code{log}, \code{log2} and \code{log10} transforms turn zero
+intensities (not detected) into \code{NA}. Fitting and aggregation stop with a
+classed error on \code{Inf}, \code{-Inf} or \code{NaN} intensities
+(\code{prolfqua_error_nonfinite_response}), on \code{NA} in hierarchy, factor or sample
+columns (\code{prolfqua_error_missing_key}), and on inputs without rows
+(\code{prolfqua_error_bad_argument}). A subject whose residual variance is zero
 (constant or noiseless response) keeps its estimated difference, but its
-test statistics are `NA`, with a `prolfqua_zero_variance` warning, and it is
+test statistics are \code{NA}, with a \code{prolfqua_zero_variance} warning, and it is
 left out of the variance moderation prior.
 }
 
@@ -61,15 +61,15 @@ left out of the variance moderation prior.
 
 Each \code{LFQData}, model and analysis records the problems and dropped
 items that happen in it; \code{$provenance()} returns them as a table (step,
-event, count, IDs, reason). Recorded are values set to `NA`
+event, count, IDs, reason). Recorded are values set to \code{NA}
 (\code{remove_small_intensities()}, zeros in log transforms), removed rows,
 features and proteins (\code{remove_decoys()}, \code{remove_contaminants()},
 \code{filter_proteins_by_peptide_count()}), estimation warnings in
-aggregation (e.g. `rlm` not converging), failed, warned, singular and
+aggregation (e.g. \code{rlm} not converging), failed, warned, singular and
 LOD-refit fits, missing responses dropped per fit and, for an analysis, the
 subjects absent from the contrasts with the reason. Each step reports its
-new entries once: failures as one warning of class `prolfqua_fit_failed`,
-everything else as one `prolfqua_message`, which `prolfqua.verbose = FALSE`
+new entries once: failures as one warning of class \code{prolfqua_fit_failed},
+everything else as one \code{prolfqua_message}, which \code{prolfqua.verbose = FALSE}
 silences. Derived data (transformed, subset, rows removed) continues the
 record of its input; aggregated data and models start their own.
 }
@@ -85,71 +85,71 @@ affecting analyses are recorded in NEWS.
 \section{Glossary}{
 
 \describe{
-  \item{LFQData}{A long-format measurement table together with its
-    \code{AnalysisConfiguration}; each row describes a feature in a sample.}
-  \item{AnalysisConfiguration}{The mapping from table columns to hierarchy
-    identifiers, sample identifiers, categorical factors and the response.}
-  \item{Hierarchy and hierarchy depth}{Ordered measurement levels, such as
-    protein, peptide and precursor. Depth selects the levels identifying a
-    modelled subject; deeper levels identify its child features.}
-  \item{subject_id}{The identifier columns of a modelled subject, usually
-    one protein or a protein-peptide pair.}
-  \item{Factor}{An explanatory variable defining experimental groups.
-    \code{setup_analysis()} converts configured predictors to character
-    labels, including numeric and ordered-factor inputs; numeric covariates
-    and ordered-factor contrasts are not preserved through this setup.}
-  \item{Response}{The numeric intensity column selected by the configuration,
-    usually log2 abundance for modelling. On this scale a difference of one
-    corresponds to a twofold abundance ratio.}
-  \item{Contrast}{A named linear combination of group means or coefficients,
-    for example treatment minus control.}
-  \item{linfct}{A matrix with one row per requested linear function and one
-    column per model coefficient. Multiplying it by the coefficient vector
-    gives the estimates being tested.}
-  \item{Strategy}{The formula, fitting algorithm and methods for extracting
-    coefficients, residual variance, degrees of freedom and contrasts.}
-  \item{Model}{Fitted regressions and their diagnostics, either per subject
-    or in a matrix representation used by limma.}
-  \item{Facade}{An analysis object composing a strategy, model and contrast
-    calculation behind the same result and plotting interface.}
-  \item{Aggregated and nested input}{Aggregated input has the same hierarchy
-    keys as the output subject. Nested input also has child-feature keys;
-    the analysis reports parent-level contrasts.}
-  \item{nr_children}{The sample-wise number of measured child features,
-    such as peptides used to estimate a protein intensity. It may be used
-    as a fitting weight; DEqMS separately pools counts per protein.}
-  \item{LOD and imputation}{The limit of detection on the working response
-    scale, supplied explicitly or estimated from low-observation group
-    means. Imputation replaces missing responses. The LOD methods refit
-    otherwise unestimable subjects and borrow variance from successful fits.}
-  \item{estimate_type}{A result label identifying how an estimate was
-    obtained, for example from observed data or an imputed refit.}
-  \item{Moderation}{Empirical Bayes shrinkage of residual variances towards
-    a shared prior, optionally dependent on abundance or peptide count.
-    Moderated degrees of freedom combine residual and prior information.}
-  \item{Null hypothesis and p-value}{For a usual two-sided contrast test,
-    the null states that the population contrast equals zero. Its p-value
-    is the probability, assuming the null and model assumptions hold, of
-    a statistic at least as extreme as the observed one. It is not the
-    probability that the null hypothesis is true.}
-  \item{FDR}{The false discovery rate: the expected proportion of false
-    discoveries among rejected hypotheses. The default Benjamini-Hochberg
-    adjustment is applied within contrast, assuming independent or suitably
-    positively dependent tests. An adjusted p-value is not the probability
-    that an individual protein is a false discovery.}
-  \item{Confidence interval}{A range from a procedure with the stated
-    repeated-sampling coverage under the model assumptions. Wald intervals
-    use the estimated standard error and a t quantile; they do not assign
-    a probability to a fixed parameter after observing the data.}
-  \item{Linear-model assumptions}{On the working scale, classical linear
-    models assume a linear mean, independent errors and constant residual
-    variance; exact t inference also assumes normal errors. Weights allow
-    specified relative variances and mixed models allow specified dependence
-    within subjects. Outliers and heavy-tailed errors pull least-squares
-    estimates; the robust methods rlm and rfit limit their influence.
-    Robust, detection and imputation methods have
-    different assumptions; diagnostics and the experimental design must
-    guide the method choice.}
+\item{LFQData}{A long-format measurement table together with its
+\code{AnalysisConfiguration}; each row describes a feature in a sample.}
+\item{AnalysisConfiguration}{The mapping from table columns to hierarchy
+identifiers, sample identifiers, categorical factors and the response.}
+\item{Hierarchy and hierarchy depth}{Ordered measurement levels, such as
+protein, peptide and precursor. Depth selects the levels identifying a
+modelled subject; deeper levels identify its child features.}
+\item{subject_id}{The identifier columns of a modelled subject, usually
+one protein or a protein-peptide pair.}
+\item{Factor}{An explanatory variable defining experimental groups.
+\code{setup_analysis()} converts configured predictors to character
+labels, including numeric and ordered-factor inputs; numeric covariates
+and ordered-factor contrasts are not preserved through this setup.}
+\item{Response}{The numeric intensity column selected by the configuration,
+usually log2 abundance for modelling. On this scale a difference of one
+corresponds to a twofold abundance ratio.}
+\item{Contrast}{A named linear combination of group means or coefficients,
+for example treatment minus control.}
+\item{linfct}{A matrix with one row per requested linear function and one
+column per model coefficient. Multiplying it by the coefficient vector
+gives the estimates being tested.}
+\item{Strategy}{The formula, fitting algorithm and methods for extracting
+coefficients, residual variance, degrees of freedom and contrasts.}
+\item{Model}{Fitted regressions and their diagnostics, either per subject
+or in a matrix representation used by limma.}
+\item{Facade}{An analysis object composing a strategy, model and contrast
+calculation behind the same result and plotting interface.}
+\item{Aggregated and nested input}{Aggregated input has the same hierarchy
+keys as the output subject. Nested input also has child-feature keys;
+the analysis reports parent-level contrasts.}
+\item{nr_children}{The sample-wise number of measured child features,
+such as peptides used to estimate a protein intensity. It may be used
+as a fitting weight; DEqMS separately pools counts per protein.}
+\item{LOD and imputation}{The limit of detection on the working response
+scale, supplied explicitly or estimated from low-observation group
+means. Imputation replaces missing responses. The LOD methods refit
+otherwise unestimable subjects and borrow variance from successful fits.}
+\item{estimate_type}{A result label identifying how an estimate was
+obtained, for example from observed data or an imputed refit.}
+\item{Moderation}{Empirical Bayes shrinkage of residual variances towards
+a shared prior, optionally dependent on abundance or peptide count.
+Moderated degrees of freedom combine residual and prior information.}
+\item{Null hypothesis and p-value}{For a usual two-sided contrast test,
+the null states that the population contrast equals zero. Its p-value
+is the probability, assuming the null and model assumptions hold, of
+a statistic at least as extreme as the observed one. It is not the
+probability that the null hypothesis is true.}
+\item{FDR}{The false discovery rate: the expected proportion of false
+discoveries among rejected hypotheses. The default Benjamini-Hochberg
+adjustment is applied within contrast, assuming independent or suitably
+positively dependent tests. An adjusted p-value is not the probability
+that an individual protein is a false discovery.}
+\item{Confidence interval}{A range from a procedure with the stated
+repeated-sampling coverage under the model assumptions. Wald intervals
+use the estimated standard error and a t quantile; they do not assign
+a probability to a fixed parameter after observing the data.}
+\item{Linear-model assumptions}{On the working scale, classical linear
+models assume a linear mean, independent errors and constant residual
+variance; exact t inference also assumes normal errors. Weights allow
+specified relative variances and mixed models allow specified dependence
+within subjects. Outliers and heavy-tailed errors pull least-squares
+estimates; the robust methods rlm and rfit limit their influence.
+Robust, detection and imputation methods have
+different assumptions; diagnostics and the experimental design must
+guide the method choice.}
 }
 }
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{prolfqua_data}
 \alias{prolfqua_data}
-\title{load data from prolfqua}
+\title{Load a dataset from prolfqua}
 \usage{
 prolfqua_data(datastr, package = "prolfqua")
 }
@@ -15,7 +15,7 @@ prolfqua_data(datastr, package = "prolfqua")
 The computed result.
 }
 \description{
-load data from prolfqua
+Load a dataset from prolfqua
 }
 \examples{
 ionstar <- prolfqua_data("data_ionstar")

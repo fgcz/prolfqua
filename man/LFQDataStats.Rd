@@ -130,7 +130,7 @@ Other LFQData:
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{lfqdata}}{LFQData object}
+      \item{\code{lfqdata}}{\link{LFQData} object with the data and its configuration}
       \item{\code{stats}}{if \code{interaction}, compute within-group stats; if \code{all},
 compute overall CV; if \code{pooled}, use pooled variance with grouping
 information}

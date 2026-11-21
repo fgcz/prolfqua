@@ -9,21 +9,26 @@ linfct_from_model(m, as_list = TRUE)
 \arguments{
 \item{m}{linear model}
 }
+\value{
+if \code{as_list = TRUE}, a list with the matrices \code{linfct_factors} (one row per factor level) and
+\code{linfct_interactions} (one row per observed factor combination), each with one column per model coefficient;
+otherwise the two matrices bound by rows into a single matrix
+}
 \description{
 Get group-level linear functions from a fitted model
 }
 \details{
 The fitted model supplies its coefficient names and observed
-  categorical factor combinations. Each combination is expressed as weights
-  on the fitted coefficients; weights for an individual factor level are
-  averaged equally over the observed combinations containing that level.
-  Thus \code{linfct_factors} describes marginal factor-level means and
-  \code{linfct_interactions} describes cell means. With treatment coding,
-  a reference-level mean includes the intercept; a non-reference mean also
-  includes its treatment coefficient. The \emph{Under the hood} article
-  shows a complete \code{~ A * B} example. These helpers assume categorical
-  predictors and the usual intercept-based coding; they are not a general
-  marginal-means implementation for continuous predictors or arbitrary coding.
+categorical factor combinations. Each combination is expressed as weights
+on the fitted coefficients; weights for an individual factor level are
+averaged equally over the observed combinations containing that level.
+Thus \code{linfct_factors} describes marginal factor-level means and
+\code{linfct_interactions} describes cell means. With treatment coding,
+a reference-level mean includes the intercept; a non-reference mean also
+includes its treatment coefficient. The \emph{Under the hood} article
+shows a complete \code{~ A * B} example. These helpers assume categorical
+predictors and the usual intercept-based coding; they are not a general
+marginal-means implementation for continuous predictors or arbitrary coding.
 }
 \examples{
 

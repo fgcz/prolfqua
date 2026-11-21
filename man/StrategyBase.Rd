@@ -162,7 +162,7 @@ backend does not accept raise a classed error}
 \if{latex}{\out{\hypertarget{method-StrategyBase-zero_residual_variance}{}}}
 \subsection{\code{StrategyBase$zero_residual_variance()}}{
   Flag residual scales indistinguishable from zero (constant or noiseless response); their
-  tests are set to NA
+tests are set to NA
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{StrategyBase$zero_residual_variance(sigma, scale)}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_plotting.R
 \name{plot_heatmap}
 \alias{plot_heatmap}
-\title{plot heatmap with annotations}
+\title{Plot a row z-score heatmap with annotations}
 \usage{
 plot_heatmap(
   matrix,
@@ -35,10 +35,14 @@ cannot be meaningfully z-scored are always removed.}
 \item{max_sample_label_chars}{maximum displayed sample label length. Labels
 keep their suffix because sample prefixes are often shared.}
 
-\item{...}{passed to [ComplexHeatmap::Heatmap()]}
+\item{...}{passed to \code{\link[ComplexHeatmap:Heatmap]{ComplexHeatmap::Heatmap()}}}
+}
+\value{
+invisibly, a ComplexHeatmap \code{Heatmap} object of the row z-scored data; \code{NULL} with a warning if
+\code{matrix} has no rows or no row can be z-scored
 }
 \description{
-plot heatmap with annotations
+Plot a row z-score heatmap with annotations
 }
 \examples{
 \dontshow{if (requireNamespace("ComplexHeatmap", quietly = TRUE) && requireNamespace("circlize", quietly = TRUE)) withAutoprint(\{ # examplesIf}

@@ -2,14 +2,17 @@
 % Please edit documentation in R/simulate_LFQ_data.R
 \name{sim_make_model_lm}
 \alias{sim_make_model_lm}
-\title{make interaction model for examples}
+\title{Fit a linear model to simulated data for examples}
 \usage{
 sim_make_model_lm(
   model = c("parallel2", "parallel3", "factors", "interaction")
 )
 }
+\value{
+an \code{lm} object fitted to one simulated protein
+}
 \description{
-make interaction model for examples
+Fit a linear model to simulated data for examples
 }
 \examples{
 \dontshow{if (requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)) withAutoprint(\{ # examplesIf}

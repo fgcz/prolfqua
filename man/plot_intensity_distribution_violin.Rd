@@ -3,7 +3,7 @@
 \name{plot_intensity_distribution_violin}
 \alias{plot_intensity_distribution_violin}
 \alias{plot_intensity_distribution_density}
-\title{visualize intensity distributions}
+\title{Visualize intensity distributions}
 \usage{
 plot_intensity_distribution_violin(
   pdata,
@@ -30,14 +30,21 @@ plot_intensity_distribution_density(
 
 \item{is_transformed}{logical — is intensity log-transformed?}
 
-\item{legend}{show legend. If `NA`, hide automatically when the number of
-samples is larger than `max_legend_samples`.}
+\item{legend}{show legend. If \code{NA}, hide automatically when the number of
+samples is larger than \code{max_legend_samples}.}
 
 \item{max_legend_samples}{maximum number of samples for automatic legend
 display.}
 }
+\value{
+\code{plot_intensity_distribution_violin()}: a ggplot object with one violin of the intensities per sample
+and the median marked.
+
+\code{plot_intensity_distribution_density()}: a ggplot object with one density line of the intensities per
+sample.
+}
 \description{
-visualize intensity distributions
+Visualize intensity distributions
 
 visualize intensity distributions
 }

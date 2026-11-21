@@ -1,4 +1,4 @@
-#' compute pooled variance
+#' Compute pooled variance
 #'
 #' following the documentation here:
 #' https://online.stat.psu.edu/stat500/lesson/7/7.3/7.3.1/7.3.1.1
@@ -66,8 +66,11 @@ poolvar <- function(res1, config) {
 
 #' Compute mean, sd, and CV for all Peptides, or proteins, for all interactions and all samples.
 #'
-#' @param lfqdata LFQData object
+#' @param lfqdata [LFQData] object with the data and its configuration
 #' @param factor_key character vector — factor columns to group by (default: relevant_factor_keys)
+#' @return `summarize_stats()`: a tibble with one row per hierarchy element, isotope label and level of
+#'   `factor_key`, with the columns `nrReplicates`, `nrMeasured`, `nrNAs`, `sd`, `var`, `meanAbundance`,
+#'   `medianAbundance`, `CV` (untransformed data only) and `interaction`.
 #' @export
 #' @rdname summarize_stats
 #' @keywords internal
@@ -118,9 +121,9 @@ summarize_stats <- function(lfqdata, factor_key = lfqdata$relevant_factor_keys()
 }
 
 
-#' compute var sd etc for all factor levels
+#' Compute variance, sd and related statistics for all factor levels
 #'
-#' @param lfqdata LFQData object
+#' @param lfqdata [LFQData] object with the data and its configuration
 #' @return The computed result.
 #' @export
 #' @examples
@@ -142,6 +145,8 @@ summarize_stats_factors <- function(lfqdata) {
 #' @param factor_keys_depth character vector — factor columns at current depth
 #' @param stats summarize either sd or CV
 #' @param probs for which quantiles 10, 20 etc.
+#' @return `summarize_stats_quantiles()`: a list with `long`, a tibble with one row per factor level and quantile
+#'   (columns `probs` and `quantiles`), and `wide`, the same quantiles with one column per factor level.
 #' @rdname summarize_stats
 #' @export
 #' @keywords internal
@@ -207,12 +212,14 @@ summarize_stats_quantiles <- function(
   list(sdtrimmed = sdtrimmed, N_exact = N_exact, N = ceiling(N_exact))
 }
 
-#' estimate sample sizes
+#' Estimate sample sizes from standard deviation quantiles
 #' @param quantile_sd output of `summarize_stats_quantiles`
 #' @param delta effect size you are interested in
 #' @param power of test
 #' @param sig.level P-Value
 #' @param min.n smallest n to determine
+#' @return a tibble with the rows of `quantile_sd` repeated for each `delta`, with the added columns `sdtrimmed`
+#'   (the sd floored at the smallest sd resolvable with `min.n` samples), `N_exact`, `N` (rounded up) and `delta`
 #'
 #' @export
 #' @keywords internal
@@ -246,6 +253,8 @@ lfq_power_t_test_quantiles_V2 <-
 #' @param power of test
 #' @param sig.level P-Value
 #' @param min.n smallest n to determine
+#' @return a tibble with one row per complete row of `stats_res` and value of `delta`, with the added columns
+#'   `delta`, `N_exact` (samples per group needed) and `N` (rounded up)
 #'
 #' @export
 #' @keywords internal
@@ -263,11 +272,12 @@ lfq_power_t_test_proteins <- function(stats_res, delta = c(0.59, 1, 2), power = 
   dplyr::bind_cols(sd_delta, pw[c("N_exact", "N")])
 }
 
-#' plot density distribution or ecdf of sd, mean or CV
+#' Plot the density or ECDF of sd, mean or CV
 #' @param pdata data.frame with statistics
 #' @param factor_key character — factor column name for colouring
 #' @param stat sd, mean or CV
 #' @param ggstat either density or ecdf
+#' @return a ggplot object with one density or ECDF line of `stat` per level of `factor_key`
 #'
 #' @export
 #' @keywords internal
@@ -288,11 +298,13 @@ plot_stat_density <- function(pdata, factor_key, stat = c("CV", "meanAbundance",
     geom_line(stat = ggstat)
   return(p)
 }
-#' plot density distribution or ecdf of sd, mean or cv given intensity below and above median
+#' Plot the density or ECDF of sd, mean or CV for intensities below and above the median
 #' @param pdata data.frame with statistics
 #' @param factor_key character — factor column name for faceting
 #' @param stat sd, mean or CV
 #' @param ggstat either density or ecdf
+#' @return a ggplot object with density or ECDF lines of `stat` for features above and below the median mean
+#'   intensity, faceted by `factor_key`
 #'
 #' @export
 #' @keywords internal
@@ -323,11 +335,12 @@ plot_stat_density_median <- function(
   return(p)
 }
 
-#' plot Violin plot of sd CV or mean
+#' Violin plot of sd, CV or mean
 #'
 #' @param pdata data.frame with statistics
 #' @param factor_keys_depth character vector — factor columns for grouping
 #' @param stat either CV, mean or sd
+#' @return a ggplot object with one violin of `stat` per combination of factor levels, with the median marked
 #' @export
 #' @keywords internal
 #' @family stats
@@ -349,10 +362,12 @@ plot_stat_violin <- function(pdata, factor_keys_depth, stat = c("CV", "meanAbund
     ggplot2::stat_summary(fun = median, geom = "point", size = 1, color = "black")
   return(p)
 }
-#' plot Violin plot of sd CV or mean given intensity lower or above median
+#' Violin plot of sd, CV or mean for intensities below and above the median
 #' @param pdata data.frame with statistics
 #' @param factor_key character — factor column name for x-axis
 #' @param stat either CV, mean or sd
+#' @return a ggplot object with violins of `stat` per level of `factor_key` and the median and interquartile range
+#'   marked, faceted into features below and above the median mean intensity
 #'
 #' @export
 #' @keywords internal
@@ -383,10 +398,12 @@ plot_stat_violin_median <- function(pdata, factor_key, stat = c("CV", "meanAbund
   return(p)
 }
 
-#' plot stddev vs mean to asses stability of variance
+#' Plot standard deviation against mean to assess variance stability
 #' @param pdata data.frame with statistics
 #' @param factor_keys_depth character vector — factor columns for faceting
 #' @param size how many points to sample (since scatter plot to slow for all)
+#' @return a ggplot scatter plot of `sd` against `meanAbundance` with a loess fit, one facet per combination of
+#'   factor levels
 #'
 #' @export
 #' @keywords internal

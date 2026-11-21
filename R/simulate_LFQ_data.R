@@ -12,7 +12,7 @@
 }
 
 
-#' simulate protein level data with two groups
+#' Simulate protein-level data with two groups
 #' @return A data frame containing simulated LFQ data.
 #' @export
 #' @param Nprot number of proteins
@@ -116,7 +116,7 @@ sim_lfq_data <- function(
 }
 
 
-#' add missing values to x vector based on the values of x
+#' Draw missing values for an intensity vector based on its values
 #' @return A logical vector indicating which values are missing.
 #' @export
 #' @param x vector of intensities
@@ -175,7 +175,7 @@ which_missing <- function(x, weight_missing = 0.2) {
 #' Simulate data, protein and peptide, with config
 #' @param Nprot one positive whole number of proteins to simulate
 #' @param with_missing add missing values, default TRUE
-#' @param weight_missing one number in [0, 1]; greater weight means more missingness
+#' @param weight_missing one number in \[0, 1\]; greater weight means more missingness
 #' @param seed seed for reproducibility, if NULL no seed is set.
 #' @param N number of replicates per group
 #' @return A list containing simulated data and an analysis configuration.
@@ -206,7 +206,7 @@ sim_lfq_data_peptide_config <- function(
 #' Simulate data, protein, with config
 #' @param Nprot one positive whole number of proteins to simulate
 #' @param with_missing add missing values, default TRUE
-#' @param weight_missing one number in [0, 1]; greater weight means more missingness
+#' @param weight_missing one number in \[0, 1\]; greater weight means more missingness
 #' @param seed seed for reproducibility, if NULL no seed is set.
 #' @param paired if TRUE, add a paired subject factor to the design
 #' @return A list containing simulated data and an analysis configuration.
@@ -259,7 +259,7 @@ sim_lfq_data_protein_config <- function(
 #' Simulate data, protein, with config with 2 factors Treatment and Background
 #' @param Nprot one positive whole number of proteins to simulate
 #' @param with_missing add missing values, default TRUE
-#' @param weight_missing one number in [0, 1]; greater weight means more missingness
+#' @param weight_missing one number in \[0, 1\]; greater weight means more missingness
 #' @param PEPTIDE if TRUE, simulate peptide-level data; if FALSE, protein-level
 #' @param seed seed for reproducibility, if NULL no seed is set.
 #' @param TWO use two factors for modelling
@@ -354,7 +354,8 @@ sim_lfq_data_2factor_config <- function(
   build_model(istar, strategy(paste0(istar$response(), rhs)))
 }
 
-#' build dataframe with models for testing
+#' Build linear models on simulated data for testing
+#' @return a [Model] object with one linear model per simulated protein, fitted with [build_model()]
 #' @family modelling
 #' @export
 #' @keywords internal
@@ -375,7 +376,8 @@ sim_build_models_lm <- function(
   .sim_build_models(match.arg(model), Nprot, with_missing, weight_missing, mixed = FALSE)
 }
 
-#' build lmer model from simulated data
+#' Build mixed-effects models on simulated data for testing
+#' @return a [Model] object with one mixed-effects model per simulated protein, fitted with [build_model()]
 #' @family modelling
 #' @export
 #' @keywords internal
@@ -399,7 +401,8 @@ sim_build_models_lmer <- function(
 }
 
 
-#' make interaction model for examples
+#' Fit a linear model to simulated data for examples
+#' @return an `lm` object fitted to one simulated protein
 #' @family modelling
 #' @export
 #' @keywords internal
@@ -415,7 +418,8 @@ sim_make_model_lm <- function(model = c("parallel2", "parallel3", "factors", "in
 }
 
 
-#' make interaction model for examples
+#' Fit a mixed-effects model to simulated data for examples
+#' @return an `lmerModLmerTest` object, the first successful fit among ten simulated proteins
 #' @family modelling
 #' @export
 #' @keywords internal

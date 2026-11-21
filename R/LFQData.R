@@ -337,7 +337,7 @@ LFQData <- R6::R6Class(
     #' proportion of modelling-level keys (subject_id, e.g. protein or peptide by
     #' `hierarchy_depth`) that are decoys — an empirical-FDR / target-decoy QC
     #' signal. Decoy status derives from the top-level hierarchy id (protein_Id).
-    #' @return numeric in [0, 1]
+    #' @return numeric in \[0, 1\]
     decoy_proportion = function() {
       private$.prefix_proportion(prolfqua::is_decoy, self$get_config()$pattern_decoys)
     },
@@ -556,10 +556,10 @@ plot.LFQData <- function(x, ...) {
   x$get_Plotter()$intensity_distribution_violin()
 }
 
-#' converts LFQData object to SummarizedExperiment
+#' Convert an LFQData object to a SummarizedExperiment
 #'
 #' For compatibility with Bioconductor
-#' @param lfqdata LFQData object
+#' @param lfqdata [LFQData] object with the data and its configuration
 #' @return SummarizedExperiment (bioconductor)
 #' @family LFQData
 #' @export

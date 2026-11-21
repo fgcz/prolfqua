@@ -15,6 +15,10 @@ table_factors(pdata, file_name, sample_name, factor_keys)
 
 \item{factor_keys}{character vector — factor column names}
 }
+\value{
+a tibble with the distinct combinations of the file name, sample name and factor columns, sorted by
+sample name
+}
 \description{
 Table of distinct factors (sample annotation)
 }

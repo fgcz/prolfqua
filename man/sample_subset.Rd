@@ -13,6 +13,9 @@ sample_subset(size, pdata, hierarchy_keys_depth)
 
 \item{hierarchy_keys_depth}{character vector — hierarchy columns at current depth}
 }
+\value{
+a tibble with all rows of \code{pdata} for \code{size} randomly drawn hierarchy elements
+}
 \description{
 Sample subset of proteins/peptides/precursors
 }

@@ -8,8 +8,8 @@ list_facades()
 }
 \value{
 A list mirroring \code{\link{FACADE_REGISTRY}} but reflecting
-  any entries added via \code{\link{register_facade}} from downstream
-  packages.
+any entries added via \code{\link{register_facade}} from downstream
+packages.
 }
 \description{
 List currently registered contrast facades

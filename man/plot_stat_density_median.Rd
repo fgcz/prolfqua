@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_stats.R
 \name{plot_stat_density_median}
 \alias{plot_stat_density_median}
-\title{plot density distribution or ecdf of sd, mean or cv given intensity below and above median}
+\title{Plot the density or ECDF of sd, mean or CV for intensities below and above the median}
 \usage{
 plot_stat_density_median(
   pdata,
@@ -20,8 +20,12 @@ plot_stat_density_median(
 
 \item{ggstat}{either density or ecdf}
 }
+\value{
+a ggplot object with density or ECDF lines of \code{stat} for features above and below the median mean
+intensity, faceted by \code{factor_key}
+}
 \description{
-plot density distribution or ecdf of sd, mean or cv given intensity below and above median
+Plot the density or ECDF of sd, mean or CV for intensities below and above the median
 }
 \examples{
 

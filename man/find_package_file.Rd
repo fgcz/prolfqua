@@ -2,7 +2,7 @@
 % Please edit documentation in R/vignetteHelpers.R
 \name{find_package_file}
 \alias{find_package_file}
-\title{find file stored in package}
+\title{Find a file stored in a package}
 \usage{
 find_package_file(packagename, file)
 }
@@ -15,7 +15,7 @@ find_package_file(packagename, file)
 The computed result.
 }
 \description{
-find file stored in package
+Find a file stored in a package
 }
 \examples{
 find_package_file("prolfqua", "CITATION")

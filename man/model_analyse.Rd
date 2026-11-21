@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_build_model.R
 \name{model_analyse}
 \alias{model_analyse}
-\title{analyses lmer4 and lm models created using help function `strategy_lm` or `strategy_lmer`}
+\title{Fit one model per subject with a modelling strategy}
 \usage{
 model_analyse(
   pepIntensity,
@@ -15,12 +15,17 @@ model_analyse(
 }
 \arguments{
 \item{label}{short label naming this fitting pass in progress output;
-defaults to `model_name`.}
+defaults to \code{model_name}.}
 
-\item{progress}{progress reporter selector passed to [.make_progress()];
-`NULL` (default) keeps the legacy terminal `progress::progress_bar`, a
-`function(i, total, label)` or `"message"` emits batch-visible progress.
-Defaults to `getOption("prolfqua.progress", NULL)`.}
+\item{progress}{progress reporter selector passed to \code{\link[=.make_progress]{.make_progress()}};
+\code{NULL} (default) keeps the legacy terminal \code{progress::progress_bar}, a
+\verb{function(i, total, label)} or \code{"message"} emits batch-visible progress.
+Defaults to \code{getOption("prolfqua.progress", NULL)}.}
+}
+\value{
+a list with \code{model_name} and \code{model_df}, a tibble with one row per subject holding the nested \code{data},
+the fitted \code{linear_model} (the error message for a failed fit), \code{fit_warnings}, \code{has_model_fit},
+\code{isSingular}, \code{df.residual}, \code{sigma}, \code{nr_coef}, \code{nr_coef_not_NA}, \code{converged} and \code{iterations}
 }
 \description{
 used in project p2901

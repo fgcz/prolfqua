@@ -15,8 +15,8 @@ A \code{\link{ContrastConfiguration}}.
 \description{
 Round-trip partner of \code{\link{R6_extract_values}}, which keeps the
 fields but drops the methods. Use it to restore the column-role mapping
-from a serialized result artifact (e.g. `SummarizedExperiment` metadata
-or an AnnData `uns` entry) so consumers can call \code{has_pvalue()} and
+from a serialized result artifact (e.g. \code{SummarizedExperiment} metadata
+or an AnnData \code{uns} entry) so consumers can call \code{has_pvalue()} and
 friends again.
 }
 \examples{

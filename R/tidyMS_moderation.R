@@ -16,6 +16,9 @@
 #' res <- moderated_p_limma(contrast_df)
 #' "moderated.p.value" %in% colnames(res)
 #' @param variance_floor optional positive lower bound for posterior variances
+#' @return `contrast_df`, ungrouped, with the added columns `moderated.var.post`, `moderated.var.prior`,
+#'   `moderated.df.prior`, `moderated.std.error`, `moderated.statistic`, `moderated.df.total`,
+#'   `moderated.p.value`, `moderated.conf.low` and `moderated.conf.high`
 #' @srrstats {G5.4} Tests compare moderation to squeezeVar, detection to glm/logistf and Hurdle to Fisher combination.
 #'   test-power_fdr.R compares FDR planning with power.t.test, analytic normal mixing and ssize.fdr.
 #' @srrstatsTODO {G5.4b} test-reference-implementations.R compares lm, limma, lmer, rlm, rfit and deqms with
@@ -131,7 +134,7 @@ moderated_p_limma <- function(
 }
 
 
-#' adjust columns
+#' Adjust p-values for multiple testing
 #'
 #' @return The computed result.
 #' @export
@@ -171,8 +174,10 @@ adjust_p_values <- function(
 
 # ROPECA ----
 
-#' p-value of protein from p.value of the median fold change peptide.
+#' Protein p-value from the p-value of the median fold-change peptide
 #' @param max.n limit number of peptides per protein.
+#' @return a numeric vector of p-values, the beta-distribution probability that the median of
+#'   `min(n.obs, max.n)` uniform p-values is at most `median.p.value`
 #' @export
 #' @family modelling
 #' @keywords internal
@@ -197,7 +202,8 @@ get_p_values_pbeta <- function(median.p.value, n.obs, max.n = 10) {
 }
 
 
-#' compute protein level fold changes and p.values (using beta distribution)
+#' Compute protein-level fold changes and p-values using the beta distribution
+#'
 #' takes p-value of the scaled p-value
 #'
 #' @param contrasts_data data frame

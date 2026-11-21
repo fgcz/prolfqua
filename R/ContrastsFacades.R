@@ -1,7 +1,7 @@
 # ContrastsFacades -----
 
 #' Require matching input and output hierarchy levels
-#' @param lfqdata LFQData containing the measurements and configuration
+#' @param lfqdata [LFQData] object with the data and its configuration
 #' @param facade_name facade identity for messages and results
 #' @noRd
 .assert_aggregated_facade_input <- function(lfqdata, facade_name) {
@@ -18,7 +18,7 @@
 }
 
 #' Require child-level input below the modelling subject
-#' @param lfqdata LFQData containing the measurements and configuration
+#' @param lfqdata [LFQData] object with the data and its configuration
 #' @param facade_name facade identity for messages and results
 #' @noRd
 .assert_nested_facade_input <- function(lfqdata, facade_name) {
@@ -37,7 +37,7 @@
 #' Every group a contrast names (a factor key followed by a level, e.g. group_A)
 #'
 #' must have samples with a measured response.
-#' @param lfqdata LFQData containing the measurements and configuration
+#' @param lfqdata [LFQData] object with the data and its configuration
 #' @param contrasts named character vector of contrast expressions
 #' @noRd
 #' @srrstats {G2.13} Facades reject groups without measured responses; `.assert_model_input()` rejects NA in hierarchy,
@@ -73,7 +73,7 @@
 #' Compute protein × contrast pairs present in input but absent from output.
 #'
 #' Returns a data.frame with hierarchy columns + `contrast_col`, or 0 rows if nothing missing.
-#' @param lfqdata LFQData containing the measurements and configuration
+#' @param lfqdata [LFQData] object with the data and its configuration
 #' @param contrast_names names of the requested contrasts
 #' @param contrast_result computed contrast table
 #' @param contrast_col column identifying contrasts
@@ -126,7 +126,7 @@ ContrastsLimmaFacade <- R6::R6Class(
   public = list(
     #' @description
     #' initialize
-    #' @param lfqdata LFQData object
+    #' @param lfqdata [LFQData] object with the data and its configuration
     #' @param modelstr model formula string (e.g. "~ group_")
     #' @param contrasts named character vector of contrasts
     #' @param weights column name for per-observation weights (default:
@@ -224,7 +224,7 @@ ContrastsLimmaVoomFacade <- R6::R6Class(
   public = list(
     #' @description
     #' initialize
-    #' @param lfqdata LFQData object
+    #' @param lfqdata [LFQData] object with the data and its configuration
     #' @param modelstr model formula string (e.g. "~ group_")
     #' @param contrasts named character vector of contrasts
     #' @param weights column name for per-observation weights (default:
@@ -394,7 +394,7 @@ ContrastsLMFacade <- R6::R6Class(
   public = list(
     #' @description
     #' initialize
-    #' @param lfqdata LFQData object
+    #' @param lfqdata [LFQData] object with the data and its configuration
     #' @param modelstr model formula string (e.g. "~ group_")
     #' @param contrasts named character vector of contrasts
     #' @param weights column name for per-observation weights (default:
@@ -433,7 +433,7 @@ ContrastsRLMFacade <- R6::R6Class(
   public = list(
     #' @description
     #' initialize
-    #' @param lfqdata LFQData object
+    #' @param lfqdata [LFQData] object with the data and its configuration
     #' @param modelstr model formula string (e.g. "~ group_")
     #' @param contrasts named character vector of contrasts
     #' @param ... passed to \code{\link{strategy_rlm}}
@@ -476,7 +476,7 @@ ContrastsRfitFacade <- R6::R6Class(
   public = list(
     #' @description
     #' initialize
-    #' @param lfqdata LFQData object
+    #' @param lfqdata [LFQData] object with the data and its configuration
     #' @param modelstr model formula string (e.g. "~ group_")
     #' @param contrasts named character vector of contrasts
     #' @param ... passed to \code{\link{strategy_rfit}}
@@ -659,7 +659,7 @@ ContrastsFirthFacade <- R6::R6Class(
   public = list(
     #' @description
     #' initialize
-    #' @param lfqdata LFQData object
+    #' @param lfqdata [LFQData] object with the data and its configuration
     #' @param modelstr model formula string (e.g. "~ group_")
     #' @param contrasts named character vector of contrasts
     #' @param control convergence controls of \code{\link[logistf]{logistf}}, see \code{\link{strategy_logistf}}
@@ -696,7 +696,7 @@ ContrastsDEqMSFacade <- R6::R6Class(
   public = list(
     #' @description
     #' initialize
-    #' @param lfqdata LFQData object
+    #' @param lfqdata [LFQData] object with the data and its configuration
     #' @param modelstr model formula string (e.g. "~ group_")
     #' @param contrasts named character vector of contrasts
     #' @param weights column name for per-observation weights (default:
@@ -743,7 +743,7 @@ ContrastsDEqMSVoomFacade <- R6::R6Class(
   public = list(
     #' @description
     #' initialize
-    #' @param lfqdata LFQData object
+    #' @param lfqdata [LFQData] object with the data and its configuration
     #' @param modelstr model formula string (e.g. "~ group_")
     #' @param contrasts named character vector of contrasts
     #' @param span lowess smoother span for vooma trend (default 0.5)

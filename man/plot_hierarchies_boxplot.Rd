@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_plotting.R
 \name{plot_hierarchies_boxplot}
 \alias{plot_hierarchies_boxplot}
-\title{plot peptides by factors and it's levels.}
+\title{Boxplot of feature intensities by factor levels}
 \usage{
 plot_hierarchies_boxplot(
   pdata,
@@ -19,7 +19,7 @@ plot_hierarchies_boxplot(
 
 \item{title}{name to show}
 
-\item{lfqdata}{LFQData object}
+\item{lfqdata}{\link{LFQData} object with the data and its configuration}
 
 \item{facet_grid_on}{on which variable to run facet_grid}
 
@@ -29,8 +29,12 @@ plot_hierarchies_boxplot(
 
 \item{pb}{progress bar}
 }
+\value{
+a ggplot object with boxplots of the intensities in \code{pdata} per combination of factor levels, optionally
+with the individual points and the means
+}
 \description{
-plot peptides by factors and it's levels.
+Boxplot of feature intensities by factor levels
 }
 \examples{
 

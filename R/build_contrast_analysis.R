@@ -15,7 +15,7 @@
 #' report, usually aggregated proteins. \code{"limpa"} needs input aggregated
 #' with \code{\link{AggregateLimpa}}.
 #'
-#' @param lfqdata an \code{\link{LFQData}} object
+#' @param lfqdata [LFQData] object with the data and its configuration
 #' @param modelstr one right-hand-side formula string without the response variable
 #'   (e.g. \code{"~ group_"}). The response is taken automatically from
 #'   \code{lfqdata$get_config()$get_response()}.

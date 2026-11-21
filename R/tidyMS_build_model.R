@@ -255,7 +255,7 @@ build_model_impute <- function(
 
 #' The limit of detection: `lod` if given, else estimated from the data.
 #' @param lod limit of detection on the response scale
-#' @param lfqdata LFQData containing the measurements and configuration
+#' @param lfqdata [LFQData] object with the data and its configuration
 #' @noRd
 #' @srrstats {G5.8a} Empty LOD/contrast/plot cases are tested; zero-row inputs to fitting and aggregation raise a
 #'   classed error (test-missing-nonfinite.R).
@@ -269,7 +269,7 @@ build_model_impute <- function(
 #' One row per sample holding the annotation columns (file, sample, factors), which do not vary per
 #'
 #' subject. Subject-specific value columns such as nr_children are not included.
-#' @param lfqdata LFQData containing the measurements and configuration
+#' @param lfqdata [LFQData] object with the data and its configuration
 #' @noRd
 .sample_template <- function(lfqdata) {
   data <- lfqdata$data_long()
@@ -450,6 +450,8 @@ impute_from_model <- function(model, lfqdata) {
 
 #' Summarize modelling and error reporting
 #' @param mod model table see \code{\link{build_model}}
+#' @return a list with the tables `exists` (counts of subjects with and without a model fit) and `isSingular`
+#'   (counts of singular and non-singular fits)
 #' @keywords internal
 #' @family modelling
 #' @export
@@ -859,7 +861,9 @@ impute_refit_singular <- function(
 
 # Fit the models to data ----
 
-#' retrieve complete models.
+#' Retrieve complete model fits
+#' @return the rows of `complete_models` that have a model fit, the maximal number of estimated coefficients and
+#'   more than one residual degree of freedom
 #' @keywords internal
 #' @family modelling
 #' @export
@@ -878,7 +882,7 @@ get_complete_model_fit <- function(complete_models) {
   return(complete_models)
 }
 
-#' analyses lmer4 and lm models created using help function `strategy_lm` or `strategy_lmer`
+#' Fit one model per subject with a modelling strategy
 #'
 #' used in project p2901
 #'
@@ -888,6 +892,9 @@ get_complete_model_fit <- function(complete_models) {
 #'   `NULL` (default) keeps the legacy terminal `progress::progress_bar`, a
 #'   `function(i, total, label)` or `"message"` emits batch-visible progress.
 #'   Defaults to `getOption("prolfqua.progress", NULL)`.
+#' @return a list with `model_name` and `model_df`, a tibble with one row per subject holding the nested `data`,
+#'   the fitted `linear_model` (the error message for a failed fit), `fit_warnings`, `has_model_fit`,
+#'   `isSingular`, `df.residual`, `sigma`, `nr_coef`, `nr_coef_not_NA`, `converged` and `iterations`
 #' @export
 #' @family modelling
 #' @keywords internal

@@ -177,10 +177,10 @@ ROPECA's \code{beta.based.significance} is mapped to \code{p.value} and
 
 Columns not directly produced by ROPECA are derived heuristically:
 \itemize{
-  \item \code{std.error = diff / statistic} (algebraic: t = estimate / SE)
-  \item \code{sigma = mad.estimate} (MAD of peptide fold changes)
-  \item \code{df = n_not_na} (number of contributing peptides)
-  \item \code{conf.low/conf.high} via \code{diff +/- qt(0.975, df) * |std.error|}
+\item \code{std.error = diff / statistic} (algebraic: t = estimate / SE)
+\item \code{sigma = mad.estimate} (MAD of peptide fold changes)
+\item \code{df = n_not_na} (number of contributing peptides)
+\item \code{conf.low/conf.high} via \code{diff +/- qt(0.975, df) * |std.error|}
 }
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}

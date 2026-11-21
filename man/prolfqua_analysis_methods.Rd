@@ -56,14 +56,14 @@ unused by the other methods.}
 
 \item{level}{confidence level, strictly between zero and one.}
 
-\item{newdata}{for `predict()`: data frame with the subject identifier and predictor columns; `NULL` (default)
+\item{newdata}{for \code{predict()}: data frame with the subject identifier and predictor columns; \code{NULL} (default)
 predicts every subject in every sample of the analysis input, including samples with missing responses.}
 
 \item{type}{plot type: fitted responses (default), FDR volcano or MA.
 Hurdle analyses default to volcano because they have two models.}
 
 \item{subject}{character vector of identifiers from the first model subject
-column for fitted plots; `NULL` selects up to six by FDR in the first contrast.}
+column for fitted plots; \code{NULL} selects up to six by FDR in the first contrast.}
 }
 \value{
 \code{print()} returns its input invisibly. \code{summary()} returns a list of
