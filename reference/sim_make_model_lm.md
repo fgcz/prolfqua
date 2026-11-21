@@ -10,6 +10,12 @@ sim_make_model_lm(
 )
 ```
 
+## Arguments
+
+- model:
+
+  design: `"parallel2"`, `"parallel3"`, `"factors"` or `"interaction"`
+
 ## Value
 
 an `lm` object fitted to one simulated protein

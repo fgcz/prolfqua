@@ -66,6 +66,28 @@
     </div>
 
     <div class="section level2">
+    <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
+
+
+<dl><dt id="arg-models">models<a class="anchor" aria-label="anchor" href="#arg-models"></a></dt>
+<dd><p>model table with one fit per subject in the column <code>linear_model</code>, e.g. the <code>model_df</code> of
+<code><a href="model_analyse.html">model_analyse()</a></code></p></dd>
+
+
+<dt id="arg-linfct">linfct<a class="anchor" aria-label="anchor" href="#arg-linfct"></a></dt>
+<dd><p>linear functions: a matrix with one row per contrast and one column per model coefficient, or
+a list with one such matrix per model</p></dd>
+
+
+<dt id="arg-subject-id">subject_id<a class="anchor" aria-label="anchor" href="#arg-subject-id"></a></dt>
+<dd><p>columns identifying a subject</p></dd>
+
+
+<dt id="arg-contrastfun">contrastfun<a class="anchor" aria-label="anchor" href="#arg-contrastfun"></a></dt>
+<dd><p>function computing the contrasts of one fit, e.g. <code><a href="compute_lmer_contrast.html">compute_lmer_contrast()</a></code></p></dd>
+
+</dl></div>
+    <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>a tibble with one row per subject and row of <code>linfct</code>, holding the <code>subject_id</code> columns, the columns
 returned by <code>contrastfun</code>, and <code>isSingular</code>, <code>sigma.model</code> and <code>df.residual.model</code>; subjects whose contrasts

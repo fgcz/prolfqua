@@ -61,6 +61,22 @@
     </div>
 
     <div class="section level2">
+    <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
+
+
+<dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
+<dd><p>numeric matrix</p></dd>
+
+
+<dt id="arg-dim">dim<a class="anchor" aria-label="anchor" href="#arg-dim"></a></dt>
+<dd><p>margin to scale: 2 scales each column (sample), 1 each row</p></dd>
+
+
+<dt id="arg-preserve-mean">preserve_mean<a class="anchor" aria-label="anchor" href="#arg-preserve-mean"></a></dt>
+<dd><p>if TRUE, add the mean of the medians back</p></dd>
+
+</dl></div>
+    <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>a matrix like <code>data</code>, centred by the median of each column (<code>dim = 2</code>) or row (<code>dim = 1</code>) and divided
 by its MAD relative to the mean MAD; only centred, with a warning, if a MAD is zero; with

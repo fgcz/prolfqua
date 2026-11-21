@@ -8,6 +8,13 @@ Retrieve complete model fits
 get_complete_model_fit(complete_models)
 ```
 
+## Arguments
+
+- complete_models:
+
+  model table, the `model_df` of
+  [`model_analyse()`](https://fgcz.github.io/prolfqua/reference/model_analyse.md)
+
 ## Value
 
 the rows of `complete_models` that have a model fit, the maximal number

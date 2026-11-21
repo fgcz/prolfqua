@@ -14,6 +14,11 @@ linfct_from_model(m, as_list = TRUE)
 
   linear model
 
+- as_list:
+
+  if TRUE, return the factor and interaction matrices as a list; if
+  FALSE, as one matrix
+
 ## Value
 
 if `as_list = TRUE`, a list with the matrices `linfct_factors` (one row

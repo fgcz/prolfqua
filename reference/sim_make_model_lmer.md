@@ -10,6 +10,12 @@ sim_make_model_lmer(
 )
 ```
 
+## Arguments
+
+- model:
+
+  design: `"parallel2"`, `"parallel3"`, `"factors"` or `"interaction"`
+
 ## Value
 
 an `lmerModLmerTest` object, the first successful fit among ten

@@ -8,6 +8,13 @@ Compute the median and MAD of each sample
 get_robscales(lfqdata)
 ```
 
+## Arguments
+
+- lfqdata:
+
+  [LFQData](https://fgcz.github.io/prolfqua/reference/LFQData.md) object
+  with the data and its configuration
+
 ## Value
 
 a list with the numeric vectors `medians` and `mads`, with one element

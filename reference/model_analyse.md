@@ -17,6 +17,23 @@ model_analyse(
 
 ## Arguments
 
+- pepIntensity:
+
+  long-format data with one row per observation
+
+- model_strategy:
+
+  modelling strategy, e.g. from
+  [`strategy_lm()`](https://fgcz.github.io/prolfqua/reference/strategy.md)
+
+- subject_id:
+
+  columns identifying a subject; one model is fitted per subject
+
+- model_name:
+
+  name stored with the fitted models
+
 - label:
 
   short label naming this fitting pass in progress output; defaults to

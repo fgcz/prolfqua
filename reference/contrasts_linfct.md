@@ -13,6 +13,28 @@ contrasts_linfct(
 )
 ```
 
+## Arguments
+
+- models:
+
+  model table with one fit per subject in the column `linear_model`,
+  e.g. the `model_df` of
+  [`model_analyse()`](https://fgcz.github.io/prolfqua/reference/model_analyse.md)
+
+- linfct:
+
+  linear functions: a matrix with one row per contrast and one column
+  per model coefficient, or a list with one such matrix per model
+
+- subject_id:
+
+  columns identifying a subject
+
+- contrastfun:
+
+  function computing the contrasts of one fit, e.g.
+  [`compute_lmer_contrast()`](https://fgcz.github.io/prolfqua/reference/compute_lmer_contrast.md)
+
 ## Value
 
 a tibble with one row per subject and row of `linfct`, holding the

@@ -8,6 +8,20 @@ Create an interaction column from factors
 make_interaction_column(data, columns, sep = ".")
 ```
 
+## Arguments
+
+- data:
+
+  data frame
+
+- columns:
+
+  factor columns to combine
+
+- sep:
+
+  separator between the levels in the combined labels
+
 ## Value
 
 `data` with an added factor column `interaction` combining the values of

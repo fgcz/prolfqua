@@ -6,7 +6,7 @@ Volcano plot for multiple contrasts
 
 ``` r
 multigroup_volcano(
-  .data,
+  data,
   effect = "fc",
   significance = "p.adjust",
   contrast = "condition",
@@ -18,13 +18,14 @@ multigroup_volcano(
   segment.size = 0.3,
   segment.alpha = 0.3,
   scales = "fixed",
-  max_nr_significant_text = 20
+  max_nr_significant_text = 20,
+  .data
 )
 ```
 
 ## Arguments
 
-- .data:
+- data:
 
   data in long format
 
@@ -75,6 +76,10 @@ multigroup_volcano(
 - max_nr_significant_text:
 
   maximum number of significant labels to display
+
+- .data:
+
+  deprecated; use `data`
 
 ## Value
 

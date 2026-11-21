@@ -83,3 +83,10 @@ and
 - `PEPTIDE`: use `peptide`
 
 - `TWO`: use `two_factor`
+
+Arguments of
+[`volcano_plotly()`](https://fgcz.github.io/prolfqua/reference/volcano_plotly.md)
+and
+[`multigroup_volcano()`](https://fgcz.github.io/prolfqua/reference/multigroup_volcano.md):
+
+- `.data`: use `data`

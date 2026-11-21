@@ -10,6 +10,14 @@ get_p_values_pbeta(median.p.value, n.obs, max.n = 10)
 
 ## Arguments
 
+- median.p.value:
+
+  median of the peptide p-values of a protein
+
+- n.obs:
+
+  number of peptides
+
 - max.n:
 
   limit number of peptides per protein.

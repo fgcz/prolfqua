@@ -8,6 +8,20 @@ Robustly scale a matrix by medians and MADs
 robust_scale(data, dim = 2, preserve_mean = FALSE)
 ```
 
+## Arguments
+
+- data:
+
+  numeric matrix
+
+- dim:
+
+  margin to scale: 2 scales each column (sample), 1 each row
+
+- preserve_mean:
+
+  if TRUE, add the mean of the medians back
+
 ## Value
 
 a matrix like `data`, centred by the median of each column (`dim = 2`)

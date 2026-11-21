@@ -17,6 +17,29 @@ moderated_p_limma(
 
 ## Arguments
 
+- contrast_df:
+
+  contrast table with the columns `sigma`, the residual degrees of
+  freedom and the estimate
+
+- df:
+
+  name of the residual degrees-of-freedom column
+
+- estimate:
+
+  name of the effect-estimate column
+
+- robust:
+
+  passed to
+  [`limma::squeezeVar()`](https://rdrr.io/pkg/limma/man/squeezeVar.html):
+  estimate the prior robustly
+
+- confint:
+
+  confidence level of the moderated intervals
+
 - variance_floor:
 
   optional positive lower bound for posterior variances

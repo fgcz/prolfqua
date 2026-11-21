@@ -28,6 +28,30 @@
   before, factors with more than 25 levels drew invalid shapes or no
   points.
 
+### Bug fixes
+
+- [`build_model_impute()`](https://fgcz.github.io/prolfqua/reference/build_model_impute.md)
+  stops with an error for input that is not aggregated (subject equals
+  the hierarchy) and for strategies other than
+  [`strategy_lm()`](https://fgcz.github.io/prolfqua/reference/strategy.md)
+  and
+  [`strategy_rfit()`](https://fgcz.github.io/prolfqua/reference/strategy.md).
+  Before, peptide-level input was refitted with one placeholder row per
+  missing sample, and mixed models failed with “\$ operator not defined
+  for this S4 class”.
+- [`missingness_histogram()`](https://fgcz.github.io/prolfqua/reference/missingness_histogram.md)
+  facets by the `factors` it is given; before, it summarised by
+  `factors` but faceted by all configured factors, and failed when
+  `factors` was a subset.
+- [`table_factors_size()`](https://fgcz.github.io/prolfqua/reference/table_factors_size.md)
+  returns an ungrouped tibble when the design has two or more factors.
+- [`summarize_stats_quantiles()`](https://fgcz.github.io/prolfqua/reference/summarize_stats.md)
+  (and `LFQDataStats$stats_quantiles()`) return `long` as an ungrouped
+  tibble.
+- [`summary_ropeca_median_p_scaled()`](https://fgcz.github.io/prolfqua/reference/summary_ropeca_median_p_scaled.md)
+  stops with an error when the `statistic` column is missing; before, it
+  filled the summary’s `statistic` column with the column name.
+
 ### Deprecated
 
 - Renamed to snake_case:
@@ -61,6 +85,11 @@
   and
   [`sim_build_models_lm()`](https://fgcz.github.io/prolfqua/reference/sim_build_models_lm.md),
   `_lmer()`, `_logistf()`. The old arguments still work and warn.
+- [`volcano_plotly()`](https://fgcz.github.io/prolfqua/reference/volcano_plotly.md)
+  and
+  [`multigroup_volcano()`](https://fgcz.github.io/prolfqua/reference/multigroup_volcano.md)
+  take their data as `data`; `.data`, which shadowed the tidy-eval
+  pronoun, still works and warns.
 
 ### Documentation
 
@@ -68,6 +97,10 @@
   backticks or brackets now format; every exported function documents
   its return value; titles are in sentence case and `lfqdata` arguments
   share one description.
+- Every argument of the exported functions is documented, and the
+  [`sim_build_models_logistf()`](https://fgcz.github.io/prolfqua/reference/sim_build_models_logistf.md)
+  example checks the fitted models instead of a field that does not
+  exist.
 
 ## prolfqua 1.9.4
 

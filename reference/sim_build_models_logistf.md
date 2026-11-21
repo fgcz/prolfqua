@@ -142,14 +142,25 @@ modi <- sim_build_models_logistf(model = "interaction", weight_missing = 1)
 #> creating sampleName from file_name column
 #> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, group, mean, N, Replicate.
 #> setup_analysis: added 59 rows with NA response for feature and sample combinations absent from the input.
-stopifnot(dim(modi$model_df) == c(10,9))
+stopifnot(nrow(modi$models$model_df) == 10)
 mod2 <- sim_build_models_logistf(model = "parallel2", weight_missing = 1)
 #> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
 #> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, group, mean, N, Replicate.
 #> setup_analysis: added 59 rows with NA response for feature and sample combinations absent from the input.
-mod2$model_df$linear_model[[1]]
-#> NULL
+mod2$models$model_df$linear_model[[1]]
+#> logistf::logistf(formula = self$formula, data = DFT, pl = FALSE, 
+#>     control = do.call(logistf::logistf.control, self$control), 
+#>     weights = Freq)
+#> Model fitted by Penalized ML
+#> Confidence intervals and p-values by Wald 
+#> 
+#> Coefficients:
+#> (Intercept)  TreatmentB 
+#>  -0.4519851   0.9039702 
+#> 
+#> Likelihood ratio test=0.8963533 on 1 df, p=0.3437614, n=16
+#> 
 mod3 <- sim_build_models_logistf(model = "parallel3", weight_missing = 1)
 #> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column

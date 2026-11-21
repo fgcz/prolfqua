@@ -17,6 +17,15 @@ poolvar(res1, config)
 
   data.frame
 
+- res1:
+
+  per-group statistics from
+  [`summarize_stats()`](https://fgcz.github.io/prolfqua/reference/summarize_stats.md)
+
+- config:
+
+  AnalysisConfiguration of the data
+
 ## Value
 
 data.frame
