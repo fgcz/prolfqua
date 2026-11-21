@@ -170,12 +170,11 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
   ## model-matrix breaks on factors with 1 level so make vector of ones (will be intercept)
   if (length(unique(data[[samples]])) == 1L) {
     per_sample <- data |>
-      group_by(across(all_of(samples))) |>
       summarize(
         lmrob = mean(!!sym(response)),
         !!expname := mean(!!sym(response)),
         weights = 1,
-        .groups = "drop"
+        .by = all_of(samples)
       )
     return(finalize(per_sample))
   }
@@ -200,8 +199,7 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
 
     sumdata <- data |>
       select(-!!sym(feature)) |>
-      group_by(across(all_of(samples))) |>
-      dplyr::summarize(!!expname := mean(!!sym(response)), weights = 1 / mean(residuals^2), .groups = "drop")
+      dplyr::summarize(!!expname := mean(!!sym(response)), weights = 1 / mean(residuals^2), .by = all_of(samples))
     if (any(is.infinite(sumdata$weights) | is.na(sumdata$weights) | sumdata$weights > 10e6)) {
       sumdata$weights <- 1
     }
@@ -213,8 +211,7 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
   } else {
     res <- data |>
       select(-!!sym(feature)) |>
-      group_by(across(all_of(samples))) |>
-      dplyr::summarize(!!expname := mean(!!sym(response)), lmrob = mean(!!sym(response)), .groups = "drop")
+      dplyr::summarize(!!expname := mean(!!sym(response)), lmrob = mean(!!sym(response)), .by = all_of(samples))
     res$weights <- 1
   }
   finalize(res)

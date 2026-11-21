@@ -268,10 +268,7 @@ sim_lfq_data_protein_config <- function(
     if (paired) {
       annot <- data |> select(sample, group) |> distinct()
       annot <- annot |>
-        group_by(group) |>
-        mutate(subject = row_number()) |>
-        ungroup() |>
-        mutate(subject = paste0("P", subject))
+        mutate(subject = paste0("P", row_number()), .by = "group")
       data <- inner_join(annot, data, by = c("group", "sample"), relationship = "one-to-many")
     }
     if (with_missing) {

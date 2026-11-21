@@ -103,16 +103,15 @@ LFQDataSummariser <- R6::R6Class(
       dfac <- prolfqua::summarize_stats_factors(self$lfq)
       all <- dplyr::bind_rows(dfac, dall)
       res <- all |>
-        dplyr::group_by(!!sym("interaction")) |>
-        dplyr::arrange(.data$meanAbundance, .by_group = TRUE) |>
+        dplyr::arrange(.data$interaction, .data$meanAbundance) |>
         dplyr::mutate(
           id = dplyr::row_number(),
           abundance_percent = meanAbundance / sum(meanAbundance, na.rm = TRUE) * 100,
           abundance_percent_cumulative = cumsum(ifelse(is.na(abundance_percent), 0, abundance_percent)) +
             abundance_percent * 0,
-          percent_prot = id / max(id) * 100
-        ) |>
-        dplyr::ungroup()
+          percent_prot = id / max(id) * 100,
+          .by = "interaction"
+        )
       res
     }
   )

@@ -195,10 +195,8 @@ missingness_per_condition_cumsum <- function(lfqdata, factors = lfqdata$relevant
     dplyr::summarize(nrTransitions = n(), .groups = "drop")
 
   xxcs <- xx |>
-    group_by(across(all_of(c(lfqdata$isotope_label(), factors)))) |>
     arrange(.data$nrNAs) |>
-    dplyr::mutate(cumulative_sum = cumsum(.data$nrTransitions)) |>
-    dplyr::ungroup()
+    dplyr::mutate(cumulative_sum = cumsum(.data$nrTransitions), .by = all_of(c(lfqdata$isotope_label(), factors)))
   res <- xxcs |> dplyr::select(-dplyr::all_of("nrTransitions"))
 
   nudgeval <- mean(res$cumulative_sum) * 0.05

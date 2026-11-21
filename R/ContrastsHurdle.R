@@ -218,6 +218,5 @@ ContrastsHurdleNestedFacade <- R6::R6Class(
 #' @noRd
 .informative_detection <- function(lfqdata) {
   .summarize_detection_counts(.prepare_detection_lfqdata(lfqdata)) |>
-    dplyr::group_by(dplyr::across(dplyr::all_of(lfqdata$subject_id()))) |>
-    dplyr::summarise(.detection_informative = any(.data$undetected > 0), .groups = "drop")
+    dplyr::summarise(.detection_informative = any(.data$undetected > 0), .by = dplyr::all_of(lfqdata$subject_id()))
 }
