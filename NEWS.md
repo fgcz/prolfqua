@@ -1,3 +1,9 @@
+# prolfqua 1.9.5
+
+## Behaviour changes
+
+- prolfqua now requires dplyr >= 1.1.0, ggplot2 >= 3.4.0 and purrr >= 1.0.0; earlier versions lacked functions prolfqua already called.
+
 # prolfqua 1.9.4
 
 ## New features
