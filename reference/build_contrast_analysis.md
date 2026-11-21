@@ -333,7 +333,6 @@ fa_ropeca <- build_contrast_analysis(lfqdata_pep, "~ group_", contrasts, method 
 #> See $provenance().
 head(fa_ropeca$get_contrasts())
 #> # A tibble: 6 × 14
-#> # Groups:   contrast [1]
 #>   modelName   estimate_type protein_Id contrast avgAbd    diff     FDR statistic
 #>   <chr>       <chr>         <chr>      <chr>     <dbl>   <dbl>   <dbl>     <dbl>
 #> 1 ropeca_nes… observed      0EfVhX~00… A_vs_Ct…   4.27 -0.0742 5.28e-2     -1.75
@@ -348,12 +347,11 @@ head(fa_ropeca$get_contrasts())
 fa_firth <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "firth")
 head(fa_firth$get_contrasts())
 #> # A tibble: 6 × 16
-#> # Groups:   contrast [1]
 #>   modelName estimate_type protein_Id  contrast  sigma    df      diff   FDR
 #>   <chr>     <chr>         <chr>       <chr>     <dbl> <int>     <dbl> <dbl>
-#> 1 firth     observed      0EfVhX~5954 A_vs_Ctrl     1     9  1.07e-15     1
+#> 1 firth     observed      0EfVhX~5954 A_vs_Ctrl     1     9  4.27e-16     1
 #> 2 firth     observed      0m5WN4~1448 A_vs_Ctrl     1     9 -2.20e+ 0     1
-#> 3 firth     observed      7cbcrd~8305 A_vs_Ctrl     1     9  1.07e-15     1
+#> 3 firth     observed      7cbcrd~8305 A_vs_Ctrl     1     9  4.27e-16     1
 #> 4 firth     observed      9VUkAq~4562 A_vs_Ctrl     1     9 -1.35e+ 0     1
 #> 5 firth     observed      At886V~3296 A_vs_Ctrl     1     9  5.58e-16     1
 #> 6 firth     observed      BEJI92~9143 A_vs_Ctrl     1     9 -1.35e+ 0     1

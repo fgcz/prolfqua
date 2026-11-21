@@ -127,7 +127,6 @@ bb <- sim_lfq_data_protein_config()
 counts <- HierarchyCountsSample$new(bb$data, bb$config)
 head(counts$wide())
 #> # A tibble: 6 × 3
-#> # Groups:   isotopeLabel [1]
 #>   isotopeLabel sampleName protein_Id
 #>   <chr>        <chr>           <int>
 #> 1 light        A_V1                9

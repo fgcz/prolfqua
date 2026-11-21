@@ -272,7 +272,6 @@ fa <- ContrastsROPECANestedFacade$new(lfqdata, "~ group_", contrasts)
 #> See $provenance().
 head(fa$get_contrasts())
 #> # A tibble: 6 × 14
-#> # Groups:   contrast [1]
 #>   modelName   estimate_type protein_Id contrast avgAbd    diff     FDR statistic
 #>   <chr>       <chr>         <chr>      <chr>     <dbl>   <dbl>   <dbl>     <dbl>
 #> 1 ropeca_nes… observed      0EfVhX~00… A_vs_Ct…   4.27 -0.0742 5.28e-2     -1.75

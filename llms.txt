@@ -110,9 +110,12 @@ panelD <- pl$boxplots()$boxplot[[1]] + ggplot2::labs(tag = "D")
 gridExtra::grid.arrange(panelA, panelB, panelC, panelD)
 ```
 
-![image](https://github.com/fgcz/prolfqua/assets/1926513/4d5bb64b-6e45-4d00-b029-f08995ac3127)
+![Peptide intensity densities, peptide-to-protein aggregation, standard
+deviations per group, and protein
+boxplot](reference/figures/README-overview.png)
 
-image
+Peptide intensity densities, peptide-to-protein aggregation, standard
+deviations per group, and protein boxplot
 
 ``` r
 ## specify contrasts
@@ -128,9 +131,11 @@ fa$get_contrasts()
 fa$get_Plotter()$volcano()$FDR
 ```
 
-![image](https://github.com/fgcz/prolfqua/assets/1926513/4ae8634b-ce6c-4fa2-8e42-c8bc64a12821)
+![Volcano plots of the three contrasts, -log10(FDR) against log2 fold
+change](reference/figures/README-volcano.png)
 
-image
+Volcano plots of the three contrasts, -log10(FDR) against log2 fold
+change
 
 # Detailed documentation with R code
 

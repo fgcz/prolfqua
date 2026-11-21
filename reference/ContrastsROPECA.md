@@ -337,7 +337,6 @@ mod <- build_model(
  contrast <- prolfqua::ContrastsROPECA$new(contrM)
  contrast$get_contrasts()
 #> # A tibble: 20 × 10
-#> # Groups:   contrast [1]
 #>    modelName estimate_type protein_Id  contrast     n   diff statistic avgAbd
 #>    <chr>     <chr>         <chr>       <chr>    <int>  <dbl>     <dbl>  <dbl>
 #>  1 ROPECA    observed      0EfVhX~5954 AvsCtrl      1  9.23     13.8     25.1

@@ -65,7 +65,6 @@ bb <- sim_lfq_data_peptide_config()
 lfq <- LFQData$new(bb$data, bb$config)
 summarize_hierarchy(lfq$data_long(), lfq$hierarchy_keys(), lfq$isotope_label())
 #> # A tibble: 28 × 3
-#> # Groups:   protein_Id [10]
 #>    protein_Id  peptide_Id isotopeLabel_n
 #>    <chr>       <chr>               <int>
 #>  1 0EfVhX~0087 ITLb4x1q                1
@@ -82,7 +81,6 @@ summarize_hierarchy(lfq$data_long(), lfq$hierarchy_keys(), lfq$isotope_label())
 summarize_hierarchy(lfq$data_long(), lfq$hierarchy_keys(), lfq$isotope_label(),
  factors = character())
 #> # A tibble: 28 × 3
-#> # Groups:   protein_Id [10]
 #>    protein_Id  peptide_Id isotopeLabel_n
 #>    <chr>       <chr>               <int>
 #>  1 0EfVhX~0087 ITLb4x1q                1

@@ -286,8 +286,7 @@ variances; see
 [`power_fdr_prior_n()`](https://fgcz.github.io/prolfqua/reference/power_fdr_prior_n.md)
 for assumptions and returned values. Grouping and feature identities
 follow the current LFQData configuration, regardless of the `stats` mode
-used to construct this decorator. Untransformed data emit a warning and
-return `NULL`.
+used to construct this decorator. Untransformed data raise an error.
 
 #### Usage
 
@@ -366,11 +365,8 @@ runallfuncs <- function(x){
   stopifnot("ggplot" %in% class(x$violin()))
   stopifnot("ggplot" %in% class(x$violin_median()))
   stopifnot("ggplot" %in% class(x$stdv_vs_mean(size = 400)))
-  if(!x$lfq$is_transformed()){
-    stopifnot(is.null(x$power_t_test()))
-    stopifnot(is.null(x$power_t_test_quantiles()))
-    stopifnot(is.null(x$power_fdr_pilot(delta_mean = 0.1)))
-  } else {
+  # the power methods need transformed data and raise an error otherwise
+  if (x$lfq$is_transformed()) {
     stopifnot(is.list(x$power_fdr_pilot(delta_mean = 0.1, max_n = 20)))
   }
 }
@@ -392,9 +388,6 @@ lfqstats$violin()
 #> (`stat_summary()`).
 
 runallfuncs(lfqstats)
-#> Warning: power_t_test requires transformed data; aborting.
-#> Warning: power_t_test_quantiles requires transformed data; aborting.
-#> Warning: power_fdr_pilot requires transformed data; aborting.
 x <- lfqstats
 
 #study variance of normalized data
@@ -443,7 +436,4 @@ lfqstats$violin()
 #> (`stat_summary()`).
 
 runallfuncs(lfqstats)
-#> Warning: power_t_test requires transformed data; aborting.
-#> Warning: power_t_test_quantiles requires transformed data; aborting.
-#> Warning: power_fdr_pilot requires transformed data; aborting.
 ```

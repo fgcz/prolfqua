@@ -173,6 +173,11 @@
 
 ### Behaviour changes
 
+- `LFQDataStats$power_t_test()`, `$power_t_test_quantiles()` and
+  `$power_fdr_pilot()` raise a `prolfqua_error_bad_argument` error on
+  untransformed data. Before, they warned “…; aborting.” and returned
+  `NULL`, which a pipeline could pass on unnoticed.
+
 - All ggplot figures have a new default look in the style of GraphPad
   Prism: white background, black axis lines with outward ticks, bold
   axis titles, bold facet labels on a light grey strip. Volcano, MA,
@@ -326,6 +331,38 @@
   Installation is from Bioconductor first.
 
 ### Bug fixes
+
+- [`adjust_p_values()`](https://fgcz.github.io/prolfqua/reference/adjust_p_values.md),
+  [`summarize_hierarchy()`](https://fgcz.github.io/prolfqua/reference/summarize_hierarchy.md),
+  [`missingness_per_condition()`](https://fgcz.github.io/prolfqua/reference/missingness_per_condition.md),
+  [`missingness_per_condition_cumsum()`](https://fgcz.github.io/prolfqua/reference/missingness_per_condition_cumsum.md),
+  `HierarchyCountsSample` and the `summary` tables of
+  `ContrastsPlotter$barplot_threshold()` return ungrouped tibbles.
+  Before, they kept the grouping used inside, so a later `mutate()` or
+  `summarise()` on the result ran per group without asking for it.
+
+- `LFQData$get_subset()` errors when `x` has none of the subject-id
+  columns. Before, it joined on no columns and returned the whole
+  dataset.
+
+- A data column named `threshold` or `N` no longer replaces the argument
+  of the same name in `remove_small_intensities()`,
+  [`filter_proteins_by_peptide_count()`](https://fgcz.github.io/prolfqua/reference/filter_proteins_by_peptide_count.md)
+  and top-N aggregation; the same holds for `limit` in
+  `LFQDataPlotter$pairs_smooth()`.
+
+- Plots: `ContrastsPlotter$histogram_diff()` marks each contrast’s own
+  median (before: the median over all contrasts, drawn once per row);
+  volcano, MA and score plots accept a colour column with more than 4
+  levels (before: “Insufficient values in manual scale”) and
+  [`multigroup_volcano()`](https://fgcz.github.io/prolfqua/reference/multigroup_volcano.md)
+  accepts significance column names that are not syntactic, such as
+  `adj p`;
+  [`plot_stat_violin_median()`](https://fgcz.github.io/prolfqua/reference/plot_stat_violin_median.md)
+  shows median and quartiles as one point range (before: three
+  unlabelled points per group); beeswarm points in
+  [`plot_hierarchies_boxplot()`](https://fgcz.github.io/prolfqua/reference/plot_hierarchies_boxplot.md)
+  are 1 to 4 mm (before: the child count in mm).
 
 - `medpolish` and `rlm` aggregation no longer report “Response
   `medpolish`: dropped attributes names” (or `lmrob`): the estimates are

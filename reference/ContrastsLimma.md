@@ -324,7 +324,6 @@ merged <- dplyr::inner_join(
   dplyr::select(res, protein_Id, diff_limma = diff),
   dplyr::select(res_prolfqua, protein_Id, diff_prolfqua = diff),
   by = "protein_Id")
-#> Adding missing grouping variables: `contrast`
 stopifnot(cor(merged$diff_limma, merged$diff_prolfqua, use = "complete.obs") > 0.99)
 
 # Plotter works

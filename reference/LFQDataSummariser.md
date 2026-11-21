@@ -265,7 +265,6 @@ sum$hierarchy_counts()
 #> 1 light                10         28
 sum$hierarchy_counts_sample("wide")
 #> # A tibble: 12 × 4
-#> # Groups:   isotopeLabel [1]
 #>    isotopeLabel sampleName protein_Id peptide_Id
 #>    <chr>        <chr>           <int>      <int>
 #>  1 light        A_V1               10         23
@@ -282,7 +281,6 @@ sum$hierarchy_counts_sample("wide")
 #> 12 light        Ctrl_V4            10         25
 sum$hierarchy_counts_sample("long")
 #> # A tibble: 24 × 4
-#> # Groups:   isotopeLabel [1]
 #>    isotopeLabel sampleName key           nr
 #>    <chr>        <chr>      <chr>      <int>
 #>  1 light        A_V1       protein_Id    10
@@ -304,7 +302,6 @@ tmp <- sum$interaction_missing_stats()
 
 sum$missingness_per_group()
 #> # A tibble: 3 × 7
-#> # Groups:   isotopeLabel, group_ [3]
 #>   isotopeLabel group_ nrReplicates   `0`   `1`   `2`   `3`
 #>   <chr>        <chr>         <int> <int> <int> <int> <int>
 #> 1 light        A                 4    19     5     2     2
@@ -312,7 +309,6 @@ sum$missingness_per_group()
 #> 3 light        Ctrl              4    17     8     3    NA
 sum$missingness_per_group_cumsum()
 #> # A tibble: 3 × 7
-#> # Groups:   isotopeLabel, group_ [3]
 #>   isotopeLabel group_ nrReplicates   `0`   `1`   `2`   `3`
 #>   <chr>        <chr>         <int> <int> <int> <int> <int>
 #> 1 light        A                 4    19    24    26    28
