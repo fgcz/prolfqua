@@ -418,7 +418,7 @@ sessionInfo()
     ##  [7] digest_0.6.39         mime_0.13             lifecycle_1.0.5      
     ## [10] cluster_2.1.8.3       statmod_1.5.2         magrittr_2.0.5       
     ## [13] compiler_4.6.2        progress_1.2.3        rlang_1.3.0          
-    ## [16] sass_0.4.10           tools_4.6.2           utf8_1.2.6           
+    ## [16] sass_0.5.0            tools_4.6.2           utf8_1.2.6           
     ## [19] yaml_2.3.12           data.table_1.18.6.1   knitr_1.52           
     ## [22] prettyunits_1.2.0     labeling_0.4.3        htmlwidgets_1.6.4    
     ## [25] RColorBrewer_1.1-3    KernSmooth_2.23-27    withr_3.0.3          
@@ -439,8 +439,8 @@ sessionInfo()
     ## [70] codetools_0.2-20      stringi_1.8.9         gtable_0.3.6         
     ## [73] shape_1.4.6.1         later_1.4.8           ComplexHeatmap_2.28.0
     ## [76] tibble_3.3.1          pillar_1.11.1         htmltools_0.5.9      
-    ## [79] circlize_0.4.18       R6_2.6.1              textshaping_1.0.5    
-    ## [82] doParallel_1.0.17     evaluate_1.0.5        shiny_1.14.0         
+    ## [79] circlize_0.4.18       R6_2.6.1              textshaping_1.1.0    
+    ## [82] doParallel_1.0.17     evaluate_1.0.5        shiny_1.15.0         
     ## [85] png_0.1-9             httpuv_1.6.17         bslib_0.12.0         
     ## [88] Rcpp_1.1.2            gridExtra_2.3.1       xfun_0.62            
     ## [91] fs_2.1.0              pkgconfig_2.0.3       GlobalOptions_0.1.4

@@ -182,8 +182,9 @@
   Prism: white background, black axis lines with outward ticks, bold
   axis titles, bold facet labels on a light grey strip. Volcano, MA,
   score, fitted-value, PCA, density and SD-versus-mean plots keep faint
-  gridlines; histograms, bar charts, boxplots and violins have none. Add
-  any ggplot2 theme to override, or add the new
+  gridlines; histograms, bar charts, boxplots and violins have none.
+  Violins have a thinner outline (`linewidth = 0.3`). Add any ggplot2
+  theme to override, or add the new
   [`theme_prolfqua()`](https://fgcz.github.io/prolfqua/reference/theme_prolfqua.md)
   to your own ggplots to match.
 

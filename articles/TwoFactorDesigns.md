@@ -524,7 +524,7 @@ sessionInfo()
     ##  [4] fastmap_1.2.0          digest_0.6.39          rpart_4.1.27          
     ##  [7] lifecycle_1.0.5        survival_3.8-12        statmod_1.5.2         
     ## [10] magrittr_2.0.5         compiler_4.6.2         rlang_1.3.0           
-    ## [13] sass_0.4.10            progress_1.2.3         tools_4.6.2           
+    ## [13] sass_0.5.0             progress_1.2.3         tools_4.6.2           
     ## [16] utf8_1.2.6             yaml_2.3.12            knitr_1.52            
     ## [19] labeling_0.4.3         prettyunits_1.2.0      htmlwidgets_1.6.4     
     ## [22] RColorBrewer_1.1-3     numDeriv_2016.8-1.1    withr_3.0.3           
@@ -544,7 +544,7 @@ sessionInfo()
     ## [64] pan_2.0                codetools_0.2-20       stringi_1.8.9         
     ## [67] gtable_0.3.6           shape_1.4.6.1          lmerTest_3.2-1        
     ## [70] lme4_2.1-0             tibble_3.3.1           pillar_1.11.1         
-    ## [73] htmltools_0.5.9        R6_2.6.1               textshaping_1.0.5     
+    ## [73] htmltools_0.5.9        R6_2.6.1               textshaping_1.1.0     
     ## [76] Rdpack_2.6.6           formula.tools_1.7.1    evaluate_1.0.5        
     ## [79] lattice_0.23-1         rbibutils_2.4.1        backports_1.5.1       
     ## [82] broom_1.0.13           bslib_0.12.0           Rcpp_1.1.2            

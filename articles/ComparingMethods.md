@@ -692,7 +692,7 @@ sessionInfo()
     ##  [4] fastmap_1.2.0          digest_0.6.39          rpart_4.1.27          
     ##  [7] lifecycle_1.0.5        survival_3.8-12        Rfit_0.27.0           
     ## [10] statmod_1.5.2          magrittr_2.0.5         compiler_4.6.2        
-    ## [13] rlang_1.3.0            sass_0.4.10            progress_1.2.3        
+    ## [13] rlang_1.3.0            sass_0.5.0             progress_1.2.3        
     ## [16] tools_4.6.2            utf8_1.2.6             yaml_2.3.12           
     ## [19] data.table_1.18.6.1    limpa_1.4.2            knitr_1.52            
     ## [22] prettyunits_1.2.0      labeling_0.4.3         htmlwidgets_1.6.4     
@@ -713,7 +713,7 @@ sessionInfo()
     ## [67] stringi_1.8.9          gtable_0.3.6           shape_1.4.6.1         
     ## [70] lmerTest_3.2-1         lme4_2.1-0             tibble_3.3.1          
     ## [73] pillar_1.11.1          htmltools_0.5.9        R6_2.6.1              
-    ## [76] textshaping_1.0.5      Rdpack_2.6.6           formula.tools_1.7.1   
+    ## [76] textshaping_1.1.0      Rdpack_2.6.6           formula.tools_1.7.1   
     ## [79] evaluate_1.0.5         lattice_0.23-1         rbibutils_2.4.1       
     ## [82] backports_1.5.1        broom_1.0.13           bslib_0.12.0          
     ## [85] Rcpp_1.1.2             nlme_3.1-171           mgcv_1.9-4            

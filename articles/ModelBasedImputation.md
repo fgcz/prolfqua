@@ -224,9 +224,9 @@ sessionInfo()
     ## [16] cluster_2.1.8.3       pkgconfig_2.0.3       RColorBrewer_1.1-3   
     ## [19] S4Vectors_0.50.3      S7_1.0.0              desc_1.4.3           
     ## [22] lifecycle_1.0.5       compiler_4.6.2        farver_2.1.2         
-    ## [25] stringr_1.6.0         textshaping_1.0.5     progress_1.2.3       
+    ## [25] stringr_1.6.0         textshaping_1.1.0     progress_1.2.3       
     ## [28] statmod_1.5.2         codetools_0.2-20      ComplexHeatmap_2.28.0
-    ## [31] clue_0.3-68           htmltools_0.5.9       sass_0.4.10          
+    ## [31] clue_0.3-68           htmltools_0.5.9       sass_0.5.0           
     ## [34] yaml_2.3.12           pillar_1.11.1         pkgdown_2.2.1        
     ## [37] crayon_1.5.3          jquerylib_0.1.4       tidyr_1.3.2          
     ## [40] MASS_7.3-66           cachem_1.1.0          limma_3.68.5         

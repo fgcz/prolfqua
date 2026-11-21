@@ -267,7 +267,7 @@ head(confint(analysis))
 #> 6 2kfAGV~3196 group_Ctrl   -0.215     0.0453     8  -0.320   -0.111
 formula(analysis)
 #> medpolish ~ group_
-#> <environment: 0x5a1dc2f36f98>
+#> <environment: 0x5f429530aaf0>
 head(nobs(analysis))
 #> # A tibble: 6 × 2
 #>   protein_Id   nobs
@@ -387,7 +387,7 @@ sessionInfo()
 #>  [4] S7_1.0.0               fastmap_1.2.0          rpart_4.1.27          
 #>  [7] digest_0.6.39          lifecycle_1.0.5        Rfit_0.27.0           
 #> [10] survival_3.8-12        statmod_1.5.2          magrittr_2.0.5        
-#> [13] compiler_4.6.2         rlang_1.3.0            sass_0.4.10           
+#> [13] compiler_4.6.2         rlang_1.3.0            sass_0.5.0            
 #> [16] progress_1.2.3         tools_4.6.2            utf8_1.2.6            
 #> [19] yaml_2.3.12            data.table_1.18.6.1    limpa_1.4.2           
 #> [22] knitr_1.52             labeling_0.4.3         prettyunits_1.2.0     
@@ -409,7 +409,7 @@ sessionInfo()
 #> [70] codetools_0.2-20       stringi_1.8.9          gtable_0.3.6          
 #> [73] shape_1.4.6.1          lmerTest_3.2-1         lme4_2.1-0            
 #> [76] tibble_3.3.1           pillar_1.11.1          htmltools_0.5.9       
-#> [79] R6_2.6.1               textshaping_1.0.5      Rdpack_2.6.6          
+#> [79] R6_2.6.1               textshaping_1.1.0      Rdpack_2.6.6          
 #> [82] formula.tools_1.7.1    evaluate_1.0.5         lattice_0.23-1        
 #> [85] rbibutils_2.4.1        backports_1.5.1        broom_1.0.13          
 #> [88] bslib_0.12.0           Rcpp_1.1.2             nlme_3.1-171          

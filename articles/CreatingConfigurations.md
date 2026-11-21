@@ -249,13 +249,13 @@ sessionInfo()
     ## [1] BiocStyle_2.40.0
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] sass_0.4.10         utf8_1.2.6          generics_0.1.4     
+    ##  [1] sass_0.5.0          utf8_1.2.6          generics_0.1.4     
     ##  [4] tidyr_1.3.2         stringi_1.8.9       digest_0.6.39      
     ##  [7] magrittr_2.0.5      evaluate_1.0.5      grid_4.6.2         
     ## [10] RColorBrewer_1.1-3  bookdown_0.48       fastmap_1.2.0      
     ## [13] jsonlite_2.0.0      ggrepel_0.9.8       limma_3.68.5       
     ## [16] prolfqua_1.9.4      BiocManager_1.30.27 purrr_1.2.2        
-    ## [19] scales_1.4.0        textshaping_1.0.5   jquerylib_0.1.4    
+    ## [19] scales_1.4.0        textshaping_1.1.0   jquerylib_0.1.4    
     ## [22] cli_3.6.6           rlang_1.3.0         withr_3.0.3        
     ## [25] cachem_1.1.0        yaml_2.3.12         otel_0.3.0         
     ## [28] tools_4.6.2         dplyr_1.2.1         ggplot2_4.0.4      
