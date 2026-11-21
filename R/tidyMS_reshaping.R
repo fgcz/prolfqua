@@ -60,7 +60,7 @@ tidy_to_wide_config <- function(
     all_of(c(lfqdata$sample_name(), lfqdata$file_name(), lfqdata$factor_keys(), lfqdata$isotope_label()))
   ) |>
     dplyr::distinct() |>
-    dplyr::arrange_at(newcolname)
+    dplyr::arrange(dplyr::pick(dplyr::all_of(newcolname)))
 
   long <- dplyr::select(data, all_of(c(row_keys, newcolname, value)))
   # the default keys are unique by setup_analysis(); a reduced key set may not be

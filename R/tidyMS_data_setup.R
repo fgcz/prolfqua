@@ -436,7 +436,7 @@ complete_cases <- function(lfqdata) {
 #' subset <- sample_subset(2, bb$data, bb$config$hierarchy_keys_depth())
 #' length(unique(subset[[bb$config$hierarchy_keys_depth()[1]]]))
 sample_subset <- function(size, pdata, hierarchy_keys_depth) {
-  hkdf <- pdata |> select(all_of(hierarchy_keys_depth)) |> distinct() |> sample_n(size = size)
+  hkdf <- pdata |> select(all_of(hierarchy_keys_depth)) |> distinct() |> dplyr::slice_sample(n = size)
   sdata <- inner_join(hkdf, pdata, by = hierarchy_keys_depth, relationship = "one-to-many")
   return(sdata)
 }

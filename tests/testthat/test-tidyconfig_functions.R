@@ -67,3 +67,12 @@ test_that("list_to_ContrastConfiguration restores roles and methods", {
     "Unknown ContrastConfiguration fields"
   )
 })
+
+test_that("make_interaction_column keeps its levels and values (review B5)", {
+  xx <- data.frame(A = c("a", "b", "a"), B = c("d", "d", "e"))
+  expect_identical(
+    make_interaction_column(xx, c("B", "A"))$interaction,
+    factor(c("Bd.Aa", "Bd.Ab", "Be.Aa"), levels = c("Bd.Aa", "Be.Aa", "Bd.Ab", "Be.Ab"))
+  )
+  expect_identical(make_interaction_column(xx, "A")$interaction, factor(c("Aa", "Ab", "Aa")))
+})

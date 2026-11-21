@@ -585,13 +585,13 @@ prolfqua_data <- function(datastr, package = "prolfqua") {
 #'
 make_interaction_column <- function(data, columns, sep = ".") {
   intr <- dplyr::select(data, dplyr::all_of(columns))
-  intr <- purrr::map_dfc(intr, factor)
+  intr <- dplyr::mutate(intr, dplyr::across(dplyr::everything(), factor))
   names(columns) <- columns
   newlev <- purrr::map2(columns, intr, function(x, y) {
     paste0(x, levels(y))
   })
-  intr <- purrr::map2_dfc(columns, intr, paste0)
-  intr <- purrr::map2_dfc(intr, newlev, function(x, lev) factor(x, levels = lev))
+  intr <- tibble::as_tibble(purrr::map2(columns, intr, paste0))
+  intr <- tibble::as_tibble(purrr::map2(intr, newlev, function(x, lev) factor(x, levels = lev)))
 
   colnames(intr) <- paste0("interaction_", columns)
   colname <- "interaction"

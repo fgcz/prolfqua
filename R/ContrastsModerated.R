@@ -105,7 +105,8 @@ ContrastsModerated <- R6::R6Class(
       contrast_result <- self$Contrast$get_contrasts(all = FALSE) |>
         dplyr::group_by(dplyr::across(dplyr::all_of("contrast"))) |>
         dplyr::group_split() |>
-        purrr::map_df(moderated_p_limma, estimate = "diff", variance_floor = self$variance_floor)
+        purrr::map(moderated_p_limma, estimate = "diff", variance_floor = self$variance_floor) |>
+        purrr::list_rbind()
       contrast_result <- .finalize_moderated_columns(contrast_result, self$p.adjust, all)
       contrast_result <- dplyr::ungroup(contrast_result)
       # modelName and estimate_type pass through from the wrapped contrast

@@ -3,7 +3,7 @@ test_that("plot_hierarchies_boxplot", {
   lfq <- LFQData$new(istar$data, istar$config)
 
   xnested <- lfq$data_long() |>
-    dplyr::group_by_at(lfq$relevant_hierarchy_keys()) |>
+    dplyr::group_by(dplyr::across(dplyr::all_of(lfq$relevant_hierarchy_keys()))) |>
     tidyr::nest()
 
   p <- plot_hierarchies_boxplot(

@@ -68,7 +68,7 @@ parse_contrast_sides <- function(contrasts) {
     x <- tibble::as_tibble(x)
     tibble::add_column(x, "factor_level" = factor_level, .before = 1)
   }
-  purrr::map_df(unique(unlist(row_name_parts)), get_coeffs)
+  purrr::list_rbind(purrr::map(unique(unlist(row_name_parts)), get_coeffs))
 }
 
 #' Get group-level linear functions from a fitted model

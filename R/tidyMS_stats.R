@@ -57,7 +57,7 @@ compute_pooled <- function(x) {
 #'
 poolvar <- function(res1, config) {
   resp <- res1 |> nest(data = -all_of(config$hierarchy_keys()))
-  pooled <- purrr::map_df(resp$data, compute_pooled)
+  pooled <- purrr::list_rbind(purrr::map(resp$data, compute_pooled))
   resp$data <- NULL
   resp <- bind_cols(resp, pooled)
   resp <- resp |> mutate(!!config$factor_keys()[1] := "pooled")
@@ -406,7 +406,7 @@ plot_stdv_vs_mean <- function(pdata, factor_keys_depth, size = 2000) {
 
   pdata <- pdata |>
     dplyr::group_by(across(all_of(factor_keys_depth))) |>
-    dplyr::sample_n(size = size) |>
+    dplyr::slice_sample(n = size) |>
     dplyr::ungroup()
 
   p <- ggplot(pdata, aes(x = meanAbundance, y = sd)) +

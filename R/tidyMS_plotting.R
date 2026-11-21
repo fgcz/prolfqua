@@ -285,7 +285,7 @@ plot_intensity_distribution_violin <- function(pdata, sample_name, response, is_
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
     stat_summary(fun = median, geom = "point", size = 1, color = "black")
   if (!is_transformed) {
-    p <- p + scale_y_continuous(trans = "log10")
+    p <- p + scale_y_log10()
   }
   return(p)
 }
@@ -338,7 +338,7 @@ plot_intensity_distribution_density <- function(
     theme_prolfqua(grid = TRUE) +
     geom_line(stat = "density")
   if (!is_transformed) {
-    p <- p + scale_x_continuous(trans = "log10")
+    p <- p + scale_x_log10()
   }
   if (!.show_sample_legend(pdata, sample_name, legend, max_legend_samples)) {
     p <- p + ggplot2::guides(colour = "none")
@@ -435,7 +435,7 @@ plot_hierarchies_boxplot <- function(
   }
 
   if (!lfqdata$is_transformed()) {
-    p <- p + scale_y_continuous(trans = "log10")
+    p <- p + scale_y_log10()
   }
   p <- p + geom_boxplot()
   if (beeswarm) {
