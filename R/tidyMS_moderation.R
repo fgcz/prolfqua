@@ -243,6 +243,7 @@ get_p_values_pbeta <- function(median.p.value, n.obs, max.n = 10) {
 #'   protein_Id = protein_Id,
 #'   estimate = estimate,
 #'   pseudo_estimate = estimate,
+#'   statistic = estimate / 0.5,
 #'   p.value = p.value,
 #'   avgAbd = avgAbd )
 #'

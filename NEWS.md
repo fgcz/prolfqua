@@ -13,6 +13,7 @@
 - `missingness_histogram()` facets by the `factors` it is given; before, it summarised by `factors` but faceted by all configured factors, and failed when `factors` was a subset.
 - `table_factors_size()` returns an ungrouped tibble when the design has two or more factors.
 - `summarize_stats_quantiles()` (and `LFQDataStats$stats_quantiles()`) return `long` as an ungrouped tibble.
+- `summary_ropeca_median_p_scaled()` stops with an error when the `statistic` column is missing; before, it filled the summary's `statistic` column with the column name.
 
 ## Deprecated
 

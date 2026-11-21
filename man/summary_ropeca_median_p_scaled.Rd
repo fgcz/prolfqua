@@ -52,6 +52,7 @@ testdata <- data.frame(contrast = "contrast1",
   protein_Id = protein_Id,
   estimate = estimate,
   pseudo_estimate = estimate,
+  statistic = estimate / 0.5,
   p.value = p.value,
   avgAbd = avgAbd )
 
