@@ -222,6 +222,15 @@ build_model_impute <- function(
   if (!inherits(lfqdata, "LFQData")) {
     abort_bad_argument("lfqdata", "be an LFQData object")
   }
+  # LOD rows complete one row per sample and subject, and the borrowed covariance needs a QR-based fit
+  .assert_aggregated_facade_input(lfqdata, "build_model_impute()")
+  if (!inherits(model_strategy, c("StrategyLM", "StrategyRfit"))) {
+    abort_bad_argument(
+      "model_strategy",
+      "come from `strategy_lm()` or `strategy_rfit()`",
+      not = class(model_strategy)[1]
+    )
+  }
   if (!is.null(lod) && (!is.numeric(lod) || length(lod) != 1 || !is.finite(lod))) {
     abort_bad_argument("lod", "be NULL or one finite number")
   }

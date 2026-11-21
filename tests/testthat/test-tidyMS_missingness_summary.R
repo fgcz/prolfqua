@@ -70,3 +70,13 @@ test_that("get_contrast resolves nested contrasts that reference earlier contras
   expect_equal(unique(nested$group_1_name), "AvsB")
   expect_equal(unique(nested$group_2_name), "AvsCtrl")
 })
+
+test_that("missingness_histogram facets by the factors it is given (D-review fold-in)", {
+  sim <- sim_lfq_data_2factor_config(n_proteins = 10)
+  lfq <- LFQData$new(sim$data, sim$config)
+  p <- missingness_histogram(lfq, factors = "Treatment")
+  facet_vars <- c(names(p$facet$params$rows), names(p$facet$params$cols))
+  expect_true("Treatment" %in% facet_vars)
+  expect_false("Background" %in% facet_vars)
+  expect_true(all(setdiff(facet_vars, lfq$isotope_label()) %in% colnames(p$data)))
+})

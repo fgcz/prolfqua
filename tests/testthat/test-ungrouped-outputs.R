@@ -44,3 +44,17 @@ test_that("barplot_threshold() summaries and duplicate counts are ungrouped", {
   expect_false(dplyr::is_grouped_df(cp$barplot_threshold()$FDR$summary))
   expect_false(dplyr::is_grouped_df(.setup_duplicate_counts(lfq$data_long(), lfq$get_config())))
 })
+
+test_that("table_factors_size returns an ungrouped tibble for two factors", {
+  sim <- sim_lfq_data_2factor_config(n_proteins = 5)
+  lfq <- LFQData$new(sim$data, sim$config)
+  res <- table_factors_size(
+    lfq$data_long(),
+    lfq$file_name(),
+    lfq$sample_name(),
+    lfq$factor_keys(),
+    lfq$relevant_factor_keys()
+  )
+  expect_false(dplyr::is_grouped_df(res))
+  expect_identical(sum(res$n), dplyr::n_distinct(lfq$data_long()[[lfq$sample_name()]]))
+})

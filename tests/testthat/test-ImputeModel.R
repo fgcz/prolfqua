@@ -243,3 +243,22 @@ test_that("rfit reports its fitted observation count", {
   fit <- strategy_rfit("Sepal.Length ~ Species")$model_fun(dat)
   expect_equal(stats::nobs(fit), 149L)
 })
+
+test_that("build_model_impute rejects input and strategies outside its contract", {
+  sim <- sim_lfq_data_peptide_config(n_proteins = 4, with_missing = FALSE, seed = 1)
+  cfg <- sim$config$clone(deep = TRUE)
+  cfg$hierarchy_depth <- 1
+  peptide_level <- LFQData$new(sim$data, cfg)
+  expect_error(
+    build_model_impute(peptide_level, strategy_lm(paste(peptide_level$response(), "~ group_"))),
+    "requires aggregated LFQData",
+    class = "prolfqua_error"
+  )
+
+  protein_sim <- sim_lfq_data_protein_config(n_proteins = 4, with_missing = FALSE, seed = 1, paired = TRUE)
+  protein_level <- LFQData$new(protein_sim$data, protein_sim$config)
+  expect_error(
+    build_model_impute(protein_level, strategy_lmer(paste(protein_level$response(), "~ group_ + (1 | subject_)"))),
+    class = "prolfqua_error_bad_argument"
+  )
+})

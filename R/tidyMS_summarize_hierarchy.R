@@ -52,7 +52,7 @@ table_factors_size <- function(pdata, file_name, sample_name, factor_keys, facto
   xx <- table_factors(pdata, file_name, sample_name, factor_keys)
   xx <- xx |>
     dplyr::group_by(dplyr::across(dplyr::all_of(factor_keys_depth))) |>
-    dplyr::summarize(n = dplyr::n())
+    dplyr::summarize(n = dplyr::n(), .groups = "drop")
   xx
 }
 

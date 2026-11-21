@@ -149,7 +149,6 @@ missingness_histogram <- function(lfqdata, showempty = FALSE, factors = lfqdata$
       )
   }
 
-  factors <- lfqdata$relevant_factor_keys()
   formula <- .isotope_by_factors_formula(lfqdata, factors)
   mean_abundance <- paste0("mean_", lfqdata$response())
   missing_percent <- dplyr::rename(missing_percent, !!sym(mean_abundance) := "meanAbundance")

@@ -7,6 +7,12 @@
 - Joins inside prolfqua check that their lookup keys are unique: a duplicated subject, contrast or sample key in an input (for instance two rows for one protein and contrast passed to `merge_contrasts_results()`) raises an error instead of silently multiplying rows.
 - Plots: volcano, MA and score plots draw smaller, more transparent points, so dense regions stay readable; `ContrastsPlotter$barplot_threshold()` fills bars with the colour-blind safe palette; score-plot reference lines are black and red regardless of the global `palette()`. `plot_pca()` shapes the second factor with 19 distinguishable shapes and, when that factor has more levels, drops the shape mapping with a message; before, factors with more than 25 levels drew invalid shapes or no points.
 
+## Bug fixes
+
+- `build_model_impute()` stops with an error for input that is not aggregated (subject equals the hierarchy) and for strategies other than `strategy_lm()` and `strategy_rfit()`. Before, peptide-level input was refitted with one placeholder row per missing sample, and mixed models failed with "$ operator not defined for this S4 class".
+- `missingness_histogram()` facets by the `factors` it is given; before, it summarised by `factors` but faceted by all configured factors, and failed when `factors` was a subset.
+- `table_factors_size()` returns an ungrouped tibble when the design has two or more factors.
+
 ## Deprecated
 
 - Renamed to snake_case: `lfqdata_to_summarized_experiment()` (was `LFQDataToSummarizedExperiment()`), `lr_test()` (`LR_test()`), `lfq_power_t_test_quantiles()` (`lfq_power_t_test_quantiles_V2()`), `r6_extract_values()` (`R6_extract_values()`), `list_to_analysis_configuration()` (`list_to_AnalysisConfiguration()`), `list_to_contrast_configuration()` (`list_to_ContrastConfiguration()`), `summary_ropeca_median_p_scaled()` (`summary_ROPECA_median_p_scaled()`), and the misspelt `missigness_histogram()` and `LFQDataPlotter$missigness_histogram()` to `missingness_histogram()`. The old names still work and warn; see `?"prolfqua-deprecated"`.
