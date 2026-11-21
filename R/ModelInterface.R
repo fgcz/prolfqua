@@ -101,6 +101,6 @@ ModelInterface <- R6::R6Class(
     # colour column of the coefficient volcano plot
     volcano_colour = "isSingular",
     volcano_prefix = "Coef_volcano_plot_",
-    coef_table = function() tidyr::unite(self$get_coefficients(), "subject_id", self$subject_id)
+    coef_table = function() tidyr::unite(self$get_coefficients(), "subject_id", dplyr::all_of(self$subject_id))
   )
 )

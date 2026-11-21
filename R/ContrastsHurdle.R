@@ -128,11 +128,11 @@ ContrastsHurdleFacade <- R6::R6Class(
           relationship = "many-to-one"
         )
 
-      p_detection <- dplyr::if_else(res$.detection_informative, res$p.value.detection, NA_real_)
+      p_detection <- dplyr::if_else(res$.detection_informative, res$p.value.detection, NA)
       log_p <- cbind(log(res$p.value.intensity), log(p_detection))
       n_components <- rowSums(!is.na(log_p))
-      res$chisq.hurdle <- dplyr::if_else(n_components > 0, -2 * rowSums(log_p, na.rm = TRUE), NA_real_)
-      res$df.hurdle <- dplyr::if_else(n_components > 0, 2 * n_components, NA_real_)
+      res$chisq.hurdle <- dplyr::if_else(n_components > 0, -2 * rowSums(log_p, na.rm = TRUE), NA)
+      res$df.hurdle <- dplyr::if_else(n_components > 0, 2 * n_components, NA)
       res$p.value <- stats::pchisq(res$chisq.hurdle, res$df.hurdle, lower.tail = FALSE)
       res$hurdle_components <- dplyr::case_when(
         n_components == 2 ~ "both",

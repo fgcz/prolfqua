@@ -21,7 +21,7 @@
     data <- tidyr::unite(
       data,
       !!sym(configuration$hierarchy_keys()[i]),
-      configuration$hierarchy[[i]],
+      dplyr::all_of(configuration$hierarchy[[i]]),
       remove = FALSE,
       sep = configuration$sep
     )
@@ -59,7 +59,7 @@
       data <- tidyr::unite(
         data,
         !!sym(configuration$factor_keys()[i]),
-        configuration$factors[[i]],
+        dplyr::all_of(configuration$factors[[i]]),
         remove = FALSE,
         sep = configuration$sep
       )
@@ -312,7 +312,7 @@ setup_analysis <- function(data, configuration, debug = FALSE) {
   if (length(dropped) > 0L) {
     inform_prolfqua("setup_analysis: dropped ", length(dropped), " unconfigured columns: ", toString(dropped), ".")
   }
-  data <- data |> dplyr::select(c(configuration$id_vars(), configuration$value_vars()))
+  data <- data |> dplyr::select(dplyr::all_of(c(configuration$id_vars(), configuration$value_vars())))
 
   duplicate_counts <- .setup_duplicate_counts(data, configuration)
   duplicate_result <- .handle_setup_duplicates(

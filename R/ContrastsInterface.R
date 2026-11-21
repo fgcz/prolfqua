@@ -306,17 +306,17 @@ merge_contrasts_results <- function(prefer, add, model_name = "mergedModel") {
   c_b <- add$get_contrasts()
 
   if (length(colnames(c_a)) < length(colnames(c_b))) {
-    c_b <- dplyr::select(c_b, colnames(c_a))
+    c_b <- dplyr::select(c_b, dplyr::all_of(colnames(c_a)))
   }
 
   c_a <- dplyr::filter(c_a, !is.na(.data$statistic))
   more_id <- setdiff(
-    distinct(select(c_b, c(prefer$subject_id, "contrast"))),
-    distinct(select(c_a, c(add$subject_id, "contrast")))
+    distinct(select(c_b, dplyr::all_of(c(prefer$subject_id, "contrast")))),
+    distinct(select(c_a, dplyr::all_of(c(add$subject_id, "contrast"))))
   )
   more <- inner_join(more_id, c_b, by = c(prefer$subject_id, "contrast"), relationship = "one-to-one")
 
-  same_id <- select(c_a, c(add$subject_id, "contrast"))
+  same_id <- select(c_a, dplyr::all_of(c(add$subject_id, "contrast")))
   same <- inner_join(same_id, c_b, by = c(add$subject_id, "contrast"), relationship = "one-to-one")
 
   if (prefer$model_name == add$model_name) {

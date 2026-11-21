@@ -479,7 +479,7 @@ plot_hierarchies_boxplot <- function(
       )
   }
   if (!is.null(facet_grid_on) && (facet_grid_on %in% colnames(pdata))) {
-    p <- p + facet_grid(formula(paste0("~", facet_grid_on)))
+    p <- p + facet_grid(cols = vars(.data[[facet_grid_on]]))
   }
   p
 }

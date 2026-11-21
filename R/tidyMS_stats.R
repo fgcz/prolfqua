@@ -169,22 +169,15 @@ summarize_stats_quantiles <- function(
   probs = c(0.1, 0.25, 0.5, 0.75, 0.9)
 ) {
   stats <- match.arg(stats)
-  q_column <- paste0(stats, "_quantiles")
 
-  stats_res <- stats_res |> dplyr::filter(!is.na(!!sym(stats)))
-  xx2 <- stats_res |>
-    dplyr::group_by(!!!syms(factor_keys_depth)) |>
-    tidyr::nest()
-
-  sd_quantile_res2 <- xx2 |>
-    dplyr::mutate(
-      !!q_column := purrr::map(
-        data,
-        ~ tibble(probs = probs, quantiles = quantile(.[[stats]], probs, na.rm = TRUE))
-      )
+  sd_quantile_res2 <- stats_res |>
+    dplyr::filter(!is.na(.data[[stats]])) |>
+    dplyr::reframe(
+      probs = probs,
+      quantiles = stats::quantile(.data[[stats]], probs, na.rm = TRUE),
+      .by = dplyr::all_of(factor_keys_depth)
     ) |>
-    dplyr::select(!!!syms(c(factor_keys_depth, q_column))) |>
-    tidyr::unnest(cols = dplyr::all_of(q_column))
+    dplyr::arrange(dplyr::pick(dplyr::all_of(factor_keys_depth)))
 
   xx <- sd_quantile_res2 |> tidyr::unite("interaction", dplyr::all_of(factor_keys_depth))
   wide <- xx |> tidyr::pivot_wider(names_from = "interaction", values_from = "quantiles")
@@ -430,7 +423,7 @@ plot_stdv_vs_mean <- function(pdata, factor_keys_depth, size = 2000) {
     theme_prolfqua(grid = TRUE) +
     geom_point() +
     geom_smooth(method = "loess", formula = y ~ x) +
-    facet_wrap(factor_keys_depth, nrow = 1) +
+    facet_wrap(factor_keys_depth) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1))
   p
 }

@@ -133,8 +133,8 @@ LFQDataStats <- R6::R6Class(
     stats_wide = function() {
       res <- tidyr::pivot_wider(
         self$statsdf,
-        id_cols = self$lfq$hierarchy_keys(),
-        names_from = self$lfq$relevant_factor_keys(),
+        id_cols = dplyr::all_of(self$lfq$hierarchy_keys()),
+        names_from = dplyr::all_of(self$lfq$relevant_factor_keys()),
         values_from = dplyr::any_of(
           c("nrReplicates", "nrMeasured", "sd", "var", "meanAbundance", "medianAbundance", "CV")
         )

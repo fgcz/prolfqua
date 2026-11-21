@@ -38,7 +38,7 @@ plot_hierarchies_line_default <- function(
     aes(x = .data[[sample]], y = .data[[intensity]], group = .data[[fragment]], color = .data[[peptide]])
   )
   p <- p + theme_prolfqua(grid = TRUE) + points + lines
-  p <- p + facet_grid(as.formula(sprintf("~%s", paste(factor, collapse = " + "))), scales = "free_x")
+  p <- p + facet_grid(cols = vars(!!!syms(factor)), scales = "free_x")
   p <- p + ggtitle(protein_name)
   p <- p + theme(axis.text.x = element_text(angle = 90, hjust = 1), legend.position = "top")
   if (log_y) {
