@@ -403,3 +403,15 @@ test_that("is_aggregatable tells whether there is a level below the modelled one
   depth2$set_config_value("hierarchy_depth", 2)
   expect_false(depth2$is_aggregatable())
 })
+
+test_that("hierarchy counts work without an nr_children column", {
+  sim <- sim_lfq_data_peptide_config(n_proteins = 5, with_missing = FALSE)
+  data <- sim$data
+  data[[sim$config$nr_children]] <- NULL
+  lfq <- LFQData$new(data, sim$config)
+  summariser <- lfq$get_Summariser()
+  counts <- summariser$hierarchy_counts_sample("long")
+  expect_gt(nrow(counts), 0)
+  expect_s3_class(summariser$plot_hierarchy_counts_sample(), "ggplot")
+  expect_error(summariser$hierarchy_counts_sample(nr_children = 2), class = "prolfqua_error_missing_column")
+})

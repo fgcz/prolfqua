@@ -119,11 +119,14 @@ HierarchyCountsSample <- R6::R6Class(
     initialize = function(pdata, configuration, nr_children = 1) {
       self$.configuration <- configuration
       hierarchy <- configuration$hierarchy_keys()
+      # the child-count column is optional; without it every feature counts as one child
+      if (configuration$nr_children %in% colnames(pdata)) {
+        pdata <- dplyr::filter(pdata, .data[[configuration$nr_children]] >= .env$nr_children)
+      } else if (nr_children > 1) {
+        abort_missing_columns(configuration$nr_children, "pdata")
+      }
       self$.summary <- pdata |>
-        dplyr::filter(
-          !is.na(.data[[configuration$get_response()]]),
-          .data[[configuration$nr_children]] >= .env$nr_children
-        ) |>
+        dplyr::filter(!is.na(.data[[configuration$get_response()]])) |>
         dplyr::group_by(across(all_of(c(configuration$isotope_label, configuration$sample_name)))) |>
         dplyr::summarise(across(all_of(hierarchy), dplyr::n_distinct), .groups = "drop")
     },

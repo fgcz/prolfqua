@@ -14,6 +14,7 @@
 - `table_factors_size()` returns an ungrouped tibble when the design has two or more factors.
 - `summarize_stats_quantiles()` (and `LFQDataStats$stats_quantiles()`) return `long` as an ungrouped tibble.
 - `summary_ropeca_median_p_scaled()` stops with an error when the `statistic` column is missing; before, it filled the summary's `statistic` column with the column name.
+- Hierarchy counts per sample (`HierarchyCountsSample`, `LFQDataSummariser$hierarchy_counts_sample()` and its plot) work without an `nr_children` column, counting every feature once, and stop with an error when `nr_children > 1` is requested without that column.
 
 ## Deprecated
 
