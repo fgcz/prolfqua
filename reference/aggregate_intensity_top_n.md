@@ -18,7 +18,8 @@ aggregate_intensity_top_n(ranked_data, lfqdata, .func, N = 3)
 
 - lfqdata:
 
-  LFQData object
+  [LFQData](https://fgcz.github.io/prolfqua/reference/LFQData.md) object
+  with the data and its configuration
 
 - .func:
 

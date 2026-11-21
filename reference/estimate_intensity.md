@@ -12,25 +12,27 @@ estimate_intensity(lfqdata, method = c("medpolish", "rlm"), control = list())
 
 - lfqdata:
 
-  LFQData object
+  [LFQData](https://fgcz.github.io/prolfqua/reference/LFQData.md) object
+  with the data and its configuration
 
 - method:
 
-  "medpolish" (Tukey's median polish, column \`medpolish\`) or "rlm"
-  (robust regression with \`MASS::rlm\`, column \`lmrob\`)
+  "medpolish" (Tukey's median polish, column `medpolish`) or "rlm"
+  (robust regression with
+  [`MASS::rlm`](https://rdrr.io/pkg/MASS/man/rlm.html), column `lmrob`)
 
 - control:
 
-  convergence controls merged over the defaults. medpolish: \`maxiter\`
-  (default 10) and \`eps\` (default 0.01, the change of the sum of
+  convergence controls merged over the defaults. medpolish: `maxiter`
+  (default 10) and `eps` (default 0.01, the change of the sum of
   absolute residuals that stops the polish, on the log2 scale of the
-  input); rlm: \`maxit\` (default 20) and \`acc\` (default 1e-4,
-  relative change of the IRLS residuals).
+  input); rlm: `maxit` (default 20) and `acc` (default 1e-4, relative
+  change of the IRLS residuals).
 
 ## Value
 
 returns list with data (data.frame), config (AnalysisConfiguration) and
-failures (tibble with the subject \`id\` and \`warning\` text of every
+failures (tibble with the subject `id` and `warning` text of every
 warning raised while estimating one subject; the warnings are not
 re-raised)
 

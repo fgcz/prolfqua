@@ -318,16 +318,16 @@ Research](https://doi.org/10.1021/acs.jproteome.2c00441)
 ## All functions
 
 - [`AggregateLimpa`](https://fgcz.github.io/prolfqua/reference/AggregateLimpa.md)
-  : AggregateLimpa
+  : Aggregate or impute intensities with limpa's DPC quantification
 
 - [`AggregateMedpolish`](https://fgcz.github.io/prolfqua/reference/AggregateMedpolish.md)
-  : AggregateMedpolish
+  : Aggregate peptide intensities by median polish
 
 - [`AggregateRlm`](https://fgcz.github.io/prolfqua/reference/AggregateRlm.md)
-  : AggregateRlm
+  : Aggregate peptide intensities by robust linear regression
 
 - [`AggregateTopN`](https://fgcz.github.io/prolfqua/reference/AggregateTopN.md)
-  : AggregateTopN
+  : Aggregate peptide intensities from the top N peptides
 
 - [`AnalysisConfiguration`](https://fgcz.github.io/prolfqua/reference/AnalysisConfiguration.md)
   : Analysis Configuration
@@ -406,7 +406,7 @@ Research](https://doi.org/10.1021/acs.jproteome.2c00441)
   : DEqMS count-dependent moderated contrasts
 
 - [`ContrastsPlotter`](https://fgcz.github.io/prolfqua/reference/ContrastsPlotter.md)
-  : plot contrasts
+  : Plot contrasts
 
 - [`ContrastsRLMFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsRLMFacade.md)
   : RLM contrast analysis facade
@@ -430,7 +430,7 @@ Research](https://doi.org/10.1021/acs.jproteome.2c00441)
   : Rfit rank-regression contrast analysis with LOD imputation facade
 
 - [`ContrastsTable`](https://fgcz.github.io/prolfqua/reference/ContrastsTable.md)
-  : holds results when contrasts are added.
+  : Hold results when contrasts are added
 
 - [`FACADE_REGISTRY`](https://fgcz.github.io/prolfqua/reference/FACADE_REGISTRY.md)
   : Registry of available contrast facade classes
@@ -453,14 +453,8 @@ Research](https://doi.org/10.1021/acs.jproteome.2c00441)
 - [`LFQDataSummariser`](https://fgcz.github.io/prolfqua/reference/LFQDataSummariser.md)
   : Summarize LFQData
 
-- [`LFQDataToSummarizedExperiment()`](https://fgcz.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md)
-  : converts LFQData object to SummarizedExperiment
-
 - [`LFQDataTransformer`](https://fgcz.github.io/prolfqua/reference/LFQDataTransformer.md)
   : Decorate LFQData with Methods for transforming Intensities
-
-- [`LR_test()`](https://fgcz.github.io/prolfqua/reference/LR_test.md) :
-  Likelihood ratio test
 
 - [`MissingHelpers`](https://fgcz.github.io/prolfqua/reference/MissingHelpers.md)
   : Group statistics and limit of detection
@@ -479,9 +473,6 @@ Research](https://doi.org/10.1021/acs.jproteome.2c00441)
 
 - [`PACKAGE_DATA`](https://fgcz.github.io/prolfqua/reference/PACKAGE_DATA.md)
   : Package Data
-
-- [`R6_extract_values()`](https://fgcz.github.io/prolfqua/reference/R6_extract_values.md)
-  : Extract all value slots in an R6 object
 
 - [`StrategyBinomial`](https://fgcz.github.io/prolfqua/reference/StrategyBinomial.md)
   : Quasibinomial detection-count strategy
@@ -511,7 +502,7 @@ Research](https://doi.org/10.1021/acs.jproteome.2c00441)
   : Rank-based regression strategy (R6 class)
 
 - [`adjust_p_values()`](https://fgcz.github.io/prolfqua/reference/adjust_p_values.md)
-  : adjust columns
+  : Adjust p-values for multiple testing
 
 - [`annotation_add_contrasts()`](https://fgcz.github.io/prolfqua/reference/annotation_add_contrasts.md)
   : DRY function: process and export annotated contrasts
@@ -544,7 +535,7 @@ Research](https://doi.org/10.1021/acs.jproteome.2c00441)
   : Build limpa vooma model from aggregated LFQData
 
 - [`center_to_reference_cfg()`](https://fgcz.github.io/prolfqua/reference/center_to_reference_cfg.md)
-  : center to reference
+  : Center data to a reference subset
 
 - [`df.residual(`*`<rfit_prolfqua>`*`)`](https://fgcz.github.io/prolfqua/reference/df.residual.rfit_prolfqua.md)
   : Residual degrees of freedom for an augmented rfit fit
@@ -553,7 +544,7 @@ Research](https://doi.org/10.1021/acs.jproteome.2c00441)
   : Per-test significance level for FDR-controlled sample-size planning
 
 - [`find_package_file()`](https://fgcz.github.io/prolfqua/reference/find_package_file.md)
-  : find file stored in package
+  : Find a file stored in a package
 
 - [`generate_contrasts()`](https://fgcz.github.io/prolfqua/reference/generate_contrasts.md)
   : Combined generate_contrasts
@@ -565,7 +556,7 @@ Research](https://doi.org/10.1021/acs.jproteome.2c00441)
   : Extracts uniprot ID
 
 - [`group_label()`](https://fgcz.github.io/prolfqua/reference/group_label.md)
-  : group label function
+  : Build group labels from two factor levels
 
 - [`impute_from_model()`](https://fgcz.github.io/prolfqua/reference/impute_from_model.md)
   : Fill missing responses with predictions from per-subject linear
@@ -586,23 +577,29 @@ Research](https://doi.org/10.1021/acs.jproteome.2c00441)
 - [`lfqdata_from_wide()`](https://fgcz.github.io/prolfqua/reference/lfqdata_from_wide.md)
   : Build LFQData from wide matrices
 
+- [`lfqdata_to_summarized_experiment()`](https://fgcz.github.io/prolfqua/reference/lfqdata_to_summarized_experiment.md)
+  : Convert an LFQData object to a SummarizedExperiment
+
 - [`list_facades()`](https://fgcz.github.io/prolfqua/reference/list_facades.md)
   : List currently registered contrast facades
 
-- [`list_to_AnalysisConfiguration()`](https://fgcz.github.io/prolfqua/reference/list_to_AnalysisConfiguration.md)
-  : read minimal yaml to reconstruct configuration
+- [`list_to_analysis_configuration()`](https://fgcz.github.io/prolfqua/reference/list_to_analysis_configuration.md)
+  : Reconstruct a configuration from minimal YAML
 
-- [`list_to_ContrastConfiguration()`](https://fgcz.github.io/prolfqua/reference/list_to_ContrastConfiguration.md)
+- [`list_to_contrast_configuration()`](https://fgcz.github.io/prolfqua/reference/list_to_contrast_configuration.md)
   : Rebuild a ContrastConfiguration from a list
 
 - [`lookup_facade()`](https://fgcz.github.io/prolfqua/reference/lookup_facade.md)
   : Look up a contrast facade by short name
 
+- [`lr_test()`](https://fgcz.github.io/prolfqua/reference/lr_test.md) :
+  Likelihood ratio test
+
 - [`main_effect_contrasts()`](https://fgcz.github.io/prolfqua/reference/main_effect_contrasts.md)
-  : main effects contrasts
+  : Main effects contrasts
 
 - [`matrix_to_tibble()`](https://fgcz.github.io/prolfqua/reference/matrix_to_tibble.md)
-  : matrix or data.frame to tibble (taken from tidyquant)
+  : Convert a matrix or data.frame to a tibble (taken from tidyquant)
 
 - [`merge_contrasts_results()`](https://fgcz.github.io/prolfqua/reference/merge_contrasts_results.md)
   : Merge contrast results coming from two different model.
@@ -623,8 +620,7 @@ Research](https://doi.org/10.1021/acs.jproteome.2c00441)
   : Null-split calibration check of normalization and model
 
 - [`pivot_model_contrasts_to_wide()`](https://fgcz.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md)
-  : pivot model contrasts matrix to wide format produced by
-  \`contrasts_linfct\` and ...
+  : Pivot long-format model contrasts to wide format
 
 - [`plot(`*`<LFQData>`*`)`](https://fgcz.github.io/prolfqua/reference/plot.LFQData.md)
   : Plot an LFQData object
@@ -651,7 +647,10 @@ Research](https://doi.org/10.1021/acs.jproteome.2c00441)
   : Inspect a fitted prolfqua analysis
 
 - [`prolfqua_data()`](https://fgcz.github.io/prolfqua/reference/prolfqua_data.md)
-  : load data from prolfqua
+  : Load a dataset from prolfqua
+
+- [`r6_extract_values()`](https://fgcz.github.io/prolfqua/reference/r6_extract_values.md)
+  : Extract all value slots in an R6 object
 
 - [`register_facade()`](https://fgcz.github.io/prolfqua/reference/register_facade.md)
   : Register a contrast facade class
@@ -665,7 +664,7 @@ Research](https://doi.org/10.1021/acs.jproteome.2c00441)
   : Scale estimate for an augmented rfit fit
 
 - [`sim_lfq_data()`](https://fgcz.github.io/prolfqua/reference/sim_lfq_data.md)
-  : simulate protein level data with two groups
+  : Simulate protein-level data with two groups
 
 - [`sim_lfq_data_2factor_config()`](https://fgcz.github.io/prolfqua/reference/sim_lfq_data_2factor_config.md)
   : Simulate data, protein, with config with 2 factors Treatment and
@@ -697,13 +696,13 @@ Research](https://doi.org/10.1021/acs.jproteome.2c00441)
   : Create limpa modelling strategy
 
 - [`summarize_stats_factors()`](https://fgcz.github.io/prolfqua/reference/summarize_stats_factors.md)
-  : compute var sd etc for all factor levels
+  : Compute variance, sd and related statistics for all factor levels
 
 - [`summarize_variance_explained()`](https://fgcz.github.io/prolfqua/reference/summarize_variance_explained.md)
   : Variance explained by the design, per feature
 
 - [`table_facade()`](https://fgcz.github.io/prolfqua/reference/table_facade.md)
-  : table facade to easily switch implementations
+  : Table facade to easily switch implementations
 
 - [`theme_prolfqua()`](https://fgcz.github.io/prolfqua/reference/theme_prolfqua.md)
   : Prism-style ggplot theme used by all prolfqua plots
@@ -715,10 +714,10 @@ Research](https://doi.org/10.1021/acs.jproteome.2c00441)
   : Named variance-covariance matrix for an augmented rfit fit
 
 - [`volcano_plotly()`](https://fgcz.github.io/prolfqua/reference/volcano_plotly.md)
-  : volcano plotly
+  : Interactive volcano plots with plotly
 
 - [`which_missing()`](https://fgcz.github.io/prolfqua/reference/which_missing.md)
-  : add missing values to x vector based on the values of x
+  : Draw missing values for an intensity vector based on its values
 
 # Articles
 

@@ -19,7 +19,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -174,7 +174,7 @@ configuration that is required to use it with prolfqua. To do this, an
 configuration object describes the columns in the long table so that
 prolfqua functions know which columns to use.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dataLongFormat</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/sim_lfq_data.html">sim_lfq_data</a></span><span class="op">(</span>Nprot <span class="op">=</span> <span class="fl">20</span>, PEPTIDE <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">dataLongFormat</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/sim_lfq_data.html">sim_lfq_data</a></span><span class="op">(</span>n_proteins <span class="op">=</span> <span class="fl">20</span>, peptide <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dataLongFormat</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 12</span></span></span>
 <span><span class="co">##   proteinID idtype2 average_prot_abundance    sd peptideID sample  group  mean</span></span>
@@ -293,7 +293,7 @@ Shown are how many precursors or proteins are found in each sample
 <span><span class="co">##  [7] magrittr_2.0.5      evaluate_1.0.5      grid_4.6.2         </span></span>
 <span><span class="co">## [10] RColorBrewer_1.1-3  bookdown_0.48       fastmap_1.2.0      </span></span>
 <span><span class="co">## [13] jsonlite_2.0.0      ggrepel_0.9.8       limma_3.68.5       </span></span>
-<span><span class="co">## [16] prolfqua_1.9.4      BiocManager_1.30.27 purrr_1.2.2        </span></span>
+<span><span class="co">## [16] prolfqua_1.9.5      BiocManager_1.30.27 purrr_1.2.2        </span></span>
 <span><span class="co">## [19] scales_1.4.0        textshaping_1.1.0   jquerylib_0.1.4    </span></span>
 <span><span class="co">## [22] cli_3.6.6           rlang_1.3.0         withr_3.0.3        </span></span>
 <span><span class="co">## [25] cachem_1.1.0        yaml_2.3.12         otel_0.3.0         </span></span>

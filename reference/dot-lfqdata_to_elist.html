@@ -13,7 +13,7 @@ linfct extraction."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,7 +74,7 @@ linfct extraction.</p>
 
 
 <dl><dt id="arg-lfqdata">lfqdata<a class="anchor" aria-label="anchor" href="#arg-lfqdata"></a></dt>
-<dd><p>an <code><a href="LFQData.html">LFQData</a></code> object</p></dd>
+<dd><p><a href="LFQData.html">LFQData</a> object with the data and its configuration</p></dd>
 
 
 <dt id="arg-formula">formula<a class="anchor" aria-label="anchor" href="#arg-formula"></a></dt>
@@ -86,25 +86,25 @@ linfct extraction.</p>
     <p>a list with components:</p><dl><dt>elist</dt>
 <dd><p>limma EList with <code>$E</code> = expression matrix</p></dd>
 
-  <dt>expr_matrix</dt>
+<dt>expr_matrix</dt>
 <dd><p>the expression matrix (same as <code>elist$E</code>)</p></dd>
 
-  <dt>design</dt>
+<dt>design</dt>
 <dd><p>the design matrix</p></dd>
 
-  <dt>annotation</dt>
+<dt>annotation</dt>
 <dd><p>sample-level annotation data.frame</p></dd>
 
-  <dt>subject_id</dt>
+<dt>subject_id</dt>
 <dd><p>character vector of hierarchy keys (possibly including isotopeLabel)</p></dd>
 
-  <dt>rowdata</dt>
+<dt>rowdata</dt>
 <dd><p>data.frame with one row per feature, columns = subject_id</p></dd>
 
-  <dt>rhs_formula</dt>
+<dt>rhs_formula</dt>
 <dd><p>the RHS-only formula</p></dd>
 
-  <dt>dummy_model</dt>
+<dt>dummy_model</dt>
 <dd><p>a dummy <code>lm</code> fitted on one complete row</p></dd>
 
 

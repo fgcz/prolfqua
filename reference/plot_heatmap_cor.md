@@ -1,6 +1,6 @@
-# plot correlation heatmap with annotations
+# Plot a sample correlation heatmap with annotations
 
-plot correlation heatmap with annotations
+Plot a sample correlation heatmap with annotations
 
 ## Usage
 
@@ -22,23 +22,23 @@ plot_heatmap_cor(
 
 - matrix:
 
-  numeric matrix — wide-format intensity data
+  numeric matrix - wide-format intensity data
 
 - annotation:
 
-  data.frame — sample annotation
+  data.frame - sample annotation
 
 - factor_keys:
 
-  character vector — factor column names for annotation
+  character vector - factor column names for annotation
 
 - sample_name:
 
-  character — sample name column
+  character - sample name column
 
 - R2:
 
-  logical — plot R-squared instead of correlation
+  logical - plot R-squared instead of correlation
 
 - color:
 
@@ -51,21 +51,27 @@ plot_heatmap_cor(
 
 - method:
 
-  correlation method: \`"pearson"\` (default), \`"spearman"\` or
-  \`"kendall"\` for \[stats::cor()\] on pairwise complete observations,
-  or a function of the matrix returning a sample-by-sample correlation
-  matrix
+  correlation method: `"pearson"` (default), `"spearman"` or `"kendall"`
+  for [`stats::cor()`](https://rdrr.io/r/stats/cor.html) on pairwise
+  complete observations, or a function of the matrix returning a
+  sample-by-sample correlation matrix
 
 - ...:
 
-  passed to \[ComplexHeatmap::Heatmap()\]
+  passed to
+  [`ComplexHeatmap::Heatmap()`](https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html)
+
+## Value
+
+invisibly, a ComplexHeatmap `Heatmap` object of the clustered sample
+correlations (or R^2 values)
 
 ## See also
 
 Other plotting:
 [`ContrastsPlotter`](https://fgcz.github.io/prolfqua/reference/ContrastsPlotter.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`missigness_histogram()`](https://fgcz.github.io/prolfqua/reference/missigness_histogram.md),
+[`missingness_histogram()`](https://fgcz.github.io/prolfqua/reference/missingness_histogram.md),
 [`missingness_per_condition()`](https://fgcz.github.io/prolfqua/reference/missingness_per_condition.md),
 [`missingness_per_condition_cumsum()`](https://fgcz.github.io/prolfqua/reference/missingness_per_condition_cumsum.md),
 [`plot_estimate()`](https://fgcz.github.io/prolfqua/reference/plot_estimate.md),

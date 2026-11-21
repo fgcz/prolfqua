@@ -20,7 +20,7 @@ modelling backend. For analyses, use
 
 ``` r
 library(prolfqua)
-sim <- sim_lfq_data_protein_config(Nprot = 100, seed = 1234)
+sim <- sim_lfq_data_protein_config(n_proteins = 100, seed = 1234)
 lfq <- LFQData$new(sim$data, sim$config)
 contrasts <- c(AvsC = "group_A - group_Ctrl", BvsC = "group_B - group_Ctrl")
 ```
@@ -394,7 +394,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] prolfqua_1.9.4
+    ## [1] prolfqua_1.9.5
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] utf8_1.2.6         sass_0.5.0         generics_0.1.4     tidyr_1.3.2       

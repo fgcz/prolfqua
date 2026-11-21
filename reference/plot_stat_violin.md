@@ -1,6 +1,6 @@
-# plot Violin plot of sd CV or mean
+# Violin plot of sd, CV or mean
 
-plot Violin plot of sd CV or mean
+Violin plot of sd, CV or mean
 
 ## Usage
 
@@ -20,11 +20,16 @@ plot_stat_violin(
 
 - factor_keys_depth:
 
-  character vector — factor columns for grouping
+  character vector - factor columns for grouping
 
 - stat:
 
   either CV, mean or sd
+
+## Value
+
+a ggplot object with one violin of `stat` per combination of factor
+levels, with the median marked
 
 ## See also
 
@@ -33,7 +38,7 @@ Other stats:
 [`compute_pooled()`](https://fgcz.github.io/prolfqua/reference/pooled_var.md),
 [`fdr_sig_level()`](https://fgcz.github.io/prolfqua/reference/fdr_sig_level.md),
 [`lfq_power_t_test_proteins()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_proteins.md),
-[`lfq_power_t_test_quantiles_V2()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_quantiles_V2.md),
+[`lfq_power_t_test_quantiles()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_quantiles.md),
 [`null_split_check()`](https://fgcz.github.io/prolfqua/reference/null_split_check.md),
 [`plot_stat_density()`](https://fgcz.github.io/prolfqua/reference/plot_stat_density.md),
 [`plot_stat_density_median()`](https://fgcz.github.io/prolfqua/reference/plot_stat_density_median.md),

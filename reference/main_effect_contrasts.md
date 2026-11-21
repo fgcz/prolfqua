@@ -1,6 +1,6 @@
-# main effects contrasts
+# Main effects contrasts
 
-main effects contrasts
+Main effects contrasts
 
 ## Usage
 

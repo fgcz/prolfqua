@@ -12,16 +12,26 @@ get_contrast(data, hierarchy_keys, contrasts)
 
 - data:
 
-  hierarchy_keys of Analysis Configuration
+  data.frame
+
+- hierarchy_keys:
+
+  hierarchy key columns of the AnalysisConfiguration
 
 - contrasts:
 
   list of contrasts to compute
 
+## Value
+
+a tibble with one row per hierarchy element and contrast and columns of
+the `hierarchy_keys`, `group_1`, `group_2`, `estimate`, `group_1_name`,
+`group_2_name` and `contrast`
+
 ## See also
 
 Other imputation:
-[`missigness_histogram()`](https://fgcz.github.io/prolfqua/reference/missigness_histogram.md),
+[`missingness_histogram()`](https://fgcz.github.io/prolfqua/reference/missingness_histogram.md),
 [`missingness_per_condition()`](https://fgcz.github.io/prolfqua/reference/missingness_per_condition.md),
 [`missingness_per_condition_cumsum()`](https://fgcz.github.io/prolfqua/reference/missingness_per_condition_cumsum.md),
 [`upset_interaction_missing_stats()`](https://fgcz.github.io/prolfqua/reference/upset_interaction_missing_stats.md),

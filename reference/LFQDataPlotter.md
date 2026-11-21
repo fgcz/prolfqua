@@ -21,8 +21,8 @@ Other LFQData:
 [`LFQData`](https://fgcz.github.io/prolfqua/reference/LFQData.md),
 [`LFQDataStats`](https://fgcz.github.io/prolfqua/reference/LFQDataStats.md),
 [`LFQDataSummariser`](https://fgcz.github.io/prolfqua/reference/LFQDataSummariser.md),
-[`LFQDataToSummarizedExperiment()`](https://fgcz.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md),
 [`lfqdata_from_wide()`](https://fgcz.github.io/prolfqua/reference/lfqdata_from_wide.md),
+[`lfqdata_to_summarized_experiment()`](https://fgcz.github.io/prolfqua/reference/lfqdata_to_summarized_experiment.md),
 [`plot.LFQData()`](https://fgcz.github.io/prolfqua/reference/plot.LFQData.md)
 
 ## Public fields
@@ -52,6 +52,8 @@ Other LFQData:
 - [`LFQDataPlotter$pca_plotly()`](#method-LFQDataPlotter-pca_plotly)
 
 - [`LFQDataPlotter$boxplots()`](#method-LFQDataPlotter-boxplots)
+
+- [`LFQDataPlotter$missingness_histogram()`](#method-LFQDataPlotter-missingness_histogram)
 
 - [`LFQDataPlotter$missigness_histogram()`](#method-LFQDataPlotter-missigness_histogram)
 
@@ -87,7 +89,8 @@ create LFQDataPlotter
 
 - `lfqdata`:
 
-  LFQData
+  [LFQData](https://fgcz.github.io/prolfqua/reference/LFQData.md) object
+  with the data and its configuration
 
 - `prefix`:
 
@@ -307,9 +310,23 @@ tibble with column boxplots containing ggplot objects
 
 ------------------------------------------------------------------------
 
-### `LFQDataPlotter$missigness_histogram()`
+### `LFQDataPlotter$missingness_histogram()`
 
 histogram of intensities given number of missing in conditions
+
+#### Usage
+
+    LFQDataPlotter$missingness_histogram()
+
+#### Returns
+
+ggplot
+
+------------------------------------------------------------------------
+
+### `LFQDataPlotter$missigness_histogram()`
+
+Deprecated; use `$missingness_histogram()`.
 
 #### Usage
 
@@ -448,8 +465,8 @@ write boxplots to file
 
 - `filename`:
 
-  file name; one ending in \`.pdf\` is used as given, otherwise
-  \`boxplot.pdf\` is appended (default: the plotter prefix)
+  file name; one ending in `.pdf` is used as given, otherwise
+  `boxplot.pdf` is appended (default: the plotter prefix)
 
 - `width`:
 
@@ -485,7 +502,7 @@ write figure to pdf
 
 - `fig_name`:
 
-  name of figure; \`.pdf\` is appended unless it ends in \`.pdf\`
+  name of figure; `.pdf` is appended unless it ends in `.pdf`
 
 - `width`:
 
@@ -537,7 +554,7 @@ stopifnot("plotly" %in%  class(lfqplotter$pca_plotly()))
 #> PCA: removed 16 of 28 features with missing values. To keep all features, impute missing values first, e.g. AggregateLimpa$new(lfqdata, impute_only = TRUE)$aggregate().
 tmp <- lfqplotter$boxplots()
 stopifnot("ggplot" %in%  class(tmp$boxplot[[1]]))
-stopifnot("ggplot" %in% class(lfqplotter$missigness_histogram()))
+stopifnot("ggplot" %in% class(lfqplotter$missingness_histogram()))
 
 stopifnot(methods::is(lfqplotter$na_heatmap(), "Heatmap"))
 class(lfqplotter$intensity_distribution_density())

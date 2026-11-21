@@ -17,8 +17,8 @@ Other LFQData:
 [`LFQData`](https://fgcz.github.io/prolfqua/reference/LFQData.md),
 [`LFQDataPlotter`](https://fgcz.github.io/prolfqua/reference/LFQDataPlotter.md),
 [`LFQDataStats`](https://fgcz.github.io/prolfqua/reference/LFQDataStats.md),
-[`LFQDataToSummarizedExperiment()`](https://fgcz.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md),
 [`lfqdata_from_wide()`](https://fgcz.github.io/prolfqua/reference/lfqdata_from_wide.md),
+[`lfqdata_to_summarized_experiment()`](https://fgcz.github.io/prolfqua/reference/lfqdata_to_summarized_experiment.md),
 [`plot.LFQData()`](https://fgcz.github.io/prolfqua/reference/plot.LFQData.md)
 
 ## Public fields
@@ -69,7 +69,8 @@ initialize
 
 - `lfqdata`:
 
-  LFQData
+  [LFQData](https://fgcz.github.io/prolfqua/reference/LFQData.md) object
+  with the data and its configuration
 
 ------------------------------------------------------------------------
 
@@ -98,11 +99,15 @@ number of elements at each level in every sample
 
 - `value`:
 
-  wide - wide format, long - long format, plot - ggplot
+  `"wide"` (one column per hierarchy level) or `"long"` format
 
 - `nr_children`:
 
   get summary for 1,2 or more number of children
+
+#### Returns
+
+tibble of counts per sample and hierarchy level
 
 ------------------------------------------------------------------------
 
@@ -119,10 +124,6 @@ barplot showing number of elements at each level in every sample
 - `nr_children`:
 
   get summary for 1,2 or more number of children
-
-- `value`:
-
-  wide - wide format, long - long format, plot - ggplot
 
 ------------------------------------------------------------------------
 

@@ -21,11 +21,17 @@ plot_hierarchies_line(res, protein_name, lfqdata, show.legend = FALSE)
 
 - lfqdata:
 
-  LFQData object
+  [LFQData](https://fgcz.github.io/prolfqua/reference/LFQData.md) object
+  with the data and its configuration
 
 - show.legend:
 
   logical, show legend in plot
+
+## Value
+
+a ggplot object with one line per feature across samples, coloured by
+peptide, faceted by factor levels and titled `protein_name`
 
 ## See also
 
@@ -38,7 +44,7 @@ Other aggregation:
 Other plotting:
 [`ContrastsPlotter`](https://fgcz.github.io/prolfqua/reference/ContrastsPlotter.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`missigness_histogram()`](https://fgcz.github.io/prolfqua/reference/missigness_histogram.md),
+[`missingness_histogram()`](https://fgcz.github.io/prolfqua/reference/missingness_histogram.md),
 [`missingness_per_condition()`](https://fgcz.github.io/prolfqua/reference/missingness_per_condition.md),
 [`missingness_per_condition_cumsum()`](https://fgcz.github.io/prolfqua/reference/missingness_per_condition_cumsum.md),
 [`plot_estimate()`](https://fgcz.github.io/prolfqua/reference/plot_estimate.md),

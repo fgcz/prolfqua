@@ -1,6 +1,6 @@
-# plot heatmap of NA values
+# Plot a heatmap of missing values
 
-plot heatmap of NA values
+Plot a heatmap of missing values
 
 ## Usage
 
@@ -19,19 +19,19 @@ plot_na_heatmap(
 
 - matrix:
 
-  numeric matrix — wide-format intensity data
+  numeric matrix - wide-format intensity data
 
 - annotation:
 
-  data.frame — sample annotation
+  data.frame - sample annotation
 
 - factor_keys:
 
-  character vector — factor column names for annotation
+  character vector - factor column names for annotation
 
 - sample_name:
 
-  character — sample name column
+  character - sample name column
 
 - limitrows:
 
@@ -41,12 +41,17 @@ plot_na_heatmap(
 
   distance method for clustering
 
+## Value
+
+a ComplexHeatmap `Heatmap` object marking the missing values of the rows
+that have any; `NULL` if fewer than two such rows
+
 ## See also
 
 Other plotting:
 [`ContrastsPlotter`](https://fgcz.github.io/prolfqua/reference/ContrastsPlotter.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`missigness_histogram()`](https://fgcz.github.io/prolfqua/reference/missigness_histogram.md),
+[`missingness_histogram()`](https://fgcz.github.io/prolfqua/reference/missingness_histogram.md),
 [`missingness_per_condition()`](https://fgcz.github.io/prolfqua/reference/missingness_per_condition.md),
 [`missingness_per_condition_cumsum()`](https://fgcz.github.io/prolfqua/reference/missingness_per_condition_cumsum.md),
 [`plot_estimate()`](https://fgcz.github.io/prolfqua/reference/plot_estimate.md),

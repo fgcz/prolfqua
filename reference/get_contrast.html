@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,7 +65,11 @@
 
 
 <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>hierarchy_keys of Analysis Configuration</p></dd>
+<dd><p>data.frame</p></dd>
+
+
+<dt id="arg-hierarchy-keys">hierarchy_keys<a class="anchor" aria-label="anchor" href="#arg-hierarchy-keys"></a></dt>
+<dd><p>hierarchy key columns of the AnalysisConfiguration</p></dd>
 
 
 <dt id="arg-contrasts">contrasts<a class="anchor" aria-label="anchor" href="#arg-contrasts"></a></dt>
@@ -73,9 +77,14 @@
 
 </dl></div>
     <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>a tibble with one row per hierarchy element and contrast and columns of the <code>hierarchy_keys</code>,
+<code>group_1</code>, <code>group_2</code>, <code>estimate</code>, <code>group_1_name</code>, <code>group_2_name</code> and <code>contrast</code></p>
+    </div>
+    <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other imputation:
-<code><a href="missigness_histogram.html">missigness_histogram()</a></code>,
+<code><a href="missingness_histogram.html">missingness_histogram()</a></code>,
 <code><a href="missingness_per_condition.html">missingness_per_condition()</a></code>,
 <code><a href="missingness_per_condition_cumsum.html">missingness_per_condition_cumsum()</a></code>,
 <code><a href="upset_interaction_missing_stats.html">upset_interaction_missing_stats()</a></code>,

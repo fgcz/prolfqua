@@ -7,18 +7,21 @@ Background
 
 ``` r
 sim_lfq_data_2factor_config(
-  Nprot = 10,
+  n_proteins = 10,
   with_missing = TRUE,
   weight_missing = 0.2,
-  PEPTIDE = FALSE,
+  peptide = FALSE,
   seed = 1234,
-  TWO = TRUE
+  two_factor = TRUE,
+  Nprot,
+  PEPTIDE,
+  TWO
 )
 ```
 
 ## Arguments
 
-- Nprot:
+- n_proteins:
 
   one positive whole number of proteins to simulate
 
@@ -30,7 +33,7 @@ sim_lfq_data_2factor_config(
 
   one number in \[0, 1\]; greater weight means more missingness
 
-- PEPTIDE:
+- peptide:
 
   if TRUE, simulate peptide-level data; if FALSE, protein-level
 
@@ -38,9 +41,14 @@ sim_lfq_data_2factor_config(
 
   seed for reproducibility, if NULL no seed is set.
 
-- TWO:
+- two_factor:
 
-  use two factors for modelling
+  if TRUE, model `Treatment` and `Background` as two factors; if FALSE,
+  as one combined factor
+
+- Nprot, PEPTIDE, TWO:
+
+  deprecated; use `n_proteins`, `peptide` and `two_factor`
 
 ## Value
 
@@ -49,7 +57,7 @@ A list containing simulated data and an analysis configuration.
 ## Examples
 
 ``` r
-x <- sim_lfq_data_2factor_config(PEPTIDE= FALSE)
+x <- sim_lfq_data_2factor_config(peptide = FALSE)
 #> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
 #> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, group, mean, N, Replicate.
@@ -58,7 +66,7 @@ dim(x$data)
 #> [1] 160   9
 stopifnot("data.frame" %in% class(x$data))
 stopifnot("AnalysisConfiguration" %in% class(x$config))
-x <- sim_lfq_data_2factor_config(PEPTIDE = TRUE)
+x <- sim_lfq_data_2factor_config(peptide = TRUE)
 #> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
 #> setup_analysis: dropped 7 unconfigured columns: average_prot_abundance, sd, group, mean, N, avg_peptide_abd, Replicate.
@@ -75,7 +83,7 @@ head(x$data)
 #> 5 A_V1   A_V1       A         X          light        9VUkAq~4703 eIC06D7g  
 #> 6 A_V1   A_V1       A         X          light        BEJI92~5282 HBkZvdhT  
 #> # ℹ 3 more variables: abundance <dbl>, qValue <dbl>, nrPeptides <dbl>
-x <- sim_lfq_data_2factor_config(PEPTIDE = TRUE, TWO = TRUE)
+x <- sim_lfq_data_2factor_config(peptide = TRUE, two_factor = TRUE)
 #> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
 #> setup_analysis: dropped 7 unconfigured columns: average_prot_abundance, sd, group, mean, N, avg_peptide_abd, Replicate.

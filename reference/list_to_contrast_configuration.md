@@ -1,16 +1,16 @@
 # Rebuild a ContrastConfiguration from a list
 
 Round-trip partner of
-[`R6_extract_values`](https://fgcz.github.io/prolfqua/reference/R6_extract_values.md),
+[`r6_extract_values`](https://fgcz.github.io/prolfqua/reference/r6_extract_values.md),
 which keeps the fields but drops the methods. Use it to restore the
 column-role mapping from a serialized result artifact (e.g.
-\`SummarizedExperiment\` metadata or an AnnData \`uns\` entry) so
-consumers can call `has_pvalue()` and friends again.
+`SummarizedExperiment` metadata or an AnnData `uns` entry) so consumers
+can call `has_pvalue()` and friends again.
 
 ## Usage
 
 ``` r
-list_to_ContrastConfiguration(dd)
+list_to_contrast_configuration(dd)
 ```
 
 ## Arguments
@@ -32,10 +32,10 @@ Other configuration:
 [`AnalysisConfiguration`](https://fgcz.github.io/prolfqua/reference/AnalysisConfiguration.md),
 [`ContrastConfiguration`](https://fgcz.github.io/prolfqua/reference/ContrastConfiguration.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`R6_extract_values()`](https://fgcz.github.io/prolfqua/reference/R6_extract_values.md),
 [`complete_cases()`](https://fgcz.github.io/prolfqua/reference/complete_cases.md),
 [`make_interaction_column()`](https://fgcz.github.io/prolfqua/reference/make_interaction_column.md),
 [`make_reduced_hierarchy_config()`](https://fgcz.github.io/prolfqua/reference/make_reduced_hierarchy_config.md),
+[`r6_extract_values()`](https://fgcz.github.io/prolfqua/reference/r6_extract_values.md),
 [`sample_subset()`](https://fgcz.github.io/prolfqua/reference/sample_subset.md),
 [`separate_hierarchy()`](https://fgcz.github.io/prolfqua/reference/separate_hierarchy.md),
 [`setup_analysis()`](https://fgcz.github.io/prolfqua/reference/setup_analysis.md),
@@ -50,9 +50,9 @@ cfg <- ContrastConfiguration$new(
   contrast_col = "Bait",
   pvalue_col = NA_character_
 )
-values <- R6_extract_values(cfg)
-restored <- list_to_ContrastConfiguration(values)
-stopifnot(all.equal(R6_extract_values(restored), values))
+values <- r6_extract_values(cfg)
+restored <- list_to_contrast_configuration(values)
+stopifnot(all.equal(r6_extract_values(restored), values))
 restored$has_pvalue()
 #> [1] FALSE
 ```

@@ -1,12 +1,11 @@
-# compute protein level fold changes and p.values (using beta distribution) takes p-value of the scaled p-value
+# Compute protein-level fold changes and p-values using the beta distribution
 
-compute protein level fold changes and p.values (using beta
-distribution) takes p-value of the scaled p-value
+takes p-value of the scaled p-value
 
 ## Usage
 
 ``` r
-summary_ROPECA_median_p_scaled(
+summary_ropeca_median_p_scaled(
   contrasts_data,
   contrast = "contrast",
   subject_id = "protein_Id",
@@ -85,7 +84,6 @@ Other modelling:
 [`ContrastsRfitImputeFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsRfitImputeFacade.md),
 [`ContrastsTable`](https://fgcz.github.io/prolfqua/reference/ContrastsTable.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`LR_test()`](https://fgcz.github.io/prolfqua/reference/LR_test.md),
 [`Model`](https://fgcz.github.io/prolfqua/reference/Model.md),
 [`ModelFirth`](https://fgcz.github.io/prolfqua/reference/ModelFirth.md),
 [`ModelLimma`](https://fgcz.github.io/prolfqua/reference/ModelLimma.md),
@@ -121,6 +119,7 @@ Other modelling:
 [`linfct_matrix_contrasts()`](https://fgcz.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
 [`list_facades()`](https://fgcz.github.io/prolfqua/reference/list_facades.md),
 [`lookup_facade()`](https://fgcz.github.io/prolfqua/reference/lookup_facade.md),
+[`lr_test()`](https://fgcz.github.io/prolfqua/reference/lr_test.md),
 [`merge_contrasts_results()`](https://fgcz.github.io/prolfqua/reference/merge_contrasts_results.md),
 [`model_analyse()`](https://fgcz.github.io/prolfqua/reference/model_analyse.md),
 [`model_summary()`](https://fgcz.github.io/prolfqua/reference/model_summary.md),
@@ -165,13 +164,13 @@ testdata <- data.frame(contrast = "contrast1",
   p.value = p.value,
   avgAbd = avgAbd )
 
-xx30 <- summary_ROPECA_median_p_scaled(testdata,
+xx30 <- summary_ropeca_median_p_scaled(testdata,
                                     subject_id = "protein_Id",
                                     estimate = "estimate",
                                     p.value = "p.value",
                                     max.n = 30)
 
-xx2 <- summary_ROPECA_median_p_scaled(testdata,
+xx2 <- summary_ropeca_median_p_scaled(testdata,
                                     subject_id = "protein_Id",
                                     estimate = "estimate",
                                     p.value = "p.value",

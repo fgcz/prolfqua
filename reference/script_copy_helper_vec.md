@@ -1,6 +1,6 @@
-# copy script files and other from a package to workdir
+# Copy script and other files from a package to a working directory
 
-copy script files and other from a package to workdir
+Copy script and other files from a package to a working directory
 
 ## Usage
 
@@ -39,7 +39,7 @@ paths of the copied files
 
 ``` r
 copied <- script_copy_helper_vec("CITATION", workdir = tempdir())
-#> copy /home/runner/work/_temp/Library/prolfqua/CITATION to /tmp/RtmpNeA7kx/CITATION
+#> copy /home/runner/work/_temp/Library/prolfqua/CITATION to /tmp/RtmpxEIdvD/CITATION
 #> your working directory now should contain: 1 new files:
 basename(copied)
 #> [1] "CITATION"

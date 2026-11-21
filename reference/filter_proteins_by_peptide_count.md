@@ -1,11 +1,12 @@
 # Keep only the parents with enough children
 
-Keeps the rows of the \`parent\` entries (e.g. proteins) with at least
-\`threshold\` distinct \`child\` entries (e.g. peptides), counted by
-\[nr_B_in_A()\], and adds that count. By default it counts the second
-hierarchy level within the first, independent of \`hierarchy_depth\`.
-The package dataset \`data_ionstar\` calls it as \`(pdata, config)\`
-from its \`filtered()\` method.
+Keeps the rows of the `parent` entries (e.g. proteins) with at least
+`threshold` distinct `child` entries (e.g. peptides), counted by
+[`nr_B_in_A()`](https://fgcz.github.io/prolfqua/reference/nr_B_in_A.md),
+and adds that count. By default it counts the second hierarchy level
+within the first, independent of `hierarchy_depth`. The package dataset
+`data_ionstar` calls it as `(pdata, config)` from its `filtered()`
+method.
 
 ## Usage
 
@@ -23,7 +24,7 @@ filter_proteins_by_peptide_count(
 
 - pdata:
 
-  data.frame in the long format of \`config\`
+  data.frame in the long format of `config`
 
 - config:
 
@@ -39,11 +40,11 @@ filter_proteins_by_peptide_count(
 
 - threshold:
 
-  minimum number of children, default \`config\$min_peptides_protein\`
+  minimum number of children, default `config$min_peptides_protein`
 
 ## Value
 
-list with the filtered \`data\` and the \`name\` of the count column
+list with the filtered `data` and the `name` of the count column
 
 ## See also
 

@@ -10,7 +10,7 @@ Each peptide t-statistic is converted to the standard normal score with the
 same tail probability. diff is the median peptide fold change,
 statistic the normal score with the protein's two-sided p-value,
 std.error = |diff / statistic|, df = Inf, and
-conf.low, conf.high the matching normal 95% interval;
+conf.low, conf.high the matching normal 95\
 sigma is the MAD of the peptide fold changes."><meta property="og:description" content="Summarises peptide-level contrasts per protein like ContrastsROPECA,
 but tests the median peptide z-score against its exact null distribution: the
 median of n standard normal scores with pairwise correlation rho. The
@@ -22,7 +22,7 @@ Each peptide t-statistic is converted to the standard normal score with the
 same tail probability. diff is the median peptide fold change,
 statistic the normal score with the protein's two-sided p-value,
 std.error = |diff / statistic|, df = Inf, and
-conf.low, conf.high the matching normal 95% interval;
+conf.low, conf.high the matching normal 95\
 sigma is the MAD of the peptide fold changes."></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
@@ -31,7 +31,7 @@ sigma is the MAD of the peptide fold changes."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -87,7 +87,7 @@ model residuals.</p>
 same tail probability. <code>diff</code> is the median peptide fold change,
 <code>statistic</code> the normal score with the protein's two-sided p-value,
 <code>std.error</code> = <code>|diff / statistic|</code>, <code>df</code> = <code>Inf</code>, and
-<code>conf.low</code>, <code>conf.high</code> the matching normal 95% interval;
+<code>conf.low</code>, <code>conf.high</code> the matching normal 95\<!-- % interval; -->
 <code>sigma</code> is the MAD of the peptide fold changes.</p>
     </div>
 
@@ -129,7 +129,6 @@ same tail probability. <code>diff</code> is the median peptide fold change,
 <code><a href="ContrastsRfitImputeFacade.html">ContrastsRfitImputeFacade</a></code>,
 <code><a href="ContrastsTable.html">ContrastsTable</a></code>,
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
-<code><a href="LR_test.html">LR_test()</a></code>,
 <code><a href="Model.html">Model</a></code>,
 <code><a href="ModelFirth.html">ModelFirth</a></code>,
 <code><a href="ModelLimma.html">ModelLimma</a></code>,
@@ -165,6 +164,7 @@ same tail probability. <code>diff</code> is the median peptide fold change,
 <code><a href="linfct_matrix_contrasts.html">linfct_matrix_contrasts()</a></code>,
 <code><a href="list_facades.html">list_facades()</a></code>,
 <code><a href="lookup_facade.html">lookup_facade()</a></code>,
+<code><a href="lr_test.html">lr_test()</a></code>,
 <code><a href="merge_contrasts_results.html">merge_contrasts_results()</a></code>,
 <code><a href="model_analyse.html">model_analyse()</a></code>,
 <code><a href="model_summary.html">model_summary()</a></code>,
@@ -185,7 +185,7 @@ same tail probability. <code>diff</code> is the median peptide fold change,
 <code><a href="strategy_limma.html">strategy_limma()</a></code>,
 <code><a href="strategy_limpa.html">strategy_limpa()</a></code>,
 <code><a href="strategy.html">strategy_logistf()</a></code>,
-<code><a href="summary_ROPECA_median_p_scaled.html">summary_ROPECA_median_p_scaled()</a></code>,
+<code><a href="summary_ropeca_median_p_scaled.html">summary_ropeca_median_p_scaled()</a></code>,
 <code><a href="vcov.rfit_prolfqua.html">vcov.rfit_prolfqua()</a></code></p></div>
     </div>
     <div class="section level2">
@@ -376,7 +376,7 @@ same tail probability. <code>diff</code> is the median peptide fold change,
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span>Nprot <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span>n_proteins <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from file_name column</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.</span>

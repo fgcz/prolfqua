@@ -1,6 +1,6 @@
-# plot heatmap with annotations
+# Plot a row z-score heatmap with annotations
 
-plot heatmap with annotations
+Plot a row z-score heatmap with annotations
 
 ## Usage
 
@@ -22,19 +22,19 @@ plot_heatmap(
 
 - matrix:
 
-  numeric matrix — wide-format intensity data
+  numeric matrix - wide-format intensity data
 
 - annotation:
 
-  data.frame — sample annotation
+  data.frame - sample annotation
 
 - factor_keys:
 
-  character vector — factor column names for annotation
+  character vector - factor column names for annotation
 
 - sample_name:
 
-  character — sample name column
+  character - sample name column
 
 - na_fraction:
 
@@ -56,14 +56,20 @@ plot_heatmap(
 
 - ...:
 
-  passed to \[ComplexHeatmap::Heatmap()\]
+  passed to
+  [`ComplexHeatmap::Heatmap()`](https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html)
+
+## Value
+
+invisibly, a ComplexHeatmap `Heatmap` object of the row z-scored data;
+`NULL` with a warning if `matrix` has no rows or no row can be z-scored
 
 ## See also
 
 Other plotting:
 [`ContrastsPlotter`](https://fgcz.github.io/prolfqua/reference/ContrastsPlotter.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`missigness_histogram()`](https://fgcz.github.io/prolfqua/reference/missigness_histogram.md),
+[`missingness_histogram()`](https://fgcz.github.io/prolfqua/reference/missingness_histogram.md),
 [`missingness_per_condition()`](https://fgcz.github.io/prolfqua/reference/missingness_per_condition.md),
 [`missingness_per_condition_cumsum()`](https://fgcz.github.io/prolfqua/reference/missingness_per_condition_cumsum.md),
 [`plot_estimate()`](https://fgcz.github.io/prolfqua/reference/plot_estimate.md),

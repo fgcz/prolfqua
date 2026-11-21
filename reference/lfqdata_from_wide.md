@@ -1,9 +1,10 @@
 # Build LFQData from wide matrices
 
-The inverse of \[tidy_to_wide_config()\]: feature x sample matrices,
-their row annotation and their sample annotation back to long-format
-LFQData. Row \`i\` of every matrix belongs to row \`i\` of \`rowdata\`;
-matrix column names are the sample names.
+The inverse of
+[`tidy_to_wide_config()`](https://fgcz.github.io/prolfqua/reference/tidy_to_wide_config.md):
+feature x sample matrices, their row annotation and their sample
+annotation back to long-format LFQData. Row `i` of every matrix belongs
+to row `i` of `rowdata`; matrix column names are the sample names.
 
 ## Usage
 
@@ -16,19 +17,19 @@ lfqdata_from_wide(values, rowdata, annotation, config, prefix = "ms")
 - values:
 
   a matrix (features in rows, samples in columns), stored under
-  \`config\$get_response()\`, or a named list of such matrices with
+  `config$get_response()`, or a named list of such matrices with
   identical dimensions and column names; list names are the value
   columns
 
 - rowdata:
 
   data.frame with one row per matrix row and the hierarchy key columns;
-  the isotope label column is optional and set to \`"light"\` if absent
+  the isotope label column is optional and set to `"light"` if absent
 
 - annotation:
 
-  data.frame with one row per sample: \`config\$sample_name\` plus the
-  file name and factor columns
+  data.frame with one row per sample: `config$sample_name` plus the file
+  name and factor columns
 
 - config:
 
@@ -36,7 +37,8 @@ lfqdata_from_wide(values, rowdata, annotation, config, prefix = "ms")
 
 - prefix:
 
-  prefix passed to \[LFQData\]
+  prefix passed to
+  [LFQData](https://fgcz.github.io/prolfqua/reference/LFQData.md)
 
 ## Value
 
@@ -54,7 +56,7 @@ Other LFQData:
 [`LFQDataPlotter`](https://fgcz.github.io/prolfqua/reference/LFQDataPlotter.md),
 [`LFQDataStats`](https://fgcz.github.io/prolfqua/reference/LFQDataStats.md),
 [`LFQDataSummariser`](https://fgcz.github.io/prolfqua/reference/LFQDataSummariser.md),
-[`LFQDataToSummarizedExperiment()`](https://fgcz.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md),
+[`lfqdata_to_summarized_experiment()`](https://fgcz.github.io/prolfqua/reference/lfqdata_to_summarized_experiment.md),
 [`plot.LFQData()`](https://fgcz.github.io/prolfqua/reference/plot.LFQData.md)
 
 ## Examples

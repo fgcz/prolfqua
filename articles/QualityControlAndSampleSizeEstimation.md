@@ -92,12 +92,12 @@ values](QualityControlAndSampleSizeEstimation_files/figure-html/cumSumSummary-1.
 
 Cumulative sum of the \# of proteins with 0,1,…N missing values
 
-In the `missigness_histogram` we can check if there is a dependency
+In the `missingness_histogram` we can check if there is a dependency
 between NAs (and the number of NAs for each protein) with respect to the
 protein intensity.
 
 ``` r
-lfqplotter$missigness_histogram()
+lfqplotter$missingness_histogram()
 ```
 
 ![Intensity distribution of proteins depending on \# of missing
@@ -543,7 +543,7 @@ sessionInfo()
     ##  [1] tidyselect_1.2.1      viridisLite_0.4.3     dplyr_1.2.1          
     ##  [4] farver_2.1.2          S7_1.0.0              fastmap_1.2.0        
     ##  [7] promises_1.5.0        digest_0.6.39         mime_0.13            
-    ## [10] prolfqua_1.9.4        lifecycle_1.0.5       cluster_2.1.8.3      
+    ## [10] prolfqua_1.9.5        lifecycle_1.0.5       cluster_2.1.8.3      
     ## [13] statmod_1.5.2         magrittr_2.0.5        compiler_4.6.2       
     ## [16] rlang_1.3.0           sass_0.5.0            tools_4.6.2          
     ## [19] utf8_1.2.6            yaml_2.3.12           data.table_1.18.6.1  

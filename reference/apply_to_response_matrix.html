@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,7 +65,7 @@
 
 
 <dl><dt id="arg-lfqdata">lfqdata<a class="anchor" aria-label="anchor" href="#arg-lfqdata"></a></dt>
-<dd><p>LFQData object</p></dd>
+<dd><p><a href="LFQData.html">LFQData</a> object with the data and its configuration</p></dd>
 
 
 <dt id="arg--func">.func<a class="anchor" aria-label="anchor" href="#arg--func"></a></dt>
@@ -78,7 +78,7 @@
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>list with `data` (data.frame) and `colname` (new column name)</p>
+    <p>list with <code>data</code> (data.frame) and <code>colname</code> (new column name)</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -94,7 +94,7 @@
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span>Nprot <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span>n_proteins <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from file_name column</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.</span>

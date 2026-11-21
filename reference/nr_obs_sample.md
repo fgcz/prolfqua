@@ -1,6 +1,6 @@
 # Sum of observed children per hierarchy unit and sample
 
-For each hierarchy unit and sample, sums the \`nr_children_col\` column
+For each hierarchy unit and sample, sums the `nr_children_col` column
 over the rows with a non-missing response, e.g. the number of peptides
 behind each protein intensity of a sample. Counts per sample, observed
 values only.
@@ -26,23 +26,23 @@ nr_obs_sample(
 
 - response:
 
-  character — intensity column name
+  character - intensity column name
 
 - hierarchy_keys_depth:
 
-  character vector — hierarchy columns at current depth
+  character vector - hierarchy columns at current depth
 
 - file_name:
 
-  character — file name column
+  character - file name column
 
 - nr_children_col:
 
-  character — nr_children column name
+  character - nr_children column name
 
 - new_child:
 
-  character — output column name
+  character - output column name
 
 ## Value
 

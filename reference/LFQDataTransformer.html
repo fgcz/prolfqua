@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,12 +64,12 @@
     <h2 id="centring-and-contrasts">Centring and contrasts<a class="anchor" aria-label="anchor" href="#centring-and-contrasts"></a></h2>
 
 
-<p>Centring is an explicit transformation step, never applied by a model. `robscale()` and `robscale_subset()`
-centre each sample at its median (and scale by its MAD); `preserve_mean = TRUE` adds the overall mean back, so
-abundances stay on the original level, `FALSE` centres them at zero. `center_to_reference()` and
-`subtract_sample_offsets()` shift each sample by one offset. A per-sample shift moves every feature of that
+<p>Centring is an explicit transformation step, never applied by a model. <code>robscale()</code> and <code>robscale_subset()</code>
+centre each sample at its median (and scale by its MAD); <code>preserve_mean = TRUE</code> adds the overall mean back, so
+abundances stay on the original level, <code>FALSE</code> centres them at zero. <code>center_to_reference()</code> and
+<code>subtract_sample_offsets()</code> shift each sample by one offset. A per-sample shift moves every feature of that
 sample by the same amount: a contrast between groups changes by the difference of the mean offsets of the groups,
-and a shift common to all samples (such as `preserve_mean`) changes the average abundance (`avgAbd`) but not the
+and a shift common to all samples (such as <code>preserve_mean</code>) changes the average abundance (<code>avgAbd</code>) but not the
 contrast estimates, standard errors or p-values.</p>
     </div>
     <div class="section level2">
@@ -119,8 +119,8 @@ contrast estimates, standard errors or p-values.</p>
 </div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>force</code></dt>
-<dd><p>if `FALSE`, data already log2 transformed will not be
-transformed a second time. `TRUE` forces log transformation</p></dd>
+<dd><p>if <code>FALSE</code>, data already log2 transformed will not be
+transformed a second time. <code>TRUE</code> forces log transformation</p></dd>
 
 
 </dl><p></p></div>
@@ -187,7 +187,7 @@ average abundance, not the contrasts (see section "Centring and contrasts")</p><
 <dd><p>should original mean value be preserved TRUE, if FALSE then center at zero</p></dd>
 
       <dt><code>colname</code></dt>
-<dd><p>- how to name the transformed intensities, default transformedIntensity</p></dd>
+<dd><p>how to name the transformed intensities, default transformedIntensity</p></dd>
 
 
 </dl><p></p></div>
@@ -279,8 +279,8 @@ Names must match the configured sample IDs exactly and may be in any order.</p><
 <h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>.func</code></dt>
 <dd><p>any function taking a matrix and returning a matrix
-(columns sample, rows feature, e.g. `base::scale()`), default
-`robust_scale`</p></dd>
+(columns sample, rows feature, e.g. <code><a href="https://rdrr.io/r/base/scale.html" class="external-link">base::scale()</a></code>), default
+<code>robust_scale</code></p></dd>
 
       <dt><code>force</code></dt>
 <dd><p>transformation on data already transformed</p></dd>
@@ -316,7 +316,7 @@ Names must match the configured sample IDs exactly and may be in any order.</p><
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span>Nprot <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span>n_proteins <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from file_name column</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.</span>
@@ -332,7 +332,7 @@ Names must match the configured sample IDs exactly and may be in any order.</p><
 <span class="r-in"><span><span class="va">x</span><span class="op">$</span><span class="va">lfq</span><span class="op">$</span><span class="fu">is_transformed</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">$</span><span class="fu">intensity_matrix</span><span class="op">(</span><span class="va">robust_scale</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>data already transformed. If you still want to log2 tranform, set force = TRUE</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The data are already transformed; set `force = TRUE` to log2-transform them again.</span>
 <span class="r-in"><span><span class="va">plotter</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">$</span><span class="va">lfq</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">plotter</span><span class="op">$</span><span class="fu">intensity_distribution_density</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 225 rows containing non-finite outside the scale range</span>
@@ -393,6 +393,33 @@ Names must match the configured sample IDs exactly and may be in any order.</p><
 <span class="r-in"><span> <span class="va">res</span><span class="op">$</span><span class="fu">get_scales</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: vsn</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: Biobase</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: BiocGenerics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: generics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘generics’</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:base’:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     as.difftime, as.factor, as.ordered, intersect, is.element, setdiff,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     setequal, union</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘BiocGenerics’</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:stats’:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     IQR, mad, sd, var, xtabs</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:base’:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     Filter, Find, Map, Position, Reduce, anyDuplicated, aperm, append,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     as.data.frame, basename, cbind, colnames, dirname, do.call,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     duplicated, eval, evalq, get, grep, grepl, is.unsorted, lapply,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     mapply, match, mget, order, paste, pmax, pmax.int, pmin, pmin.int,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     rank, rbind, rownames, sapply, saveRDS, table, tapply, unique,</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     unsplit, which.max, which.min</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Welcome to Bioconductor</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     Vignettes contain introductory material; view with</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     'browseVignettes()'. To cite Bioconductor, see</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     'citation("Biobase")', and for packages 'citation("pkgname")'.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $medians</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     A_V1     A_V2     A_V3     A_V4     B_V1     B_V2     B_V3     B_V4 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5.010572 5.002975 4.994914 5.006013 5.051370 5.074292 5.033370 5.044391 </span>
@@ -416,7 +443,7 @@ Names must match the configured sample IDs exactly and may be in any order.</p><
 <span class="r-in"><span> <span class="va">res</span><span class="op">$</span><span class="va">lfq</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">intensity_distribution_density</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: preprocessCore</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>data already transformed. If you still want to log2 tranform, set force = TRUE</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The data are already transformed; set `force = TRUE` to log2-transform them again.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 225 rows containing non-finite outside the scale range</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> (`stat_density()`).</span>
 <span class="r-plt img"><img src="LFQDataTransformer-3.png" alt="" width="700" height="433"></span>

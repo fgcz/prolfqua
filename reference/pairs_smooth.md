@@ -1,6 +1,6 @@
-# smoothScatter pairs
+# Pairs plot with smoothed scatter panels
 
-smoothScatter pairs
+Pairs plot with smoothed scatter panels
 
 ## Usage
 
@@ -21,6 +21,10 @@ pairs_smooth(data, legend = FALSE, ...)
 - ...:
 
   params usually passed to pairs
+
+## Value
+
+`NULL`, invisibly; called for its side effect of drawing the pairs plot
 
 ## See also
 

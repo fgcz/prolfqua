@@ -5,7 +5,7 @@ Fits a least-squares model to every feature of a log-transformed
 splits each feature's variance with its ANOVA table. Use it to check a
 normalization: a good normalization lowers the within-group variance
 more than the overall variance, so the share explained by the design,
-the model R², rises.
+the model R^2, rises.
 
 ## Usage
 
@@ -34,7 +34,7 @@ summarize_variance_explained(lfqdata, modelstr = NULL)
 A tibble with one row per feature and ANOVA term, residuals included:
 the feature keys, `factor`, `Df`, `Sum.Sq`, `SS_total` (the feature's
 total sum of squares), `eta2` (`Sum.Sq / SS_total`) and `R2` (the
-feature's model R², `1 - SS_residual / SS_total`, repeated on each of
+feature's model R^2, `1 - SS_residual / SS_total`, repeated on each of
 its rows).
 
 ## Details
@@ -48,16 +48,17 @@ more than one residual degree of freedom are kept, the set returned by
 so all features share the same terms; a message reports how many
 features were left out.
 
-Read the model R² first. The ANOVA uses sequential (type I) sums of
+Read the model R^2 first. The ANOVA uses sequential (type I) sums of
 squares: when a feature is unbalanced, for example through missing
 values, the shares of the individual factors depend on the order of the
-terms in `modelstr`. R² does not.
+terms in `modelstr`. R^2 does not.
 
-Without any effect R² is positive on average: E\[R²\] = p / (n - 1) for
-p model degrees of freedom and n observed values. Compare normalizations
-of the same samples with the same missing values; imputation changes n.
+Without any effect R^2 is positive on average: E\[R^2\] = p / (n - 1)
+for p model degrees of freedom and n observed values. Compare
+normalizations of the same samples with the same missing values;
+imputation changes n.
 
-Use R² as a check of a normalization, not as a criterion to pick the
+Use R^2 as a check of a normalization, not as a criterion to pick the
 normalization with the highest value: that choice favours the group
 differences tested afterwards.
 
@@ -70,7 +71,7 @@ Other stats:
 [`compute_pooled()`](https://fgcz.github.io/prolfqua/reference/pooled_var.md),
 [`fdr_sig_level()`](https://fgcz.github.io/prolfqua/reference/fdr_sig_level.md),
 [`lfq_power_t_test_proteins()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_proteins.md),
-[`lfq_power_t_test_quantiles_V2()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_quantiles_V2.md),
+[`lfq_power_t_test_quantiles()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_quantiles.md),
 [`null_split_check()`](https://fgcz.github.io/prolfqua/reference/null_split_check.md),
 [`plot_stat_density()`](https://fgcz.github.io/prolfqua/reference/plot_stat_density.md),
 [`plot_stat_density_median()`](https://fgcz.github.io/prolfqua/reference/plot_stat_density_median.md),
@@ -84,7 +85,7 @@ Other stats:
 ## Examples
 
 ``` r
-bb <- prolfqua::sim_lfq_data_protein_config(Nprot = 20)
+bb <- prolfqua::sim_lfq_data_protein_config(n_proteins = 20)
 #> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
 #> setup_analysis: dropped 5 unconfigured columns: average_prot_abundance, sd, mean, N, Replicate.

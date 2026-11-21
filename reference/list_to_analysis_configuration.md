@@ -1,11 +1,11 @@
-# read minimal yaml to reconstruct configuration
+# Reconstruct a configuration from minimal YAML
 
-read minimal yaml to reconstruct configuration
+Reconstruct a configuration from minimal YAML
 
 ## Usage
 
 ``` r
-list_to_AnalysisConfiguration(dd)
+list_to_analysis_configuration(dd)
 ```
 
 ## Arguments
@@ -13,7 +13,7 @@ list_to_AnalysisConfiguration(dd)
 - dd:
 
   list with table and parameter elements as produced by
-  R6_extract_values
+  r6_extract_values
 
 ## Value
 
@@ -34,9 +34,9 @@ DEAconfig$hierarchy[["fragment_Id"]] <- c(
 DEAconfig$ident_q_value <- "annotation_QValue"
 DEAconfig$set_response("Area")
 DEAconfig$isotope_label <- "Isotope.Label"
-configList <- prolfqua::R6_extract_values(DEAconfig)
+configList <- prolfqua::r6_extract_values(DEAconfig)
 stopifnot(class(configList) == "list")
-config <- list_to_AnalysisConfiguration(configList)
-all.equal(prolfqua::R6_extract_values(config), configList)
+config <- list_to_analysis_configuration(configList)
+all.equal(prolfqua::r6_extract_values(config), configList)
 #> [1] TRUE
 ```

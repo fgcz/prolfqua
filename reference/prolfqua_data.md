@@ -1,6 +1,6 @@
-# load data from prolfqua
+# Load a dataset from prolfqua
 
-load data from prolfqua
+Load a dataset from prolfqua
 
 ## Usage
 

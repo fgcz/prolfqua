@@ -1,9 +1,9 @@
 # Factor annotation of 36 samples
 
-Sample annotation table with two factors (\`factor_A\`: MI / MINOCA,
-\`factor_B\`: sampling time T0 / T150 / T300), used to demonstrate how
+Sample annotation table with two factors (`factor_A`: MI / MINOCA,
+`factor_B`: sampling time T0 / T150 / T300), used to demonstrate how
 contrasts are derived from the factor levels. See
-\`inst/script/README.md\` for its origin.
+`inst/script/README.md` for its origin.
 
 ## Usage
 
@@ -13,8 +13,8 @@ x5463yzwer453bbb
 
 ## Format
 
-A tibble with 36 rows and the columns \`Relative Path\`, \`Name\`,
-\`Group\`, \`factor_A\`, \`factor_B\`.
+A tibble with 36 rows and the columns `Relative Path`, `Name`, `Group`,
+`factor_A`, `factor_B`.
 
 ## See also
 

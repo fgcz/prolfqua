@@ -2,7 +2,7 @@
 
 Default plot: distribution of the response per sample (violin plot), on
 a log scale when the response is not transformed. Other plots are
-available from \`x\$get_Plotter()\`.
+available from `x$get_Plotter()`.
 
 ## Usage
 
@@ -37,8 +37,8 @@ Other LFQData:
 [`LFQDataPlotter`](https://fgcz.github.io/prolfqua/reference/LFQDataPlotter.md),
 [`LFQDataStats`](https://fgcz.github.io/prolfqua/reference/LFQDataStats.md),
 [`LFQDataSummariser`](https://fgcz.github.io/prolfqua/reference/LFQDataSummariser.md),
-[`LFQDataToSummarizedExperiment()`](https://fgcz.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md),
-[`lfqdata_from_wide()`](https://fgcz.github.io/prolfqua/reference/lfqdata_from_wide.md)
+[`lfqdata_from_wide()`](https://fgcz.github.io/prolfqua/reference/lfqdata_from_wide.md),
+[`lfqdata_to_summarized_experiment()`](https://fgcz.github.io/prolfqua/reference/lfqdata_to_summarized_experiment.md)
 
 ## Examples
 

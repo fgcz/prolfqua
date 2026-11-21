@@ -1,4 +1,4 @@
-# AggregateTopN
+# Aggregate peptide intensities from the top N peptides
 
 Aggregates peptide intensities to protein level using top N peptides.
 Works with raw (untransformed) intensities.
@@ -18,8 +18,8 @@ Other LFQData:
 [`LFQDataPlotter`](https://fgcz.github.io/prolfqua/reference/LFQDataPlotter.md),
 [`LFQDataStats`](https://fgcz.github.io/prolfqua/reference/LFQDataStats.md),
 [`LFQDataSummariser`](https://fgcz.github.io/prolfqua/reference/LFQDataSummariser.md),
-[`LFQDataToSummarizedExperiment()`](https://fgcz.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md),
 [`lfqdata_from_wide()`](https://fgcz.github.io/prolfqua/reference/lfqdata_from_wide.md),
+[`lfqdata_to_summarized_experiment()`](https://fgcz.github.io/prolfqua/reference/lfqdata_to_summarized_experiment.md),
 [`plot.LFQData()`](https://fgcz.github.io/prolfqua/reference/plot.LFQData.md)
 
 ## Super class

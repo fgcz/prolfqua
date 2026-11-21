@@ -14,8 +14,8 @@ NULL.
 
 - lfqdata:
 
-  an [`LFQData`](https://fgcz.github.io/prolfqua/reference/LFQData.md)
-  object
+  [LFQData](https://fgcz.github.io/prolfqua/reference/LFQData.md) object
+  with the data and its configuration
 
 - strategy:
 

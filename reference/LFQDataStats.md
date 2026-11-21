@@ -17,8 +17,8 @@ Other LFQData:
 [`LFQData`](https://fgcz.github.io/prolfqua/reference/LFQData.md),
 [`LFQDataPlotter`](https://fgcz.github.io/prolfqua/reference/LFQDataPlotter.md),
 [`LFQDataSummariser`](https://fgcz.github.io/prolfqua/reference/LFQDataSummariser.md),
-[`LFQDataToSummarizedExperiment()`](https://fgcz.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md),
 [`lfqdata_from_wide()`](https://fgcz.github.io/prolfqua/reference/lfqdata_from_wide.md),
+[`lfqdata_to_summarized_experiment()`](https://fgcz.github.io/prolfqua/reference/lfqdata_to_summarized_experiment.md),
 [`plot.LFQData()`](https://fgcz.github.io/prolfqua/reference/plot.LFQData.md)
 
 ## Public fields
@@ -79,7 +79,8 @@ create analyse variances and CV
 
 - `lfqdata`:
 
-  LFQData object
+  [LFQData](https://fgcz.github.io/prolfqua/reference/LFQData.md) object
+  with the data and its configuration
 
 - `stats`:
 
@@ -411,7 +412,7 @@ stopifnot(ncol(lfqstats$stats_wide()) == 20)
 runallfuncs(lfqstats)
 
 # Group size 1
-bb <- prolfqua::sim_lfq_data_peptide_config(N=1)
+bb <- prolfqua::sim_lfq_data_peptide_config(n_per_group = 1)
 #> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
 #> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.

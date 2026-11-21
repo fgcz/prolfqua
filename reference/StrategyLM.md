@@ -42,7 +42,6 @@ Other modelling:
 [`ContrastsRfitImputeFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsRfitImputeFacade.md),
 [`ContrastsTable`](https://fgcz.github.io/prolfqua/reference/ContrastsTable.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`LR_test()`](https://fgcz.github.io/prolfqua/reference/LR_test.md),
 [`Model`](https://fgcz.github.io/prolfqua/reference/Model.md),
 [`ModelFirth`](https://fgcz.github.io/prolfqua/reference/ModelFirth.md),
 [`ModelLimma`](https://fgcz.github.io/prolfqua/reference/ModelLimma.md),
@@ -77,6 +76,7 @@ Other modelling:
 [`linfct_matrix_contrasts()`](https://fgcz.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
 [`list_facades()`](https://fgcz.github.io/prolfqua/reference/list_facades.md),
 [`lookup_facade()`](https://fgcz.github.io/prolfqua/reference/lookup_facade.md),
+[`lr_test()`](https://fgcz.github.io/prolfqua/reference/lr_test.md),
 [`merge_contrasts_results()`](https://fgcz.github.io/prolfqua/reference/merge_contrasts_results.md),
 [`model_analyse()`](https://fgcz.github.io/prolfqua/reference/model_analyse.md),
 [`model_summary()`](https://fgcz.github.io/prolfqua/reference/model_summary.md),
@@ -97,7 +97,7 @@ Other modelling:
 [`strategy_limma()`](https://fgcz.github.io/prolfqua/reference/strategy_limma.md),
 [`strategy_limpa()`](https://fgcz.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://fgcz.github.io/prolfqua/reference/strategy.md),
-[`summary_ROPECA_median_p_scaled()`](https://fgcz.github.io/prolfqua/reference/summary_ROPECA_median_p_scaled.md),
+[`summary_ropeca_median_p_scaled()`](https://fgcz.github.io/prolfqua/reference/summary_ropeca_median_p_scaled.md),
 [`vcov.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
 ## Super class
@@ -177,7 +177,7 @@ The objects of this class are cloneable with this method.
 strat <- StrategyLM$new("Intensity ~ condition", model_name = "parallel design")
 strat$formula
 #> Intensity ~ condition
-#> <environment: 0x56e4c1bf2880>
+#> <environment: 0x64f3739428b8>
 strat$weights
 #> NULL
 ```

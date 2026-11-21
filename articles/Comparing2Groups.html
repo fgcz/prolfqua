@@ -19,7 +19,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -106,7 +106,7 @@ them together with a matching <code>AnalysisConfiguration</code>. To
 read your own data, see the article <a href="https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html">Importing
 your data</a>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/sim_lfq_data_protein_config.html">sim_lfq_data_protein_config</a></span><span class="op">(</span>Nprot <span class="op">=</span> <span class="fl">100</span>, weight_missing <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/sim_lfq_data_protein_config.html">sim_lfq_data_protein_config</a></span><span class="op">(</span>n_proteins <span class="op">=</span> <span class="fl">100</span>, weight_missing <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
 <span><span class="va">xx</span></span></code></pre></div>
 <pre><code><span><span class="co">## $data</span></span>
 <span><span class="co">## <span style="color: #949494;"># A tibble: 1,200 × 8</span></span></span>
@@ -217,7 +217,7 @@ Heatmap of missing protein intensities, black - missing, white - present
 </p>
 </div>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">lfqplotter</span><span class="op">$</span><span class="fu">missigness_histogram</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">lfqplotter</span><span class="op">$</span><span class="fu">missingness_histogram</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="Comparing2Groups_files/figure-html/missignessHistogram-1.png" class="r-plt" alt="Intensity distribution of proteins depending on # of missing values" width="700"><p class="caption">
 Intensity distribution of proteins depending on # of missing values
@@ -478,7 +478,7 @@ Bioconductor page</a></li>
 <span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] prolfqua_1.9.4   dplyr_1.2.1      BiocStyle_2.40.0</span></span>
+<span><span class="co">## [1] prolfqua_1.9.5   dplyr_1.2.1      BiocStyle_2.40.0</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##  [1] tidyselect_1.2.1      viridisLite_0.4.3     farver_2.1.2         </span></span>

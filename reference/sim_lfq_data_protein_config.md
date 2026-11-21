@@ -6,17 +6,18 @@ Simulate data, protein, with config
 
 ``` r
 sim_lfq_data_protein_config(
-  Nprot = 10,
+  n_proteins = 10,
   with_missing = TRUE,
   weight_missing = 0.2,
   seed = 1234,
-  paired = FALSE
+  paired = FALSE,
+  Nprot
 )
 ```
 
 ## Arguments
 
-- Nprot:
+- n_proteins:
 
   one positive whole number of proteins to simulate
 
@@ -35,6 +36,10 @@ sim_lfq_data_protein_config(
 - paired:
 
   if TRUE, add a paired subject factor to the design
+
+- Nprot:
+
+  deprecated; use `n_proteins`
 
 ## Value
 

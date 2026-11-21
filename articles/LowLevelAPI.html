@@ -19,7 +19,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -104,7 +104,7 @@ add a new modelling backend. For analyses, use
 <code><a href="../reference/build_contrast_analysis.html">build_contrast_analysis()</a></code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/fgcz/prolfqua" class="external-link">prolfqua</a></span><span class="op">)</span></span>
-<span><span class="va">sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_lfq_data_protein_config.html">sim_lfq_data_protein_config</a></span><span class="op">(</span>Nprot <span class="op">=</span> <span class="fl">100</span>, seed <span class="op">=</span> <span class="fl">1234</span><span class="op">)</span></span>
+<span><span class="va">sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_lfq_data_protein_config.html">sim_lfq_data_protein_config</a></span><span class="op">(</span>n_proteins <span class="op">=</span> <span class="fl">100</span>, seed <span class="op">=</span> <span class="fl">1234</span><span class="op">)</span></span>
 <span><span class="va">lfq</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">sim</span><span class="op">$</span><span class="va">data</span>, <span class="va">sim</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span>
 <span><span class="va">contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>AvsC <span class="op">=</span> <span class="st">"group_A - group_Ctrl"</span>, BvsC <span class="op">=</span> <span class="st">"group_B - group_Ctrl"</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -412,7 +412,7 @@ same.</p>
 <span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] prolfqua_1.9.4</span></span>
+<span><span class="co">## [1] prolfqua_1.9.5</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##  [1] utf8_1.2.6         sass_0.5.0         generics_0.1.4     tidyr_1.3.2       </span></span>

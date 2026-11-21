@@ -114,7 +114,6 @@ Other modelling:
 [`ContrastsRfitImputeFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsRfitImputeFacade.md),
 [`ContrastsTable`](https://fgcz.github.io/prolfqua/reference/ContrastsTable.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`LR_test()`](https://fgcz.github.io/prolfqua/reference/LR_test.md),
 [`Model`](https://fgcz.github.io/prolfqua/reference/Model.md),
 [`ModelFirth`](https://fgcz.github.io/prolfqua/reference/ModelFirth.md),
 [`ModelLimma`](https://fgcz.github.io/prolfqua/reference/ModelLimma.md),
@@ -150,6 +149,7 @@ Other modelling:
 [`linfct_matrix_contrasts()`](https://fgcz.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
 [`list_facades()`](https://fgcz.github.io/prolfqua/reference/list_facades.md),
 [`lookup_facade()`](https://fgcz.github.io/prolfqua/reference/lookup_facade.md),
+[`lr_test()`](https://fgcz.github.io/prolfqua/reference/lr_test.md),
 [`merge_contrasts_results()`](https://fgcz.github.io/prolfqua/reference/merge_contrasts_results.md),
 [`model_analyse()`](https://fgcz.github.io/prolfqua/reference/model_analyse.md),
 [`model_summary()`](https://fgcz.github.io/prolfqua/reference/model_summary.md),
@@ -169,7 +169,7 @@ Other modelling:
 [`sim_make_model_lmer()`](https://fgcz.github.io/prolfqua/reference/sim_make_model_lmer.md),
 [`strategy_limma()`](https://fgcz.github.io/prolfqua/reference/strategy_limma.md),
 [`strategy_limpa()`](https://fgcz.github.io/prolfqua/reference/strategy_limpa.md),
-[`summary_ROPECA_median_p_scaled()`](https://fgcz.github.io/prolfqua/reference/summary_ROPECA_median_p_scaled.md),
+[`summary_ropeca_median_p_scaled()`](https://fgcz.github.io/prolfqua/reference/summary_ropeca_median_p_scaled.md),
 [`vcov.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
 ## Examples
@@ -178,9 +178,9 @@ Other modelling:
 tmp <- strategy_logistf("bin_resp ~ condition", model_name = "parallel design")
 tmp$formula
 #> bin_resp ~ condition
-#> <environment: 0x56e4d54e5728>
+#> <environment: 0x64f3a08bd380>
 
-istar <- prolfqua::sim_lfq_data_peptide_config(Nprot = 10, with_missing = TRUE,
+istar <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
 #> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
@@ -232,22 +232,22 @@ modelFunction$model_fun(nestProtein$data[[4]])
 tmp <- strategy_rfit("Intensity ~ condition", model_name = "parallel design")
 tmp$formula
 #> Intensity ~ condition
-#> <environment: 0x56e4b4a10ab0>
+#> <environment: 0x64f39e81c360>
 modelFunction <- strategy_lmer("abundanceC ~ group_ + (1|peptide_Id)",
   model_name = "random_example")
 modelFunction$formula
 #> abundanceC ~ group_ + (1 | peptide_Id)
-#> <environment: 0x56e4bde70020>
+#> <environment: 0x64f39284eb20>
 tmp <- strategy_lm("Intensity ~ condition", model_name = "parallel design")
 tmp$formula
 #> Intensity ~ condition
-#> <environment: 0x56e4c0d7c1c0>
+#> <environment: 0x64f394866198>
 tmp$weights
 #> NULL
 tmp <- strategy_rlm("Intensity ~ condition", model_name = "parallel design")
 tmp$formula
 #> Intensity ~ condition
-#> <environment: 0x56e4b9c55220>
+#> <environment: 0x64f39ef22c38>
 strategy_rlm("Intensity ~ condition", control = list(maxit = 50))$control
 #> $maxit
 #> [1] 50

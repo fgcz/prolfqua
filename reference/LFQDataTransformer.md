@@ -9,16 +9,15 @@ An R6 class generator.
 ## Centring and contrasts
 
 Centring is an explicit transformation step, never applied by a model.
-\`robscale()\` and \`robscale_subset()\` centre each sample at its
-median (and scale by its MAD); \`preserve_mean = TRUE\` adds the overall
-mean back, so abundances stay on the original level, \`FALSE\` centres
-them at zero. \`center_to_reference()\` and
-\`subtract_sample_offsets()\` shift each sample by one offset. A
-per-sample shift moves every feature of that sample by the same amount:
-a contrast between groups changes by the difference of the mean offsets
-of the groups, and a shift common to all samples (such as
-\`preserve_mean\`) changes the average abundance (\`avgAbd\`) but not
-the contrast estimates, standard errors or p-values.
+`robscale()` and `robscale_subset()` centre each sample at its median
+(and scale by its MAD); `preserve_mean = TRUE` adds the overall mean
+back, so abundances stay on the original level, `FALSE` centres them at
+zero. `center_to_reference()` and `subtract_sample_offsets()` shift each
+sample by one offset. A per-sample shift moves every feature of that
+sample by the same amount: a contrast between groups changes by the
+difference of the mean offsets of the groups, and a shift common to all
+samples (such as `preserve_mean`) changes the average abundance
+(`avgAbd`) but not the contrast estimates, standard errors or p-values.
 
 ## Public fields
 
@@ -80,8 +79,8 @@ log2 transform data
 
 - `force`:
 
-  if \`FALSE\`, data already log2 transformed will not be transformed a
-  second time. \`TRUE\` forces log transformation
+  if `FALSE`, data already log2 transformed will not be transformed a
+  second time. `TRUE` forces log transformation
 
 #### Returns
 
@@ -157,8 +156,7 @@ log2 transform and robust scale data based on subset
 
 - `colname`:
 
-  \- how to name the transformed intensities, default
-  transformedIntensity
+  how to name the transformed intensities, default transformedIntensity
 
 #### Returns
 
@@ -258,7 +256,9 @@ pass a function which works with matrices, e.g., vsn::justvsn
 - `.func`:
 
   any function taking a matrix and returning a matrix (columns sample,
-  rows feature, e.g. \`base::scale()\`), default \`robust_scale\`
+  rows feature, e.g.
+  [`base::scale()`](https://rdrr.io/r/base/scale.html)), default
+  `robust_scale`
 
 - `force`:
 
@@ -287,7 +287,7 @@ The objects of this class are cloneable with this method.
 ## Examples
 
 ``` r
-istar <- sim_lfq_data_peptide_config(Nprot = 50)
+istar <- sim_lfq_data_peptide_config(n_proteins = 50)
 #> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
 #> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
@@ -303,7 +303,7 @@ x <- lfqTrans$intensity_array(log2)
 x$lfq$is_transformed()
 #> [1] TRUE
 x <- x$intensity_matrix(robust_scale)
-#> Warning: data already transformed. If you still want to log2 tranform, set force = TRUE
+#> Warning: The data are already transformed; set `force = TRUE` to log2-transform them again.
 plotter <- x$lfq$get_Plotter()
 plotter$intensity_distribution_density()
 #> Warning: Removed 225 rows containing non-finite outside the scale range
@@ -364,6 +364,33 @@ if(require("vsn")){
  res$get_scales()
 }
 #> Loading required package: vsn
+#> Loading required package: Biobase
+#> Loading required package: BiocGenerics
+#> Loading required package: generics
+#> 
+#> Attaching package: ‘generics’
+#> The following objects are masked from ‘package:base’:
+#> 
+#>     as.difftime, as.factor, as.ordered, intersect, is.element, setdiff,
+#>     setequal, union
+#> 
+#> Attaching package: ‘BiocGenerics’
+#> The following objects are masked from ‘package:stats’:
+#> 
+#>     IQR, mad, sd, var, xtabs
+#> The following objects are masked from ‘package:base’:
+#> 
+#>     Filter, Find, Map, Position, Reduce, anyDuplicated, aperm, append,
+#>     as.data.frame, basename, cbind, colnames, dirname, do.call,
+#>     duplicated, eval, evalq, get, grep, grepl, is.unsorted, lapply,
+#>     mapply, match, mget, order, paste, pmax, pmax.int, pmin, pmin.int,
+#>     rank, rbind, rownames, sapply, saveRDS, table, tapply, unique,
+#>     unsplit, which.max, which.min
+#> Welcome to Bioconductor
+#> 
+#>     Vignettes contain introductory material; view with
+#>     'browseVignettes()'. To cite Bioconductor, see
+#>     'citation("Biobase")', and for packages 'citation("pkgname")'.
 #> $medians
 #>     A_V1     A_V2     A_V3     A_V4     B_V1     B_V2     B_V3     B_V4 
 #> 5.010572 5.002975 4.994914 5.006013 5.051370 5.074292 5.033370 5.044391 
@@ -387,7 +414,7 @@ quant <- function(y){
  res$lfq$get_Plotter()$intensity_distribution_density()
 }
 #> Loading required package: preprocessCore
-#> Warning: data already transformed. If you still want to log2 tranform, set force = TRUE
+#> Warning: The data are already transformed; set `force = TRUE` to log2-transform them again.
 #> Warning: Removed 225 rows containing non-finite outside the scale range
 #> (`stat_density()`).
 

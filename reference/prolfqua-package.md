@@ -36,57 +36,56 @@ package prolfquabenchmark
 
 ## Options
 
-- \`prolfqua.verbose\`:
+- `prolfqua.verbose`:
 
-  \`TRUE\` (default) or \`FALSE\`. With \`FALSE\`, prolfqua prints no
+  `TRUE` (default) or `FALSE`. With `FALSE`, prolfqua prints no
   informative messages, such as columns added, rows removed or files
   written. Warnings and errors are not affected. The messages carry
-  class \`prolfqua_message\`, so an application can route them to its
-  own log with \`withCallingHandlers(prolfqua_message = ...)\`.
+  class `prolfqua_message`, so an application can route them to its own
+  log with `withCallingHandlers(prolfqua_message = ...)`.
 
-- \`prolfqua.progress\`:
+- `prolfqua.progress`:
 
   Progress reporting while models and contrasts are computed per
-  protein: \`NULL\` (default) shows a terminal progress bar,
-  \`"message"\` a throttled message with elapsed time, and a
-  \`function(i, total, label)\` is called with the progress.
+  protein: `NULL` (default) shows a terminal progress bar, `"message"` a
+  throttled message with elapsed time, and a `function(i, total, label)`
+  is called with the progress.
 
 ## Missing and non-finite values
 
-An \`NA\` intensity is a missing observation. The \`method\` argument of
+An `NA` intensity is a missing observation. The `method` argument of
 [`build_contrast_analysis`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
 decides how missing observations are handled: dropped per fit (e.g.
-\`lm\`, \`limma\`), imputed at the limit of detection (the \`\_impute\`
-methods), or modelled as detection (\`firth\`, \`binomial_nested\`,
-\`hurdle_nested\`);
+`lm`, `limma`), imputed at the limit of detection (the `_impute`
+methods), or modelled as detection (`firth`, `binomial_nested`,
+`hurdle_nested`);
 [`impute_from_model`](https://fgcz.github.io/prolfqua/reference/impute_from_model.md)
-fills them from fitted models. The \`log\`, \`log2\` and \`log10\`
-transforms turn zero intensities (not detected) into \`NA\`. Fitting and
-aggregation stop with a classed error on \`Inf\`, \`-Inf\` or \`NaN\`
-intensities (\`prolfqua_error_nonfinite_response\`), on \`NA\` in
-hierarchy, factor or sample columns (\`prolfqua_error_missing_key\`),
-and on inputs without rows (\`prolfqua_error_bad_argument\`). A subject
-whose residual variance is zero (constant or noiseless response) keeps
-its estimated difference, but its test statistics are \`NA\`, with a
-\`prolfqua_zero_variance\` warning, and it is left out of the variance
-moderation prior.
+fills them from fitted models. The `log`, `log2` and `log10` transforms
+turn zero intensities (not detected) into `NA`. Fitting and aggregation
+stop with a classed error on `Inf`, `-Inf` or `NaN` intensities
+(`prolfqua_error_nonfinite_response`), on `NA` in hierarchy, factor or
+sample columns (`prolfqua_error_missing_key`), and on inputs without
+rows (`prolfqua_error_bad_argument`). A subject whose residual variance
+is zero (constant or noiseless response) keeps its estimated difference,
+but its test statistics are `NA`, with a `prolfqua_zero_variance`
+warning, and it is left out of the variance moderation prior.
 
 ## Provenance
 
 Each `LFQData`, model and analysis records the problems and dropped
 items that happen in it; `$provenance()` returns them as a table (step,
-event, count, IDs, reason). Recorded are values set to \`NA\`
+event, count, IDs, reason). Recorded are values set to `NA`
 (`remove_small_intensities()`, zeros in log transforms), removed rows,
 features and proteins (`remove_decoys()`, `remove_contaminants()`,
 [`filter_proteins_by_peptide_count()`](https://fgcz.github.io/prolfqua/reference/filter_proteins_by_peptide_count.md)),
-estimation warnings in aggregation (e.g. \`rlm\` not converging),
-failed, warned, singular and LOD-refit fits, missing responses dropped
-per fit and, for an analysis, the subjects absent from the contrasts
-with the reason. Each step reports its new entries once: failures as one
-warning of class \`prolfqua_fit_failed\`, everything else as one
-\`prolfqua_message\`, which \`prolfqua.verbose = FALSE\` silences.
-Derived data (transformed, subset, rows removed) continues the record of
-its input; aggregated data and models start their own.
+estimation warnings in aggregation (e.g. `rlm` not converging), failed,
+warned, singular and LOD-refit fits, missing responses dropped per fit
+and, for an analysis, the subjects absent from the contrasts with the
+reason. Each step reports its new entries once: failures as one warning
+of class `prolfqua_fit_failed`, everything else as one
+`prolfqua_message`, which `prolfqua.verbose = FALSE` silences. Derived
+data (transformed, subset, rows removed) continues the record of its
+input; aggregated data and models start their own.
 
 ## Lifecycle
 

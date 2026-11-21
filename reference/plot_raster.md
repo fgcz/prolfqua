@@ -1,6 +1,6 @@
-# plot heatmap without any clustering (use to show NA's)
+# Plot a heatmap without clustering (use to show NAs)
 
-plot heatmap without any clustering (use to show NA's)
+Plot a heatmap without clustering (use to show NAs)
 
 ## Usage
 
@@ -23,19 +23,19 @@ plot_raster(
 
 - matrix:
 
-  numeric matrix — wide-format intensity data
+  numeric matrix - wide-format intensity data
 
 - annotation:
 
-  data.frame — sample annotation
+  data.frame - sample annotation
 
 - factor_keys:
 
-  character vector — factor column names for annotation
+  character vector - factor column names for annotation
 
 - sample_name:
 
-  character — sample name column
+  character - sample name column
 
 - arrange:
 
@@ -60,14 +60,21 @@ plot_raster(
 
 - ...:
 
-  additional arguments passed to \[ComplexHeatmap::Heatmap()\]
+  additional arguments passed to
+  [`ComplexHeatmap::Heatmap()`](https://rdrr.io/pkg/ComplexHeatmap/man/Heatmap.html)
+
+## Value
+
+invisibly, a ComplexHeatmap `Heatmap` object of the abundances with rows
+ordered by `arrange` and unclustered columns; `NULL` with a warning if
+`matrix` has fewer than two rows
 
 ## See also
 
 Other plotting:
 [`ContrastsPlotter`](https://fgcz.github.io/prolfqua/reference/ContrastsPlotter.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`missigness_histogram()`](https://fgcz.github.io/prolfqua/reference/missigness_histogram.md),
+[`missingness_histogram()`](https://fgcz.github.io/prolfqua/reference/missingness_histogram.md),
 [`missingness_per_condition()`](https://fgcz.github.io/prolfqua/reference/missingness_per_condition.md),
 [`missingness_per_condition_cumsum()`](https://fgcz.github.io/prolfqua/reference/missingness_per_condition_cumsum.md),
 [`plot_estimate()`](https://fgcz.github.io/prolfqua/reference/plot_estimate.md),

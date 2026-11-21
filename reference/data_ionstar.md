@@ -5,7 +5,7 @@ with E. coli spike-in dilution series (dilutions a to e, 4 replicates
 each), processed with MaxQuant. An R6 object holding the data, its
 [`AnalysisConfiguration`](https://fgcz.github.io/prolfqua/reference/AnalysisConfiguration.md),
 and the methods `filtered()`, `normalized()` and `subset_normalized()`.
-See \`inst/script/README.md\` for its origin.
+See `inst/script/README.md` for its origin.
 
 ## Usage
 
@@ -15,8 +15,8 @@ data_ionstar
 
 ## Format
 
-An R6 object of class \`IonstarData\`; \`\$data\` is a data frame with
-26520 rows.
+An R6 object of class `IonstarData`; `$data` is a data frame with 26520
+rows.
 
 ## Source
 

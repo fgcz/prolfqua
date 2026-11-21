@@ -6,17 +6,19 @@ Simulate data, protein and peptide, with config
 
 ``` r
 sim_lfq_data_peptide_config(
-  Nprot = 10,
+  n_proteins = 10,
   with_missing = TRUE,
   weight_missing = 0.2,
   seed = 1234,
-  N = 4
+  n_per_group = 4,
+  Nprot,
+  N
 )
 ```
 
 ## Arguments
 
-- Nprot:
+- n_proteins:
 
   one positive whole number of proteins to simulate
 
@@ -32,9 +34,13 @@ sim_lfq_data_peptide_config(
 
   seed for reproducibility, if NULL no seed is set.
 
-- N:
+- n_per_group:
 
   number of replicates per group
+
+- Nprot, N:
+
+  deprecated; use `n_proteins` and `n_per_group`
 
 ## Value
 

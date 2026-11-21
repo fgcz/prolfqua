@@ -134,7 +134,7 @@ data.frame
 
 ### `ContrastsInterface$get_missing()`
 
-get protein × contrast pairs that could not be estimated. Returns a
+get protein x contrast pairs that could not be estimated. Returns a
 data.frame with hierarchy columns and contrast, or 0 rows.
 
 #### Usage
@@ -171,7 +171,7 @@ data.frame with subject id, contrast, and score columns.
 
 ### `ContrastsInterface$get_ora()`
 
-get ORA input table — features passing the FDR and absolute effect-size
+get ORA input table - features passing the FDR and absolute effect-size
 threshold in the requested direction.
 
 #### Usage
@@ -243,11 +243,11 @@ data.frame with canonical column names `contrast`, `effect`, `score`,
 
 - `rounded`:
 
-  if TRUE round numeric columns to \`digits\` significant digits
+  if TRUE round numeric columns to `digits` significant digits
 
 - `digits`:
 
-  significant digits when \`rounded\` (default 3, the prolfquapp report
+  significant digits when `rounded` (default 3, the prolfquapp report
   convention)
 
 ------------------------------------------------------------------------

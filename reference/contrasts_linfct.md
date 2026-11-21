@@ -1,4 +1,4 @@
-# compute group averages
+# Compute group averages or contrasts for each model
 
 used in p2621, p2109
 
@@ -12,6 +12,13 @@ contrasts_linfct(
   contrastfun = prolfqua::compute_lmer_contrast
 )
 ```
+
+## Value
+
+a tibble with one row per subject and row of `linfct`, holding the
+`subject_id` columns, the columns returned by `contrastfun`, and
+`isSingular`, `sigma.model` and `df.residual.model`; subjects whose
+contrasts failed are dropped with a warning
 
 ## Examples
 

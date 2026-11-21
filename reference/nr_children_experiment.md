@@ -24,23 +24,23 @@ nr_children_experiment(
 
 - response:
 
-  character — intensity column name
+  character - intensity column name
 
 - hierarchy_keys_depth:
 
-  character vector — hierarchy columns at current depth
+  character vector - hierarchy columns at current depth
 
 - file_name:
 
-  character — file name column
+  character - file name column
 
 - nr_children_col:
 
-  character — nr_children column name
+  character - nr_children column name
 
 - name_nr_child:
 
-  character — output column name
+  character - output column name
 
 ## Value
 

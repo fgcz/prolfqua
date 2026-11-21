@@ -1,6 +1,6 @@
-# convert to binary response
+# Encode intensities as a binary detection response
 
-convert to binary response
+Encode intensities as a binary detection response
 
 ## Usage
 
@@ -12,11 +12,17 @@ encode_bin_resp(lfqdata, name = "bin_resp")
 
 - lfqdata:
 
-  LFQData object
+  [LFQData](https://fgcz.github.io/prolfqua/reference/LFQData.md) object
+  with the data and its configuration
 
 - name:
 
   column name for binary response
+
+## Value
+
+a tibble of the long-format data with an added integer column `name`: 1
+if the response is observed, 0 if it is `NA`
 
 ## Examples
 

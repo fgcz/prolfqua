@@ -1,7 +1,7 @@
-# correlation panel for pairs plot function (used as default in pairs_smooth)
+# Correlation panel for pairs plots (default lower panel of `pairs_smooth()`)
 
-correlation panel for pairs plot function (used as default in
-pairs_smooth)
+Correlation panel for pairs plots (default lower panel of
+[`pairs_smooth()`](https://fgcz.github.io/prolfqua/reference/pairs_smooth.md))
 
 ## Usage
 
@@ -26,6 +26,11 @@ panel_cor(x, y, digits = 2, ...)
 - ...:
 
   not used
+
+## Value
+
+`NULL`, invisibly; called for its side effect of writing the
+correlation, R^2 and p-value into the current panel
 
 ## See also
 

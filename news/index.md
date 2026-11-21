@@ -1,5 +1,74 @@
 # Changelog
 
+## prolfqua 1.9.5
+
+### Behaviour changes
+
+- prolfqua now requires dplyr \>= 1.1.0, ggplot2 \>= 3.4.0 and purrr \>=
+  1.0.0; earlier versions lacked functions prolfqua already called.
+- Error messages state the problem in their first line (“`method` must
+  be one of …”, “Can’t find column `x` in `data`.”) and name the
+  function you called instead of prolfqua’s internal checker. Condition
+  classes are unchanged; about 30 error and warning messages were
+  reworded.
+- Joins inside prolfqua check that their lookup keys are unique: a
+  duplicated subject, contrast or sample key in an input (for instance
+  two rows for one protein and contrast passed to
+  [`merge_contrasts_results()`](https://fgcz.github.io/prolfqua/reference/merge_contrasts_results.md))
+  raises an error instead of silently multiplying rows.
+- Plots: volcano, MA and score plots draw smaller, more transparent
+  points, so dense regions stay readable;
+  `ContrastsPlotter$barplot_threshold()` fills bars with the
+  colour-blind safe palette; score-plot reference lines are black and
+  red regardless of the global
+  [`palette()`](https://rdrr.io/r/grDevices/palette.html).
+  [`plot_pca()`](https://fgcz.github.io/prolfqua/reference/plot_pca.md)
+  shapes the second factor with 19 distinguishable shapes and, when that
+  factor has more levels, drops the shape mapping with a message;
+  before, factors with more than 25 levels drew invalid shapes or no
+  points.
+
+### Deprecated
+
+- Renamed to snake_case:
+  [`lfqdata_to_summarized_experiment()`](https://fgcz.github.io/prolfqua/reference/lfqdata_to_summarized_experiment.md)
+  (was
+  [`LFQDataToSummarizedExperiment()`](https://fgcz.github.io/prolfqua/reference/prolfqua-deprecated.md)),
+  [`lr_test()`](https://fgcz.github.io/prolfqua/reference/lr_test.md)
+  ([`LR_test()`](https://fgcz.github.io/prolfqua/reference/prolfqua-deprecated.md)),
+  [`lfq_power_t_test_quantiles()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_quantiles.md)
+  ([`lfq_power_t_test_quantiles_V2()`](https://fgcz.github.io/prolfqua/reference/prolfqua-deprecated.md)),
+  [`r6_extract_values()`](https://fgcz.github.io/prolfqua/reference/r6_extract_values.md)
+  ([`R6_extract_values()`](https://fgcz.github.io/prolfqua/reference/prolfqua-deprecated.md)),
+  [`list_to_analysis_configuration()`](https://fgcz.github.io/prolfqua/reference/list_to_analysis_configuration.md)
+  ([`list_to_AnalysisConfiguration()`](https://fgcz.github.io/prolfqua/reference/prolfqua-deprecated.md)),
+  [`list_to_contrast_configuration()`](https://fgcz.github.io/prolfqua/reference/list_to_contrast_configuration.md)
+  ([`list_to_ContrastConfiguration()`](https://fgcz.github.io/prolfqua/reference/prolfqua-deprecated.md)),
+  [`summary_ropeca_median_p_scaled()`](https://fgcz.github.io/prolfqua/reference/summary_ropeca_median_p_scaled.md)
+  ([`summary_ROPECA_median_p_scaled()`](https://fgcz.github.io/prolfqua/reference/prolfqua-deprecated.md)),
+  and the misspelt
+  [`missigness_histogram()`](https://fgcz.github.io/prolfqua/reference/prolfqua-deprecated.md)
+  and `LFQDataPlotter$missigness_histogram()` to
+  [`missingness_histogram()`](https://fgcz.github.io/prolfqua/reference/missingness_histogram.md).
+  The old names still work and warn; see
+  [`?"prolfqua-deprecated"`](https://fgcz.github.io/prolfqua/reference/prolfqua-deprecated.md).
+- Simulator arguments renamed: `Nprot` to `n_proteins`, `N` to
+  `n_per_group`, `PEPTIDE` to `peptide`, `TWO` to `two_factor` in
+  [`sim_lfq_data()`](https://fgcz.github.io/prolfqua/reference/sim_lfq_data.md),
+  [`sim_lfq_data_peptide_config()`](https://fgcz.github.io/prolfqua/reference/sim_lfq_data_peptide_config.md),
+  [`sim_lfq_data_protein_config()`](https://fgcz.github.io/prolfqua/reference/sim_lfq_data_protein_config.md),
+  [`sim_lfq_data_2factor_config()`](https://fgcz.github.io/prolfqua/reference/sim_lfq_data_2factor_config.md)
+  and
+  [`sim_build_models_lm()`](https://fgcz.github.io/prolfqua/reference/sim_build_models_lm.md),
+  `_lmer()`, `_logistf()`. The old arguments still work and warn.
+
+### Documentation
+
+- Help pages render Markdown, so code and links that showed as literal
+  backticks or brackets now format; every exported function documents
+  its return value; titles are in sentence case and `lfqdata` arguments
+  share one description.
+
 ## prolfqua 1.9.4
 
 ### New features
@@ -55,19 +124,15 @@
   `not_converged`, and a fit that stops at its iteration limit without a
   backend warning is recorded in `$provenance()`.
 
-- Provenance: `LFQData`, models and analyses record the problems and
-  dropped items that happen in them, read with `$provenance()`: values
-  set to `NA` (`remove_small_intensities()`, zeros in log transforms),
-  removed rows, features and proteins (`remove_decoys()`,
-  `remove_contaminants()`,
-  [`filter_proteins_by_peptide_count()`](https://fgcz.github.io/prolfqua/reference/filter_proteins_by_peptide_count.md)),
-  estimation warnings in aggregation, failed, warned, singular and
-  LOD-refit fits, missing responses dropped per fit, and the subjects
+- Provenance: `LFQData`, models and analyses record problems and dropped
+  items, read with `$provenance()`: values set to `NA`, removed rows,
+  features and proteins, aggregation warnings, failed, warned, singular
+  and LOD-refit fits, missing responses dropped per fit, and subjects
   absent from the contrasts with the reason. Each step reports its new
-  entries in one message or, for failures, one warning;
+  entries in one message (failures: one warning);
   [`print()`](https://rdrr.io/r/base/print.html) and
   [`summary()`](https://rdrr.io/r/base/summary.html) of an analysis show
-  a one-line provenance summary.
+  a one-line summary.
 
 - [`null_split_check()`](https://fgcz.github.io/prolfqua/reference/null_split_check.md)
   checks the calibration of normalization and model together: it splits
@@ -120,49 +185,38 @@
   effect distribution. The QC and Sample Size Estimation vignette
   demonstrates both approaches.
 
-- Fitted analysis results support
-  [`print()`](https://rdrr.io/r/base/print.html) for a concise model
-  overview without computing contrasts, and
-  [`summary()`](https://rdrr.io/r/base/summary.html) for fit status and
-  per-contrast significance counts.
+- Fitted analyses support [`print()`](https://rdrr.io/r/base/print.html)
+  (model overview without computing contrasts),
+  [`summary()`](https://rdrr.io/r/base/summary.html) (fit status and
+  significance counts per contrast),
   [`coef()`](https://rdrr.io/r/stats/coef.html),
-  [`confint()`](https://rdrr.io/r/stats/confint.html),
-  [`formula()`](https://rdrr.io/r/stats/formula.html) and
-  [`nobs()`](https://rdrr.io/r/stats/nobs.html) expose model
-  coefficients, Wald intervals, the fitted specification and observed
-  sample counts in subject-keyed tables.
+  [`confint()`](https://rdrr.io/r/stats/confint.html) (Wald intervals),
+  [`formula()`](https://rdrr.io/r/stats/formula.html),
+  [`nobs()`](https://rdrr.io/r/stats/nobs.html),
   [`fitted()`](https://rdrr.io/r/stats/fitted.values.html) and
-  [`residuals()`](https://rdrr.io/r/stats/residuals.html) return
-  observed responses with sample identifiers and imputation flags, on
-  the fitted response scale.
-  [`plot()`](https://rdrr.io/r/graphics/plot.default.html) returns
-  fitted group means with intervals, or a volcano or MA plot. The
-  Modelling methods vignette demonstrates these methods, and all
-  registered backends are tested against the common result contract.
+  [`residuals()`](https://rdrr.io/r/stats/residuals.html) (with sample
+  identifiers and imputation flags, on the fitted scale) and
+  [`plot()`](https://rdrr.io/r/graphics/plot.default.html) (group means
+  with intervals, volcano or MA plot). All registered backends are
+  tested against this result contract; the Modelling methods vignette
+  shows the methods.
 
 - Fitted analyses retain an independent input snapshot. Matrix models
   retain their response matrix, weights and observed-response mask, and
   LOD-refitted models identify imputed rows for result inspection.
 
 - New method `ropecaV2_nested` (`ContrastsROPECAV2NestedFacade`,
-  `ContrastsROPECAV2`): ROPECA with calibrated protein p-values.
-  `ropeca_nested` tests the median signed peptide p-value against a beta
-  distribution, which is conservative for independent peptides and makes
-  proteins with many correlated peptides too significant; its 10-peptide
-  cap only damps that. `ropecaV2_nested` converts the moderated peptide
-  t-statistics to normal scores and tests their median per protein
-  against its exact null distribution, allowing for the correlation of
-  the peptides of a protein, which it estimates once from the peptide
-  model residuals. Share of p \< 0.05 for proteins that do not change,
-  by number of peptides (prolfquabenchmark vignette `Benchmark_ropeca`):
-  on simulated proteins whose peptide correlation varies between
-  proteins, 0.050 to 0.067 for 2 to 20 peptides, where `ropeca_nested`
-  gives 0.037 to 0.082; on the human proteins of IonStar, whose peptides
-  are nearly uncorrelated, 0.041 to 0.053 for 2 to more than 20
-  peptides, where `ropeca_nested` gives 0.018 down to 0.000. `diff` is
-  the median peptide fold change, as in `ropeca_nested`; `statistic`,
-  `std.error` and the 95% interval follow from the p-value.
-  `ropeca_nested` is unchanged.
+  `ContrastsROPECAV2`): ROPECA with calibrated protein p-values. It
+  converts the moderated peptide t-statistics to normal scores and tests
+  their median per protein against its exact null distribution, allowing
+  for the peptide correlation estimated from the peptide model
+  residuals. `ropeca_nested`, unchanged, is conservative for independent
+  peptides and too significant for proteins with many correlated
+  peptides. Share of p \< 0.05 for unchanged proteins (prolfquabenchmark
+  vignette `Benchmark_ropeca`): 0.050 to 0.067 on simulated data and
+  0.041 to 0.053 on IonStar, against 0.037 to 0.082 and 0.018 to 0.000
+  for `ropeca_nested`. `diff` is the median peptide fold change;
+  `statistic`, `std.error` and the 95% interval follow from the p-value.
 
 - New option `prolfqua.verbose`: set `options(prolfqua.verbose = FALSE)`
   to silence prolfqua’s informative messages (columns added, rows
@@ -248,16 +302,14 @@
   error rather than an unweighted fit. Subset scaling rejects mismatched
   transformation states.
 
-- Fewer hard dependencies: ‘UpSetR’, ‘ComplexHeatmap’, ‘circlize’,
-  ‘plotly’, ‘ggbeeswarm’, ‘progress’, ‘logistf’, ‘lme4’ and ‘lmerTest’
-  moved from Imports to Suggests, and ‘forcats’ and ‘tidyselect’ are no
-  longer needed (Imports: 23 to 12). Heatmaps, UpSet plots, interactive
-  plots, the `firth` and `lmer_nested` methods ask to install the
-  packages they need. Without ‘plotly’ the intensity density plot is
-  static, without ‘ggbeeswarm’ box plots show jittered points, and
-  without ‘progress’ no progress bar is shown. Progress of aggregation
-  and of writing box and aggregation plots now also follows
-  `options(prolfqua.progress)`.
+- Fewer hard dependencies (Imports: 23 to 12): ‘UpSetR’,
+  ‘ComplexHeatmap’, ‘circlize’, ‘plotly’, ‘ggbeeswarm’, ‘progress’,
+  ‘logistf’, ‘lme4’ and ‘lmerTest’ moved to Suggests; ‘forcats’ and
+  ‘tidyselect’ are no longer needed. Functions that need a suggested
+  package ask to install it; without ‘plotly’, ‘ggbeeswarm’ or
+  ‘progress’ the density plot is static, box plots show jittered points
+  and no progress bar is shown. Progress of aggregation and plot writing
+  follows `options(prolfqua.progress)`.
 
 - prolfqua no longer prints internal progress messages such as “setup
   done”, “completing cases”, “contrasts_linfct”, “starting aggregation”,
@@ -277,19 +329,15 @@
   longer warn “Partial NA coefficients” for the proteins they then
   refit. Results are unchanged.
 
-- Missing and non-finite values:
-  [`log()`](https://rdrr.io/r/base/Log.html),
-  [`log2()`](https://rdrr.io/r/base/Log.html) and
-  [`log10()`](https://rdrr.io/r/base/Log.html) transforms turn zero
-  intensities (not detected) into `NA` with a message, instead of `-Inf`
-  with a warning. Fitting and aggregation stop with a classed error on
-  `Inf`, `-Inf` or `NaN` intensities
-  (`prolfqua_error_nonfinite_response`), on `NA` in hierarchy, factor or
-  sample columns (`prolfqua_error_missing_key`), and on inputs without
-  rows; before, such a protein failed to fit and vanished from the
+- Missing and non-finite values: log transforms turn zero intensities
+  into `NA` with a message instead of `-Inf` with a warning. Fitting and
+  aggregation stop with classed errors on `Inf`, `-Inf` or `NaN`
+  intensities (`prolfqua_error_nonfinite_response`), on `NA` in
+  hierarchy, factor or sample columns (`prolfqua_error_missing_key`) and
+  on inputs without rows, where before the protein vanished from the
   contrasts behind a warning.
   [`which_missing()`](https://fgcz.github.io/prolfqua/reference/which_missing.md)
-  rejects input containing `NA`. The policy is described in
+  rejects input containing `NA`. See
   [`?prolfqua`](https://fgcz.github.io/prolfqua/reference/prolfqua-package.md)
   and the Modelling methods vignette.
 
@@ -309,18 +357,16 @@
   could underflow to zero and turn the estimates `NA` on Linux and
   Windows.
 
-- Failed fits and warnings raised while fitting (e.g. `rlm`, `lmer` or
-  Firth not converging) or aggregating (`rlm`, `medpolish`) are reported
-  once per step as one warning of class `prolfqua_fit_failed` naming the
-  subjects and reasons, instead of one warning per protein. The
-  per-protein lmer contrast warnings are part of the single
-  `contrasts_linfct` warning. limma’s “Partial NA coefficients” warning
-  is replaced by a “singular fits” entry in the model’s provenance.
+- Failed fits and warnings while fitting or aggregating
+  (e.g. non-converging `rlm`, `lmer`, Firth or `medpolish`) are reported
+  once per step as one `prolfqua_fit_failed` warning naming subjects and
+  reasons, instead of one warning per protein; lmer contrast warnings
+  join the single `contrasts_linfct` warning, and limma’s “Partial NA
+  coefficients” warning becomes a “singular fits” provenance entry.
   [`transform_work_intensity()`](https://fgcz.github.io/prolfqua/reference/transform_work_intensity.md)
-  returns the rows whose zeros became `NA` (`zeros`) instead of sending
-  a message;
+  returns the rows whose zeros became `NA` (`zeros`) and
   [`estimate_intensity()`](https://fgcz.github.io/prolfqua/reference/estimate_intensity.md)
-  returns per-subject warnings (`failures`) instead of raising them.
+  the per-subject warnings (`failures`) instead of signalling them.
 
 - [`sim_lfq_data_2factor_config()`](https://fgcz.github.io/prolfqua/reference/sim_lfq_data_2factor_config.md)
   no longer warns “Unknown or uninitialised column: `nrPeptides`”.
@@ -447,7 +493,7 @@
   the number of peptides, which made those proteins too significant,
   e.g. p = 0.00067 instead of 0.0031 for two tested peptides and one
   untested.
-  [`summary_ROPECA_median_p_scaled()`](https://fgcz.github.io/prolfqua/reference/summary_ROPECA_median_p_scaled.md)
+  [`summary_ROPECA_median_p_scaled()`](https://fgcz.github.io/prolfqua/reference/prolfqua-deprecated.md)
   now counts only peptides with a p-value in `n_not_na`, as the original
   ROPECA (PECA) does; `df` of `ropeca_nested` changes with it.
 
@@ -538,7 +584,7 @@
 
 ### Bug fixes
 
-- [`LFQDataToSummarizedExperiment()`](https://fgcz.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md)
+- [`LFQDataToSummarizedExperiment()`](https://fgcz.github.io/prolfqua/reference/prolfqua-deprecated.md)
   stops with an install hint when SummarizedExperiment or S4Vectors is
   missing; before, it returned `NULL` silently.
 - `Contrasts$get_contrasts()` no longer prints the debug lines
@@ -762,7 +808,7 @@ Changes for the Bioconductor review
 - [`script_copy_helper_vec()`](https://fgcz.github.io/prolfqua/reference/script_copy_helper_vec.md)
   gains an `overwrite` argument (default `TRUE`, as before).
 - `summary_ROPECA_median_p.scaled()` is renamed to
-  [`summary_ROPECA_median_p_scaled()`](https://fgcz.github.io/prolfqua/reference/summary_ROPECA_median_p_scaled.md)
+  [`summary_ROPECA_median_p_scaled()`](https://fgcz.github.io/prolfqua/reference/prolfqua-deprecated.md)
   (Bioconductor function names must not contain `.`). There is no alias.
 
 ### Removed
@@ -853,6 +899,8 @@ prolfquasaint, prolfquabenchmark, ptm-pipeline).
   missing file;
   [`find_package_file()`](https://fgcz.github.io/prolfqua/reference/find_package_file.md)
   returns `NULL` invisibly when the file is not found.
+- Class vectors of strategies and aggregators include `StrategyBase` and
+  `AggregatorBase`.
 
 ### Removed
 
@@ -860,10 +908,11 @@ prolfquasaint, prolfquabenchmark, ptm-pipeline).
   `contrasts_linfct_firth()`, `effective_contaminant_pattern()`,
   `effective_decoy_pattern()`, `filter_difference()`,
   `hierarchy_counts_sample()`, `is_singular_lm()`,
-  `lfq_power_t_test_quantiles()`, `linfct_all_possible_contrasts()`,
-  `linfct_factors_contrasts()`, `medpolish_estimate()`,
-  `medpolish_estimate_df()`, `medpolish_estimate_dfconfig()`,
-  `moderated_p_limma_long()`, `names_to_matrix()`,
+  [`lfq_power_t_test_quantiles()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_quantiles.md),
+  `linfct_all_possible_contrasts()`, `linfct_factors_contrasts()`,
+  `medpolish_estimate()`, `medpolish_estimate_df()`,
+  `medpolish_estimate_dfconfig()`, `moderated_p_limma_long()`,
+  `names_to_matrix()`,
   [`nr_B_in_A()`](https://fgcz.github.io/prolfqua/reference/nr_B_in_A.md),
   `plot_hierarchies_add_quantline()`, `plot_hierarchies_line_df()`,
   `plot_lmer_peptide_predictions()`, `remove_na_rows()`,
@@ -874,7 +923,7 @@ prolfquasaint, prolfquabenchmark, ptm-pipeline).
   names are unchanged). `unregister_facade()` is no longer exported.
 - Replacements where one exists: sample sizes via
   `LFQDataStats$power_t_test_quantiles()` or
-  [`lfq_power_t_test_quantiles_V2()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_quantiles_V2.md);
+  [`lfq_power_t_test_quantiles_V2()`](https://fgcz.github.io/prolfqua/reference/prolfqua-deprecated.md);
   `summarize_stats(x, factor_key = NULL)` for `summarize_stats_all(x)`;
   the Summariser method `$hierarchy_counts_sample()`.
 - Datasets `data_checksummarizerobust` and `data_correlatedPeptideList`.
@@ -908,14 +957,6 @@ prolfquasaint, prolfquabenchmark, ptm-pipeline).
 - [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
   no longer honours an undocumented `builder` field on facade registry
   entries.
-
-### Internal
-
-- Facades, strategies, aggregators and model classes now share base
-  classes (`ContrastsFacadeBase$.setup()`, `StrategyBase`,
-  `AggregatorBase`, plotting methods on `ModelInterface`); the four
-  `build_model_limma*()` builders share one core. Class vectors of
-  strategies and aggregators gain `StrategyBase` / `AggregatorBase`.
 
 ## prolfqua 1.7.1
 
@@ -966,9 +1007,9 @@ prolfquasaint, prolfquabenchmark, ptm-pipeline).
   is unchanged; only the data column is renamed.
 
 - New
-  [`list_to_ContrastConfiguration()`](https://fgcz.github.io/prolfqua/reference/list_to_ContrastConfiguration.md)
+  [`list_to_ContrastConfiguration()`](https://fgcz.github.io/prolfqua/reference/prolfqua-deprecated.md)
   rebuilds a `ContrastConfiguration` from the plain list produced by
-  [`R6_extract_values()`](https://fgcz.github.io/prolfqua/reference/R6_extract_values.md),
+  [`R6_extract_values()`](https://fgcz.github.io/prolfqua/reference/prolfqua-deprecated.md),
   so a serialized column-role mapping (e.g. from `SummarizedExperiment`
   metadata or an AnnData `uns` entry) can be restored with its methods,
   such as `has_pvalue()`, intact.

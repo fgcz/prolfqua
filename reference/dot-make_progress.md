@@ -1,9 +1,11 @@
 # Build a progress reporter for the per-protein / per-contrast loops
 
-Internal factory used by \`model_analyse()\` and the contrast loops. The
-returned object exposes \`\$tick(len = 1, tokens = list())\`, the same
-contract as \`progress::progress_bar\`, so call sites are agnostic to
-which reporter they received.
+Internal factory used by
+[`model_analyse()`](https://fgcz.github.io/prolfqua/reference/model_analyse.md)
+and the contrast loops. The returned object exposes
+`$tick(len = 1, tokens = list())`, the same contract as
+[`progress::progress_bar`](http://r-lib.github.io/progress/reference/progress_bar.md),
+so call sites are agnostic to which reporter they received.
 
 ## Usage
 
@@ -19,7 +21,7 @@ which reporter they received.
 
 - total:
 
-  number of iterations; \`\<= 0\` yields a no-op reporter.
+  number of iterations; `<= 0` yields a no-op reporter.
 
 - label:
 
@@ -28,21 +30,24 @@ which reporter they received.
 - reporter:
 
   reporter selector; see Details. Defaults to
-  \`getOption("prolfqua.progress", NULL)\`.
+  `getOption("prolfqua.progress", NULL)`.
 
 ## Value
 
-an object with a \`\$tick()\` method.
+an object with a `$tick()` method.
 
 ## Details
 
-The \`reporter\` argument (defaulting to the \`prolfqua.progress\`
-option) selects the mode:
+The `reporter` argument (defaulting to the `prolfqua.progress` option)
+selects the mode:
 
-- \`NULL\` – the legacy \`progress::progress_bar\` (terminal,
-  unchanged).
+- `NULL` – the legacy
+  [`progress::progress_bar`](http://r-lib.github.io/progress/reference/progress_bar.md)
+  (terminal, unchanged).
 
-- a \`function(i, total, label)\` – a throttled user callback, e.g. one
-  that calls \`logger::log_info()\`.
+- a `function(i, total, label)` – a throttled user callback, e.g. one
+  that calls `logger::log_info()`.
 
-- \`"message"\` – a throttled \`message()\` heartbeat with elapsed/ETA.
+- `"message"` – a throttled
+  [`message()`](https://rdrr.io/r/base/message.html) heartbeat with
+  elapsed/ETA.

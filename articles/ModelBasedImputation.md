@@ -13,7 +13,7 @@ value, and with it exactly these proteins.
 ``` r
 library(prolfqua)
 library(ggplot2)
-sim <- sim_lfq_data_protein_config(Nprot = 100, weight_missing = 0.5, seed = 1234)
+sim <- sim_lfq_data_protein_config(n_proteins = 100, weight_missing = 0.5, seed = 1234)
 lfq <- LFQData$new(sim$data, sim$config)
 
 wide <- lfq$data_wide(as.matrix = TRUE)$data
@@ -213,7 +213,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] ggplot2_4.0.4    prolfqua_1.9.4   BiocStyle_2.40.0
+    ## [1] ggplot2_4.0.4    prolfqua_1.9.5   BiocStyle_2.40.0
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] shape_1.4.6.1         circlize_0.4.18       gtable_0.3.6         

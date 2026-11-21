@@ -1,6 +1,6 @@
-# visualize intensity distributions
+# Visualize intensity distributions
 
-visualize intensity distributions
+Visualize intensity distributions
 
 visualize intensity distributions
 
@@ -32,31 +32,39 @@ plot_intensity_distribution_density(
 
 - sample_name:
 
-  character — sample column name
+  character - sample column name
 
 - response:
 
-  character — intensity column name
+  character - intensity column name
 
 - is_transformed:
 
-  logical — is intensity log-transformed?
+  logical - is intensity log-transformed?
 
 - legend:
 
-  show legend. If \`NA\`, hide automatically when the number of samples
-  is larger than \`max_legend_samples\`.
+  show legend. If `NA`, hide automatically when the number of samples is
+  larger than `max_legend_samples`.
 
 - max_legend_samples:
 
   maximum number of samples for automatic legend display.
+
+## Value
+
+`plot_intensity_distribution_violin()`: a ggplot object with one violin
+of the intensities per sample and the median marked.
+
+`plot_intensity_distribution_density()`: a ggplot object with one
+density line of the intensities per sample.
 
 ## See also
 
 Other plotting:
 [`ContrastsPlotter`](https://fgcz.github.io/prolfqua/reference/ContrastsPlotter.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`missigness_histogram()`](https://fgcz.github.io/prolfqua/reference/missigness_histogram.md),
+[`missingness_histogram()`](https://fgcz.github.io/prolfqua/reference/missingness_histogram.md),
 [`missingness_per_condition()`](https://fgcz.github.io/prolfqua/reference/missingness_per_condition.md),
 [`missingness_per_condition_cumsum()`](https://fgcz.github.io/prolfqua/reference/missingness_per_condition_cumsum.md),
 [`plot_estimate()`](https://fgcz.github.io/prolfqua/reference/plot_estimate.md),

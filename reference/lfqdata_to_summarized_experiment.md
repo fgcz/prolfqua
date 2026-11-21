@@ -1,18 +1,19 @@
-# converts LFQData object to SummarizedExperiment
+# Convert an LFQData object to a SummarizedExperiment
 
 For compatibility with Bioconductor
 
 ## Usage
 
 ``` r
-LFQDataToSummarizedExperiment(lfqdata)
+lfqdata_to_summarized_experiment(lfqdata)
 ```
 
 ## Arguments
 
 - lfqdata:
 
-  LFQData object
+  [LFQData](https://fgcz.github.io/prolfqua/reference/LFQData.md) object
+  with the data and its configuration
 
 ## Value
 
@@ -132,11 +133,16 @@ lfqdata$data_wide()
 #>     work_intensity: abundance
 #> 
 if(require("SummarizedExperiment")){
-   tmp <- LFQDataToSummarizedExperiment(lfqdata)
+   tmp <- lfqdata_to_summarized_experiment(lfqdata)
 }
 #> Loading required package: SummarizedExperiment
 #> Loading required package: MatrixGenerics
 #> Loading required package: matrixStats
+#> 
+#> Attaching package: ‘matrixStats’
+#> The following objects are masked from ‘package:Biobase’:
+#> 
+#>     anyMissing, rowMedians
 #> 
 #> Attaching package: ‘MatrixGenerics’
 #> The following objects are masked from ‘package:matrixStats’:
@@ -156,29 +162,11 @@ if(require("SummarizedExperiment")){
 #>     rowSdDiffs, rowSds, rowSums2, rowTabulates, rowVarDiffs, rowVars,
 #>     rowWeightedMads, rowWeightedMeans, rowWeightedMedians,
 #>     rowWeightedSds, rowWeightedVars
+#> The following object is masked from ‘package:Biobase’:
+#> 
+#>     rowMedians
 #> Loading required package: GenomicRanges
 #> Loading required package: stats4
-#> Loading required package: BiocGenerics
-#> Loading required package: generics
-#> 
-#> Attaching package: ‘generics’
-#> The following objects are masked from ‘package:base’:
-#> 
-#>     as.difftime, as.factor, as.ordered, intersect, is.element, setdiff,
-#>     setequal, union
-#> 
-#> Attaching package: ‘BiocGenerics’
-#> The following objects are masked from ‘package:stats’:
-#> 
-#>     IQR, mad, sd, var, xtabs
-#> The following objects are masked from ‘package:base’:
-#> 
-#>     Filter, Find, Map, Position, Reduce, anyDuplicated, aperm, append,
-#>     as.data.frame, basename, cbind, colnames, dirname, do.call,
-#>     duplicated, eval, evalq, get, grep, grepl, is.unsorted, lapply,
-#>     mapply, match, mget, order, paste, pmax, pmax.int, pmin, pmin.int,
-#>     rank, rbind, rownames, sapply, saveRDS, table, tapply, unique,
-#>     unsplit, which.max, which.min
 #> Loading required package: S4Vectors
 #> 
 #> Attaching package: ‘S4Vectors’
@@ -190,18 +178,4 @@ if(require("SummarizedExperiment")){
 #>     I, expand.grid, unname
 #> Loading required package: IRanges
 #> Loading required package: Seqinfo
-#> Loading required package: Biobase
-#> Welcome to Bioconductor
-#> 
-#>     Vignettes contain introductory material; view with
-#>     'browseVignettes()'. To cite Bioconductor, see
-#>     'citation("Biobase")', and for packages 'citation("pkgname")'.
-#> 
-#> Attaching package: ‘Biobase’
-#> The following object is masked from ‘package:MatrixGenerics’:
-#> 
-#>     rowMedians
-#> The following objects are masked from ‘package:matrixStats’:
-#> 
-#>     anyMissing, rowMedians
 ```

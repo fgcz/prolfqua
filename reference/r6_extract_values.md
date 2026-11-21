@@ -5,7 +5,7 @@ Extract all value slots in an R6 object
 ## Usage
 
 ``` r
-R6_extract_values(r6class)
+r6_extract_values(r6class)
 ```
 
 ## Arguments
@@ -25,7 +25,7 @@ Other configuration:
 [`ContrastConfiguration`](https://fgcz.github.io/prolfqua/reference/ContrastConfiguration.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
 [`complete_cases()`](https://fgcz.github.io/prolfqua/reference/complete_cases.md),
-[`list_to_ContrastConfiguration()`](https://fgcz.github.io/prolfqua/reference/list_to_ContrastConfiguration.md),
+[`list_to_contrast_configuration()`](https://fgcz.github.io/prolfqua/reference/list_to_contrast_configuration.md),
 [`make_interaction_column()`](https://fgcz.github.io/prolfqua/reference/make_interaction_column.md),
 [`make_reduced_hierarchy_config()`](https://fgcz.github.io/prolfqua/reference/make_reduced_hierarchy_config.md),
 [`sample_subset()`](https://fgcz.github.io/prolfqua/reference/sample_subset.md),
@@ -42,7 +42,7 @@ bb <- sim_lfq_data_peptide_config()
 #> creating sampleName from file_name column
 #> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
 #> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
-values <- R6_extract_values(bb$config)
+values <- r6_extract_values(bb$config)
 names(values)
 #>  [1] "min_peptides_protein"    "hierarchy_depth"        
 #>  [3] "hierarchy"               "factor_depth"           

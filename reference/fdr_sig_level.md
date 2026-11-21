@@ -6,7 +6,7 @@ the result to
 [`stats::power.t.test()`](https://rdrr.io/r/stats/power.t.test.html),
 [`lfq_power_t_test_proteins()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_proteins.md),
 or
-[`lfq_power_t_test_quantiles_V2()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_quantiles_V2.md).
+[`lfq_power_t_test_quantiles()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_quantiles.md).
 
 ## Usage
 
@@ -62,7 +62,7 @@ Other stats:
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
 [`compute_pooled()`](https://fgcz.github.io/prolfqua/reference/pooled_var.md),
 [`lfq_power_t_test_proteins()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_proteins.md),
-[`lfq_power_t_test_quantiles_V2()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_quantiles_V2.md),
+[`lfq_power_t_test_quantiles()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_quantiles.md),
 [`null_split_check()`](https://fgcz.github.io/prolfqua/reference/null_split_check.md),
 [`plot_stat_density()`](https://fgcz.github.io/prolfqua/reference/plot_stat_density.md),
 [`plot_stat_density_median()`](https://fgcz.github.io/prolfqua/reference/plot_stat_density_median.md),

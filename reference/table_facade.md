@@ -1,6 +1,6 @@
-# table facade to easily switch implementations
+# Table facade to easily switch implementations
 
-table facade to easily switch implementations
+Table facade to easily switch implementations
 
 ## Usage
 

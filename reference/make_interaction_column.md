@@ -1,6 +1,6 @@
-# create interaction column from factors
+# Create an interaction column from factors
 
-create interaction column from factors
+Create an interaction column from factors
 
 ## Usage
 
@@ -8,16 +8,21 @@ create interaction column from factors
 make_interaction_column(data, columns, sep = ".")
 ```
 
+## Value
+
+`data` with an added factor column `interaction` combining the values of
+`columns`, each prefixed with its column name and joined by `sep`
+
 ## See also
 
 Other configuration:
 [`AnalysisConfiguration`](https://fgcz.github.io/prolfqua/reference/AnalysisConfiguration.md),
 [`ContrastConfiguration`](https://fgcz.github.io/prolfqua/reference/ContrastConfiguration.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`R6_extract_values()`](https://fgcz.github.io/prolfqua/reference/R6_extract_values.md),
 [`complete_cases()`](https://fgcz.github.io/prolfqua/reference/complete_cases.md),
-[`list_to_ContrastConfiguration()`](https://fgcz.github.io/prolfqua/reference/list_to_ContrastConfiguration.md),
+[`list_to_contrast_configuration()`](https://fgcz.github.io/prolfqua/reference/list_to_contrast_configuration.md),
 [`make_reduced_hierarchy_config()`](https://fgcz.github.io/prolfqua/reference/make_reduced_hierarchy_config.md),
+[`r6_extract_values()`](https://fgcz.github.io/prolfqua/reference/r6_extract_values.md),
 [`sample_subset()`](https://fgcz.github.io/prolfqua/reference/sample_subset.md),
 [`separate_hierarchy()`](https://fgcz.github.io/prolfqua/reference/separate_hierarchy.md),
 [`setup_analysis()`](https://fgcz.github.io/prolfqua/reference/setup_analysis.md),

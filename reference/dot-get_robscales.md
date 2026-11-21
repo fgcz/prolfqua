@@ -1,6 +1,6 @@
-# compute median and mad on matrix
+# Compute medians and MADs of a matrix along one margin
 
-compute median and mad on matrix
+Compute medians and MADs of a matrix along one margin
 
 ## Usage
 

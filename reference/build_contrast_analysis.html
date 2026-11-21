@@ -19,7 +19,7 @@ columns and can be compared or combined."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -83,7 +83,7 @@ columns and can be compared or combined.</p>
 
 
 <dl><dt id="arg-lfqdata">lfqdata<a class="anchor" aria-label="anchor" href="#arg-lfqdata"></a></dt>
-<dd><p>an <code><a href="LFQData.html">LFQData</a></code> object</p></dd>
+<dd><p><a href="LFQData.html">LFQData</a> object with the data and its configuration</p></dd>
 
 
 <dt id="arg-modelstr">modelstr<a class="anchor" aria-label="anchor" href="#arg-modelstr"></a></dt>
@@ -123,7 +123,7 @@ authoritative list is <code>names(<a href="list_facades.html">list_facades</a>()
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>a facade object of the class registered for <code>method</code>, see
-  <code><a href="lookup_facade.html">lookup_facade</a></code>.</p>
+<code><a href="lookup_facade.html">lookup_facade</a></code>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -132,60 +132,60 @@ report protein-level contrasts; the others take input at the level they
 report, usually aggregated proteins. <code>"limpa"</code> needs input aggregated
 with <code><a href="AggregateLimpa.html">AggregateLimpa</a></code>.</p>
 <p>The formula is translated into a design matrix with R's current
-  contrast options (normally treatment coding). Configured predictors are
-  categorical labels; their reference level is normally the first sorted
-  level. Each contrast expression combines group-level coefficient weights,
-  rather than referring directly to design-matrix coefficient names. For
-  example, <code>"group_A - group_Ctrl"</code> subtracts the control group mean
-  from the A group mean, including the reference coefficient as needed.
-  Interaction cell means are named with a colon and quoted with backticks
-  inside expressions. See the <em>Under the hood</em> article for worked
-  one-factor and <code>~ A * B</code> design matrices and linear functions.</p>
+contrast options (normally treatment coding). Configured predictors are
+categorical labels; their reference level is normally the first sorted
+level. Each contrast expression combines group-level coefficient weights,
+rather than referring directly to design-matrix coefficient names. For
+example, <code>"group_A - group_Ctrl"</code> subtracts the control group mean
+from the A group mean, including the reference coefficient as needed.
+Interaction cell means are named with a colon and quoted with backticks
+inside expressions. See the <em>Under the hood</em> article for worked
+one-factor and <code>~ A * B</code> design matrices and linear functions.</p>
 <p>Internally, <code>limpa_nested</code> and <code>hurdle_nested</code> aggregate child
-  features to proteins. Detection methods (<code>binomial_nested</code>,
-  <code>binomial_firth_nested</code>, <code>firth</code>, and the detection component
-  of <code>hurdle_nested</code>) encode intensities as detected/not detected.
-  These aggregation and detection steps have no inverse. The analysis keeps
-  its input in <code>analysis$.lfqdata</code>; for aggregated input this is already
-  at the modelled hierarchy. <code><a href="https://rdrr.io/r/stats/fitted.values.html" class="external-link">fitted()</a></code> and <code><a href="https://rdrr.io/r/stats/residuals.html" class="external-link">residuals()</a></code> expose
-  the modelled observed responses (inspect each hurdle component separately).
-  Intensity effects are differences on the modelled scale, hence log2 fold
-  changes for log2 responses; detection effects are log odds ratios, with
-  fitted responses reported as probabilities. Transformations performed
-  before this call retain their input columns in LFQData; this call does not
-  record a transformation history or infer inverse transformations.</p>
+features to proteins. Detection methods (<code>binomial_nested</code>,
+<code>binomial_firth_nested</code>, <code>firth</code>, and the detection component
+of <code>hurdle_nested</code>) encode intensities as detected/not detected.
+These aggregation and detection steps have no inverse. The analysis keeps
+its input in <code>analysis$.lfqdata</code>; for aggregated input this is already
+at the modelled hierarchy. <code><a href="https://rdrr.io/r/stats/fitted.values.html" class="external-link">fitted()</a></code> and <code><a href="https://rdrr.io/r/stats/residuals.html" class="external-link">residuals()</a></code> expose
+the modelled observed responses (inspect each hurdle component separately).
+Intensity effects are differences on the modelled scale, hence log2 fold
+changes for log2 responses; detection effects are log odds ratios, with
+fitted responses reported as probabilities. Transformations performed
+before this call retain their input columns in LFQData; this call does not
+record a transformation history or infer inverse transformations.</p>
 <p>With a fixed design and fixed observations per protein, the per-protein
-  <code>lm</code> and <code>lmer_nested</code> fitting loops grow approximately linearly
-  with the number of proteins and run sequentially. <code>limma</code> fits the
-  expression matrix in one call and has lower per-protein overhead.
-  Single-run elapsed seconds for 500, 1000 and 2000 proteins were respectively
-  0.173, 0.288 and 0.592 for <code>lm</code>; 0.077, 0.043 and 0.050 for
-  <code>limma</code>; and 7.902, 15.314 and 29.667 for <code>lmer_nested</code>
-  (R 4.6.2, arm64 macOS, 12 samples, three peptides per protein for the
-  nested model, no missing responses). These timings cover facade
-  construction, including fitting, but exclude lazy contrast extraction.
-  They are illustrative timings, not guarantees: sample count, design width,
-  missingness and mixed-model convergence affect cost. Some mixed fits in
-  this run emitted convergence warnings. Reproduction code and environment
-  details are in <code>srr/benchmark-runtime.R</code> in the source repository.</p>
+<code>lm</code> and <code>lmer_nested</code> fitting loops grow approximately linearly
+with the number of proteins and run sequentially. <code>limma</code> fits the
+expression matrix in one call and has lower per-protein overhead.
+Single-run elapsed seconds for 500, 1000 and 2000 proteins were respectively
+0.173, 0.288 and 0.592 for <code>lm</code>; 0.077, 0.043 and 0.050 for
+<code>limma</code>; and 7.902, 15.314 and 29.667 for <code>lmer_nested</code>
+(R 4.6.2, arm64 macOS, 12 samples, three peptides per protein for the
+nested model, no missing responses). These timings cover facade
+construction, including fitting, but exclude lazy contrast extraction.
+They are illustrative timings, not guarantees: sample count, design width,
+missingness and mixed-model convergence affect cost. Some mixed fits in
+this run emitted convergence warnings. Reproduction code and environment
+details are in <code>srr/benchmark-runtime.R</code> in the source repository.</p>
     </div>
     <div class="section level2">
     <h2 id="prior-art">Prior art<a class="anchor" aria-label="anchor" href="#prior-art"></a></h2>
 
 
 <ul><li><p>Improvements on existing R implementations, applied per protein behind one interface:
-    <code>lm</code> (stats), <code>rlm</code> (MASS), <code>rfit</code> (Rfit), <code>limma</code> and <code>limma_voom</code> (limma),
-    <code>deqms</code> (DEqMS), <code>limpa</code> and <code>limpa_nested</code> (limpa), <code>lmer_nested</code> (lme4, lmerTest),
-    <code>firth</code> (logistf).</p></li>
+<code>lm</code> (stats), <code>rlm</code> (MASS), <code>rfit</code> (Rfit), <code>limma</code> and <code>limma_voom</code> (limma),
+<code>deqms</code> (DEqMS), <code>limpa</code> and <code>limpa_nested</code> (limpa), <code>lmer_nested</code> (lme4, lmerTest),
+<code>firth</code> (logistf).</p></li>
 <li><p>Reimplementation in R of a published method: <code>ropeca_nested</code>, ROPECA (Suomi and Elo 2017,
-    Bioconductor package PECA), on peptide-level models of any design.</p></li>
+Bioconductor package PECA), on peptide-level models of any design.</p></li>
 <li><p>First implementations of new methods: the <code>_impute</code> methods (<code>lm_impute</code>,
-    <code>rfit_impute</code>, <code>limma_impute</code>, <code>limma_voom_impute</code>), which refit groups without
-    observations at the limit of detection with a borrowed variance (Wolski et al. 2023);
-    <code>ropecaV2_nested</code>, a median peptide z-score with a correlation-aware null; <code>binomial_nested</code> and
-    <code>binomial_firth_nested</code>, per-protein models of peptide detection.</p></li>
+<code>rfit_impute</code>, <code>limma_impute</code>, <code>limma_voom_impute</code>), which refit groups without
+observations at the limit of detection with a borrowed variance (Wolski et al. 2023);
+<code>ropecaV2_nested</code>, a median peptide z-score with a correlation-aware null; <code>binomial_nested</code> and
+<code>binomial_firth_nested</code>, per-protein models of peptide detection.</p></li>
 <li><p><code>hurdle_nested</code> combines the intensity and detection tests as msqrob2's
-    <code>hypothesisTestHurdle</code> does, on prolfqua's own components.</p></li>
+<code>hypothesisTestHurdle</code> does, on prolfqua's own components.</p></li>
 </ul><p>The Comparing methods article on the package website compares these
 implementations on one dataset. Comparisons with MSstats, msqrob2 and proDA are in the companion package
 prolfquabenchmark.</p>
@@ -224,7 +224,6 @@ prolfquabenchmark.</p>
 <code><a href="ContrastsRfitImputeFacade.html">ContrastsRfitImputeFacade</a></code>,
 <code><a href="ContrastsTable.html">ContrastsTable</a></code>,
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
-<code><a href="LR_test.html">LR_test()</a></code>,
 <code><a href="Model.html">Model</a></code>,
 <code><a href="ModelFirth.html">ModelFirth</a></code>,
 <code><a href="ModelLimma.html">ModelLimma</a></code>,
@@ -259,6 +258,7 @@ prolfquabenchmark.</p>
 <code><a href="linfct_matrix_contrasts.html">linfct_matrix_contrasts()</a></code>,
 <code><a href="list_facades.html">list_facades()</a></code>,
 <code><a href="lookup_facade.html">lookup_facade()</a></code>,
+<code><a href="lr_test.html">lr_test()</a></code>,
 <code><a href="merge_contrasts_results.html">merge_contrasts_results()</a></code>,
 <code><a href="model_analyse.html">model_analyse()</a></code>,
 <code><a href="model_summary.html">model_summary()</a></code>,
@@ -279,13 +279,13 @@ prolfquabenchmark.</p>
 <code><a href="strategy_limma.html">strategy_limma()</a></code>,
 <code><a href="strategy_limpa.html">strategy_limpa()</a></code>,
 <code><a href="strategy.html">strategy_logistf()</a></code>,
-<code><a href="summary_ROPECA_median_p_scaled.html">summary_ROPECA_median_p_scaled()</a></code>,
+<code><a href="summary_ropeca_median_p_scaled.html">summary_ropeca_median_p_scaled()</a></code>,
 <code><a href="vcov.rfit_prolfqua.html">vcov.rfit_prolfqua()</a></code></p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_lfq_data_protein_config.html">sim_lfq_data_protein_config</a></span><span class="op">(</span>Nprot <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_lfq_data_protein_config.html">sim_lfq_data_protein_config</a></span><span class="op">(</span>n_proteins <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from file_name column</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> setup_analysis: dropped 5 unconfigured columns: average_prot_abundance, sd, mean, N, Replicate.</span>

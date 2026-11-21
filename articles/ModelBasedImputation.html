@@ -19,7 +19,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -94,7 +94,7 @@ value, and with it exactly these proteins.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/fgcz/prolfqua" class="external-link">prolfqua</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span><span class="va">sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_lfq_data_protein_config.html">sim_lfq_data_protein_config</a></span><span class="op">(</span>Nprot <span class="op">=</span> <span class="fl">100</span>, weight_missing <span class="op">=</span> <span class="fl">0.5</span>, seed <span class="op">=</span> <span class="fl">1234</span><span class="op">)</span></span>
+<span><span class="va">sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_lfq_data_protein_config.html">sim_lfq_data_protein_config</a></span><span class="op">(</span>n_proteins <span class="op">=</span> <span class="fl">100</span>, weight_missing <span class="op">=</span> <span class="fl">0.5</span>, seed <span class="op">=</span> <span class="fl">1234</span><span class="op">)</span></span>
 <span><span class="va">lfq</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">sim</span><span class="op">$</span><span class="va">data</span>, <span class="va">sim</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">wide</span> <span class="op">&lt;-</span> <span class="va">lfq</span><span class="op">$</span><span class="fu">data_wide</span><span class="op">(</span>as.matrix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="va">data</span></span>
@@ -478,7 +478,7 @@ matrix to look at the data; for tests use the contrasts of
 <span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] ggplot2_4.0.4    prolfqua_1.9.4   BiocStyle_2.40.0</span></span>
+<span><span class="co">## [1] ggplot2_4.0.4    prolfqua_1.9.5   BiocStyle_2.40.0</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##  [1] shape_1.4.6.1         circlize_0.4.18       gtable_0.3.6         </span></span>

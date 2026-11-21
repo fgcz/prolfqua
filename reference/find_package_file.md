@@ -1,6 +1,6 @@
-# find file stored in package
+# Find a file stored in a package
 
-find file stored in package
+Find a file stored in a package
 
 ## Usage
 

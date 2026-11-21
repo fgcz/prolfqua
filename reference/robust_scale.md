@@ -1,12 +1,19 @@
-# robust scale wrapper
+# Robustly scale a matrix by medians and MADs
 
-robust scale wrapper
+Robustly scale a matrix by medians and MADs
 
 ## Usage
 
 ``` r
 robust_scale(data, dim = 2, preserve_mean = FALSE)
 ```
+
+## Value
+
+a matrix like `data`, centred by the median of each column (`dim = 2`)
+or row (`dim = 1`) and divided by its MAD relative to the mean MAD; only
+centred, with a warning, if a MAD is zero; with `preserve_mean = TRUE`
+the mean of the medians is added back
 
 ## See also
 

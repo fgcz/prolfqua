@@ -1,6 +1,6 @@
-# visualize correlation among samples
+# Visualize correlation among samples
 
-visualize correlation among samples
+Visualize correlation among samples
 
 ## Usage
 
@@ -12,23 +12,32 @@ plot_sample_correlation(matrix, method = "pearson", ...)
 
 - matrix:
 
-  numeric matrix — wide-format intensity data (samples as columns)
+  numeric matrix - wide-format intensity data (samples as columns)
 
 - method:
 
-  correlation method, as for \[plot_heatmap_cor()\]
+  correlation method, as for
+  [`plot_heatmap_cor()`](https://fgcz.github.io/prolfqua/reference/plot_heatmap_cor.md)
 
 - ...:
 
-  passed to \[corrplot::corrplot.mixed()\], e.g. \`tl.cex\` and
-  \`number.cex\` for text size (default 1)
+  passed to
+  [`corrplot::corrplot.mixed()`](https://rdrr.io/pkg/corrplot/man/corrplot.mixed.html),
+  e.g. `tl.cex` and `number.cex` for text size (default 1)
+
+## Value
+
+invisibly, the list returned by
+[`corrplot::corrplot.mixed()`](https://rdrr.io/pkg/corrplot/man/corrplot.mixed.html)
+with the correlation matrix `corr` and the cell positions `corrPos`;
+called for its side effect of drawing the plot
 
 ## See also
 
 Other plotting:
 [`ContrastsPlotter`](https://fgcz.github.io/prolfqua/reference/ContrastsPlotter.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`missigness_histogram()`](https://fgcz.github.io/prolfqua/reference/missigness_histogram.md),
+[`missingness_histogram()`](https://fgcz.github.io/prolfqua/reference/missingness_histogram.md),
 [`missingness_per_condition()`](https://fgcz.github.io/prolfqua/reference/missingness_per_condition.md),
 [`missingness_per_condition_cumsum()`](https://fgcz.github.io/prolfqua/reference/missingness_per_condition_cumsum.md),
 [`plot_estimate()`](https://fgcz.github.io/prolfqua/reference/plot_estimate.md),

@@ -9,7 +9,7 @@ Create various visualization of the LFQdata"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -76,8 +76,8 @@ Create various visualization of the LFQdata</p>
 <code><a href="LFQData.html">LFQData</a></code>,
 <code><a href="LFQDataStats.html">LFQDataStats</a></code>,
 <code><a href="LFQDataSummariser.html">LFQDataSummariser</a></code>,
-<code><a href="LFQDataToSummarizedExperiment.html">LFQDataToSummarizedExperiment()</a></code>,
 <code><a href="lfqdata_from_wide.html">lfqdata_from_wide()</a></code>,
+<code><a href="lfqdata_to_summarized_experiment.html">lfqdata_to_summarized_experiment()</a></code>,
 <code><a href="plot.LFQData.html">plot.LFQData()</a></code></p></div>
     </div>
     <div class="section level2">
@@ -104,6 +104,7 @@ Create various visualization of the LFQdata</p>
 <li><p><a href="#method-LFQDataPlotter-pca"><code>LFQDataPlotter$pca()</code></a></p></li>
 <li><p><a href="#method-LFQDataPlotter-pca_plotly"><code>LFQDataPlotter$pca_plotly()</code></a></p></li>
 <li><p><a href="#method-LFQDataPlotter-boxplots"><code>LFQDataPlotter$boxplots()</code></a></p></li>
+<li><p><a href="#method-LFQDataPlotter-missingness_histogram"><code>LFQDataPlotter$missingness_histogram()</code></a></p></li>
 <li><p><a href="#method-LFQDataPlotter-missigness_histogram"><code>LFQDataPlotter$missigness_histogram()</code></a></p></li>
 <li><p><a href="#method-LFQDataPlotter-na_heatmap"><code>LFQDataPlotter$na_heatmap()</code></a></p></li>
 <li><p><a href="#method-LFQDataPlotter-intensity_distribution_density"><code>LFQDataPlotter$intensity_distribution_density()</code></a></p></li>
@@ -122,7 +123,7 @@ Create various visualization of the LFQdata</p>
 </div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>lfqdata</code></dt>
-<dd><p>LFQData</p></dd>
+<dd><p><a href="LFQData.html">LFQData</a> object with the data and its configuration</p></dd>
 
       <dt><code>prefix</code></dt>
 <dd><p>will be prepended to outputs written</p></dd>
@@ -318,13 +319,25 @@ first, e.g. with <code><a href="AggregateLimpa.html">AggregateLimpa</a></code> i
 
 </div>
 
-<p></p><hr><a id="method-LFQDataPlotter-missigness_histogram"></a><div class="section">
-<h3 id="lfqdataplotter-missigness-histogram-"><code>LFQDataPlotter$missigness_histogram()</code><a class="anchor" aria-label="anchor" href="#lfqdataplotter-missigness-histogram-"></a></h3>
+<p></p><hr><a id="method-LFQDataPlotter-missingness_histogram"></a><div class="section">
+<h3 id="lfqdataplotter-missingness-histogram-"><code>LFQDataPlotter$missingness_histogram()</code><a class="anchor" aria-label="anchor" href="#lfqdataplotter-missingness-histogram-"></a></h3>
 <p>histogram of intensities given number of missing in conditions</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataPlotter</span><span class="op">$</span><span class="fu">missigness_histogram</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataPlotter</span><span class="op">$</span><span class="fu">missingness_histogram</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
+<p>ggplot</p>
+</div>
+
+</div>
+
+<p></p><hr><a id="method-LFQDataPlotter-missigness_histogram"></a><div class="section">
+<h3 id="lfqdataplotter-missigness-histogram-"><code>LFQDataPlotter$missigness_histogram()</code><a class="anchor" aria-label="anchor" href="#lfqdataplotter-missigness-histogram-"></a></h3>
+<p>Deprecated; use <code>$missingness_histogram()</code>.</p><div class="section">
+<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataPlotter</span><span class="op">$</span><span class="fu">missigness_histogram</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
 <p>ggplot</p>
 </div>
 
@@ -333,10 +346,10 @@ first, e.g. with <code><a href="AggregateLimpa.html">AggregateLimpa</a></code> i
 <p></p><hr><a id="method-LFQDataPlotter-na_heatmap"></a><div class="section">
 <h3 id="lfqdataplotter-na-heatmap-"><code>LFQDataPlotter$na_heatmap()</code><a class="anchor" aria-label="anchor" href="#lfqdataplotter-na-heatmap-"></a></h3>
 <p>heatmap of features with missing values</p><div class="section">
-<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
+<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataPlotter</span><span class="op">$</span><span class="fu">na_heatmap</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
+<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
 <p>ComplexHeatmap::Heatmap</p>
 </div>
 
@@ -345,7 +358,7 @@ first, e.g. with <code><a href="AggregateLimpa.html">AggregateLimpa</a></code> i
 <p></p><hr><a id="method-LFQDataPlotter-intensity_distribution_density"></a><div class="section">
 <h3 id="lfqdataplotter-intensity-distribution-density-"><code>LFQDataPlotter$intensity_distribution_density()</code><a class="anchor" aria-label="anchor" href="#lfqdataplotter-intensity-distribution-density-"></a></h3>
 <p>density distribution of intensities</p><div class="section">
-<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
+<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataPlotter</span><span class="op">$</span><span class="fu">intensity_distribution_density</span><span class="op">(</span></span>
 <span>  legend <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  max_legend_samples <span class="op">=</span> <span class="fl">16</span></span>
@@ -363,7 +376,7 @@ display.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
+<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
 <p>ggplot</p>
 </div>
 
@@ -372,10 +385,10 @@ display.</p></dd>
 <p></p><hr><a id="method-LFQDataPlotter-intensity_distribution_violin"></a><div class="section">
 <h3 id="lfqdataplotter-intensity-distribution-violin-"><code>LFQDataPlotter$intensity_distribution_violin()</code><a class="anchor" aria-label="anchor" href="#lfqdataplotter-intensity-distribution-violin-"></a></h3>
 <p>Violinplot showing distribution of intensities in all samples</p><div class="section">
-<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
+<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataPlotter</span><span class="op">$</span><span class="fu">intensity_distribution_violin</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
+<h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
 <p>ggplot</p>
 </div>
 
@@ -384,31 +397,12 @@ display.</p></dd>
 <p></p><hr><a id="method-LFQDataPlotter-pairs_smooth"></a><div class="section">
 <h3 id="lfqdataplotter-pairs-smooth-"><code>LFQDataPlotter$pairs_smooth()</code><a class="anchor" aria-label="anchor" href="#lfqdataplotter-pairs-smooth-"></a></h3>
 <p>pairsplot of intensities</p><div class="section">
-<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
+<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataPlotter</span><span class="op">$</span><span class="fu">pairs_smooth</span><span class="op">(</span>max <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>max</code></dt>
 <dd><p>maximal number of samples to show</p></dd>
-
-
-</dl><p></p></div>
-</div><p></p><div class="section">
-<h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
-<p>NULL</p>
-</div>
-
-</div>
-
-<p></p><hr><a id="method-LFQDataPlotter-sample_correlation"></a><div class="section">
-<h3 id="lfqdataplotter-sample-correlation-"><code>LFQDataPlotter$sample_correlation()</code><a class="anchor" aria-label="anchor" href="#lfqdataplotter-sample-correlation-"></a></h3>
-<p>plot of sample correlations</p><div class="section">
-<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataPlotter</span><span class="op">$</span><span class="fu">sample_correlation</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"pearson"</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div><p></p><div class="section">
-<h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>method</code></dt>
-<dd><p>correlation method or function, see <code><a href="plot_heatmap_cor.html">plot_heatmap_cor</a></code></p></dd>
 
 
 </dl><p></p></div>
@@ -419,13 +413,32 @@ display.</p></dd>
 
 </div>
 
+<p></p><hr><a id="method-LFQDataPlotter-sample_correlation"></a><div class="section">
+<h3 id="lfqdataplotter-sample-correlation-"><code>LFQDataPlotter$sample_correlation()</code><a class="anchor" aria-label="anchor" href="#lfqdataplotter-sample-correlation-"></a></h3>
+<p>plot of sample correlations</p><div class="section">
+<h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataPlotter</span><span class="op">$</span><span class="fu">sample_correlation</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"pearson"</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>method</code></dt>
+<dd><p>correlation method or function, see <code><a href="plot_heatmap_cor.html">plot_heatmap_cor</a></code></p></dd>
+
+
+</dl><p></p></div>
+</div><p></p><div class="section">
+<h4 id="returns-12">Returns<a class="anchor" aria-label="anchor" href="#returns-12"></a></h4>
+<p>NULL</p>
+</div>
+
+</div>
+
 <p></p><hr><a id="method-LFQDataPlotter-upset_missing"></a><div class="section">
 <h3 id="lfqdataplotter-upset-missing-"><code>LFQDataPlotter$upset_missing()</code><a class="anchor" aria-label="anchor" href="#lfqdataplotter-upset-missing-"></a></h3>
 <p>upset plot based on presence absence information</p><div class="section">
-<h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
+<h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataPlotter</span><span class="op">$</span><span class="fu">upset_missing</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-12">Returns<a class="anchor" aria-label="anchor" href="#returns-12"></a></h4>
+<h4 id="returns-13">Returns<a class="anchor" aria-label="anchor" href="#returns-13"></a></h4>
 <p>plot</p>
 </div>
 
@@ -434,7 +447,7 @@ display.</p></dd>
 <p></p><hr><a id="method-LFQDataPlotter-write_boxplots"></a><div class="section">
 <h3 id="lfqdataplotter-write-boxplots-"><code>LFQDataPlotter$write_boxplots()</code><a class="anchor" aria-label="anchor" href="#lfqdataplotter-write-boxplots-"></a></h3>
 <p>write boxplots to file</p><div class="section">
-<h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
+<h4 id="usage-15">Usage<a class="anchor" aria-label="anchor" href="#usage-15"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataPlotter</span><span class="op">$</span><span class="fu">write_boxplots</span><span class="op">(</span><span class="va">path_qc</span>, filename <span class="op">=</span> <span class="cn">NULL</span>, width <span class="op">=</span> <span class="fl">6</span>, height <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
@@ -442,7 +455,7 @@ display.</p></dd>
 <dd><p>path to write to</p></dd>
 
       <dt><code>filename</code></dt>
-<dd><p>file name; one ending in `.pdf` is used as given, otherwise `boxplot.pdf` is appended
+<dd><p>file name; one ending in <code>.pdf</code> is used as given, otherwise <code>boxplot.pdf</code> is appended
 (default: the plotter prefix)</p></dd>
 
       <dt><code>width</code></dt>
@@ -454,7 +467,7 @@ display.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-13">Returns<a class="anchor" aria-label="anchor" href="#returns-13"></a></h4>
+<h4 id="returns-14">Returns<a class="anchor" aria-label="anchor" href="#returns-14"></a></h4>
 <p>path the file was written to (invisible)</p>
 </div>
 
@@ -463,7 +476,7 @@ display.</p></dd>
 <p></p><hr><a id="method-LFQDataPlotter-write_pdf"></a><div class="section">
 <h3 id="lfqdataplotter-write-pdf-"><code>LFQDataPlotter$write_pdf()</code><a class="anchor" aria-label="anchor" href="#lfqdataplotter-write-pdf-"></a></h3>
 <p>write figure to pdf</p><div class="section">
-<h4 id="usage-15">Usage<a class="anchor" aria-label="anchor" href="#usage-15"></a></h4>
+<h4 id="usage-16">Usage<a class="anchor" aria-label="anchor" href="#usage-16"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataPlotter</span><span class="op">$</span><span class="fu">write_pdf</span><span class="op">(</span><span class="va">fig</span>, <span class="va">path_qc</span>, <span class="va">fig_name</span>, width <span class="op">=</span> <span class="fl">7</span>, height <span class="op">=</span> <span class="fl">7</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-11">Arguments<a class="anchor" aria-label="anchor" href="#arguments-11"></a></h4>
@@ -474,7 +487,7 @@ display.</p></dd>
 <dd><p>path to write to</p></dd>
 
       <dt><code>fig_name</code></dt>
-<dd><p>name of figure; `.pdf` is appended unless it ends in `.pdf`</p></dd>
+<dd><p>name of figure; <code>.pdf</code> is appended unless it ends in <code>.pdf</code></p></dd>
 
       <dt><code>width</code></dt>
 <dd><p>figure width</p></dd>
@@ -485,7 +498,7 @@ display.</p></dd>
 
 </dl><p></p></div>
 </div><p></p><div class="section">
-<h4 id="returns-14">Returns<a class="anchor" aria-label="anchor" href="#returns-14"></a></h4>
+<h4 id="returns-15">Returns<a class="anchor" aria-label="anchor" href="#returns-15"></a></h4>
 <p>path the file was written to</p>
 </div>
 
@@ -494,7 +507,7 @@ display.</p></dd>
 <p></p><hr><a id="method-LFQDataPlotter-clone"></a><div class="section">
 <h3 id="lfqdataplotter-clone-"><code>LFQDataPlotter$clone()</code><a class="anchor" aria-label="anchor" href="#lfqdataplotter-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-16">Usage<a class="anchor" aria-label="anchor" href="#usage-16"></a></h4>
+<h4 id="usage-17">Usage<a class="anchor" aria-label="anchor" href="#usage-17"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQDataPlotter</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments-12">Arguments<a class="anchor" aria-label="anchor" href="#arguments-12"></a></h4>
@@ -532,7 +545,7 @@ display.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> PCA: removed 16 of 28 features with missing values. To keep all features, impute missing values first, e.g. AggregateLimpa$new(lfqdata, impute_only = TRUE)$aggregate().</span>
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="va">lfqplotter</span><span class="op">$</span><span class="fu">boxplots</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="st">"ggplot"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span>  <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">$</span><span class="va">boxplot</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="st">"ggplot"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">lfqplotter</span><span class="op">$</span><span class="fu">missigness_histogram</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="st">"ggplot"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">lfqplotter</span><span class="op">$</span><span class="fu">missingness_histogram</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu">methods</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/methods/is.html" class="external-link">is</a></span><span class="op">(</span><span class="va">lfqplotter</span><span class="op">$</span><span class="fu">na_heatmap</span><span class="op">(</span><span class="op">)</span>, <span class="st">"Heatmap"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">lfqplotter</span><span class="op">$</span><span class="fu">intensity_distribution_density</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>

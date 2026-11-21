@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -71,7 +71,7 @@
 
 
 <dl><dt id="arg-stats-res">stats_res<a class="anchor" aria-label="anchor" href="#arg-stats-res"></a></dt>
-<dd><p>data.frame `summarize_stats` output</p></dd>
+<dd><p>data.frame <code>summarize_stats</code> output</p></dd>
 
 
 <dt id="arg-delta">delta<a class="anchor" aria-label="anchor" href="#arg-delta"></a></dt>
@@ -91,12 +91,17 @@
 
 </dl></div>
     <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>a tibble with one row per complete row of <code>stats_res</code> and value of <code>delta</code>, with the added columns
+<code>delta</code>, <code>N_exact</code> (samples per group needed) and <code>N</code> (rounded up)</p>
+    </div>
+    <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other stats:
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
 <code><a href="pooled_var.html">compute_pooled()</a></code>,
 <code><a href="fdr_sig_level.html">fdr_sig_level()</a></code>,
-<code><a href="lfq_power_t_test_quantiles_V2.html">lfq_power_t_test_quantiles_V2()</a></code>,
+<code><a href="lfq_power_t_test_quantiles.html">lfq_power_t_test_quantiles()</a></code>,
 <code><a href="null_split_check.html">null_split_check()</a></code>,
 <code><a href="plot_stat_density.html">plot_stat_density()</a></code>,
 <code><a href="plot_stat_density_median.html">plot_stat_density_median()</a></code>,

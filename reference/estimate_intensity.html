@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,25 +65,25 @@
 
 
 <dl><dt id="arg-lfqdata">lfqdata<a class="anchor" aria-label="anchor" href="#arg-lfqdata"></a></dt>
-<dd><p>LFQData object</p></dd>
+<dd><p><a href="LFQData.html">LFQData</a> object with the data and its configuration</p></dd>
 
 
 <dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
-<dd><p>"medpolish" (Tukey's median polish, column `medpolish`) or "rlm" (robust regression with
-`MASS::rlm`, column `lmrob`)</p></dd>
+<dd><p>"medpolish" (Tukey's median polish, column <code>medpolish</code>) or "rlm" (robust regression with
+<code><a href="https://rdrr.io/pkg/MASS/man/rlm.html" class="external-link">MASS::rlm</a></code>, column <code>lmrob</code>)</p></dd>
 
 
 <dt id="arg-control">control<a class="anchor" aria-label="anchor" href="#arg-control"></a></dt>
-<dd><p>convergence controls merged over the defaults. medpolish: `maxiter` (default 10) and `eps`
+<dd><p>convergence controls merged over the defaults. medpolish: <code>maxiter</code> (default 10) and <code>eps</code>
 (default 0.01, the change of the sum of absolute residuals that stops the polish, on the log2 scale of the
-input); rlm: `maxit` (default 20) and `acc` (default 1e-4, relative change of the IRLS residuals).</p></dd>
+input); rlm: <code>maxit</code> (default 20) and <code>acc</code> (default 1e-4, relative change of the IRLS residuals).</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>returns list with data (data.frame), config (AnalysisConfiguration) and failures (tibble with the
-  subject `id` and `warning` text of every warning raised while estimating one subject; the warnings are not
-  re-raised)</p>
+subject <code>id</code> and <code>warning</code> text of every warning raised while estimating one subject; the warnings are not
+re-raised)</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

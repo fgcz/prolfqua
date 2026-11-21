@@ -14,6 +14,13 @@ linfct_from_model(m, as_list = TRUE)
 
   linear model
 
+## Value
+
+if `as_list = TRUE`, a list with the matrices `linfct_factors` (one row
+per factor level) and `linfct_interactions` (one row per observed factor
+combination), each with one column per model coefficient; otherwise the
+two matrices bound by rows into a single matrix
+
 ## Details
 
 The fitted model supplies its coefficient names and observed categorical
@@ -63,7 +70,6 @@ Other modelling:
 [`ContrastsRfitImputeFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsRfitImputeFacade.md),
 [`ContrastsTable`](https://fgcz.github.io/prolfqua/reference/ContrastsTable.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`LR_test()`](https://fgcz.github.io/prolfqua/reference/LR_test.md),
 [`Model`](https://fgcz.github.io/prolfqua/reference/Model.md),
 [`ModelFirth`](https://fgcz.github.io/prolfqua/reference/ModelFirth.md),
 [`ModelLimma`](https://fgcz.github.io/prolfqua/reference/ModelLimma.md),
@@ -98,6 +104,7 @@ Other modelling:
 [`linfct_matrix_contrasts()`](https://fgcz.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
 [`list_facades()`](https://fgcz.github.io/prolfqua/reference/list_facades.md),
 [`lookup_facade()`](https://fgcz.github.io/prolfqua/reference/lookup_facade.md),
+[`lr_test()`](https://fgcz.github.io/prolfqua/reference/lr_test.md),
 [`merge_contrasts_results()`](https://fgcz.github.io/prolfqua/reference/merge_contrasts_results.md),
 [`model_analyse()`](https://fgcz.github.io/prolfqua/reference/model_analyse.md),
 [`model_summary()`](https://fgcz.github.io/prolfqua/reference/model_summary.md),
@@ -118,7 +125,7 @@ Other modelling:
 [`strategy_limma()`](https://fgcz.github.io/prolfqua/reference/strategy_limma.md),
 [`strategy_limpa()`](https://fgcz.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://fgcz.github.io/prolfqua/reference/strategy.md),
-[`summary_ROPECA_median_p_scaled()`](https://fgcz.github.io/prolfqua/reference/summary_ROPECA_median_p_scaled.md),
+[`summary_ropeca_median_p_scaled()`](https://fgcz.github.io/prolfqua/reference/summary_ropeca_median_p_scaled.md),
 [`vcov.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
 ## Examples

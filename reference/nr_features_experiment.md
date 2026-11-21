@@ -1,7 +1,7 @@
 # Count distinct child features per hierarchy unit
 
 Counts the number of distinct entries of the hierarchy levels below
-\`hierarchy_keys_depth\` (e.g. peptides per protein). Counts
+`hierarchy_keys_depth` (e.g. peptides per protein). Counts
 experiment-wide, whether observed or not.
 
 ## Usage
@@ -23,15 +23,15 @@ nr_features_experiment(
 
 - hierarchy_keys:
 
-  character vector — all hierarchy column names
+  character vector - all hierarchy column names
 
 - hierarchy_keys_depth:
 
-  character vector — hierarchy columns at current depth
+  character vector - hierarchy columns at current depth
 
 - name_nr_child:
 
-  character — output column name
+  character - output column name
 
 ## Value
 

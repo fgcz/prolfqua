@@ -1,6 +1,6 @@
-# adjust columns
+# Adjust p-values for multiple testing
 
-adjust columns
+Adjust p-values for multiple testing
 
 ## Usage
 

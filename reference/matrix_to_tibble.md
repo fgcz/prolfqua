@@ -1,6 +1,6 @@
-# matrix or data.frame to tibble (taken from tidyquant)
+# Convert a matrix or data.frame to a tibble (taken from tidyquant)
 
-matrix or data.frame to tibble (taken from tidyquant)
+Convert a matrix or data.frame to a tibble (taken from tidyquant)
 
 ## Usage
 

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -77,14 +77,18 @@
 
 </dl></div>
     <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>a matrix with one row per computable contrast and one column per model coefficient</p>
+    </div>
+    <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Rows of <code>linfct</code> represent group or interaction means and
-  columns represent fitted coefficients. Contrast expressions combine these
-  rows, so <code>"group_A - group_Ctrl"</code> becomes their row difference.
-  Quote interaction names containing colons with backticks. Expressions may
-  reference earlier named contrasts. A row naming a group unavailable in a
-  particular model is dropped with a warning. The returned matrix has one
-  row per estimable contrast and coefficient columns in model order.</p>
+columns represent fitted coefficients. Contrast expressions combine these
+rows, so <code>"group_A - group_Ctrl"</code> becomes their row difference.
+Quote interaction names containing colons with backticks. Expressions may
+reference earlier named contrasts. A row naming a group unavailable in a
+particular model is dropped with a warning. The returned matrix has one
+row per estimable contrast and coefficient columns in model order.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -120,7 +124,6 @@
 <code><a href="ContrastsRfitImputeFacade.html">ContrastsRfitImputeFacade</a></code>,
 <code><a href="ContrastsTable.html">ContrastsTable</a></code>,
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
-<code><a href="LR_test.html">LR_test()</a></code>,
 <code><a href="Model.html">Model</a></code>,
 <code><a href="ModelFirth.html">ModelFirth</a></code>,
 <code><a href="ModelLimma.html">ModelLimma</a></code>,
@@ -155,6 +158,7 @@
 <code><a href="linfct_from_model.html">linfct_from_model()</a></code>,
 <code><a href="list_facades.html">list_facades()</a></code>,
 <code><a href="lookup_facade.html">lookup_facade()</a></code>,
+<code><a href="lr_test.html">lr_test()</a></code>,
 <code><a href="merge_contrasts_results.html">merge_contrasts_results()</a></code>,
 <code><a href="model_analyse.html">model_analyse()</a></code>,
 <code><a href="model_summary.html">model_summary()</a></code>,
@@ -175,7 +179,7 @@
 <code><a href="strategy_limma.html">strategy_limma()</a></code>,
 <code><a href="strategy_limpa.html">strategy_limpa()</a></code>,
 <code><a href="strategy.html">strategy_logistf()</a></code>,
-<code><a href="summary_ROPECA_median_p_scaled.html">summary_ROPECA_median_p_scaled()</a></code>,
+<code><a href="summary_ropeca_median_p_scaled.html">summary_ropeca_median_p_scaled()</a></code>,
 <code><a href="vcov.rfit_prolfqua.html">vcov.rfit_prolfqua()</a></code></p></div>
     </div>
 

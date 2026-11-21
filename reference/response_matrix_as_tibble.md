@@ -30,6 +30,11 @@ response_matrix_as_tibble(pdata, value, config, data = NULL, sep = "~lfq~")
 
   separator used to unite the hierarchy keys
 
+## Value
+
+a long-format tibble with the hierarchy key, isotope label, sample name
+and `value` columns; if `data` is given, `data` joined with these values
+
 ## Examples
 
 ``` r

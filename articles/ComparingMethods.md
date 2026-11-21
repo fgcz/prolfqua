@@ -57,7 +57,7 @@ facades separately.
 ## Simulate one experiment
 
 ``` r
-istar <- sim_lfq_data_peptide_config(Nprot = 80, seed = 42)
+istar <- sim_lfq_data_peptide_config(n_proteins = 80, seed = 42)
 
 
 lfq_peptide <- LFQData$new(istar$data, istar$config)
@@ -685,7 +685,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] ggplot2_4.0.4  dplyr_1.2.1    prolfqua_1.9.4
+    ## [1] ggplot2_4.0.4  dplyr_1.2.1    prolfqua_1.9.5
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] tidyselect_1.2.1       farver_2.1.2           S7_1.0.0              

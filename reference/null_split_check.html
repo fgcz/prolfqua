@@ -17,7 +17,7 @@ without favouring any of them by construction."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -151,7 +151,7 @@ calibration carries over, power does not.</p>
 <code><a href="pooled_var.html">compute_pooled()</a></code>,
 <code><a href="fdr_sig_level.html">fdr_sig_level()</a></code>,
 <code><a href="lfq_power_t_test_proteins.html">lfq_power_t_test_proteins()</a></code>,
-<code><a href="lfq_power_t_test_quantiles_V2.html">lfq_power_t_test_quantiles_V2()</a></code>,
+<code><a href="lfq_power_t_test_quantiles.html">lfq_power_t_test_quantiles()</a></code>,
 <code><a href="plot_stat_density.html">plot_stat_density()</a></code>,
 <code><a href="plot_stat_density_median.html">plot_stat_density_median()</a></code>,
 <code><a href="plot_stat_violin.html">plot_stat_violin()</a></code>,
@@ -165,7 +165,7 @@ calibration carries over, power does not.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_lfq_data_protein_config.html">sim_lfq_data_protein_config</a></span><span class="op">(</span>Nprot <span class="op">=</span> <span class="fl">50</span>, with_missing <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_lfq_data_protein_config.html">sim_lfq_data_protein_config</a></span><span class="op">(</span>n_proteins <span class="op">=</span> <span class="fl">50</span>, with_missing <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from file_name column</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> setup_analysis: dropped 5 unconfigured columns: average_prot_abundance, sd, mean, N, Replicate.</span>

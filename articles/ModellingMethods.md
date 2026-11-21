@@ -25,7 +25,7 @@ compare group `A` with the control.
 
 ``` r
 library(prolfqua)
-sim <- sim_lfq_data_peptide_config(Nprot = 20, seed = 42)
+sim <- sim_lfq_data_peptide_config(n_proteins = 20, seed = 42)
 lfq_peptide <- LFQData$new(sim$data, sim$config)
 lfq_peptide <- lfq_peptide$get_Transformer()$log2()$lfq
 lfq_protein <- lfq_peptide$get_Aggregator()$aggregate()
@@ -267,7 +267,7 @@ head(confint(analysis))
 #> 6 2kfAGV~3196 group_Ctrl   -0.215     0.0453     8  -0.320   -0.111
 formula(analysis)
 #> medpolish ~ group_
-#> <environment: 0x5f429530aaf0>
+#> <environment: 0x634350016448>
 head(nobs(analysis))
 #> # A tibble: 6 × 2
 #>   protein_Id   nobs
@@ -380,7 +380,7 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] prolfqua_1.9.4   BiocStyle_2.40.0
+#> [1] prolfqua_1.9.5   BiocStyle_2.40.0
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] tidyselect_1.2.1       dplyr_1.2.1            farver_2.1.2          

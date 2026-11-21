@@ -83,10 +83,10 @@ plot(x, type = c("fitted", "volcano", "ma"), subject = NULL, level = 0.95, ...)
 
 - newdata:
 
-  for \`predict()\`: data frame with the subject identifier and
-  predictor columns; \`NULL\` (default) predicts every subject in every
-  sample of the analysis input, including samples with missing
-  responses.
+  for [`predict()`](https://rdrr.io/r/stats/predict.html): data frame
+  with the subject identifier and predictor columns; `NULL` (default)
+  predicts every subject in every sample of the analysis input,
+  including samples with missing responses.
 
 - type:
 
@@ -96,7 +96,7 @@ plot(x, type = c("fitted", "volcano", "ma"), subject = NULL, level = 0.95, ...)
 - subject:
 
   character vector of identifiers from the first model subject column
-  for fitted plots; \`NULL\` selects up to six by FDR in the first
+  for fitted plots; `NULL` selects up to six by FDR in the first
   contrast.
 
 ## Value
@@ -183,7 +183,6 @@ Other modelling:
 [`ContrastsRfitImputeFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsRfitImputeFacade.md),
 [`ContrastsTable`](https://fgcz.github.io/prolfqua/reference/ContrastsTable.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`LR_test()`](https://fgcz.github.io/prolfqua/reference/LR_test.md),
 [`Model`](https://fgcz.github.io/prolfqua/reference/Model.md),
 [`ModelFirth`](https://fgcz.github.io/prolfqua/reference/ModelFirth.md),
 [`ModelLimma`](https://fgcz.github.io/prolfqua/reference/ModelLimma.md),
@@ -219,6 +218,7 @@ Other modelling:
 [`linfct_matrix_contrasts()`](https://fgcz.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
 [`list_facades()`](https://fgcz.github.io/prolfqua/reference/list_facades.md),
 [`lookup_facade()`](https://fgcz.github.io/prolfqua/reference/lookup_facade.md),
+[`lr_test()`](https://fgcz.github.io/prolfqua/reference/lr_test.md),
 [`merge_contrasts_results()`](https://fgcz.github.io/prolfqua/reference/merge_contrasts_results.md),
 [`model_analyse()`](https://fgcz.github.io/prolfqua/reference/model_analyse.md),
 [`model_summary()`](https://fgcz.github.io/prolfqua/reference/model_summary.md),
@@ -238,13 +238,13 @@ Other modelling:
 [`strategy_limma()`](https://fgcz.github.io/prolfqua/reference/strategy_limma.md),
 [`strategy_limpa()`](https://fgcz.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://fgcz.github.io/prolfqua/reference/strategy.md),
-[`summary_ROPECA_median_p_scaled()`](https://fgcz.github.io/prolfqua/reference/summary_ROPECA_median_p_scaled.md),
+[`summary_ropeca_median_p_scaled()`](https://fgcz.github.io/prolfqua/reference/summary_ropeca_median_p_scaled.md),
 [`vcov.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
 ## Examples
 
 ``` r
-sim <- sim_lfq_data_protein_config(Nprot = 10, weight_missing = 0, seed = 42)
+sim <- sim_lfq_data_protein_config(n_proteins = 10, weight_missing = 0, seed = 42)
 #> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
 #> setup_analysis: dropped 5 unconfigured columns: average_prot_abundance, sd, mean, N, Replicate.
@@ -314,7 +314,7 @@ head(stats::confint(analysis))
 #> 6 2kfAGV~7674 group_Ctrl     0.123     0.863     9    -1.83      2.07
 stats::formula(analysis)
 #> abundance ~ group_
-#> <environment: 0x56e4c83bb440>
+#> <environment: 0x64f38b3147c8>
 head(stats::nobs(analysis))
 #> # A tibble: 6 × 2
 #>   protein_Id   nobs

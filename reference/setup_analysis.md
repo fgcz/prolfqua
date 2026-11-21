@@ -36,13 +36,13 @@ hierarchy-key/sample combination is observed more than once (unless
 
 ## Details
 
-\`setup_analysis()\` is optional: \`LFQData\$new(setup = FALSE)\`, the
+`setup_analysis()` is optional: `LFQData$new(setup = FALSE)`, the
 default, applies none of the steps below. Each step that changes the
-data says so with a message (class \`prolfqua_message\`) or warning:
+data says so with a message (class `prolfqua_message`) or warning:
 
 - several configured hierarchy or factor source columns are united into
-  one key column (separator \`configuration\$sep\`); avoid by
-  configuring one column per key;
+  one key column (separator `configuration$sep`); avoid by configuring
+  one column per key;
 
 - factor source columns that are not character (numeric, factor,
   ordered) are converted to character labels; ordered levels and their
@@ -68,11 +68,11 @@ Other configuration:
 [`AnalysisConfiguration`](https://fgcz.github.io/prolfqua/reference/AnalysisConfiguration.md),
 [`ContrastConfiguration`](https://fgcz.github.io/prolfqua/reference/ContrastConfiguration.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`R6_extract_values()`](https://fgcz.github.io/prolfqua/reference/R6_extract_values.md),
 [`complete_cases()`](https://fgcz.github.io/prolfqua/reference/complete_cases.md),
-[`list_to_ContrastConfiguration()`](https://fgcz.github.io/prolfqua/reference/list_to_ContrastConfiguration.md),
+[`list_to_contrast_configuration()`](https://fgcz.github.io/prolfqua/reference/list_to_contrast_configuration.md),
 [`make_interaction_column()`](https://fgcz.github.io/prolfqua/reference/make_interaction_column.md),
 [`make_reduced_hierarchy_config()`](https://fgcz.github.io/prolfqua/reference/make_reduced_hierarchy_config.md),
+[`r6_extract_values()`](https://fgcz.github.io/prolfqua/reference/r6_extract_values.md),
 [`sample_subset()`](https://fgcz.github.io/prolfqua/reference/sample_subset.md),
 [`separate_hierarchy()`](https://fgcz.github.io/prolfqua/reference/separate_hierarchy.md),
 [`table_factors()`](https://fgcz.github.io/prolfqua/reference/table_factors.md),
@@ -83,7 +83,7 @@ Other configuration:
 ``` r
 # Example with a normValue column (e.g., creatinine)
 set.seed(1234)
-data <- sim_lfq_data(Nprot = 10, PEPTIDE = TRUE, N = 4)
+data <- sim_lfq_data(n_proteins = 10, peptide = TRUE, n_per_group = 4)
 data$nr_children <- 1
 data$isotopeLabel <- "light"
 data$qValue <- 0

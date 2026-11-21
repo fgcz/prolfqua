@@ -13,7 +13,13 @@ complete_cases(lfqdata)
 
 - lfqdata:
 
-  LFQData object
+  [LFQData](https://fgcz.github.io/prolfqua/reference/LFQData.md) object
+  with the data and its configuration
+
+## Value
+
+a tibble of the long-format data with one row for every combination of
+sample and hierarchy element; added rows have `NA` intensities
 
 ## See also
 
@@ -21,10 +27,10 @@ Other configuration:
 [`AnalysisConfiguration`](https://fgcz.github.io/prolfqua/reference/AnalysisConfiguration.md),
 [`ContrastConfiguration`](https://fgcz.github.io/prolfqua/reference/ContrastConfiguration.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`R6_extract_values()`](https://fgcz.github.io/prolfqua/reference/R6_extract_values.md),
-[`list_to_ContrastConfiguration()`](https://fgcz.github.io/prolfqua/reference/list_to_ContrastConfiguration.md),
+[`list_to_contrast_configuration()`](https://fgcz.github.io/prolfqua/reference/list_to_contrast_configuration.md),
 [`make_interaction_column()`](https://fgcz.github.io/prolfqua/reference/make_interaction_column.md),
 [`make_reduced_hierarchy_config()`](https://fgcz.github.io/prolfqua/reference/make_reduced_hierarchy_config.md),
+[`r6_extract_values()`](https://fgcz.github.io/prolfqua/reference/r6_extract_values.md),
 [`sample_subset()`](https://fgcz.github.io/prolfqua/reference/sample_subset.md),
 [`separate_hierarchy()`](https://fgcz.github.io/prolfqua/reference/separate_hierarchy.md),
 [`setup_analysis()`](https://fgcz.github.io/prolfqua/reference/setup_analysis.md),

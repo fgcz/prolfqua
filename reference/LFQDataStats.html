@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -71,8 +71,8 @@
 <code><a href="LFQData.html">LFQData</a></code>,
 <code><a href="LFQDataPlotter.html">LFQDataPlotter</a></code>,
 <code><a href="LFQDataSummariser.html">LFQDataSummariser</a></code>,
-<code><a href="LFQDataToSummarizedExperiment.html">LFQDataToSummarizedExperiment()</a></code>,
 <code><a href="lfqdata_from_wide.html">lfqdata_from_wide()</a></code>,
+<code><a href="lfqdata_to_summarized_experiment.html">lfqdata_to_summarized_experiment()</a></code>,
 <code><a href="plot.LFQData.html">plot.LFQData()</a></code></p></div>
     </div>
     <div class="section level2">
@@ -117,7 +117,7 @@
 </div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>lfqdata</code></dt>
-<dd><p>LFQData object</p></dd>
+<dd><p><a href="LFQData.html">LFQData</a> object with the data and its configuration</p></dd>
 
       <dt><code>stats</code></dt>
 <dd><p>if <code>interaction</code>, compute within-group stats; if <code>all</code>,
@@ -430,7 +430,7 @@ Untransformed data raise an error.</p><div class="section">
 <span class="r-in"><span><span class="fu">runallfuncs</span><span class="op">(</span><span class="va">lfqstats</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Group size 1</span></span></span>
-<span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span>N<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span>n_per_group <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from file_name column</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.</span>

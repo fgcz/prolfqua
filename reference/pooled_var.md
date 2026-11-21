@@ -1,4 +1,4 @@
-# compute pooled variance
+# Compute pooled variance
 
 following the documentation here:
 https://online.stat.psu.edu/stat500/lesson/7/7.3/7.3.1/7.3.1.1
@@ -27,7 +27,7 @@ Other stats:
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
 [`fdr_sig_level()`](https://fgcz.github.io/prolfqua/reference/fdr_sig_level.md),
 [`lfq_power_t_test_proteins()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_proteins.md),
-[`lfq_power_t_test_quantiles_V2()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_quantiles_V2.md),
+[`lfq_power_t_test_quantiles()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_quantiles.md),
 [`null_split_check()`](https://fgcz.github.io/prolfqua/reference/null_split_check.md),
 [`plot_stat_density()`](https://fgcz.github.io/prolfqua/reference/plot_stat_density.md),
 [`plot_stat_density_median()`](https://fgcz.github.io/prolfqua/reference/plot_stat_density_median.md),

@@ -18,7 +18,7 @@ lfq_power_t_test_proteins(
 
 - stats_res:
 
-  data.frame \`summarize_stats\` output
+  data.frame `summarize_stats` output
 
 - delta:
 
@@ -36,13 +36,19 @@ lfq_power_t_test_proteins(
 
   smallest n to determine
 
+## Value
+
+a tibble with one row per complete row of `stats_res` and value of
+`delta`, with the added columns `delta`, `N_exact` (samples per group
+needed) and `N` (rounded up)
+
 ## See also
 
 Other stats:
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
 [`compute_pooled()`](https://fgcz.github.io/prolfqua/reference/pooled_var.md),
 [`fdr_sig_level()`](https://fgcz.github.io/prolfqua/reference/fdr_sig_level.md),
-[`lfq_power_t_test_quantiles_V2()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_quantiles_V2.md),
+[`lfq_power_t_test_quantiles()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_quantiles.md),
 [`null_split_check()`](https://fgcz.github.io/prolfqua/reference/null_split_check.md),
 [`plot_stat_density()`](https://fgcz.github.io/prolfqua/reference/plot_stat_density.md),
 [`plot_stat_density_median()`](https://fgcz.github.io/prolfqua/reference/plot_stat_density_median.md),

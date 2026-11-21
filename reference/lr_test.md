@@ -5,7 +5,7 @@ Likelihood ratio test
 ## Usage
 
 ``` r
-LR_test(
+lr_test(
   complete_models,
   model_name,
   complete_models_int,
@@ -135,14 +135,14 @@ Other modelling:
 [`strategy_limma()`](https://fgcz.github.io/prolfqua/reference/strategy_limma.md),
 [`strategy_limpa()`](https://fgcz.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://fgcz.github.io/prolfqua/reference/strategy.md),
-[`summary_ROPECA_median_p_scaled()`](https://fgcz.github.io/prolfqua/reference/summary_ROPECA_median_p_scaled.md),
+[`summary_ropeca_median_p_scaled()`](https://fgcz.github.io/prolfqua/reference/summary_ropeca_median_p_scaled.md),
 [`vcov.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
 ## Examples
 
 ``` r
 data_2Factor <- prolfqua::sim_lfq_data_2factor_config(
- Nprot = 200,
+ n_proteins = 200,
  with_missing = TRUE,
  weight_missing = 1)
 #> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
@@ -197,7 +197,7 @@ modC <- prolfqua::build_model(
 #> fit (Model): 976 missing responses dropped (e.g. 0ZHbvZ~4125, 0lCgkE~2864, 0m5WN4~1168, 0vgFfT~5498, 1HZ2jt~5236, ...): NA response (missing observation) left out of the fit
 #> See $provenance().
 
-tmp <- LR_test(modCB$model_df, "modCB", modC$model_df, "modB")
+tmp <- lr_test(modCB$model_df, "modCB", modC$model_df, "modB")
 hist(tmp$likelihood_ratio_test.pValue)
 
 ```

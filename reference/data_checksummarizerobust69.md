@@ -1,7 +1,7 @@
 # Reference input for the robust summarisation check (69 percent)
 
 log2 peptide areas of one protein, used by the tests of the robust
-(medpolish/rlm) protein summarisation. See \`inst/script/README.md\`.
+(medpolish/rlm) protein summarisation. See `inst/script/README.md`.
 
 ## Usage
 
@@ -11,8 +11,8 @@ data_checksummarizerobust69
 
 ## Format
 
-A data frame with 20 rows and the columns \`log2Area\`, \`peptide_Id\`,
-\`sampleName\`.
+A data frame with 20 rows and the columns `log2Area`, `peptide_Id`,
+`sampleName`.
 
 ## See also
 

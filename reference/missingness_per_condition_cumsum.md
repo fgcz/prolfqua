@@ -1,6 +1,6 @@
-# cumulative sums of missing
+# Cumulative counts of missing values per condition
 
-cumulative sums of missing
+Cumulative counts of missing values per condition
 
 ## Usage
 
@@ -15,18 +15,25 @@ missingness_per_condition_cumsum(
 
 - lfqdata:
 
-  LFQData object
+  [LFQData](https://fgcz.github.io/prolfqua/reference/LFQData.md) object
+  with the data and its configuration
 
 - factors:
 
   factor columns to use
+
+## Value
+
+a list with `data`, a wide tibble with one row per condition and one
+column per number of missing values holding the cumulative feature
+count, and `figure`, a ggplot bar chart of these counts
 
 ## See also
 
 Other plotting:
 [`ContrastsPlotter`](https://fgcz.github.io/prolfqua/reference/ContrastsPlotter.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`missigness_histogram()`](https://fgcz.github.io/prolfqua/reference/missigness_histogram.md),
+[`missingness_histogram()`](https://fgcz.github.io/prolfqua/reference/missingness_histogram.md),
 [`missingness_per_condition()`](https://fgcz.github.io/prolfqua/reference/missingness_per_condition.md),
 [`plot_estimate()`](https://fgcz.github.io/prolfqua/reference/plot_estimate.md),
 [`plot_heatmap()`](https://fgcz.github.io/prolfqua/reference/plot_heatmap.md),
@@ -44,7 +51,7 @@ Other plotting:
 
 Other imputation:
 [`get_contrast()`](https://fgcz.github.io/prolfqua/reference/get_contrast.md),
-[`missigness_histogram()`](https://fgcz.github.io/prolfqua/reference/missigness_histogram.md),
+[`missingness_histogram()`](https://fgcz.github.io/prolfqua/reference/missingness_histogram.md),
 [`missingness_per_condition()`](https://fgcz.github.io/prolfqua/reference/missingness_per_condition.md),
 [`upset_interaction_missing_stats()`](https://fgcz.github.io/prolfqua/reference/upset_interaction_missing_stats.md),
 [`upset_missing_stats()`](https://fgcz.github.io/prolfqua/reference/upset_missing_stats.md)

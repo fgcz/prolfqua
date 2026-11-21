@@ -27,7 +27,7 @@ sample, and returns them together with a matching
 data](https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.html).
 
 ``` r
-xx <- prolfqua::sim_lfq_data_protein_config(Nprot = 100, weight_missing = 0.5)
+xx <- prolfqua::sim_lfq_data_protein_config(n_proteins = 100, weight_missing = 0.5)
 xx
 ```
 
@@ -154,7 +154,7 @@ values](Comparing2Groups_files/figure-html/missignessPerGroup-1.png)
 \# of proteins with 0,1,…N missing values
 
 ``` r
-lfqplotter$missigness_histogram()
+lfqplotter$missingness_histogram()
 ```
 
 ![Intensity distribution of proteins depending on \# of missing
@@ -410,7 +410,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] prolfqua_1.9.4   dplyr_1.2.1      BiocStyle_2.40.0
+    ## [1] prolfqua_1.9.5   dplyr_1.2.1      BiocStyle_2.40.0
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] tidyselect_1.2.1      viridisLite_0.4.3     farver_2.1.2         

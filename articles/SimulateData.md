@@ -21,7 +21,7 @@ For peptides:
   the peptide abundance and $`\sigma`$
 
 ``` r
-peptideAbundances <- prolfqua::sim_lfq_data(PEPTIDE = TRUE)
+peptideAbundances <- prolfqua::sim_lfq_data(peptide = TRUE)
 ```
 
 ## Analyse simulated data with prolfqua
@@ -164,7 +164,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] prolfqua_1.9.4
+    ## [1] prolfqua_1.9.5
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] tidyselect_1.2.1      viridisLite_0.4.3     dplyr_1.2.1          

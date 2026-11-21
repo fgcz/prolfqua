@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,11 +58,12 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sim_lfq_data_protein_config</span><span class="op">(</span></span>
-<span>  Nprot <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  n_proteins <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  with_missing <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  weight_missing <span class="op">=</span> <span class="fl">0.2</span>,</span>
 <span>  seed <span class="op">=</span> <span class="fl">1234</span>,</span>
-<span>  paired <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  paired <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">Nprot</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -70,7 +71,7 @@
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-nprot">Nprot<a class="anchor" aria-label="anchor" href="#arg-nprot"></a></dt>
+<dl><dt id="arg-n-proteins">n_proteins<a class="anchor" aria-label="anchor" href="#arg-n-proteins"></a></dt>
 <dd><p>one positive whole number of proteins to simulate</p></dd>
 
 
@@ -88,6 +89,10 @@
 
 <dt id="arg-paired">paired<a class="anchor" aria-label="anchor" href="#arg-paired"></a></dt>
 <dd><p>if TRUE, add a paired subject factor to the design</p></dd>
+
+
+<dt id="arg-nprot">Nprot<a class="anchor" aria-label="anchor" href="#arg-nprot"></a></dt>
+<dd><p>deprecated; use <code>n_proteins</code></p></dd>
 
 </dl></div>
     <div class="section level2">

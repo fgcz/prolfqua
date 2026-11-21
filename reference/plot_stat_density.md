@@ -1,6 +1,6 @@
-# plot density distribution or ecdf of sd, mean or CV
+# Plot the density or ECDF of sd, mean or CV
 
-plot density distribution or ecdf of sd, mean or CV
+Plot the density or ECDF of sd, mean or CV
 
 ## Usage
 
@@ -21,7 +21,7 @@ plot_stat_density(
 
 - factor_key:
 
-  character — factor column name for colouring
+  character - factor column name for colouring
 
 - stat:
 
@@ -31,6 +31,11 @@ plot_stat_density(
 
   either density or ecdf
 
+## Value
+
+a ggplot object with one density or ECDF line of `stat` per level of
+`factor_key`
+
 ## See also
 
 Other stats:
@@ -38,7 +43,7 @@ Other stats:
 [`compute_pooled()`](https://fgcz.github.io/prolfqua/reference/pooled_var.md),
 [`fdr_sig_level()`](https://fgcz.github.io/prolfqua/reference/fdr_sig_level.md),
 [`lfq_power_t_test_proteins()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_proteins.md),
-[`lfq_power_t_test_quantiles_V2()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_quantiles_V2.md),
+[`lfq_power_t_test_quantiles()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_quantiles.md),
 [`null_split_check()`](https://fgcz.github.io/prolfqua/reference/null_split_check.md),
 [`plot_stat_density_median()`](https://fgcz.github.io/prolfqua/reference/plot_stat_density_median.md),
 [`plot_stat_violin()`](https://fgcz.github.io/prolfqua/reference/plot_stat_violin.md),

@@ -1,6 +1,6 @@
-# transform long to wide
+# Transform long to wide format
 
-transform long to wide
+Transform long to wide format
 
 ## Usage
 
@@ -19,7 +19,8 @@ tidy_to_wide_config(
 
 - lfqdata:
 
-  LFQData object
+  [LFQData](https://fgcz.github.io/prolfqua/reference/LFQData.md) object
+  with the data and its configuration
 
 - as.matrix:
 

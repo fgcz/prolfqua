@@ -1,6 +1,6 @@
-# compute var sd etc for all factor levels
+# Compute variance, sd and related statistics for all factor levels
 
-compute var sd etc for all factor levels
+Compute variance, sd and related statistics for all factor levels
 
 ## Usage
 
@@ -12,7 +12,8 @@ summarize_stats_factors(lfqdata)
 
 - lfqdata:
 
-  LFQData object
+  [LFQData](https://fgcz.github.io/prolfqua/reference/LFQData.md) object
+  with the data and its configuration
 
 ## Value
 

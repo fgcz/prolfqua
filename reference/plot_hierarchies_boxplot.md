@@ -1,6 +1,6 @@
-# plot peptides by factors and it's levels.
+# Boxplot of feature intensities by factor levels
 
-plot peptides by factors and it's levels.
+Boxplot of feature intensities by factor levels
 
 ## Usage
 
@@ -28,7 +28,8 @@ plot_hierarchies_boxplot(
 
 - lfqdata:
 
-  LFQData object
+  [LFQData](https://fgcz.github.io/prolfqua/reference/LFQData.md) object
+  with the data and its configuration
 
 - facet_grid_on:
 
@@ -45,6 +46,12 @@ plot_hierarchies_boxplot(
 - pb:
 
   progress bar
+
+## Value
+
+a ggplot object with boxplots of the intensities in `pdata` per
+combination of factor levels, optionally with the individual points and
+the means
 
 ## Examples
 

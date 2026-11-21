@@ -1,11 +1,11 @@
-# estimate sample sizes
+# Estimate sample sizes from standard deviation quantiles
 
-estimate sample sizes
+Estimate sample sizes from standard deviation quantiles
 
 ## Usage
 
 ``` r
-lfq_power_t_test_quantiles_V2(
+lfq_power_t_test_quantiles(
   quantile_sd,
   delta = c(0.59, 1, 2),
   power = 0.8,
@@ -18,7 +18,7 @@ lfq_power_t_test_quantiles_V2(
 
 - quantile_sd:
 
-  output of \`summarize_stats_quantiles\`
+  output of `summarize_stats_quantiles`
 
 - delta:
 
@@ -35,6 +35,13 @@ lfq_power_t_test_quantiles_V2(
 - min.n:
 
   smallest n to determine
+
+## Value
+
+a tibble with the rows of `quantile_sd` repeated for each `delta`, with
+the added columns `sdtrimmed` (the sd floored at the smallest sd
+resolvable with `min.n` samples), `N_exact`, `N` (rounded up) and
+`delta`
 
 ## See also
 
@@ -68,7 +75,7 @@ bb1 <- prolfqua::sim_lfq_data_peptide_config()
 lfq <- LFQData$new(bb1$data, bb1$config)
 stats_res <- summarize_stats(lfq)
 xx <- summarize_stats_quantiles(stats_res, lfq$relevant_factor_keys(), probs = c(0.5, 0.8))
-bbb <- lfq_power_t_test_quantiles_V2(xx$long)
+bbb <- lfq_power_t_test_quantiles(xx$long)
 bbb <- dplyr::bind_rows(bbb)
 summary <- bbb |>
  dplyr::select( -N_exact, -quantiles, -sdtrimmed ) |>

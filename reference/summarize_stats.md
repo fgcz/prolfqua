@@ -22,20 +22,21 @@ summarize_stats_quantiles(
 
 - lfqdata:
 
-  LFQData object
+  [LFQData](https://fgcz.github.io/prolfqua/reference/LFQData.md) object
+  with the data and its configuration
 
 - factor_key:
 
-  character vector — factor columns to group by (default:
+  character vector - factor columns to group by (default:
   relevant_factor_keys)
 
 - stats_res:
 
-  result of running \`summarize_stats\`
+  result of running `summarize_stats`
 
 - factor_keys_depth:
 
-  character vector — factor columns at current depth
+  character vector - factor columns at current depth
 
 - stats:
 
@@ -45,6 +46,17 @@ summarize_stats_quantiles(
 
   for which quantiles 10, 20 etc.
 
+## Value
+
+`summarize_stats()`: a tibble with one row per hierarchy element,
+isotope label and level of `factor_key`, with the columns
+`nrReplicates`, `nrMeasured`, `nrNAs`, `sd`, `var`, `meanAbundance`,
+`medianAbundance`, `CV` (untransformed data only) and `interaction`.
+
+`summarize_stats_quantiles()`: a list with `long`, a tibble with one row
+per factor level and quantile (columns `probs` and `quantiles`), and
+`wide`, the same quantiles with one column per factor level.
+
 ## See also
 
 Other stats:
@@ -52,7 +64,7 @@ Other stats:
 [`compute_pooled()`](https://fgcz.github.io/prolfqua/reference/pooled_var.md),
 [`fdr_sig_level()`](https://fgcz.github.io/prolfqua/reference/fdr_sig_level.md),
 [`lfq_power_t_test_proteins()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_proteins.md),
-[`lfq_power_t_test_quantiles_V2()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_quantiles_V2.md),
+[`lfq_power_t_test_quantiles()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_quantiles.md),
 [`null_split_check()`](https://fgcz.github.io/prolfqua/reference/null_split_check.md),
 [`plot_stat_density()`](https://fgcz.github.io/prolfqua/reference/plot_stat_density.md),
 [`plot_stat_density_median()`](https://fgcz.github.io/prolfqua/reference/plot_stat_density_median.md),

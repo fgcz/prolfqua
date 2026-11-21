@@ -1,6 +1,6 @@
-# add missing values to x vector based on the values of x
+# Draw missing values for an intensity vector based on its values
 
-add missing values to x vector based on the values of x
+Draw missing values for an intensity vector based on its values
 
 ## Usage
 

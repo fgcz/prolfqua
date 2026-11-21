@@ -30,8 +30,8 @@ Other LFQData:
 [`LFQDataPlotter`](https://fgcz.github.io/prolfqua/reference/LFQDataPlotter.md),
 [`LFQDataStats`](https://fgcz.github.io/prolfqua/reference/LFQDataStats.md),
 [`LFQDataSummariser`](https://fgcz.github.io/prolfqua/reference/LFQDataSummariser.md),
-[`LFQDataToSummarizedExperiment()`](https://fgcz.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md),
 [`lfqdata_from_wide()`](https://fgcz.github.io/prolfqua/reference/lfqdata_from_wide.md),
+[`lfqdata_to_summarized_experiment()`](https://fgcz.github.io/prolfqua/reference/lfqdata_to_summarized_experiment.md),
 [`plot.LFQData()`](https://fgcz.github.io/prolfqua/reference/plot.LFQData.md)
 
 ## Public fields
@@ -265,7 +265,7 @@ set a config field value
 
 - `field`:
 
-  character — field name
+  character - field name
 
 - `value`:
 
@@ -286,7 +286,7 @@ get deep copy
 ### `LFQData$is_aggregatable()`
 
 can the data be aggregated, i.e. is there a hierarchy level below the
-modelled one (\`hierarchy_depth\`)
+modelled one (`hierarchy_depth`)
 
 #### Usage
 
@@ -386,10 +386,10 @@ self
 
 ### `LFQData$filter_proteins_by_peptide_count()`
 
-remove parents (e.g. proteins) with fewer than \`threshold\` distinct
+remove parents (e.g. proteins) with fewer than `threshold` distinct
 children (e.g. peptides) and add the count as a column. By default the
 second hierarchy level is counted within the first, independent of
-\`hierarchy_depth\`; a hierarchy with one level is an error.
+`hierarchy_depth`; a hierarchy with one level is an error.
 
 #### Usage
 
@@ -403,7 +403,7 @@ second hierarchy level is counted within the first, independent of
 
 - `threshold`:
 
-  minimum number of children, default \`config\$min_peptides_protein\`
+  minimum number of children, default `config$min_peptides_protein`
 
 - `parent`:
 
@@ -423,7 +423,7 @@ self (invisible)
 
 remove decoy / reverse-database entries (rows whose top-level hierarchy
 id, e.g. protein_Id, is a decoy). Detection uses the configured
-\`pattern_decoys\` unioned with the built-in defaults (see
+`pattern_decoys` unioned with the built-in defaults (see
 [`is_decoy`](https://fgcz.github.io/prolfqua/reference/is_decoy.md));
 decoys are always detectable even when no pattern is configured. Returns
 a new decoy-free LFQData (self is not modified).
@@ -442,7 +442,7 @@ LFQData without decoys
 
 remove contaminant entries (rows whose top-level hierarchy id, e.g.
 protein_Id, is a contaminant). Detection uses the configured
-\`pattern_contaminants\` unioned with the built-in defaults (see
+`pattern_contaminants` unioned with the built-in defaults (see
 [`is_contaminant`](https://fgcz.github.io/prolfqua/reference/is_contaminant.md)).
 Returns a new contaminant-free LFQData (self is not modified).
 
@@ -459,9 +459,9 @@ LFQData without contaminants
 ### `LFQData$decoy_proportion()`
 
 proportion of modelling-level keys (subject_id, e.g. protein or peptide
-by \`hierarchy_depth\`) that are decoys — an empirical-FDR /
-target-decoy QC signal. Decoy status derives from the top-level
-hierarchy id (protein_Id).
+by `hierarchy_depth`) that are decoys - an empirical-FDR / target-decoy
+QC signal. Decoy status derives from the top-level hierarchy id
+(protein_Id).
 
 #### Usage
 

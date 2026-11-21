@@ -1,12 +1,17 @@
-# compute median and standard deviation for each sample
+# Compute the median and MAD of each sample
 
-compute median and standard deviation for each sample
+Compute the median and MAD of each sample
 
 ## Usage
 
 ``` r
 get_robscales(lfqdata)
 ```
+
+## Value
+
+a list with the numeric vectors `medians` and `mads`, with one element
+per sample
 
 ## See also
 

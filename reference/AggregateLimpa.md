@@ -1,4 +1,4 @@
-# AggregateLimpa
+# Aggregate or impute intensities with limpa's DPC quantification
 
 Aggregates peptide/precursor intensities to protein level using limpa's
 probabilistic DPC-based quantification
@@ -9,13 +9,13 @@ using
 
 The output LFQData contains three value columns:
 
-- intensity (`"limpa"`) — protein-level log-expression (complete, no
+- intensity (`"limpa"`) - protein-level log-expression (complete, no
   NAs)
 
-- standard error (in `config$opt_se`) — per-protein, per-sample
+- standard error (in `config$opt_se`) - per-protein, per-sample
   posterior SEs
 
-- observation count (in `config$nr_children`) — number of observed
+- observation count (in `config$nr_children`) - number of observed
   precursors
 
 ## Value
@@ -33,8 +33,8 @@ Other LFQData:
 [`LFQDataPlotter`](https://fgcz.github.io/prolfqua/reference/LFQDataPlotter.md),
 [`LFQDataStats`](https://fgcz.github.io/prolfqua/reference/LFQDataStats.md),
 [`LFQDataSummariser`](https://fgcz.github.io/prolfqua/reference/LFQDataSummariser.md),
-[`LFQDataToSummarizedExperiment()`](https://fgcz.github.io/prolfqua/reference/LFQDataToSummarizedExperiment.md),
 [`lfqdata_from_wide()`](https://fgcz.github.io/prolfqua/reference/lfqdata_from_wide.md),
+[`lfqdata_to_summarized_experiment()`](https://fgcz.github.io/prolfqua/reference/lfqdata_to_summarized_experiment.md),
 [`plot.LFQData()`](https://fgcz.github.io/prolfqua/reference/plot.LFQData.md)
 
 ## Super class

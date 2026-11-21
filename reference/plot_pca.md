@@ -1,6 +1,6 @@
-# plot PCA
+# Plot a principal component analysis of the samples
 
-plot PCA
+Plot a principal component analysis of the samples
 
 ## Usage
 
@@ -20,19 +20,19 @@ plot_pca(
 
 - matrix:
 
-  numeric matrix — wide-format intensity data
+  numeric matrix - wide-format intensity data
 
 - annotation:
 
-  data.frame — sample annotation
+  data.frame - sample annotation
 
 - sample_name:
 
-  character — sample name column
+  character - sample name column
 
 - factor_keys:
 
-  character vector — factor column names (first for color, second for
+  character vector - factor column names (first for color, second for
   shape)
 
 - PC:
@@ -47,12 +47,17 @@ plot_pca(
 
   label nudge distance
 
+## Value
+
+a ggplot object of the sample scores on the principal components `PC`,
+coloured by the first and shaped by the second of `factor_keys`
+
 ## See also
 
 Other plotting:
 [`ContrastsPlotter`](https://fgcz.github.io/prolfqua/reference/ContrastsPlotter.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`missigness_histogram()`](https://fgcz.github.io/prolfqua/reference/missigness_histogram.md),
+[`missingness_histogram()`](https://fgcz.github.io/prolfqua/reference/missingness_histogram.md),
 [`missingness_per_condition()`](https://fgcz.github.io/prolfqua/reference/missingness_per_condition.md),
 [`missingness_per_condition_cumsum()`](https://fgcz.github.io/prolfqua/reference/missingness_per_condition_cumsum.md),
 [`plot_estimate()`](https://fgcz.github.io/prolfqua/reference/plot_estimate.md),
@@ -71,7 +76,7 @@ Other plotting:
 ## Examples
 
 ``` r
-istar <- sim_lfq_data_protein_config(with_missing = TRUE, weight_missing = .8, Nprot = 3000)
+istar <- sim_lfq_data_protein_config(with_missing = TRUE, weight_missing = .8, n_proteins = 3000)
 #> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
 #> setup_analysis: dropped 5 unconfigured columns: average_prot_abundance, sd, mean, N, Replicate.

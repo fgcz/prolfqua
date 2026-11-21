@@ -21,10 +21,10 @@ one-factor introduction.
 
 ``` r
 dd <- sim_lfq_data_2factor_config(
-  Nprot = 80,
+  n_proteins = 80,
   with_missing = TRUE,
   weight_missing = 1,
-  PEPTIDE = TRUE,
+  peptide = TRUE,
   seed = 7
 )
 
@@ -517,7 +517,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] ggplot2_4.0.4    dplyr_1.2.1      prolfqua_1.9.4   BiocStyle_2.40.0
+    ## [1] ggplot2_4.0.4    dplyr_1.2.1      prolfqua_1.9.5   BiocStyle_2.40.0
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] tidyselect_1.2.1       farver_2.1.2           S7_1.0.0              

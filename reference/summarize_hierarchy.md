@@ -1,8 +1,8 @@
 # Summarize hierarchy counts
 
 E.g compute number of peptides for each protein: for each entry of
-\`hierarchy\` (and of \`factors\`), the number of distinct entries of
-the other hierarchy levels, in columns named \`\<level\>\_n\`. Counts
+`hierarchy` (and of `factors`), the number of distinct entries of the
+other hierarchy levels, in columns named `<level>_n`. Counts
 experiment-wide, whether observed or not.
 
 ## Usage
@@ -25,20 +25,26 @@ summarize_hierarchy(
 
 - hierarchy_keys:
 
-  character vector — all hierarchy column names
+  character vector - all hierarchy column names
 
 - isotope_label:
 
-  character — isotope label column name
+  character - isotope label column name
 
 - hierarchy:
 
-  character vector — hierarchy level to group by (default
+  character vector - hierarchy level to group by (default
   hierarchy_keys)
 
 - factors:
 
-  character vector — factor columns to include
+  character vector - factor columns to include
+
+## Value
+
+a tibble with one row per combination of the `factors` and `hierarchy`
+columns and, for each other hierarchy level and the isotope label, a
+column `<level>_n` with the number of its distinct entries
 
 ## See also
 

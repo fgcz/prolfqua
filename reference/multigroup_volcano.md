@@ -1,6 +1,6 @@
-# plot volcano given multiple contrasts
+# Volcano plot for multiple contrasts
 
-plot volcano given multiple contrasts
+Volcano plot for multiple contrasts
 
 ## Usage
 
@@ -75,6 +75,11 @@ multigroup_volcano(
 - max_nr_significant_text:
 
   maximum number of significant labels to display
+
+## Value
+
+a ggplot object with one volcano panel per contrast; if `label` is
+given, significant points are labelled
 
 ## See also
 

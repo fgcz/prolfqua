@@ -113,7 +113,7 @@ The objects of this class are cloneable with this method.
 ## Examples
 
 ``` r
-dd <- prolfqua::sim_lfq_data_protein_config(Nprot = 100,weight_missing = 1)
+dd <- prolfqua::sim_lfq_data_protein_config(n_proteins = 100,weight_missing = 1)
 #> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
 #> setup_analysis: dropped 5 unconfigured columns: average_prot_abundance, sd, mean, N, Replicate.
@@ -122,7 +122,7 @@ mh <- prolfqua::MissingHelpers$new(dd$data, dd$config, prob = 0.8)
 xx <- mh$get_stats()
 xx <- mh$get_lod()
 
-dd <- prolfqua::sim_lfq_data_2factor_config(Nprot = 100,weight_missing = 0.1)
+dd <- prolfqua::sim_lfq_data_2factor_config(n_proteins = 100,weight_missing = 0.1)
 #> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
 #> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, group, mean, N, Replicate.

@@ -1,6 +1,6 @@
-# generates peptide level plots for all Proteins
+# Generate feature-level boxplots for all proteins
 
-generates peptide level plots for all Proteins
+Generate feature-level boxplots for all proteins
 
 ## Usage
 
@@ -21,7 +21,8 @@ plot_hierarchies_boxplot_df(
 
 - lfqdata:
 
-  LFQData object
+  [LFQData](https://fgcz.github.io/prolfqua/reference/LFQData.md) object
+  with the data and its configuration
 
 - hierarchy:
 
@@ -31,12 +32,19 @@ plot_hierarchies_boxplot_df(
 
   default NULL
 
+## Value
+
+a tibble with one row per element of `hierarchy`, a column (named after
+the `hierarchy` columns joined by `+`) identifying it, and a list column
+`boxplot` of ggplot objects made by
+[`plot_hierarchies_boxplot()`](https://fgcz.github.io/prolfqua/reference/plot_hierarchies_boxplot.md)
+
 ## See also
 
 Other plotting:
 [`ContrastsPlotter`](https://fgcz.github.io/prolfqua/reference/ContrastsPlotter.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`missigness_histogram()`](https://fgcz.github.io/prolfqua/reference/missigness_histogram.md),
+[`missingness_histogram()`](https://fgcz.github.io/prolfqua/reference/missingness_histogram.md),
 [`missingness_per_condition()`](https://fgcz.github.io/prolfqua/reference/missingness_per_condition.md),
 [`missingness_per_condition_cumsum()`](https://fgcz.github.io/prolfqua/reference/missingness_per_condition_cumsum.md),
 [`plot_estimate()`](https://fgcz.github.io/prolfqua/reference/plot_estimate.md),

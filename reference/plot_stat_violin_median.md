@@ -1,6 +1,6 @@
-# plot Violin plot of sd CV or mean given intensity lower or above median
+# Violin plot of sd, CV or mean for intensities below and above the median
 
-plot Violin plot of sd CV or mean given intensity lower or above median
+Violin plot of sd, CV or mean for intensities below and above the median
 
 ## Usage
 
@@ -20,11 +20,17 @@ plot_stat_violin_median(
 
 - factor_key:
 
-  character — factor column name for x-axis
+  character - factor column name for x-axis
 
 - stat:
 
   either CV, mean or sd
+
+## Value
+
+a ggplot object with violins of `stat` per level of `factor_key` and the
+median and interquartile range marked, faceted into features below and
+above the median mean intensity
 
 ## See also
 
@@ -33,7 +39,7 @@ Other stats:
 [`compute_pooled()`](https://fgcz.github.io/prolfqua/reference/pooled_var.md),
 [`fdr_sig_level()`](https://fgcz.github.io/prolfqua/reference/fdr_sig_level.md),
 [`lfq_power_t_test_proteins()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_proteins.md),
-[`lfq_power_t_test_quantiles_V2()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_quantiles_V2.md),
+[`lfq_power_t_test_quantiles()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_quantiles.md),
 [`null_split_check()`](https://fgcz.github.io/prolfqua/reference/null_split_check.md),
 [`plot_stat_density()`](https://fgcz.github.io/prolfqua/reference/plot_stat_density.md),
 [`plot_stat_density_median()`](https://fgcz.github.io/prolfqua/reference/plot_stat_density_median.md),

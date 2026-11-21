@@ -17,11 +17,16 @@ hierarchy_counts(pdata, hierarchy_keys, isotope_label = "isotopeLabel")
 
 - hierarchy_keys:
 
-  character vector — all hierarchy column names
+  character vector - all hierarchy column names
 
 - isotope_label:
 
-  character — isotope label column name
+  character - isotope label column name
+
+## Value
+
+a tibble with one row per isotope label and one column per hierarchy key
+holding the number of distinct elements
 
 ## See also
 

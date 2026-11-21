@@ -5,7 +5,7 @@ Histogram summarizing missingness
 ## Usage
 
 ``` r
-missigness_histogram(
+missingness_histogram(
   lfqdata,
   showempty = FALSE,
   factors = lfqdata$relevant_factor_keys(),
@@ -17,7 +17,8 @@ missigness_histogram(
 
 - lfqdata:
 
-  LFQData object
+  [LFQData](https://fgcz.github.io/prolfqua/reference/LFQData.md) object
+  with the data and its configuration
 
 - showempty:
 
@@ -30,6 +31,11 @@ missigness_histogram(
 - alpha:
 
   transparency
+
+## Value
+
+a ggplot object with density plots of the mean intensity per number of
+missing values, faceted by factor levels
 
 ## See also
 
@@ -68,8 +74,8 @@ istar <- sim_lfq_data_peptide_config()
 #> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
 #> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
 lfq <- LFQData$new(istar$data, istar$config)
-pl <- missigness_histogram(lfq, showempty = FALSE)
+pl <- missingness_histogram(lfq, showempty = FALSE)
 stopifnot("ggplot" %in% class(pl))
-pl <- missigness_histogram(lfq, showempty = TRUE)
+pl <- missingness_histogram(lfq, showempty = TRUE)
 stopifnot("ggplot" %in% class(pl))
 ```

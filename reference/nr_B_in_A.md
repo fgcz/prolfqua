@@ -1,7 +1,7 @@
 # Count the children of each parent in the hierarchy
 
-The number of distinct \`level_b\` entries, e.g. peptides, within each
-\`level_a\` entry, e.g. protein.
+The number of distinct `level_b` entries, e.g. peptides, within each
+`level_a` entry, e.g. protein.
 
 ## Usage
 
@@ -35,7 +35,7 @@ nr_B_in_A(
 
 ## Value
 
-data.frame of the \`level_a\` keys and the count column
+data.frame of the `level_a` keys and the count column
 
 ## See also
 

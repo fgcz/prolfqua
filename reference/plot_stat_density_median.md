@@ -1,7 +1,7 @@
-# plot density distribution or ecdf of sd, mean or cv given intensity below and above median
+# Plot the density or ECDF of sd, mean or CV for intensities below and above the median
 
-plot density distribution or ecdf of sd, mean or cv given intensity
-below and above median
+Plot the density or ECDF of sd, mean or CV for intensities below and
+above the median
 
 ## Usage
 
@@ -22,7 +22,7 @@ plot_stat_density_median(
 
 - factor_key:
 
-  character — factor column name for faceting
+  character - factor column name for faceting
 
 - stat:
 
@@ -32,6 +32,11 @@ plot_stat_density_median(
 
   either density or ecdf
 
+## Value
+
+a ggplot object with density or ECDF lines of `stat` for features above
+and below the median mean intensity, faceted by `factor_key`
+
 ## See also
 
 Other stats:
@@ -39,7 +44,7 @@ Other stats:
 [`compute_pooled()`](https://fgcz.github.io/prolfqua/reference/pooled_var.md),
 [`fdr_sig_level()`](https://fgcz.github.io/prolfqua/reference/fdr_sig_level.md),
 [`lfq_power_t_test_proteins()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_proteins.md),
-[`lfq_power_t_test_quantiles_V2()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_quantiles_V2.md),
+[`lfq_power_t_test_quantiles()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_quantiles.md),
 [`null_split_check()`](https://fgcz.github.io/prolfqua/reference/null_split_check.md),
 [`plot_stat_density()`](https://fgcz.github.io/prolfqua/reference/plot_stat_density.md),
 [`plot_stat_violin()`](https://fgcz.github.io/prolfqua/reference/plot_stat_violin.md),

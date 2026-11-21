@@ -12,7 +12,8 @@ apply_to_response_matrix(lfqdata, .func, .funcname = NULL)
 
 - lfqdata:
 
-  LFQData object
+  [LFQData](https://fgcz.github.io/prolfqua/reference/LFQData.md) object
+  with the data and its configuration
 
 - .func:
 
@@ -24,7 +25,7 @@ apply_to_response_matrix(lfqdata, .func, .funcname = NULL)
 
 ## Value
 
-list with \`data\` (data.frame) and \`colname\` (new column name)
+list with `data` (data.frame) and `colname` (new column name)
 
 ## See also
 
@@ -39,7 +40,7 @@ Other preprocessing:
 ## Examples
 
 ``` r
-bb <- sim_lfq_data_peptide_config(Nprot = 100)
+bb <- sim_lfq_data_peptide_config(n_proteins = 100)
 #> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
 #> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.

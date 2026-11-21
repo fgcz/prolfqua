@@ -1,6 +1,6 @@
-# ranks precursor - peptide by intensity.
+# Rank precursors or peptides by intensity
 
-ranks precursor - peptide by intensity.
+Rank precursors or peptides by intensity
 
 ## Usage
 
@@ -16,11 +16,11 @@ rank_peptide_by_intensity(pdata, response, hierarchy_keys)
 
 - response:
 
-  character — intensity column name
+  character - intensity column name
 
 - hierarchy_keys:
 
-  character vector — all hierarchy column names
+  character vector - all hierarchy column names
 
 ## Value
 

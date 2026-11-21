@@ -13,7 +13,7 @@ to Firth's bias-reducing penalty."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -97,7 +97,7 @@ to Firth's bias-reducing penalty.</p>
 </ul></details></p><hr><a id="method-StrategyBinomial-initialize"></a><div class="section">
 <h3 id="strategybinomial-new-"><code>StrategyBinomial$new()</code><a class="anchor" aria-label="anchor" href="#strategybinomial-new-"></a></h3>
 <p>Create a quasibinomial count strategy. <code><a href="https://rdrr.io/r/stats/sigma.html" class="external-link">sigma()</a></code> is the
-  Pearson residual scale used by <code><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov()</a></code>.</p><div class="section">
+Pearson residual scale used by <code><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov()</a></code>.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/StrategyBinomial.html">StrategyBinomial</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
 <span>  <span class="va">modelstr</span>,</span>
@@ -129,7 +129,7 @@ to Firth's bias-reducing penalty.</p>
 <p></p><hr><a id="method-StrategyBinomial-zero_residual_variance"></a><div class="section">
 <h3 id="strategybinomial-zero-residual-variance-"><code>StrategyBinomial$zero_residual_variance()</code><a class="anchor" aria-label="anchor" href="#strategybinomial-zero-residual-variance-"></a></h3>
 <p>Never flags: a zero Pearson dispersion (identical detection pattern within groups) is bounded
-  below by the binomial variance (<code>binomial_bound</code>), which keeps the test defined</p><div class="section">
+below by the binomial variance (<code>binomial_bound</code>), which keeps the test defined</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">StrategyBinomial</span><span class="op">$</span><span class="fu">zero_residual_variance</span><span class="op">(</span><span class="va">sigma</span>, <span class="va">scale</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">

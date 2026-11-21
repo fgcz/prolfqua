@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,18 +69,24 @@
 
 </dl></div>
     <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>if <code>as_list = TRUE</code>, a list with the matrices <code>linfct_factors</code> (one row per factor level) and
+<code>linfct_interactions</code> (one row per observed factor combination), each with one column per model coefficient;
+otherwise the two matrices bound by rows into a single matrix</p>
+    </div>
+    <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The fitted model supplies its coefficient names and observed
-  categorical factor combinations. Each combination is expressed as weights
-  on the fitted coefficients; weights for an individual factor level are
-  averaged equally over the observed combinations containing that level.
-  Thus <code>linfct_factors</code> describes marginal factor-level means and
-  <code>linfct_interactions</code> describes cell means. With treatment coding,
-  a reference-level mean includes the intercept; a non-reference mean also
-  includes its treatment coefficient. The <em>Under the hood</em> article
-  shows a complete <code>~ A * B</code> example. These helpers assume categorical
-  predictors and the usual intercept-based coding; they are not a general
-  marginal-means implementation for continuous predictors or arbitrary coding.</p>
+categorical factor combinations. Each combination is expressed as weights
+on the fitted coefficients; weights for an individual factor level are
+averaged equally over the observed combinations containing that level.
+Thus <code>linfct_factors</code> describes marginal factor-level means and
+<code>linfct_interactions</code> describes cell means. With treatment coding,
+a reference-level mean includes the intercept; a non-reference mean also
+includes its treatment coefficient. The <em>Under the hood</em> article
+shows a complete <code>~ A * B</code> example. These helpers assume categorical
+predictors and the usual intercept-based coding; they are not a general
+marginal-means implementation for continuous predictors or arbitrary coding.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -116,7 +122,6 @@
 <code><a href="ContrastsRfitImputeFacade.html">ContrastsRfitImputeFacade</a></code>,
 <code><a href="ContrastsTable.html">ContrastsTable</a></code>,
 <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
-<code><a href="LR_test.html">LR_test()</a></code>,
 <code><a href="Model.html">Model</a></code>,
 <code><a href="ModelFirth.html">ModelFirth</a></code>,
 <code><a href="ModelLimma.html">ModelLimma</a></code>,
@@ -151,6 +156,7 @@
 <code><a href="linfct_matrix_contrasts.html">linfct_matrix_contrasts()</a></code>,
 <code><a href="list_facades.html">list_facades()</a></code>,
 <code><a href="lookup_facade.html">lookup_facade()</a></code>,
+<code><a href="lr_test.html">lr_test()</a></code>,
 <code><a href="merge_contrasts_results.html">merge_contrasts_results()</a></code>,
 <code><a href="model_analyse.html">model_analyse()</a></code>,
 <code><a href="model_summary.html">model_summary()</a></code>,
@@ -171,7 +177,7 @@
 <code><a href="strategy_limma.html">strategy_limma()</a></code>,
 <code><a href="strategy_limpa.html">strategy_limpa()</a></code>,
 <code><a href="strategy.html">strategy_logistf()</a></code>,
-<code><a href="summary_ROPECA_median_p_scaled.html">summary_ROPECA_median_p_scaled()</a></code>,
+<code><a href="summary_ropeca_median_p_scaled.html">summary_ropeca_median_p_scaled()</a></code>,
 <code><a href="vcov.rfit_prolfqua.html">vcov.rfit_prolfqua()</a></code></p></div>
     </div>
 
