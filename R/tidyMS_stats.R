@@ -345,7 +345,7 @@ plot_stat_violin <- function(pdata, factor_keys_depth, stat = c("CV", "meanAbund
   pdata <- pdata |> tidyr::unite("groups", dplyr::all_of(factor_keys_depth))
   p <- ggplot(pdata, aes(x = .data$groups, y = .data[[stat]])) +
     theme_prolfqua() +
-    geom_violin() +
+    geom_violin(linewidth = 0.3) +
     ggplot2::stat_summary(fun = median, geom = "point", size = 1, color = "black")
   return(p)
 }
@@ -372,7 +372,7 @@ plot_stat_violin_median <- function(pdata, factor_key, stat = c("CV", "meanAbund
 
   p <- ggplot(top50, aes(x = .data[[factor_key]], y = .data[[stat]])) +
     theme_prolfqua() +
-    geom_violin() +
+    geom_violin(linewidth = 0.3) +
     stat_summary(
       fun = stats::median,
       fun.min = function(x) stats::quantile(x, 0.25),

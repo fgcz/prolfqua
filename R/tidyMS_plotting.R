@@ -281,7 +281,7 @@ theme_prolfqua <- function(grid = FALSE, base_size = 12) {
 plot_intensity_distribution_violin <- function(pdata, sample_name, response, is_transformed = FALSE) {
   p <- ggplot(pdata, aes(x = .data[[sample_name]], y = .data[[response]])) +
     theme_prolfqua() +
-    geom_violin() +
+    geom_violin(linewidth = 0.3) +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
     stat_summary(fun = median, geom = "point", size = 1, color = "black")
   if (!is_transformed) {
