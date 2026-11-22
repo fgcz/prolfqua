@@ -249,7 +249,8 @@ Other modelling:
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{global}}{logical TRUE - get linear functions for all models}
+      \item{\code{global}}{ignored; kept for the \code{ContrastsInterface} signature. The linear functions come from the wrapped
+contrast object}
     }
     \if{html}{\out{</div>}}
   }

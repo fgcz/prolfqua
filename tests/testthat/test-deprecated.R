@@ -86,3 +86,24 @@ test_that("volcano functions take `data`; `.data` warns and gives the same plot"
   expect_length(old, length(new))
   expect_equal(plotly::plotly_build(old[[1]])$x$data[[1]]$x, plotly::plotly_build(new[[1]])$x$data[[1]]$x)
 })
+
+test_that("merge_contrasts_results warns on `model_name` and ignores it", {
+  tab <- function(model, diff) {
+    df <- data.frame(
+      protein_Id = c("P1", "P2"),
+      contrast = "A_vs_B",
+      modelName = model,
+      diff = diff,
+      p.value = c(0.01, 0.2),
+      FDR = c(0.02, 0.2),
+      statistic = c(3, NA)
+    )
+    ContrastsTable$new(df, subject_id = "protein_Id", model_name = model)
+  }
+  prefer <- tab("prefer", c(1, 2))
+  add <- tab("add", c(1.1, 2.1))
+  expect_warning(old <- merge_contrasts_results(prefer, add, model_name = "my_merge"), "deprecated")
+  new <- merge_contrasts_results(prefer, add)
+  expect_identical(old$merged$get_contrasts(), new$merged$get_contrasts())
+  expect_identical(old$merged$model_name, "prefer_add")
+})

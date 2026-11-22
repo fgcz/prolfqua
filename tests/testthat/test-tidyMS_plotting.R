@@ -634,3 +634,28 @@ test_that("plot_pca draws only valid shapes for a second factor with many levels
   p <- plot_pca(m[, few$sample], few, "sample", c("group", "subject"))
   expect_setequal(unique(ggplot2::layer_data(p, 1)$shape), c(16, 17, 15))
 })
+
+test_that("plot_heatmap_cor maps `color` from the lowest to the highest correlation", {
+  skip_if_not_installed("ComplexHeatmap")
+  skip_if_not_installed("circlize")
+  data <- test_long_sample_heatmap_data()
+  heatmap <- function(...) {
+    plot_heatmap_cor(data$matrix, data$annotation, factor_keys = "group", sample_name = "sample", ...)
+  }
+  rgb_at <- function(p, value) grDevices::col2rgb(p@matrix_color_mapping@col_fun(value))
+  p <- heatmap(color = c("blue", "yellow"))
+  expect_equal(rgb_at(p, min(p@matrix)), grDevices::col2rgb("blue"))
+  expect_equal(rgb_at(p, max(p@matrix)), grDevices::col2rgb("yellow"))
+  default <- heatmap()
+  expect_equal(rgb_at(default, min(default@matrix)), grDevices::col2rgb("white"))
+  expect_equal(rgb_at(default, max(default@matrix)), grDevices::col2rgb("red"))
+})
+
+test_that("pca_plotly plots the requested principal components", {
+  skip_if_not_installed("plotly")
+  istar <- sim_lfq_data_protein_config(with_missing = FALSE)
+  lfq <- LFQData$new(istar$data, istar$config)
+  layout <- plotly::plotly_build(lfq$get_Plotter()$pca_plotly(PC = c(2, 3)))$x$layout
+  expect_match(layout$xaxis$title$text, "PC2")
+  expect_match(layout$yaxis$title$text, "PC3")
+})

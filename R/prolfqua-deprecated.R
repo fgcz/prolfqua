@@ -1,7 +1,7 @@
 #' Deprecated functions and arguments
 #'
-#' These functions and arguments were renamed in prolfqua 1.9.5. The old names still work and warn; following the
-#' policy in [prolfqua-package], they call `.Defunct()` in a later release.
+#' These functions and arguments were renamed or retired in prolfqua 1.9.5. The old names still work and warn;
+#' following the policy in [prolfqua-package], they call `.Defunct()` in a later release.
 #'
 #' Functions:
 #' * `LFQDataToSummarizedExperiment()`: use [lfqdata_to_summarized_experiment()]
@@ -24,6 +24,9 @@
 #'
 #' Arguments of [volcano_plotly()] and [multigroup_volcano()]:
 #' * `.data`: use `data`
+#'
+#' Argument of [merge_contrasts_results()]:
+#' * `model_name`: never used; the merged model is named after its inputs, `<prefer>_<add>`
 #'
 #' @param ... passed to the replacement function
 #' @return the value of the replacement function

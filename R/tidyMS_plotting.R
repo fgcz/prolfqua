@@ -233,13 +233,14 @@ theme_prolfqua <- function(grid = FALSE, base_size = 12) {
   matrix[stats::hclust(distance)$order, , drop = FALSE]
 }
 
-#' White-to-red color function for correlation heatmaps, ranging over the
+#' Color function for correlation heatmaps, spreading `color` evenly over the
 #'
 #' observed values (R-squared lives in \[0, 1\]).
 #' @param cres sample correlation matrix
 #' @param R2 show squared correlations
+#' @param color colours from the lowest to the highest value
 #' @noRd
-.cor_col_fun <- function(cres, R2 = FALSE) {
+.cor_col_fun <- function(cres, R2 = FALSE, color = c("white", "red")) {
   rng <- range(cres, na.rm = TRUE)
   lo <- if (R2) 0 else max(-1, rng[1])
   hi <- rng[2]
@@ -247,7 +248,7 @@ theme_prolfqua <- function(grid = FALSE, base_size = 12) {
     lo <- 0
     hi <- 1
   }
-  circlize::colorRamp2(c(lo, hi), c("white", "red"))
+  circlize::colorRamp2(seq(lo, hi, length.out = length(color)), color)
 }
 
 #' Sequential blue-yellow-red color function for the raster of raw abundances.
@@ -562,7 +563,7 @@ plot_hierarchies_boxplot_df <- function(
 #' @param factor_keys character vector - factor column names for annotation
 #' @param sample_name character - sample name column
 #' @param R2 logical - plot R-squared instead of correlation
-#' @param color color palette
+#' @param color colours, spread evenly from the lowest to the highest correlation (default white to red)
 #' @param max_sample_label_chars maximum displayed sample label length. Labels
 #'   keep their suffix because sample prefixes are often shared.
 #' @param method correlation method: `"pearson"` (default), `"spearman"` or `"kendall"` for [stats::cor()] on
@@ -595,7 +596,7 @@ plot_heatmap_cor <- function(
   factor_keys,
   sample_name,
   R2 = FALSE,
-  color = colorRampPalette(c("white", "red"))(1024),
+  color = c("white", "red"),
   max_sample_label_chars = 20,
   method = "pearson",
   ...
@@ -612,7 +613,7 @@ plot_heatmap_cor <- function(
   res <- .annotated_heatmap(
     plot_data,
     title,
-    .cor_col_fun(plot_data, R2),
+    .cor_col_fun(plot_data, R2, color),
     .heatmap_top_annotation(annotation, factor_keys, sample_name, colnames(plot_data)),
     max_sample_label_chars,
     cluster_columns = TRUE,

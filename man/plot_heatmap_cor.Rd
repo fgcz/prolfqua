@@ -10,7 +10,7 @@ plot_heatmap_cor(
   factor_keys,
   sample_name,
   R2 = FALSE,
-  color = colorRampPalette(c("white", "red"))(1024),
+  color = c("white", "red"),
   max_sample_label_chars = 20,
   method = "pearson",
   ...
@@ -27,7 +27,7 @@ plot_heatmap_cor(
 
 \item{R2}{logical - plot R-squared instead of correlation}
 
-\item{color}{color palette}
+\item{color}{colours, spread evenly from the lowest to the highest correlation (default white to red)}
 
 \item{max_sample_label_chars}{maximum displayed sample label length. Labels
 keep their suffix because sample prefixes are often shared.}

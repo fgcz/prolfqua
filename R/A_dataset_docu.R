@@ -9,7 +9,7 @@
 #' @importFrom ggrepel geom_text_repel
 #' @importFrom graphics par hist
 #' @importFrom graphics abline pairs plot text
-#' @importFrom grDevices colorRampPalette dev.off pdf
+#' @importFrom grDevices dev.off pdf
 #' @importFrom purrr map map2 map2_dbl map_lgl map_dbl
 #' @importFrom rlang := syms .data
 #' @importFrom stats as.formula cor

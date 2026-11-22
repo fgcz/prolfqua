@@ -270,7 +270,8 @@ ContrastsInterface <- R6::R6Class(
 #'
 #' @param prefer contrasts to use preferentially
 #' @param add contrasts to add from if missing in prefer
-#' @param model_name name of the merged model default "mergedModel"
+#' @param model_name deprecated and ignored; the merged model is named `<prefer>_<add>` after the model names of
+#'   `prefer` and `add`
 #' @return Contrast definitions or contrast results.
 #' @export
 #' @family modelling
@@ -298,7 +299,15 @@ ContrastsInterface <- R6::R6Class(
 #' add <- ContrastsTable$new(add_df, subject_id = "protein_Id", model_name = "add")
 #' merged <- merge_contrasts_results(prefer, add)
 #' merged$merged$get_contrasts()
-merge_contrasts_results <- function(prefer, add, model_name = "mergedModel") {
+merge_contrasts_results <- function(prefer, add, model_name) {
+  if (!missing(model_name)) {
+    .Deprecated(
+      msg = paste0(
+        "Argument `model_name` of merge_contrasts_results() is deprecated and ignored; ",
+        "the merged model is named <prefer>_<add>."
+      )
+    )
+  }
   c_a <- prefer$get_contrasts()
   c_b <- add$get_contrasts()
 

@@ -35,8 +35,8 @@ missigness_histogram(...)
 the value of the replacement function
 }
 \description{
-These functions and arguments were renamed in prolfqua 1.9.5. The old names still work and warn; following the
-policy in \link{prolfqua-package}, they call \code{.Defunct()} in a later release.
+These functions and arguments were renamed or retired in prolfqua 1.9.5. The old names still work and warn;
+following the policy in \link{prolfqua-package}, they call \code{.Defunct()} in a later release.
 }
 \details{
 Functions:
@@ -65,6 +65,11 @@ Simulator arguments of \code{\link[=sim_lfq_data]{sim_lfq_data()}}, \code{\link[
 Arguments of \code{\link[=volcano_plotly]{volcano_plotly()}} and \code{\link[=multigroup_volcano]{multigroup_volcano()}}:
 \itemize{
 \item \code{.data}: use \code{data}
+}
+
+Argument of \code{\link[=merge_contrasts_results]{merge_contrasts_results()}}:
+\itemize{
+\item \code{model_name}: never used; the merged model is named after its inputs, \verb{<prefer>_<add>}
 }
 }
 \keyword{internal}

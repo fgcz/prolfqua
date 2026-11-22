@@ -4,14 +4,15 @@
 \alias{merge_contrasts_results}
 \title{Merge contrast results coming from two different model.}
 \usage{
-merge_contrasts_results(prefer, add, model_name = "mergedModel")
+merge_contrasts_results(prefer, add, model_name)
 }
 \arguments{
 \item{prefer}{contrasts to use preferentially}
 
 \item{add}{contrasts to add from if missing in prefer}
 
-\item{model_name}{name of the merged model default "mergedModel"}
+\item{model_name}{deprecated and ignored; the merged model is named \verb{<prefer>_<add>} after the model names of
+\code{prefer} and \code{add}}
 }
 \value{
 Contrast definitions or contrast results.

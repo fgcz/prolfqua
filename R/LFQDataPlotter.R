@@ -220,7 +220,7 @@ LFQDataPlotter <- R6::R6Class(
     #' @return plotly
     pca_plotly = function(PC = c(1, 2), add_txt = FALSE) {
       rlang::check_installed("plotly", reason = "for interactive plots.")
-      fig <- plotly::ggplotly(self$pca(add_txt = add_txt), tooltip = self$lfq$sample_name())
+      fig <- plotly::ggplotly(self$pca(PC = PC, add_txt = add_txt), tooltip = self$lfq$sample_name())
       fig
     },
     #' @description

@@ -326,7 +326,6 @@ importFrom(ggplot2,
 )
 importFrom(ggrepel,geom_text_repel)
 importFrom(grDevices,
-  colorRampPalette,
   dev.off,
   pdf
 )

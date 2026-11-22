@@ -92,7 +92,8 @@ ContrastsModerated <- R6::R6Class(
     },
     #' @description
     #' get linear functions from contrasts
-    #' @param global logical TRUE - get the a linear functions for all models, FALSE - linear function for each model
+    #' @param global ignored; kept for the `ContrastsInterface` signature. The linear functions come from the wrapped
+    #'   contrast object
     get_linfct = function(global = TRUE) {
       self$Contrast$get_linfct()
     },

@@ -17,6 +17,8 @@
 - `summarize_stats_quantiles()` (and `LFQDataStats$stats_quantiles()`) return `long` as an ungrouped tibble.
 - `summary_ropeca_median_p_scaled()` stops with an error when the `statistic` column is missing; before, it filled the summary's `statistic` column with the column name.
 - Hierarchy counts per sample (`HierarchyCountsSample`, `LFQDataSummariser$hierarchy_counts_sample()` and its plot) work without an `nr_children` column, counting every feature once, and stop with an error when `nr_children > 1` is requested without that column.
+- `LFQDataPlotter$pca_plotly()` plots the principal components given in `PC`; before, it always plotted the first two.
+- `plot_heatmap_cor()` colours by its `color` argument, spread from the lowest to the highest correlation (default white to red, as before); before, `color` was ignored.
 
 ## Performance
 
@@ -27,6 +29,7 @@
 - Renamed to snake_case: `lfqdata_to_summarized_experiment()` (was `LFQDataToSummarizedExperiment()`), `lr_test()` (`LR_test()`), `lfq_power_t_test_quantiles()` (`lfq_power_t_test_quantiles_V2()`), `r6_extract_values()` (`R6_extract_values()`), `list_to_analysis_configuration()` (`list_to_AnalysisConfiguration()`), `list_to_contrast_configuration()` (`list_to_ContrastConfiguration()`), `summary_ropeca_median_p_scaled()` (`summary_ROPECA_median_p_scaled()`), and the misspelt `missigness_histogram()` and `LFQDataPlotter$missigness_histogram()` to `missingness_histogram()`. The old names still work and warn; see `?"prolfqua-deprecated"`.
 - Simulator arguments renamed: `Nprot` to `n_proteins`, `N` to `n_per_group`, `PEPTIDE` to `peptide`, `TWO` to `two_factor` in `sim_lfq_data()`, `sim_lfq_data_peptide_config()`, `sim_lfq_data_protein_config()`, `sim_lfq_data_2factor_config()` and `sim_build_models_lm()`, `_lmer()`, `_logistf()`. The old arguments still work and warn.
 - `volcano_plotly()` and `multigroup_volcano()` take their data as `data`; `.data`, which shadowed the tidy-eval pronoun, still works and warns.
+- `merge_contrasts_results(model_name = )` is deprecated: it was never used, and the merged model keeps its name `<prefer>_<add>`. Passing it warns.
 
 ## Documentation
 
