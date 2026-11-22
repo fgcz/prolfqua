@@ -290,6 +290,7 @@ lProt$rename_response("transformedIntensity")
 strat <- strategy_limma("transformedIntensity ~ group_")
 mod_limma <- build_model_limma(lProt, strat)
 #> fit (limma): 1 singular fits (e.g. VUnZ6o~1614): coefficients not estimable (Partial NA coefficients)
+#> fit (limma): 1 limma warnings (e.g. Partial NA coefficients for 1 probe(s)): raised by limma while fitting all proteins; kept verbatim
 #> fit (limma): 82 missing responses dropped (e.g. 0EfVhX~7161, 0m5WN4~3543, 7QuTub~5556, 7cbcrd~0495, 9VUkAq~8655, ...): NA response (missing observation) left out of the fit
 #> See $provenance().
 

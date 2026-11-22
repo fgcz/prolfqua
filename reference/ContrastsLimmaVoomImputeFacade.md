@@ -228,6 +228,7 @@ lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata$rename_response("transformedIntensity")
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 fa <- ContrastsLimmaVoomImputeFacade$new(lfqdata, "~ group_", contrasts)
+#> fit (limmaImputed): 1 limma warnings (e.g. Partial NA coefficients for 4 probe(s)): raised by limma while fitting all proteins; kept verbatim
 #> fit (limmaImputed): 4 refit at the limit of detection (e.g. DuwH7n~2082, HvIpHG~1448, JcKVfU~4958, JfvT8X~6972): fit failed, singular or missing a group; missing responses imputed at the LOD
 #> fit (limmaImputed): 62 missing responses dropped (e.g. 0m5WN4~6730, 7QuTub~6175, 7cbcrd~2687, 9VUkAq~3402, BEJI92~2727, ...): NA response (missing observation) left out of the fit
 #> See $provenance().

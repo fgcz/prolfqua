@@ -166,7 +166,7 @@ returns a plain list (formula, trend, robust, weights) consumed by
 when passed to new LFQData instances. Never modify config in-place on an
 existing LFQData.
 
-### R6 Classes (22 classes across R/)
+### R6 Classes (62 R6 generators across R/; the main ones)
 
 | Category | Classes | Files |
 |----|----|----|
@@ -244,8 +244,8 @@ downstream packages.
 - **When fixing a bug, first add a test that reproduces it**, then fix.
   This ensures regressions are caught.
 
-11 test files in `tests/testthat/`: - `test-LFQData.R` — Core data
-container and decorators - `test-Model.R` — Model fitting and
+58 test files in `tests/testthat/`; the main ones: - `test-LFQData.R` —
+Core data container and decorators - `test-Model.R` — Model fitting and
 coefficient extraction - `test-Contrasts.R` — Contrast computation (Wald
 test path) - `test-ContrastsFacades.R` — All facade classes and
 [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md) -

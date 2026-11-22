@@ -61,6 +61,10 @@
 <code><a href="../reference/register_facade.html">register_facade()</a></code> refuses the names of built-in methods (<code>"lm"</code>, <code>"limma"</code>, …). Before, registering such a name silently replaced the built-in entry, and the built-in facade then rejected valid input with an error naming the wrong class. Built-in facades check their input shape themselves instead of reading it from the registry.</li>
 <li>Error messages state the problem in their first line (“<code>method</code> must be one of …”, “Can’t find column <code>x</code> in <code>data</code>.”) and name the function you called instead of prolfqua’s internal checker. Condition classes are unchanged; about 30 error and warning messages were reworded.</li>
 <li>Joins inside prolfqua check that their lookup keys are unique: a duplicated subject, contrast or sample key in an input (for instance two rows for one protein and contrast passed to <code><a href="../reference/merge_contrasts_results.html">merge_contrasts_results()</a></code>) raises an error instead of silently multiplying rows.</li>
+<li>
+<code><a href="../reference/list_to_analysis_configuration.html">list_to_analysis_configuration()</a></code> stops with a prolfqua error naming the keys that are not configuration fields (also method names such as <code>hierarchy_keys</code>); before, it failed with base R’s “cannot add bindings to a locked environment”.</li>
+<li>
+<code><a href="../reference/moderated_p_deqms_long.html">moderated_p_deqms_long()</a></code> (used by the deqms methods) reports problems of its per-contrast variance fits as a <code>prolfqua_fit_failed</code> warning, like the other fitting steps; before, the warning had no class. The limma methods keep limma’s own warning text (e.g. “Partial NA coefficients”) in <code>$provenance()</code> instead of matching and dropping it.</li>
 <li>Plots: volcano, MA and score plots draw smaller, more transparent points, so dense regions stay readable; <code>ContrastsPlotter$barplot_threshold()</code> fills bars with the colour-blind safe palette; score-plot reference lines are black and red regardless of the global <code><a href="https://rdrr.io/r/grDevices/palette.html" class="external-link">palette()</a></code>. <code><a href="../reference/plot_pca.html">plot_pca()</a></code> shapes the second factor with 19 distinguishable shapes and, when that factor has more levels, drops the shape mapping with a message; before, factors with more than 25 levels drew invalid shapes or no points.</li>
 </ul></div>
 <div class="section level3">
@@ -82,10 +86,21 @@
 <code>LFQDataPlotter$pca_plotly()</code> plots the principal components given in <code>PC</code>; before, it always plotted the first two.</li>
 <li>
 <code><a href="../reference/plot_heatmap_cor.html">plot_heatmap_cor()</a></code> colours by its <code>color</code> argument, spread from the lowest to the highest correlation (default white to red, as before); before, <code>color</code> was ignored.</li>
+<li>
+<code>AggregatorBase$write_plots()</code> (and the aggregators’ <code>write_plots()</code>) uses its <code>show.legend</code> argument; before, the legend was never shown.</li>
+<li>
+<code><a href="../reference/linfct_matrix_contrasts.html">linfct_matrix_contrasts()</a></code> names an unnamed contrast <code>contrast_&lt;i&gt;</code>; before, it dropped it with the warning “LHS of <code>:=</code> must be a string”.</li>
+<li>Aggregation plots from <code><a href="../reference/plot_estimate.html">plot_estimate()</a></code> and <code>AggregatorBase$plot()</code>, and boxplots from <code>LFQDataPlotter$boxplots()</code>, no longer carry the whole data set: <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS()</a></code> of one aggregation plot of 300 proteins writes 11 MB instead of 2 GB.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="performance-1-9-5">Performance<a class="anchor" aria-label="anchor" href="#performance-1-9-5"></a></h3>
 <ul><li>The duplicate-key check run before modelling and aggregation (<code><a href="../reference/build_model.html">build_model()</a></code>, <code><a href="../reference/build_model_limma.html">build_model_limma()</a></code>, the facades and the aggregators), and <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> of an <code>LFQData</code>, count distinct keys by hashing instead of comparing rows; on precursor-level tables with millions of rows this takes a fraction of a second instead of seconds and no longer needs several GB of extra memory.</li>
+<li>
+<code>write_plots()</code> of the aggregators and <code>LFQDataPlotter$write_boxplots()</code> build and write one protein at a time, so their memory use no longer grows with the number of proteins (300 proteins: peak 0.33 GB instead of 0.84 GB).</li>
+<li>
+<code><a href="../reference/summarize_stats.html">summarize_stats()</a></code>, and with it <code>get_Stats()</code>, the heatmap feature selection and the limit of detection of the impute methods, computes all groups in one pass: 0.2 s instead of 10.5 s for 67,000 peptides in 12 samples.</li>
+<li>Median-polish aggregation is about 5 times faster (2,000 proteins: 1.4 s instead of 7.4 s) and rlm aggregation about a quarter faster.</li>
+<li>Wald contrasts of the methods that fit one model per protein (lm, rlm, rfit, lm_impute, rfit_impute, deqms, ropeca) are computed once per protein instead of once per contrast row, and contrasts naming a group a protein lacks are skipped without raising and catching an error; the lm method on 5,000 proteins takes 3.7 s instead of 9.4 s.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="deprecated-1-9-5">Deprecated<a class="anchor" aria-label="anchor" href="#deprecated-1-9-5"></a></h3>
