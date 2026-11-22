@@ -9,6 +9,7 @@
 
 ## Bug fixes
 
+- `null_split_check()` no longer adds `pseudo_group_` to the configuration of the `LFQData` passed in; before, later calls on that object such as `data_wide()` and `get_Stats()$stats()` failed.
 - `build_model_impute()` stops with an error for input that is not aggregated (subject equals the hierarchy) and for strategies other than `strategy_lm()` and `strategy_rfit()`. Before, peptide-level input was refitted with one placeholder row per missing sample, and mixed models failed with "$ operator not defined for this S4 class".
 - `missingness_histogram()` facets by the `factors` it is given; before, it summarised by `factors` but faceted by all configured factors, and failed when `factors` was a subset.
 - `table_factors_size()` returns an ungrouped tibble when the design has two or more factors.

@@ -80,9 +80,38 @@ test_that("invalid strata and splits raise", {
   expect_error(null_split_check(one, method = "limma"), "at least two samples")
 })
 
-test_that("p-values of a no-effect simulation are roughly calibrated", {
+test_that("null_split_check() leaves the caller's LFQData unchanged", {
+  lfq <- .ns_lfq()
+  keys_before <- lfq$factor_keys()
+  wide_before <- lfq$data_wide()$data
+  null_split_check(lfq, method = "limma", n_splits = 2, seed = 8)
+  expect_identical(lfq$factor_keys(), keys_before)
+  expect_false("pseudo_group_" %in% names(lfq$get_config()$factors))
+  expect_identical(lfq$data_wide()$data, wide_before)
+  expect_s3_class(lfq$get_Stats()$stats(), "data.frame")
+})
+
+test_that("non-LFQData input raises", {
+  expect_error(null_split_check(data.frame(x = 1)), class = "prolfqua_error_bad_argument")
+})
+
+test_that("p-values of a no-effect simulation are calibrated", {
   lfq <- .ns_lfq(n_proteins = 200)
   res <- null_split_check(lfq, method = "limma", n_splits = 10, seed = 7)
-  expect_lt(stats::median(res$p_below_0.05), 0.15)
+  expect_gt(stats::median(res$p_below_0.05), 0.01)
+  expect_lt(stats::median(res$p_below_0.05), 0.12)
   expect_lt(stats::median(res$n_FDR_below_0.05), 5)
+})
+
+test_that("calibrated methods give about 5% of p-values below 0.05 under the null (extended)", {
+  skip_if_not_extended()
+  lfq <- .ns_lfq(n_proteins = 200)
+  for (method in c("lm", "limma", "deqms", "rlm")) {
+    res <- muffle_warnings_matching(
+      null_split_check(lfq, method = method, n_splits = 10, seed = 7),
+      paste(loess_ties_warning, rlm_convergence_warning, sep = "|")
+    )
+    expect_gt(stats::median(res$p_below_0.05), 0.01, label = method)
+    expect_lt(stats::median(res$p_below_0.05), 0.12, label = method)
+  }
 })

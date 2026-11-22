@@ -105,7 +105,7 @@ null_split_check <- function(
     )
   }
 
-  config <- lfqdata$get_config()
+  config <- lfqdata$get_config()$clone(deep = TRUE)
   config$factors[["pseudo_group_"]] <- "pseudo_group_"
   modelstr <- paste("~", paste(c(strata, "pseudo_group_"), collapse = " + "))
   contrast <- c(B_vs_A = "pseudo_group_B - pseudo_group_A")
