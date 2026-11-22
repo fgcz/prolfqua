@@ -104,9 +104,11 @@ ContrastsFacadeBase <- R6::R6Class(
   private = list(
     # the input LFQData copy made by .setup(); hurdle_nested and limpa_nested replace .lfqdata afterwards
     .input = NULL,
-    # Shared initialize() prologue: check the input shape required by the
-    # registry entry of `key` (`needs`), store the input and the contrast names,
-    # record the facade key, and return the full model formula string.
+    # input shape this class takes: "aggregated" (subject_id equals the hierarchy) or "nested" (child-level input);
+    # nested facades override it. The registry's `needs` mirrors it for callers that look up a method by name.
+    .needs = "aggregated",
+    # Shared initialize() prologue: check the input shape required by `.needs`, store the input and the contrast
+    # names, record the facade key, and return the full model formula string.
     .setup = function(lfqdata, contrasts, key, modelstr) {
       if (!inherits(lfqdata, "LFQData")) {
         abort_bad_argument("lfqdata", "be an LFQData object")
@@ -117,11 +119,10 @@ ContrastsFacadeBase <- R6::R6Class(
       if (!is.character(modelstr) || length(formula) != 2) {
         abort_bad_argument("modelstr", "be one right-hand-side formula string, e.g. `~ group_`")
       }
-      entry <- lookup_facade(key)
-      if (identical(entry$needs, "nested")) {
-        .assert_nested_facade_input(lfqdata, entry$class)
+      if (identical(private$.needs, "nested")) {
+        .assert_nested_facade_input(lfqdata, class(self)[1])
       } else {
-        .assert_aggregated_facade_input(lfqdata, entry$class)
+        .assert_aggregated_facade_input(lfqdata, class(self)[1])
       }
       .assert_contrast_groups(lfqdata, contrasts)
       .assert_full_rank_design(lfqdata, modelstr)

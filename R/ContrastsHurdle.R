@@ -208,6 +208,9 @@ ContrastsHurdleNestedFacade <- R6::R6Class(
       detection <- ContrastsBinomialFirthNestedFacade$new(lfqdata, modelstr, contrasts)
       self$contrast <- ContrastsHurdleFacade$new(intensity, detection, model_name = "hurdle_nested")
     }
+  ),
+  private = list(
+    .needs = "nested"
   )
 )
 

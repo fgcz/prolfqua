@@ -79,6 +79,9 @@ ContrastsLmerNestedFacade <- R6::R6Class(
       self$model <- build_model(lfqdata, strat)
       self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts, model_name = "lmer_nested"))
     }
+  ),
+  private = list(
+    .needs = "nested"
   )
 )
 
@@ -171,6 +174,9 @@ ContrastsROPECANestedFacade <- R6::R6Class(
         contrast = "contrast"
       )
     }
+  ),
+  private = list(
+    .needs = "nested"
   )
 )
 
@@ -249,6 +255,9 @@ ContrastsROPECAV2NestedFacade <- R6::R6Class(
         contrast = "contrast"
       )
     }
+  ),
+  private = list(
+    .needs = "nested"
   )
 )
 
@@ -300,6 +309,9 @@ ContrastsBinomialNestedFacade <- R6::R6Class(
       self$model <- fitted$model
       self$contrast <- fitted$contrast
     }
+  ),
+  private = list(
+    .needs = "nested"
   )
 )
 
@@ -339,6 +351,9 @@ ContrastsBinomialFirthNestedFacade <- R6::R6Class(
       self$model <- fitted$model
       self$contrast <- fitted$contrast
     }
+  ),
+  private = list(
+    .needs = "nested"
   )
 )
 
@@ -435,5 +450,8 @@ ContrastsLimpaNestedFacade <- R6::R6Class(
       self$contrast <- ContrastsLimma$new(self$model, contrasts, model_name = "limpa_nested")
       self$.drop_na_diff <- TRUE
     }
+  ),
+  private = list(
+    .needs = "nested"
   )
 )

@@ -767,10 +767,10 @@ ContrastsDEqMSVoomFacade <- R6::R6Class(
 
 .facade_registry_env <- new.env(parent = emptyenv())
 
-#' Create the built-in method-to-facade registry
+#' Built-in methods: name, facade class and input shape
 #' @noRd
-.seed_facade_registry <- function() {
-  entries <- list(
+.builtin_facade_entries <- function() {
+  list(
     lm = list(class = "ContrastsLMFacade", needs = "aggregated"),
     lm_impute = list(class = "ContrastsLMImputeFacade", needs = "aggregated"),
     limma = list(class = "ContrastsLimmaFacade", needs = "aggregated"),
@@ -792,6 +792,12 @@ ContrastsDEqMSVoomFacade <- R6::R6Class(
     ropeca_nested = list(class = "ContrastsROPECANestedFacade", needs = "nested"),
     ropecaV2_nested = list(class = "ContrastsROPECAV2NestedFacade", needs = "nested")
   )
+}
+
+#' Create the built-in method-to-facade registry
+#' @noRd
+.seed_facade_registry <- function() {
+  entries <- .builtin_facade_entries()
   for (nm in names(entries)) {
     entry <- entries[[nm]]
     entry$package <- "prolfqua"
@@ -810,7 +816,8 @@ ContrastsDEqMSVoomFacade <- R6::R6Class(
 #' modelling backends (e.g. \code{prolfquasaint}) and want to plug into
 #' the same dispatch path as the built-in facades.
 #'
-#' @param name short method name, e.g. \code{"saint"}.
+#' @param name short method name, e.g. \code{"saint"}; the names of the built-in methods (\code{"lm"},
+#'   \code{"limma"}, ...) are refused.
 #' @param class character; R6 facade class name to instantiate.
 #' @param needs the input the facade takes: \code{"aggregated"} (input at the
 #'   level of the contrasts, \code{subject_id} equal to the hierarchy keys,
@@ -837,6 +844,9 @@ register_facade <- function(name, class, needs, package = "prolfqua", needs_sain
   is_string <- function(x) is.character(x) && length(x) == 1 && !is.na(x)
   if (!(is_string(name) && nzchar(name))) {
     abort_bad_argument("name", "be one non-empty string")
+  }
+  if (name %in% names(.builtin_facade_entries())) {
+    abort_bad_argument("name", "not be the name of a built-in method", not = name)
   }
   if (!(is_string(class) && nzchar(class))) {
     abort_bad_argument("class", "be one non-empty string")

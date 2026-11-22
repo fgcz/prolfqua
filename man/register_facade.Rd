@@ -14,7 +14,8 @@ register_facade(
 )
 }
 \arguments{
-\item{name}{short method name, e.g. \code{"saint"}.}
+\item{name}{short method name, e.g. \code{"saint"}; the names of the built-in methods (\code{"lm"},
+\code{"limma"}, ...) are refused.}
 
 \item{class}{character; R6 facade class name to instantiate.}
 

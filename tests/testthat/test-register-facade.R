@@ -59,3 +59,35 @@ test_that("register_facade accepts only aggregated or nested input", {
   register_facade("test_needs", class = "Whatever", needs = "nested")
   expect_equal(lookup_facade("test_needs")$needs, "nested")
 })
+
+test_that("register_facade refuses the names of built-in methods", {
+  expect_error(
+    register_facade("lm", class = "Whatever", needs = "nested", package = "other"),
+    class = "prolfqua_error_bad_argument"
+  )
+  expect_identical(lookup_facade("lm")$class, "ContrastsLMFacade")
+  expect_identical(lookup_facade("lm")$needs, "aggregated")
+})
+
+test_that("built-in facades check their input shape themselves, not through the registry", {
+  protein <- sim_lfq_data_protein_config(n_proteins = 10, with_missing = FALSE)
+  lfq_protein <- LFQData$new(protein$data, protein$config)
+  lfq_protein$is_transformed(TRUE)
+  peptide <- sim_lfq_data_peptide_config(n_proteins = 10, with_missing = FALSE)
+  lfq_peptide <- LFQData$new(peptide$data, peptide$config)
+  lfq_peptide$is_transformed(TRUE)
+  contrasts <- c(A_vs_Ctrl = "group_A - group_Ctrl")
+
+  # a registry entry changed behind the class's back no longer changes what the class accepts
+  on.exit(prolfqua:::.seed_facade_registry(), add = TRUE)
+  entry <- lookup_facade("lm")
+  entry$needs <- "nested"
+  assign("lm", entry, envir = prolfqua:::.facade_registry_env)
+  expect_s3_class(ContrastsLMFacade$new(lfq_protein, "~ group_", contrasts)$get_contrasts(), "data.frame")
+
+  expect_error(ContrastsLMFacade$new(lfq_peptide, "~ group_", contrasts), "ContrastsLMFacade requires aggregated")
+  expect_error(
+    ContrastsROPECANestedFacade$new(lfq_protein, "~ group_", contrasts),
+    "ContrastsROPECANestedFacade requires LFQData with additional hierarchy"
+  )
+})
