@@ -32,8 +32,8 @@ response_matrix_as_tibble(pdata, value, config, data = NULL, sep = "~lfq~")
 
 ## Value
 
-a long-format tibble with the hierarchy key, isotope label, sample name
-and `value` columns; if `data` is given, `data` joined with these values
+a long-format tibble with the hierarchy key, sample name and `value`
+columns; if `data` is given, `data` joined with these values
 
 ## Examples
 

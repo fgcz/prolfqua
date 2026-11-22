@@ -63,7 +63,7 @@ nrow(bbRob$data)
 #> [1] 116
 xt <- dplyr::inner_join(bbMed$data, bbRob$data)
 #> Joining with `by = join_by(protein_Id, sampleName, group_, sample,
-#> isotopeLabel, nr_children_protein_Id)`
+#> nr_children_protein_Id)`
 plot(xt$medpolish, xt$lmrob, log = "xy", pch = "*")
 abline(0, 1, col = 2)
 

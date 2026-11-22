@@ -42,11 +42,6 @@ Other configuration:
 
   optional column with normalization values (e.g., Creatinine)
 
-- `isotope_label`:
-
-  which column contains the isotope label (e.g. heavy or light), or
-  light only if LFQ.
-
 - `ident_q_value`:
 
   column name with identification QValues (smaller better)

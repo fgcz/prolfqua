@@ -68,10 +68,10 @@ pl <- lfqdata$get_Plotter()
 lfqdata$hierarchy_counts()
 ```
 
-    ## # A tibble: 1 × 3
-    ##   isotopeLabel protein_Id peptide_Id
-    ##   <chr>             <int>      <int>
-    ## 1 light                16         60
+    ## # A tibble: 1 × 2
+    ##   protein_Id peptide_Id
+    ##        <int>      <int>
+    ## 1         16         60
 
 ``` r
 lfqdata$relevant_hierarchy_keys()

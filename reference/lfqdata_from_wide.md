@@ -23,8 +23,7 @@ lfqdata_from_wide(values, rowdata, annotation, config, prefix = "ms")
 
 - rowdata:
 
-  data.frame with one row per matrix row and the hierarchy key columns;
-  the isotope label column is optional and set to `"light"` if absent
+  data.frame with one row per matrix row and the hierarchy key columns
 
 - annotation:
 

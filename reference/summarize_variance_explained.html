@@ -95,8 +95,8 @@ R^2, <code>1 - SS_residual / SS_total</code>, repeated on each of its rows).</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>One model is fitted per lowest-level feature (all hierarchy keys and the
-isotope label), the grouping of <code><a href="summarize_stats.html">summarize_stats()</a></code>. Missing responses are
+    <p>One model is fitted per lowest-level feature (all hierarchy keys), the
+grouping of <code><a href="summarize_stats.html">summarize_stats()</a></code>. Missing responses are
 omitted within each fit. Only full-rank fits with more than one residual
 degree of freedom are kept, the set returned by <code><a href="get_complete_model_fit.html">get_complete_model_fit()</a></code>,
 so all features share the same terms; a message reports how many features
@@ -143,18 +143,18 @@ differences tested afterwards.</p>
 <span class="r-in"><span><span class="co"># the simulated intensities are already on the log2 scale</span></span></span>
 <span class="r-in"><span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">is_transformed</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">ve</span> <span class="op">&lt;-</span> <span class="fu">summarize_variance_explained</span><span class="op">(</span><span class="va">lfqdata</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> fit (Model): 34 missing responses dropped (e.g. 0m5WN4~1448~light, 9VUkAq~4562~light, At886V~3296~light, BEJI92~9143~light, CtOJ9t~2837~light, ...): NA response (missing observation) left out of the fit</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> fit (Model): 34 missing responses dropped (e.g. 0m5WN4~1448, 9VUkAq~4562, At886V~3296, BEJI92~9143, CtOJ9t~2837, ...): NA response (missing observation) left out of the fit</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> See $provenance().</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ve</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 8</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   protein_Id  isotopeLabel factor       Df Sum.Sq SS_total  eta2    R2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 0EfVhX~5954 light        group_        2 53.0      76.3  0.694 0.694</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 0EfVhX~5954 light        Residuals     9 23.3      76.3  0.306 0.694</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 0m5WN4~1448 light        group_        2  0.892     4.48 0.199 0.199</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> 0m5WN4~1448 light        Residuals     5  3.59      4.48 0.801 0.199</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> 7cbcrd~8305 light        group_        2 19.1      25.0  0.765 0.765</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> 7cbcrd~8305 light        Residuals     9  5.89     25.0  0.235 0.765</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   protein_Id  factor       Df Sum.Sq SS_total  eta2    R2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 0EfVhX~5954 group_        2 53.0      76.3  0.694 0.694</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 0EfVhX~5954 Residuals     9 23.3      76.3  0.306 0.694</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 0m5WN4~1448 group_        2  0.892     4.48 0.199 0.199</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> 0m5WN4~1448 Residuals     5  3.59      4.48 0.801 0.199</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> 7cbcrd~8305 group_        2 19.1      25.0  0.765 0.765</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> 7cbcrd~8305 Residuals     9  5.89     25.0  0.235 0.765</span>
 <span class="r-in"><span><span class="fu"><a href="pooled_variance_explained.html">pooled_variance_explained</a></span><span class="op">(</span><span class="va">ve</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      factor     eta2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    group_ 0.681619</span>

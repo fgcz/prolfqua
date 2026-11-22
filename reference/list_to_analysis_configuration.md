@@ -33,7 +33,6 @@ DEAconfig$hierarchy[["fragment_Id"]] <- c(
 )
 DEAconfig$ident_q_value <- "annotation_QValue"
 DEAconfig$set_response("Area")
-DEAconfig$isotope_label <- "Isotope.Label"
 configList <- prolfqua::r6_extract_values(DEAconfig)
 stopifnot(class(configList) == "list")
 config <- list_to_analysis_configuration(configList)

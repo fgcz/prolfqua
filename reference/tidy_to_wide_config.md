@@ -11,7 +11,7 @@ tidy_to_wide_config(
   file_name = FALSE,
   sep = "~lfq~",
   value = lfqdata$response(),
-  row_keys = c(lfqdata$hierarchy_keys(), lfqdata$isotope_label())
+  row_keys = lfqdata$hierarchy_keys()
 )
 ```
 
@@ -41,8 +41,7 @@ tidy_to_wide_config(
 - row_keys:
 
   columns identifying a row of the wide table (default: the hierarchy
-  keys and the isotope label). They must identify one value per sample;
-  e.g. drop the isotope label only for single-label data.
+  keys). They must identify one value per sample.
 
 ## Value
 
@@ -62,60 +61,59 @@ stopifnot(nrow(res$rowdata) == nrow(res$data))
 stopifnot(ncol(res$data) - ncol(res$rowdata) == nrow(res$annotation))
 res <- tidy_to_wide_config(lfqdata, as.matrix = TRUE)
 stopifnot(all(dim(res$data) == c(28,  12)))
-stopifnot(all(dim(res$annotation) == c(12,  4)))
-stopifnot(all(dim(res$rowdata) == c(28, 3)))
+stopifnot(all(dim(res$annotation) == c(12,  3)))
+stopifnot(all(dim(res$rowdata) == c(28, 2)))
 
 res <- scale(res$data)
 tidy_to_wide_config(lfqdata, value = lfqdata$nr_children_col())
 #> $data
-#> # A tibble: 28 × 15
-#>    protein_Id  peptide_Id isotopeLabel  A_V1  A_V2  A_V3  A_V4  B_V1  B_V2  B_V3
-#>    <chr>       <chr>      <chr>        <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-#>  1 0EfVhX~0087 ITLb4x1q   light            1    NA     1     1     1     1     1
-#>  2 0EfVhX~0087 ahQLlQY7   light            1     1     1     1     1     1     1
-#>  3 0EfVhX~0087 dJkdz7so   light           NA     1     1    NA     1     1     1
-#>  4 7cbcrd~5725 D5dQ4nKk   light            1     1     1     1    NA     1     1
-#>  5 9VUkAq~4703 eIC06D7g   light            1     1     1     1     1    NA     1
-#>  6 BEJI92~5282 HBkZvdhT   light            1     1    NA    NA     1     1     1
-#>  7 BEJI92~5282 qQ1GK8Un   light            1     1     1     1     1     1     1
-#>  8 CGzoYe~2147 mjHSHhoe   light            1     1     1     1    NA     1     1
-#>  9 DoWup2~5896 KVUnZ6oZ   light            1     1     1     1     1     1     1
-#> 10 Fl4JiV~8625 GsUIOl6Q   light            1     1     1    NA     1     1     1
+#> # A tibble: 28 × 14
+#>    protein_Id peptide_Id  A_V1  A_V2  A_V3  A_V4  B_V1  B_V2  B_V3  B_V4 Ctrl_V1
+#>    <chr>      <chr>      <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>   <dbl>
+#>  1 0EfVhX~00… ITLb4x1q       1    NA     1     1     1     1     1     1       1
+#>  2 0EfVhX~00… ahQLlQY7       1     1     1     1     1     1     1    NA       1
+#>  3 0EfVhX~00… dJkdz7so      NA     1     1    NA     1     1     1     1      NA
+#>  4 7cbcrd~57… D5dQ4nKk       1     1     1     1    NA     1     1     1       1
+#>  5 9VUkAq~47… eIC06D7g       1     1     1     1     1    NA     1     1       1
+#>  6 BEJI92~52… HBkZvdhT       1     1    NA    NA     1     1     1     1      NA
+#>  7 BEJI92~52… qQ1GK8Un       1     1     1     1     1     1     1     1       1
+#>  8 CGzoYe~21… mjHSHhoe       1     1     1     1    NA     1     1     1       1
+#>  9 DoWup2~58… KVUnZ6oZ       1     1     1     1     1     1     1     1       1
+#> 10 Fl4JiV~86… GsUIOl6Q       1     1     1    NA     1     1     1     1       1
 #> # ℹ 18 more rows
-#> # ℹ 5 more variables: B_V4 <dbl>, Ctrl_V1 <dbl>, Ctrl_V2 <dbl>, Ctrl_V3 <dbl>,
-#> #   Ctrl_V4 <dbl>
+#> # ℹ 3 more variables: Ctrl_V2 <dbl>, Ctrl_V3 <dbl>, Ctrl_V4 <dbl>
 #> 
 #> $annotation
-#> # A tibble: 12 × 4
-#>    sampleName sample  group_ isotopeLabel
-#>    <chr>      <chr>   <chr>  <chr>       
-#>  1 A_V1       A_V1    A      light       
-#>  2 A_V2       A_V2    A      light       
-#>  3 A_V3       A_V3    A      light       
-#>  4 A_V4       A_V4    A      light       
-#>  5 B_V1       B_V1    B      light       
-#>  6 B_V2       B_V2    B      light       
-#>  7 B_V3       B_V3    B      light       
-#>  8 B_V4       B_V4    B      light       
-#>  9 Ctrl_V1    Ctrl_V1 Ctrl   light       
-#> 10 Ctrl_V2    Ctrl_V2 Ctrl   light       
-#> 11 Ctrl_V3    Ctrl_V3 Ctrl   light       
-#> 12 Ctrl_V4    Ctrl_V4 Ctrl   light       
+#> # A tibble: 12 × 3
+#>    sampleName sample  group_
+#>    <chr>      <chr>   <chr> 
+#>  1 A_V1       A_V1    A     
+#>  2 A_V2       A_V2    A     
+#>  3 A_V3       A_V3    A     
+#>  4 A_V4       A_V4    A     
+#>  5 B_V1       B_V1    B     
+#>  6 B_V2       B_V2    B     
+#>  7 B_V3       B_V3    B     
+#>  8 B_V4       B_V4    B     
+#>  9 Ctrl_V1    Ctrl_V1 Ctrl  
+#> 10 Ctrl_V2    Ctrl_V2 Ctrl  
+#> 11 Ctrl_V3    Ctrl_V3 Ctrl  
+#> 12 Ctrl_V4    Ctrl_V4 Ctrl  
 #> 
 #> $rowdata
-#> # A tibble: 28 × 3
-#>    protein_Id  peptide_Id isotopeLabel
-#>    <chr>       <chr>      <chr>       
-#>  1 0EfVhX~0087 ITLb4x1q   light       
-#>  2 0EfVhX~0087 ahQLlQY7   light       
-#>  3 0EfVhX~0087 dJkdz7so   light       
-#>  4 7cbcrd~5725 D5dQ4nKk   light       
-#>  5 9VUkAq~4703 eIC06D7g   light       
-#>  6 BEJI92~5282 HBkZvdhT   light       
-#>  7 BEJI92~5282 qQ1GK8Un   light       
-#>  8 CGzoYe~2147 mjHSHhoe   light       
-#>  9 DoWup2~5896 KVUnZ6oZ   light       
-#> 10 Fl4JiV~8625 GsUIOl6Q   light       
+#> # A tibble: 28 × 2
+#>    protein_Id  peptide_Id
+#>    <chr>       <chr>     
+#>  1 0EfVhX~0087 ITLb4x1q  
+#>  2 0EfVhX~0087 ahQLlQY7  
+#>  3 0EfVhX~0087 dJkdz7so  
+#>  4 7cbcrd~5725 D5dQ4nKk  
+#>  5 9VUkAq~4703 eIC06D7g  
+#>  6 BEJI92~5282 HBkZvdhT  
+#>  7 BEJI92~5282 qQ1GK8Un  
+#>  8 CGzoYe~2147 mjHSHhoe  
+#>  9 DoWup2~5896 KVUnZ6oZ  
+#> 10 Fl4JiV~8625 GsUIOl6Q  
 #> # ℹ 18 more rows
 #> 
 
@@ -132,23 +130,18 @@ dd <- prolfqua::sim_lfq_data_protein_config()
 lfqprot <- prolfqua::LFQData$new(dd$data, dd$config)
 xt <- tidy_to_wide_config(lfqprot, value = lfqprot$nr_children_col())
 xt$data
-#> # A tibble: 10 × 14
-#>    protein_Id  isotopeLabel  A_V1  A_V2  A_V3  A_V4  B_V1  B_V2  B_V3  B_V4
-#>    <chr>       <chr>        <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-#>  1 0EfVhX~0087 light            3     3    NA     3     3     3     3     3
-#>  2 7cbcrd~5725 light            1     1     1     1    NA    NA     1    NA
-#>  3 9VUkAq~4703 light            1     1     1     1     1     1     1     1
-#>  4 BEJI92~5282 light            2    NA     2     2     2     2     2     2
-#>  5 CGzoYe~2147 light            1     1     1     1     1     1     1     1
-#>  6 DoWup2~5896 light           NA     1     1     1     1     1    NA     1
-#>  7 Fl4JiV~8625 light            4     4    NA     4     4     4     4     4
-#>  8 HvIpHG~9079 light            2     2    NA     2     2     2     2     2
-#>  9 JcKVfU~9653 light            7     7     7     7     7     7     7     7
-#> 10 SGIVBl~5782 light            6     6     6     6     6     6    NA     6
-#> # ℹ 4 more variables: Ctrl_V1 <dbl>, Ctrl_V2 <dbl>, Ctrl_V3 <dbl>,
-#> #   Ctrl_V4 <dbl>
-
-# row names without the isotope label
-xh <- tidy_to_wide_config(lfqprot, as.matrix = TRUE, row_keys = lfqprot$hierarchy_keys())
-stopifnot(!any(grepl("light", rownames(xh$data))))
+#> # A tibble: 10 × 13
+#>    protein_Id   A_V1  A_V2  A_V3  A_V4  B_V1  B_V2  B_V3  B_V4 Ctrl_V1 Ctrl_V2
+#>    <chr>       <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>   <dbl>   <dbl>
+#>  1 0EfVhX~0087     3     3    NA     3     3     3     3     3       3       3
+#>  2 7cbcrd~5725     1     1     1     1    NA    NA     1    NA       1       1
+#>  3 9VUkAq~4703     1     1     1     1     1     1     1     1      NA      NA
+#>  4 BEJI92~5282     2    NA     2     2     2     2     2     2       2       2
+#>  5 CGzoYe~2147     1     1     1     1     1     1     1     1       1       1
+#>  6 DoWup2~5896    NA     1     1     1     1     1    NA     1      NA      NA
+#>  7 Fl4JiV~8625     4     4    NA     4     4     4     4     4       4       4
+#>  8 HvIpHG~9079     2     2    NA     2     2     2     2     2       2       2
+#>  9 JcKVfU~9653     7     7     7     7     7     7     7     7       7       7
+#> 10 SGIVBl~5782     6     6     6     6     6     6    NA     6       6       6
+#> # ℹ 2 more variables: Ctrl_V3 <dbl>, Ctrl_V4 <dbl>
 ```

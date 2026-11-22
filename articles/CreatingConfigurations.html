@@ -154,10 +154,10 @@ containing the factors of your analysis (Group).</p>
 <span><span class="va">lfqdata</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">analysis_data</span>, <span class="va">config</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">hierarchy_counts</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 2</span></span></span>
-<span><span class="co">##   isotopeLabel protein_Id</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> light                 4</span></span></code></pre>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
+<span><span class="co">##   protein_Id</span></span>
+<span><span class="co">##        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>          4</span></span></code></pre>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">smrz</span> <span class="op">&lt;-</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_Summariser</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">smrz</span><span class="op">$</span><span class="fu">plot_hierarchy_counts_sample</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -218,29 +218,29 @@ configuration.</p>
 <span></span>
 <span><span class="va">lfq_tmp</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">analysis_data</span>, <span class="va">config</span><span class="op">)</span></span>
 <span><span class="va">lfq_tmp</span><span class="op">$</span><span class="fu">summarize_hierarchy</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 20 × 3</span></span></span>
-<span><span class="co">##    proteinID isotopeLabel_n peptideID_n</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> 1DIdTQ                 1           6</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> 1SO1NY                 1           2</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> 2JOCP3                 1           6</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> 5pb90S                 1           2</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> OyHgjC                 1           2</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> PDPfVe                 1           2</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> TvODf3                 1           2</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> UHjlsA                 1           2</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> UmCi4L                 1           1</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> Vphs0t                 1           6</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">11</span> Xp1Tno                 1           1</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">12</span> de5llz                 1           2</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">13</span> hwBDgU                 1           2</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">14</span> pGZKaB                 1           1</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">15</span> rNWbGH                 1           1</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">16</span> wXXHRN                 1           6</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">17</span> yOSJAW                 1           6</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">18</span> yj3Whg                 1          10</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">19</span> z9WqiE                 1           2</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">20</span> zVMmad                 1           2</span></span></code></pre>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 20 × 2</span></span></span>
+<span><span class="co">##    proteinID peptideID_n</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> 1DIdTQ              6</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> 1SO1NY              2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> 2JOCP3              6</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> 5pb90S              2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> OyHgjC              2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> PDPfVe              2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> TvODf3              2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> UHjlsA              2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> UmCi4L              1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> Vphs0t              6</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">11</span> Xp1Tno              1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">12</span> de5llz              2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">13</span> hwBDgU              2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">14</span> pGZKaB              1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">15</span> rNWbGH              1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">16</span> wXXHRN              6</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">17</span> yOSJAW              6</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">18</span> yj3Whg             10</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">19</span> z9WqiE              2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">20</span> zVMmad              2</span></span></code></pre>
 <p>Now the analysis_data object is ready to generate the
 <code>LFQData</code> class instance. This object is the start for
 further analysis.</p>

@@ -104,8 +104,6 @@ Other LFQData:
 
 - [`LFQData$nr_children_col()`](#method-LFQData-nr_children_col)
 
-- [`LFQData$isotope_label()`](#method-LFQData-isotope_label)
-
 - [`LFQData$data_long()`](#method-LFQData-data_long)
 
 - [`LFQData$rename_response()`](#method-LFQData-rename_response)
@@ -622,16 +620,6 @@ return name of nr_children column
 
 ------------------------------------------------------------------------
 
-### `LFQData$isotope_label()`
-
-return isotope label column name
-
-#### Usage
-
-    LFQData$isotope_label()
-
-------------------------------------------------------------------------
-
 ### `LFQData$data_long()`
 
 return the tidy (long-format) data frame
@@ -818,15 +806,15 @@ tmp <- lfqdata$data_wide(as.matrix = TRUE)
 stopifnot("matrix" %in% class(tmp$data))
 stopifnot(lfqdata$is_transformed()==FALSE)
 lfqdata$summarize_hierarchy()
-#> # A tibble: 6 × 3
-#>   protein_Id  isotopeLabel_n peptide_Id_n
-#>   <chr>                <int>        <int>
-#> 1 0EfVhX~0087              1            3
-#> 2 BEJI92~5282              1            2
-#> 3 Fl4JiV~8625              1            4
-#> 4 HvIpHG~9079              1            2
-#> 5 JcKVfU~9653              1            7
-#> 6 SGIVBl~5782              1            6
+#> # A tibble: 6 × 2
+#>   protein_Id  peptide_Id_n
+#>   <chr>              <int>
+#> 1 0EfVhX~0087            3
+#> 2 BEJI92~5282            2
+#> 3 Fl4JiV~8625            4
+#> 4 HvIpHG~9079            2
+#> 5 JcKVfU~9653            7
+#> 6 SGIVBl~5782            6
 
 lfqdata$response()
 #> [1] "abundance"

@@ -1,8 +1,8 @@
 # Count distinct elements for each level of hierarchy per sample
 
 Provides wide, long, and plot views of hierarchy counts. Counts per
-sample and isotope label, observed values only (non-missing response and
-at least `nr_children` children).
+sample, observed values only (non-missing response and at least
+`nr_children` children).
 
 ## Value
 
@@ -126,13 +126,13 @@ bb <- sim_lfq_data_protein_config()
 #> setup_analysis: added 16 rows with NA response for feature and sample combinations absent from the input.
 counts <- HierarchyCountsSample$new(bb$data, bb$config)
 head(counts$wide())
-#> # A tibble: 6 × 3
-#>   isotopeLabel sampleName protein_Id
-#>   <chr>        <chr>           <int>
-#> 1 light        A_V1                9
-#> 2 light        A_V2                9
-#> 3 light        A_V3                7
-#> 4 light        A_V4               10
-#> 5 light        B_V1                9
-#> 6 light        B_V2                9
+#> # A tibble: 6 × 2
+#>   sampleName protein_Id
+#>   <chr>           <int>
+#> 1 A_V1                9
+#> 2 A_V2                9
+#> 3 A_V3                7
+#> 4 A_V4               10
+#> 5 B_V1                9
+#> 6 B_V2                9
 ```

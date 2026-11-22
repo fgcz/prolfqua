@@ -60,19 +60,18 @@ analysis <- bb$data
 config$factor_depth <- 1
 make_interaction_column(analysis,
    config$factor_keys_depth())
-#> # A tibble: 120 × 9
-#>    sample sampleName group_ isotopeLabel protein_Id  abundance qValue nrPeptides
-#>    <chr>  <chr>      <chr>  <chr>        <chr>           <dbl>  <dbl>      <dbl>
-#>  1 A_V1   A_V1       A      light        0EfVhX~0087      20.1      0          3
-#>  2 A_V1   A_V1       A      light        7cbcrd~5725      22.0      0          1
-#>  3 A_V1   A_V1       A      light        9VUkAq~4703      19.8      0          1
-#>  4 A_V1   A_V1       A      light        BEJI92~5282      21.2      0          2
-#>  5 A_V1   A_V1       A      light        CGzoYe~2147      29.4      0          1
-#>  6 A_V1   A_V1       A      light        DoWup2~5896      NA       NA         NA
-#>  7 A_V1   A_V1       A      light        Fl4JiV~8625      20.1      0          4
-#>  8 A_V1   A_V1       A      light        HvIpHG~9079      21.7      0          2
-#>  9 A_V1   A_V1       A      light        JcKVfU~9653      34.5      0          7
-#> 10 A_V1   A_V1       A      light        SGIVBl~5782      23.9      0          6
+#> # A tibble: 120 × 8
+#>    sample sampleName group_ protein_Id  abundance qValue nrPeptides interaction
+#>    <chr>  <chr>      <chr>  <chr>           <dbl>  <dbl>      <dbl> <fct>      
+#>  1 A_V1   A_V1       A      0EfVhX~0087      20.1      0          3 group_A    
+#>  2 A_V1   A_V1       A      7cbcrd~5725      22.0      0          1 group_A    
+#>  3 A_V1   A_V1       A      9VUkAq~4703      19.8      0          1 group_A    
+#>  4 A_V1   A_V1       A      BEJI92~5282      21.2      0          2 group_A    
+#>  5 A_V1   A_V1       A      CGzoYe~2147      29.4      0          1 group_A    
+#>  6 A_V1   A_V1       A      DoWup2~5896      NA       NA         NA group_A    
+#>  7 A_V1   A_V1       A      Fl4JiV~8625      20.1      0          4 group_A    
+#>  8 A_V1   A_V1       A      HvIpHG~9079      21.7      0          2 group_A    
+#>  9 A_V1   A_V1       A      JcKVfU~9653      34.5      0          7 group_A    
+#> 10 A_V1   A_V1       A      SGIVBl~5782      23.9      0          6 group_A    
 #> # ℹ 110 more rows
-#> # ℹ 1 more variable: interaction <fct>
 ```

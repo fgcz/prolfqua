@@ -215,53 +215,52 @@ agg <- AggregateLimpa$new(lfqdata, "protein")
 agg$aggregate()
 agg$lfq_agg$data_wide()
 #> $data
-#> # A tibble: 10 × 14
-#>    protein_Id  isotopeLabel  A_V1  A_V2  A_V3  A_V4  B_V1  B_V2  B_V3  B_V4
-#>    <chr>       <chr>        <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-#>  1 0EfVhX~0087 light         4.37  4.28  4.26  4.31  4.74  4.68  4.72  4.78
-#>  2 7cbcrd~5725 light         4.90  4.90  4.86  4.77  3.55  4.43  4.38  4.39
-#>  3 9VUkAq~4703 light         4.10  4.12  4.25  4.24  4.05  3.53  4.13  4.14
-#>  4 BEJI92~5282 light         4.31  4.37  4.30  4.30  4.54  4.47  4.47  4.40
-#>  5 CGzoYe~2147 light         4.60  4.60  4.65  4.58  3.66  4.96  4.95  4.95
-#>  6 DoWup2~5896 light         4.59  4.60  4.54  4.54  4.21  4.22  4.21  4.16
-#>  7 Fl4JiV~8625 light         4.32  4.37  4.29  4.27  4.54  4.56  4.60  4.51
-#>  8 HvIpHG~9079 light         4.09  4.29  4.04  4.24  4.74  4.78  4.77  4.74
-#>  9 JcKVfU~9653 light         4.97  5.00  5.01  5.02  5.22  5.23  5.22  5.27
-#> 10 SGIVBl~5782 light         4.60  4.61  4.73  4.70  4.73  4.67  4.71  4.74
-#> # ℹ 4 more variables: Ctrl_V1 <dbl>, Ctrl_V2 <dbl>, Ctrl_V3 <dbl>,
-#> #   Ctrl_V4 <dbl>
+#> # A tibble: 10 × 13
+#>    protein_Id   A_V1  A_V2  A_V3  A_V4  B_V1  B_V2  B_V3  B_V4 Ctrl_V1 Ctrl_V2
+#>    <chr>       <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>   <dbl>   <dbl>
+#>  1 0EfVhX~0087  4.37  4.28  4.26  4.31  4.74  4.68  4.72  4.78    4.31    4.27
+#>  2 7cbcrd~5725  4.90  4.90  4.86  4.77  3.55  4.43  4.38  4.39    4.24    3.95
+#>  3 9VUkAq~4703  4.10  4.12  4.25  4.24  4.05  3.53  4.13  4.14    4.67    4.81
+#>  4 BEJI92~5282  4.31  4.37  4.30  4.30  4.54  4.47  4.47  4.40    3.76    4.17
+#>  5 CGzoYe~2147  4.60  4.60  4.65  4.58  3.66  4.96  4.95  4.95    4.82    4.98
+#>  6 DoWup2~5896  4.59  4.60  4.54  4.54  4.21  4.22  4.21  4.16    4.27    4.27
+#>  7 Fl4JiV~8625  4.32  4.37  4.29  4.27  4.54  4.56  4.60  4.51    4.40    4.36
+#>  8 HvIpHG~9079  4.09  4.29  4.04  4.24  4.74  4.78  4.77  4.74    4.62    4.61
+#>  9 JcKVfU~9653  4.97  5.00  5.01  5.02  5.22  5.23  5.22  5.27    5.14    5.09
+#> 10 SGIVBl~5782  4.60  4.61  4.73  4.70  4.73  4.67  4.71  4.74    4.63    4.61
+#> # ℹ 2 more variables: Ctrl_V3 <dbl>, Ctrl_V4 <dbl>
 #> 
 #> $annotation
-#> # A tibble: 12 × 4
-#>    sampleName sample  group_ isotopeLabel
-#>    <chr>      <chr>   <chr>  <chr>       
-#>  1 A_V1       A_V1    A      light       
-#>  2 A_V2       A_V2    A      light       
-#>  3 A_V3       A_V3    A      light       
-#>  4 A_V4       A_V4    A      light       
-#>  5 B_V1       B_V1    B      light       
-#>  6 B_V2       B_V2    B      light       
-#>  7 B_V3       B_V3    B      light       
-#>  8 B_V4       B_V4    B      light       
-#>  9 Ctrl_V1    Ctrl_V1 Ctrl   light       
-#> 10 Ctrl_V2    Ctrl_V2 Ctrl   light       
-#> 11 Ctrl_V3    Ctrl_V3 Ctrl   light       
-#> 12 Ctrl_V4    Ctrl_V4 Ctrl   light       
+#> # A tibble: 12 × 3
+#>    sampleName sample  group_
+#>    <chr>      <chr>   <chr> 
+#>  1 A_V1       A_V1    A     
+#>  2 A_V2       A_V2    A     
+#>  3 A_V3       A_V3    A     
+#>  4 A_V4       A_V4    A     
+#>  5 B_V1       B_V1    B     
+#>  6 B_V2       B_V2    B     
+#>  7 B_V3       B_V3    B     
+#>  8 B_V4       B_V4    B     
+#>  9 Ctrl_V1    Ctrl_V1 Ctrl  
+#> 10 Ctrl_V2    Ctrl_V2 Ctrl  
+#> 11 Ctrl_V3    Ctrl_V3 Ctrl  
+#> 12 Ctrl_V4    Ctrl_V4 Ctrl  
 #> 
 #> $rowdata
-#> # A tibble: 10 × 2
-#>    protein_Id  isotopeLabel
-#>    <chr>       <chr>       
-#>  1 0EfVhX~0087 light       
-#>  2 7cbcrd~5725 light       
-#>  3 9VUkAq~4703 light       
-#>  4 BEJI92~5282 light       
-#>  5 CGzoYe~2147 light       
-#>  6 DoWup2~5896 light       
-#>  7 Fl4JiV~8625 light       
-#>  8 HvIpHG~9079 light       
-#>  9 JcKVfU~9653 light       
-#> 10 SGIVBl~5782 light       
+#> # A tibble: 10 × 1
+#>    protein_Id 
+#>    <chr>      
+#>  1 0EfVhX~0087
+#>  2 7cbcrd~5725
+#>  3 9VUkAq~4703
+#>  4 BEJI92~5282
+#>  5 CGzoYe~2147
+#>  6 DoWup2~5896
+#>  7 Fl4JiV~8625
+#>  8 HvIpHG~9079
+#>  9 JcKVfU~9653
+#> 10 SGIVBl~5782
 #> 
 #> $config
 #> <AnalysisConfiguration>
@@ -283,7 +282,6 @@ agg$lfq_agg$data_wide()
 #>     ident_q_value: qValue
 #>     ident_score: 
 #>     is_response_transformed: TRUE
-#>     isotope_label: isotopeLabel
 #>     min_peptides_protein: 2
 #>     norm_value: NULL
 #>     nr_children: nr_children_protein_Id

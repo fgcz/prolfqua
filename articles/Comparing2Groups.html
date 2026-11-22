@@ -109,19 +109,19 @@ your data</a>.</p>
 <code class="sourceCode R"><span><span class="va">xx</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="../reference/sim_lfq_data_protein_config.html">sim_lfq_data_protein_config</a></span><span class="op">(</span>n_proteins <span class="op">=</span> <span class="fl">100</span>, weight_missing <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
 <span><span class="va">xx</span></span></code></pre></div>
 <pre><code><span><span class="co">## $data</span></span>
-<span><span class="co">## <span style="color: #949494;"># A tibble: 1,200 × 8</span></span></span>
-<span><span class="co">##    sample sampleName group_ isotopeLabel protein_Id  abundance qValue nrPeptides</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> A_V1   A_V1       A      light        0EfVhX~3967      20.4      0          2</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> A_V1   A_V1       A      light        0m5WN4~6025      16.4      0          7</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> A_V1   A_V1       A      light        0YSKpy~2865      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> A_V1   A_V1       A      light        3QLHfm~8938      23.0      0          1</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> A_V1   A_V1       A      light        3QYop0~7543      23.1      0          7</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> A_V1   A_V1       A      light        76k03k~7094      25.5      0          4</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> A_V1   A_V1       A      light        7cbcrd~7351      27.1      0          2</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> A_V1   A_V1       A      light        7QuTub~1867      18.4      0          4</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> A_V1   A_V1       A      light        7soopj~5352      19.5      0          2</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> A_V1   A_V1       A      light        7zeekV~7127      20.6      0          8</span></span>
+<span><span class="co">## <span style="color: #949494;"># A tibble: 1,200 × 7</span></span></span>
+<span><span class="co">##    sample sampleName group_ protein_Id  abundance qValue nrPeptides</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> A_V1   A_V1       A      0EfVhX~3967      20.4      0          2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> A_V1   A_V1       A      0m5WN4~6025      16.4      0          7</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> A_V1   A_V1       A      0YSKpy~2865      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> A_V1   A_V1       A      3QLHfm~8938      23.0      0          1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> A_V1   A_V1       A      3QYop0~7543      23.1      0          7</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> A_V1   A_V1       A      76k03k~7094      25.5      0          4</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> A_V1   A_V1       A      7cbcrd~7351      27.1      0          2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> A_V1   A_V1       A      7QuTub~1867      18.4      0          4</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> A_V1   A_V1       A      7soopj~5352      19.5      0          2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> A_V1   A_V1       A      7zeekV~7127      20.6      0          8</span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 1,190 more rows</span></span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $config</span></span>
@@ -144,7 +144,6 @@ your data</a>.</p>
 <span><span class="co">##     ident_q_value: qValue</span></span>
 <span><span class="co">##     ident_score: </span></span>
 <span><span class="co">##     is_response_transformed: FALSE</span></span>
-<span><span class="co">##     isotope_label: isotopeLabel</span></span>
 <span><span class="co">##     min_peptides_protein: 2</span></span>
 <span><span class="co">##     norm_value: NULL</span></span>
 <span><span class="co">##     nr_children: nrPeptides</span></span>
@@ -185,11 +184,11 @@ missing values.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">data_wide</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">7</span><span class="op">]</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 7</span></span></span>
-<span><span class="co">##   protein_Id  isotopeLabel  A_V1  A_V2  A_V3  A_V4  B_V1</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> 0EfVhX~3967 light         20.4  23.8  22.3  21.5  <span style="color: #BB0000;">NA</span>  </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> 0m5WN4~6025 light         16.4  <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    18.2  24.3</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> 0YSKpy~2865 light         <span style="color: #BB0000;">NA</span>    17.7  16.7  17.7  18.2</span></span></code></pre>
+<span><span class="co">##   protein_Id   A_V1  A_V2  A_V3  A_V4  B_V1  B_V2</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> 0EfVhX~3967  20.4  23.8  22.3  21.5  <span style="color: #BB0000;">NA</span>    19.6</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> 0m5WN4~6025  16.4  <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    18.2  24.3  21.7</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> 0YSKpy~2865  <span style="color: #BB0000;">NA</span>    17.7  16.7  17.7  18.2  17.5</span></span></code></pre>
 <div class="section level3">
 <h3 id="visualization-of-not-normalized-data">Visualization of not normalized data<a class="anchor" aria-label="anchor" href="#visualization-of-not-normalized-data"></a>
 </h3>

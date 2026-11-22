@@ -94,10 +94,10 @@ lfqdata <- prolfqua::LFQData$new(analysis_data, config)
 lfqdata$hierarchy_counts()
 ```
 
-    ## # A tibble: 1 × 2
-    ##   isotopeLabel protein_Id
-    ##   <chr>             <int>
-    ## 1 light                 4
+    ## # A tibble: 1 × 1
+    ##   protein_Id
+    ##        <int>
+    ## 1          4
 
 ``` r
 smrz <- lfqdata$get_Summariser()
@@ -173,29 +173,29 @@ lfq_tmp <- prolfqua::LFQData$new(analysis_data, config)
 lfq_tmp$summarize_hierarchy()
 ```
 
-    ## # A tibble: 20 × 3
-    ##    proteinID isotopeLabel_n peptideID_n
-    ##    <chr>              <int>       <int>
-    ##  1 1DIdTQ                 1           6
-    ##  2 1SO1NY                 1           2
-    ##  3 2JOCP3                 1           6
-    ##  4 5pb90S                 1           2
-    ##  5 OyHgjC                 1           2
-    ##  6 PDPfVe                 1           2
-    ##  7 TvODf3                 1           2
-    ##  8 UHjlsA                 1           2
-    ##  9 UmCi4L                 1           1
-    ## 10 Vphs0t                 1           6
-    ## 11 Xp1Tno                 1           1
-    ## 12 de5llz                 1           2
-    ## 13 hwBDgU                 1           2
-    ## 14 pGZKaB                 1           1
-    ## 15 rNWbGH                 1           1
-    ## 16 wXXHRN                 1           6
-    ## 17 yOSJAW                 1           6
-    ## 18 yj3Whg                 1          10
-    ## 19 z9WqiE                 1           2
-    ## 20 zVMmad                 1           2
+    ## # A tibble: 20 × 2
+    ##    proteinID peptideID_n
+    ##    <chr>           <int>
+    ##  1 1DIdTQ              6
+    ##  2 1SO1NY              2
+    ##  3 2JOCP3              6
+    ##  4 5pb90S              2
+    ##  5 OyHgjC              2
+    ##  6 PDPfVe              2
+    ##  7 TvODf3              2
+    ##  8 UHjlsA              2
+    ##  9 UmCi4L              1
+    ## 10 Vphs0t              6
+    ## 11 Xp1Tno              1
+    ## 12 de5llz              2
+    ## 13 hwBDgU              2
+    ## 14 pGZKaB              1
+    ## 15 rNWbGH              1
+    ## 16 wXXHRN              6
+    ## 17 yOSJAW              6
+    ## 18 yj3Whg             10
+    ## 19 z9WqiE              2
+    ## 20 zVMmad              2
 
 Now the analysis_data object is ready to generate the `LFQData` class
 instance. This object is the start for further analysis.

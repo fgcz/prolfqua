@@ -48,10 +48,10 @@ summarize_stats_quantiles(
 
 ## Value
 
-`summarize_stats()`: a tibble with one row per hierarchy element,
-isotope label and level of `factor_key`, with the columns
-`nrReplicates`, `nrMeasured`, `nrNAs`, `sd`, `var`, `meanAbundance`,
-`medianAbundance`, `CV` (untransformed data only) and `interaction`.
+`summarize_stats()`: a tibble with one row per hierarchy element and
+level of `factor_key`, with the columns `nrReplicates`, `nrMeasured`,
+`nrNAs`, `sd`, `var`, `meanAbundance`, `medianAbundance`, `CV`
+(untransformed data only) and `interaction`.
 
 `summarize_stats_quantiles()`: a list with `long`, a tibble with one row
 per factor level and quantile (columns `probs` and `quantiles`), and

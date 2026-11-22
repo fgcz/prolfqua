@@ -59,7 +59,7 @@ bb$config$factor_depth <- 2
 lfqdata <- LFQData$new(bb$data, bb$config)
 lfqdata$is_transformed(TRUE)
 pooled <- pooled_variance_explained(summarize_variance_explained(lfqdata))
-#> fit (Model): 44 missing responses dropped (e.g. 0EfVhX~5954~light, 0m5WN4~1448~light, 7cbcrd~8305~light, 9VUkAq~4562~light, At886V~3296~light, ...): NA response (missing observation) left out of the fit
+#> fit (Model): 44 missing responses dropped (e.g. 0EfVhX~5954, 0m5WN4~1448, 7cbcrd~8305, 9VUkAq~4562, At886V~3296, ...): NA response (missing observation) left out of the fit
 #> See $provenance().
 pooled
 #>                 factor      eta2

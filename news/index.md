@@ -4,6 +4,29 @@
 
 ### Behaviour changes
 
+- prolfqua is label-free only: the isotope label is gone.
+  [`setup_analysis()`](https://fgcz.github.io/prolfqua/reference/setup_analysis.md)
+  no longer adds an `isotopeLabel` column, so `data_long()`, the wide
+  rowdata and annotation,
+  [`hierarchy_counts()`](https://fgcz.github.io/prolfqua/reference/hierarchy_counts.md),
+  [`summarize_stats()`](https://fgcz.github.io/prolfqua/reference/summarize_stats.md),
+  the missingness tables and every result table come without it, and
+  `data_wide(as.matrix = TRUE)` row names are the united hierarchy keys
+  (`P1`, not `P1~lfq~light`). An `isotopeLabel` column in the input is
+  an unconfigured column and is dropped; input with two labels per
+  feature and sample fails as duplicate observations.
+  [`hierarchy_counts()`](https://fgcz.github.io/prolfqua/reference/hierarchy_counts.md)
+  returns one row, also for empty input (counts of 0).
+- Removed without deprecation, because no package used them: the
+  `AnalysisConfiguration$isotope_label` field,
+  `LFQData$isotope_label()`, and the `isotope_label` argument of
+  [`hierarchy_counts()`](https://fgcz.github.io/prolfqua/reference/hierarchy_counts.md)
+  and
+  [`summarize_hierarchy()`](https://fgcz.github.io/prolfqua/reference/summarize_hierarchy.md)
+  (pass `hierarchy` and `factors` by name).
+  [`list_to_analysis_configuration()`](https://fgcz.github.io/prolfqua/reference/list_to_analysis_configuration.md)
+  still loads stored configurations that carry the `isotope_label` key
+  and ignores it.
 - prolfqua now requires dplyr \>= 1.1.1, ggplot2 \>= 3.4.0 and purrr \>=
   1.0.0; earlier versions lacked functions and arguments prolfqua
   already used (joins pass `relationship =`, added in dplyr 1.1.1).

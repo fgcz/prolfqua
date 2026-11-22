@@ -260,40 +260,40 @@ sum
 #>     plot_missingness_per_group_cumsum: function () 
 #>     upset_interaction_missing_stats: function (tr = 2) 
 sum$hierarchy_counts()
-#> # A tibble: 1 × 3
-#>   isotopeLabel protein_Id peptide_Id
-#>   <chr>             <int>      <int>
-#> 1 light                10         28
+#> # A tibble: 1 × 2
+#>   protein_Id peptide_Id
+#>        <int>      <int>
+#> 1         10         28
 sum$hierarchy_counts_sample("wide")
-#> # A tibble: 12 × 4
-#>    isotopeLabel sampleName protein_Id peptide_Id
-#>    <chr>        <chr>           <int>      <int>
-#>  1 light        A_V1               10         23
-#>  2 light        A_V2               10         26
-#>  3 light        A_V3               10         25
-#>  4 light        A_V4               10         23
-#>  5 light        B_V1                8         26
-#>  6 light        B_V2                9         26
-#>  7 light        B_V3               10         27
-#>  8 light        B_V4               10         26
-#>  9 light        Ctrl_V1            10         24
-#> 10 light        Ctrl_V2            10         25
-#> 11 light        Ctrl_V3             9         24
-#> 12 light        Ctrl_V4            10         25
+#> # A tibble: 12 × 3
+#>    sampleName protein_Id peptide_Id
+#>    <chr>           <int>      <int>
+#>  1 A_V1               10         23
+#>  2 A_V2               10         26
+#>  3 A_V3               10         25
+#>  4 A_V4               10         23
+#>  5 B_V1                8         26
+#>  6 B_V2                9         26
+#>  7 B_V3               10         27
+#>  8 B_V4               10         26
+#>  9 Ctrl_V1            10         24
+#> 10 Ctrl_V2            10         25
+#> 11 Ctrl_V3             9         24
+#> 12 Ctrl_V4            10         25
 sum$hierarchy_counts_sample("long")
-#> # A tibble: 24 × 4
-#>    isotopeLabel sampleName key           nr
-#>    <chr>        <chr>      <chr>      <int>
-#>  1 light        A_V1       protein_Id    10
-#>  2 light        A_V1       peptide_Id    23
-#>  3 light        A_V2       protein_Id    10
-#>  4 light        A_V2       peptide_Id    26
-#>  5 light        A_V3       protein_Id    10
-#>  6 light        A_V3       peptide_Id    25
-#>  7 light        A_V4       protein_Id    10
-#>  8 light        A_V4       peptide_Id    23
-#>  9 light        B_V1       protein_Id     8
-#> 10 light        B_V1       peptide_Id    26
+#> # A tibble: 24 × 3
+#>    sampleName key           nr
+#>    <chr>      <chr>      <int>
+#>  1 A_V1       protein_Id    10
+#>  2 A_V1       peptide_Id    23
+#>  3 A_V2       protein_Id    10
+#>  4 A_V2       peptide_Id    26
+#>  5 A_V3       protein_Id    10
+#>  6 A_V3       peptide_Id    25
+#>  7 A_V4       protein_Id    10
+#>  8 A_V4       peptide_Id    23
+#>  9 B_V1       protein_Id     8
+#> 10 B_V1       peptide_Id    26
 #> # ℹ 14 more rows
 sum$plot_hierarchy_counts_sample()
 
@@ -302,19 +302,19 @@ sum$plot_hierarchy_counts_sample()
 tmp <- sum$interaction_missing_stats()
 
 sum$missingness_per_group()
-#> # A tibble: 3 × 7
-#>   isotopeLabel group_ nrReplicates   `0`   `1`   `2`   `3`
-#>   <chr>        <chr>         <int> <int> <int> <int> <int>
-#> 1 light        A                 4    19     5     2     2
-#> 2 light        B                 4    21     7    NA    NA
-#> 3 light        Ctrl              4    17     8     3    NA
+#> # A tibble: 3 × 6
+#>   group_ nrReplicates   `0`   `1`   `2`   `3`
+#>   <chr>         <int> <int> <int> <int> <int>
+#> 1 A                 4    19     5     2     2
+#> 2 B                 4    21     7    NA    NA
+#> 3 Ctrl              4    17     8     3    NA
 sum$missingness_per_group_cumsum()
-#> # A tibble: 3 × 7
-#>   isotopeLabel group_ nrReplicates   `0`   `1`   `2`   `3`
-#>   <chr>        <chr>         <int> <int> <int> <int> <int>
-#> 1 light        A                 4    19    24    26    28
-#> 2 light        B                 4    21    28    NA    NA
-#> 3 light        Ctrl              4    17    25    28    NA
+#> # A tibble: 3 × 6
+#>   group_ nrReplicates   `0`   `1`   `2`   `3`
+#>   <chr>         <int> <int> <int> <int> <int>
+#> 1 A                 4    19    24    26    28
+#> 2 B                 4    21    28    NA    NA
+#> 3 Ctrl              4    17    25    28    NA
 sum$plot_missingness_per_group()
 
 sum$plot_missingness_per_group_cumsum()
@@ -322,21 +322,21 @@ sum$plot_missingness_per_group_cumsum()
 sum$upset_interaction_missing_stats()
 
 sum$percentage_abundance()
-#> # A tibble: 112 × 17
-#>    protein_Id peptide_Id isotopeLabel group_ nrReplicates nrMeasured nrNAs    sd
-#>    <chr>      <chr>      <chr>        <chr>         <int>      <int> <int> <dbl>
-#>  1 BEJI92~52… HBkZvdhT   light        All              12          8     4  1.35
-#>  2 DoWup2~58… KVUnZ6oZ   light        All              12         12     0  2.55
-#>  3 Fl4JiV~86… KpyeEoiy   light        All              12         10     2  1.30
-#>  4 0EfVhX~00… dJkdz7so   light        All              12          9     3  4.36
-#>  5 Fl4JiV~86… fv2Ck8hz   light        All              12          8     4  4.31
-#>  6 9VUkAq~47… eIC06D7g   light        All              12         11     1  4.97
-#>  7 Fl4JiV~86… GsUIOl6Q   light        All              12         10     2  3.29
-#>  8 HvIpHG~90… opjydeWJ   light        All              12         10     2  3.16
-#>  9 SGIVBl~57… 03kMlNn1   light        All              12          9     3  1.24
-#> 10 BEJI92~52… qQ1GK8Un   light        All              12         11     1  3.69
+#> # A tibble: 112 × 16
+#>    protein_Id  peptide_Id group_ nrReplicates nrMeasured nrNAs    sd   var
+#>    <chr>       <chr>      <chr>         <int>      <int> <int> <dbl> <dbl>
+#>  1 BEJI92~5282 HBkZvdhT   All              12          8     4  1.35  1.82
+#>  2 DoWup2~5896 KVUnZ6oZ   All              12         12     0  2.55  6.48
+#>  3 Fl4JiV~8625 KpyeEoiy   All              12         10     2  1.30  1.68
+#>  4 0EfVhX~0087 dJkdz7so   All              12          9     3  4.36 19.0 
+#>  5 Fl4JiV~8625 fv2Ck8hz   All              12          8     4  4.31 18.6 
+#>  6 9VUkAq~4703 eIC06D7g   All              12         11     1  4.97 24.7 
+#>  7 Fl4JiV~8625 GsUIOl6Q   All              12         10     2  3.29 10.8 
+#>  8 HvIpHG~9079 opjydeWJ   All              12         10     2  3.16  9.99
+#>  9 SGIVBl~5782 03kMlNn1   All              12          9     3  1.24  1.53
+#> 10 BEJI92~5282 qQ1GK8Un   All              12         11     1  3.69 13.6 
 #> # ℹ 102 more rows
-#> # ℹ 9 more variables: var <dbl>, meanAbundance <dbl>, medianAbundance <dbl>,
-#> #   CV <dbl>, interaction <chr>, id <int>, abundance_percent <dbl>,
+#> # ℹ 8 more variables: meanAbundance <dbl>, medianAbundance <dbl>, CV <dbl>,
+#> #   interaction <chr>, id <int>, abundance_percent <dbl>,
 #> #   abundance_percent_cumulative <dbl>, percent_prot <dbl>
 ```

@@ -32,19 +32,19 @@ xx
 ```
 
     ## $data
-    ## # A tibble: 1,200 × 8
-    ##    sample sampleName group_ isotopeLabel protein_Id  abundance qValue nrPeptides
-    ##    <chr>  <chr>      <chr>  <chr>        <chr>           <dbl>  <dbl>      <dbl>
-    ##  1 A_V1   A_V1       A      light        0EfVhX~3967      20.4      0          2
-    ##  2 A_V1   A_V1       A      light        0m5WN4~6025      16.4      0          7
-    ##  3 A_V1   A_V1       A      light        0YSKpy~2865      NA       NA         NA
-    ##  4 A_V1   A_V1       A      light        3QLHfm~8938      23.0      0          1
-    ##  5 A_V1   A_V1       A      light        3QYop0~7543      23.1      0          7
-    ##  6 A_V1   A_V1       A      light        76k03k~7094      25.5      0          4
-    ##  7 A_V1   A_V1       A      light        7cbcrd~7351      27.1      0          2
-    ##  8 A_V1   A_V1       A      light        7QuTub~1867      18.4      0          4
-    ##  9 A_V1   A_V1       A      light        7soopj~5352      19.5      0          2
-    ## 10 A_V1   A_V1       A      light        7zeekV~7127      20.6      0          8
+    ## # A tibble: 1,200 × 7
+    ##    sample sampleName group_ protein_Id  abundance qValue nrPeptides
+    ##    <chr>  <chr>      <chr>  <chr>           <dbl>  <dbl>      <dbl>
+    ##  1 A_V1   A_V1       A      0EfVhX~3967      20.4      0          2
+    ##  2 A_V1   A_V1       A      0m5WN4~6025      16.4      0          7
+    ##  3 A_V1   A_V1       A      0YSKpy~2865      NA       NA         NA
+    ##  4 A_V1   A_V1       A      3QLHfm~8938      23.0      0          1
+    ##  5 A_V1   A_V1       A      3QYop0~7543      23.1      0          7
+    ##  6 A_V1   A_V1       A      76k03k~7094      25.5      0          4
+    ##  7 A_V1   A_V1       A      7cbcrd~7351      27.1      0          2
+    ##  8 A_V1   A_V1       A      7QuTub~1867      18.4      0          4
+    ##  9 A_V1   A_V1       A      7soopj~5352      19.5      0          2
+    ## 10 A_V1   A_V1       A      7zeekV~7127      20.6      0          8
     ## # ℹ 1,190 more rows
     ## 
     ## $config
@@ -67,7 +67,6 @@ xx
     ##     ident_q_value: qValue
     ##     ident_score: 
     ##     is_response_transformed: FALSE
-    ##     isotope_label: isotopeLabel
     ##     min_peptides_protein: 2
     ##     norm_value: NULL
     ##     nr_children: nrPeptides
@@ -116,11 +115,11 @@ lfqdata$data_wide()$data[1:3,1:7]
 ```
 
     ## # A tibble: 3 × 7
-    ##   protein_Id  isotopeLabel  A_V1  A_V2  A_V3  A_V4  B_V1
-    ##   <chr>       <chr>        <dbl> <dbl> <dbl> <dbl> <dbl>
-    ## 1 0EfVhX~3967 light         20.4  23.8  22.3  21.5  NA  
-    ## 2 0m5WN4~6025 light         16.4  NA    NA    18.2  24.3
-    ## 3 0YSKpy~2865 light         NA    17.7  16.7  17.7  18.2
+    ##   protein_Id   A_V1  A_V2  A_V3  A_V4  B_V1  B_V2
+    ##   <chr>       <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+    ## 1 0EfVhX~3967  20.4  23.8  22.3  21.5  NA    19.6
+    ## 2 0m5WN4~6025  16.4  NA    NA    18.2  24.3  21.7
+    ## 3 0YSKpy~2865  NA    17.7  16.7  17.7  18.2  17.5
 
 ### Visualization of not normalized data
 

@@ -51,6 +51,6 @@ names(values)
 #>  [9] "nr_children"             "opt_se"                 
 #> [11] "opt_mz"                  "opt_rt"                 
 #> [13] "ident_score"             "ident_q_value"          
-#> [15] "isotope_label"           "sample_name"            
-#> [17] "file_name"               "sep"                    
+#> [15] "sample_name"             "file_name"              
+#> [17] "sep"                    
 ```

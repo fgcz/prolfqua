@@ -102,7 +102,7 @@ ordering are not retained; avoid by supplying character columns;
 names of <code>configuration$factors</code> become the predictor column names;</p></li>
 <li><p>a missing sample name is derived from the file name; avoid by
 supplying the sample name column;</p></li>
-<li><p>missing isotope labels, identification q-values and child counts
+<li><p>missing identification q-values and child counts
 receive default values (child counts of one with a warning); avoid by
 supplying these columns;</p></li>
 <li><p>unconfigured columns and their attributes are dropped; the returned
@@ -134,7 +134,6 @@ rows with NA response, so every feature has a row in every sample.</p></li>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_lfq_data.html">sim_lfq_data</a></span><span class="op">(</span>n_proteins <span class="op">=</span> <span class="fl">10</span>, peptide <span class="op">=</span> <span class="cn">TRUE</span>, n_per_group <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">data</span><span class="op">$</span><span class="va">nr_children</span> <span class="op">&lt;-</span> <span class="fl">1</span></span></span>
-<span class="r-in"><span><span class="va">data</span><span class="op">$</span><span class="va">isotopeLabel</span> <span class="op">&lt;-</span> <span class="st">"light"</span></span></span>
 <span class="r-in"><span><span class="va">data</span><span class="op">$</span><span class="va">qValue</span> <span class="op">&lt;-</span> <span class="fl">0</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Add creatinine values per sample (not per protein/peptide)</span></span></span>

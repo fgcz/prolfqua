@@ -52,9 +52,9 @@ data says so with a message (class `prolfqua_message`) or warning:
 - a missing sample name is derived from the file name; avoid by
   supplying the sample name column;
 
-- missing isotope labels, identification q-values and child counts
-  receive default values (child counts of one with a warning); avoid by
-  supplying these columns;
+- missing identification q-values and child counts receive default
+  values (child counts of one with a warning); avoid by supplying these
+  columns;
 
 - unconfigured columns and their attributes are dropped; the returned
   table keeps only configured analysis columns;
@@ -85,7 +85,6 @@ Other configuration:
 set.seed(1234)
 data <- sim_lfq_data(n_proteins = 10, peptide = TRUE, n_per_group = 4)
 data$nr_children <- 1
-data$isotopeLabel <- "light"
 data$qValue <- 0
 
 # Add creatinine values per sample (not per protein/peptide)

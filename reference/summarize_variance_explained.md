@@ -39,8 +39,8 @@ its rows).
 
 ## Details
 
-One model is fitted per lowest-level feature (all hierarchy keys and the
-isotope label), the grouping of
+One model is fitted per lowest-level feature (all hierarchy keys), the
+grouping of
 [`summarize_stats()`](https://fgcz.github.io/prolfqua/reference/summarize_stats.md).
 Missing responses are omitted within each fit. Only full-rank fits with
 more than one residual degree of freedom are kept, the set returned by
@@ -94,18 +94,18 @@ lfqdata <- LFQData$new(bb$data, bb$config)
 # the simulated intensities are already on the log2 scale
 lfqdata$is_transformed(TRUE)
 ve <- summarize_variance_explained(lfqdata)
-#> fit (Model): 34 missing responses dropped (e.g. 0m5WN4~1448~light, 9VUkAq~4562~light, At886V~3296~light, BEJI92~9143~light, CtOJ9t~2837~light, ...): NA response (missing observation) left out of the fit
+#> fit (Model): 34 missing responses dropped (e.g. 0m5WN4~1448, 9VUkAq~4562, At886V~3296, BEJI92~9143, CtOJ9t~2837, ...): NA response (missing observation) left out of the fit
 #> See $provenance().
 head(ve)
-#> # A tibble: 6 × 8
-#>   protein_Id  isotopeLabel factor       Df Sum.Sq SS_total  eta2    R2
-#>   <chr>       <chr>        <chr>     <int>  <dbl>    <dbl> <dbl> <dbl>
-#> 1 0EfVhX~5954 light        group_        2 53.0      76.3  0.694 0.694
-#> 2 0EfVhX~5954 light        Residuals     9 23.3      76.3  0.306 0.694
-#> 3 0m5WN4~1448 light        group_        2  0.892     4.48 0.199 0.199
-#> 4 0m5WN4~1448 light        Residuals     5  3.59      4.48 0.801 0.199
-#> 5 7cbcrd~8305 light        group_        2 19.1      25.0  0.765 0.765
-#> 6 7cbcrd~8305 light        Residuals     9  5.89     25.0  0.235 0.765
+#> # A tibble: 6 × 7
+#>   protein_Id  factor       Df Sum.Sq SS_total  eta2    R2
+#>   <chr>       <chr>     <int>  <dbl>    <dbl> <dbl> <dbl>
+#> 1 0EfVhX~5954 group_        2 53.0      76.3  0.694 0.694
+#> 2 0EfVhX~5954 Residuals     9 23.3      76.3  0.306 0.694
+#> 3 0m5WN4~1448 group_        2  0.892     4.48 0.199 0.199
+#> 4 0m5WN4~1448 Residuals     5  3.59      4.48 0.801 0.199
+#> 5 7cbcrd~8305 group_        2 19.1      25.0  0.765 0.765
+#> 6 7cbcrd~8305 Residuals     9  5.89     25.0  0.235 0.765
 pooled_variance_explained(ve)
 #>      factor     eta2
 #> 1    group_ 0.681619
