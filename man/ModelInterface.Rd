@@ -13,12 +13,11 @@ R6 interface class representing modelling result
 
 mi <- ModelInterface$new()
 
-testthat::expect_error(mi$get_coefficients())
-testthat::expect_error(mi$get_anova())
-testthat::expect_error(mi$coef_histogram())
-testthat::expect_error(mi$coef_volcano())
-testthat::expect_error(mi$coef_pairs())
-testthat::expect_error(mi$anova_histogram())
+abstract <- c("get_coefficients", "get_anova", "coef_histogram", "coef_volcano", "coef_pairs",
+  "anova_histogram")
+for (m in abstract) {
+  stopifnot(inherits(try(mi[[m]](), silent = TRUE), "try-error"))
+}
 
 
 }

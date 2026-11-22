@@ -197,10 +197,10 @@ adjust_p_values <- function(
 #' abline(0,1)
 #' plot(seq(0.0,1.0,length=30),get_p_values_pbeta(seq(0.0,1.0,length=30),rep(10,30),3))
 #' abline(0,1)
-#' testthat::expect_equal(get_p_values_pbeta(0.3,10, 3),0.216, tolerance = 1e-4)
-#' testthat::expect_equal(get_p_values_pbeta(0,10, 3),0, tolerance = 1e-4)
-#' testthat::expect_equal(get_p_values_pbeta(1,10, 3),1, tolerance = 1e-4)
-#' testthat::expect_equal(get_p_values_pbeta(1,10, 3),get_p_values_pbeta(1,3, 10), tolerance = 1e-4)
+#' stopifnot(isTRUE(all.equal(get_p_values_pbeta(0.3, 10, 3), 0.216, tolerance = 1e-4)))
+#' stopifnot(isTRUE(all.equal(get_p_values_pbeta(0, 10, 3), 0, tolerance = 1e-4)))
+#' stopifnot(isTRUE(all.equal(get_p_values_pbeta(1, 10, 3), 1, tolerance = 1e-4)))
+#' stopifnot(isTRUE(all.equal(get_p_values_pbeta(1, 10, 3), get_p_values_pbeta(1, 3, 10), tolerance = 1e-4)))
 #'
 get_p_values_pbeta <- function(median.p.value, n.obs, max.n = 10) {
   # beta distribution of the median of n.obs uniform p-values; both shapes equal n.obs / 2 + 0.5
@@ -259,10 +259,10 @@ get_p_values_pbeta <- function(median.p.value, n.obs, max.n = 10) {
 #'                                     p.value = "p.value",
 #'                                     max.n = 1)
 #'
-#' testthat::expect_equal(mad(xx2$estimate, na.rm = TRUE),0.384409, tolerance = 1e-4)
-#' testthat::expect_equal(median(xx2$estimate), -0.006874857, tolerance = 1e-4)
-#' testthat::expect_equal(xx2$beta.based.significance[1],0.819, tolerance = 1e-3)
-#' testthat::expect_equal(xx2$beta.based.significance[2],0.9234362,tolerance = 1e-3)
+#' stopifnot(isTRUE(all.equal(mad(xx2$estimate, na.rm = TRUE), 0.384409, tolerance = 1e-4)))
+#' stopifnot(isTRUE(all.equal(median(xx2$estimate), -0.006874857, tolerance = 1e-4)))
+#' stopifnot(isTRUE(all.equal(xx2$beta.based.significance[1], 0.819, tolerance = 1e-3)))
+#' stopifnot(isTRUE(all.equal(xx2$beta.based.significance[2], 0.9234362, tolerance = 1e-3)))
 #'
 #' # Uniform distribution
 #' hist(testdata$p.value)

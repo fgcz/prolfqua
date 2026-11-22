@@ -336,7 +336,7 @@ ContrastsLimmaVoomImputeFacade <- R6::R6Class(
 #' @return An R6 class generator.
 #' @export
 #' @family modelling
-#' @examples
+#' @examplesIf requireNamespace("limpa", quietly = TRUE)
 #' istar <- prolfqua::sim_lfq_data_peptide_config()
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqdata <- lfqdata$get_Transformer()$log2()$lfq
@@ -462,7 +462,7 @@ ContrastsRLMFacade <- R6::R6Class(
 #' @return An R6 class generator.
 #' @export
 #' @family modelling
-#' @examples
+#' @examplesIf requireNamespace("Rfit", quietly = TRUE)
 #' istar <- sim_lfq_data_protein_config()
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqdata$rename_response("transformedIntensity")
@@ -589,7 +589,7 @@ ContrastsLMImputeFacade <- R6::R6Class(
 #' @family modelling
 #' @seealso \code{\link{ContrastsLMImputeFacade}}, \code{\link{ContrastsRfitFacade}},
 #'   \code{\link{build_model_impute}}
-#' @examples
+#' @examplesIf requireNamespace("Rfit", quietly = TRUE)
 #' istar <- sim_lfq_data_protein_config(n_proteins = 30, weight_missing = 0.5)
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqdata$rename_response("transformedIntensity")

@@ -76,3 +76,10 @@ test_that("make_interaction_column keeps its levels and values (review B5)", {
   )
   expect_identical(make_interaction_column(xx, "A")$interaction, factor(c("Aa", "Ab", "Aa")))
 })
+
+test_that("table_facade returns a kable table, or the data frame with kable = FALSE", {
+  df <- head(iris, 3)
+  expect_identical(table_facade(df, caption = "x", kable = FALSE), df)
+  skip_if_not_installed("knitr")
+  expect_s3_class(table_facade(df, caption = "x"), "knitr_kable")
+})

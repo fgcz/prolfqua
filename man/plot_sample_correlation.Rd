@@ -21,10 +21,12 @@ cell positions \code{corrPos}; called for its side effect of drawing the plot
 Visualize correlation among samples
 }
 \examples{
+\dontshow{if (requireNamespace("corrplot", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 istar <- sim_lfq_data_peptide_config()
 lfq <- LFQData$new(istar$data, istar$config)
 lfq <- lfq$get_Transformer()$log2()$lfq
 plot_sample_correlation(lfq$data_wide(as.matrix = TRUE)$data)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other plotting:

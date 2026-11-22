@@ -13,16 +13,18 @@ table_facade(df, caption, digits = getOption("digits"), kable = TRUE)
 
 \item{digits}{number of digits (default from options)}
 
-\item{kable}{if TRUE use knitr::kable}
+\item{kable}{if TRUE use knitr::kable (requires knitr)}
 }
 \value{
-The requested plot, table, or transformed object.
+a \code{knitr_kable} table, or \code{df} unchanged when \code{kable = FALSE}
 }
 \description{
 Table facade to easily switch implementations
 }
 \examples{
+\dontshow{if (requireNamespace("knitr", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 table_facade(head(iris, 3), caption = "Iris preview")
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other utilities:

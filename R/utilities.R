@@ -390,19 +390,21 @@ pairs_smooth <- function(data, legend = FALSE, ...) {
 
 
 #' Table facade to easily switch implementations
-#' @return The requested plot, table, or transformed object.
+#' @return a `knitr_kable` table, or `df` unchanged when `kable = FALSE`
 #' @export
 #' @family utilities
 #' @param df data.frame to display
 #' @param caption table caption
 #' @param digits number of digits (default from options)
-#' @param kable if TRUE use knitr::kable
-#' @examples
+#' @param kable if TRUE use knitr::kable (requires knitr)
+#' @examplesIf requireNamespace("knitr", quietly = TRUE)
 #' table_facade(head(iris, 3), caption = "Iris preview")
 table_facade <- function(df, caption, digits = getOption("digits"), kable = TRUE) {
-  if (kable) {
-    knitr::kable(df, digits = digits, caption = caption)
+  if (!kable) {
+    return(df)
   }
+  rlang::check_installed("knitr", reason = "for kable tables.")
+  knitr::kable(df, digits = digits, caption = caption)
 }
 
 

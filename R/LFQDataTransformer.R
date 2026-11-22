@@ -50,12 +50,12 @@
 #' lfqTransCheck$get_scales()
 #' lfqTransCheck$lfq$get_Plotter()$intensity_distribution_density()
 #'
-#' if(require("vsn")){
+#' if (requireNamespace("vsn", quietly = TRUE)) {
 #'  res <- lfqTrans$intensity_matrix( .func = vsn::justvsn)
 #'  res$lfq$get_Plotter()$intensity_distribution_density()
 #'  res$get_scales()
 #' }
-#' if(require("preprocessCore")){
+#' if (requireNamespace("preprocessCore", quietly = TRUE)) {
 #' quant <- function(y){
 #'  ynorm <- preprocessCore::normalize.quantiles(y)
 #'  rownames(ynorm) <- rownames(y)
@@ -489,7 +489,7 @@ robust_scale <- function(data, dim = 2, preserve_mean = FALSE) {
 #'
 #' res <- apply_to_response_matrix(lfqdata, .func = robust_scale)
 #'
-#' if (require("vsn")) {
+#' if (requireNamespace("vsn", quietly = TRUE)) {
 #'   res <- apply_to_response_matrix(lfqdata, .func = vsn::justvsn)
 #' }
 #'

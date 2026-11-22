@@ -20,7 +20,7 @@
 #'   coefficient names.
 #' @exportS3Method stats::vcov
 #' @family modelling
-#' @examples
+#' @examplesIf requireNamespace("Rfit", quietly = TRUE)
 #' fit <- strategy_rfit("Sepal.Length ~ Species")$model_fun(iris)
 #' vcov(fit)
 vcov.rfit_prolfqua <- function(object, ...) {
@@ -38,7 +38,7 @@ vcov.rfit_prolfqua <- function(object, ...) {
 #' @return number of observations minus number of coefficients.
 #' @exportS3Method stats::df.residual
 #' @family modelling
-#' @examples
+#' @examplesIf requireNamespace("Rfit", quietly = TRUE)
 #' fit <- strategy_rfit("Sepal.Length ~ Species")$model_fun(iris)
 #' df.residual(fit)
 df.residual.rfit_prolfqua <- function(object, ...) {
@@ -57,7 +57,7 @@ df.residual.rfit_prolfqua <- function(object, ...) {
 #' @return the rank-based scale estimate `tauhat`.
 #' @exportS3Method stats::sigma
 #' @family modelling
-#' @examples
+#' @examplesIf requireNamespace("Rfit", quietly = TRUE)
 #' fit <- strategy_rfit("Sepal.Length ~ Species")$model_fun(iris)
 #' sigma(fit)
 sigma.rfit_prolfqua <- function(object, ...) {
@@ -155,7 +155,7 @@ strategy_rfit <- function(modelstr, model_name = "rfit", control = list()) {
 #' @return Number of fitted observations, excluding omitted rows.
 #' @exportS3Method stats::nobs
 #' @family modelling
-#' @examples
+#' @examplesIf requireNamespace("Rfit", quietly = TRUE)
 #' fit <- strategy_rfit("Sepal.Length ~ Species")$model_fun(iris)
 #' stats::nobs(fit)
 nobs.rfit_prolfqua <- function(object, ...) {

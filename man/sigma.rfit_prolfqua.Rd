@@ -21,8 +21,10 @@ p-value (those come from \code{vcov()}), but it is reported and used as the per-
 protein variance estimate if results are passed to limma/eBayes moderation.
 }
 \examples{
+\dontshow{if (requireNamespace("Rfit", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 fit <- strategy_rfit("Sepal.Length ~ Species")$model_fun(iris)
 sigma(fit)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other modelling:

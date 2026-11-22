@@ -364,12 +364,13 @@ plot_intensity_distribution_density <- function(
 #' @keywords internal
 #' @family plotting
 #' @rdname plot_sample_correlation
-#' @examples
+#' @examplesIf requireNamespace("corrplot", quietly = TRUE)
 #' istar <- sim_lfq_data_peptide_config()
 #' lfq <- LFQData$new(istar$data, istar$config)
 #' lfq <- lfq$get_Transformer()$log2()$lfq
 #' plot_sample_correlation(lfq$data_wide(as.matrix = TRUE)$data)
 plot_sample_correlation <- function(matrix, method = "pearson", ...) {
+  rlang::check_installed("corrplot", reason = "for sample correlation plots.")
   M <- .sample_correlation(matrix, method)
   # up to 12 samples the lower panel shows the correlation values, otherwise pies (corrplot defaults otherwise)
   numbers <- nrow(M) <= 12

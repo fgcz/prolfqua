@@ -20,6 +20,7 @@ The output LFQData contains three value columns:
 }
 }
 \examples{
+\dontshow{if (requireNamespace("limpa", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 istar <- prolfqua::sim_lfq_data_peptide_config()
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata <- lfqdata$get_Transformer()$log2()$lfq
@@ -27,6 +28,7 @@ lfqdata <- lfqdata$get_Transformer()$log2()$lfq
 agg <- AggregateLimpa$new(lfqdata, "protein")
 agg$aggregate()
 agg$lfq_agg$data_wide()
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other LFQData:

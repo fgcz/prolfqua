@@ -21,7 +21,7 @@ istar <- prolfqua::sim_lfq_data_peptide_config()
 data <- istar$data
 lfqdata <- LFQData$new(data, istar$config)
 lfqdata$data_wide()
-if(require("SummarizedExperiment")){
+if (requireNamespace("SummarizedExperiment", quietly = TRUE)) {
    tmp <- lfqdata_to_summarized_experiment(lfqdata)
 }
 

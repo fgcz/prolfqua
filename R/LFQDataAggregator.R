@@ -353,7 +353,7 @@ AggregateTopN <- R6::R6Class(
 #' @export
 #' @family LFQData
 #'
-#' @examples
+#' @examplesIf requireNamespace("limpa", quietly = TRUE)
 #' istar <- prolfqua::sim_lfq_data_peptide_config()
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqdata <- lfqdata$get_Transformer()$log2()$lfq

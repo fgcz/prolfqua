@@ -65,12 +65,12 @@ lfqTransCheck$log2()
 lfqTransCheck$get_scales()
 lfqTransCheck$lfq$get_Plotter()$intensity_distribution_density()
 
-if(require("vsn")){
+if (requireNamespace("vsn", quietly = TRUE)) {
  res <- lfqTrans$intensity_matrix( .func = vsn::justvsn)
  res$lfq$get_Plotter()$intensity_distribution_density()
  res$get_scales()
 }
-if(require("preprocessCore")){
+if (requireNamespace("preprocessCore", quietly = TRUE)) {
 quant <- function(y){
  ynorm <- preprocessCore::normalize.quantiles(y)
  rownames(ynorm) <- rownames(y)

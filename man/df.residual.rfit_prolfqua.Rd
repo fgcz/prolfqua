@@ -18,8 +18,10 @@ number of observations minus number of coefficients.
 Residual degrees of freedom for an augmented rfit fit
 }
 \examples{
+\dontshow{if (requireNamespace("Rfit", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 fit <- strategy_rfit("Sepal.Length ~ Species")$model_fun(iris)
 df.residual(fit)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other modelling:

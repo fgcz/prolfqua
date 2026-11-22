@@ -36,6 +36,7 @@ flagged in the \code{estimate_type} column as \code{"lod_imputed"}, the same
 convention used by \code{\link{ContrastsLMImputeFacade}}.
 }
 \examples{
+\dontshow{if (requireNamespace("Rfit", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 istar <- sim_lfq_data_protein_config(n_proteins = 30, weight_missing = 0.5)
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata$rename_response("transformedIntensity")
@@ -43,6 +44,7 @@ contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 fa <- ContrastsRfitImputeFacade$new(lfqdata, "~ group_", contrasts)
 head(fa$get_contrasts())
 fa$to_wide()
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link{ContrastsLMImputeFacade}}, \code{\link{ContrastsRfitFacade}},

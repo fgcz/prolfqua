@@ -24,6 +24,7 @@ via limpa's DPC quantification, use \code{\link{ContrastsLimpaNestedFacade}}
 instead - that facade owns the \code{\link{AggregateLimpa}} pre-step.
 }
 \examples{
+\dontshow{if (requireNamespace("limpa", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 istar <- prolfqua::sim_lfq_data_peptide_config()
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata <- lfqdata$get_Transformer()$log2()$lfq
@@ -32,6 +33,7 @@ lfq_agg <- agg$aggregate()
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 fa <- ContrastsLimpaFacade$new(lfq_agg, "~ group_", contrasts)
 head(fa$get_contrasts())
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other modelling:

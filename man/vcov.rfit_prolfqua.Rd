@@ -21,8 +21,10 @@ covariance by coefficient name, so this method restores the dimnames from
 \code{coef()}.
 }
 \examples{
+\dontshow{if (requireNamespace("Rfit", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 fit <- strategy_rfit("Sepal.Length ~ Species")$model_fun(iris)
 vcov(fit)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other modelling:

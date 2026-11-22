@@ -18,8 +18,10 @@ Number of fitted observations, excluding omitted rows.
 Number of observations in an augmented rfit fit
 }
 \examples{
+\dontshow{if (requireNamespace("Rfit", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 fit <- strategy_rfit("Sepal.Length ~ Species")$model_fun(iris)
 stats::nobs(fit)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other modelling:

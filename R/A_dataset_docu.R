@@ -1,4 +1,4 @@
-#' @importFrom dplyr across all_of anti_join arrange bind_cols bind_rows case_when count desc distinct filter group_by
+#' @importFrom dplyr across all_of anti_join arrange bind_cols bind_rows case_when desc distinct filter group_by
 #' @importFrom dplyr inner_join left_join mutate nest_by
 #' @importFrom dplyr rename select starts_with summarize ungroup
 #'
@@ -7,22 +7,22 @@
 #' @importFrom ggplot2 stat_summary scale_x_continuous scale_y_continuous theme
 #'
 #' @importFrom ggrepel geom_text_repel
-#' @importFrom graphics par rect hist
+#' @importFrom graphics par hist
 #' @importFrom graphics abline pairs plot text
-#' @importFrom grDevices colorRampPalette dev.off pdf png rainbow
-#' @importFrom purrr map map2 map2_dbl map_lgl map_chr map_dbl reduce map_if map_int
+#' @importFrom grDevices colorRampPalette dev.off pdf
+#' @importFrom purrr map map2 map2_dbl map_lgl map_dbl
 #' @importFrom rlang := syms .data
 #' @importFrom stats as.formula cor
 #' @importFrom stats .lm.fit glm model.matrix residuals
-#' @importFrom tidyr nest nesting separate_rows unite unnest separate
+#' @importFrom tidyr nest nesting unite unnest
 #' @importFrom tidyr pivot_wider pivot_longer
 #' @importFrom tibble add_column as_tibble column_to_rownames tibble
 #' @importFrom stats anova coef coefficients confint cor.test delete.response
 #'   df.residual ecdf formula lm mad median medpolish
 #' @importFrom stats na.omit p.adjust pbeta power.t.test prcomp predict pt qt
 #'   quantile sd setNames sigma terms update vcov
-#' @importFrom stats approx df fisher.test ftable lm.fit pchisq pf pnorm qf rgeom rlnorm rnorm uniroot
-#' @importFrom utils combn data head read.csv tail unzip
+#' @importFrom stats approx pchisq pnorm rgeom rlnorm rnorm
+#' @importFrom utils combn data head tail
 #' @importFrom limma lmFit contrasts.fit eBayes topTable
 NULL
 

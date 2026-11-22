@@ -22,8 +22,8 @@
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqdata$filter_proteins_by_peptide_count()
 #' tmp <- lfqdata$data_wide()
-#' testthat::expect_equal(nrow(tmp$data) , nrow(tmp$rowdata))
-#' testthat::expect_equal(ncol(tmp$data) , nrow(tmp$annotation) + ncol(tmp$rowdata))
+#' stopifnot(nrow(tmp$data) == nrow(tmp$rowdata))
+#' stopifnot(ncol(tmp$data) == nrow(tmp$annotation) + ncol(tmp$rowdata))
 #'
 #' stopifnot("data.frame" %in% class(tmp$data))
 #' tmp <- lfqdata$data_wide(as.matrix = TRUE)
@@ -569,7 +569,7 @@ plot.LFQData <- function(x, ...) {
 #' data <- istar$data
 #' lfqdata <- LFQData$new(data, istar$config)
 #' lfqdata$data_wide()
-#' if(require("SummarizedExperiment")){
+#' if (requireNamespace("SummarizedExperiment", quietly = TRUE)) {
 #'    tmp <- lfqdata_to_summarized_experiment(lfqdata)
 #' }
 #'
