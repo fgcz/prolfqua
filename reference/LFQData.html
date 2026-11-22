@@ -244,7 +244,8 @@ subset); a copy is kept. NULL starts a new record.</p></dd>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">LFQData</span><span class="op">$</span><span class="fu">get_config</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
-<p>AnalysisConfiguration</p>
+<p>the AnalysisConfiguration of this object itself, not a copy: changing a field of it changes this
+<code>LFQData</code>. Use <code>get_config()$clone(deep = TRUE)</code> to modify a configuration for another object.</p>
 </div>
 
 </div>

@@ -221,11 +221,8 @@ get contrasts
 
 - `all`:
 
-  should all columns be returned (default FALSE)
-
-- `global`:
-
-  use a global linear function (determined by get_linfct)
+  ignored; kept for the `ContrastsInterface` signature. The stored table
+  is returned as is
 
 ------------------------------------------------------------------------
 

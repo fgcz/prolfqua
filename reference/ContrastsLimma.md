@@ -233,7 +233,7 @@ get linear functions from contrasts
 
 - `global`:
 
-  ignored (for API compatibility)
+  ignored; kept for the `ContrastsInterface` signature
 
 - `avg`:
 
@@ -253,7 +253,8 @@ get table with contrast estimates via limma pipeline
 
 - `all`:
 
-  should all columns be returned (default FALSE)
+  ignored; kept for the `ContrastsInterface` signature. The result
+  always has the same columns
 
 #### Returns
 

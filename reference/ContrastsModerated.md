@@ -230,10 +230,6 @@ applies limma moderation
 
   should all columns be returned (default FALSE)
 
-- `global`:
-
-  use a global linear function (determined by get_linfct)
-
 ------------------------------------------------------------------------
 
 ### `ContrastsModerated$clone()`

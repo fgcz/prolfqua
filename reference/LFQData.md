@@ -249,7 +249,10 @@ return the AnalysisConfiguration object
 
 #### Returns
 
-AnalysisConfiguration
+the AnalysisConfiguration of this object itself, not a copy: changing a
+field of it changes this `LFQData`. Use
+`get_config()$clone(deep = TRUE)` to modify a configuration for another
+object.
 
 ------------------------------------------------------------------------
 

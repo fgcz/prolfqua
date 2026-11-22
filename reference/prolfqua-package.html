@@ -75,6 +75,24 @@ reproduced by the vignettes of the companion package prolfquabenchmark
 (<a href="https://prolfqua.github.io/prolfquabenchmark/" class="external-link">https://prolfqua.github.io/prolfquabenchmark/</a>).</p>
     </div>
     <div class="section level2">
+    <h2 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a></h2>
+
+
+<p>Approximate figures, measured on simulated data with 12 to 48 samples on one laptop; times scale with the machine.</p><ul><li><p>Memory: the long table takes about 75 bytes per row (one feature in one sample).
+<code><a href="setup_analysis.html">setup_analysis()</a></code> needs about 8 times that for a short time, because it completes the feature by
+sample grid, adding <code>NA</code> rows for absent combinations.</p></li>
+<li><p>Matrix backends (<code>limma</code>, <code>limma_impute</code>, <code>limma_voom</code>, <code>limma_voom_impute</code>, <code>deqms_voom</code>, <code>limpa</code>)
+analyse 5,000 to 10,000 proteins in about a second or less; <code>limpa_nested</code>, which also aggregates, takes
+about 1.5 s per 1,000 proteins.</p></li>
+<li><p>Per-subject backends fit one model per protein or peptide on a single thread: about 1.7 ms per protein
+for <code>lm</code>, 2 to 3 ms per peptide for the ROPECA methods, 10 ms per protein for <code>hurdle_nested</code> and 16 ms for
+<code>lmer_nested</code>, which is about three minutes at 10,000 proteins.</p></li>
+<li><p>Per-subject backends keep every fitted model (about 9 KB per protein for <code>lm</code>, 40 KB for
+<code>lmer_nested</code>), so that <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code>, <code><a href="https://rdrr.io/r/stats/residuals.html" class="external-link">residuals()</a></code> and <code><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov()</a></code> work on the analysis.</p></li>
+<li><p><code><a href="null_split_check.html">null_split_check()</a></code> repeats the whole analysis <code>n_splits</code> times (default 20); <code>n_features</code>
+limits its cost.</p></li>
+</ul></div>
+    <div class="section level2">
     <h2 id="options">Options<a class="anchor" aria-label="anchor" href="#options"></a></h2>
 
 

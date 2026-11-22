@@ -145,6 +145,14 @@
   [`sim_build_models_logistf()`](https://fgcz.github.io/prolfqua/reference/sim_build_models_logistf.md)
   example checks the fitted models instead of a field that does not
   exist.
+- [`?prolfqua`](https://fgcz.github.io/prolfqua/reference/prolfqua-package.md)
+  has a Resources section: memory per row, run time per protein for the
+  matrix and per-subject backends, retained fitted models, and the cost
+  of
+  [`null_split_check()`](https://fgcz.github.io/prolfqua/reference/null_split_check.md).
+  `LFQData$get_config()` says it returns the configuration of the object
+  itself, not a copy, and the `all` and `global` arguments that only
+  keep the `ContrastsInterface` signature say that they are ignored.
 
 ## prolfqua 1.9.4
 
