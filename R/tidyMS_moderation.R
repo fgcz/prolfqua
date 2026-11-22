@@ -200,7 +200,8 @@ adjust_p_values <- function(
 #' stopifnot(isTRUE(all.equal(get_p_values_pbeta(0.3, 10, 3), 0.216, tolerance = 1e-4)))
 #' stopifnot(isTRUE(all.equal(get_p_values_pbeta(0, 10, 3), 0, tolerance = 1e-4)))
 #' stopifnot(isTRUE(all.equal(get_p_values_pbeta(1, 10, 3), 1, tolerance = 1e-4)))
-#' stopifnot(isTRUE(all.equal(get_p_values_pbeta(1, 10, 3), get_p_values_pbeta(1, 3, 10), tolerance = 1e-4)))
+#' symmetric <- all.equal(get_p_values_pbeta(1, 10, 3), get_p_values_pbeta(1, 3, 10), tolerance = 1e-4)
+#' stopifnot(isTRUE(symmetric))
 #'
 get_p_values_pbeta <- function(median.p.value, n.obs, max.n = 10) {
   # beta distribution of the median of n.obs uniform p-values; both shapes equal n.obs / 2 + 0.5

@@ -32,7 +32,8 @@ abline(0,1)
 stopifnot(isTRUE(all.equal(get_p_values_pbeta(0.3, 10, 3), 0.216, tolerance = 1e-4)))
 stopifnot(isTRUE(all.equal(get_p_values_pbeta(0, 10, 3), 0, tolerance = 1e-4)))
 stopifnot(isTRUE(all.equal(get_p_values_pbeta(1, 10, 3), 1, tolerance = 1e-4)))
-stopifnot(isTRUE(all.equal(get_p_values_pbeta(1, 10, 3), get_p_values_pbeta(1, 3, 10), tolerance = 1e-4)))
+symmetric <- all.equal(get_p_values_pbeta(1, 10, 3), get_p_values_pbeta(1, 3, 10), tolerance = 1e-4)
+stopifnot(isTRUE(symmetric))
 
 }
 \seealso{
