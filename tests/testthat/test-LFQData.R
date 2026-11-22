@@ -415,3 +415,28 @@ test_that("hierarchy counts work without an nr_children column", {
   expect_s3_class(summariser$plot_hierarchy_counts_sample(), "ggplot")
   expect_error(summariser$hierarchy_counts_sample(nr_children = 2), class = "prolfqua_error_missing_column")
 })
+
+test_that("LFQDataSummariser$percentage_abundance gives each protein's share of the total mean abundance", {
+  x <- sim_lfq_data_protein_config(n_proteins = 5, with_missing = TRUE, seed = 1)
+  lfq <- LFQData$new(x$data, x$config)
+  res <- lfq$get_Summariser()$percentage_abundance()
+  expect_setequal(unique(res$interaction), c("All", "group_A", "group_B", "group_Ctrl"))
+
+  data <- lfq$data_long()
+  all_means <- vapply(split(data$abundance, data$protein_Id), mean, numeric(1), na.rm = TRUE)
+  all <- res[res$interaction == "All", ]
+  expect_equal(all$meanAbundance, unname(all_means[all$protein_Id]))
+  expect_equal(all$abundance_percent, unname(all_means[all$protein_Id] / sum(all_means) * 100))
+
+  a <- data[data$group_ == "A", ]
+  a_means <- vapply(split(a$abundance, a$protein_Id), mean, numeric(1), na.rm = TRUE)
+  group_a <- res[res$interaction == "group_A", ]
+  expect_equal(group_a$meanAbundance, unname(a_means[group_a$protein_Id]))
+
+  for (part in split(res, res$interaction)) {
+    expect_false(is.unsorted(part$meanAbundance))
+    expect_equal(sum(part$abundance_percent), 100)
+    expect_equal(part$abundance_percent_cumulative, cumsum(part$abundance_percent))
+    expect_equal(part$percent_prot, seq_len(nrow(part)) / nrow(part) * 100)
+  }
+})

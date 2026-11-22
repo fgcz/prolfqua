@@ -128,7 +128,7 @@ test_that("pooled_variance_explained requires the columns of summarize_variance_
 
 test_that("R2 rises after removing per-sample shifts", {
   bb <- prolfqua::sim_lfq_data_protein_config(n_proteins = 30, with_missing = FALSE)
-  set.seed(1)
+  withr::local_seed(1)
   samples <- unique(bb$data$sampleName)
   shift <- stats::setNames(stats::rnorm(length(samples), sd = 1), samples)
   bb$data$abundance <- bb$data$abundance + shift[bb$data$sampleName]

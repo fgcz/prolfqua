@@ -251,3 +251,36 @@ test_that("ContrastsLimpaFacade accepts aggregated LFQData without opt_se", {
   expect_true(nrow(res) > 0)
   expect_true(all(res$modelName == "limpa"))
 })
+
+test_that("limpa and limpa_nested equal limpa's own dpcQuant + dpcDE pipeline", {
+  skip_if_not_installed("limpa")
+  istar <- withr::with_seed(3, sim_lfq_data_peptide_config(n_proteins = 30))
+  lfq <- LFQData$new(istar$data, istar$config)
+  lfq <- lfq$get_Transformer()$log2()$lfq
+  contrasts <- c(A_vs_Ctrl = "group_A - group_Ctrl")
+
+  # reference: limpa's documented workflow on the same peptide matrix (group A is the baseline level)
+  wide <- lfq$data_wide(as.matrix = TRUE)
+  protein <- wide$rowdata$protein_Id
+  dpc <- limpa::dpc(wide$data)
+  protein_elist <- limpa::dpcQuant(wide$data, protein.id = protein, dpc = dpc, dpc.slope = 0.8, verbose = FALSE)
+  design <- model.matrix(~group_, data = wide$annotation)
+  fit <- limpa::dpcDE(protein_elist, design, plot = FALSE)
+  contrast_matrix <- matrix(c(0, 0, -1), ncol = 1, dimnames = list(colnames(design), "A_vs_Ctrl"))
+  reference <- limma::topTable(
+    limma::eBayes(limma::contrasts.fit(fit, contrast_matrix)),
+    coef = 1,
+    number = Inf,
+    sort.by = "none"
+  )
+
+  lfq_agg <- AggregateLimpa$new(lfq, "protein")$aggregate()
+  aggregated <- ContrastsLimpaFacade$new(lfq_agg, "~ group_", contrasts)$get_contrasts()
+  nested <- ContrastsLimpaNestedFacade$new(lfq, "~ group_", contrasts)$get_contrasts()
+  for (ct in list(aggregated, nested)) {
+    expect_setequal(ct$protein_Id, rownames(reference))
+    ref <- reference[ct$protein_Id, ]
+    expect_equal(ct$diff, ref$logFC, tolerance = 1e-8)
+    expect_equal(ct$p.value, ref$P.Value, tolerance = 1e-8)
+  }
+})

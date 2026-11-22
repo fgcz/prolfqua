@@ -1,6 +1,6 @@
 # setup raw (pre-setup_analysis) peptide data + matching config
 .dup_setup_fixture <- function() {
-  set.seed(1234)
+  withr::local_seed(1234)
   data <- prolfqua::sim_lfq_data(n_proteins = 5, n_per_group = 3, peptide = TRUE)
   data$nr_children <- 1
   data$isotopeLabel <- "light"
@@ -72,10 +72,33 @@ test_that("setup_analysis works when sample_name and file_name are the same colu
 })
 
 test_that("sim_lfq_data respects the mean_prot argument", {
-  set.seed(42)
+  withr::local_seed(42)
   low <- prolfqua::sim_lfq_data(n_proteins = 50, n_per_group = 3, mean_prot = 20)
-  set.seed(42)
+  withr::local_seed(42)
   high <- prolfqua::sim_lfq_data(n_proteins = 50, n_per_group = 3, mean_prot = 200)
   # higher mean_prot must shift abundances up; previously log(20) was hardcoded
   expect_gt(mean(high$abundance, na.rm = TRUE), mean(low$abundance, na.rm = TRUE))
+})
+
+test_that("separate_hierarchy splits hierarchy keys at the separator into their configured columns", {
+  bb <- sim_lfq_data_peptide_config(n_proteins = 3)
+  lfq <- LFQData$new(bb$data, bb$config)
+  config <- lfq$get_config()$clone(deep = TRUE)
+  data <- lfq$data_long()
+  data$protein_Id[1] <- "noseparator"
+
+  res <- separate_hierarchy(data, config)
+  expect_identical(colnames(res)[5:7], c("protein_Id", "proteinID", "idtype2"))
+  parts <- strsplit(data$protein_Id[-1], "~", fixed = TRUE)
+  expect_identical(res$proteinID[-1], vapply(parts, `[`, character(1), 1))
+  expect_identical(res$idtype2[-1], vapply(parts, `[`, character(1), 2))
+  # too few parts fill from the start
+  expect_identical(res$proteinID[1], "noseparator")
+  expect_true(is.na(res$idtype2[1]))
+  # keys below the hierarchy depth are left alone
+  expect_false("peptideID" %in% colnames(res))
+
+  config$hierarchy_depth <- 2
+  deeper <- separate_hierarchy(data, config)
+  expect_identical(deeper$peptideID, data$peptide_Id)
 })

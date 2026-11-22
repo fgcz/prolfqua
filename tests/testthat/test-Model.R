@@ -105,7 +105,7 @@ test_that("get_complete_model_fit drops fits with fewer coefficients than the fu
 })
 
 test_that("strategy_rlm sigma matches the scale embedded in vcov() (moderation coherence)", {
-  set.seed(1)
+  withr::local_seed(1)
   d <- data.frame(
     abundance = c(stats::rnorm(10), stats::rnorm(10, mean = 2)),
     group_ = rep(c("A", "B"), each = 10)
@@ -138,7 +138,7 @@ test_that("Model (lm strategy with weights)", {
   config <- istar$config
 
   # Add a weight column with non-uniform weights
-  set.seed(42)
+  withr::local_seed(42)
   istar$data$wt_col <- runif(nrow(istar$data), min = 0.1, max = 10)
 
   # Fit unweighted model
@@ -221,4 +221,27 @@ test_that("build_model_glm_protein returns ModelFirth", {
   prot_mod <- build_model_glm_protein(prot_lfq, "~ group_")
   expect_true(inherits(prot_mod, "ModelFirth"))
   expect_s3_class(prot_mod$get_coefficients(), "data.frame")
+})
+
+test_that("firth contrasts equal logistf::logistf() fitted on one protein's detection pattern", {
+  skip_if_not_installed("logistf")
+  prot <- sim_lfq_data_protein_config(n_proteins = 10, with_missing = TRUE, weight_missing = 0.5, seed = 7)
+  lfq <- LFQData$new(prot$data, prot$config)
+  ct <- ContrastsFirthFacade$new(lfq, "~ group_", c(A_vs_Ctrl = "group_A - group_Ctrl"))$get_contrasts()
+
+  data <- lfq$data_long()
+  data$detected <- as.integer(!is.na(data[[lfq$response()]]))
+  for (protein in ct$protein_Id[order(-abs(ct$diff))][1:3]) {
+    ref <- logistf::logistf(detected ~ group_, data = data[data$protein_Id == protein, ], pl = FALSE)
+    # group A is the baseline level, so A - Ctrl is minus the group_Ctrl coefficient
+    contrast <- c(0, 0, -1)
+    estimate <- sum(contrast * stats::coef(ref))
+    std_error <- sqrt(drop(t(contrast) %*% stats::vcov(ref) %*% contrast))
+    df <- ref$n - length(stats::coef(ref))
+    row <- ct[ct$protein_Id == protein, ]
+    expect_equal(row$diff, estimate, tolerance = 1e-6)
+    expect_equal(row$std.error, std_error, tolerance = 1e-6)
+    expect_equal(row$df, df)
+    expect_equal(row$p.value, 2 * stats::pt(abs(estimate / std_error), df, lower.tail = FALSE), tolerance = 1e-6)
+  }
 })

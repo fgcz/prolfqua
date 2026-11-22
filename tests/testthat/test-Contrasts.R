@@ -133,7 +133,77 @@ test_that("summary_ropeca_median_p_scaled counts only peptides with a p-value", 
   res <- summary_ropeca_median_p_scaled(peptides, estimate = "diff", p.value = "p.value")
   expect_equal(res$n, 3)
   expect_equal(res$n_not_na, 2)
-  expect_equal(res$beta.based.significance, get_p_values_pbeta(res$median.p.value, 2))
+  # scaled p-values 0.99 and 0.98, median 0.985; the median of 2 p-values is Beta(1.5, 1.5)
+  expect_equal(res$median.p.value, 0.015)
+  expect_equal(res$beta.based.significance, stats::pbeta(0.015, 1.5, 1.5))
+})
+
+test_that("summary_ropeca_median_p_scaled matches a hand computation", {
+  peptides <- data.frame(
+    contrast = "c1",
+    protein_Id = "P1",
+    diff = c(1, 2, -0.5),
+    statistic = c(4, 3, -1),
+    p.value = c(0.01, 0.04, 0.5),
+    avgAbd = c(18, 20, 22)
+  )
+  res <- summary_ropeca_median_p_scaled(peptides, estimate = "diff", p.value = "p.value")
+  # signed scaled p-values 1 - 0.01, 1 - 0.04 and 0.5 - 1; their median is 0.96
+  expect_equal(res$median.p.scaled, 0.96)
+  expect_equal(res$median.p.value, 0.04)
+  # the median of 3 uniform p-values is Beta(2, 2), CDF 3 x^2 - 2 x^3
+  expect_equal(res$beta.based.significance, 3 * 0.04^2 - 2 * 0.04^3)
+  expect_equal(res$estimate, 1)
+  expect_equal(res$mad.estimate, 1.4826)
+  expect_equal(res$statistic, 3)
+  expect_equal(res$avgAbd, 20)
+})
+
+test_that("summary_ropeca_median_p_scaled is conservative for uniform p-values with random signs", {
+  # ropeca_nested is conservative under the null by construction; ropecaV2_nested is the calibrated variant
+  withr::local_seed(11)
+  n_proteins <- 4000
+  peptides <- data.frame(
+    contrast = "c1",
+    protein_Id = rep(seq_len(n_proteins), each = 10),
+    diff = stats::rnorm(n_proteins * 10),
+    statistic = 0,
+    p.value = stats::runif(n_proteins * 10),
+    avgAbd = 1
+  )
+  res <- summary_ropeca_median_p_scaled(peptides, estimate = "diff", p.value = "p.value")
+  expect_lt(mean(res$beta.based.significance < 0.05), 0.01)
+})
+
+test_that("ropeca_nested equals per-peptide lm fits summarised by median and beta p-value", {
+  istar <- sim_lfq_data_peptide_config(n_proteins = 15, with_missing = FALSE, seed = 4)
+  lfq <- LFQData$new(istar$data, istar$config)
+  lfq <- lfq$get_Transformer()$log2()$lfq
+  ct <- ContrastsROPECANestedFacade$new(lfq, "~ group_", c(A_vs_Ctrl = "group_A - group_Ctrl"))$get_contrasts()
+
+  # reference: one stats::lm per peptide; group A is the baseline level, so A - Ctrl is minus group_Ctrl
+  data <- lfq$data_long()
+  peptide_fits <- lapply(split(data, data$peptide_Id), function(d) {
+    coefs <- summary(stats::lm(log2_abundance ~ group_, data = d))$coefficients
+    data.frame(protein_Id = d$protein_Id[1], diff = -coefs["group_Ctrl", "Estimate"], p = coefs["group_Ctrl", 4])
+  })
+  peptide_fits <- do.call(rbind, peptide_fits)
+  reference <- do.call(
+    rbind,
+    lapply(split(peptide_fits, peptide_fits$protein_Id), function(p) {
+      scaled <- ifelse(p$diff > 0, 1 - p$p, p$p - 1)
+      median_p <- 1 - abs(stats::median(scaled))
+      shape <- min(nrow(p), 10) / 2 + 0.5
+      data.frame(
+        protein_Id = p$protein_Id[1],
+        diff = stats::median(p$diff),
+        p.value = stats::pbeta(median_p, shape, shape)
+      )
+    })
+  )
+  ct <- ct[match(reference$protein_Id, ct$protein_Id), ]
+  expect_equal(ct$diff, reference$diff, tolerance = 1e-8)
+  expect_equal(ct$p.value, reference$p.value, tolerance = 1e-8)
 })
 
 test_that("ContrastsTable (passive container)", {
@@ -337,4 +407,29 @@ test_that("merge_contrasts_results errors on duplicated subject-contrast rows in
   prefer <- ContrastsTable$new(prefer_df, subject_id = "protein_Id", model_name = "prefer")
   add <- ContrastsTable$new(add_df, subject_id = "protein_Id", model_name = "add")
   expect_error(merge_contrasts_results(prefer, add), "must match at most 1 row")
+})
+
+test_that("get_rank scores by signed -log10 p-value; filter_significant is one-sided for directional backends", {
+  df <- data.frame(
+    protein_Id = c("P1", "P2", "P3", "P4"),
+    contrast = "c1",
+    modelName = "m",
+    diff = c(2, -2, 0.5, NA),
+    statistic = c(5, -5, 1, NA),
+    p.value = c(0.001, 0.01, 0.5, NA),
+    FDR = c(0.004, 0.02, 0.5, NA),
+    avgAbd = 1
+  )
+  ct <- ContrastsTable$new(df, subject_id = "protein_Id")
+  rank <- ct$get_rank()
+  expect_identical(rank$protein_Id, c("P1", "P2", "P3"))
+  expect_equal(rank$score, c(3, -2, -log10(0.5)))
+  expect_identical(ct$filter_significant(FDR_threshold = 0.05, diff_threshold = 1)$protein_Id, c("P1", "P2"))
+
+  directional <- ContrastsTable$new(
+    df,
+    subject_id = "protein_Id",
+    config = ContrastConfiguration$new(subject_id = "protein_Id", significance_directional = TRUE)
+  )
+  expect_identical(directional$filter_significant(FDR_threshold = 0.05, diff_threshold = 1)$protein_Id, "P1")
 })

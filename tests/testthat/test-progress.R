@@ -1,13 +1,5 @@
 ## Tests for the injectable progress reporter (.make_progress + wiring)
 
-# Aggregated protein-level data (the "aggregated" facades, e.g. lm, need this).
-make_progress_protein_data <- function(n_proteins = 30) {
-  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = n_proteins, seed = 42)
-  lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
-  lfqdata$rename_response("transformedIntensity")
-  lfqdata
-}
-
 CONTRASTS_P <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 MODELSTR_P <- "~ group_"
 
@@ -71,7 +63,7 @@ test_that("'message' reporter emits a heartbeat in a non-interactive session", {
 # ---- Wiring: the option reaches the real pipeline ----
 
 test_that("prolfqua.progress callback fires through build_contrast_analysis (lm)", {
-  lfqdata <- make_progress_protein_data()
+  lfqdata <- protein_lfqdata_fixture()
   rec <- make_recorder()
   withr::local_options(prolfqua.progress = rec$callback)
 
@@ -104,7 +96,7 @@ test_that("firth pass labels appear in progress output (firth)", {
 
 test_that("setting prolfqua.progress does not change get_contrasts() results", {
   res_default <- prolfqua::build_contrast_analysis(
-    make_progress_protein_data(),
+    protein_lfqdata_fixture(),
     MODELSTR_P,
     CONTRASTS_P,
     method = "lm"
@@ -112,7 +104,7 @@ test_that("setting prolfqua.progress does not change get_contrasts() results", {
 
   withr::local_options(prolfqua.progress = function(i, total, label) invisible(NULL))
   res_opt <- prolfqua::build_contrast_analysis(
-    make_progress_protein_data(),
+    protein_lfqdata_fixture(),
     MODELSTR_P,
     CONTRASTS_P,
     method = "lm"

@@ -918,7 +918,7 @@ ContrastsLimma <- R6::R6Class(
     },
     #' @description
     #' get linear functions from contrasts
-    #' @param global ignored (for API compatibility)
+    #' @param global ignored; kept for the `ContrastsInterface` signature
     #' @param avg logical, also compute avgAbd linfct
     get_linfct = function(global = TRUE, avg = TRUE) {
       linfct <- .linfct(self$model$dummy_model, self$contrasts, avg = avg)
@@ -926,7 +926,7 @@ ContrastsLimma <- R6::R6Class(
     },
     #' @description
     #' get table with contrast estimates via limma pipeline
-    #' @param all should all columns be returned (default FALSE)
+    #' @param all ignored; kept for the `ContrastsInterface` signature. The result always has the same columns
     #' @return data.frame with contrasts
     get_contrasts = function(all = FALSE) {
       if (!is.null(self$contrast_result)) {

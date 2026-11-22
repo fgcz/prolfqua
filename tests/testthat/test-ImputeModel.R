@@ -22,6 +22,7 @@ test_that("coefficient tables use the borrowed covariance and df of imputed fits
 })
 
 test_that("imputed_model S3 dispatch works", {
+  withr::local_seed(1)
   dat <- data.frame(x = 1:10, y = rnorm(10))
   m <- lm(y ~ x, data = dat)
 

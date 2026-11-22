@@ -1,13 +1,6 @@
 ## Tests for the Rfit rank-based regression backend
 ## (StrategyRfit, S3 glue, ContrastsRfitFacade, build_contrast_analysis dispatch)
 
-make_protein_lfqdata_rfit <- function(n_proteins = 30) {
-  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = n_proteins, seed = 42)
-  lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
-  lfqdata$rename_response("transformedIntensity")
-  lfqdata
-}
-
 RFIT_CONTRASTS <- c("A_vs_Ctrl" = "group_A - group_Ctrl", "B_vs_Ctrl" = "group_B - group_Ctrl")
 RFIT_MODELSTR <- "~ group_"
 
@@ -21,7 +14,7 @@ test_that("strategy_rfit constructs a StrategyRfit", {
 
 test_that("rfit S3 glue: vcov is named, df.residual and sigma resolve", {
   skip_if_not_installed("Rfit")
-  set.seed(1)
+  withr::local_seed(1)
   d <- data.frame(
     y = rnorm(24),
     Treatment = factor(rep(c("A", "B"), each = 12)),
@@ -42,7 +35,7 @@ test_that("rfit S3 glue: vcov is named, df.residual and sigma resolve", {
 
 test_that("linfct_from_model on an rfit fit matches the lm scaffold", {
   skip_if_not_installed("Rfit")
-  set.seed(2)
+  withr::local_seed(2)
   d <- data.frame(
     y = rnorm(24),
     Treatment = factor(rep(c("A", "B"), each = 12)),
@@ -60,7 +53,7 @@ test_that("linfct_from_model on an rfit fit matches the lm scaffold", {
 
 test_that("ContrastsRfitFacade initialises and returns the standard schema", {
   skip_if_not_installed("Rfit")
-  lfqdata <- make_protein_lfqdata_rfit()
+  lfqdata <- protein_lfqdata_fixture()
   fa <- prolfqua::ContrastsRfitFacade$new(lfqdata, RFIT_MODELSTR, RFIT_CONTRASTS)
 
   expect_true(inherits(fa, "ContrastsRfitFacade"))
@@ -86,7 +79,7 @@ test_that("ContrastsRfitFacade initialises and returns the standard schema", {
 
 test_that("rfit fold-changes agree in sign and correlate with lm", {
   skip_if_not_installed("Rfit")
-  lfqdata <- make_protein_lfqdata_rfit()
+  lfqdata <- protein_lfqdata_fixture()
   res_rfit <- prolfqua::ContrastsRfitFacade$new(lfqdata, RFIT_MODELSTR, RFIT_CONTRASTS)$get_contrasts()
   res_lm <- prolfqua::ContrastsLMFacade$new(lfqdata, RFIT_MODELSTR, RFIT_CONTRASTS)$get_contrasts()
 
@@ -104,7 +97,7 @@ test_that("rfit fold-changes agree in sign and correlate with lm", {
 
 test_that("build_contrast_analysis dispatches method = 'rfit'", {
   skip_if_not_installed("Rfit")
-  lfqdata <- make_protein_lfqdata_rfit()
+  lfqdata <- protein_lfqdata_fixture()
   fa <- prolfqua::build_contrast_analysis(lfqdata, RFIT_MODELSTR, RFIT_CONTRASTS, method = "rfit")
   expect_true(inherits(fa, "ContrastsRfitFacade"))
   expect_true(all(fa$get_contrasts()$modelName == "rfit"))

@@ -229,7 +229,8 @@ subset); a copy is kept. NULL starts a new record.}
     \if{html}{\out{</div>}}
   }
   \subsection{Returns}{
-    AnalysisConfiguration
+    the AnalysisConfiguration of this object itself, not a copy: changing a field of it changes this
+\code{LFQData}. Use \code{get_config()$clone(deep = TRUE)} to modify a configuration for another object.
   }
 }
 

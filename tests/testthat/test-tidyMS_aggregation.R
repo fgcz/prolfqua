@@ -103,7 +103,7 @@ test_that(".rlm_estimate returns one consistent column schema across all three b
   res_samp1 <- prolfqua:::.rlm_estimate(df_samp1, "response", "feature", "samples")
 
   # main path: multiple features and samples
-  set.seed(42)
+  withr::local_seed(42)
   xx <- data.frame(response = rnorm(20, 0, 10), feature = rep(LETTERS[1:5], 4), samples = rep(letters[1:4], 5))
   res_main <- prolfqua:::.rlm_estimate(xx, "response", "feature", "samples")
 
@@ -126,7 +126,7 @@ test_that(".rlm_estimate re-establishes every input sample in all branches", {
   expect_equal(nrow(res_na), 4L)
 
   # main path already re-establishes all samples -- pin that it stays true
-  set.seed(7)
+  withr::local_seed(7)
   xx <- data.frame(response = rnorm(20, 0, 10), feature = rep(LETTERS[1:5], 4), samples = rep(letters[1:4], 5))
   res_main <- prolfqua:::.rlm_estimate(xx, "response", "feature", "samples")
   expect_setequal(res_main$samples, letters[1:4])
@@ -169,7 +169,7 @@ test_that("rlm and medpolish aggregation produce the same (protein, sample) rows
 })
 
 test_that("rlm aggregation removes only aliased columns (factor sample with an unused level)", {
-  set.seed(3)
+  withr::local_seed(3)
   grid <- expand.grid(feature = paste0("p", 1:4), samples = c("a", "b", "c"), stringsAsFactors = FALSE)
   grid$response <- 10 +
     match(grid$samples, c("a", "b", "c")) +
@@ -188,7 +188,7 @@ test_that("rlm aggregation removes only aliased columns (factor sample with an u
 })
 
 test_that("rlm aggregation ignores an unused level of a factor feature column", {
-  set.seed(4)
+  withr::local_seed(4)
   grid <- expand.grid(feature = paste0("p", 1:4), samples = c("a", "b", "c"), stringsAsFactors = FALSE)
   grid$response <- 10 +
     match(grid$samples, c("a", "b", "c")) +

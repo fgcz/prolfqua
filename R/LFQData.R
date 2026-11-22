@@ -178,7 +178,8 @@ LFQData <- R6::R6Class(
     },
     #' @description
     #' return the AnalysisConfiguration object
-    #' @return AnalysisConfiguration
+    #' @return the AnalysisConfiguration of this object itself, not a copy: changing a field of it changes this
+    #'   `LFQData`. Use `get_config()$clone(deep = TRUE)` to modify a configuration for another object.
     get_config = function() {
       private$.config
     },

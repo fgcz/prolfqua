@@ -101,7 +101,6 @@ ContrastsModerated <- R6::R6Class(
     #' applies limma moderation
     #' @seealso \code{\link{moderated_p_limma}}
     #' @param all should all columns be returned (default FALSE)
-    #' @param global use a global linear function (determined by get_linfct)
     get_contrasts = function(all = FALSE) {
       contrast_result <- self$Contrast$get_contrasts(all = FALSE) |>
         dplyr::group_by(dplyr::across(dplyr::all_of("contrast"))) |>

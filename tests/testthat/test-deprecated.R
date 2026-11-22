@@ -36,9 +36,18 @@ test_that("deprecated function names warn and return the same value as the new n
   expect_warning(p <- lfq$get_Plotter()$missigness_histogram(), "deprecated")
   expect_s3_class(p, "ggplot")
 
-  # remaining aliases: the warning comes first, then the call reaches the new function
-  expect_warning(expect_error(LR_test()), "lr_test")
-  expect_warning(expect_error(LFQDataToSummarizedExperiment()), "lfqdata_to_summarized_experiment")
+  two_factor <- sim_lfq_data_2factor_config(n_proteins = 10, with_missing = FALSE)
+  lfq2 <- LFQData$new(two_factor$data, two_factor$config)
+  full <- build_model(lfq2, strategy_lm("abundance ~ Treatment + Background"))
+  reduced <- build_model(lfq2, strategy_lm("abundance ~ Treatment"))
+  args <- list(full$model_df, "full", reduced$model_df, "reduced")
+  expect_warning(old <- do.call(LR_test, args), "lr_test")
+  expect_identical(old, do.call(lr_test, args))
+
+  skip_if_not_installed("SummarizedExperiment")
+  skip_if_not_installed("S4Vectors")
+  expect_warning(old <- LFQDataToSummarizedExperiment(lfq), "lfqdata_to_summarized_experiment")
+  expect_identical(old, lfqdata_to_summarized_experiment(lfq))
 })
 
 test_that("deprecated simulator arguments warn and give the same data as the new ones", {

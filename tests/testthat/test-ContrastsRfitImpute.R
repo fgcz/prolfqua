@@ -2,24 +2,13 @@
 ## (new_imputed_model on an rfit fit, build_model_impute with strategy_rfit,
 ##  ContrastsRfitImputeFacade, build_contrast_analysis dispatch, registry)
 
-make_protein_lfqdata_rfit_impute <- function(n_proteins = 50, weight_missing = 0.5, seed = 42) {
-  istar <- prolfqua::sim_lfq_data_protein_config(
-    n_proteins = n_proteins,
-    weight_missing = weight_missing,
-    seed = seed
-  )
-  lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
-  lfqdata$rename_response("transformedIntensity")
-  lfqdata
-}
-
 RFITIMP_CONTRASTS <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 RFITIMP_MODELSTR <- "~ group_"
 
 
 test_that("new_imputed_model wraps an rfit fit, overriding vcov/sigma/df.residual", {
   skip_if_not_installed("Rfit")
-  set.seed(1)
+  withr::local_seed(1)
   d <- data.frame(
     y = rnorm(12),
     group_ = factor(rep(c("A", "Ctrl"), each = 6))
@@ -54,7 +43,7 @@ test_that("new_imputed_model wraps an rfit fit, overriding vcov/sigma/df.residua
 test_that("build_model_impute rescues failed/singular rfit fits (vcov, fail-hard)", {
   muffle_warnings_matching(one_group_warning, expr = {
     skip_if_not_installed("Rfit")
-    lfqdata <- make_protein_lfqdata_rfit_impute()
+    lfqdata <- protein_lfqdata_fixture(n_proteins = 50, weight_missing = 0.5)
     strat <- prolfqua::strategy_rfit(paste(lfqdata$response(), RFITIMP_MODELSTR))
 
     mod_plain <- prolfqua::build_model(lfqdata, strat)
@@ -89,7 +78,7 @@ test_that("build_model_impute rescues failed/singular rfit fits (vcov, fail-hard
 test_that("ContrastsRfitImputeFacade returns the standard schema with facade tag", {
   muffle_warnings_matching(one_group_warning, expr = {
     skip_if_not_installed("Rfit")
-    lfqdata <- make_protein_lfqdata_rfit_impute()
+    lfqdata <- protein_lfqdata_fixture(n_proteins = 50, weight_missing = 0.5)
     fa <- prolfqua::ContrastsRfitImputeFacade$new(lfqdata, RFITIMP_MODELSTR, RFITIMP_CONTRASTS)
 
     expect_true(inherits(fa, "ContrastsRfitImputeFacade"))
@@ -127,7 +116,7 @@ test_that("ContrastsRfitImputeFacade returns the standard schema with facade tag
 test_that("rfit_impute flags rescued rows via estimate_type", {
   muffle_warnings_matching(one_group_warning, expr = {
     skip_if_not_installed("Rfit")
-    lfqdata <- make_protein_lfqdata_rfit_impute()
+    lfqdata <- protein_lfqdata_fixture(n_proteins = 50, weight_missing = 0.5)
     fa <- prolfqua::ContrastsRfitImputeFacade$new(lfqdata, RFITIMP_MODELSTR, RFITIMP_CONTRASTS)
     res <- fa$get_contrasts()
     # modelName is the facade key; rescued rows are tagged in estimate_type.
@@ -141,7 +130,7 @@ test_that("rfit_impute flags rescued rows via estimate_type", {
 test_that("rfit_impute has fewer or equal missing than plain rfit", {
   muffle_warnings_matching(one_group_warning, expr = {
     skip_if_not_installed("Rfit")
-    lfqdata <- make_protein_lfqdata_rfit_impute()
+    lfqdata <- protein_lfqdata_fixture(n_proteins = 50, weight_missing = 0.5)
     fa_impute <- prolfqua::ContrastsRfitImputeFacade$new(lfqdata, RFITIMP_MODELSTR, RFITIMP_CONTRASTS)
     fa_rfit <- prolfqua::ContrastsRfitFacade$new(lfqdata, RFITIMP_MODELSTR, RFITIMP_CONTRASTS)
 
@@ -158,7 +147,7 @@ test_that("rfit_impute is stable under LOD-created ties", {
     # many identical (tied) values whose rank order Rfit resolves with
     # ties.method = "first". Deterministic sample-row ordering must make the
     # facade reproducible across runs.
-    lfqdata <- make_protein_lfqdata_rfit_impute(n_proteins = 40, weight_missing = 1, seed = 7)
+    lfqdata <- protein_lfqdata_fixture(n_proteins = 40, weight_missing = 1, seed = 7)
     res1 <- prolfqua::ContrastsRfitImputeFacade$new(
       lfqdata,
       RFITIMP_MODELSTR,
@@ -204,7 +193,7 @@ test_that("rfit null-model fallback names survive the imputed wrapper", {
 test_that("build_contrast_analysis dispatches method = 'rfit_impute'", {
   muffle_warnings_matching(one_group_warning, expr = {
     skip_if_not_installed("Rfit")
-    lfqdata <- make_protein_lfqdata_rfit_impute()
+    lfqdata <- protein_lfqdata_fixture(n_proteins = 50, weight_missing = 0.5)
     fa <- prolfqua::build_contrast_analysis(
       lfqdata,
       RFITIMP_MODELSTR,

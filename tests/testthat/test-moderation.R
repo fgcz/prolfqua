@@ -1,5 +1,5 @@
 test_that("moderated_p_limma moderates via limma::squeezeVar", {
-  set.seed(42)
+  withr::local_seed(42)
   n <- 60
   sigma <- sqrt(rexp(n))
   diff <- rnorm(n)

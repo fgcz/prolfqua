@@ -23,4 +23,4 @@ Extended tests repeat parameter-recovery checks over many seeds, test noise susc
 
 ## Reference outputs
 
-Stored outputs of other software live in `inst/extdata`; the scripts that produce them are in `data-raw`. Do not put data files in `tests/testthat`: `tests/testthat/cleanup.R` deletes every non-`.R` entry there.
+Stored outputs of other software live in `inst/extdata`; the scripts that produce them are in `data-raw`. Do not put data files in `tests/testthat`; tests write temporary files to `tempdir()` (e.g. `withr::local_tempdir()`) and draw plots on a null device (`withr::local_pdf(NULL)`), so a test run leaves no files behind.

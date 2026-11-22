@@ -227,8 +227,7 @@ result columns; default \code{NULL} builds an LM-flavoured one on demand}
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{all}}{should all columns be returned (default FALSE)}
-      \item{\code{global}}{use a global linear function (determined by get_linfct)}
+      \item{\code{all}}{ignored; kept for the \code{ContrastsInterface} signature. The stored table is returned as is}
     }
     \if{html}{\out{</div>}}
   }

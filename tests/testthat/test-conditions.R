@@ -161,6 +161,7 @@ test_that("errors carry class prolfqua_error", {
 })
 
 test_that("plot_pca rejects a PC argument of the wrong length", {
+  withr::local_seed(1)
   x <- matrix(rnorm(20), nrow = 5, dimnames = list(NULL, paste0("s", 1:4)))
   annot <- data.frame(sample = paste0("s", 1:4), group = c("a", "a", "b", "b"))
   expect_error(

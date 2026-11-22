@@ -4,7 +4,7 @@
 # Median of n peptide z-scores per protein; the peptides of a protein share a
 # protein effect, so their z-scores have correlation rho.
 simulate_median_z <- function(n_prot, n, rho, seed) {
-  set.seed(seed)
+  withr::local_seed(seed)
   shared <- stats::rnorm(n_prot)
   own <- matrix(stats::rnorm(n_prot * n), n_prot)
   z <- sqrt(rho) * shared + sqrt(1 - rho) * own
@@ -14,7 +14,7 @@ simulate_median_z <- function(n_prot, n, rho, seed) {
 # Peptide abundances, 4 vs 4 samples; peptides of a protein share a sample effect
 # with variance rho (total variance 1), some values missing at random.
 simulate_correlated_peptides <- function(n_prot, n_pep, rho, missing = 0, seed = 1) {
-  set.seed(seed)
+  withr::local_seed(seed)
   samples <- paste0(rep(c("A", "B"), each = 4), "_", 1:4)
   data <- expand.grid(
     sampleName = samples,
@@ -37,7 +37,7 @@ simulate_correlated_peptides <- function(n_prot, n_pep, rho, missing = 0, seed =
 }
 
 test_that(".median_normal_sf matches simulated medians of normals", {
-  set.seed(1)
+  withr::local_seed(1)
   for (n in 1:6) {
     medians <- apply(matrix(stats::rnorm(4e4 * n), ncol = n), 1, stats::median)
     q <- stats::quantile(medians, c(0.95, 0.99), names = FALSE)

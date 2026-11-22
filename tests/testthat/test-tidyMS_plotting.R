@@ -31,6 +31,7 @@ test_that("density legend is suppressed automatically for many samples", {
     feature = seq_len(20),
     KEEP.OUT.ATTRS = FALSE
   )
+  withr::local_seed(1)
   pdata$abundance <- stats::rnorm(nrow(pdata), mean = 10)
 
   expect_false(prolfqua:::.show_sample_legend(pdata, "sample", NA, 16))
@@ -55,6 +56,7 @@ test_that("density plot carries sample keys for plotly hover highlighting", {
     feature = seq_len(30),
     KEEP.OUT.ATTRS = FALSE
   )
+  withr::local_seed(1)
   pdata$abundance <- c(stats::rnorm(30, mean = 10), stats::rnorm(30, mean = 12))
 
   p <- plot_intensity_distribution_density(
@@ -70,6 +72,7 @@ test_that("density plot carries sample keys for plotly hover highlighting", {
 })
 
 test_that("PCA sample labels repel and are not clipped", {
+  withr::local_seed(1)
   matrix <- matrix(stats::rnorm(60), nrow = 10)
   colnames(matrix) <- paste0("sample_", seq_len(6))
   annotation <- data.frame(
@@ -97,6 +100,7 @@ test_that("PCA sample labels repel and are not clipped", {
 })
 
 test_that("plot_pca errors when no complete features remain", {
+  withr::local_seed(1)
   matrix <- matrix(stats::rnorm(60), nrow = 10)
   colnames(matrix) <- paste0("sample_", seq_len(6))
   matrix[, 1] <- NA # every feature now has at least one missing value
@@ -117,6 +121,7 @@ test_that("plot_pca errors when no complete features remain", {
 })
 
 test_that("plot_pca errors with too few samples instead of returning NULL", {
+  withr::local_seed(1)
   matrix <- matrix(stats::rnorm(20), nrow = 10)
   colnames(matrix) <- c("s1", "s2")
   annotation <- data.frame(sample = colnames(matrix), group = c("a", "b"))
@@ -128,6 +133,7 @@ test_that("plot_pca errors with too few samples instead of returning NULL", {
 })
 
 test_that("plot_pca errors on duplicated sample names", {
+  withr::local_seed(1)
   matrix <- matrix(stats::rnorm(60), nrow = 10)
   colnames(matrix) <- c("s1", "s1", "s2", "s3", "s4", "s5")
   annotation <- data.frame(
@@ -142,6 +148,7 @@ test_that("plot_pca errors on duplicated sample names", {
 })
 
 test_that("plot_pca joins explicitly and handles a single factor key", {
+  withr::local_seed(1)
   matrix <- matrix(stats::rnorm(60), nrow = 10)
   colnames(matrix) <- paste0("sample_", seq_len(6))
   annotation <- data.frame(
@@ -164,6 +171,7 @@ test_that("plot_pca joins explicitly and handles a single factor key", {
 test_that("heatmap row labels are truncated without changing matrix row names", {
   skip_if_not_installed("ComplexHeatmap")
   skip_if_not_installed("circlize")
+  withr::local_seed(1)
   matrix <- matrix(stats::rnorm(12), nrow = 3)
   original_labels <- c(
     "Feature001_very_long_metabolomics_identifier_mz101.1234_rt12.34",
@@ -196,6 +204,7 @@ test_that("heatmap row labels are truncated without changing matrix row names", 
 })
 
 test_long_sample_heatmap_data <- function() {
+  withr::local_seed(1)
   matrix <- matrix(stats::rnorm(30), nrow = 5)
   sample_names <- paste0(
     "20250225_0",
@@ -322,6 +331,7 @@ test_that("abundance heatmap draws sparse one-row matrices with all-NA columns",
   )
 
   expect_s4_class(p, "Heatmap")
+  withr::local_pdf(NULL)
   expect_no_error(ComplexHeatmap::draw(p))
 })
 
@@ -352,6 +362,7 @@ test_that("abundance heatmap keeps partially observed rows and drops rows that c
 
   expect_s4_class(p, "Heatmap")
   expect_setequal(rownames(p@matrix), c("complete", "bait_only"))
+  withr::local_pdf(NULL)
   expect_no_warning(ComplexHeatmap::draw(p))
 })
 

@@ -272,7 +272,7 @@ test_that("build_model_limma passes weights from column name", {
   lProt$rename_response("transformedIntensity")
 
   # Add a weight column to the underlying data (per-sample weights)
-  set.seed(42)
+  withr::local_seed(42)
   sample_ids <- unique(lProt$data_long()$sampleName)
   wt_map <- stats::setNames(runif(length(sample_ids), 0.1, 1.0), sample_ids)
   lProt$set_data(
@@ -727,4 +727,44 @@ test_that("facades retain a snapshot independent of the caller", {
   config$sample_name <- "changed"
   expect_equal(facade$.lfqdata$data_long(), before)
   expect_false(identical(facade$.lfqdata$sample_name(), "changed"))
+})
+
+test_that("build_model_limma weights from a matrix or an annotation column equal limma::lmFit", {
+  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 30, weight_missing = 0, seed = 5)
+  lProt <- prolfqua::LFQData$new(istar$data, istar$config)
+  lProt$rename_response("transformedIntensity")
+  wide <- lProt$data_wide(as.matrix = TRUE)
+  design <- model.matrix(~group_, data = wide$annotation)
+
+  # observation weights as a matrix
+  W <- matrix(
+    withr::with_seed(1, stats::runif(length(wide$data), 0.2, 1)),
+    nrow = nrow(wide$data),
+    dimnames = dimnames(wide$data)
+  )
+  mod <- build_model_limma(lProt, strategy_limma("transformedIntensity ~ group_", weights = W))
+  ref <- limma::lmFit(wide$data, design, weights = W)
+  expect_equal(unname(mod$fit$coefficients), unname(ref$coefficients))
+  expect_equal(unname(mod$fit$stdev.unscaled), unname(ref$stdev.unscaled))
+
+  # per-sample weights from a column of the sample annotation
+  w_sample <- stats::setNames(
+    withr::with_seed(2, stats::runif(nrow(wide$annotation), 0.2, 1)),
+    wide$annotation$sampleName
+  )
+  data <- lProt$data_long()
+  data$sample_weight <- w_sample[data$sampleName]
+  config <- lProt$get_config()$clone(deep = TRUE)
+  config$factors[["sample_weight"]] <- "sample_weight"
+  lw <- LFQData$new(data, config)
+  wide_w <- lw$data_wide(as.matrix = TRUE)
+  expect_true("sample_weight" %in% colnames(wide_w$annotation))
+  mod_w <- build_model_limma(lw, strategy_limma("transformedIntensity ~ group_", weights = "sample_weight"))
+  ref_w <- limma::lmFit(
+    wide_w$data,
+    model.matrix(~group_, data = wide_w$annotation),
+    weights = wide_w$annotation$sample_weight
+  )
+  expect_equal(unname(mod_w$fit$coefficients), unname(ref_w$coefficients))
+  expect_equal(unname(mod_w$fit$stdev.unscaled), unname(ref_w$stdev.unscaled))
 })

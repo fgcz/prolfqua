@@ -36,6 +36,7 @@
 
 - Help pages render Markdown, so code and links that showed as literal backticks or brackets now format; every exported function documents its return value; titles are in sentence case and `lfqdata` arguments share one description.
 - Every argument of the exported functions is documented, and the `sim_build_models_logistf()` example checks the fitted models instead of a field that does not exist.
+- `?prolfqua` has a Resources section: memory per row, run time per protein for the matrix and per-subject backends, retained fitted models, and the cost of `null_split_check()`. `LFQData$get_config()` says it returns the configuration of the object itself, not a copy, and the `all` and `global` arguments that only keep the `ContrastsInterface` signature say that they are ignored.
 
 # prolfqua 1.9.4
 

@@ -16,10 +16,7 @@ make_peptide_lfqdata <- function(n_proteins = 30) {
 
 # Protein-level data with nrPeptides (used for deqms)
 make_protein_lfqdata <- function(n_proteins = 30) {
-  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = n_proteins, seed = 42)
-  lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
-  lfqdata$rename_response("transformedIntensity")
-  list(lfqdata = lfqdata, raw = istar)
+  list(lfqdata = protein_lfqdata_fixture(n_proteins))
 }
 
 CONTRASTS <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
@@ -65,9 +62,8 @@ test_that("facade modelName is consistent across get_contrasts/to_wide/get_Plott
   wide_modelname <- unique(unlist(wide[grep("^modelName", names(wide))]))
   expect_setequal(wide_modelname, "lm")
 
-  pl <- fa$get_Plotter()
-  pl_df <- pl$.__enclos_env__$private$.contrast_df
-  expect_setequal(unique(pl_df$modelName), "lm")
+  # the plotter's data, read through one of its plots
+  expect_setequal(unique(fa$get_Plotter()$histogram_diff()$data$modelName), "lm")
 })
 
 # ---- ContrastsLimmaFacade ----

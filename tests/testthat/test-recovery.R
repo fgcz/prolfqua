@@ -19,7 +19,8 @@ AGGREGATED_RECOVERY_METHODS <- c(
   "limma_impute",
   "limma_voom",
   "deqms",
-  "deqms_voom"
+  "deqms_voom",
+  "limpa"
 )
 RECOVERY_WARNINGS <- paste(rlm_convergence_warning, loess_ties_warning, single_peptide_warning, sep = "|")
 
@@ -48,7 +49,12 @@ expect_recovery <- function(method, seeds, N = 4) {
 }
 
 skip_if_backend_missing <- function(method) {
-  if (method == "rfit") skip_if_not_installed("Rfit")
+  if (method == "rfit") {
+    skip_if_not_installed("Rfit")
+  }
+  if (method == "limpa") {
+    skip_if_not_installed("limpa")
+  }
 }
 
 for (method in AGGREGATED_RECOVERY_METHODS) {

@@ -24,6 +24,26 @@ reproduced by the vignettes of the companion package prolfquabenchmark
 (\url{https://prolfqua.github.io/prolfquabenchmark/}).
 }
 
+\section{Resources}{
+
+Approximate figures, measured on simulated data with 12 to 48 samples on one laptop; times scale with the machine.
+\itemize{
+\item Memory: the long table takes about 75 bytes per row (one feature in one sample).
+\code{setup_analysis()} needs about 8 times that for a short time, because it completes the feature by
+sample grid, adding \code{NA} rows for absent combinations.
+\item Matrix backends (\code{limma}, \code{limma_impute}, \code{limma_voom}, \code{limma_voom_impute}, \code{deqms_voom}, \code{limpa})
+analyse 5,000 to 10,000 proteins in about a second or less; \code{limpa_nested}, which also aggregates, takes
+about 1.5 s per 1,000 proteins.
+\item Per-subject backends fit one model per protein or peptide on a single thread: about 1.7 ms per protein
+for \code{lm}, 2 to 3 ms per peptide for the ROPECA methods, 10 ms per protein for \code{hurdle_nested} and 16 ms for
+\code{lmer_nested}, which is about three minutes at 10,000 proteins.
+\item Per-subject backends keep every fitted model (about 9 KB per protein for \code{lm}, 40 KB for
+\code{lmer_nested}), so that \code{predict()}, \code{residuals()} and \code{vcov()} work on the analysis.
+\item \code{null_split_check()} repeats the whole analysis \code{n_splits} times (default 20); \code{n_features}
+limits its cost.
+}
+}
+
 \section{Options}{
 
 \describe{

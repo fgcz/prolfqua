@@ -9,7 +9,7 @@ test_that("linfct_matrix_contrasts resolves self-referencing contrasts", {
     "interactXZ" = "IntoflintoX - IntoflintoZ",
     "interactAB" = "IntoflintoA - IntoflintoB"
   )
-  set.seed(42)
+  withr::local_seed(42)
   additive <- linfct_matrix_contrasts(linfct_from_model(sim_make_model_lm("factors"), as_list = FALSE), Contr)
   expect_equal(sum(additive["interactXZ", ]), 0)
   expect_equal(sum(additive["interactAB", ]), 0)
@@ -32,7 +32,7 @@ test_that("linfct_matrix_contrasts reports failed contrasts and keeps the valid 
 })
 
 test_that("compute_contrast returns NA for contrasts on non-estimable coefficients", {
-  set.seed(42)
+  withr::local_seed(42)
   df <- data.frame(
     y = c(rnorm(3, mean = 10), rnorm(3, mean = 12)),
     group = factor(c("A", "A", "A", "B", "B", "B"), levels = c("A", "B", "C"))

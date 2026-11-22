@@ -249,7 +249,7 @@ wrapping with \code{\link{ContrastsModeratedDEqMS}}.}
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{global}}{ignored (for API compatibility)}
+      \item{\code{global}}{ignored; kept for the \code{ContrastsInterface} signature}
       \item{\code{avg}}{logical, also compute avgAbd linfct}
     }
     \if{html}{\out{</div>}}
@@ -269,7 +269,7 @@ wrapping with \code{\link{ContrastsModeratedDEqMS}}.}
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{all}}{should all columns be returned (default FALSE)}
+      \item{\code{all}}{ignored; kept for the \code{ContrastsInterface} signature. The result always has the same columns}
     }
     \if{html}{\out{</div>}}
   }

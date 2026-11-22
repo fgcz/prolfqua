@@ -63,8 +63,7 @@ ContrastsTable <- R6::R6Class(
     #' @description
     #' get contrasts
     #' @seealso \code{\link{summary_ropeca_median_p_scaled}}
-    #' @param all should all columns be returned (default FALSE)
-    #' @param global use a global linear function (determined by get_linfct)
+    #' @param all ignored; kept for the `ContrastsInterface` signature. The stored table is returned as is
     get_contrasts = function(all = FALSE) {
       self$contrast_result
     },
