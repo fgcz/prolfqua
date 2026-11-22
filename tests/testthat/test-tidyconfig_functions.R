@@ -83,3 +83,25 @@ test_that("table_facade returns a kable table, or the data frame with kable = FA
   skip_if_not_installed("knitr")
   expect_s3_class(table_facade(df, caption = "x"), "knitr_kable")
 })
+
+test_that("list_to_analysis_configuration names unknown keys and method names in a classed error", {
+  vals <- r6_extract_values(AnalysisConfiguration$new())
+  expect_error(
+    list_to_analysis_configuration(c(vals, list(no_such_field = 1))),
+    "no_such_field",
+    class = "prolfqua_error_bad_argument"
+  )
+  expect_error(
+    list_to_analysis_configuration(list(hierarchy_keys = "x")),
+    "hierarchy_keys",
+    class = "prolfqua_error_bad_argument"
+  )
+  expect_error(
+    list_to_analysis_configuration(list(table = list(not_a_field = 1))),
+    "not_a_field",
+    class = "prolfqua_error_bad_argument"
+  )
+  # the legacy parameter block keeps only known fields
+  legacy <- list_to_analysis_configuration(list(table = list(sep = "~"), parameter = list(old_parameter = 1)))
+  expect_identical(legacy$sep, "~")
+})

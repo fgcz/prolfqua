@@ -229,3 +229,13 @@ test_that("moderated_p_deqms predicts the prior for proteins left out of the loe
   expect_true(is.na(res$moderated.p.value[10]))
   expect_true(all(is.finite(res$moderated.p.value[1:8])))
 })
+
+test_that("moderated_p_deqms_long reports warnings of the per-contrast fits as prolfqua_fit_failed", {
+  mm <- data.frame(contrast = c("a", "a", "b", "b"), diff = c(1, -1, 2, 0), n = 1)
+  local_mocked_bindings(moderated_p_deqms = function(mm, ...) {
+    warning("loess trouble")
+    mm
+  })
+  expect_warning(res <- moderated_p_deqms_long(mm, count_col = "n"), "loess trouble", class = "prolfqua_fit_failed")
+  expect_equal(nrow(res), 4)
+})

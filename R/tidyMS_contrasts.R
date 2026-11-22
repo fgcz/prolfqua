@@ -187,61 +187,89 @@ linfct_from_model <- function(m, as_list = TRUE) {
 #' stopifnot(sum(x["interactAB",]) ==1 )
 #'
 linfct_matrix_contrasts <- function(linfct, contrasts, p.message = FALSE) {
-  linfct <- t(linfct)
-  df <- tibble::as_tibble(linfct, rownames = "interaction")
-  make_contrasts <- function(data, contrasts) {
-    cnams <- base::setdiff(colnames(data), "interaction")
-    failures <- list()
-    for (i in seq_along(contrasts)) {
-      if (p.message) {
-        message(names(contrasts)[i], "=", contrasts[i], "\n")
-      }
-      contrast_name <- names(contrasts)[i]
-      if (is.null(contrast_name) || !nzchar(contrast_name)) {
-        contrast_name <- paste0("contrast_", i)
-      }
-      err <- tryCatch(
-        {
-          data <- dplyr::mutate(data, !!names(contrasts)[i] := !!rlang::parse_expr(contrasts[i]))
-          NULL
-        },
-        error = function(e) {
-          e
-        }
-      )
-      if (inherits(err, "error")) {
-        failures[[length(failures) + 1]] <- list(
-          contrast = contrast_name,
-          message = conditionMessage(err)
-        )
-      }
+  # one coefficient vector per group; computed contrasts join them so later contrasts can use earlier ones
+  terms <- stats::setNames(lapply(seq_len(nrow(linfct)), function(i) linfct[i, ]), rownames(linfct))
+  computed <- character(0)
+  failures <- list()
+  for (i in seq_along(contrasts)) {
+    contrast_name <- names(contrasts)[i]
+    if (is.null(contrast_name) || !nzchar(contrast_name)) {
+      contrast_name <- paste0("contrast_", i)
     }
-    res <- data |> dplyr::select(-all_of(cnams))
-    if (length(failures) > 0) {
-      failure_df <- dplyr::bind_rows(failures)
-      failure_names <- toString(failure_df$contrast)
-      failure_messages <- unique(failure_df$message)
-      failure_summary <- paste(utils::head(failure_messages, 3), collapse = "; ")
-      msg <- sprintf(
-        "linfct_matrix_contrasts: computed %d/%d contrasts; failed %d: %s. %s",
-        ncol(res) - 1,
-        length(contrasts),
-        nrow(failure_df),
-        failure_names,
-        failure_summary
-      )
-      warning(msg, call. = FALSE)
+    if (p.message) {
+      message(contrast_name, "=", contrasts[i], "\n")
     }
-    res
+    value <- .eval_contrast(contrasts[[i]], terms)
+    if (is.character(value)) {
+      failures[[length(failures) + 1]] <- list(contrast = contrast_name, message = value)
+    } else {
+      terms[[contrast_name]] <- value
+      computed <- c(computed, contrast_name)
+    }
   }
+  if (length(failures) > 0) {
+    failure_df <- dplyr::bind_rows(failures)
+    msg <- sprintf(
+      "linfct_matrix_contrasts: computed %d/%d contrasts; failed %d: %s. %s",
+      length(computed),
+      length(contrasts),
+      nrow(failure_df),
+      toString(failure_df$contrast),
+      paste(utils::head(unique(failure_df$message), 3), collapse = "; ")
+    )
+    warning(msg, call. = FALSE)
+  }
+  matrix(
+    as.numeric(unlist(terms[computed], use.names = FALSE)),
+    nrow = length(computed),
+    ncol = ncol(linfct),
+    byrow = TRUE,
+    dimnames = list(computed, colnames(linfct))
+  )
+}
 
-  res <- make_contrasts(df, contrasts)
-  res <- tibble::column_to_rownames(res, "interaction")
-  res <- t(res)
-  res
+#' Evaluate one contrast expression on the group coefficient vectors
+#' @param contrast contrast expression, e.g. "group_A - group_B"
+#' @param terms named list of coefficient vectors (groups and earlier contrasts)
+#' @return the coefficient vector of the contrast, or the reason it could not be computed (character)
+#' @noRd
+.eval_contrast <- function(contrast, terms) {
+  expr <- tryCatch(rlang::parse_expr(contrast), error = function(e) e)
+  if (inherits(expr, "error")) {
+    return(conditionMessage(expr))
+  }
+  # a group missing from this model (partial design) is reported without raising an error
+  unknown <- setdiff(all.vars(expr), names(terms))
+  if (length(unknown) > 0) {
+    return(paste0("not in the model: ", toString(unknown)))
+  }
+  value <- tryCatch(eval(expr, terms, baseenv()), error = function(e) e)
+  if (inherits(value, "error")) {
+    return(conditionMessage(value))
+  }
+  value
 }
 
 # Computing contrasts helpers -----
+
+#' Variance of each contrast row, l' V l over the coefficients the row uses
+#'
+#' Coefficients with zero weight are left out, so an infinite or NA variance of an unused coefficient (rfit on
+#' small groups) does not turn the row into NaN through 0 * Inf.
+#' @param linfct contrast matrix, one row per contrast
+#' @param Sigma.hat variance-covariance matrix of the coefficients in the columns of `linfct`
+#' @noRd
+.contrast_variance <- function(linfct, Sigma.hat) {
+  vapply(
+    seq_len(nrow(linfct)),
+    function(i) {
+      used <- !.is_zero(linfct[i, ])
+      l <- linfct[i, used]
+      sum(l * (Sigma.hat[used, used, drop = FALSE] %*% l))
+    },
+    numeric(1)
+  )
+}
 
 #' compute contrasts for full models
 #'
@@ -264,7 +292,7 @@ linfct_matrix_contrasts <- function(linfct, contrasts, p.message = FALSE) {
   estimate <- linfct %*% t(t(coef))
 
   if (df > 0) {
-    std.error <- sqrt(diag(linfct %*% Sigma.hat %*% t(linfct)))
+    std.error <- sqrt(.contrast_variance(linfct, Sigma.hat))
     statistic <- estimate / std.error
 
     p.value <- pt(abs(statistic), df = df, lower.tail = FALSE) * 2
@@ -316,43 +344,32 @@ linfct_matrix_contrasts <- function(linfct, contrasts, p.message = FALSE) {
 #'
 #' @srrstats {RE7.1} Tests recover exact group differences and exact paired-design means.
 compute_contrast <- function(m, linfct, confint = 0.95) {
-  Sigma.hat <- vcov(m)
-
-  coef <- na.omit(coefficients(m))
-
-  res <- vector(nrow(linfct), mode = "list")
-  for (i in seq_len(nrow(linfct))) {
-    linfct_v <- linfct[i, , drop = FALSE]
-    idx <- which(!.is_zero(linfct_v))
-    nam <- colnames(linfct_v)[idx]
-
-    if (all(nam %in% names(coef))) {
-      linfct_v_red <- linfct_v[, nam, drop = FALSE]
-      Sigma.hat_red <- Sigma.hat[nam, nam, drop = FALSE]
-      coef_red <- coef[nam]
-      if (
-        !isTRUE(all.equal(colnames(linfct_v_red), colnames(Sigma.hat_red))) ||
-          !isTRUE(all.equal(colnames(linfct_v_red), names(coef_red)))
-      ) {
-        abort_prolfqua("Internal error: `linfct` columns do not match the model coefficients.")
-      }
-      res[[i]] <- .compute_contrast(m, linfct_v_red, coef = coef_red, Sigma.hat = Sigma.hat_red, confint = confint)
-    } else {
-      res[[i]] <- data.frame(
-        lhs = rownames(linfct_v),
-        sigma = sigma(m),
-        df = df.residual(m),
-        estimate = NA,
-        std.error = NA,
-        statistic = NA,
-        p.value = NA,
-        conf.low = NA,
-        conf.high = NA,
-        stringsAsFactors = FALSE
-      )
-    }
+  if (nrow(linfct) == 0L) {
+    return(dplyr::bind_rows(list()))
   }
-  res <- dplyr::bind_rows(res)
+  zero_rows <- rowSums(!.is_zero(linfct)) == 0
+  if (any(zero_rows)) {
+    abort_bad_argument(
+      "linfct",
+      "have a non-zero coefficient in every row",
+      not = paste0("all-zero rows ", toString(rownames(linfct)[zero_rows]))
+    )
+  }
+  coef <- stats::na.omit(stats::coefficients(m))
+  estimable_coef <- intersect(colnames(linfct), names(coef))
+  # a row is estimable when it puts no weight on a coefficient the model could not estimate
+  other <- linfct[, setdiff(colnames(linfct), estimable_coef), drop = FALSE]
+  estimable <- rowSums(!.is_zero(other)) == 0
+  res <- .compute_contrast(
+    m,
+    linfct[, estimable_coef, drop = FALSE],
+    coef = coef[estimable_coef],
+    Sigma.hat = stats::vcov(m)[estimable_coef, estimable_coef, drop = FALSE],
+    confint = confint
+  )
+  if (!all(estimable)) {
+    res[!estimable, c("estimate", "std.error", "statistic", "p.value", "conf.low", "conf.high")] <- NA
+  }
   res
 }
 

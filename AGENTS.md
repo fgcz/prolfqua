@@ -106,7 +106,7 @@ lfqdata <- lfqdata$get_Transformer()$log2()$robscale()$lfq
 
 **Config immutability**: AnalysisConfiguration is always deep-cloned when passed to new LFQData instances. Never modify config in-place on an existing LFQData.
 
-### R6 Classes (22 classes across R/)
+### R6 Classes (62 R6 generators across R/; the main ones)
 
 | Category | Classes | Files |
 |----------|---------|-------|
@@ -156,7 +156,7 @@ Concrete config factories (e.g. `create_config_Skyline()`, `create_config_Spectr
 
 - **When fixing a bug, first add a test that reproduces it**, then fix. This ensures regressions are caught.
 
-11 test files in `tests/testthat/`:
+58 test files in `tests/testthat/`; the main ones:
 - `test-LFQData.R` — Core data container and decorators
 - `test-Model.R` — Model fitting and coefficient extraction
 - `test-Contrasts.R` — Contrast computation (Wald test path)

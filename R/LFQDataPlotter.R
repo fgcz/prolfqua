@@ -31,6 +31,16 @@
   mat[sort(keep), , drop = FALSE]
 }
 
+#' Hierarchy level below the modelled one to facet boxplots on, or NULL
+#' @param lfq LFQData
+#' @param facet facet when there is a lower level
+#' @noRd
+.boxplot_facet <- function(lfq, facet) {
+  rhk <- lfq$relevant_hierarchy_keys()
+  hk <- lfq$hierarchy_keys()
+  if (length(rhk) < length(hk) && facet) hk[length(rhk) + 1] else NULL
+}
+
 #' LFQDataPlotter ----
 #' Create various visualization of the LFQdata
 #' @return An R6 class generator.
@@ -228,16 +238,12 @@ LFQDataPlotter <- R6::R6Class(
     #' @param facet enable facet wrap if hierarchy_depth less then hierarchy length.
     #' @return tibble with column boxplots containing ggplot objects
     boxplots = function(facet = TRUE) {
-      rhk <- self$lfq$relevant_hierarchy_keys()
-      hk <- self$lfq$hierarchy_keys()
-      fg <- if (length(rhk) < length(hk) && facet) hk[length(rhk) + 1] else NULL
-      bb <- prolfqua::plot_hierarchies_boxplot_df(
+      prolfqua::plot_hierarchies_boxplot_df(
         self$lfq$data_long(),
         self$lfq,
-        hierarchy = rhk,
-        facet_grid_on = fg
+        hierarchy = self$lfq$relevant_hierarchy_keys(),
+        facet_grid_on = .boxplot_facet(self$lfq, facet)
       )
-      bb
     },
     #' @description
     #' histogram of intensities given number of missing in conditions
@@ -340,17 +346,23 @@ LFQDataPlotter <- R6::R6Class(
         filename <- self$prefix
       }
       fpath <- file.path(path_qc, if (.has_pdf_suffix(filename)) filename else paste0(filename, "boxplot.pdf"))
-      bb <- self$boxplots()
+      # one plot at a time: memory does not grow with the number of proteins
+      hierarchy <- self$lfq$relevant_hierarchy_keys()
+      xnested <- .nest_by_hierarchy(self$lfq$data_long(), hierarchy)
+      ids <- xnested[[paste(hierarchy, collapse = "+")]]
+      facet_grid_on <- .boxplot_facet(self$lfq, TRUE)
 
       inform_prolfqua("writing ", fpath)
-      pb <- .make_progress(length(bb$boxplot))
+      pb <- .make_progress(nrow(xnested))
 
       grDevices::pdf(fpath, width = width, height = height)
       pdf_dev <- grDevices::dev.cur()
       on.exit(.dev_close(pdf_dev), add = TRUE)
-      for (x in bb$boxplot) {
+      for (i in seq_len(nrow(xnested))) {
         pb$tick()
-        .render_plot_to_device(x)
+        .render_plot_to_device(
+          prolfqua::plot_hierarchies_boxplot(xnested$data[[i]], ids[i], self$lfq, facet_grid_on = facet_grid_on)
+        )
       }
       invisible(fpath)
     },

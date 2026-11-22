@@ -190,6 +190,8 @@ test_that("limma records non-estimable coefficients as singular fits; lm_impute 
   expect_length(limma$messages, 0L)
   singular <- limma$result$model$provenance()
   expect_equal(singular$ids[singular$event == "singular fits"], list(fixture$target))
+  # limma's own warning text is kept in the provenance, not matched against a pattern
+  expect_match(unlist(singular$ids[singular$event == "limma warnings"]), "Partial NA coefficients", all = FALSE)
   for (method in c("lm_impute", "limma_impute")) {
     imputed <- prov_fit_warnings(build_contrast_analysis(fixture$lfq, "~ group_", contrasts, method))
     expect_length(imputed$messages, 0L)

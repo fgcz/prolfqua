@@ -61,3 +61,45 @@ test_that("compute_contrast returns NA for contrasts on non-estimable coefficien
   expect_true(is.na(res$estimate))
   expect_true(is.na(res$p.value))
 })
+
+test_that("compute_contrast matches summary.lm and the hand-computed Wald test next to a non-estimable row", {
+  withr::local_seed(3)
+  df <- data.frame(
+    y = c(rnorm(4, mean = 10), rnorm(4, mean = 12)),
+    group = factor(rep(c("A", "B"), each = 4), levels = c("A", "B", "C"))
+  )
+  m <- lm(y ~ group, data = df)
+  # lm drops the empty level C, so groupC is a linfct column the model does not estimate
+  linfct <- rbind(B = c(0, 1, 0), C = c(0, 0, 1), mix = c(1, 0.5, 0))
+  colnames(linfct) <- c("(Intercept)", "groupB", "groupC")
+  res <- compute_contrast(m, linfct, confint = 0.9)
+
+  ref <- summary(m)$coefficients["groupB", ]
+  expect_equal(res$estimate[1], unname(ref["Estimate"]))
+  expect_equal(res$std.error[1], unname(ref["Std. Error"]))
+  expect_equal(res$p.value[1], unname(ref["Pr(>|t|)"]))
+  expect_true(all(is.na(res[2, c("estimate", "std.error", "statistic", "p.value", "conf.low", "conf.high")])))
+
+  L <- linfct["mix", 1:2, drop = FALSE]
+  est <- unname(drop(L %*% coefficients(m)[1:2]))
+  se <- sqrt(drop(L %*% vcov(m)[1:2, 1:2] %*% t(L)))
+  q <- stats::qt(0.95, df.residual(m))
+  expect_equal(res$estimate[3], est)
+  expect_equal(res$std.error[3], se)
+  expect_equal(c(res$conf.low[3], res$conf.high[3]), est + c(-1, 1) * q * se)
+  expect_equal(res$df, rep(df.residual(m), 3))
+  expect_equal(res$sigma, rep(sigma(m), 3))
+})
+
+test_that("linfct_matrix_contrasts names an unnamed contrast contrast_<i>", {
+  linfct <- linfct_from_model(sim_make_model_lm("parallel3"), as_list = FALSE)
+  res <- expect_no_warning(linfct_matrix_contrasts(linfct, c("group_A - group_Ctrl", AB = "group_A - group_B")))
+  expect_identical(rownames(res), c("contrast_1", "AB"))
+  expect_equal(res["contrast_1", ], linfct["group_A", ] - linfct["group_Ctrl", ])
+})
+
+test_that("an infinite variance of an unused coefficient does not reach the contrast (rfit on small groups)", {
+  linfct <- rbind(uses_b = c(0, 1), uses_a = c(1, 0))
+  V <- matrix(c(Inf, 0, 0, 2), 2)
+  expect_equal(prolfqua:::.contrast_variance(linfct, V), c(2, Inf))
+})

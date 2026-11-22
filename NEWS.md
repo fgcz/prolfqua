@@ -7,6 +7,8 @@
 - `register_facade()` refuses the names of built-in methods (`"lm"`, `"limma"`, ...). Before, registering such a name silently replaced the built-in entry, and the built-in facade then rejected valid input with an error naming the wrong class. Built-in facades check their input shape themselves instead of reading it from the registry.
 - Error messages state the problem in their first line ("`method` must be one of ...", "Can't find column `x` in `data`.") and name the function you called instead of prolfqua's internal checker. Condition classes are unchanged; about 30 error and warning messages were reworded.
 - Joins inside prolfqua check that their lookup keys are unique: a duplicated subject, contrast or sample key in an input (for instance two rows for one protein and contrast passed to `merge_contrasts_results()`) raises an error instead of silently multiplying rows.
+- `list_to_analysis_configuration()` stops with a prolfqua error naming the keys that are not configuration fields (also method names such as `hierarchy_keys`); before, it failed with base R's "cannot add bindings to a locked environment".
+- `moderated_p_deqms_long()` (used by the deqms methods) reports problems of its per-contrast variance fits as a `prolfqua_fit_failed` warning, like the other fitting steps; before, the warning had no class. The limma methods keep limma's own warning text (e.g. "Partial NA coefficients") in `$provenance()` instead of matching and dropping it.
 - Plots: volcano, MA and score plots draw smaller, more transparent points, so dense regions stay readable; `ContrastsPlotter$barplot_threshold()` fills bars with the colour-blind safe palette; score-plot reference lines are black and red regardless of the global `palette()`. `plot_pca()` shapes the second factor with 19 distinguishable shapes and, when that factor has more levels, drops the shape mapping with a message; before, factors with more than 25 levels drew invalid shapes or no points.
 
 ## Bug fixes
@@ -20,10 +22,17 @@
 - Hierarchy counts per sample (`HierarchyCountsSample`, `LFQDataSummariser$hierarchy_counts_sample()` and its plot) work without an `nr_children` column, counting every feature once, and stop with an error when `nr_children > 1` is requested without that column.
 - `LFQDataPlotter$pca_plotly()` plots the principal components given in `PC`; before, it always plotted the first two.
 - `plot_heatmap_cor()` colours by its `color` argument, spread from the lowest to the highest correlation (default white to red, as before); before, `color` was ignored.
+- `AggregatorBase$write_plots()` (and the aggregators' `write_plots()`) uses its `show.legend` argument; before, the legend was never shown.
+- `linfct_matrix_contrasts()` names an unnamed contrast `contrast_<i>`; before, it dropped it with the warning "LHS of `:=` must be a string".
+- Aggregation plots from `plot_estimate()` and `AggregatorBase$plot()`, and boxplots from `LFQDataPlotter$boxplots()`, no longer carry the whole data set: `saveRDS()` of one aggregation plot of 300 proteins writes 11 MB instead of 2 GB.
 
 ## Performance
 
 - The duplicate-key check run before modelling and aggregation (`build_model()`, `build_model_limma()`, the facades and the aggregators), and `print()` of an `LFQData`, count distinct keys by hashing instead of comparing rows; on precursor-level tables with millions of rows this takes a fraction of a second instead of seconds and no longer needs several GB of extra memory.
+- `write_plots()` of the aggregators and `LFQDataPlotter$write_boxplots()` build and write one protein at a time, so their memory use no longer grows with the number of proteins (300 proteins: peak 0.33 GB instead of 0.84 GB).
+- `summarize_stats()`, and with it `get_Stats()`, the heatmap feature selection and the limit of detection of the impute methods, computes all groups in one pass: 0.2 s instead of 10.5 s for 67,000 peptides in 12 samples.
+- Median-polish aggregation is about 5 times faster (2,000 proteins: 1.4 s instead of 7.4 s) and rlm aggregation about a quarter faster.
+- Wald contrasts of the methods that fit one model per protein (lm, rlm, rfit, lm_impute, rfit_impute, deqms, ropeca) are computed once per protein instead of once per contrast row, and contrasts naming a group a protein lacks are skipped without raising and catching an error; the lm method on 5,000 proteins takes 3.7 s instead of 9.4 s.
 
 ## Deprecated
 

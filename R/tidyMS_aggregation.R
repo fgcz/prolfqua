@@ -37,7 +37,7 @@ plot_hierarchies_line_default <- function(
     data,
     aes(x = .data[[sample]], y = .data[[intensity]], group = .data[[fragment]], color = .data[[peptide]])
   )
-  p <- p + theme_prolfqua(grid = TRUE) + points + lines
+  p <- p + .theme_prolfqua_shared(grid = TRUE) + points + lines
   p <- p + facet_grid(cols = vars(!!!syms(factor)), scales = "free_x")
   p <- p + ggtitle(protein_name)
   p <- p + theme(axis.text.x = element_text(angle = 90, hjust = 1), legend.position = "top")
@@ -99,20 +99,24 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
 }
 
 
-#' Attach sample annotations to the median-polish protein estimates
+#' Attach sample annotations to the per-sample estimates of all subjects
+#'
+#' Keeps the column order subject keys, sample annotation, estimates.
 #' @param data long-format measurement data frame
-#' @param medpolishRes median-polish estimates and residuals
+#' @param estimates per-subject, per-sample estimates with the subject keys first
+#' @param subject_keys columns identifying the subjects
 #' @param sample_name column identifying samples
 #' @param factor_keys configured explanatory-variable columns
 #' @param file_name column identifying the input measurement files
 #' @param isotope_label column identifying isotope labels
 #' @noRd
-.reestablish_condition <- function(data, medpolishRes, sample_name, factor_keys, file_name, isotope_label) {
-  xx <- data |>
+.reestablish_condition <- function(data, estimates, subject_keys, sample_name, factor_keys, file_name, isotope_label) {
+  annotation <- data |>
     dplyr::select(dplyr::all_of(c(sample_name, factor_keys, file_name, isotope_label))) |>
     dplyr::distinct()
-  res <- dplyr::inner_join(xx, medpolishRes, by = sample_name, relationship = "many-to-one")
-  res
+  # several isotope labels share a sample, so one estimate can match several annotation rows
+  res <- dplyr::inner_join(estimates, annotation, by = sample_name, relationship = "many-to-many")
+  dplyr::select(res, dplyr::all_of(c(subject_keys, colnames(annotation))), dplyr::everything())
 }
 
 
@@ -124,10 +128,16 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
 #' @param control `maxiter` and `eps` of \code{stats::medpolish}
 #' @noRd
 .medpolish_estimate <- function(pdata, response, feature, sample_name, control = .aggregation_control("medpolish")) {
-  wide <- pdata |>
-    dplyr::select(all_of(c(sample_name, feature, response))) |>
-    tidyr::pivot_wider(names_from = all_of(sample_name), values_from = all_of(response))
-  mat <- as.matrix(wide[, vapply(wide, is.numeric, logical(1))])
+  # feature x sample matrix filled by index; the polish does not depend on row or column order
+  feature_id <- if (length(feature) == 1L) {
+    pdata[[feature]]
+  } else {
+    do.call(paste, c(unname(as.list(pdata[feature])), sep = "\r"))
+  }
+  features <- unique(feature_id)
+  samples <- unique(pdata[[sample_name]])
+  mat <- matrix(NA_real_, length(features), length(samples), dimnames = list(NULL, as.character(samples)))
+  mat[cbind(match(feature_id, features), match(pdata[[sample_name]], samples))] <- pdata[[response]]
   X <- medpolish(mat, na.rm = TRUE, trace.iter = FALSE, maxiter = control$maxiter, eps = control$eps)
   tibble(!!sample_name := names(X$col), medpolish = unname(X$col + X$overall))
 }
@@ -316,7 +326,7 @@ estimate_intensity <- function(lfqdata, method = c("medpolish", "rlm"), control 
   res <- purrr::map(seq_len(nrow(xnested)), function(i) {
     pb$tick()
     withCallingHandlers(
-      .reestablish_condition(xnested$data[[i]], estimate(xnested$data[[i]]), sname, fkeys, fname, iso),
+      estimate(xnested$data[[i]]),
       warning = function(w) {
         failures[[length(failures) + 1L]] <<- tibble::tibble(id = ids[i], warning = conditionMessage(w))
         invokeRestart("muffleWarning")
@@ -335,6 +345,7 @@ estimate_intensity <- function(lfqdata, method = c("medpolish", "rlm"), control 
     dplyr::select(all_of(c(hkeysd, make_name))) |>
     tidyr::unnest(cols = dplyr::all_of(make_name)) |>
     dplyr::ungroup()
+  unnested <- .reestablish_condition(data, unnested, hkeysd, sname, fkeys, fname, iso)
 
   result <- .add_nr_children(data, unnested, hkeysd, fname, response, nrc, newconfig)
   result$failures <- dplyr::bind_rows(tibble::tibble(id = character(0), warning = character(0)), failures)
@@ -365,41 +376,61 @@ estimate_intensity <- function(lfqdata, method = c("medpolish", "rlm"), control 
 #' stopifnot("ggplot" %in% class(tmpMed$plots[[1]]))
 #'
 plot_estimate <- function(lfqdata, lfqdata_agg, show.legend = FALSE) {
-  hierarchy_id <- "hierarchy_id"
-  hkeysd <- lfqdata$relevant_hierarchy_keys()
+  plot_data <- .estimate_plot_data(lfqdata, lfqdata_agg)
+  estimate_aes <- .estimate_aes(lfqdata$sample_name(), lfqdata_agg$response())
+  plots <- vector(mode = "list", length = nrow(plot_data))
+  pb <- .make_progress(nrow(plot_data))
+  for (i in seq_len(nrow(plot_data))) {
+    plots[[i]] <- .estimate_plot(plot_data, i, lfqdata, estimate_aes, show.legend)
+    pb$tick()
+  }
+  plot_data$plots <- plots
+  plot_data
+}
 
+#' Feature data of each aggregated element next to its aggregate, one row per element
+#' @param lfqdata LFQData with the feature data
+#' @param lfqdata_agg LFQData with the aggregated data
+#' @return tibble with `hierarchy_id`, `data` (feature intensities) and `other` (aggregated intensities)
+#' @noRd
+.estimate_plot_data <- function(lfqdata, lfqdata_agg) {
+  hkeysd <- lfqdata$relevant_hierarchy_keys()
   xnested <- lfqdata$data_long() |>
     group_by(across(all_of(hkeysd))) |>
     nest()
-  xnested <- xnested |> tidyr::unite(hierarchy_id, all_of(hkeysd))
+  xnested <- xnested |> tidyr::unite("hierarchy_id", all_of(hkeysd))
   xnested_aggr <- lfqdata_agg$data_long() |>
     group_by(across(all_of(lfqdata_agg$relevant_hierarchy_keys()))) |>
     nest_by(.key = "other")
-  xnested_aggr <- xnested_aggr |> tidyr::unite(hierarchy_id, all_of(hkeysd))
-  xnested_all <- inner_join(xnested, xnested_aggr, by = hierarchy_id, relationship = "one-to-one")
+  xnested_aggr <- xnested_aggr |> tidyr::unite("hierarchy_id", all_of(hkeysd))
+  inner_join(xnested, xnested_aggr, by = "hierarchy_id", relationship = "one-to-one")
+}
 
-  plots <- vector(mode = "list", length = nrow(xnested_all))
-  # protein estimate drawn on top of the peptide intensities
-  sample_name <- lfqdata$sample_name()
-  aes_y <- lfqdata_agg$response()
-  quant_aes <- aes(x = .data[[sample_name]], y = .data[[aes_y]], group = 1)
+#' Mapping of the aggregate line; built here so its environment holds the two column names and nothing else
+#' @param sample_name sample column
+#' @param response aggregated response column
+#' @noRd
+.estimate_aes <- function(sample_name, response) {
+  aes(x = .data[[sample_name]], y = .data[[response]], group = 1)
+}
 
-  pb <- .make_progress(nrow(xnested_all))
-  for (i in seq_len(nrow(xnested_all))) {
-    p1 <- plot_hierarchies_line(
-      xnested_all$data[[i]],
-      xnested_all[[hierarchy_id]][i],
-      lfqdata = lfqdata,
-      show.legend = show.legend
-    )
-    plots[[i]] <- p1 +
-      geom_line(data = xnested_all$other[[i]], quant_aes, linewidth = 1.3, color = "black", linetype = "solid") +
-      geom_point(data = xnested_all$other[[i]], quant_aes, color = "black", shape = 10)
-    pb$tick()
-  }
-  xnested_all$plots <- plots
-
-  xnested_all
+#' Plot of element `i`: its feature intensities with the aggregate drawn in black
+#' @param plot_data result of .estimate_plot_data()
+#' @param i row of `plot_data`
+#' @param lfqdata LFQData with the feature data
+#' @param estimate_aes result of .estimate_aes()
+#' @param show.legend show the legend
+#' @noRd
+.estimate_plot <- function(plot_data, i, lfqdata, estimate_aes, show.legend) {
+  p <- plot_hierarchies_line(
+    plot_data$data[[i]],
+    plot_data$hierarchy_id[i],
+    lfqdata = lfqdata,
+    show.legend = show.legend
+  )
+  p +
+    geom_line(data = plot_data$other[[i]], estimate_aes, linewidth = 1.3, color = "black", linetype = "solid") +
+    geom_point(data = plot_data$other[[i]], estimate_aes, color = "black", shape = 10)
 }
 
 

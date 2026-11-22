@@ -211,3 +211,23 @@ test_that("medpolish and rlm aggregation return unnamed estimates, so LFQData dr
     expect_null(attributes(res$data[[response]]), info = method)
   }
 })
+
+test_that("estimate_intensity medpolish equals stats::medpolish on the pivoted feature x sample matrix", {
+  sim <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 6, weight_missing = 0.3, seed = 11)
+  lfq <- suppressMessages(prolfqua::LFQData$new(sim$data, sim$config))
+  lfq <- suppressMessages(lfq$get_Transformer()$log2()$lfq)
+  res <- estimate_intensity(lfq, method = "medpolish")
+  expect_identical(
+    colnames(res$data)[1:5],
+    c("protein_Id", "sampleName", "group_", "sample", "isotopeLabel")
+  )
+  for (prot in unique(res$data$protein_Id)[1:3]) {
+    wide <- lfq$data_long() |>
+      dplyr::filter(.data$protein_Id == prot) |>
+      dplyr::select(dplyr::all_of(c("peptide_Id", "sampleName", lfq$response()))) |>
+      tidyr::pivot_wider(names_from = "sampleName", values_from = dplyr::all_of(lfq$response()))
+    mp <- stats::medpolish(as.matrix(wide[, -1]), na.rm = TRUE, trace.iter = FALSE, maxiter = 10, eps = 0.01)
+    got <- res$data[res$data$protein_Id == prot, ]
+    expect_equal(got$medpolish, unname((mp$col + mp$overall)[got$sampleName]), tolerance = 1e-12)
+  }
+})

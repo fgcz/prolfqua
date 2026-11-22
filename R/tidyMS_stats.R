@@ -66,6 +66,47 @@ poolvar <- function(res1, config) {
   resp
 }
 
+#' Counts, sd, var, mean and median of `y` per group, computed for all groups at once
+#'
+#' Same values as `n()`, `sum(!is.na(y))`, `sd()`, `var()`, `mean()` and `median()` with `na.rm = TRUE` per group:
+#' sd and var are NA below two values, the mean is NaN and the median NA for groups without values.
+#' @param y numeric response
+#' @param group integer group index of each element of `y`, 1 to `n_groups`
+#' @param n_groups number of groups
+#' @noRd
+.group_stats <- function(y, group, n_groups) {
+  observed <- !is.na(y)
+  y_obs <- y[observed]
+  g_obs <- group[observed]
+  n <- tabulate(group, n_groups)
+  n_measured <- tabulate(g_obs, n_groups)
+  group_sum <- function(x) {
+    s <- numeric(n_groups)
+    s[sort(unique(g_obs))] <- rowsum(x, g_obs, reorder = TRUE)[, 1]
+    s
+  }
+  mean_g <- group_sum(y_obs) / n_measured
+  var_g <- group_sum((y_obs - mean_g[g_obs])^2) / (n_measured - 1)
+  var_g[n_measured < 2] <- NA_real_
+  # medians: values sorted within groups, groups in index order
+  sorted <- y_obs[order(g_obs, y_obs)]
+  start <- cumsum(c(0L, n_measured))[seq_len(n_groups)]
+  median_g <- rep(NA_real_, n_groups)
+  has <- which(n_measured > 0)
+  lower <- sorted[start[has] + (n_measured[has] + 1L) %/% 2L]
+  upper <- sorted[start[has] + n_measured[has] %/% 2L + 1L]
+  median_g[has] <- (lower + upper) / 2
+  tibble::tibble(
+    nrReplicates = n,
+    nrMeasured = n_measured,
+    nrNAs = n - n_measured,
+    sd = sqrt(var_g),
+    var = var_g,
+    meanAbundance = mean_g,
+    medianAbundance = median_g
+  )
+}
+
 #' Compute mean, sd, and CV for all Peptides, or proteins, for all interactions and all samples.
 #'
 #' @param lfqdata [LFQData] object with the data and its configuration
@@ -96,19 +137,14 @@ poolvar <- function(res1, config) {
 #' stats <- summarize_stats(lfq2, factor_key = NULL)
 #' stopifnot(nrow(stats) == 10)
 summarize_stats <- function(lfqdata, factor_key = lfqdata$relevant_factor_keys()) {
-  resp <- lfqdata$response()
-  hierarchy_factor <- lfqdata$data_long() |>
-    dplyr::group_by(dplyr::across(all_of(c(lfqdata$hierarchy_keys(), lfqdata$isotope_label(), factor_key)))) |>
-    dplyr::summarize(
-      nrReplicates = dplyr::n(),
-      nrMeasured = sum(!is.na(.data[[resp]])),
-      nrNAs = sum(is.na(.data[[resp]])),
-      sd = stats::sd(.data[[resp]], na.rm = TRUE),
-      var = stats::var(.data[[resp]], na.rm = TRUE),
-      meanAbundance = mean(.data[[resp]], na.rm = TRUE),
-      medianAbundance = median(.data[[resp]], na.rm = TRUE),
-      .groups = "drop"
-    ) |>
+  grouped <- dplyr::group_by(
+    lfqdata$data_long(),
+    dplyr::across(all_of(c(lfqdata$hierarchy_keys(), lfqdata$isotope_label(), factor_key)))
+  )
+  hierarchy_factor <- dplyr::bind_cols(
+    dplyr::group_keys(grouped),
+    .group_stats(as.double(grouped[[lfqdata$response()]]), dplyr::group_indices(grouped), dplyr::n_groups(grouped))
+  ) |>
     dplyr::mutate(dplyr::across(all_of(factor_key), as.character))
   if (!lfqdata$is_transformed()) {
     hierarchy_factor <- hierarchy_factor |> dplyr::mutate(CV = sd / meanAbundance * 100)

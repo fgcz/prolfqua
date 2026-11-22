@@ -317,7 +317,7 @@ test_that("contrast calculation rejects an all-zero coefficient vector", {
   zero <- matrix(0, nrow = 1, ncol = length(stats::coef(model)), dimnames = list("zero", names(stats::coef(model))))
   expect_error(
     compute_contrast(model, zero),
-    regexp = "`linfct` columns do not match the model coefficients",
+    regexp = "`linfct` must have a non-zero coefficient in every row",
     class = "prolfqua_error"
   )
 })

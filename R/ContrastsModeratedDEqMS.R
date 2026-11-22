@@ -216,7 +216,7 @@ moderated_p_deqms_long <- function(mm, count_col, group_by_col = "contrast", est
       nrow(dfg),
       warning_examples
     )
-    warning(msg, call. = FALSE)
+    rlang::warn(msg, class = "prolfqua_fit_failed")
   }
 
   xx

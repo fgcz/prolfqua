@@ -191,8 +191,10 @@ AnalysisConfiguration <- R6::R6Class(
 #' all.equal(prolfqua::r6_extract_values(config), configList)
 list_to_analysis_configuration <- function(dd) {
   config <- AnalysisConfiguration$new()
+  fields <- names(Filter(function(x) !is.function(x) && !is.environment(x), as.list(config)))
   if (!is.null(dd$table)) {
-    # Old nested format (backwards compat)
+    # Old nested format (backwards compat); its `parameter` block is filtered to known fields below
+    .assert_configuration_keys(names(dd$table), fields)
     for (i in names(dd$table)) {
       config[[i]] <- dd$table[[i]]
     }
@@ -205,6 +207,7 @@ list_to_analysis_configuration <- function(dd) {
     }
   } else {
     # New flat format
+    .assert_configuration_keys(setdiff(names(dd), "sep"), fields)
     for (i in names(dd)) {
       if (i != "sep") {
         config[[i]] <- dd[[i]]
@@ -215,6 +218,22 @@ list_to_analysis_configuration <- function(dd) {
     config$sep <- dd$sep
   }
   config
+}
+
+#' Abort unless every key names a field of AnalysisConfiguration
+#' @param keys list names to set on the configuration
+#' @param fields configuration fields
+#' @noRd
+.assert_configuration_keys <- function(keys, fields) {
+  unknown <- setdiff(keys, fields)
+  if (length(unknown) > 0) {
+    abort_bad_argument(
+      "dd",
+      "name only AnalysisConfiguration fields",
+      not = paste0("unknown keys ", toString(unknown)),
+      call = rlang::caller_env()
+    )
+  }
 }
 
 

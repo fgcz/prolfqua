@@ -153,7 +153,7 @@ generate_contrasts <- function(primary_levels, secondary_levels, interactions = 
     }
   )
   res <- data.frame(ContrastName = names(res), Contrast = res)
-  return(res)
+  res
 }
 
 #' DRY function: process and export annotated contrasts
@@ -200,5 +200,5 @@ annotation_add_contrasts <- function(
     df_contrast
   )
   name <- paste0("DEA_", prefix, "_", dataset_id, ".csv")
-  return(list(annot = annot, name = name))
+  list(annot = annot, name = name)
 }

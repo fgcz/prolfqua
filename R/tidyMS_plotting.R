@@ -31,6 +31,20 @@ theme_prolfqua <- function(grid = FALSE, base_size = 12) {
   th
 }
 
+# theme_prolfqua() objects shared by the per-protein plots, so a list of plots holds one theme, not one per plot
+.prolfqua_themes <- new.env(parent = emptyenv())
+
+#' theme_prolfqua(grid), created once per session
+#' @param grid add faint major gridlines
+#' @noRd
+.theme_prolfqua_shared <- function(grid = FALSE) {
+  key <- if (grid) "grid" else "plain"
+  if (is.null(.prolfqua_themes[[key]])) {
+    .prolfqua_themes[[key]] <- theme_prolfqua(grid = grid)
+  }
+  .prolfqua_themes[[key]]
+}
+
 #' Decide whether sample counts allow a readable legend
 #' @param pdata long-format measurement table
 #' @param sample_name column identifying samples
@@ -429,25 +443,58 @@ plot_hierarchies_boxplot <- function(
   if (!missing(pb)) {
     pb$tick()
   }
+  .plot_hierarchies_boxplot_default(
+    pdata,
+    title,
+    response = lfqdata$response(),
+    isotope_col = lfqdata$isotope_label(),
+    nr_children_col = lfqdata$nr_children_col(),
+    factor_keys = lfqdata$relevant_factor_keys(),
+    log_y = !lfqdata$is_transformed(),
+    facet_grid_on = facet_grid_on,
+    beeswarm = beeswarm,
+    show_mean = show_mean
+  )
+}
 
-  isotope_col <- lfqdata$isotope_label()
-  nr_children_col <- lfqdata$nr_children_col()
-  response <- lfqdata$response()
-
+#' Boxplot of one protein from column names only, so the plot's mappings do not hold the LFQData
+#' @param pdata long-format measurement data of one protein
+#' @param title plot title
+#' @param response response column
+#' @param isotope_col isotope label column
+#' @param nr_children_col child-count column
+#' @param factor_keys factor columns combined on the x axis
+#' @param log_y logarithmic intensity axis
+#' @param facet_grid_on column to facet on, or NULL
+#' @param beeswarm draw the points
+#' @param show_mean draw the means
+#' @noRd
+.plot_hierarchies_boxplot_default <- function(
+  pdata,
+  title,
+  response,
+  isotope_col,
+  nr_children_col,
+  factor_keys,
+  log_y,
+  facet_grid_on,
+  beeswarm,
+  show_mean
+) {
   lil <- length(unique(pdata[[isotope_col]]))
 
-  pdata <- prolfqua::make_interaction_column(pdata, c(lfqdata$relevant_factor_keys()))
+  pdata <- prolfqua::make_interaction_column(pdata, c(factor_keys))
   pdata$size <- ifelse(pdata[[nr_children_col]] == 0, 2, pdata[[nr_children_col]])
   pdata[[nr_children_col]] <- as.factor(pdata[[nr_children_col]])
   p <- ggplot(pdata, aes(x = .data[["interaction"]], y = .data[[response]])) +
-    theme_prolfqua() +
+    .theme_prolfqua_shared() +
     theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
     ggtitle(title)
   if (lil > 1) {
     p <- p + aes(colour = .data[[isotope_col]])
   }
 
-  if (!lfqdata$is_transformed()) {
+  if (log_y) {
     p <- p + scale_y_log10()
   }
   p <- p + geom_boxplot()
@@ -515,9 +562,8 @@ plot_hierarchies_boxplot_df <- function(
   hierarchy = lfqdata$relevant_hierarchy_keys(),
   facet_grid_on = NULL
 ) {
-  xnested <- pdata |> dplyr::group_by(across(all_of(hierarchy))) |> tidyr::nest()
+  xnested <- .nest_by_hierarchy(pdata, hierarchy)
   newcol <- paste(hierarchy, collapse = "+")
-  xnested <- xnested |> tidyr::unite(!!newcol, all_of(hierarchy))
 
   pb <- .make_progress(nrow(xnested))
 
@@ -533,6 +579,15 @@ plot_hierarchies_boxplot_df <- function(
       )
     )
   dplyr::select(figs, all_of(c(newcol, "boxplot")))
+}
+
+#' Nest the data per element of `hierarchy`, with the element id in a column named after the joined keys
+#' @param pdata long-format measurement data
+#' @param hierarchy key columns, e.g. protein_Id
+#' @noRd
+.nest_by_hierarchy <- function(pdata, hierarchy) {
+  xnested <- pdata |> dplyr::group_by(across(all_of(hierarchy))) |> tidyr::nest()
+  xnested |> tidyr::unite(!!paste(hierarchy, collapse = "+"), all_of(hierarchy))
 }
 
 

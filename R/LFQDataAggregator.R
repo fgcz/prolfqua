@@ -60,11 +60,7 @@ AggregatorBase <- R6::R6Class(
     #' @param show.legend default FALSE
     #' @return data.frame
     plot = function(subset = NULL, show.legend = FALSE) {
-      if (is.null(self$lfq_agg)) {
-        abort_bad_argument("lfq_agg", "be an aggregated LFQData (call the aggregator first)", not = "NULL")
-      }
-      lfqagg <- if (is.null(subset)) self$lfq_agg else self$lfq_agg$get_subset(subset)
-      invisible(prolfqua::plot_estimate(self$lfq, lfqagg, show.legend = show.legend))
+      invisible(prolfqua::plot_estimate(self$lfq, private$.plotted(subset), show.legend = show.legend))
     },
     #' @description
     #' writes plots to folder
@@ -75,20 +71,29 @@ AggregatorBase <- R6::R6Class(
     #' @param height figure height
     #' @return file path
     write_plots = function(qcpath, subset = NULL, show.legend = FALSE, width = 6, height = 6) {
-      pl <- self$plot(subset)
-      pb <- .make_progress(nrow(pl))
+      # one plot at a time: memory does not grow with the number of proteins
+      lfq_agg <- private$.plotted(subset)
+      plot_data <- .estimate_plot_data(self$lfq, lfq_agg)
+      estimate_aes <- .estimate_aes(self$lfq$sample_name(), lfq_agg$response())
+      pb <- .make_progress(nrow(plot_data))
       filepath <- file.path(qcpath, paste0(self$prefix, "_aggregation_plot.pdf"))
       grDevices::pdf(filepath, width = width, height = height)
       pdf_dev <- grDevices::dev.cur()
       on.exit(.dev_close(pdf_dev), add = TRUE)
-      for (i in seq_len(nrow(pl))) {
-        .render_plot_to_device(pl$plots[[i]])
+      for (i in seq_len(nrow(plot_data))) {
+        .render_plot_to_device(.estimate_plot(plot_data, i, self$lfq, estimate_aes, show.legend))
         pb$tick()
       }
       invisible(filepath)
     }
   ),
   private = list(
+    .plotted = function(subset) {
+      if (is.null(self$lfq_agg)) {
+        abort_bad_argument("lfq_agg", "be an aggregated LFQData (call the aggregator first)", not = "NULL")
+      }
+      if (is.null(subset)) self$lfq_agg else self$lfq_agg$get_subset(subset)
+    },
     .check_transformed = function(lfq) NULL,
     .set_result = function(lfq_agg) {
       self$lfq_agg <- lfq_agg

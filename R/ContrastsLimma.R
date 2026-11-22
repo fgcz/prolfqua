@@ -178,23 +178,20 @@ compute_borrowed_variance_limma <- function(fit) {
 
   if (is.character(strategy$weights) && length(strategy$weights) == 1) {
     wcol <- strategy$weights
-    if (!wcol %in% names(lfqdata$data_long())) {
+    data <- lfqdata$data_long()
+    if (!wcol %in% names(data)) {
       abort_missing_columns(wcol, data_nm = "lfqdata")
     }
     if (wcol %in% colnames(annotation)) {
       return(annotation[[wcol]])
     }
-    if (wcol %in% colnames(lfqdata$data_long())) {
-      if (wcol %in% lfqdata$get_config()$value_vars()) {
-        wt_wide <- lfqdata$data_wide(as.matrix = TRUE, value = wcol)
-        return(wt_wide$data)
-      } else {
-        fname_col <- lfqdata$file_name()
-        wt_df <- unique(lfqdata$data_long()[, c(fname_col, wcol)])
-        wt_df <- wt_df[match(annotation[[fname_col]], wt_df[[fname_col]]), ]
-        return(wt_df[[wcol]])
-      }
+    if (wcol %in% lfqdata$get_config()$value_vars()) {
+      return(lfqdata$data_wide(as.matrix = TRUE, value = wcol)$data)
     }
+    fname_col <- lfqdata$file_name()
+    wt_df <- unique(data[, c(fname_col, wcol)])
+    wt_df <- wt_df[match(annotation[[fname_col]], wt_df[[fname_col]]), ]
+    return(wt_df[[wcol]])
   }
 
   abort_bad_argument("weights", "be NULL, one column name, or a numeric matrix")
@@ -309,15 +306,10 @@ compute_borrowed_variance_limma <- function(fit) {
   .assert_model_input(lfqdata)
   setup <- .lfqdata_to_elist(lfqdata, strategy$formula)
   weights <- .resolve_weights(lfqdata, strategy, setup$annotation)
-  fitted <- withCallingHandlers(
-    fit_fun(setup$expr_matrix, setup$design, weights = weights),
-    warning = function(w) {
-      # proteins with NA coefficients are recorded in the model's provenance (and refit with impute = TRUE)
-      if (grepl("^Partial NA coefficients", conditionMessage(w))) {
-        invokeRestart("muffleWarning")
-      }
-    }
-  )
+  # limma's warnings go to the model's provenance; proteins with NA coefficients are recorded there as singular
+  # fits (and refit with impute = TRUE)
+  captured <- .fit_capturing_warnings(fit_fun, setup$expr_matrix, setup$design, weights = weights)
+  fitted <- captured$fit
   fit <- fitted$fit
   observed <- is.finite(setup$expr_matrix)
   if (!is.null(weights)) {
@@ -327,7 +319,7 @@ compute_borrowed_variance_limma <- function(fit) {
   failed <- if (impute) which(rowSums(is.na(fit$coefficients)) > 0) else integer(0)
   if (length(failed) == 0) {
     model <- .new_model_limma(fit, setup, strategy, model_name, setup$expr_matrix, fitted$weights, observed)
-    return(.record_limma_fits(model, setup))
+    return(.record_limma_fits(model, setup, fit_warnings = captured$warnings))
   }
 
   lod <- .resolve_lod(lod, lfqdata)
@@ -360,7 +352,7 @@ compute_borrowed_variance_limma <- function(fit) {
     dummy_model = .limma_dummy_model(setup$annotation, setup$rhs_formula, imputed$expression[1, ]),
     imputed_proteins = setup$rowdata[failed, setup$subject_id[1], drop = TRUE]
   )
-  .record_limma_fits(model, setup, refit = failed)
+  .record_limma_fits(model, setup, refit = failed, fit_warnings = captured$warnings)
 }
 
 #' Record the per-protein outcomes of a limma fit in the model's provenance and report them
@@ -370,13 +362,15 @@ compute_borrowed_variance_limma <- function(fit) {
 #' @param model ModelLimma
 #' @param setup matrix data and metadata returned by .lfqdata_to_elist
 #' @param refit row indices refit at the limit of detection
+#' @param fit_warnings warning texts limma raised while fitting all proteins
 #' @noRd
-.record_limma_fits <- function(model, setup, refit = integer(0)) {
+.record_limma_fits <- function(model, setup, refit = integer(0), fit_warnings = character(0)) {
   log <- model$get_provenance_log()
   step <- paste0("fit (", model$model_name, ")")
   ids <- .key_ids(setup$rowdata, setup$subject_id)
   singular <- rowSums(is.na(model$fit$coefficients)) > 0
   log$record(step, "singular fits", ids[singular], "coefficients not estimable (Partial NA coefficients)")
+  log$record(step, "limma warnings", fit_warnings, "raised by limma while fitting all proteins; kept verbatim")
   log$record(
     step,
     "refit at the limit of detection",
