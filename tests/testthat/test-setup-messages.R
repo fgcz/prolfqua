@@ -53,7 +53,6 @@ test_that("input already in the configured form gets no transformation messages"
   data$source <- NULL
   data <- rbind(data, data.frame(run = "s2", protein = "P2", peptide = "c", group = "A", intensity = 9))
   data$sampleName <- data$run
-  data$isotopeLabel <- "light"
   data$qValue <- 0
   data$nr_children <- 1
   config <- input$config

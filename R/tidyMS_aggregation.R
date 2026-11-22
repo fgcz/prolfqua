@@ -8,7 +8,6 @@
 #' @param peptide peptide identifier column
 #' @param fragment fragment identifier column
 #' @param factor explanatory-variable column
-#' @param isotope_label column identifying isotope labels
 #' @param log_y use a logarithmic intensity axis
 #' @param show.legend show the plot legend
 #' @noRd
@@ -20,19 +19,11 @@ plot_hierarchies_line_default <- function(
   peptide,
   fragment,
   factor,
-  isotope_label,
   log_y = FALSE,
   show.legend = FALSE
 ) {
-  if (length(isotope_label)) {
-    data <- tidyr::unite(data, "fragment_label", dplyr::all_of(c(fragment, isotope_label)), remove = FALSE)
-    fragment <- "fragment_label"
-    points <- geom_point(aes(shape = .data[[isotope_label]]), show.legend = show.legend)
-    lines <- geom_line(aes(linetype = .data[[isotope_label]]), show.legend = show.legend)
-  } else {
-    points <- geom_point(show.legend = show.legend)
-    lines <- geom_line(show.legend = show.legend)
-  }
+  points <- geom_point(show.legend = show.legend)
+  lines <- geom_line(show.legend = show.legend)
   p <- ggplot(
     data,
     aes(x = .data[[sample]], y = .data[[intensity]], group = .data[[fragment]], color = .data[[peptide]])
@@ -91,7 +82,6 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
     peptide = peptide,
     fragment = fragment,
     factor = lfqdata$relevant_factor_keys(),
-    isotope_label = lfqdata$isotope_label(),
     log_y = !lfqdata$is_transformed(),
     show.legend = show.legend
   )
@@ -108,14 +98,12 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
 #' @param sample_name column identifying samples
 #' @param factor_keys configured explanatory-variable columns
 #' @param file_name column identifying the input measurement files
-#' @param isotope_label column identifying isotope labels
 #' @noRd
-.reestablish_condition <- function(data, estimates, subject_keys, sample_name, factor_keys, file_name, isotope_label) {
+.reestablish_condition <- function(data, estimates, subject_keys, sample_name, factor_keys, file_name) {
   annotation <- data |>
-    dplyr::select(dplyr::all_of(c(sample_name, factor_keys, file_name, isotope_label))) |>
+    dplyr::select(dplyr::all_of(c(sample_name, factor_keys, file_name))) |>
     dplyr::distinct()
-  # several isotope labels share a sample, so one estimate can match several annotation rows
-  res <- dplyr::inner_join(estimates, annotation, by = sample_name, relationship = "many-to-many")
+  res <- dplyr::inner_join(estimates, annotation, by = sample_name, relationship = "many-to-one")
   dplyr::select(res, dplyr::all_of(c(subject_keys, colnames(annotation))), dplyr::everything())
 }
 
@@ -306,7 +294,6 @@ estimate_intensity <- function(lfqdata, method = c("medpolish", "rlm"), control 
   sname <- lfqdata$sample_name()
   fname <- lfqdata$file_name()
   fkeys <- lfqdata$factor_keys()
-  iso <- lfqdata$isotope_label()
   nrc <- lfqdata$nr_children_col()
   feature <- base::setdiff(hkeys, hkeysd)
   estimate <- if (method == "medpolish") {
@@ -345,7 +332,7 @@ estimate_intensity <- function(lfqdata, method = c("medpolish", "rlm"), control 
     dplyr::select(all_of(c(hkeysd, make_name))) |>
     tidyr::unnest(cols = dplyr::all_of(make_name)) |>
     dplyr::ungroup()
-  unnested <- .reestablish_condition(data, unnested, hkeysd, sname, fkeys, fname, iso)
+  unnested <- .reestablish_condition(data, unnested, hkeysd, sname, fkeys, fname)
 
   result <- .add_nr_children(data, unnested, hkeysd, fname, response, nrc, newconfig)
   result$failures <- dplyr::bind_rows(tibble::tibble(id = character(0), warning = character(0)), failures)
@@ -474,7 +461,6 @@ aggregate_intensity_top_n <- function(ranked_data, lfqdata, .func, N = 3) {
       lfqdata$relevant_hierarchy_keys(),
       lfqdata$sample_name(),
       lfqdata$file_name(),
-      lfqdata$isotope_label(),
       lfqdata$factor_keys()
     ))))
   sum_top_intensities <- top_intensities |>

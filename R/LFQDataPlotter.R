@@ -18,7 +18,7 @@
   }
   lfqstats <- lfqdata$get_Stats(stats = "all")
   metric <- lfqstats$stat # "CV" (untransformed) or "sd" (transformed)
-  keys <- c(lfqdata$hierarchy_keys(), lfqdata$isotope_label())
+  keys <- lfqdata$hierarchy_keys()
   # wide$rowdata is in the same row order as the matrix, so joining the
   # per-feature statistic onto it aligns the ranking with the matrix rows.
   ranked <- dplyr::left_join(

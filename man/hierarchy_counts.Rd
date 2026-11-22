@@ -2,37 +2,34 @@
 % Please edit documentation in R/tidyMS_summarize_hierarchy.R
 \name{hierarchy_counts}
 \alias{hierarchy_counts}
-\title{Count distinct elements for each level of hierarchy and isotope}
+\title{Count distinct elements for each level of hierarchy}
 \usage{
-hierarchy_counts(pdata, hierarchy_keys, isotope_label = "isotopeLabel")
+hierarchy_counts(pdata, hierarchy_keys)
 }
 \arguments{
 \item{pdata}{data.frame}
 
 \item{hierarchy_keys}{character vector - all hierarchy column names}
-
-\item{isotope_label}{character - isotope label column name}
 }
 \value{
-a tibble with one row per isotope label and one column per hierarchy key holding the number of distinct
-elements
+a one-row tibble with one column per hierarchy key holding the number of distinct elements
 }
 \description{
-E.g. number of proteins, peptides, precursors in the dataset. Counts per
-isotope label over the whole dataset, whether observed or not.
+E.g. number of proteins, peptides, precursors in the dataset. Counts over the
+whole dataset, whether observed or not.
 }
 \examples{
 
 bb <- prolfqua::sim_lfq_data_peptide_config()
 lfq <- LFQData$new(bb$data, bb$config)
 
-x <- hierarchy_counts(lfq$data_long(), lfq$hierarchy_keys(), lfq$isotope_label())
+x <- hierarchy_counts(lfq$data_long(), lfq$hierarchy_keys())
 x$protein_Id
-stopifnot(ncol(x) == length(lfq$hierarchy_keys()) + 1)
+stopifnot(ncol(x) == length(lfq$hierarchy_keys()))
 # select non existing protein
 data0 <- lfq$data_long() |> dplyr::filter(protein_Id == "XYZ")
-tmp <- hierarchy_counts(data0, lfq$hierarchy_keys(), lfq$isotope_label())
-stopifnot(nrow(tmp) == 0)
+tmp <- hierarchy_counts(data0, lfq$hierarchy_keys())
+stopifnot(tmp$protein_Id == 0)
 }
 \seealso{
 Other summary:

@@ -47,8 +47,6 @@ Other configuration:
 
     \item{\code{norm_value}}{optional column with normalization values (e.g., Creatinine)}
 
-    \item{\code{isotope_label}}{which column contains the isotope label (e.g. heavy or light), or light only if LFQ.}
-
     \item{\code{ident_q_value}}{column name with identification QValues (smaller better)}
 
     \item{\code{ident_score}}{column with identification score (larger better)}

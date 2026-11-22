@@ -310,14 +310,14 @@ AggregateTopN <- R6::R6Class(
   } else {
     newconfig <- make_reduced_hierarchy_config(config, "limpa", config$hierarchy_keys_depth(names = FALSE))
   }
-  # rows of E are the united hierarchy keys and isotope label; pivot_longer keeps row-major order,
+  # rows of E are the united hierarchy keys; pivot_longer keeps row-major order,
   # which the transposed standard error and observation count matrices match
   long_data <- response_matrix_as_tibble(elist$E, "limpa", newconfig)
   long_data$limpa_se <- as.vector(t(elist$other$standard.error))
   long_data <- dplyr::left_join(
     long_data,
     wide$annotation,
-    by = c(config$sample_name, config$isotope_label),
+    by = config$sample_name,
     relationship = "many-to-one"
   )
   newconfig$nr_children <- paste0("nr_children_", paste(newconfig$hierarchy_keys(), collapse = "_"))
@@ -415,8 +415,8 @@ AggregateLimpa <- R6::R6Class(
         # Restore rownames from input (dpcQuantByRow uses integer IDs internally)
         rownames(elist$E) <- rownames(expr_matrix)
       } else {
-        # protein ID: hierarchy keys at depth and isotope label, united like the rownames of data_wide
-        id_cols <- c(self$lfq$relevant_hierarchy_keys(), self$lfq$isotope_label())
+        # protein ID: hierarchy keys at depth, united like the rownames of data_wide
+        id_cols <- self$lfq$relevant_hierarchy_keys()
         protein_ids <- do.call(paste, c(wide$rowdata[, id_cols, drop = FALSE], sep = "~lfq~"))
         elist <- limpa::dpcQuant(
           expr_matrix,

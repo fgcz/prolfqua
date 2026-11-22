@@ -27,8 +27,8 @@ the overall variance, so the share explained by the design, the model R^2,
 rises.
 }
 \details{
-One model is fitted per lowest-level feature (all hierarchy keys and the
-isotope label), the grouping of \code{\link[=summarize_stats]{summarize_stats()}}. Missing responses are
+One model is fitted per lowest-level feature (all hierarchy keys), the
+grouping of \code{\link[=summarize_stats]{summarize_stats()}}. Missing responses are
 omitted within each fit. Only full-rank fits with more than one residual
 degree of freedom are kept, the set returned by \code{\link[=get_complete_model_fit]{get_complete_model_fit()}},
 so all features share the same terms; a message reports how many features

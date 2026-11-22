@@ -31,8 +31,6 @@ AnalysisConfiguration <- R6::R6Class(
     #' @field norm_value optional column with normalization values (e.g., Creatinine)
     norm_value = NULL,
 
-    #' @field isotope_label which column contains the isotope label (e.g. heavy or light), or light only if LFQ.
-    isotope_label = "isotopeLabel",
     #' @field ident_q_value column name with identification QValues (smaller better)
     ident_q_value = "qValue",
     #' @field ident_score column with identification score (larger better)
@@ -136,7 +134,6 @@ AnalysisConfiguration <- R6::R6Class(
         self$file_name,
         names(self$factors),
         names(self$hierarchy),
-        self$isotope_label,
         self$sample_name,
         self$norm_value
       )
@@ -184,7 +181,6 @@ AnalysisConfiguration <- R6::R6Class(
 #' )
 #' DEAconfig$ident_q_value <- "annotation_QValue"
 #' DEAconfig$set_response("Area")
-#' DEAconfig$isotope_label <- "Isotope.Label"
 #' configList <- prolfqua::r6_extract_values(DEAconfig)
 #' stopifnot(class(configList) == "list")
 #' config <- list_to_analysis_configuration(configList)
@@ -194,6 +190,8 @@ list_to_analysis_configuration <- function(dd) {
   fields <- names(Filter(function(x) !is.function(x) && !is.environment(x), as.list(config)))
   if (!is.null(dd$table)) {
     # Old nested format (backwards compat); its `parameter` block is filtered to known fields below
+    # configurations stored before prolfqua became label-free carry the removed `isotope_label`
+    dd$table$isotope_label <- NULL
     .assert_configuration_keys(names(dd$table), fields)
     for (i in names(dd$table)) {
       config[[i]] <- dd$table[[i]]
@@ -207,6 +205,7 @@ list_to_analysis_configuration <- function(dd) {
     }
   } else {
     # New flat format
+    dd$isotope_label <- NULL
     .assert_configuration_keys(setdiff(names(dd), "sep"), fields)
     for (i in names(dd)) {
       if (i != "sep") {

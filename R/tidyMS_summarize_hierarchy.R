@@ -58,16 +58,14 @@ table_factors_size <- function(pdata, file_name, sample_name, factor_keys, facto
 
 # Functions - summarize hierarchies
 
-#' Count distinct elements for each level of hierarchy and isotope
+#' Count distinct elements for each level of hierarchy
 #'
-#' E.g. number of proteins, peptides, precursors in the dataset. Counts per
-#' isotope label over the whole dataset, whether observed or not.
+#' E.g. number of proteins, peptides, precursors in the dataset. Counts over the
+#' whole dataset, whether observed or not.
 #'
 #' @param pdata data.frame
 #' @param hierarchy_keys character vector - all hierarchy column names
-#' @param isotope_label character - isotope label column name
-#' @return a tibble with one row per isotope label and one column per hierarchy key holding the number of distinct
-#'   elements
+#' @return a one-row tibble with one column per hierarchy key holding the number of distinct elements
 #' @export
 #' @keywords internal
 #' @family summary
@@ -77,24 +75,23 @@ table_factors_size <- function(pdata, file_name, sample_name, factor_keys, facto
 #' bb <- prolfqua::sim_lfq_data_peptide_config()
 #' lfq <- LFQData$new(bb$data, bb$config)
 #'
-#' x <- hierarchy_counts(lfq$data_long(), lfq$hierarchy_keys(), lfq$isotope_label())
+#' x <- hierarchy_counts(lfq$data_long(), lfq$hierarchy_keys())
 #' x$protein_Id
-#' stopifnot(ncol(x) == length(lfq$hierarchy_keys()) + 1)
+#' stopifnot(ncol(x) == length(lfq$hierarchy_keys()))
 #' # select non existing protein
 #' data0 <- lfq$data_long() |> dplyr::filter(protein_Id == "XYZ")
-#' tmp <- hierarchy_counts(data0, lfq$hierarchy_keys(), lfq$isotope_label())
-#' stopifnot(nrow(tmp) == 0)
-hierarchy_counts <- function(pdata, hierarchy_keys, isotope_label = "isotopeLabel") {
+#' tmp <- hierarchy_counts(data0, lfq$hierarchy_keys())
+#' stopifnot(tmp$protein_Id == 0)
+hierarchy_counts <- function(pdata, hierarchy_keys) {
   res <- pdata |>
-    dplyr::group_by(across(all_of(isotope_label))) |>
     dplyr::summarise(across(all_of(hierarchy_keys), n_distinct))
   res
 }
 
 #' Count distinct elements for each level of hierarchy per sample
 #'
-#' Provides wide, long, and plot views of hierarchy counts. Counts per sample
-#' and isotope label, observed values only (non-missing response and at least
+#' Provides wide, long, and plot views of hierarchy counts. Counts per sample,
+#' observed values only (non-missing response and at least
 #' `nr_children` children).
 #'
 #' @return An R6 class generator.
@@ -127,7 +124,7 @@ HierarchyCountsSample <- R6::R6Class(
       }
       self$.summary <- pdata |>
         dplyr::filter(!is.na(.data[[configuration$get_response()]])) |>
-        dplyr::group_by(across(all_of(c(configuration$isotope_label, configuration$sample_name)))) |>
+        dplyr::group_by(across(all_of(configuration$sample_name))) |>
         dplyr::summarise(across(all_of(hierarchy), dplyr::n_distinct), .groups = "drop")
     },
     #' @description Return wide-format summary
@@ -138,7 +135,7 @@ HierarchyCountsSample <- R6::R6Class(
     long = function() {
       self$.summary |>
         tidyr::pivot_longer(
-          cols = -dplyr::all_of(c(self$.configuration$isotope_label, self$.configuration$sample_name)),
+          cols = -dplyr::all_of(self$.configuration$sample_name),
           names_to = "key",
           values_to = "nr"
         )
@@ -173,36 +170,31 @@ HierarchyCountsSample <- R6::R6Class(
 #' @family hierarchy counting
 #' @param pdata data.frame
 #' @param hierarchy_keys character vector - all hierarchy column names
-#' @param isotope_label character - isotope label column name
 #' @param hierarchy character vector - hierarchy level to group by (default hierarchy_keys)
 #' @param factors character vector - factor columns to include
 #' @return a tibble with one row per combination of the `factors` and `hierarchy` columns and, for each other
-#'   hierarchy level and the isotope label, a column `<level>_n` with the number of its distinct entries
+#'   hierarchy level, a column `<level>_n` with the number of its distinct entries
 #'
 #' @examples
 #'
 #' bb <- sim_lfq_data_peptide_config()
 #' lfq <- LFQData$new(bb$data, bb$config)
-#' summarize_hierarchy(lfq$data_long(), lfq$hierarchy_keys(), lfq$isotope_label())
-#' summarize_hierarchy(lfq$data_long(), lfq$hierarchy_keys(), lfq$isotope_label(),
-#'  factors = character())
-#' summarize_hierarchy(lfq$data_long(), lfq$hierarchy_keys(), lfq$isotope_label(),
+#' summarize_hierarchy(lfq$data_long(), lfq$hierarchy_keys())
+#' summarize_hierarchy(lfq$data_long(), lfq$hierarchy_keys(), factors = character())
+#' summarize_hierarchy(lfq$data_long(), lfq$hierarchy_keys(),
 #'  hierarchy = lfq$relevant_hierarchy_keys())
 #'
 summarize_hierarchy <- function(
   pdata,
   hierarchy_keys,
-  isotope_label = "isotopeLabel",
   hierarchy = hierarchy_keys,
   factors = character()
 ) {
-  all_hierarchy <- c(isotope_label, hierarchy_keys)
-
-  precursor <- pdata |> dplyr::select(dplyr::all_of(c(factors, all_hierarchy))) |> dplyr::distinct()
+  precursor <- pdata |> dplyr::select(dplyr::all_of(c(factors, hierarchy_keys))) |> dplyr::distinct()
   x3 <- precursor |>
     dplyr::group_by(across(all_of(c(factors, hierarchy)))) |>
     dplyr::summarize(
-      across(all_of(base::setdiff(all_hierarchy, hierarchy)), list(n = dplyr::n_distinct)),
+      across(all_of(base::setdiff(hierarchy_keys, hierarchy)), list(n = dplyr::n_distinct)),
       .groups = "drop"
     )
   x3

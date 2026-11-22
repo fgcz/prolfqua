@@ -447,7 +447,6 @@ plot_hierarchies_boxplot <- function(
     pdata,
     title,
     response = lfqdata$response(),
-    isotope_col = lfqdata$isotope_label(),
     nr_children_col = lfqdata$nr_children_col(),
     factor_keys = lfqdata$relevant_factor_keys(),
     log_y = !lfqdata$is_transformed(),
@@ -461,7 +460,6 @@ plot_hierarchies_boxplot <- function(
 #' @param pdata long-format measurement data of one protein
 #' @param title plot title
 #' @param response response column
-#' @param isotope_col isotope label column
 #' @param nr_children_col child-count column
 #' @param factor_keys factor columns combined on the x axis
 #' @param log_y logarithmic intensity axis
@@ -473,7 +471,6 @@ plot_hierarchies_boxplot <- function(
   pdata,
   title,
   response,
-  isotope_col,
   nr_children_col,
   factor_keys,
   log_y,
@@ -481,8 +478,6 @@ plot_hierarchies_boxplot <- function(
   beeswarm,
   show_mean
 ) {
-  lil <- length(unique(pdata[[isotope_col]]))
-
   pdata <- prolfqua::make_interaction_column(pdata, c(factor_keys))
   pdata$size <- ifelse(pdata[[nr_children_col]] == 0, 2, pdata[[nr_children_col]])
   pdata[[nr_children_col]] <- as.factor(pdata[[nr_children_col]])
@@ -490,9 +485,6 @@ plot_hierarchies_boxplot <- function(
     .theme_prolfqua_shared() +
     theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) +
     ggtitle(title)
-  if (lil > 1) {
-    p <- p + aes(colour = .data[[isotope_col]])
-  }
 
   if (log_y) {
     p <- p + scale_y_log10()

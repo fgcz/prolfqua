@@ -339,7 +339,7 @@ transform_work_intensity <- function(pdata, response, .func, .funcname = NULL) {
 #' @param config AnalysisConfiguration (needed for column name mapping)
 #' @param data optional data.frame to join back to
 #' @param sep separator used to unite the hierarchy keys
-#' @return a long-format tibble with the hierarchy key, isotope label, sample name and `value` columns; if `data`
+#' @return a long-format tibble with the hierarchy key, sample name and `value` columns; if `data`
 #'   is given, `data` joined with these values
 #' @export
 #'
@@ -373,13 +373,13 @@ response_matrix_as_tibble <- function(pdata, value, config, data = NULL, sep = "
     pdata,
     "row.names",
     delim = sep,
-    names = unique(c(config$hierarchy_keys(), config$isotope_label))
+    names = config$hierarchy_keys()
   )
   if (!is.null(data)) {
     pdata <- dplyr::inner_join(
       data,
       pdata,
-      by = unique(c(config$hierarchy_keys(), config$isotope_label, config$sample_name)),
+      by = unique(c(config$hierarchy_keys(), config$sample_name)),
       relationship = "one-to-one"
     )
   }

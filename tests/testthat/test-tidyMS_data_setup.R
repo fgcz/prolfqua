@@ -3,7 +3,6 @@
   withr::local_seed(1234)
   data <- prolfqua::sim_lfq_data(n_proteins = 5, n_per_group = 3, peptide = TRUE)
   data$nr_children <- 1
-  data$isotopeLabel <- "light"
   data$qValue <- 0
 
   config <- prolfqua::AnalysisConfiguration$new()
@@ -29,6 +28,15 @@ test_that("setup_analysis stops on duplicate observations per key", {
   expect_error(prolfqua::setup_analysis(dup, fx$config), "more than one observation")
 })
 
+test_that("setup_analysis rejects two isotope labels as duplicate observations", {
+  fx <- .dup_setup_fixture()
+  two_labels <- dplyr::bind_rows(
+    dplyr::mutate(fx$data, isotopeLabel = "light"),
+    dplyr::mutate(fx$data, isotopeLabel = "heavy")
+  )
+  expect_error(prolfqua::setup_analysis(two_labels, fx$config), "more than one observation")
+})
+
 test_that("setup_analysis(debug = TRUE) returns the count table for inspection", {
   fx <- .dup_setup_fixture()
   dup <- dplyr::bind_rows(fx$data, fx$data[1, , drop = FALSE])
@@ -40,24 +48,21 @@ test_that("setup_analysis(debug = TRUE) returns the count table for inspection",
 
 test_that("setup_analysis derives sample names and default metadata", {
   fx <- .dup_setup_fixture()
-  fx$data$isotopeLabel <- NULL
   fx$data$qValue <- NULL
   fx$data$nr_children <- NULL
 
-  # isotopeLabel and qValue are optional and only reported; missing peptide
+  # qValue is optional and only reported; missing peptide
   # counts change model weights, so nr_children still warns
   expect_warning(
     messages <- capture_messages(result <- prolfqua::setup_analysis(fx$data, fx$config)),
     "no nr_children"
   )
-  expect_true(any(grepl("no isotopeLabel", messages)))
   expect_true(any(grepl("no qValue", messages)))
 
   expect_equal(
     dplyr::n_distinct(result[[fx$config$sample_name]]),
     dplyr::n_distinct(result[[fx$config$file_name]])
   )
-  expect_setequal(result[[fx$config$isotope_label]], "light")
   expect_setequal(result[[fx$config$ident_q_value]], 0)
   expect_setequal(result[[fx$config$nr_children]], 1)
 })
@@ -88,7 +93,7 @@ test_that("separate_hierarchy splits hierarchy keys at the separator into their 
   data$protein_Id[1] <- "noseparator"
 
   res <- separate_hierarchy(data, config)
-  expect_identical(colnames(res)[5:7], c("protein_Id", "proteinID", "idtype2"))
+  expect_identical(colnames(res)[4:6], c("protein_Id", "proteinID", "idtype2"))
   parts <- strsplit(data$protein_Id[-1], "~", fixed = TRUE)
   expect_identical(res$proteinID[-1], vapply(parts, `[`, character(1), 1))
   expect_identical(res$idtype2[-1], vapply(parts, `[`, character(1), 2))

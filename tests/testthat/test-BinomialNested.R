@@ -13,7 +13,6 @@ test_that("binomial counts reuse the completed Firth missingness representation"
   grouping <- unique(c(
     prepared$subject_id(),
     prepared$sample_name(),
-    prepared$isotope_label(),
     prepared$factor_keys()
   ))
   expected <- prepared$data_long() |>

@@ -7,7 +7,6 @@
 summarize_hierarchy(
   pdata,
   hierarchy_keys,
-  isotope_label = "isotopeLabel",
   hierarchy = hierarchy_keys,
   factors = character()
 )
@@ -17,15 +16,13 @@ summarize_hierarchy(
 
 \item{hierarchy_keys}{character vector - all hierarchy column names}
 
-\item{isotope_label}{character - isotope label column name}
-
 \item{hierarchy}{character vector - hierarchy level to group by (default hierarchy_keys)}
 
 \item{factors}{character vector - factor columns to include}
 }
 \value{
 a tibble with one row per combination of the \code{factors} and \code{hierarchy} columns and, for each other
-hierarchy level and the isotope label, a column \verb{<level>_n} with the number of its distinct entries
+hierarchy level, a column \verb{<level>_n} with the number of its distinct entries
 }
 \description{
 E.g compute number of peptides for each protein: for each entry of
@@ -37,10 +34,9 @@ whether observed or not.
 
 bb <- sim_lfq_data_peptide_config()
 lfq <- LFQData$new(bb$data, bb$config)
-summarize_hierarchy(lfq$data_long(), lfq$hierarchy_keys(), lfq$isotope_label())
-summarize_hierarchy(lfq$data_long(), lfq$hierarchy_keys(), lfq$isotope_label(),
- factors = character())
-summarize_hierarchy(lfq$data_long(), lfq$hierarchy_keys(), lfq$isotope_label(),
+summarize_hierarchy(lfq$data_long(), lfq$hierarchy_keys())
+summarize_hierarchy(lfq$data_long(), lfq$hierarchy_keys(), factors = character())
+summarize_hierarchy(lfq$data_long(), lfq$hierarchy_keys(),
  hierarchy = lfq$relevant_hierarchy_keys())
 
 }

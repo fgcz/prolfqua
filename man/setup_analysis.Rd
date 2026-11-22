@@ -40,7 +40,7 @@ ordering are not retained; avoid by supplying character columns;
 names of \code{configuration$factors} become the predictor column names;
 \item a missing sample name is derived from the file name; avoid by
 supplying the sample name column;
-\item missing isotope labels, identification q-values and child counts
+\item missing identification q-values and child counts
 receive default values (child counts of one with a warning); avoid by
 supplying these columns;
 \item unconfigured columns and their attributes are dropped; the returned
@@ -55,7 +55,6 @@ rows with NA response, so every feature has a row in every sample.
 set.seed(1234)
 data <- sim_lfq_data(n_proteins = 10, peptide = TRUE, n_per_group = 4)
 data$nr_children <- 1
-data$isotopeLabel <- "light"
 data$qValue <- 0
 
 # Add creatinine values per sample (not per protein/peptide)

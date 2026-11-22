@@ -423,11 +423,6 @@ LFQData <- R6::R6Class(
       private$.config$nr_children
     },
     #' @description
-    #' return isotope label column name
-    isotope_label = function() {
-      private$.config$isotope_label
-    },
-    #' @description
     #' return the tidy (long-format) data frame
     #' @param na.omit if TRUE, remove rows with NA in response column
     data_long = function(na.omit = FALSE) {
@@ -457,7 +452,7 @@ LFQData <- R6::R6Class(
     #' @description
     #' number of elements at each level
     hierarchy_counts = function() {
-      prolfqua::hierarchy_counts(self$data_long(), self$hierarchy_keys(), self$isotope_label())
+      prolfqua::hierarchy_counts(self$data_long(), self$hierarchy_keys())
     },
     #' @description
     #' e.g. number of peptides per protein etc
@@ -466,7 +461,6 @@ LFQData <- R6::R6Class(
       prolfqua::summarize_hierarchy(
         self$data_long(),
         self$hierarchy_keys(),
-        self$isotope_label(),
         hierarchy = self$relevant_hierarchy_keys()
       )
     },

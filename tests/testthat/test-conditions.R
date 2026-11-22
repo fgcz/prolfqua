@@ -48,7 +48,6 @@ test_that("setup_analysis aborts (typed) on duplicate hierarchy-key / sample com
     idtype2 = c("x", "x"),
     peptideID = c("pep1", "pep1"),
     abundance = c(10, 12),
-    isotopeLabel = "light",
     qValue = 0,
     stringsAsFactors = FALSE
   )

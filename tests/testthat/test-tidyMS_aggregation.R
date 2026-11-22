@@ -218,8 +218,8 @@ test_that("estimate_intensity medpolish equals stats::medpolish on the pivoted f
   lfq <- suppressMessages(lfq$get_Transformer()$log2()$lfq)
   res <- estimate_intensity(lfq, method = "medpolish")
   expect_identical(
-    colnames(res$data)[1:5],
-    c("protein_Id", "sampleName", "group_", "sample", "isotopeLabel")
+    colnames(res$data)[1:4],
+    c("protein_Id", "sampleName", "group_", "sample")
   )
   for (prot in unique(res$data$protein_Id)[1:3]) {
     wide <- lfq$data_long() |>

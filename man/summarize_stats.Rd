@@ -28,7 +28,7 @@ summarize_stats_quantiles(
 \item{probs}{for which quantiles 10, 20 etc.}
 }
 \value{
-\code{summarize_stats()}: a tibble with one row per hierarchy element, isotope label and level of
+\code{summarize_stats()}: a tibble with one row per hierarchy element and level of
 \code{factor_key}, with the columns \code{nrReplicates}, \code{nrMeasured}, \code{nrNAs}, \code{sd}, \code{var}, \code{meanAbundance},
 \code{medianAbundance}, \code{CV} (untransformed data only) and \code{interaction}.
 

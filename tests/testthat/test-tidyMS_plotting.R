@@ -490,7 +490,7 @@ test_that("heatmap keeps only the top_n most variable features", {
   expect_equal(nrow(sub), k)
 
   st <- lfq$get_Stats(stats = "all")
-  keys <- c(lfq$hierarchy_keys(), lfq$isotope_label())
+  keys <- lfq$hierarchy_keys()
   ranked <- dplyr::left_join(
     wide$rowdata,
     dplyr::select(st$stats(), dplyr::all_of(c(keys, st$stat))),

@@ -7,8 +7,8 @@
 An R6 class generator.
 }
 \description{
-Provides wide, long, and plot views of hierarchy counts. Counts per sample
-and isotope label, observed values only (non-missing response and at least
+Provides wide, long, and plot views of hierarchy counts. Counts per sample,
+observed values only (non-missing response and at least
 \code{nr_children} children).
 }
 \examples{

@@ -97,7 +97,7 @@ compute_borrowed_variance_limma <- function(fit) {
 #'
 #' Shared preamble for all \code{build_model_limma*} and \code{build_model_limpa}
 #' functions. Pivots LFQData to wide format, builds the design matrix from the
-#' formula, resolves the subject_id / isotopeLabel, and creates a dummy lm for
+#' formula, resolves the subject_id, and creates a dummy lm for
 #' linfct extraction.
 #'
 #' @param lfqdata [LFQData] object with the data and its configuration
@@ -108,7 +108,7 @@ compute_borrowed_variance_limma <- function(fit) {
 #'   \item{expr_matrix}{the expression matrix (same as \code{elist$E})}
 #'   \item{design}{the design matrix}
 #'   \item{annotation}{sample-level annotation data.frame}
-#'   \item{subject_id}{character vector of hierarchy keys (possibly including isotopeLabel)}
+#'   \item{subject_id}{character vector of hierarchy keys}
 #'   \item{rowdata}{data.frame with one row per feature, columns = subject_id}
 #'   \item{rhs_formula}{the RHS-only formula}
 #'   \item{dummy_model}{a dummy \code{lm} fitted on one complete row}
@@ -124,11 +124,6 @@ compute_borrowed_variance_limma <- function(fit) {
   annotation <- wide$annotation
   subject_id <- lfqdata$hierarchy_keys()
   rowdata <- wide$rowdata |> dplyr::select(dplyr::all_of(subject_id))
-  if (anyDuplicated(rowdata) && !is.null(lfqdata$isotope_label())) {
-    rowdata <- wide$rowdata |>
-      dplyr::select(dplyr::all_of(unique(c(subject_id, lfqdata$isotope_label()))))
-    subject_id <- colnames(rowdata)
-  }
 
   rhs_formula <- formula(delete.response(terms(formula)))
   design <- model.matrix(rhs_formula, data = annotation)

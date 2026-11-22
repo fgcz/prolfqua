@@ -128,20 +128,13 @@
   data
 }
 
-#' isotopeLabel and qValue are optional and only reported. A missing nr_children
+#' qValue is optional and only reported. A missing nr_children
 #'
 #' warns: the default of 1 changes the fitting weights of aggregated data.
 #' @param data long-format measurement data frame
 #' @param configuration AnalysisConfiguration defining the column roles
 #' @noRd
 .add_setup_default_columns <- function(data, configuration) {
-  data <- .add_setup_default_column(
-    data,
-    configuration$isotope_label,
-    "light",
-    "no isotopeLabel column specified in the data, adding column isotopeLabel automatically and setting to 'light'.",
-    inform_prolfqua
-  )
   data <- .add_setup_default_column(
     data,
     configuration$ident_q_value,
@@ -167,8 +160,7 @@
     group_by(
       across(all_of(c(
         configuration$file_name,
-        configuration$hierarchy_keys(),
-        configuration$isotope_label
+        configuration$hierarchy_keys()
       )))
     ) |>
     summarize(n = n(), .groups = "drop")
@@ -236,7 +228,7 @@
 #'     names of \code{configuration$factors} become the predictor column names;
 #'   \item a missing sample name is derived from the file name; avoid by
 #'     supplying the sample name column;
-#'   \item missing isotope labels, identification q-values and child counts
+#'   \item missing identification q-values and child counts
 #'     receive default values (child counts of one with a warning); avoid by
 #'     supplying these columns;
 #'   \item unconfigured columns and their attributes are dropped; the returned
@@ -262,7 +254,6 @@
 #' set.seed(1234)
 #' data <- sim_lfq_data(n_proteins = 10, peptide = TRUE, n_per_group = 4)
 #' data$nr_children <- 1
-#' data$isotopeLabel <- "light"
 #' data$qValue <- 0
 #'
 #' # Add creatinine values per sample (not per protein/peptide)
@@ -329,7 +320,6 @@ setup_analysis <- function(data, configuration, debug = FALSE) {
     configuration$file_name,
     configuration$sample_name,
     configuration$factor_keys(),
-    configuration$isotope_label,
     configuration$hierarchy_keys()
   )
   if (nrow(data) > n_input) {
@@ -383,16 +373,14 @@ separate_hierarchy <- function(data, config) {
 #' @param file_name column identifying the input measurement files
 #' @param sample_name column identifying samples
 #' @param factor_keys configured explanatory-variable columns
-#' @param isotope_label column identifying isotope labels
 #' @param hierarchy_keys hierarchy identifier columns
 #' @noRd
-.complete_cases_impl <- function(pdata, file_name, sample_name, factor_keys, isotope_label, hierarchy_keys) {
+.complete_cases_impl <- function(pdata, file_name, sample_name, factor_keys, hierarchy_keys) {
   fkeys <- unique(c(file_name, sample_name, factor_keys))
-  hkeys <- c(isotope_label, hierarchy_keys)
   res <- tidyr::complete(
     pdata,
     tidyr::nesting(!!!syms(fkeys)),
-    tidyr::nesting(!!!syms(hkeys))
+    tidyr::nesting(!!!syms(hierarchy_keys))
   )
   res
 }
@@ -421,7 +409,6 @@ complete_cases <- function(lfqdata) {
     lfqdata$file_name(),
     lfqdata$sample_name(),
     lfqdata$factor_keys(),
-    lfqdata$isotope_label(),
     lfqdata$hierarchy_keys()
   )
 }

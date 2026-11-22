@@ -1,12 +1,8 @@
-#' Facets "isotope label by factor1 + factor2" used by the missingness plots.
-#' @param lfqdata [LFQData] object with the data and its configuration
+#' Facets "factor1 + factor2" used by the missingness plots.
 #' @param factors named list of explanatory-variable columns
 #' @noRd
-.isotope_by_factors_facet <- function(lfqdata, factors) {
-  ggplot2::facet_grid(
-    rows = ggplot2::vars(!!!rlang::syms(lfqdata$isotope_label())),
-    cols = ggplot2::vars(!!!rlang::syms(factors))
-  )
+.factors_facet <- function(factors) {
+  ggplot2::facet_grid(cols = ggplot2::vars(!!!rlang::syms(factors)))
 }
 
 #' Encode intensities as a binary detection response
@@ -161,7 +157,7 @@ missingness_histogram <- function(lfqdata, showempty = FALSE, factors = lfqdata$
   ) +
     theme_prolfqua() +
     ggplot2::geom_density(alpha = alpha, position = "identity") +
-    .isotope_by_factors_facet(lfqdata, factors) +
+    .factors_facet(factors) +
     ggplot2::theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
   if (!lfqdata$is_transformed()) {
@@ -191,12 +187,12 @@ missingness_per_condition_cumsum <- function(lfqdata, factors = lfqdata$relevant
   missing_percent <- summarize_stats(lfqdata, factor_key = factors)
 
   xx <- missing_percent |>
-    group_by(across(all_of(c(lfqdata$isotope_label(), factors, "nrNAs", "nrReplicates")))) |>
+    group_by(across(all_of(c(factors, "nrNAs", "nrReplicates")))) |>
     dplyr::summarize(nrTransitions = n(), .groups = "drop")
 
   xxcs <- xx |>
     arrange(.data$nrNAs) |>
-    dplyr::mutate(cumulative_sum = cumsum(.data$nrTransitions), .by = all_of(c(lfqdata$isotope_label(), factors)))
+    dplyr::mutate(cumulative_sum = cumsum(.data$nrTransitions), .by = all_of(factors))
   res <- xxcs |> dplyr::select(-dplyr::all_of("nrTransitions"))
 
   nudgeval <- mean(res$cumulative_sum) * 0.05
@@ -204,7 +200,7 @@ missingness_per_condition_cumsum <- function(lfqdata, factors = lfqdata$relevant
     theme_prolfqua() +
     geom_col(color = "black", fill = "white") +
     geom_text(aes(label = .data$cumulative_sum), nudge_y = nudgeval, angle = -45) +
-    .isotope_by_factors_facet(lfqdata, factors)
+    .factors_facet(factors)
 
   res <- res |> tidyr::pivot_wider(names_from = "nrNAs", values_from = "cumulative_sum")
   list(data = res, figure = p)
@@ -232,7 +228,7 @@ missingness_per_condition <- function(lfqdata, factors = lfqdata$relevant_factor
   hierarchy_key <- tail(lfqdata$hierarchy_keys(), 1)
   hierarchy_key <- paste0("nr_", hierarchy_key)
   xx <- missing_percent |>
-    group_by(across(all_of(c(lfqdata$isotope_label(), factors, "nrNAs", "nrReplicates")))) |>
+    group_by(across(all_of(c(factors, "nrNAs", "nrReplicates")))) |>
     dplyr::summarize(!!hierarchy_key := n(), .groups = "drop")
 
   nudgeval <- max(xx[[hierarchy_key]]) * 0.05
@@ -241,7 +237,7 @@ missingness_per_condition <- function(lfqdata, factors = lfqdata$relevant_factor
     theme_prolfqua() +
     geom_col(color = "black", fill = "white") +
     geom_text(aes(label = .data[[hierarchy_key]]), nudge_y = nudgeval, angle = 45) +
-    .isotope_by_factors_facet(lfqdata, factors)
+    .factors_facet(factors)
   xx <- tidyr::pivot_wider(xx, names_from = "nrNAs", values_from = dplyr::all_of(hierarchy_key))
 
   list(data = xx, figure = p)

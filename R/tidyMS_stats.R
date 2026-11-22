@@ -111,7 +111,7 @@ poolvar <- function(res1, config) {
 #'
 #' @param lfqdata [LFQData] object with the data and its configuration
 #' @param factor_key character vector - factor columns to group by (default: relevant_factor_keys)
-#' @return `summarize_stats()`: a tibble with one row per hierarchy element, isotope label and level of
+#' @return `summarize_stats()`: a tibble with one row per hierarchy element and level of
 #'   `factor_key`, with the columns `nrReplicates`, `nrMeasured`, `nrNAs`, `sd`, `var`, `meanAbundance`,
 #'   `medianAbundance`, `CV` (untransformed data only) and `interaction`.
 #' @export
@@ -139,7 +139,7 @@ poolvar <- function(res1, config) {
 summarize_stats <- function(lfqdata, factor_key = lfqdata$relevant_factor_keys()) {
   grouped <- dplyr::group_by(
     lfqdata$data_long(),
-    dplyr::across(all_of(c(lfqdata$hierarchy_keys(), lfqdata$isotope_label(), factor_key)))
+    dplyr::across(all_of(c(lfqdata$hierarchy_keys(), factor_key)))
   )
   hierarchy_factor <- dplyr::bind_cols(
     dplyr::group_keys(grouped),

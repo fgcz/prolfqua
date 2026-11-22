@@ -10,7 +10,7 @@ tidy_to_wide_config(
   file_name = FALSE,
   sep = "~lfq~",
   value = lfqdata$response(),
-  row_keys = c(lfqdata$hierarchy_keys(), lfqdata$isotope_label())
+  row_keys = lfqdata$hierarchy_keys()
 )
 }
 \arguments{
@@ -25,8 +25,7 @@ tidy_to_wide_config(
 \item{value}{column name to pivot (default: lfqdata$response())}
 
 \item{row_keys}{columns identifying a row of the wide table (default: the
-hierarchy keys and the isotope label). They must identify one value per
-sample; e.g. drop the isotope label only for single-label data.}
+hierarchy keys). They must identify one value per sample.}
 }
 \value{
 list with data, rowdata, and annotation (colData)
@@ -43,8 +42,8 @@ stopifnot(nrow(res$rowdata) == nrow(res$data))
 stopifnot(ncol(res$data) - ncol(res$rowdata) == nrow(res$annotation))
 res <- tidy_to_wide_config(lfqdata, as.matrix = TRUE)
 stopifnot(all(dim(res$data) == c(28,  12)))
-stopifnot(all(dim(res$annotation) == c(12,  4)))
-stopifnot(all(dim(res$rowdata) == c(28, 3)))
+stopifnot(all(dim(res$annotation) == c(12,  3)))
+stopifnot(all(dim(res$rowdata) == c(28, 2)))
 
 res <- scale(res$data)
 tidy_to_wide_config(lfqdata, value = lfqdata$nr_children_col())
@@ -57,10 +56,6 @@ dd <- prolfqua::sim_lfq_data_protein_config()
 lfqprot <- prolfqua::LFQData$new(dd$data, dd$config)
 xt <- tidy_to_wide_config(lfqprot, value = lfqprot$nr_children_col())
 xt$data
-
-# row names without the isotope label
-xh <- tidy_to_wide_config(lfqprot, as.matrix = TRUE, row_keys = lfqprot$hierarchy_keys())
-stopifnot(!any(grepl("light", rownames(xh$data))))
 
 }
 \keyword{internal}

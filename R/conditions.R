@@ -176,7 +176,7 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
 #' @param lfqdata LFQData to check
 #' @param call the call shown in the error header
 #' @noRd
-#' @srrstats {EA2.1} Sample, hierarchy and isotope keys must identify each row; `setup_analysis()` and every model and
+#' @srrstats {EA2.1} Sample and hierarchy keys must identify each row; `setup_analysis()` and every model and
 #'   aggregation entry (`.assert_model_input()`) check uniqueness and raise `prolfqua_error_duplicate_keys`.
 .assert_model_input <- function(lfqdata, call = rlang::caller_env()) {
   data <- lfqdata$data_long()
@@ -214,7 +214,7 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
       call = call
     )
   }
-  .assert_unique_keys(data, c(lfqdata$file_name(), lfqdata$hierarchy_keys(), lfqdata$isotope_label()), call = call)
+  .assert_unique_keys(data, c(lfqdata$file_name(), lfqdata$hierarchy_keys()), call = call)
   invisible(lfqdata)
 }
 
@@ -260,7 +260,7 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
 
 #' Abort when key columns do not identify each row
 #' @param data long-format data
-#' @param keys sample, hierarchy and isotope key columns
+#' @param keys sample and hierarchy key columns
 #' @param call the call shown in the error header
 #' @noRd
 .assert_unique_keys <- function(data, keys, call = rlang::caller_env()) {

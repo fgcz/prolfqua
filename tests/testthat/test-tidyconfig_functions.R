@@ -9,7 +9,6 @@ test_that("check config", {
   config$hierarchy[["fragment_Id"]] <- c("Peptide.Sequence", "Precursor.Charge", "Fragment.Ion", "Product.Charge")
   config$ident_q_value <- "annotation_QValue"
   config$set_response("Area")
-  config$isotope_label <- "Isotope.Label"
   config$factors[["Time"]] <- "Sampling.Time.Point"
   expect_equal(config$factor_keys(), "Time")
   expect_equal(config$hierarchy_keys(), c("protein_Id", "peptide_Id", "precursor_Id", "fragment_Id"))
@@ -104,4 +103,13 @@ test_that("list_to_analysis_configuration names unknown keys and method names in
   # the legacy parameter block keeps only known fields
   legacy <- list_to_analysis_configuration(list(table = list(sep = "~"), parameter = list(old_parameter = 1)))
   expect_identical(legacy$sep, "~")
+})
+
+test_that("list_to_analysis_configuration loads configurations stored with the removed isotope_label", {
+  vals <- r6_extract_values(AnalysisConfiguration$new())
+  expect_false("isotope_label" %in% names(vals))
+  flat <- list_to_analysis_configuration(c(vals, list(isotope_label = "isotopeLabel")))
+  expect_identical(r6_extract_values(flat), vals)
+  nested <- list_to_analysis_configuration(list(table = list(sep = "~", isotope_label = "isotopeLabel")))
+  expect_identical(nested$sep, "~")
 })

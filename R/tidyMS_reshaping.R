@@ -7,8 +7,7 @@
 #' @param sep separator for row IDs when as.matrix = TRUE
 #' @param value column name to pivot (default: lfqdata$response())
 #' @param row_keys columns identifying a row of the wide table (default: the
-#'   hierarchy keys and the isotope label). They must identify one value per
-#'   sample; e.g. drop the isotope label only for single-label data.
+#'   hierarchy keys). They must identify one value per sample.
 #' @export
 #' @keywords internal
 #' @return list with data, rowdata, and annotation (colData)
@@ -21,8 +20,8 @@
 #' stopifnot(ncol(res$data) - ncol(res$rowdata) == nrow(res$annotation))
 #' res <- tidy_to_wide_config(lfqdata, as.matrix = TRUE)
 #' stopifnot(all(dim(res$data) == c(28,  12)))
-#' stopifnot(all(dim(res$annotation) == c(12,  4)))
-#' stopifnot(all(dim(res$rowdata) == c(28, 3)))
+#' stopifnot(all(dim(res$annotation) == c(12,  3)))
+#' stopifnot(all(dim(res$rowdata) == c(28, 2)))
 #'
 #' res <- scale(res$data)
 #' tidy_to_wide_config(lfqdata, value = lfqdata$nr_children_col())
@@ -36,17 +35,13 @@
 #' xt <- tidy_to_wide_config(lfqprot, value = lfqprot$nr_children_col())
 #' xt$data
 #'
-#' # row names without the isotope label
-#' xh <- tidy_to_wide_config(lfqprot, as.matrix = TRUE, row_keys = lfqprot$hierarchy_keys())
-#' stopifnot(!any(grepl("light", rownames(xh$data))))
-#'
 tidy_to_wide_config <- function(
   lfqdata,
   as.matrix = FALSE,
   file_name = FALSE,
   sep = "~lfq~",
   value = lfqdata$response(),
-  row_keys = c(lfqdata$hierarchy_keys(), lfqdata$isotope_label())
+  row_keys = lfqdata$hierarchy_keys()
 ) {
   data <- lfqdata$data_long()
   if (file_name) {
@@ -57,7 +52,7 @@ tidy_to_wide_config <- function(
 
   ids <- dplyr::select(
     data,
-    all_of(c(lfqdata$sample_name(), lfqdata$file_name(), lfqdata$factor_keys(), lfqdata$isotope_label()))
+    all_of(c(lfqdata$sample_name(), lfqdata$file_name(), lfqdata$factor_keys()))
   ) |>
     dplyr::distinct() |>
     dplyr::arrange(dplyr::pick(dplyr::all_of(newcolname)))
@@ -65,7 +60,7 @@ tidy_to_wide_config <- function(
   long <- dplyr::select(data, all_of(c(row_keys, newcolname, value)))
   # the default keys are unique by setup_analysis(); a reduced key set may not be
   if (
-    !setequal(row_keys, c(lfqdata$hierarchy_keys(), lfqdata$isotope_label())) &&
+    !setequal(row_keys, lfqdata$hierarchy_keys()) &&
       anyDuplicated(long[c(row_keys, newcolname)]) > 0
   ) {
     abort_bad_argument("row_keys", "identify one value per sample", not = toString(row_keys))
@@ -158,7 +153,7 @@ tidy_to_wide_config <- function(
 #'   `config$get_response()`, or a named list of such matrices with identical
 #'   dimensions and column names; list names are the value columns
 #' @param rowdata data.frame with one row per matrix row and the hierarchy key
-#'   columns; the isotope label column is optional and set to `"light"` if absent
+#'   columns
 #' @param annotation data.frame with one row per sample: `config$sample_name`
 #'   plus the file name and factor columns
 #' @param config AnalysisConfiguration describing the result
@@ -194,11 +189,8 @@ lfqdata_from_wide <- function(values, rowdata, annotation, config, prefix = "ms"
 
   annotation <- tibble::as_tibble(annotation)
   annotation[[sample_name]] <- samples
-  # columns already taken from rowdata (e.g. the isotope label) are not joined twice
+  # columns already taken from rowdata are not joined twice
   annotation <- annotation[, c(sample_name, setdiff(colnames(annotation), colnames(long))), drop = FALSE]
   long <- dplyr::inner_join(long, annotation, by = sample_name, relationship = "many-to-one")
-  if (!config$isotope_label %in% colnames(long)) {
-    long[[config$isotope_label]] <- "light"
-  }
   LFQData$new(long, config, prefix = prefix)
 }

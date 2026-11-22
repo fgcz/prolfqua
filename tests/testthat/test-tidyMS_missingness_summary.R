@@ -78,5 +78,5 @@ test_that("missingness_histogram facets by the factors it is given (D-review fol
   facet_vars <- c(names(p$facet$params$rows), names(p$facet$params$cols))
   expect_true("Treatment" %in% facet_vars)
   expect_false("Background" %in% facet_vars)
-  expect_true(all(setdiff(facet_vars, lfq$isotope_label()) %in% colnames(p$data)))
+  expect_true(all(facet_vars %in% colnames(p$data)))
 })

@@ -169,7 +169,6 @@ which_missing <- function(x, weight_missing = 0.2) {
 #' @param factor_depth number of configured factors included in summaries and plots
 #' @noRd
 .sim_setup <- function(data, factors, peptide, nr_children = "nr_children", factor_depth = 1) {
-  data$isotopeLabel <- "light"
   data$qValue <- 0
   config <- AnalysisConfiguration$new()
   config$file_name <- "sample"

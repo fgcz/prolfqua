@@ -324,16 +324,13 @@ test_that("Transformer and Summariser deep-clone their input", {
 
 test_that("tidy_to_wide_config takes the row keys", {
   default <- tidy_to_wide_config(lfqdata, as.matrix = TRUE)
-  no_label <- tidy_to_wide_config(lfqdata, as.matrix = TRUE, row_keys = lfqdata$hierarchy_keys())
-  expect_equal(dim(no_label$data), dim(default$data))
-  expect_false(any(grepl(lfqdata$data_long()[[lfqdata$isotope_label()]][1], rownames(no_label$data), fixed = TRUE)))
-  expect_equal(colnames(no_label$rowdata), lfqdata$hierarchy_keys())
+  expect_equal(colnames(default$rowdata), lfqdata$hierarchy_keys())
+  united <- do.call(paste, c(default$rowdata, sep = "~lfq~"))
+  expect_identical(rownames(default$data), united)
 
-  # two isotope labels: the hierarchy keys alone do not identify a row
-  heavy <- dplyr::mutate(lfqdata$data_long(), !!lfqdata$isotope_label() := "heavy")
-  two_labels <- LFQData$new(dplyr::bind_rows(lfqdata$data_long(), heavy), lfqdata$get_config())
+  # a reduced key set must still identify one value per sample
   expect_error(
-    tidy_to_wide_config(two_labels, row_keys = two_labels$hierarchy_keys()),
+    tidy_to_wide_config(lfqdata, row_keys = lfqdata$hierarchy_keys()[1]),
     class = "prolfqua_error_bad_argument"
   )
 })
@@ -362,7 +359,7 @@ test_that("lfqdata_from_wide inverts tidy_to_wide_config", {
   expect_s3_class(back, "LFQData")
 
   keys <- c(lfq$hierarchy_keys(), lfq$sample_name())
-  cols <- c(keys, lfq$isotope_label(), lfq$file_name(), lfq$factor_keys(), lfq$response(), lfq$nr_children_col())
+  cols <- c(keys, lfq$file_name(), lfq$factor_keys(), lfq$response(), lfq$nr_children_col())
   tidy <- function(x) {
     x <- dplyr::select(x$data_long(), dplyr::all_of(cols))
     as.data.frame(dplyr::arrange(x, dplyr::across(dplyr::all_of(keys))))

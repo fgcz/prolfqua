@@ -11,7 +11,6 @@
   grouping <- unique(c(
     lfqdata$subject_id(),
     lfqdata$sample_name(),
-    lfqdata$isotope_label(),
     lfqdata$factor_keys()
   ))
 

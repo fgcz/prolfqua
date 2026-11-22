@@ -157,19 +157,19 @@ test_that("main returned tables have the documented dimensions and column classe
   expect_identical(unname(column_classes(coefs)), c("character", "character", "numeric", "numeric", "numeric"))
 
   stats <- fixture$peptide$get_Stats()$stats()
-  expect_identical(dim(stats), c(4L * n_peptide, 12L)) # three groups and "All"
+  expect_identical(dim(stats), c(4L * n_peptide, 11L)) # three groups and "All"
   expect_identical(
     unname(column_classes(stats)),
-    c(rep("character", 4), rep("integer", 3), rep("numeric", 4), "character")
+    c(rep("character", 3), rep("integer", 3), rep("numeric", 4), "character")
   )
 
   variance <- summarize_variance_explained(fixture$protein)
-  expect_identical(dim(variance), c(2L * n_protein, 8L))
-  expect_identical(unname(column_classes(variance)), c(rep("character", 3), "integer", rep("numeric", 4)))
+  expect_identical(dim(variance), c(2L * n_protein, 7L))
+  expect_identical(unname(column_classes(variance)), c(rep("character", 2), "integer", rep("numeric", 4)))
 
   counts <- fixture$peptide$hierarchy_counts()
-  expect_identical(dim(counts), c(1L, 3L))
-  expect_identical(unname(column_classes(counts)), c("character", "integer", "integer"))
+  expect_identical(dim(counts), c(1L, 2L))
+  expect_identical(unname(column_classes(counts)), c("integer", "integer"))
   expect_identical(counts$protein_Id, n_protein)
 
   provenance <- fixture$protein$provenance()

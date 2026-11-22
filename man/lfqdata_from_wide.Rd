@@ -12,7 +12,7 @@ lfqdata_from_wide(values, rowdata, annotation, config, prefix = "ms")
 dimensions and column names; list names are the value columns}
 
 \item{rowdata}{data.frame with one row per matrix row and the hierarchy key
-columns; the isotope label column is optional and set to \code{"light"} if absent}
+columns}
 
 \item{annotation}{data.frame with one row per sample: \code{config$sample_name}
 plus the file name and factor columns}

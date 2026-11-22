@@ -361,7 +361,7 @@ impute_from_model <- function(model, lfqdata) {
 
   data <- lfqdata$data_long()
   sample_template <- .sample_template(lfqdata)
-  row_keys <- intersect(c(subject_id, lfqdata$isotope_label()), colnames(data))
+  row_keys <- intersect(subject_id, colnames(data))
   completed <- data |>
     dplyr::select(dplyr::all_of(row_keys)) |>
     dplyr::distinct() |>

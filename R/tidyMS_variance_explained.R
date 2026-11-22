@@ -15,8 +15,8 @@
 #'   sum of squares), `eta2` (`Sum.Sq / SS_total`) and `R2` (the feature's model
 #'   R^2, `1 - SS_residual / SS_total`, repeated on each of its rows).
 #' @details
-#' One model is fitted per lowest-level feature (all hierarchy keys and the
-#' isotope label), the grouping of [summarize_stats()]. Missing responses are
+#' One model is fitted per lowest-level feature (all hierarchy keys), the
+#' grouping of [summarize_stats()]. Missing responses are
 #' omitted within each fit. Only full-rank fits with more than one residual
 #' degree of freedom are kept, the set returned by [get_complete_model_fit()],
 #' so all features share the same terms; a message reports how many features
@@ -57,7 +57,7 @@ summarize_variance_explained <- function(lfqdata, modelstr = NULL) {
   if (is.null(modelstr)) {
     modelstr <- paste0(lfqdata$response(), " ~ ", paste(lfqdata$relevant_factor_keys(), collapse = " * "))
   }
-  subject_id <- c(lfqdata$hierarchy_keys(), lfqdata$isotope_label())
+  subject_id <- lfqdata$hierarchy_keys()
   model <- build_model(lfqdata, strategy_lm(modelstr), subject_id = subject_id)
   fits <- get_complete_model_fit(model$model_df)
   n_features <- nrow(model$model_df)

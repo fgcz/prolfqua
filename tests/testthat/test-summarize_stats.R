@@ -3,7 +3,7 @@
 reference_summarize_stats <- function(lfqdata, factor_key) {
   resp <- lfqdata$response()
   lfqdata$data_long() |>
-    dplyr::group_by(dplyr::across(dplyr::all_of(c(lfqdata$hierarchy_keys(), lfqdata$isotope_label(), factor_key)))) |>
+    dplyr::group_by(dplyr::across(dplyr::all_of(c(lfqdata$hierarchy_keys(), factor_key)))) |>
     dplyr::summarize(
       nrReplicates = dplyr::n(),
       nrMeasured = sum(!is.na(.data[[resp]])),
