@@ -139,7 +139,7 @@ LFQData <- R6::R6Class(
       response <- self$response()
       samples <- self$factors()
       keys <- self$hierarchy_keys()
-      levels <- vapply(seq_along(keys), function(i) nrow(unique(data[, keys[seq_len(i)], drop = FALSE])), integer(1))
+      levels <- vapply(seq_along(keys), function(i) dplyr::n_distinct(data[keys[seq_len(i)]]), integer(1))
       n_missing <- sum(is.na(data[[response]]))
       range <- range(data[[response]], na.rm = TRUE)
       cat("LFQData:", nrow(samples), "samples\n")

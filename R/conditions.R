@@ -264,10 +264,11 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
 #' @param call the call shown in the error header
 #' @noRd
 .assert_unique_keys <- function(data, keys, call = rlang::caller_env()) {
-  duplicated_rows <- duplicated(data[, keys, drop = FALSE])
-  if (!any(duplicated_rows)) {
+  # hash-based count first; the row-wise duplicated() runs only when a duplicate exists
+  if (dplyr::n_distinct(data[keys]) == nrow(data)) {
     return(invisible(data))
   }
+  duplicated_rows <- duplicated(data[, keys, drop = FALSE])
   ids <- unique(do.call(paste, c(data[duplicated_rows, keys, drop = FALSE], sep = "~")))
   abort_prolfqua(
     "More than one row for ",

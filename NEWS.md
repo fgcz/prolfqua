@@ -18,6 +18,10 @@
 - `summary_ropeca_median_p_scaled()` stops with an error when the `statistic` column is missing; before, it filled the summary's `statistic` column with the column name.
 - Hierarchy counts per sample (`HierarchyCountsSample`, `LFQDataSummariser$hierarchy_counts_sample()` and its plot) work without an `nr_children` column, counting every feature once, and stop with an error when `nr_children > 1` is requested without that column.
 
+## Performance
+
+- The duplicate-key check run before modelling and aggregation (`build_model()`, `build_model_limma()`, the facades and the aggregators), and `print()` of an `LFQData`, count distinct keys by hashing instead of comparing rows; on precursor-level tables with millions of rows this takes a fraction of a second instead of seconds and no longer needs several GB of extra memory.
+
 ## Deprecated
 
 - Renamed to snake_case: `lfqdata_to_summarized_experiment()` (was `LFQDataToSummarizedExperiment()`), `lr_test()` (`LR_test()`), `lfq_power_t_test_quantiles()` (`lfq_power_t_test_quantiles_V2()`), `r6_extract_values()` (`R6_extract_values()`), `list_to_analysis_configuration()` (`list_to_AnalysisConfiguration()`), `list_to_contrast_configuration()` (`list_to_ContrastConfiguration()`), `summary_ropeca_median_p_scaled()` (`summary_ROPECA_median_p_scaled()`), and the misspelt `missigness_histogram()` and `LFQDataPlotter$missigness_histogram()` to `missingness_histogram()`. The old names still work and warn; see `?"prolfqua-deprecated"`.
