@@ -24,11 +24,11 @@ table_facade(df, caption, digits = getOption("digits"), kable = TRUE)
 
 - kable:
 
-  if TRUE use knitr::kable
+  if TRUE use knitr::kable (requires knitr)
 
 ## Value
 
-The requested plot, table, or transformed object.
+a `knitr_kable` table, or `df` unchanged when `kable = FALSE`
 
 ## See also
 

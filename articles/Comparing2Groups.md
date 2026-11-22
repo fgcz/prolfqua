@@ -433,7 +433,7 @@ sessionInfo()
     ## [52] vctrs_0.7.3           jsonlite_2.0.0        bookdown_0.48        
     ## [55] hms_1.1.4             IRanges_2.46.0        GetoptLong_1.1.1     
     ## [58] S4Vectors_0.50.3      ggrepel_0.9.8         clue_0.3-68          
-    ## [61] systemfonts_1.3.3     crosstalk_1.2.2       foreach_1.5.2        
+    ## [61] systemfonts_1.3.4     crosstalk_1.2.2       foreach_1.5.2        
     ## [64] limma_3.68.5          plotly_4.12.1         tidyr_1.3.2          
     ## [67] jquerylib_0.1.4       glue_1.8.1            pkgdown_2.2.1        
     ## [70] codetools_0.2-20      stringi_1.8.9         gtable_0.3.6         

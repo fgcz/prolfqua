@@ -358,52 +358,24 @@ lfqTransCheck$lfq$get_Plotter()$intensity_distribution_density()
 #> (`stat_density()`).
 
 
-if(require("vsn")){
+if (requireNamespace("vsn", quietly = TRUE)) {
  res <- lfqTrans$intensity_matrix( .func = vsn::justvsn)
  res$lfq$get_Plotter()$intensity_distribution_density()
  res$get_scales()
 }
-#> Loading required package: vsn
-#> Loading required package: Biobase
-#> Loading required package: BiocGenerics
-#> Loading required package: generics
-#> 
-#> Attaching package: ‘generics’
-#> The following objects are masked from ‘package:base’:
-#> 
-#>     as.difftime, as.factor, as.ordered, intersect, is.element, setdiff,
-#>     setequal, union
-#> 
-#> Attaching package: ‘BiocGenerics’
-#> The following objects are masked from ‘package:stats’:
-#> 
-#>     IQR, mad, sd, var, xtabs
-#> The following objects are masked from ‘package:base’:
-#> 
-#>     Filter, Find, Map, Position, Reduce, anyDuplicated, aperm, append,
-#>     as.data.frame, basename, cbind, colnames, dirname, do.call,
-#>     duplicated, eval, evalq, get, grep, grepl, is.unsorted, lapply,
-#>     mapply, match, mget, order, paste, pmax, pmax.int, pmin, pmin.int,
-#>     rank, rbind, rownames, sapply, saveRDS, table, tapply, unique,
-#>     unsplit, which.max, which.min
-#> Welcome to Bioconductor
-#> 
-#>     Vignettes contain introductory material; view with
-#>     'browseVignettes()'. To cite Bioconductor, see
-#>     'citation("Biobase")', and for packages 'citation("pkgname")'.
 #> $medians
 #>     A_V1     A_V2     A_V3     A_V4     B_V1     B_V2     B_V3     B_V4 
-#> 5.010572 5.002975 4.994914 5.006013 5.051370 5.074292 5.033370 5.044391 
+#> 5.067592 5.060373 5.052612 5.063121 5.106810 5.128959 5.089511 5.100129 
 #>  Ctrl_V1  Ctrl_V2  Ctrl_V3  Ctrl_V4 
-#> 5.043057 5.010404 5.033362 5.015886 
+#> 5.098851 5.067436 5.089542 5.072697 
 #> 
 #> $mads
 #>      A_V1      A_V2      A_V3      A_V4      B_V1      B_V2      B_V3      B_V4 
-#> 0.2443545 0.2638516 0.2494166 0.2556915 0.2710033 0.2638501 0.2316761 0.2437389 
+#> 0.2356539 0.2539392 0.2391802 0.2462082 0.2603902 0.2549782 0.2228186 0.2342742 
 #>   Ctrl_V1   Ctrl_V2   Ctrl_V3   Ctrl_V4 
-#> 0.2738565 0.2415127 0.2514121 0.2512947 
+#> 0.2618927 0.2316253 0.2412538 0.2422008 
 #> 
-if(require("preprocessCore")){
+if (requireNamespace("preprocessCore", quietly = TRUE)) {
 quant <- function(y){
  ynorm <- preprocessCore::normalize.quantiles(y)
  rownames(ynorm) <- rownames(y)
@@ -413,7 +385,6 @@ quant <- function(y){
  res <- lfqTrans$intensity_matrix( .func = quant)
  res$lfq$get_Plotter()$intensity_distribution_density()
 }
-#> Loading required package: preprocessCore
 #> Warning: The data are already transformed; set `force = TRUE` to log2-transform them again.
 #> Warning: Removed 225 rows containing non-finite outside the scale range
 #> (`stat_density()`).

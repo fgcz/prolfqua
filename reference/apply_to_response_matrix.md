@@ -51,7 +51,7 @@ stopifnot("abundance_base..scale" %in% colnames(res$data))
 
 res <- apply_to_response_matrix(lfqdata, .func = robust_scale)
 
-if (require("vsn")) {
+if (requireNamespace("vsn", quietly = TRUE)) {
   res <- apply_to_response_matrix(lfqdata, .func = vsn::justvsn)
 }
 ```

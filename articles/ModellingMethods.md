@@ -267,7 +267,7 @@ head(confint(analysis))
 #> 6 2kfAGV~3196 group_Ctrl   -0.215     0.0453     8  -0.320   -0.111
 formula(analysis)
 #> medpolish ~ group_
-#> <environment: 0x62d2192f85d8>
+#> <environment: 0x620e301458e8>
 head(nobs(analysis))
 #> # A tibble: 6 × 2
 #>   protein_Id   nobs
@@ -403,7 +403,7 @@ sessionInfo()
 #> [52] vctrs_0.7.3            boot_1.3-32            glmnet_5.2            
 #> [55] Matrix_1.7-6           jsonlite_2.0.0         bookdown_0.48         
 #> [58] hms_1.1.4              mitml_0.4-5            ggrepel_0.9.8         
-#> [61] systemfonts_1.3.3      foreach_1.5.2          limma_3.68.5          
+#> [61] systemfonts_1.3.4      foreach_1.5.2          limma_3.68.5          
 #> [64] tidyr_1.3.2            jquerylib_0.1.4        glue_1.8.1            
 #> [67] pkgdown_2.2.1          nloptr_2.2.1           pan_2.0               
 #> [70] codetools_0.2-20       stringi_1.8.9          gtable_0.3.6          

@@ -538,7 +538,7 @@ sessionInfo()
     ## [46] BiocManager_1.30.27    vctrs_0.7.3            boot_1.3-32           
     ## [49] glmnet_5.2             Matrix_1.7-6           jsonlite_2.0.0        
     ## [52] bookdown_0.48          hms_1.1.4              mitml_0.4-5           
-    ## [55] ggrepel_0.9.8          systemfonts_1.3.3      foreach_1.5.2         
+    ## [55] ggrepel_0.9.8          systemfonts_1.3.4      foreach_1.5.2         
     ## [58] limma_3.68.5           tidyr_1.3.2            jquerylib_0.1.4       
     ## [61] glue_1.8.1             pkgdown_2.2.1          nloptr_2.2.1          
     ## [64] pan_2.0                codetools_0.2-20       stringi_1.8.9         

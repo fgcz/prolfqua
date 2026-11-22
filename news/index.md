@@ -4,8 +4,24 @@
 
 ### Behaviour changes
 
-- prolfqua now requires dplyr \>= 1.1.0, ggplot2 \>= 3.4.0 and purrr \>=
-  1.0.0; earlier versions lacked functions prolfqua already called.
+- prolfqua now requires dplyr \>= 1.1.1, ggplot2 \>= 3.4.0 and purrr \>=
+  1.0.0; earlier versions lacked functions and arguments prolfqua
+  already used (joins pass `relationship =`, added in dplyr 1.1.1).
+- `table_facade(kable = FALSE)` returns the data frame instead of
+  `NULL`.
+  [`table_facade()`](https://fgcz.github.io/prolfqua/reference/table_facade.md)
+  and
+  [`plot_sample_correlation()`](https://fgcz.github.io/prolfqua/reference/plot_sample_correlation.md)
+  (also `LFQDataPlotter$sample_correlation()`) name the Suggests package
+  to install (knitr, corrplot) instead of failing with “there is no
+  package called …”, and every help-page example runs without the
+  Suggests packages.
+- [`register_facade()`](https://fgcz.github.io/prolfqua/reference/register_facade.md)
+  refuses the names of built-in methods (`"lm"`, `"limma"`, …). Before,
+  registering such a name silently replaced the built-in entry, and the
+  built-in facade then rejected valid input with an error naming the
+  wrong class. Built-in facades check their input shape themselves
+  instead of reading it from the registry.
 - Error messages state the problem in their first line (“`method` must
   be one of …”, “Can’t find column `x` in `data`.”) and name the
   function you called instead of prolfqua’s internal checker. Condition
@@ -30,6 +46,10 @@
 
 ### Bug fixes
 
+- [`null_split_check()`](https://fgcz.github.io/prolfqua/reference/null_split_check.md)
+  no longer adds `pseudo_group_` to the configuration of the `LFQData`
+  passed in; before, later calls on that object such as `data_wide()`
+  and `get_Stats()$stats()` failed.
 - [`build_model_impute()`](https://fgcz.github.io/prolfqua/reference/build_model_impute.md)
   stops with an error for input that is not aggregated (subject equals
   the hierarchy) and for strategies other than
@@ -55,6 +75,23 @@
   `LFQDataSummariser$hierarchy_counts_sample()` and its plot) work
   without an `nr_children` column, counting every feature once, and stop
   with an error when `nr_children > 1` is requested without that column.
+- `LFQDataPlotter$pca_plotly()` plots the principal components given in
+  `PC`; before, it always plotted the first two.
+- [`plot_heatmap_cor()`](https://fgcz.github.io/prolfqua/reference/plot_heatmap_cor.md)
+  colours by its `color` argument, spread from the lowest to the highest
+  correlation (default white to red, as before); before, `color` was
+  ignored.
+
+### Performance
+
+- The duplicate-key check run before modelling and aggregation
+  ([`build_model()`](https://fgcz.github.io/prolfqua/reference/build_model.md),
+  [`build_model_limma()`](https://fgcz.github.io/prolfqua/reference/build_model_limma.md),
+  the facades and the aggregators), and
+  [`print()`](https://rdrr.io/r/base/print.html) of an `LFQData`, count
+  distinct keys by hashing instead of comparing rows; on precursor-level
+  tables with millions of rows this takes a fraction of a second instead
+  of seconds and no longer needs several GB of extra memory.
 
 ### Deprecated
 
@@ -94,6 +131,9 @@
   [`multigroup_volcano()`](https://fgcz.github.io/prolfqua/reference/multigroup_volcano.md)
   take their data as `data`; `.data`, which shadowed the tidy-eval
   pronoun, still works and warns.
+- `merge_contrasts_results(model_name = )` is deprecated: it was never
+  used, and the merged model keeps its name `<prefer>_<add>`. Passing it
+  warns.
 
 ### Documentation
 

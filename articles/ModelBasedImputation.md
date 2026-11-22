@@ -242,4 +242,4 @@ sessionInfo()
     ## [70] IRanges_2.46.0        doParallel_1.0.17     rlang_1.3.0          
     ## [73] Rcpp_1.1.2            glue_1.8.1            BiocManager_1.30.27  
     ## [76] BiocGenerics_0.58.1   jsonlite_2.0.0        R6_2.6.1             
-    ## [79] systemfonts_1.3.3     fs_2.1.0
+    ## [79] systemfonts_1.3.4     fs_2.1.0

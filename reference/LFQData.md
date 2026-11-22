@@ -807,8 +807,8 @@ lfqdata$filter_proteins_by_peptide_count()
 #> filter_proteins_by_peptide_count: 4 protein_Id removed (e.g. 7cbcrd~5725, 9VUkAq~4703, CGzoYe~2147, DoWup2~5896): fewer than 2 peptide_Id
 #> See $provenance().
 tmp <- lfqdata$data_wide()
-testthat::expect_equal(nrow(tmp$data) , nrow(tmp$rowdata))
-testthat::expect_equal(ncol(tmp$data) , nrow(tmp$annotation) + ncol(tmp$rowdata))
+stopifnot(nrow(tmp$data) == nrow(tmp$rowdata))
+stopifnot(ncol(tmp$data) == nrow(tmp$annotation) + ncol(tmp$rowdata))
 
 stopifnot("data.frame" %in% class(tmp$data))
 tmp <- lfqdata$data_wide(as.matrix = TRUE)

@@ -292,16 +292,13 @@ The objects of this class are cloneable with this method.
 
 ``` r
 int <- ContrastsInterface$new()
-testthat::expect_error(int$get_contrast_sides())
-testthat::expect_error(int$get_contrasts())
-testthat::expect_error(int$get_missing())
 # get_Plotter / to_wide / get_rank / get_ora / filter_significant call get_contrasts()
 # internally, which is not implemented on the bare interface, so they surface that error.
-testthat::expect_error(int$get_Plotter())
-testthat::expect_error(int$to_wide())
-testthat::expect_error(int$get_rank())
-testthat::expect_error(int$get_ora())
-testthat::expect_error(int$filter_significant())
+abstract <- c("get_contrast_sides", "get_contrasts", "get_missing", "get_Plotter", "to_wide",
+  "get_rank", "get_ora", "filter_significant")
+for (m in abstract) {
+  stopifnot(inherits(try(int[[m]](), silent = TRUE), "try-error"))
+}
 identical(int$extra_artifacts(), list())
 #> [1] TRUE
 int$column_description()

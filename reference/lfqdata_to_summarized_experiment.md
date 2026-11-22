@@ -132,50 +132,7 @@ lfqdata$data_wide()
 #>     value_vars: function () 
 #>     work_intensity: abundance
 #> 
-if(require("SummarizedExperiment")){
+if (requireNamespace("SummarizedExperiment", quietly = TRUE)) {
    tmp <- lfqdata_to_summarized_experiment(lfqdata)
 }
-#> Loading required package: SummarizedExperiment
-#> Loading required package: MatrixGenerics
-#> Loading required package: matrixStats
-#> 
-#> Attaching package: ‘matrixStats’
-#> The following objects are masked from ‘package:Biobase’:
-#> 
-#>     anyMissing, rowMedians
-#> 
-#> Attaching package: ‘MatrixGenerics’
-#> The following objects are masked from ‘package:matrixStats’:
-#> 
-#>     colAlls, colAnyNAs, colAnys, colAvgsPerRowSet, colCollapse,
-#>     colCounts, colCummaxs, colCummins, colCumprods, colCumsums,
-#>     colDiffs, colIQRDiffs, colIQRs, colLogSumExps, colMadDiffs,
-#>     colMads, colMaxs, colMeans2, colMedians, colMins, colOrderStats,
-#>     colProds, colQuantiles, colRanges, colRanks, colSdDiffs, colSds,
-#>     colSums2, colTabulates, colVarDiffs, colVars, colWeightedMads,
-#>     colWeightedMeans, colWeightedMedians, colWeightedSds,
-#>     colWeightedVars, rowAlls, rowAnyNAs, rowAnys, rowAvgsPerColSet,
-#>     rowCollapse, rowCounts, rowCummaxs, rowCummins, rowCumprods,
-#>     rowCumsums, rowDiffs, rowIQRDiffs, rowIQRs, rowLogSumExps,
-#>     rowMadDiffs, rowMads, rowMaxs, rowMeans2, rowMedians, rowMins,
-#>     rowOrderStats, rowProds, rowQuantiles, rowRanges, rowRanks,
-#>     rowSdDiffs, rowSds, rowSums2, rowTabulates, rowVarDiffs, rowVars,
-#>     rowWeightedMads, rowWeightedMeans, rowWeightedMedians,
-#>     rowWeightedSds, rowWeightedVars
-#> The following object is masked from ‘package:Biobase’:
-#> 
-#>     rowMedians
-#> Loading required package: GenomicRanges
-#> Loading required package: stats4
-#> Loading required package: S4Vectors
-#> 
-#> Attaching package: ‘S4Vectors’
-#> The following object is masked from ‘package:utils’:
-#> 
-#>     findMatches
-#> The following objects are masked from ‘package:base’:
-#> 
-#>     I, expand.grid, unname
-#> Loading required package: IRanges
-#> Loading required package: Seqinfo
 ```

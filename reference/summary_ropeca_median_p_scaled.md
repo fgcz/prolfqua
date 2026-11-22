@@ -177,10 +177,10 @@ xx2 <- summary_ropeca_median_p_scaled(testdata,
                                     p.value = "p.value",
                                     max.n = 1)
 
-testthat::expect_equal(mad(xx2$estimate, na.rm = TRUE),0.384409, tolerance = 1e-4)
-testthat::expect_equal(median(xx2$estimate), -0.006874857, tolerance = 1e-4)
-testthat::expect_equal(xx2$beta.based.significance[1],0.819, tolerance = 1e-3)
-testthat::expect_equal(xx2$beta.based.significance[2],0.9234362,tolerance = 1e-3)
+stopifnot(isTRUE(all.equal(mad(xx2$estimate, na.rm = TRUE), 0.384409, tolerance = 1e-4)))
+stopifnot(isTRUE(all.equal(median(xx2$estimate), -0.006874857, tolerance = 1e-4)))
+stopifnot(isTRUE(all.equal(xx2$beta.based.significance[1], 0.819, tolerance = 1e-3)))
+stopifnot(isTRUE(all.equal(xx2$beta.based.significance[2], 0.9234362, tolerance = 1e-3)))
 
 # Uniform distribution
 hist(testdata$p.value)

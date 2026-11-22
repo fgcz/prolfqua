@@ -60,7 +60,7 @@ estimates from another model, e.g. the LOD-imputed refits of <code><a href="Cont
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">merge_contrasts_results</span><span class="op">(</span><span class="va">prefer</span>, <span class="va">add</span>, model_name <span class="op">=</span> <span class="st">"mergedModel"</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">merge_contrasts_results</span><span class="op">(</span><span class="va">prefer</span>, <span class="va">add</span>, <span class="va">model_name</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -76,7 +76,8 @@ estimates from another model, e.g. the LOD-imputed refits of <code><a href="Cont
 
 
 <dt id="arg-model-name">model_name<a class="anchor" aria-label="anchor" href="#arg-model-name"></a></dt>
-<dd><p>name of the merged model default "mergedModel"</p></dd>
+<dd><p>deprecated and ignored; the merged model is named <code>&lt;prefer&gt;_&lt;add&gt;</code> after the model names of
+<code>prefer</code> and <code>add</code></p></dd>
 
 </dl></div>
     <div class="section level2">

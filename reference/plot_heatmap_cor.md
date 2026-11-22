@@ -11,7 +11,7 @@ plot_heatmap_cor(
   factor_keys,
   sample_name,
   R2 = FALSE,
-  color = colorRampPalette(c("white", "red"))(1024),
+  color = c("white", "red"),
   max_sample_label_chars = 20,
   method = "pearson",
   ...
@@ -42,7 +42,8 @@ plot_heatmap_cor(
 
 - color:
 
-  color palette
+  colours, spread evenly from the lowest to the highest correlation
+  (default white to red)
 
 - max_sample_label_chars:
 

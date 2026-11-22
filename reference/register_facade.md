@@ -25,7 +25,8 @@ register_facade(
 
 - name:
 
-  short method name, e.g. `"saint"`.
+  short method name, e.g. `"saint"`; the names of the built-in methods
+  (`"lm"`, `"limma"`, ...) are refused.
 
 - class:
 

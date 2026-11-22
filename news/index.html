@@ -54,7 +54,11 @@
 <h2 class="pkg-version" data-toc-text="1.9.5" id="prolfqua-195">prolfqua 1.9.5<a class="anchor" aria-label="anchor" href="#prolfqua-195"></a></h2>
 <div class="section level3">
 <h3 id="behaviour-changes-1-9-5">Behaviour changes<a class="anchor" aria-label="anchor" href="#behaviour-changes-1-9-5"></a></h3>
-<ul><li>prolfqua now requires dplyr &gt;= 1.1.0, ggplot2 &gt;= 3.4.0 and purrr &gt;= 1.0.0; earlier versions lacked functions prolfqua already called.</li>
+<ul><li>prolfqua now requires dplyr &gt;= 1.1.1, ggplot2 &gt;= 3.4.0 and purrr &gt;= 1.0.0; earlier versions lacked functions and arguments prolfqua already used (joins pass <code>relationship =</code>, added in dplyr 1.1.1).</li>
+<li>
+<code>table_facade(kable = FALSE)</code> returns the data frame instead of <code>NULL</code>. <code><a href="../reference/table_facade.html">table_facade()</a></code> and <code><a href="../reference/plot_sample_correlation.html">plot_sample_correlation()</a></code> (also <code>LFQDataPlotter$sample_correlation()</code>) name the Suggests package to install (knitr, corrplot) instead of failing with “there is no package called …”, and every help-page example runs without the Suggests packages.</li>
+<li>
+<code><a href="../reference/register_facade.html">register_facade()</a></code> refuses the names of built-in methods (<code>"lm"</code>, <code>"limma"</code>, …). Before, registering such a name silently replaced the built-in entry, and the built-in facade then rejected valid input with an error naming the wrong class. Built-in facades check their input shape themselves instead of reading it from the registry.</li>
 <li>Error messages state the problem in their first line (“<code>method</code> must be one of …”, “Can’t find column <code>x</code> in <code>data</code>.”) and name the function you called instead of prolfqua’s internal checker. Condition classes are unchanged; about 30 error and warning messages were reworded.</li>
 <li>Joins inside prolfqua check that their lookup keys are unique: a duplicated subject, contrast or sample key in an input (for instance two rows for one protein and contrast passed to <code><a href="../reference/merge_contrasts_results.html">merge_contrasts_results()</a></code>) raises an error instead of silently multiplying rows.</li>
 <li>Plots: volcano, MA and score plots draw smaller, more transparent points, so dense regions stay readable; <code>ContrastsPlotter$barplot_threshold()</code> fills bars with the colour-blind safe palette; score-plot reference lines are black and red regardless of the global <code><a href="https://rdrr.io/r/grDevices/palette.html" class="external-link">palette()</a></code>. <code><a href="../reference/plot_pca.html">plot_pca()</a></code> shapes the second factor with 19 distinguishable shapes and, when that factor has more levels, drops the shape mapping with a message; before, factors with more than 25 levels drew invalid shapes or no points.</li>
@@ -62,6 +66,8 @@
 <div class="section level3">
 <h3 id="bug-fixes-1-9-5">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-9-5"></a></h3>
 <ul><li>
+<code><a href="../reference/null_split_check.html">null_split_check()</a></code> no longer adds <code>pseudo_group_</code> to the configuration of the <code>LFQData</code> passed in; before, later calls on that object such as <code>data_wide()</code> and <code>get_Stats()$stats()</code> failed.</li>
+<li>
 <code><a href="../reference/build_model_impute.html">build_model_impute()</a></code> stops with an error for input that is not aggregated (subject equals the hierarchy) and for strategies other than <code><a href="../reference/strategy.html">strategy_lm()</a></code> and <code><a href="../reference/strategy.html">strategy_rfit()</a></code>. Before, peptide-level input was refitted with one placeholder row per missing sample, and mixed models failed with “$ operator not defined for this S4 class”.</li>
 <li>
 <code><a href="../reference/missingness_histogram.html">missingness_histogram()</a></code> facets by the <code>factors</code> it is given; before, it summarised by <code>factors</code> but faceted by all configured factors, and failed when <code>factors</code> was a subset.</li>
@@ -72,6 +78,14 @@
 <li>
 <code><a href="../reference/summary_ropeca_median_p_scaled.html">summary_ropeca_median_p_scaled()</a></code> stops with an error when the <code>statistic</code> column is missing; before, it filled the summary’s <code>statistic</code> column with the column name.</li>
 <li>Hierarchy counts per sample (<code>HierarchyCountsSample</code>, <code>LFQDataSummariser$hierarchy_counts_sample()</code> and its plot) work without an <code>nr_children</code> column, counting every feature once, and stop with an error when <code>nr_children &gt; 1</code> is requested without that column.</li>
+<li>
+<code>LFQDataPlotter$pca_plotly()</code> plots the principal components given in <code>PC</code>; before, it always plotted the first two.</li>
+<li>
+<code><a href="../reference/plot_heatmap_cor.html">plot_heatmap_cor()</a></code> colours by its <code>color</code> argument, spread from the lowest to the highest correlation (default white to red, as before); before, <code>color</code> was ignored.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="performance-1-9-5">Performance<a class="anchor" aria-label="anchor" href="#performance-1-9-5"></a></h3>
+<ul><li>The duplicate-key check run before modelling and aggregation (<code><a href="../reference/build_model.html">build_model()</a></code>, <code><a href="../reference/build_model_limma.html">build_model_limma()</a></code>, the facades and the aggregators), and <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> of an <code>LFQData</code>, count distinct keys by hashing instead of comparing rows; on precursor-level tables with millions of rows this takes a fraction of a second instead of seconds and no longer needs several GB of extra memory.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="deprecated-1-9-5">Deprecated<a class="anchor" aria-label="anchor" href="#deprecated-1-9-5"></a></h3>
@@ -79,6 +93,8 @@
 <li>Simulator arguments renamed: <code>Nprot</code> to <code>n_proteins</code>, <code>N</code> to <code>n_per_group</code>, <code>PEPTIDE</code> to <code>peptide</code>, <code>TWO</code> to <code>two_factor</code> in <code><a href="../reference/sim_lfq_data.html">sim_lfq_data()</a></code>, <code><a href="../reference/sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config()</a></code>, <code><a href="../reference/sim_lfq_data_protein_config.html">sim_lfq_data_protein_config()</a></code>, <code><a href="../reference/sim_lfq_data_2factor_config.html">sim_lfq_data_2factor_config()</a></code> and <code><a href="../reference/sim_build_models_lm.html">sim_build_models_lm()</a></code>, <code>_lmer()</code>, <code>_logistf()</code>. The old arguments still work and warn.</li>
 <li>
 <code><a href="../reference/volcano_plotly.html">volcano_plotly()</a></code> and <code><a href="../reference/multigroup_volcano.html">multigroup_volcano()</a></code> take their data as <code>data</code>; <code>.data</code>, which shadowed the tidy-eval pronoun, still works and warns.</li>
+<li>
+<code>merge_contrasts_results(model_name = )</code> is deprecated: it was never used, and the merged model keeps its name <code>&lt;prefer&gt;_&lt;add&gt;</code>. Passing it warns.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="documentation-1-9-5">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-9-5"></a></h3>

@@ -1,7 +1,7 @@
 # Deprecated functions and arguments
 
-These functions and arguments were renamed in prolfqua 1.9.5. The old
-names still work and warn; following the policy in
+These functions and arguments were renamed or retired in prolfqua 1.9.5.
+The old names still work and warn; following the policy in
 [prolfqua-package](https://fgcz.github.io/prolfqua/reference/prolfqua-package.md),
 they call [`.Defunct()`](https://rdrr.io/r/base/Defunct.html) in a later
 release.
@@ -90,3 +90,9 @@ and
 [`multigroup_volcano()`](https://fgcz.github.io/prolfqua/reference/multigroup_volcano.md):
 
 - `.data`: use `data`
+
+Argument of
+[`merge_contrasts_results()`](https://fgcz.github.io/prolfqua/reference/merge_contrasts_results.md):
+
+- `model_name`: never used; the merged model is named after its inputs,
+  `<prefer>_<add>`

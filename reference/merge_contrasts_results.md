@@ -8,7 +8,7 @@ with estimates from another model, e.g. the LOD-imputed refits of
 ## Usage
 
 ``` r
-merge_contrasts_results(prefer, add, model_name = "mergedModel")
+merge_contrasts_results(prefer, add, model_name)
 ```
 
 ## Arguments
@@ -23,7 +23,8 @@ merge_contrasts_results(prefer, add, model_name = "mergedModel")
 
 - model_name:
 
-  name of the merged model default "mergedModel"
+  deprecated and ignored; the merged model is named `<prefer>_<add>`
+  after the model names of `prefer` and `add`
 
 ## Value
 

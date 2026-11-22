@@ -211,8 +211,8 @@ get linear functions from contrasts
 
 - `global`:
 
-  logical TRUE - get the a linear functions for all models, FALSE -
-  linear function for each model
+  ignored; kept for the `ContrastsInterface` signature. The linear
+  functions come from the wrapped contrast object
 
 ------------------------------------------------------------------------
 
