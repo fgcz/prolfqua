@@ -184,7 +184,7 @@ test_that("rfit null-model fallback names survive the imputed wrapper", {
     n_observed = 4
   )
   expect_equal(names(stats::coef(wrapped)), c("(Intercept)", "group_Ctrl"))
-  lf <- prolfqua::linfct_from_model(wrapped, as_list = FALSE)
+  lf <- .linfct_from_model(wrapped, as_list = FALSE)
   expect_false(is.null(colnames(lf)))
   expect_setequal(colnames(lf), c("(Intercept)", "group_Ctrl"))
 })

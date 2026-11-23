@@ -15,9 +15,9 @@ test_that("deprecated function names warn and return the same value as the new n
   expect_warning(old <- list_to_ContrastConfiguration(contrast_list), "deprecated")
   expect_identical(r6_extract_values(old), r6_extract_values(list_to_contrast_configuration(contrast_list)))
 
-  quantiles <- summarize_stats_quantiles(summarize_stats(lfq), lfq$relevant_factor_keys(), probs = c(0.5, 0.8))
+  quantiles <- .summarize_stats_quantiles(.summarize_stats(lfq), lfq$relevant_factor_keys(), probs = c(0.5, 0.8))
   expect_warning(old <- lfq_power_t_test_quantiles_V2(quantiles$long), "deprecated")
-  expect_identical(old, lfq_power_t_test_quantiles(quantiles$long))
+  expect_identical(old, .lfq_power_t_test_quantiles(quantiles$long))
 
   ropeca_input <- data.frame(
     contrast = "c1",
@@ -29,7 +29,7 @@ test_that("deprecated function names warn and return the same value as the new n
   )
   args <- list(ropeca_input, subject_id = "protein_Id", estimate = "estimate", p.value = "p.value")
   expect_warning(old <- do.call(summary_ROPECA_median_p_scaled, args), "deprecated")
-  expect_identical(old, do.call(summary_ropeca_median_p_scaled, args))
+  expect_identical(old, do.call(.summary_ropeca_median_p_scaled, args))
 
   expect_warning(p <- missigness_histogram(lfq), "deprecated")
   expect_s3_class(p, "ggplot")
@@ -84,8 +84,8 @@ test_that("volcano functions take `data`; `.data` warns and gives the same plot"
       name = paste0("n", 1:40)
     )
   )
-  expect_warning(old <- multigroup_volcano(.data = d, significance = "BFDR", label = "name"), "deprecated")
-  new <- multigroup_volcano(data = d, significance = "BFDR", label = "name")
+  expect_warning(old <- .multigroup_volcano_labelled(.data = d, significance = "BFDR", label = "name"), "deprecated")
+  new <- .multigroup_volcano_labelled(data = d, significance = "BFDR", label = "name")
   expect_identical(ggplot2::layer_data(old, 1), ggplot2::layer_data(new, 1))
 
   skip_if_not_installed("plotly")

@@ -130,7 +130,7 @@ test_that("summary_ropeca_median_p_scaled counts only peptides with a p-value", 
     p.value = c(0.01, 0.02, NA),
     avgAbd = 20
   )
-  res <- summary_ropeca_median_p_scaled(peptides, estimate = "diff", p.value = "p.value")
+  res <- .summary_ropeca_median_p_scaled(peptides, estimate = "diff", p.value = "p.value")
   expect_equal(res$n, 3)
   expect_equal(res$n_not_na, 2)
   # scaled p-values 0.99 and 0.98, median 0.985; the median of 2 p-values is Beta(1.5, 1.5)
@@ -147,7 +147,7 @@ test_that("summary_ropeca_median_p_scaled matches a hand computation", {
     p.value = c(0.01, 0.04, 0.5),
     avgAbd = c(18, 20, 22)
   )
-  res <- summary_ropeca_median_p_scaled(peptides, estimate = "diff", p.value = "p.value")
+  res <- .summary_ropeca_median_p_scaled(peptides, estimate = "diff", p.value = "p.value")
   # signed scaled p-values 1 - 0.01, 1 - 0.04 and 0.5 - 1; their median is 0.96
   expect_equal(res$median.p.scaled, 0.96)
   expect_equal(res$median.p.value, 0.04)
@@ -171,7 +171,7 @@ test_that("summary_ropeca_median_p_scaled is conservative for uniform p-values w
     p.value = stats::runif(n_proteins * 10),
     avgAbd = 1
   )
-  res <- summary_ropeca_median_p_scaled(peptides, estimate = "diff", p.value = "p.value")
+  res <- .summary_ropeca_median_p_scaled(peptides, estimate = "diff", p.value = "p.value")
   expect_lt(mean(res$beta.based.significance < 0.05), 0.01)
 })
 
@@ -376,11 +376,11 @@ test_that("compute_lmer_contrast reports an empty contrast matrix instead of fai
   # A protein whose model carries none of the requested contrast coefficients
   # leaves `linfct_matrix_contrasts()` with a 0-row matrix. lmerTest::contest()
   # indexes 1:nrow(L) and used to abort the whole run on it.
-  mb <- muffle_warnings_matching(sim_make_model_lmer("interaction"), single_peptide_warning)
-  linfct <- linfct_from_model(mb)$linfct_factors
+  mb <- muffle_warnings_matching(.sim_make_model_lmer("interaction"), single_peptide_warning)
+  linfct <- .linfct_from_model(mb)$linfct_factors
   empty <- linfct[0, , drop = FALSE]
 
-  expect_warning(res <- compute_lmer_contrast(mb, empty), "No estimable contrast")
+  expect_warning(res <- .compute_lmer_contrast(mb, empty), "No estimable contrast")
   expect_true(is.logical(res))
   expect_true(is.na(res))
 })

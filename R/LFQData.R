@@ -211,7 +211,7 @@ LFQData <- R6::R6Class(
     #' @param seed set seed
     get_sample = function(size = 100, seed = NULL) {
       sample_data <- function() {
-        prolfqua::sample_subset(size = size, self$data_long(), self$relevant_hierarchy_keys())
+        .sample_subset(size = size, self$data_long(), self$relevant_hierarchy_keys())
       }
       subset <- if (is.null(seed)) {
         sample_data()
@@ -258,7 +258,7 @@ LFQData <- R6::R6Class(
       private$.data <- dplyr::filter(before, .data[[response]] >= .env$threshold)
       features <- self$hierarchy_keys()
       removed <- setdiff(.key_ids(before, features), .key_ids(private$.data, features))
-      private$.data <- prolfqua::complete_cases(self)
+      private$.data <- .complete_cases(self)
       step <- "remove_small_intensities"
       reason <- paste0("intensity below ", threshold)
       private$.provenance$record(
@@ -348,7 +348,7 @@ LFQData <- R6::R6Class(
     #' @param threshold default 4.
     #' @return self
     complete_cases = function() {
-      private$.data <- prolfqua::complete_cases(self)
+      private$.data <- .complete_cases(self)
       invisible(self)
     },
     #' @description
@@ -364,7 +364,7 @@ LFQData <- R6::R6Class(
           abort_bad_argument("value", paste0("be one of ", toString(cfg$value_vars())), not = value)
         }
       }
-      wide <- prolfqua::tidy_to_wide_config(self, as.matrix = as.matrix, value = value %||% self$response())
+      wide <- .tidy_to_wide_config(self, as.matrix = as.matrix, value = value %||% self$response())
       wide$config <- cfg$clone(deep = TRUE)
       wide
     },
@@ -372,7 +372,7 @@ LFQData <- R6::R6Class(
     #' Annotation table
     #' @return data.frame
     factors = function() {
-      prolfqua::table_factors(self$data_long(), self$file_name(), self$sample_name(), self$factor_keys())
+      .table_factors(self$data_long(), self$file_name(), self$sample_name(), self$factor_keys())
     },
     #' @description
     #' Hierarchy table
@@ -452,13 +452,13 @@ LFQData <- R6::R6Class(
     #' @description
     #' number of elements at each level
     hierarchy_counts = function() {
-      prolfqua::hierarchy_counts(self$data_long(), self$hierarchy_keys())
+      .hierarchy_counts(self$data_long(), self$hierarchy_keys())
     },
     #' @description
     #' e.g. number of peptides per protein etc
     #' @return data.frame
     summarize_hierarchy = function() {
-      prolfqua::summarize_hierarchy(
+      .summarize_hierarchy(
         self$data_long(),
         self$hierarchy_keys(),
         hierarchy = self$relevant_hierarchy_keys()

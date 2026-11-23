@@ -534,7 +534,7 @@
 #' @export
 .fit_group_means.default <- function(fit, contrast_fun, level) {
   # Cell means align with observed factor combinations; marginal means do not.
-  linear <- linfct_from_model(fit)$linfct_interactions
+  linear <- .linfct_from_model(fit)$linfct_interactions
   estimates <- contrast_fun(fit, linear)
   margin <- stats::qt((1 + level) / 2, estimates$df) * estimates$std.error
   tibble::tibble(
@@ -564,7 +564,7 @@
   data <- fit$model
   terms <- stats::terms(stats::formula(fit))
   factors <- intersect(attr(terms, "term.labels"), names(data))
-  groups <- make_interaction_column(data, factors, sep = ":")$interaction
+  groups <- .make_interaction_column(data, factors, sep = ":")$interaction
   rows <- which(!duplicated(groups))
   design <- stats::model.matrix(terms, data)[rows, , drop = FALSE]
   estimate <- as.numeric(design %*% stats::coef(fit))
@@ -619,7 +619,7 @@
 #' @noRd
 #' @export
 .model_group_means.ModelLimma <- function(model, subjects, level = 0.95) {
-  linear <- linfct_from_model(model$dummy_model)$linfct_interactions
+  linear <- .linfct_from_model(model$dummy_model)$linfct_interactions
   fit <- limma::contrasts.fit(model$fit, t(linear))
   fit <- limma::eBayes(fit, trend = model$trend, robust = model$robust)
   selected <- model$rowdata[[model$subject_id[1]]] %in% subjects & rowSums(!is.finite(model$fit$coefficients)) == 0L

@@ -31,21 +31,8 @@ find_d0_deqms <- function(mean_myfct) {
 #' @param loess_span span parameter for LOESS fit (default 0.75)
 #' @param confint confidence level for intervals (default 0.95)
 #' @return data.frame with added moderated.* columns
-#' @export
-#' @family modelling
-#' @keywords internal
-#' @examples
-#' mm <- data.frame(
-#'   sigma = c(0.25, 0.32, 0.28, 0.40, 0.35),
-#'   df = rep(6, 5),
-#'   statistic = c(2.1, -1.8, 0.5, 3.0, -2.2),
-#'   std.error = c(0.8 / 2.1, 0.6 / 1.8, 0.2 / 0.5, 1.2 / 3.0, 0.9 / 2.2),
-#'   diff = c(0.8, -0.6, 0.2, 1.2, -0.9),
-#'   count = c(2, 3, 4, 6, 8)
-#' )
-#' res <- moderated_p_deqms(mm, count_col = "count")
-#' "moderated.p.value" %in% colnames(res)
-moderated_p_deqms <- function(mm, count_col, df = "df", estimate = "diff", loess_span = 0.75, confint = 0.95) {
+#' @noRd
+.moderated_p_deqms <- function(mm, count_col, df = "df", estimate = "diff", loess_span = 0.75, confint = 0.95) {
   logvar <- log(mm$sigma^2)
   log2count <- log2(mm[[count_col]])
   df_res <- mm[[df]]
@@ -54,7 +41,7 @@ moderated_p_deqms <- function(mm, count_col, df = "df", estimate = "diff", loess
   ok <- is.finite(logvar) & is.finite(log2count) & is.finite(df_res) & df_res > 0
   if (sum(ok) < 4) {
     # Too few observations for LOESS - fall back to standard limma moderation
-    return(moderated_p_limma(mm, df = df, estimate = estimate, confint = confint))
+    return(.moderated_p_limma(mm, df = df, estimate = estimate, confint = confint))
   }
 
   # Fit variance ~ count curve using LOESS
@@ -132,22 +119,8 @@ moderated_p_deqms <- function(mm, count_col, df = "df", estimate = "diff", loess
 #' @param estimate name of the fold change column
 #' @param loess_span span parameter for LOESS fit (default 0.75)
 #' @return data.frame with moderated columns added
-#' @export
-#' @family modelling
-#' @keywords internal
-#' @examples
-#' mm <- data.frame(
-#'   contrast = rep(c("A_vs_B", "C_vs_D"), each = 5),
-#'   sigma = rep(c(0.25, 0.32, 0.28, 0.40, 0.35), 2),
-#'   df = rep(6, 10),
-#'   statistic = rep(c(2.1, -1.8, 0.5, 3.0, -2.2), 2),
-#'   std.error = rep(c(0.8 / 2.1, 0.6 / 1.8, 0.2 / 0.5, 1.2 / 3.0, 0.9 / 2.2), 2),
-#'   diff = rep(c(0.8, -0.6, 0.2, 1.2, -0.9), 2),
-#'   count = rep(c(2, 3, 4, 6, 8), 2)
-#' )
-#' res <- moderated_p_deqms_long(mm, count_col = "count")
-#' table(res$contrast)
-moderated_p_deqms_long <- function(mm, count_col, group_by_col = "contrast", estimate = "diff", loess_span = 0.75) {
+#' @noRd
+.moderated_p_deqms_long <- function(mm, count_col, group_by_col = "contrast", estimate = "diff", loess_span = 0.75) {
   dfg <- mm |>
     dplyr::group_by(dplyr::across(dplyr::all_of(group_by_col))) |>
     tidyr::nest()
@@ -160,7 +133,7 @@ moderated_p_deqms_long <- function(mm, count_col, group_by_col = "contrast", est
     warning_env$messages <- character()
     group_data <- dfg[i, setdiff(names(dfg), "data"), drop = FALSE]
     result_i <- withCallingHandlers(
-      moderated_p_deqms(
+      .moderated_p_deqms(
         dfg$data[[i]],
         count_col = count_col,
         estimate = estimate,
@@ -348,7 +321,6 @@ ContrastsModeratedDEqMS <- R6::R6Class(
     },
     #' @description
     #' applies DEqMS-style count-dependent moderation
-    #' @seealso \code{\link{moderated_p_deqms_long}}
     #' @param all should all columns be returned (default FALSE)
     get_contrasts = function(all = FALSE) {
       contrast_result <- self$Contrast$get_contrasts(all = FALSE)
@@ -367,7 +339,7 @@ ContrastsModeratedDEqMS <- R6::R6Class(
         1
       )
 
-      contrast_result <- moderated_p_deqms_long(
+      contrast_result <- .moderated_p_deqms_long(
         contrast_result,
         count_col = self$count_column,
         group_by_col = "contrast",

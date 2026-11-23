@@ -16,7 +16,7 @@
 #' x <- lfqTrans$intensity_array(log2)
 #'
 #' x$lfq$is_transformed()
-#' x <- x$intensity_matrix(robust_scale)
+#' x <- x$intensity_matrix()
 #' plotter <- x$lfq$get_Plotter()
 #' plotter$intensity_distribution_density()
 #'
@@ -26,7 +26,7 @@
 #' lfqTrans <- lfqcopy$get_Transformer()
 #' x <- lfqTrans$intensity_array(asinh)
 #' mads1 <- mean(x$get_scales()$mads)
-#' x <- lfqTrans$intensity_matrix(robust_scale, force = TRUE)
+#' x <- lfqTrans$intensity_matrix(force = TRUE)
 #' mads2 <- mean(x$get_scales()$mads)
 #' stopifnot(abs(mads1 - mads2) < 1e-8)
 #'
@@ -127,7 +127,7 @@ LFQDataTransformer <- R6::R6Class(
     #' get mean and variance and standard deviation in each sample
     #' @return list with means and mads
     get_scales = function() {
-      get_robscales(self$lfq)
+      .lfqdata_robscales(self$lfq)
     },
     #' @description
     #' robust scale data
@@ -151,7 +151,7 @@ LFQDataTransformer <- R6::R6Class(
         abort_bad_argument("lfqsubset", "have the same transformation state (is_transformed) as self")
       }
       cfg <- self$lfq$get_config()$clone(deep = TRUE)
-      scaled <- prolfqua::scale_with_subset(self$lfq, lfqsubset, preserve_mean = preserve_mean, colname = colname)
+      scaled <- .scale_with_subset(self$lfq, lfqsubset, preserve_mean = preserve_mean, colname = colname)
       cfg$set_response(scaled$colname)
       self$lfq <- LFQData$new(scaled$data, cfg, provenance = self$lfq$get_provenance_log())
       invisible(self)
@@ -206,21 +206,21 @@ LFQDataTransformer <- R6::R6Class(
       .funcname <- deparse(match.call()$.func)
       private$.set_transformed(
         force,
-        prolfqua::transform_work_intensity(self$lfq$data_long(), self$lfq$response(), .func, .funcname),
+        .transform_work_intensity(self$lfq$data_long(), self$lfq$response(), .func, .funcname),
         transformed = transformed
       )
     },
     #' @description
     #' pass a function which works with matrices, e.g., vsn::justvsn
     #' @param .func any function taking a matrix and returning a matrix
-    #'   (columns sample, rows feature, e.g. `base::scale()`), default
-    #'   `robust_scale`
+    #'   (columns sample, rows feature, e.g. `base::scale()`); default: robust scaling, which centres each
+    #'   sample on its median and scales it by its MAD, as `$robscale()`
     #' @param force transformation on data already transformed
     #' @return LFQDataTransformer (self)
     #'
-    intensity_matrix = function(.func = robust_scale, force = FALSE) {
+    intensity_matrix = function(.func = .robust_scale, force = FALSE) {
       .funcname <- deparse(match.call()$.func)
-      private$.set_transformed(force, prolfqua::apply_to_response_matrix(self$lfq, .func, .funcname))
+      private$.set_transformed(force, .apply_to_response_matrix(self$lfq, .func, .funcname))
     }
   ),
   private = list(
@@ -289,22 +289,8 @@ LFQDataTransformer <- R6::R6Class(
 #' @details For `log`, `log2` and `log10`, zero intensities mean "not detected" and become `NA`; LFQData records
 #'   them in its provenance. Negative intensities give `NaN` with a warning, which fitting and aggregation then
 #'   reject.
-#' @export
-#' @keywords internal
-#' @examples
-#'
-#' istar <- sim_lfq_data_peptide_config()
-#' config <- istar$config
-#' res <- transform_work_intensity(
-#'   istar$data, config$get_response(), .func = log2
-#' )
-#' stopifnot("log2_abundance" %in% colnames(res$data))
-#' res <- transform_work_intensity(
-#'   istar$data, config$get_response(), .func = asinh
-#' )
-#' stopifnot("asinh_abundance" %in% colnames(res$data))
-#'
-transform_work_intensity <- function(pdata, response, .func, .funcname = NULL) {
+#' @noRd
+.transform_work_intensity <- function(pdata, response, .func, .funcname = NULL) {
   newcol <- paste(.funcname %||% deparse(match.call()$.func), response, sep = "_")
   vals <- pdata[[response]]
   zeros <- rep(FALSE, nrow(pdata))
@@ -341,24 +327,8 @@ transform_work_intensity <- function(pdata, response, .func, .funcname = NULL) {
 #' @param sep separator used to unite the hierarchy keys
 #' @return a long-format tibble with the hierarchy key, sample name and `value` columns; if `data`
 #'   is given, `data` joined with these values
-#' @export
-#'
-#' @keywords internal
-#' @examples
-#' dd <- prolfqua::sim_lfq_data_peptide_config()
-#' lfqdata <- prolfqua::LFQData$new(dd$data, dd$config)
-#' res <- tidy_to_wide_config(lfqdata, as.matrix = TRUE)
-#'
-#' res_scaled <- scale(res$data)
-#' xx <- response_matrix_as_tibble(
-#'   res_scaled, "srm_intensityScaled", lfqdata$get_config()
-#' )
-#' xx <- response_matrix_as_tibble(
-#'   res_scaled, "srm_intensityScaled",
-#'   lfqdata$get_config(), lfqdata$data_long()
-#' )
-#'
-response_matrix_as_tibble <- function(pdata, value, config, data = NULL, sep = "~lfq~") {
+#' @noRd
+.response_matrix_as_tibble <- function(pdata, value, config, data = NULL, sep = "~lfq~") {
   pdata <- dplyr::bind_cols(
     tibble::tibble("row.names" := rownames(pdata)),
     tibble::as_tibble(pdata)
@@ -401,25 +371,9 @@ response_matrix_as_tibble <- function(pdata, value, config, data = NULL, sep = "
 #' Compute the median and MAD of each sample
 #' @param lfqdata [LFQData] object with the data and its configuration
 #' @return a list with the numeric vectors `medians` and `mads`, with one element per sample
-#' @export
-#' @keywords internal
-#' @family preprocessing
-#' @examples
-#'
-#'
-#' bb <- prolfqua::sim_lfq_data_peptide_config()
-#' lfqdata <- prolfqua::LFQData$new(bb$data, bb$config)
-#' lfqdata <- lfqdata$get_Transformer()$log2()$lfq
-#' s1 <- get_robscales(lfqdata)
-#'
-#' res <- scale_with_subset(lfqdata, lfqdata)
-#' lfqres <- prolfqua::LFQData$new(res$data, lfqdata$get_config()$clone(deep = TRUE))
-#' s2 <- get_robscales(lfqres)
-#' abs(mean(s1$mads) - mean(s2$mads)) < 0.1
-#'
-#'
-get_robscales <- function(lfqdata) {
-  data <- tidy_to_wide_config(lfqdata, as.matrix = TRUE)$data
+#' @noRd
+.lfqdata_robscales <- function(lfqdata) {
+  data <- .tidy_to_wide_config(lfqdata, as.matrix = TRUE)$data
   scales <- .get_robscales(data)
   scales
 }
@@ -432,16 +386,10 @@ get_robscales <- function(lfqdata) {
 #' @return a matrix like `data`, centred by the median of each column (`dim = 2`) or row (`dim = 1`) and divided
 #'   by its MAD relative to the mean MAD; only centred, with a warning, if a MAD is zero; with
 #'   `preserve_mean = TRUE` the mean of the medians is added back
-#' @keywords internal
-#' @family preprocessing
-#' @export
-#' @examples
-#' mat <- matrix(c(1, 2, 3, 4, 10, 12), nrow = 3)
-#' scaled <- robust_scale(mat)
-#' dim(scaled)
 #' @srrstats {G5.8c} Tests cover zero MAD, constant heatmaps, missing groups, and proteins with all-NA or constant
 #'   responses in model fits (test-missing-nonfinite.R).
-robust_scale <- function(data, dim = 2, preserve_mean = FALSE) {
+#' @noRd
+.robust_scale <- function(data, dim = 2, preserve_mean = FALSE) {
   .apply_robscales(
     data,
     .get_robscales(data, dim = dim),
@@ -477,27 +425,12 @@ robust_scale <- function(data, dim = 2, preserve_mean = FALSE) {
 #' @param .func function taking and returning a matrix
 #' @param .funcname name of function (used for creating new column)
 #' @return list with `data` (data.frame) and `colname` (new column name)
-#' @export
-#' @keywords internal
-#' @family preprocessing
-#' @examples
-#'
-#' bb <- sim_lfq_data_peptide_config(n_proteins = 100)
-#' lfqdata <- LFQData$new(bb$data, bb$config)
-#' res <- apply_to_response_matrix(lfqdata, .func = base::scale)
-#' stopifnot("abundance_base..scale" %in% colnames(res$data))
-#'
-#' res <- apply_to_response_matrix(lfqdata, .func = robust_scale)
-#'
-#' if (requireNamespace("vsn", quietly = TRUE)) {
-#'   res <- apply_to_response_matrix(lfqdata, .func = vsn::justvsn)
-#' }
-#'
-apply_to_response_matrix <- function(lfqdata, .func, .funcname = NULL) {
+#' @noRd
+.apply_to_response_matrix <- function(lfqdata, .func, .funcname = NULL) {
   colname <- make.names(paste(lfqdata$response(), .funcname %||% deparse(match.call()$.func), sep = "_"))
-  mat <- tidy_to_wide_config(lfqdata, as.matrix = TRUE)$data
+  mat <- .tidy_to_wide_config(lfqdata, as.matrix = TRUE)$data
   mat <- .func(mat)
-  data <- response_matrix_as_tibble(
+  data <- .response_matrix_as_tibble(
     mat,
     colname,
     lfqdata$get_config(),
@@ -510,37 +443,23 @@ apply_to_response_matrix <- function(lfqdata, .func, .funcname = NULL) {
 #'
 #' this should reduce the overall variance.
 #'
-#' @export
-#' @keywords internal
 #' @param lfqdata LFQData object with full dataset
 #' @param lfqsubset LFQData object with subset for computing scales
 #' @param preserve_mean default FALSE - sets mean to zero
 #' @param colname name of the scaled intensity column; default NULL uses \code{<response>_subset_scaled}
-#' @family preprocessing
 #' @return list with data, scales, and colname
-#' @examples
-#'
-#' bb <- sim_lfq_data_peptide_config(n_proteins = 100)
-#' lfqdata <- LFQData$new(bb$data, bb$config)
-#' lfqdata <- lfqdata$get_Transformer()$log2()$lfq
-#' s1 <- get_robscales(lfqdata)
-#' res <- scale_with_subset(lfqdata, lfqdata)
-#' cfg <- lfqdata$get_config()$clone(deep = TRUE)
-#' cfg$set_response(res$colname)
-#' lfqres <- LFQData$new(res$data, cfg)
-#' s2 <- get_robscales(lfqres)
-#' stopifnot(abs(mean(s1$mads) - mean(s2$mads)) < 1e-6)
-scale_with_subset <- function(lfqdata, lfqsubset, preserve_mean = FALSE, colname = NULL) {
+#' @noRd
+.scale_with_subset <- function(lfqdata, lfqsubset, preserve_mean = FALSE, colname = NULL) {
   scaled_name <- make.names(paste(lfqdata$response(), "subset_scaled", sep = "_"))
-  scales <- .get_robscales(tidy_to_wide_config(lfqsubset, as.matrix = TRUE)$data)
+  scales <- .get_robscales(.tidy_to_wide_config(lfqsubset, as.matrix = TRUE)$data)
   mat <- .apply_robscales(
-    tidy_to_wide_config(lfqdata, as.matrix = TRUE)$data,
+    .tidy_to_wide_config(lfqdata, as.matrix = TRUE)$data,
     scales,
     preserve_mean,
     2,
     "Skipping the scaling step in `scale_with_subset()`: one or more MAD values are zero."
   )
-  data <- response_matrix_as_tibble(mat, scaled_name, lfqdata$get_config(), lfqdata$data_long())
+  data <- .response_matrix_as_tibble(mat, scaled_name, lfqdata$get_config(), lfqdata$data_long())
   if (!is.null(colname)) {
     data <- dplyr::rename(data, !!colname := dplyr::all_of(scaled_name))
   }

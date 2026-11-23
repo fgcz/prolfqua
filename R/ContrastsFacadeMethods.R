@@ -357,7 +357,7 @@ plot.ContrastsFacadeBase <- function(x, type = c("fitted", "volcano", "ma"), sub
   observed <- .model_values(x$model, x$.lfqdata)
   observed <- observed[observed[[keys[1]]] %in% subject, , drop = FALSE]
   factors <- intersect(attr(stats::terms(.model_formula(x$model)), "term.labels"), x$.lfqdata$factor_keys())
-  observed$group <- as.character(make_interaction_column(observed, factors, sep = ":")$interaction)
+  observed$group <- as.character(.make_interaction_column(observed, factors, sep = ":")$interaction)
   means <- .model_group_means(x$model, subject, level)
   observed$subject <- do.call(paste, c(observed[keys], sep = " / "))
   means$subject <- do.call(paste, c(means[keys], sep = " / "))

@@ -7,26 +7,48 @@
 An R6 class generator.
 }
 \description{
-Holds the fields and delegating methods shared by every facade in
-\code{ContrastsFacades.R} and \code{ContrastsChildToParentFacades.R}.
-Subclasses implement the unique pipeline wiring in \code{initialize()}: they
-call the private \code{.setup()} (input-shape check, \code{self$.lfqdata},
-\code{self$.contrast_names}, \code{self$facade_name}), then build the model
-and the inner contrast object. \code{get_config()} defaults to the inner
-contrast object's configuration. The limma family additionally sets
-\code{self$.drop_na_diff <- TRUE} to drop rows whose fold change could not be
-estimated.
+The extension point for new modelling backends. Every method of \code{\link{build_contrast_analysis}} is a
+facade class that inherits from \code{ContrastsFacadeBase}; a package adds a method by writing such a class and
+registering it with \code{\link{register_facade}} (usually from its \code{.onLoad()}). The base class provides
+the uniform API: \code{get_contrasts()} (stamped with the method name), \code{get_missing()},
+\code{get_Plotter()}, \code{to_wide()} and \code{get_config()}.
 
-\code{get_contrasts()} delegates to the inner contrast object and then stamps
-the facade key into \code{modelName} via \code{.stamp_facade_identity()};
-rescue/imputation state is carried in the \code{estimate_type} column set by
-the inner contrast classes.
+A subclass implements \code{initialize(lfqdata, modelstr, contrasts, ...)}:
+\itemize{
+\item call the private \code{.setup(lfqdata, contrasts, key, modelstr)} first; it checks the input shape,
+the contrasts and the design, stores a copy of the input, and returns the full model formula string
+\item set \code{self$model} to the fitted model and \code{self$contrast} to the contrast object the facade
+delegates to (e.g. \code{\link{ContrastsModerated}})
+\item set the private field \code{.needs} to \code{"nested"} if the facade takes child-level input
+(e.g. peptides) and reports parent-level contrasts; the default is \code{"aggregated"}
+}
+The limma family additionally sets \code{self$.drop_na_diff <- TRUE} to drop rows whose fold change could not
+be estimated.
 }
 \examples{
-facade <- ContrastsFacadeBase$new()
-inherits(facade, "ContrastsFacadeBase")
+# a facade: unweighted linear model per protein, moderated contrasts
+ContrastsUnweightedLMFacade <- R6::R6Class(
+  "ContrastsUnweightedLMFacade",
+  inherit = ContrastsFacadeBase,
+  public = list(
+    initialize = function(lfqdata, modelstr, contrasts) {
+      full_formula <- private$.setup(lfqdata, contrasts, "lm_unweighted", modelstr)
+      self$model <- build_model(lfqdata, strategy_lm(full_formula))
+      self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts))
+    }
+  )
+)
+istar <- sim_lfq_data_protein_config(n_proteins = 10)
+lfqdata <- LFQData$new(istar$data, istar$config)
+facade <- ContrastsUnweightedLMFacade$new(lfqdata, "~ group_", c(AvsCtrl = "group_A - group_Ctrl"))
+head(facade$get_contrasts())
+# registered from a package's .onLoad(), build_contrast_analysis() finds the method by name:
+# register_facade("lm_unweighted", class = "ContrastsUnweightedLMFacade", needs = "aggregated",
+#                 package = "mypackage")
 }
 \seealso{
+\code{\link{register_facade}}, \code{\link{list_facades}}
+
 Other modelling:
 \code{\link{AnovaExtractor}},
 \code{\link{Contrasts}},
@@ -77,48 +99,28 @@ Other modelling:
 \code{\link[=build_model_limma_voom]{build_model_limma_voom()}},
 \code{\link[=build_model_limma_voom_impute]{build_model_limma_voom_impute()}},
 \code{\link[=build_model_limpa]{build_model_limpa()}},
-\code{\link[=build_model_logistf]{build_model_logistf()}},
 \code{\link[=compute_borrowed_variance]{compute_borrowed_variance()}},
 \code{\link[=compute_borrowed_variance_limma]{compute_borrowed_variance_limma()}},
-\code{\link[=compute_contrast]{compute_contrast()}},
-\code{\link[=compute_lmer_contrast]{compute_lmer_contrast()}},
 \code{\link[=df.residual.rfit_prolfqua]{df.residual.rfit_prolfqua()}},
-\code{\link[=get_anova_df]{get_anova_df()}},
-\code{\link[=get_complete_model_fit]{get_complete_model_fit()}},
-\code{\link[=get_p_values_pbeta]{get_p_values_pbeta()}},
 \code{\link[=group_label]{group_label()}},
 \code{\link[=impute_from_model]{impute_from_model()}},
 \code{\link[=impute_refit_singular]{impute_refit_singular()}},
-\code{\link[=linfct_from_model]{linfct_from_model()}},
-\code{\link[=linfct_matrix_contrasts]{linfct_matrix_contrasts()}},
 \code{\link[=list_facades]{list_facades()}},
 \code{\link[=lookup_facade]{lookup_facade()}},
 \code{\link[=lr_test]{lr_test()}},
 \code{\link[=merge_contrasts_results]{merge_contrasts_results()}},
-\code{\link[=model_analyse]{model_analyse()}},
-\code{\link[=model_summary]{model_summary()}},
-\code{\link[=moderated_p_deqms]{moderated_p_deqms()}},
-\code{\link[=moderated_p_deqms_long]{moderated_p_deqms_long()}},
-\code{\link[=moderated_p_limma]{moderated_p_limma()}},
 \code{\link[=new_imputed_model]{new_imputed_model()}},
 \code{\link[=nobs.rfit_prolfqua]{nobs.rfit_prolfqua()}},
 \code{\link[=pivot_model_contrasts_to_wide]{pivot_model_contrasts_to_wide()}},
 \code{\link{prolfqua_analysis_methods}},
 \code{\link[=register_facade]{register_facade()}},
 \code{\link[=sigma.rfit_prolfqua]{sigma.rfit_prolfqua()}},
-\code{\link[=sim_build_models_lm]{sim_build_models_lm()}},
-\code{\link[=sim_build_models_lmer]{sim_build_models_lmer()}},
-\code{\link[=sim_build_models_logistf]{sim_build_models_logistf()}},
-\code{\link[=sim_make_model_lm]{sim_make_model_lm()}},
-\code{\link[=sim_make_model_lmer]{sim_make_model_lmer()}},
 \code{\link[=strategy_limma]{strategy_limma()}},
 \code{\link[=strategy_limpa]{strategy_limpa()}},
 \code{\link[=strategy_logistf]{strategy_logistf()}},
-\code{\link[=summary_ropeca_median_p_scaled]{summary_ropeca_median_p_scaled()}},
 \code{\link[=vcov.rfit_prolfqua]{vcov.rfit_prolfqua()}}
 }
 \concept{modelling}
-\keyword{internal}
 \section{Super class}{
 \code{\link[prolfqua:ContrastsInterface]{ContrastsInterface}} -> \code{ContrastsFacadeBase}
 }

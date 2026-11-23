@@ -43,7 +43,8 @@ Other LFQData:
 \section{Public fields}{
   \if{html}{\out{<div class="r6-fields">}}
   \describe{
-    \item{\code{control}}{convergence controls, see \code{\link{estimate_intensity}}}
+    \item{\code{control}}{convergence controls of \code{MASS::rlm}: \code{maxit} (default 20) and \code{acc}
+(default 1e-4, relative change of the IRLS residuals)}
   }
   \if{html}{\out{</div>}}
 }
@@ -76,8 +77,9 @@ Other LFQData:
     \describe{
       \item{\code{lfq}}{LFQData}
       \item{\code{prefix}}{default protein}
-      \item{\code{control}}{named list of convergence controls merged over the defaults, see
-\code{\link{estimate_intensity}}}
+      \item{\code{control}}{named list merged over the defaults; convergence controls of \code{MASS::rlm}: \code{maxit}
+(default 20) and \code{acc}
+(default 1e-4, relative change of the IRLS residuals)}
     }
     \if{html}{\out{</div>}}
   }

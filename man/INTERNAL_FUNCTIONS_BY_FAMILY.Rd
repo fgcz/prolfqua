@@ -10,25 +10,12 @@ A documentation topic.
 Internal Functions by category
 }
 \seealso{
-Other aggregation:
-\code{\link[=aggregate_intensity_top_n]{aggregate_intensity_top_n()}},
-\code{\link[=estimate_intensity]{estimate_intensity()}},
-\code{\link[=plot_estimate]{plot_estimate()}},
-\code{\link[=plot_hierarchies_line]{plot_hierarchies_line()}}
-
 Other configuration:
 \code{\link{AnalysisConfiguration}},
 \code{\link{ContrastConfiguration}},
-\code{\link[=complete_cases]{complete_cases()}},
 \code{\link[=list_to_contrast_configuration]{list_to_contrast_configuration()}},
-\code{\link[=make_interaction_column]{make_interaction_column()}},
-\code{\link[=make_reduced_hierarchy_config]{make_reduced_hierarchy_config()}},
 \code{\link[=r6_extract_values]{r6_extract_values()}},
-\code{\link[=sample_subset]{sample_subset()}},
-\code{\link[=separate_hierarchy]{separate_hierarchy()}},
-\code{\link[=setup_analysis]{setup_analysis()}},
-\code{\link[=table_factors]{table_factors()}},
-\code{\link[=table_factors_size]{table_factors_size()}}
+\code{\link[=setup_analysis]{setup_analysis()}}
 
 Other modelling:
 \code{\link{AnovaExtractor}},
@@ -80,102 +67,50 @@ Other modelling:
 \code{\link[=build_model_limma_voom]{build_model_limma_voom()}},
 \code{\link[=build_model_limma_voom_impute]{build_model_limma_voom_impute()}},
 \code{\link[=build_model_limpa]{build_model_limpa()}},
-\code{\link[=build_model_logistf]{build_model_logistf()}},
 \code{\link[=compute_borrowed_variance]{compute_borrowed_variance()}},
 \code{\link[=compute_borrowed_variance_limma]{compute_borrowed_variance_limma()}},
-\code{\link[=compute_contrast]{compute_contrast()}},
-\code{\link[=compute_lmer_contrast]{compute_lmer_contrast()}},
 \code{\link[=df.residual.rfit_prolfqua]{df.residual.rfit_prolfqua()}},
-\code{\link[=get_anova_df]{get_anova_df()}},
-\code{\link[=get_complete_model_fit]{get_complete_model_fit()}},
-\code{\link[=get_p_values_pbeta]{get_p_values_pbeta()}},
 \code{\link[=group_label]{group_label()}},
 \code{\link[=impute_from_model]{impute_from_model()}},
 \code{\link[=impute_refit_singular]{impute_refit_singular()}},
-\code{\link[=linfct_from_model]{linfct_from_model()}},
-\code{\link[=linfct_matrix_contrasts]{linfct_matrix_contrasts()}},
 \code{\link[=list_facades]{list_facades()}},
 \code{\link[=lookup_facade]{lookup_facade()}},
 \code{\link[=lr_test]{lr_test()}},
 \code{\link[=merge_contrasts_results]{merge_contrasts_results()}},
-\code{\link[=model_analyse]{model_analyse()}},
-\code{\link[=model_summary]{model_summary()}},
-\code{\link[=moderated_p_deqms]{moderated_p_deqms()}},
-\code{\link[=moderated_p_deqms_long]{moderated_p_deqms_long()}},
-\code{\link[=moderated_p_limma]{moderated_p_limma()}},
 \code{\link[=new_imputed_model]{new_imputed_model()}},
 \code{\link[=nobs.rfit_prolfqua]{nobs.rfit_prolfqua()}},
 \code{\link[=pivot_model_contrasts_to_wide]{pivot_model_contrasts_to_wide()}},
 \code{\link{prolfqua_analysis_methods}},
 \code{\link[=register_facade]{register_facade()}},
 \code{\link[=sigma.rfit_prolfqua]{sigma.rfit_prolfqua()}},
-\code{\link[=sim_build_models_lm]{sim_build_models_lm()}},
-\code{\link[=sim_build_models_lmer]{sim_build_models_lmer()}},
-\code{\link[=sim_build_models_logistf]{sim_build_models_logistf()}},
-\code{\link[=sim_make_model_lm]{sim_make_model_lm()}},
-\code{\link[=sim_make_model_lmer]{sim_make_model_lmer()}},
 \code{\link[=strategy_limma]{strategy_limma()}},
 \code{\link[=strategy_limpa]{strategy_limpa()}},
 \code{\link[=strategy_logistf]{strategy_logistf()}},
-\code{\link[=summary_ropeca_median_p_scaled]{summary_ropeca_median_p_scaled()}},
 \code{\link[=vcov.rfit_prolfqua]{vcov.rfit_prolfqua()}}
 
 Other plotting:
 \code{\link{ContrastsPlotter}},
-\code{\link[=missingness_histogram]{missingness_histogram()}},
-\code{\link[=missingness_per_condition]{missingness_per_condition()}},
-\code{\link[=missingness_per_condition_cumsum]{missingness_per_condition_cumsum()}},
-\code{\link[=plot_estimate]{plot_estimate()}},
-\code{\link[=plot_heatmap]{plot_heatmap()}},
-\code{\link[=plot_heatmap_cor]{plot_heatmap_cor()}},
-\code{\link[=plot_hierarchies_boxplot_df]{plot_hierarchies_boxplot_df()}},
-\code{\link[=plot_hierarchies_line]{plot_hierarchies_line()}},
-\code{\link[=plot_intensity_distribution_violin]{plot_intensity_distribution_violin()}},
-\code{\link[=plot_na_heatmap]{plot_na_heatmap()}},
-\code{\link[=plot_pca]{plot_pca()}},
-\code{\link[=plot_raster]{plot_raster()}},
-\code{\link[=plot_sample_correlation]{plot_sample_correlation()}},
 \code{\link[=theme_prolfqua]{theme_prolfqua()}},
-\code{\link[=upset_interaction_missing_stats]{upset_interaction_missing_stats()}},
-\code{\link[=upset_missing_stats]{upset_missing_stats()}}
+\code{\link[=upset_interaction_missing_stats]{upset_interaction_missing_stats()}}
 
 Other preprocessing:
-\code{\link[=apply_to_response_matrix]{apply_to_response_matrix()}},
 \code{\link[=filter_proteins_by_peptide_count]{filter_proteins_by_peptide_count()}},
-\code{\link[=get_robscales]{get_robscales()}},
-\code{\link[=nr_B_in_A]{nr_B_in_A()}},
-\code{\link[=robust_scale]{robust_scale()}},
-\code{\link[=scale_with_subset]{scale_with_subset()}}
+\code{\link[=nr_B_in_A]{nr_B_in_A()}}
 
 Other stats:
-\code{\link[=compute_pooled]{compute_pooled()}},
 \code{\link[=fdr_sig_level]{fdr_sig_level()}},
-\code{\link[=lfq_power_t_test_proteins]{lfq_power_t_test_proteins()}},
-\code{\link[=lfq_power_t_test_quantiles]{lfq_power_t_test_quantiles()}},
 \code{\link[=null_split_check]{null_split_check()}},
-\code{\link[=plot_stat_density]{plot_stat_density()}},
-\code{\link[=plot_stat_density_median]{plot_stat_density_median()}},
-\code{\link[=plot_stat_violin]{plot_stat_violin()}},
-\code{\link[=plot_stat_violin_median]{plot_stat_violin_median()}},
-\code{\link[=plot_stdv_vs_mean]{plot_stdv_vs_mean()}},
 \code{\link[=pooled_variance_explained]{pooled_variance_explained()}},
 \code{\link[=power_fdr_prior_n]{power_fdr_prior_n()}},
-\code{\link[=summarize_stats]{summarize_stats()}},
 \code{\link[=summarize_variance_explained]{summarize_variance_explained()}}
 
 Other summary:
-\code{\link{HierarchyCountsSample}},
-\code{\link[=hierarchy_counts]{hierarchy_counts()}},
-\code{\link[=summarize_hierarchy]{summarize_hierarchy()}}
+\code{\link{HierarchyCountsSample}}
 
 Other utilities:
 \code{\link[=get_uniprot_id_from_fasta_header]{get_uniprot_id_from_fasta_header()}},
 \code{\link[=is_contaminant]{is_contaminant()}},
 \code{\link[=is_decoy]{is_decoy()}},
-\code{\link[=matrix_to_tibble]{matrix_to_tibble()}},
-\code{\link[=multigroup_volcano]{multigroup_volcano()}},
-\code{\link[=pairs_smooth]{pairs_smooth()}},
-\code{\link[=panel_cor]{panel_cor()}},
 \code{\link[=table_facade]{table_facade()}}
 }
 \concept{aggregation}

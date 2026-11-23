@@ -8,34 +8,9 @@
 #' @param value column name to pivot (default: lfqdata$response())
 #' @param row_keys columns identifying a row of the wide table (default: the
 #'   hierarchy keys). They must identify one value per sample.
-#' @export
-#' @keywords internal
 #' @return list with data, rowdata, and annotation (colData)
-#' @examples
-#'
-#' dd <- prolfqua::sim_lfq_data_peptide_config()
-#' lfqdata <- prolfqua::LFQData$new(dd$data, dd$config)
-#' res <- tidy_to_wide_config(lfqdata)
-#' stopifnot(nrow(res$rowdata) == nrow(res$data))
-#' stopifnot(ncol(res$data) - ncol(res$rowdata) == nrow(res$annotation))
-#' res <- tidy_to_wide_config(lfqdata, as.matrix = TRUE)
-#' stopifnot(all(dim(res$data) == c(28,  12)))
-#' stopifnot(all(dim(res$annotation) == c(12,  3)))
-#' stopifnot(all(dim(res$rowdata) == c(28, 2)))
-#'
-#' res <- scale(res$data)
-#' tidy_to_wide_config(lfqdata, value = lfqdata$nr_children_col())
-#'
-#' res <- lfqdata$get_Aggregator("medpolish")
-#' x <- res$aggregate()
-#' towide <- tidy_to_wide_config(x, value = x$nr_children_col())
-#'
-#' dd <- prolfqua::sim_lfq_data_protein_config()
-#' lfqprot <- prolfqua::LFQData$new(dd$data, dd$config)
-#' xt <- tidy_to_wide_config(lfqprot, value = lfqprot$nr_children_col())
-#' xt$data
-#'
-tidy_to_wide_config <- function(
+#' @noRd
+.tidy_to_wide_config <- function(
   lfqdata,
   as.matrix = FALSE,
   file_name = FALSE,
@@ -144,7 +119,7 @@ tidy_to_wide_config <- function(
 
 #' Build LFQData from wide matrices
 #'
-#' The inverse of [tidy_to_wide_config()]: feature x sample matrices, their row
+#' The inverse of `LFQData$data_wide()`: feature x sample matrices, their row
 #' annotation and their sample annotation back to long-format LFQData. Row `i`
 #' of every matrix belongs to row `i` of `rowdata`; matrix column names are the
 #' sample names.
@@ -164,7 +139,7 @@ tidy_to_wide_config <- function(
 #' @examples
 #' dd <- prolfqua::sim_lfq_data_peptide_config()
 #' lfqdata <- prolfqua::LFQData$new(dd$data, dd$config)
-#' wide <- tidy_to_wide_config(lfqdata, as.matrix = TRUE)
+#' wide <- lfqdata$data_wide(as.matrix = TRUE)
 #' back <- lfqdata_from_wide(wide$data, wide$rowdata, wide$annotation, lfqdata$get_config())
 #' stopifnot(nrow(back$data_long()) == nrow(lfqdata$data_long()))
 #' @srrstatsTODO {G2.7} Long data frames and wide matrices are supported; limit: no SummarizedExperiment input adapter.

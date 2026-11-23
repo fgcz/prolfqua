@@ -454,7 +454,7 @@ test_that("fitted lm cell means and intervals match prediction for one and two f
       fit <- fits$linear_model[[match(protein, fits$protein_Id)]]
       factors <- intersect(attr(stats::terms(fit), "term.labels"), names(fit$model))
       data <- unique(fit$model[, factors, drop = FALSE])
-      groups <- as.character(make_interaction_column(data, factors, sep = ":")$interaction)
+      groups <- as.character(.make_interaction_column(data, factors, sep = ":")$interaction)
       expected <- stats::predict(fit, newdata = data, interval = "confidence", level = 0.9)
       rows <- actual[actual$protein_Id == protein, ]
       expected <- expected[match(rows$group, groups), , drop = FALSE]
@@ -475,8 +475,8 @@ test_that("fitted mixed-model means retain Satterthwaite confidence limits", {
   fits <- .model_fits(facade$model)
   protein <- fits$protein_Id[1]
   fit <- fits$linear_model[[1]]
-  linear <- linfct_from_model(fit)$linfct_factors
-  expected <- compute_lmer_contrast(fit, linear)
+  linear <- .linfct_from_model(fit)$linfct_factors
+  expected <- .compute_lmer_contrast(fit, linear)
   actual <- .model_group_means(facade$model, protein, level = 0.9)
   margin <- stats::qt(0.95, expected$df) * expected$std.error
   expect_equal(actual$estimate, expected$estimate)
@@ -487,7 +487,7 @@ test_that("fitted mixed-model means retain Satterthwaite confidence limits", {
 test_that("fitted matrix-model means match moderated contrast intervals", {
   facade <- facade_methods_fit("limma")
   model <- facade$model
-  linear <- linfct_from_model(model$dummy_model)$linfct_factors
+  linear <- .linfct_from_model(model$dummy_model)$linfct_factors
   fit <- limma::eBayes(limma::contrasts.fit(model$fit, t(linear)), trend = model$trend, robust = model$robust)
   actual <- .model_group_means(model, model$rowdata$protein_Id, level = 0.95)
   for (i in seq_len(nrow(linear))) {

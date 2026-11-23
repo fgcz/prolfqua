@@ -23,7 +23,7 @@ test_that("Model needs a model table with the subject columns and a strategy", {
   )
 })
 
-test_that("ModelFirth needs a model_analyse() result", {
+test_that("ModelFirth needs a .model_analyse() result", {
   expect_error(ModelFirth$new(list(models1 = NULL)), class = "prolfqua_error_bad_argument")
   expect_s3_class(ModelFirth$new(list(model_df = data.frame())), "ModelFirth")
 })

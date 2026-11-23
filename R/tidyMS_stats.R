@@ -5,22 +5,8 @@
 #'
 #' @param x data.frame
 #' @return data.frame
-#' @export
-#' @rdname pooled_var
-#' @keywords internal
-#' @family stats
-#'
-#' @examples
-#' x <- data.frame(nrMeasured =c(1,2,2), var = c(3,4,4), meanAbundance = c(3,3,3))
-#' x <- data.frame(nrMeasured = c(1,2,1,1), var = c(NA, 0.0370, NA, NA),
-#'   meanAbundance = c(-1.94,-1.46,-1.87,-1.45))
-#' compute_pooled(x)
-#' y <- data.frame(dilution.=c("a","b","c"),
-#'      nrReplicates = c(4,4,4), nrMeasured = c(0,0,1), sd =c(NA,NA,NA),
-#'      var = c(NA,NA,NA),meanAbundance = c(NaN,NaN,NaN))
-#' compute_pooled(y)
-#' yb <- y |> dplyr::filter(nrMeasured > 1)
-compute_pooled <- function(x) {
+#' @noRd
+.compute_pooled <- function(x) {
   xm <- x |> dplyr::filter(.data$nrMeasured > 0)
   mean_all <- sum(xm$meanAbundance * xm$nrMeasured) / sum(xm$nrMeasured)
   x <- x |> dplyr::filter(.data$nrMeasured > 1)
@@ -45,21 +31,10 @@ compute_pooled <- function(x) {
 #' pooled variance
 #' @param res1 per-group statistics from [summarize_stats()]
 #' @param config AnalysisConfiguration of the data
-#' @export
-#' @rdname pooled_var
-#' @keywords internal
-#' @family stats
-#' @examples
-#'
-#' bb <- prolfqua::sim_lfq_data_peptide_config()
-#' lfq <- LFQData$new(bb$data, bb$config)
-#' res1 <- summarize_stats(lfq)
-#' pv <- poolvar(res1, bb$config)
-#' stopifnot(nrow(pv) == nrow(res1) / 3)
-#'
-poolvar <- function(res1, config) {
+#' @noRd
+.poolvar <- function(res1, config) {
   resp <- res1 |> nest(data = -all_of(config$hierarchy_keys()))
-  pooled <- purrr::list_rbind(purrr::map(resp$data, compute_pooled))
+  pooled <- purrr::list_rbind(purrr::map(resp$data, .compute_pooled))
   resp$data <- NULL
   resp <- bind_cols(resp, pooled)
   resp <- resp |> mutate(!!config$factor_keys()[1] := "pooled")
@@ -114,29 +89,8 @@ poolvar <- function(res1, config) {
 #' @return `summarize_stats()`: a tibble with one row per hierarchy element and level of
 #'   `factor_key`, with the columns `nrReplicates`, `nrMeasured`, `nrNAs`, `sd`, `var`, `meanAbundance`,
 #'   `medianAbundance`, `CV` (untransformed data only) and `interaction`.
-#' @export
-#' @rdname summarize_stats
-#' @keywords internal
-#' @family stats
-#' @examples
-#'
-#' bb <- prolfqua::sim_lfq_data_protein_config()
-#' lfq <- LFQData$new(bb$data, bb$config)
-#' res1 <- summarize_stats(lfq)
-#'
-#' res2 <- prolfqua::sim_lfq_data_2factor_config()
-#' res2$config$factor_depth <- 2
-#' lfq2 <- LFQData$new(res2$data, res2$config)
-#' stats <- summarize_stats(lfq2)
-#' stopifnot(nrow(stats) == 40)
-#'
-#' stats <- summarize_stats(lfq2, factor_key = lfq2$factor_keys()[1])
-#' stopifnot(nrow(stats) == 20)
-#' stats <- summarize_stats(lfq2, factor_key = lfq2$factor_keys()[2])
-#' stopifnot(nrow(stats) == 20)
-#' stats <- summarize_stats(lfq2, factor_key = NULL)
-#' stopifnot(nrow(stats) == 10)
-summarize_stats <- function(lfqdata, factor_key = lfqdata$relevant_factor_keys()) {
+#' @noRd
+.summarize_stats <- function(lfqdata, factor_key = lfqdata$relevant_factor_keys()) {
   grouped <- dplyr::group_by(
     lfqdata$data_long(),
     dplyr::across(all_of(c(lfqdata$hierarchy_keys(), factor_key)))
@@ -153,7 +107,7 @@ summarize_stats <- function(lfqdata, factor_key = lfqdata$relevant_factor_keys()
     hierarchy_factor <- dplyr::mutate(hierarchy_factor, !!lfqdata$factor_keys()[1] := "All")
     hierarchy_factor$interaction <- "All"
   } else {
-    hierarchy_factor <- prolfqua::make_interaction_column(hierarchy_factor, columns = factor_key, sep = ":")
+    hierarchy_factor <- .make_interaction_column(hierarchy_factor, columns = factor_key, sep = ":")
   }
   hierarchy_factor
 }
@@ -173,8 +127,8 @@ summarize_stats <- function(lfqdata, factor_key = lfqdata$relevant_factor_keys()
 #' stopifnot(length(unique(xx$interaction)) == (2 + 2 + 2 * 2))
 summarize_stats_factors <- function(lfqdata) {
   rfk <- lfqdata$relevant_factor_keys()
-  per_factor <- if (length(rfk) > 1) lapply(rfk, function(factor) summarize_stats(lfqdata, factor_key = factor))
-  dplyr::bind_rows(c(list(summarize_stats(lfqdata)), per_factor))
+  per_factor <- if (length(rfk) > 1) lapply(rfk, function(factor) .summarize_stats(lfqdata, factor_key = factor))
+  dplyr::bind_rows(c(list(.summarize_stats(lfqdata)), per_factor))
 }
 
 
@@ -185,22 +139,8 @@ summarize_stats_factors <- function(lfqdata) {
 #' @param probs for which quantiles 10, 20 etc.
 #' @return `summarize_stats_quantiles()`: a list with `long`, a tibble with one row per factor level and quantile
 #'   (columns `probs` and `quantiles`), and `wide`, the same quantiles with one column per factor level.
-#' @rdname summarize_stats
-#' @export
-#' @keywords internal
-#' @family stats
-#' @examples
-#' library(ggplot2)
-#' bb1 <- prolfqua::sim_lfq_data_peptide_config()
-#' lfq <- LFQData$new(bb1$data, bb1$config)
-#' stats_res <- summarize_stats(lfq)
-#' sq <- summarize_stats_quantiles(stats_res, lfq$relevant_factor_keys())
-#' sq <- summarize_stats_quantiles(stats_res, lfq$relevant_factor_keys(), stats = "CV")
-#' sq <- summarize_stats_quantiles(stats_res, lfq$relevant_factor_keys(), stats = "sd")
-#' xx <- summarize_stats_quantiles(stats_res, lfq$relevant_factor_keys(), probs = seq(0, 1, by = 0.1))
-#' ggplot2::ggplot(xx$long, aes(x = probs, y = quantiles, color = group_)) + geom_line() + geom_point()
-#'
-summarize_stats_quantiles <- function(
+#' @noRd
+.summarize_stats_quantiles <- function(
   stats_res,
   factor_keys_depth,
   stats = c("sd", "CV"),
@@ -252,25 +192,8 @@ summarize_stats_quantiles <- function(
 #' @return a tibble with the rows of `quantile_sd` repeated for each `delta`, with the added columns `sdtrimmed`
 #'   (the sd floored at the smallest sd resolvable with `min.n` samples), `N_exact`, `N` (rounded up) and `delta`
 #'
-#' @export
-#' @keywords internal
-#' @family stats
-#' @examples
-#'
-#'
-#'
-#'
-#' bb1 <- prolfqua::sim_lfq_data_peptide_config()
-#' lfq <- LFQData$new(bb1$data, bb1$config)
-#' stats_res <- summarize_stats(lfq)
-#' xx <- summarize_stats_quantiles(stats_res, lfq$relevant_factor_keys(), probs = c(0.5, 0.8))
-#' bbb <- lfq_power_t_test_quantiles(xx$long)
-#' bbb <- dplyr::bind_rows(bbb)
-#' summary <- bbb |>
-#'  dplyr::select( -N_exact, -quantiles, -sdtrimmed ) |>
-#'  tidyr::pivot_wider(names_from = delta, values_from = N)
-#'
-lfq_power_t_test_quantiles <-
+#' @noRd
+.lfq_power_t_test_quantiles <-
   function(quantile_sd, delta = c(0.59, 1, 2), power = 0.8, sig.level = 0.05, min.n = 1.5) {
     res <- lapply(delta, function(d) {
       dplyr::bind_cols(quantile_sd, .power_t_test_n(quantile_sd$quantiles, d, power, sig.level, min.n), delta = d)
@@ -287,17 +210,8 @@ lfq_power_t_test_quantiles <-
 #' @return a tibble with one row per complete row of `stats_res` and value of `delta`, with the added columns
 #'   `delta`, `N_exact` (samples per group needed) and `N` (rounded up)
 #'
-#' @export
-#' @keywords internal
-#' @family stats
-#' @examples
-#'
-#' bb1 <- prolfqua::sim_lfq_data_peptide_config()
-#' ldata <- LFQData$new(bb1$data, bb1$config)
-#' stats_res <- summarize_stats(ldata)
-#' bb <- lfq_power_t_test_proteins(stats_res)
-#'
-lfq_power_t_test_proteins <- function(stats_res, delta = c(0.59, 1, 2), power = 0.8, sig.level = 0.05, min.n = 1.5) {
+#' @noRd
+.lfq_power_t_test_proteins <- function(stats_res, delta = c(0.59, 1, 2), power = 0.8, sig.level = 0.05, min.n = 1.5) {
   sd_delta <- tidyr::crossing(na.omit(stats_res), delta = delta)
   pw <- .power_t_test_n(sd_delta$sd, sd_delta$delta, power, sig.level, min.n)
   dplyr::bind_cols(sd_delta, pw[c("N_exact", "N")])
@@ -310,18 +224,13 @@ lfq_power_t_test_proteins <- function(stats_res, delta = c(0.59, 1, 2), power = 
 #' @param ggstat either density or ecdf
 #' @return a ggplot object with one density or ECDF line of `stat` per level of `factor_key`
 #'
-#' @export
-#' @keywords internal
-#' @family stats
-#' @examples
-#'
-#' bb1 <- prolfqua::sim_lfq_data_peptide_config()
-#' lfq <- LFQData$new(bb1$data, bb1$config)
-#' res <- lfq$get_Stats()$stats()
-#' plot_stat_density(res, lfq$factor_keys()[1], stat = "meanAbundance")
-#' plot_stat_density(res, lfq$factor_keys()[1], stat = "sd")
-#' plot_stat_density(res, lfq$factor_keys()[1], stat = "CV")
-plot_stat_density <- function(pdata, factor_key, stat = c("CV", "meanAbundance", "sd"), ggstat = c("density", "ecdf")) {
+#' @noRd
+.plot_stat_density <- function(
+  pdata,
+  factor_key,
+  stat = c("CV", "meanAbundance", "sd"),
+  ggstat = c("density", "ecdf")
+) {
   stat <- match.arg(stat)
   ggstat <- match.arg(ggstat)
   p <- ggplot(pdata, aes(x = .data[[stat]], colour = .data[[factor_key]])) +
@@ -337,18 +246,8 @@ plot_stat_density <- function(pdata, factor_key, stat = c("CV", "meanAbundance",
 #' @return a ggplot object with density or ECDF lines of `stat` for features above and below the median mean
 #'   intensity, faceted by `factor_key`
 #'
-#' @export
-#' @keywords internal
-#' @family stats
-#' @examples
-#'
-#' bb1 <- prolfqua::sim_lfq_data_peptide_config()
-#' lfq <- LFQData$new(bb1$data, bb1$config)
-#' res <- lfq$get_Stats()$stats()
-#' plot_stat_density_median(res, lfq$factor_keys()[1], "CV")
-#' plot_stat_density_median(res, lfq$factor_keys()[1], "meanAbundance")
-#' plot_stat_density_median(res, lfq$factor_keys()[1], "sd")
-plot_stat_density_median <- function(
+#' @noRd
+.plot_stat_density_median <- function(
   pdata,
   factor_key,
   stat = c("CV", "meanAbundance", "sd"),
@@ -372,19 +271,8 @@ plot_stat_density_median <- function(
 #' @param factor_keys_depth character vector - factor columns for grouping
 #' @param stat either CV, mean or sd
 #' @return a ggplot object with one violin of `stat` per combination of factor levels, with the median marked
-#' @export
-#' @keywords internal
-#' @family stats
-#' @examples
-#'
-#' bb1 <- prolfqua::sim_lfq_data_peptide_config()
-#' lfq <- LFQData$new(bb1$data, bb1$config)
-#' res <- lfq$get_Stats()$stats()
-#' plot_stat_violin(res, lfq$relevant_factor_keys(), stat = "meanAbundance")
-#' plot_stat_violin(res, lfq$relevant_factor_keys(), stat = "sd")
-#' plot_stat_violin(res, lfq$relevant_factor_keys(), stat = "CV")
-#'
-plot_stat_violin <- function(pdata, factor_keys_depth, stat = c("CV", "meanAbundance", "sd")) {
+#' @noRd
+.plot_stat_violin <- function(pdata, factor_keys_depth, stat = c("CV", "meanAbundance", "sd")) {
   stat <- match.arg(stat)
   pdata <- pdata |> tidyr::unite("groups", dplyr::all_of(factor_keys_depth))
   p <- ggplot(pdata, aes(x = .data$groups, y = .data[[stat]])) +
@@ -400,16 +288,8 @@ plot_stat_violin <- function(pdata, factor_keys_depth, stat = c("CV", "meanAbund
 #' @return a ggplot object with violins of `stat` per level of `factor_key` and the median and interquartile range
 #'   marked, faceted into features below and above the median mean intensity
 #'
-#' @export
-#' @keywords internal
-#' @family stats
-#' @examples
-#'
-#' bb1 <- prolfqua::sim_lfq_data_peptide_config()
-#' lfq <- LFQData$new(bb1$data, bb1$config)
-#' res <- lfq$get_Stats()$stats()
-#' plot_stat_violin_median(res, lfq$factor_keys()[1], stat = "meanAbundance")
-plot_stat_violin_median <- function(pdata, factor_key, stat = c("CV", "meanAbundance", "sd")) {
+#' @noRd
+.plot_stat_violin_median <- function(pdata, factor_key, stat = c("CV", "meanAbundance", "sd")) {
   stat <- match.arg(stat)
   pdata <- pdata |> dplyr::filter(!is.na(.data[[stat]]))
 
@@ -436,17 +316,8 @@ plot_stat_violin_median <- function(pdata, factor_key, stat = c("CV", "meanAbund
 #' @return a ggplot scatter plot of `sd` against `meanAbundance` with a loess fit, one facet per combination of
 #'   factor levels
 #'
-#' @export
-#' @keywords internal
-#' @family stats
-#' @examples
-#'
-#' bb1 <- prolfqua::sim_lfq_data_peptide_config()
-#' lfq <- LFQData$new(bb1$data, bb1$config)
-#' res <- lfq$get_Stats()$stats()
-#' plot_stdv_vs_mean(res, lfq$relevant_factor_keys())
-#'
-plot_stdv_vs_mean <- function(pdata, factor_keys_depth, size = 2000) {
+#' @noRd
+.plot_stdv_vs_mean <- function(pdata, factor_keys_depth, size = 2000) {
   summary <- pdata |>
     group_by(across(all_of(factor_keys_depth))) |>
     dplyr::summarize(n = n(), .groups = "drop")

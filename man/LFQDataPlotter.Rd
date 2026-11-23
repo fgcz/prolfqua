@@ -36,16 +36,10 @@ stopifnot(is.null(lfqplotter$pairs_smooth()))
 stopifnot(class(lfqplotter$sample_correlation()) == "list")
 stopifnot(methods::is(lfqplotter$raster(), "Heatmap"))
 stopifnot("upset" == class(lfqplotter$upset_missing()))
-wide <- lfqdata$data_wide(as.matrix = TRUE)
-stopifnot(class(prolfqua::plot_sample_correlation(wide$data)) == "list")
 
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-\code{\link{plot_heatmap_cor}}
-
-\code{\link{plot_pca}}
-
 Other LFQData:
 \code{\link{AggregateLimpa}},
 \code{\link{AggregateMedpolish}},
@@ -159,12 +153,15 @@ to the difference in the expression in the samples.
 Without the z-scoring, the proteins would group according
 to their abundance, e.g., high abundant proteins would be one cluster.
 
-Only the \code{top_n} most variable features are shown. Row clustering
-uses \code{stats::hclust}, which errors above 65536 features, so the rows
-are ranked by their variability statistic (CV for untransformed data, sd
-for transformed data; see \code{\link{LFQDataStats}}) and the most
-variable are kept. This keeps the heatmap feasible and legible for
+By default only the \code{n_most_variable} most variable features are shown and the rows are clustered.
+Row clustering uses \code{stats::hclust}, which errors above 65536 features, so the rows are ranked by
+their variability statistic (CV for untransformed data, sd for transformed data; see
+\code{\link{LFQDataStats}}) and the most variable are kept. This keeps the heatmap feasible and legible for
 peptide-list / entrapment searches with tens of thousands of features.
+
+With \code{row_order}, the heatmap shows exactly these features in this order, without clustering. Use it
+to compare two states of the same data row by row, e.g. before and after imputation: imputation changes the
+per-feature sd, so the most variable set and the clustering would differ between the two heatmaps.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{LFQDataPlotter$heatmap(
@@ -172,7 +169,9 @@ peptide-list / entrapment searches with tens of thousands of features.
   rownames = FALSE,
   max_rownames_chars = 60,
   max_sample_label_chars = 20,
-  top_n = 1000
+  n_most_variable = 1000,
+  row_order = NULL,
+  top_n
 )}
     \if{html}{\out{</div>}}
   }
@@ -185,8 +184,11 @@ keeps every row that can be meaningfully z-scored.}
       \item{\code{max_rownames_chars}}{maximum displayed row label length}
       \item{\code{max_sample_label_chars}}{maximum displayed sample label length.
 Labels keep their suffix because sample prefixes are often shared.}
-      \item{\code{top_n}}{keep the \code{top_n} most variable features (default 1000);
-\code{NULL} or \code{Inf} keeps all features.}
+      \item{\code{n_most_variable}}{keep the \code{n_most_variable} most variable features (default 1000);
+\code{NULL} or \code{Inf} keeps all features. Not together with \code{row_order}.}
+      \item{\code{row_order}}{feature IDs (rownames of \code{LFQData$data_wide()}) to show, in this order, without row
+clustering; default \code{NULL} selects and clusters the most variable features.}
+      \item{\code{top_n}}{deprecated, use \code{n_most_variable}}
     }
     \if{html}{\out{</div>}}
   }
@@ -213,7 +215,9 @@ is computed. Then the euclidean distance is used to compute the distances.
     \describe{
       \item{\code{max_sample_label_chars}}{maximum displayed sample label length.
 Labels keep their suffix because sample prefixes are often shared.}
-      \item{\code{method}}{correlation method or function, see \code{\link{plot_heatmap_cor}}}
+      \item{\code{method}}{correlation method: \code{"pearson"} (default), \code{"spearman"} or \code{"kendall"} for
+\code{stats::cor()} on pairwise complete observations, or a function of the matrix returning a
+sample-by-sample correlation matrix}
     }
     \if{html}{\out{</div>}}
   }
@@ -418,7 +422,9 @@ display.}
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{method}}{correlation method or function, see \code{\link{plot_heatmap_cor}}}
+      \item{\code{method}}{correlation method: \code{"pearson"} (default), \code{"spearman"} or \code{"kendall"} for
+\code{stats::cor()} on pairwise complete observations, or a function of the matrix returning a
+sample-by-sample correlation matrix}
     }
     \if{html}{\out{</div>}}
   }

@@ -2,28 +2,48 @@
 
 #' Base class for contrast analysis facades
 #'
-#' Holds the fields and delegating methods shared by every facade in
-#' \code{ContrastsFacades.R} and \code{ContrastsChildToParentFacades.R}.
-#' Subclasses implement the unique pipeline wiring in \code{initialize()}: they
-#' call the private \code{.setup()} (input-shape check, \code{self$.lfqdata},
-#' \code{self$.contrast_names}, \code{self$facade_name}), then build the model
-#' and the inner contrast object. \code{get_config()} defaults to the inner
-#' contrast object's configuration. The limma family additionally sets
-#' \code{self$.drop_na_diff <- TRUE} to drop rows whose fold change could not be
-#' estimated.
+#' The extension point for new modelling backends. Every method of \code{\link{build_contrast_analysis}} is a
+#' facade class that inherits from \code{ContrastsFacadeBase}; a package adds a method by writing such a class and
+#' registering it with \code{\link{register_facade}} (usually from its \code{.onLoad()}). The base class provides
+#' the uniform API: \code{get_contrasts()} (stamped with the method name), \code{get_missing()},
+#' \code{get_Plotter()}, \code{to_wide()} and \code{get_config()}.
 #'
-#' \code{get_contrasts()} delegates to the inner contrast object and then stamps
-#' the facade key into \code{modelName} via \code{.stamp_facade_identity()};
-#' rescue/imputation state is carried in the \code{estimate_type} column set by
-#' the inner contrast classes.
+#' A subclass implements \code{initialize(lfqdata, modelstr, contrasts, ...)}:
+#' \itemize{
+#'   \item call the private \code{.setup(lfqdata, contrasts, key, modelstr)} first; it checks the input shape,
+#'     the contrasts and the design, stores a copy of the input, and returns the full model formula string
+#'   \item set \code{self$model} to the fitted model and \code{self$contrast} to the contrast object the facade
+#'     delegates to (e.g. \code{\link{ContrastsModerated}})
+#'   \item set the private field \code{.needs} to \code{"nested"} if the facade takes child-level input
+#'     (e.g. peptides) and reports parent-level contrasts; the default is \code{"aggregated"}
+#' }
+#' The limma family additionally sets \code{self$.drop_na_diff <- TRUE} to drop rows whose fold change could not
+#' be estimated.
 #'
 #' @return An R6 class generator.
 #' @export
 #' @family modelling
-#' @keywords internal
+#' @seealso \code{\link{register_facade}}, \code{\link{list_facades}}
 #' @examples
-#' facade <- ContrastsFacadeBase$new()
-#' inherits(facade, "ContrastsFacadeBase")
+#' # a facade: unweighted linear model per protein, moderated contrasts
+#' ContrastsUnweightedLMFacade <- R6::R6Class(
+#'   "ContrastsUnweightedLMFacade",
+#'   inherit = ContrastsFacadeBase,
+#'   public = list(
+#'     initialize = function(lfqdata, modelstr, contrasts) {
+#'       full_formula <- private$.setup(lfqdata, contrasts, "lm_unweighted", modelstr)
+#'       self$model <- build_model(lfqdata, strategy_lm(full_formula))
+#'       self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts))
+#'     }
+#'   )
+#' )
+#' istar <- sim_lfq_data_protein_config(n_proteins = 10)
+#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' facade <- ContrastsUnweightedLMFacade$new(lfqdata, "~ group_", c(AvsCtrl = "group_A - group_Ctrl"))
+#' head(facade$get_contrasts())
+#' # registered from a package's .onLoad(), build_contrast_analysis() finds the method by name:
+#' # register_facade("lm_unweighted", class = "ContrastsUnweightedLMFacade", needs = "aggregated",
+#' #                 package = "mypackage")
 #' @srrstats {RE1.3} Facade results retain subject identifiers, and get_missing reports absent subject/contrast pairs.
 #' @srrstats {RE4.8} Facades copy LFQData; matrix fits retain E, weights, observed masks and sample annotation.
 ContrastsFacadeBase <- R6::R6Class(

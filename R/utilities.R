@@ -104,22 +104,8 @@ get_uniprot_id_from_fasta_header <- function(df, idcolumn = "protein_Id") {
 #' @param max_nr_significant_text maximum number of significant labels to display
 #' @param .data deprecated; use `data`
 #' @return a ggplot object with one volcano panel per contrast; if `label` is given, significant points are labelled
-#' @export
-#' @keywords internal
-#' @family utilities
-#' @examples
-#'
-#'
-#' show <- data.frame(logFC = rnorm(100, 0, 1), adj.P.Val = runif(100, 0, 1),
-#'   Condition = sample(c("a","b")), colour = "forward", Name = paste0("n", 1:100))
-#' prolfqua::multigroup_volcano( show,
-#' effect="logFC",
-#' significance = "adj.P.Val",
-#' contrast="Condition",
-#' colour=NULL,
-#' label="Name",
-#' max_nr_significant_text = 300)
-multigroup_volcano <- function(
+#' @noRd
+.multigroup_volcano_labelled <- function(
   data,
   effect = "fc",
   significance = "p.adjust",
@@ -272,54 +258,15 @@ multigroup_volcano <- function(
 }
 
 
-#' Convert a matrix or data.frame to a tibble (taken from tidyquant)
-#'
-#' @param x a matrix
-#' @param preserve_row_names give name to rownames column, if NULL discard rownames
-#' @param ... further parameters passed to as_tibble
-#' @return The computed result.
-#' @export
-#' @family utilities
-#' @examples
-#' x <- matrix(rnorm(20), ncol=4)
-#' rownames(x) <- LETTERS[seq_len(nrow(x))]
-#' matrix_to_tibble(x)
-#' !(is.matrix(x) || is.data.frame(x))
-#'
-matrix_to_tibble <- function(x, preserve_row_names = "row.names", ...) {
-  if (!(is.matrix(x) || is.data.frame(x))) {
-    abort_bad_argument("x", "be a matrix or data.frame")
-  }
-  if (!is.null(preserve_row_names)) {
-    row.names <- rownames(x)
-    if (!is.null(row.names)) {
-      dplyr::bind_cols(
-        tibble::tibble(!!preserve_row_names := row.names),
-        tibble::as_tibble(x, ...)
-      )
-    } else {
-      warning("No row names to preserve. Object otherwise converted to tibble successfully.", call. = FALSE)
-      tibble::as_tibble(x, ...)
-    }
-  } else {
-    tibble::as_tibble(x, ...)
-  }
-}
-
 #' Correlation panel for pairs plots (default lower panel of `pairs_smooth()`)
-#' @export
-#' @family utilities
-#' @keywords internal
 #' @param x numeric data
 #' @param y numeric data
 #' @param ... not used
 #' @param digits number of digits to display
 #' @return `NULL`, invisibly; called for its side effect of writing the correlation, R^2 and p-value into the
 #'   current panel
-#' @examples
-#' graphics::plot(1:3, 1:3, type = "n")
-#' panel_cor(1:3, 1:3)
-panel_cor <- function(x, y, digits = 2, ...) {
+#' @noRd
+.panel_cor <- function(x, y, digits = 2, ...) {
   usr <- par("usr")
   on.exit(par(usr = usr), add = TRUE)
   par(usr = c(0, 1, 0, 1))
@@ -352,16 +299,8 @@ panel_cor <- function(x, y, digits = 2, ...) {
 #' @param legend  add legend to plots
 #' @param ... params usually passed to pairs
 #' @return `NULL`, invisibly; called for its side effect of drawing the pairs plot
-#' @export
-#' @family utilities
-#' @keywords internal
-#' @examples
-#' tmp = matrix(rep((1:100),times = 4) + rnorm(100*4,0,3),ncol=4)
-#' pairs_smooth(tmp,main="small data", legend=TRUE)
-#' pairs_smooth(tmp,main="small data")
-#' pairs_smooth(tmp,log="xy",main="small data", legend=TRUE)
-#' @seealso also \code{\link{pairs}}
-pairs_smooth <- function(data, legend = FALSE, ...) {
+#' @noRd
+.pairs_smooth <- function(data, legend = FALSE, ...) {
   non_na_counts <- apply(data, 2, function(x) sum(!is.na(x)))
   min_col <- which(non_na_counts < 2)
   if (length(min_col) >= 1) {
@@ -383,7 +322,7 @@ pairs_smooth <- function(data, legend = FALSE, ...) {
         graphics::legend("topleft", legend = paste0("R^2=", round(r_squared, digits = 2)), text.col = 3)
       }
     },
-    lower.panel = panel_cor,
+    lower.panel = .panel_cor,
     ...
   )
 }
@@ -589,22 +528,8 @@ prolfqua_data <- function(datastr, package = "prolfqua") {
 #' @param sep separator between the levels in the combined labels
 #' @return `data` with an added factor column `interaction` combining the values of `columns`, each prefixed with
 #'   its column name and joined by `sep`
-#' @export
-#' @keywords internal
-#' @family configuration
-#' @examples
-#' xx <- data.frame(A = c("a","a","a"), B = c("d","d","e"))
-#' x <- make_interaction_column(xx, c("B","A"))
-#' x <- make_interaction_column(xx, c("A"))
-#' bb <- prolfqua::sim_lfq_data_protein_config()
-#' config <- bb$config
-#' analysis <- bb$data
-#'
-#' config$factor_depth <- 1
-#' make_interaction_column(analysis,
-#'    config$factor_keys_depth())
-#'
-make_interaction_column <- function(data, columns, sep = ".") {
+#' @noRd
+.make_interaction_column <- function(data, columns, sep = ".") {
   intr <- dplyr::select(data, dplyr::all_of(columns))
   intr <- dplyr::mutate(intr, dplyr::across(dplyr::everything(), factor))
   names(columns) <- columns

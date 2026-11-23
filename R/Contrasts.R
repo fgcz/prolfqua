@@ -4,7 +4,7 @@
 #' @param avg include average-abundance linear functions
 #' @noRd
 .linfct <- function(model, contrast, avg = TRUE) {
-  linfct <- linfct_from_model(model, as_list = FALSE)
+  linfct <- .linfct_from_model(model, as_list = FALSE)
   linfct <- unique(linfct) # needed for single factor models
   if (avg) {
     namtmp <- paste0("avg_", names(contrast))
@@ -12,7 +12,7 @@
     names(cntr_avg) <- namtmp
     contrast <- c(contrast, cntr_avg)
   }
-  linfct_a <- linfct_matrix_contrasts(linfct, contrast)
+  linfct_a <- .linfct_matrix_contrasts(linfct, contrast)
   linfct_a
 }
 
@@ -42,7 +42,7 @@
   res <- vector(mode = "list", nrow(model_df))
   pb <- .make_progress(nrow(model_df), label = label)
   if (reuse_complete && nrow(model_df) > 0) {
-    compmodel <- .linfct(get_complete_model_fit(model_df)$linear_model[[1]], contrasts, avg = avg)
+    compmodel <- .linfct(.get_complete_model_fit(model_df)$linear_model[[1]], contrasts, avg = avg)
     max_coef <- max(model_df$nr_coef_not_NA)
   }
   for (i in seq_along(model_df$linear_model)) {
@@ -107,8 +107,8 @@
 
 #' Estimate contrasts using Wald Test
 #'
-#' The per-protein contrast computation uses \code{\link{compute_contrast}} and
-#' \code{\link{linfct_matrix_contrasts}} internally.
+#' Each contrast is a Wald test of a linear function of the model coefficients; \code{$get_linfct()} returns
+#' these coefficient weights.
 #'
 #' @return An R6 class generator.
 #' @export
@@ -136,7 +136,6 @@
 #'   group_Ctrl = c(-1, -1, 1),
 #'   row.names = c("groupA_vs_Ctrl", "dil.e_vs_b", "dil.ctrl_vs_b")
 #' )
-#' prolfqua::model_summary(mod)
 #' Contr <- c(
 #'   "groupA_vs_Ctrl" = "group_A - group_Ctrl",
 #'   "dil.e_vs_b" = "group_B - group_Ctrl",
@@ -224,7 +223,7 @@ Contrasts <- R6::R6Class(
     #' @param avg logical TRUE - get also linfct for averages
     get_linfct = function(global = TRUE, avg = TRUE) {
       if (global) {
-        model <- get_complete_model_fit(self$models)$linear_model[[1]]
+        model <- .get_complete_model_fit(self$models)$linear_model[[1]]
         res <- .linfct(model, self$contrasts, avg = avg)
         return(res)
       }
@@ -238,7 +237,7 @@ Contrasts <- R6::R6Class(
     get_contrasts = function(all = FALSE) {
       if (is.null(self$contrast_result)) {
         linfct <- self$get_linfct(global = self$global)
-        contrast_result <- contrasts_linfct(
+        contrast_result <- .contrasts_linfct(
           self$models,
           linfct,
           subject_id = self$subject_id,

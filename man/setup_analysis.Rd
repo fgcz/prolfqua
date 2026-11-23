@@ -78,14 +78,7 @@ Other configuration:
 \code{\link{AnalysisConfiguration}},
 \code{\link{ContrastConfiguration}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link[=complete_cases]{complete_cases()}},
 \code{\link[=list_to_contrast_configuration]{list_to_contrast_configuration()}},
-\code{\link[=make_interaction_column]{make_interaction_column()}},
-\code{\link[=make_reduced_hierarchy_config]{make_reduced_hierarchy_config()}},
-\code{\link[=r6_extract_values]{r6_extract_values()}},
-\code{\link[=sample_subset]{sample_subset()}},
-\code{\link[=separate_hierarchy]{separate_hierarchy()}},
-\code{\link[=table_factors]{table_factors()}},
-\code{\link[=table_factors_size]{table_factors_size()}}
+\code{\link[=r6_extract_values]{r6_extract_values()}}
 }
 \concept{configuration}

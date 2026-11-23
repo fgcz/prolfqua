@@ -18,7 +18,8 @@
 #' @family modelling
 #' @examplesIf requireNamespace("logistf", quietly = TRUE)
 #'
-#' modi <- sim_build_models_logistf(model = "parallel3", weight_missing = 1)
+#' istar <- sim_lfq_data_protein_config(n_proteins = 10, weight_missing = 1, seed = 3)
+#' modi <- build_model_glm_protein(LFQData$new(istar$data, istar$config), "~ group_")
 #' contrasts <- c(Avs = "group_A - group_B", AvsCtrl = "group_A - group_Ctrl")
 #'
 #' ctr <- ContrastsFirth$new(modi,contrasts)
@@ -86,7 +87,7 @@ ContrastsFirth <- R6::R6Class(
     get_contrasts = function(all = FALSE) {
       if (is.null(self$contrast_result)) {
         models <- self$get_linfct()
-        contrast_result <- contrasts_linfct(
+        contrast_result <- .contrasts_linfct(
           models$model_df,
           models$model_df$linfct,
           subject_id = self$subject_id,

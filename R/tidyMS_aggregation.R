@@ -40,32 +40,14 @@ plot_hierarchies_line_default <- function(
 
 #' Plot peptide intensities of protein as a function of the sample and factor
 #'
-#' @export
 #' @param res data.frame
 #' @param protein_name title of plot
 #' @param lfqdata [LFQData] object with the data and its configuration
 #' @param show.legend logical, show legend in plot
 #' @return a ggplot object with one line per feature across samples, coloured by peptide, faceted by factor
 #'   levels and titled `protein_name`
-#' @family aggregation
-#' @family plotting
-#'
-#' @keywords internal
-#' @examples
-#'
-#'
-#' istar <- sim_lfq_data_peptide_config()
-#' config <- istar$config
-#' analysis <- istar$data
-#'
-#' xnested <- analysis |>
-#'   dplyr::group_by(across(all_of(config$hierarchy_keys_depth()))) |>
-#'   tidyr::nest()
-#'
-#' lfq <- LFQData$new(analysis, config)
-#' prolfqua::plot_hierarchies_line(xnested$data[[1]], xnested$protein_Id[[1]], lfq)
-#'
-plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALSE) {
+#' @noRd
+.plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALSE) {
   rev_hnames <- lfqdata$hierarchy_keys()
   rev_hnames <- rev(rev_hnames)
   fragment <- rev_hnames[1]
@@ -263,24 +245,9 @@ plot_hierarchies_line <- function(res, protein_name, lfqdata, show.legend = FALS
 #' @return returns list with data (data.frame), config (AnalysisConfiguration) and failures (tibble with the
 #'   subject `id` and `warning` text of every warning raised while estimating one subject; the warnings are not
 #'   re-raised)
-#' @family aggregation
-#' @keywords internal
 #' @importFrom MASS rlm
-#' @export
-#' @examples
-#'
-#' dd <- prolfqua::sim_lfq_data_peptide_config()
-#' lfq <- LFQData$new(dd$data, dd$config)
-#' lfq <- lfq$get_Transformer()$log2()$lfq
-#' bbMed <- estimate_intensity(lfq, method = "medpolish")
-#' bbRob <- estimate_intensity(lfq, method = "rlm")
-#' nrow(bbMed$data)
-#' nrow(bbRob$data)
-#' xt <- dplyr::inner_join(bbMed$data, bbRob$data)
-#' plot(xt$medpolish, xt$lmrob, log = "xy", pch = "*")
-#' abline(0, 1, col = 2)
-#'
-estimate_intensity <- function(lfqdata, method = c("medpolish", "rlm"), control = list()) {
+#' @noRd
+.estimate_intensity <- function(lfqdata, method = c("medpolish", "rlm"), control = list()) {
   method <- match.arg(method)
   control <- .aggregation_control(method, control)
   make_name <- if (method == "medpolish") "medpolish" else "lmrob"
@@ -309,20 +276,18 @@ estimate_intensity <- function(lfqdata, method = c("medpolish", "rlm"), control 
   pb <- .make_progress(nrow(xnested))
   # per-subject warnings (e.g. rlm or medpolish not converging) are collected with the subject id and returned
   ids <- .key_ids(xnested, hkeysd)
-  failures <- list()
-  res <- purrr::map(seq_len(nrow(xnested)), function(i) {
+  fits <- purrr::map(xnested$data, function(d) {
     pb$tick()
-    withCallingHandlers(
-      estimate(xnested$data[[i]]),
-      warning = function(w) {
-        failures[[length(failures) + 1L]] <<- tibble::tibble(id = ids[i], warning = conditionMessage(w))
-        invokeRestart("muffleWarning")
-      }
-    )
+    .fit_capturing_warnings(estimate, d)
   })
+  subject_warnings <- purrr::map(fits, "warnings")
+  failures <- tibble::tibble(
+    id = rep(ids, lengths(subject_warnings)),
+    warning = as.character(unlist(subject_warnings))
+  )
 
-  xnested[[make_name]] <- res
-  newconfig <- make_reduced_hierarchy_config(
+  xnested[[make_name]] <- purrr::map(fits, "fit")
+  newconfig <- .make_reduced_hierarchy_config(
     config,
     work_intensity = make_name,
     hierarchy = config$hierarchy_keys_depth(names = FALSE)
@@ -335,7 +300,7 @@ estimate_intensity <- function(lfqdata, method = c("medpolish", "rlm"), control 
   unnested <- .reestablish_condition(data, unnested, hkeysd, sname, fkeys, fname)
 
   result <- .add_nr_children(data, unnested, hkeysd, fname, response, nrc, newconfig)
-  result$failures <- dplyr::bind_rows(tibble::tibble(id = character(0), warning = character(0)), failures)
+  result$failures <- failures
   result
 }
 
@@ -348,21 +313,8 @@ estimate_intensity <- function(lfqdata, method = c("medpolish", "rlm"), control 
 #' @return a tibble with one row per aggregated element and the columns `hierarchy_id`, `data` (the feature
 #'   intensities), `other` (the aggregated intensities) and `plots` (ggplot objects of the feature intensities with
 #'   the aggregate drawn in black)
-#' @family plotting
-#' @family aggregation
-#' @keywords internal
-#' @export
-#' @examples
-#'
-#' istar <- sim_lfq_data_peptide_config()
-#' lfq <- LFQData$new(istar$data, istar$config)
-#' lfq <- lfq$get_Transformer()$log2()$lfq
-#' bbMed <- estimate_intensity(lfq, method = "medpolish")
-#' lfq_med <- LFQData$new(bbMed$data, bbMed$config)
-#' tmpMed <- plot_estimate(lfq, lfq_med)
-#' stopifnot("ggplot" %in% class(tmpMed$plots[[1]]))
-#'
-plot_estimate <- function(lfqdata, lfqdata_agg, show.legend = FALSE) {
+#' @noRd
+.plot_estimate <- function(lfqdata, lfqdata_agg, show.legend = FALSE) {
   plot_data <- .estimate_plot_data(lfqdata, lfqdata_agg)
   estimate_aes <- .estimate_aes(lfqdata$sample_name(), lfqdata_agg$response())
   plots <- vector(mode = "list", length = nrow(plot_data))
@@ -409,7 +361,7 @@ plot_estimate <- function(lfqdata, lfqdata_agg, show.legend = FALSE) {
 #' @param show.legend show the legend
 #' @noRd
 .estimate_plot <- function(plot_data, i, lfqdata, estimate_aes, show.legend) {
-  p <- plot_hierarchies_line(
+  p <- .plot_hierarchies_line(
     plot_data$data[[i]],
     plot_data$hierarchy_id[i],
     lfqdata = lfqdata,
@@ -429,27 +381,8 @@ plot_estimate <- function(lfqdata, lfqdata_agg, show.legend = FALSE) {
 #' @param .func function to use for aggregation
 #' @param N default 3 top intensities.
 #' @return list with data and new reduced configuration (config)
-#' @family aggregation
-#' @export
-#' @keywords internal
-#' @examples
-#'
-#' dd <- prolfqua::sim_lfq_data_peptide_config()
-#' lfq <- LFQData$new(dd$data, dd$config)
-#' ranked <- rank_peptide_by_intensity(lfq$data_long(), lfq$response(), lfq$hierarchy_keys())
-#'
-#' mean_f <- function(x, name = FALSE) {
-#'   if (name) return("mean")
-#'   mean(x, na.rm = TRUE)
-#' }
-#'
-#' resTOPN <- aggregate_intensity_top_n(ranked, lfq, .func = mean_f, N = 3)
-#' stopifnot(names(resTOPN) %in% c("data", "config"))
-#' lfq_agg <- LFQData$new(resTOPN$data, resTOPN$config)
-#' tmpRob <- plot_estimate(lfq, lfq_agg, show.legend = TRUE)
-#' stopifnot("ggplot" %in% class(tmpRob$plots[[4]]))
-#'
-aggregate_intensity_top_n <- function(ranked_data, lfqdata, .func, N = 3) {
+#' @noRd
+.aggregate_intensity_top_n <- function(ranked_data, lfqdata, .func, N = 3) {
   newcol <- make.names(paste0("srm_", .func(name = TRUE), "_", N))
   config <- lfqdata$get_config()$clone(deep = TRUE)
 
@@ -471,7 +404,7 @@ aggregate_intensity_top_n <- function(ranked_data, lfqdata, .func, N = 3) {
       .groups = "drop"
     )
 
-  newconfig <- make_reduced_hierarchy_config(
+  newconfig <- .make_reduced_hierarchy_config(
     config,
     work_intensity = newcol,
     hierarchy = config$hierarchy[seq_len(config$hierarchy_depth)]
@@ -611,17 +544,8 @@ nr_features_experiment <- function(data, hierarchy_keys, hierarchy_keys_depth, n
 #' @param response character - intensity column name
 #' @param hierarchy_keys character vector - all hierarchy column names
 #' @return data.frame
-#' @export
-#' @keywords internal
-#' @examples
-#'
-#' bb <- prolfqua::sim_lfq_data_peptide_config()
-#' lfq <- LFQData$new(bb$data, bb$config)
-#' res <- rank_peptide_by_intensity(lfq$data_long(), lfq$response(), lfq$hierarchy_keys())
-#' X <- res |> dplyr::select(c(lfq$hierarchy_keys(),
-#'  srm_meanInt, srm_meanIntRank)) |> dplyr::distinct()
-#' X |> dplyr::arrange(!!!rlang::syms(c(lfq$hierarchy_keys()[1], "srm_meanIntRank")))
-rank_peptide_by_intensity <- function(pdata, response, hierarchy_keys) {
+#' @noRd
+.rank_peptide_by_intensity <- function(pdata, response, hierarchy_keys) {
   summary_column <- "srm_meanInt"
   rank_column <- "srm_meanIntRank"
   # mean intensity of each precursor, ranked within its protein (hierarchy_keys[1])

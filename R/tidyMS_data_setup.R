@@ -332,41 +332,6 @@ setup_analysis <- function(data, configuration, debug = FALSE) {
   data
 }
 
-#' Separates hierarchy columns into starting columns
-#'
-#'
-#' @export
-#' @param data data.frame
-#' @param config AnalysisConfiguration
-#' @return `data` with each hierarchy key at the current depth split at `config$sep` into its component columns,
-#'   which are added after the key column
-#' @family configuration
-#' @keywords internal
-#' @examples
-#'
-#'
-#' bb <- sim_lfq_data_protein_config()
-#' dt <- separate_hierarchy(bb$data, bb$config)
-#' base::setdiff(colnames(dt) ,colnames(bb$data))
-#' stopifnot(ncol(dt) >= ncol(bb$data))
-#'
-separate_hierarchy <- function(data, config) {
-  for (hkey in config$hierarchy_keys_depth()) {
-    if (length(config$hierarchy[[hkey]]) == 1 && hkey == config$hierarchy[[hkey]]) {} else {
-      data <- data |>
-        tidyr::separate_wider_delim(
-          dplyr::all_of(hkey),
-          delim = config$sep,
-          names = config$hierarchy[[hkey]],
-          too_few = "align_start",
-          too_many = "drop",
-          cols_remove = FALSE
-        ) |>
-        dplyr::relocate(dplyr::all_of(hkey), .before = dplyr::all_of(config$hierarchy[[hkey]][1]))
-    }
-  }
-  data
-}
 
 #' Internal implementation for complete_cases (used by setup_analysis before LFQData exists)
 #' @param pdata long-format measurement table
@@ -390,20 +355,11 @@ separate_hierarchy <- function(data, config) {
 #' The tidy table does not need to contain missing data.
 #' This function re-establishes the missing observations in a sample.
 #'
-#' @export
 #' @param lfqdata [LFQData] object with the data and its configuration
 #' @return a tibble of the long-format data with one row for every combination of sample and hierarchy element;
 #'   added rows have `NA` intensities
-#' @keywords internal
-#' @family configuration
-#' @examples
-#'
-#' bb <- sim_lfq_data_protein_config()
-#' lfq <- LFQData$new(bb$data, bb$config)
-#' xx <- complete_cases(lfq)
-#' stopifnot(nrow(bb$data) <= nrow(xx))
-#'
-complete_cases <- function(lfqdata) {
+#' @noRd
+.complete_cases <- function(lfqdata) {
   .complete_cases_impl(
     lfqdata$data_long(),
     lfqdata$file_name(),
@@ -419,15 +375,8 @@ complete_cases <- function(lfqdata) {
 #' @param pdata tidy table
 #' @param hierarchy_keys_depth character vector - hierarchy columns at current depth
 #' @return a tibble with all rows of `pdata` for `size` randomly drawn hierarchy elements
-#' @export
-#' @keywords internal
-#' @family configuration
-#'
-#' @examples
-#' bb <- sim_lfq_data_peptide_config(n_proteins = 5)
-#' subset <- sample_subset(2, bb$data, bb$config$hierarchy_keys_depth())
-#' length(unique(subset[[bb$config$hierarchy_keys_depth()[1]]]))
-sample_subset <- function(size, pdata, hierarchy_keys_depth) {
+#' @noRd
+.sample_subset <- function(size, pdata, hierarchy_keys_depth) {
   hkdf <- pdata |> select(all_of(hierarchy_keys_depth)) |> distinct() |> dplyr::slice_sample(n = size)
   sdata <- inner_join(hkdf, pdata, by = hierarchy_keys_depth, relationship = "one-to-many")
   sdata

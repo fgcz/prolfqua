@@ -45,8 +45,8 @@ test_that("linfct_from_model on an rfit fit matches the lm scaffold", {
   fit <- prolfqua::strategy_rfit("y ~ Treatment * Background")$model_fun(d)
   m <- lm(fo, data = d)
 
-  lf_rfit <- prolfqua::linfct_from_model(fit, as_list = FALSE)
-  lf_lm <- prolfqua::linfct_from_model(m, as_list = FALSE)
+  lf_rfit <- .linfct_from_model(fit, as_list = FALSE)
+  lf_lm <- .linfct_from_model(m, as_list = FALSE)
   expect_equal(lf_rfit, lf_lm)
 })
 
@@ -154,7 +154,7 @@ test_that("rfit restores names when it falls back to the null model", {
   # Two groups whose medians do not separate: Rfit's rank fit is no better
   # than the intercept-only model, so rfit() returns the UNNAMED fallback
   # `c(median(y), 0)` at full QR rank. The adapter must restore the
-  # coefficient names from the design matrix, otherwise linfct_from_model()
+  # coefficient names from the design matrix, otherwise .linfct_from_model()
   # -> .model_coeff_matrix() propagates NULL column names and the contrast
   # path crashes in tibble::as_tibble() ("Columns must be named").
   d <- data.frame(
@@ -167,7 +167,7 @@ test_that("rfit restores names when it falls back to the null model", {
   expect_equal(names(stats::coef(fit)), c("(Intercept)", "G_T"))
   expect_equal(unname(stats::coef(fit)[2]), 0)
   # The downstream contrast machinery now works instead of crashing.
-  lf <- prolfqua::linfct_from_model(fit, as_list = FALSE)
+  lf <- .linfct_from_model(fit, as_list = FALSE)
   expect_false(is.null(colnames(lf)))
   expect_setequal(colnames(lf), c("(Intercept)", "G_T"))
 })

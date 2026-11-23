@@ -39,7 +39,7 @@ parse_contrast_sides <- function(contrasts) {
     coeffs <- coef(m)
   }
   interaction_columns <- intersect(attributes(terms(m))$term.labels, colnames(data))
-  data <- make_interaction_column(data, interaction_columns, sep = ":")
+  data <- .make_interaction_column(data, interaction_columns, sep = ":")
 
   inter <- unique(data$interaction)
   coeff_matrix <- matrix(0, nrow = length(inter), ncol = length(coeffs))
@@ -89,42 +89,10 @@ parse_contrast_sides <- function(contrasts) {
 #' @return if `as_list = TRUE`, a list with the matrices `linfct_factors` (one row per factor level) and
 #'   `linfct_interactions` (one row per observed factor combination), each with one column per model coefficient;
 #'   otherwise the two matrices bound by rows into a single matrix
-#' @family modelling
-#' @export
-#' @keywords internal
-#' @examples
-#'
-#' m <- sim_make_model_lm("factors")
-#' linfct <- linfct_from_model(m, as_list = TRUE)
-#'
-#' linfct$linfct_factors
-#' linfct$linfct_interactions
-#' lf <- matrix(
-#' c(1, 1, 1, 1, 0.5, 0.5, 0, 1, 0, 1, 0.5, 0.5),
-#' nrow = 4,
-#' byrow = FALSE,
-#' dimnames = list(c("BackgroundX", "BackgroundZ", "TreatmentA", "TreatmentB"),
-#'                 c("(Intercept)", "TreatmentB", "BackgroundZ"))
-#' )
-#' stopifnot(lf == linfct$linfct_factors)
-#' m <- sim_make_model_lm("interaction")
-#' linfct <- linfct_from_model(m)
-#'
-#' m <- lm(Petal.Width ~ Species, data = iris)
-#' linfct_from_model(m)
-#' xx <- data.frame( Y = 1:10 , Condition = c(rep("a",5), rep("b",5)) )
-#' m <- lm(Y ~ Condition, data = xx)
-#' linfct_from_model(m)
-#' xx <- data.frame( Y = 1:10 , Condition = c(rep("a",5), rep("b.b",5)) )
-#' m <- lm(Y ~ Condition, data = xx)
-#' linfct_from_model(m)
-#' xx <- data.frame( Y = 1:10 , Condition = c(rep("a",5), rep("ab",5)) )
-#' m <- lm(Y ~ Condition, data = xx)
-#' linfct_from_model(m)
-#'
 #' @srrstats {RE1.1} The article and linfct details show treatment-coded designs, cell means and tested interaction
 #'   weights.
-linfct_from_model <- function(m, as_list = TRUE) {
+#' @noRd
+.linfct_from_model <- function(m, as_list = TRUE) {
   coeff_result <- .model_coeff_matrix(m)
   sorted_coeff_matrix <- coeff_result$coeff_matrix[order(rownames(coeff_result$coeff_matrix)), ]
 
@@ -155,38 +123,13 @@ linfct_from_model <- function(m, as_list = TRUE) {
 #'   particular model is dropped with a warning. The returned matrix has one
 #'   row per estimable contrast and coefficient columns in model order.
 #'
-#' @export
 #' @param linfct linear functions as created by linfct_from_model
 #' @param contrasts named character vector of contrasts to determine linear functions for
 #' @param p.message print messages default FALSE
 #' @return a matrix with one row per computable contrast and one column per model coefficient
 #'
-#' @family modelling
-#' @keywords internal
-#' @examples
-#'
-#' m <- sim_make_model_lm( "factors")
-#' Contr <- c("TreatmentA_vs_B" = "TreatmentA - TreatmentB",
-#'     "BackgroundX_vs_Z" = "BackgroundX - BackgroundZ",
-#'     "IntoflintoA" = "`TreatmentA:BackgroundX` - `TreatmentA:BackgroundZ`",
-#'     "IntoflintoB" = "`TreatmentB:BackgroundX` - `TreatmentB:BackgroundZ`",
-#'     "IntoflintoX" = "`TreatmentA:BackgroundX` - `TreatmentB:BackgroundX`",
-#'     "IntoflintoZ" = "`TreatmentA:BackgroundZ` - `TreatmentB:BackgroundZ`",
-#'     "interactXZ" = "IntoflintoX - IntoflintoZ",
-#'     "interactAB" = "IntoflintoA - IntoflintoB"
-#'      )
-#' linfct <- linfct_from_model(m, as_list = FALSE)
-#' x <- linfct_matrix_contrasts(linfct, Contr )
-#' stopifnot(sum(x["interactXZ",]) == 0 )
-#' stopifnot(sum(x["interactAB",]) == 0 )
-#'
-#' m <- sim_make_model_lm( "interaction")
-#' linfct <- linfct_from_model(m, as_list = FALSE)
-#' x <- linfct_matrix_contrasts(linfct, Contr )
-#' stopifnot(sum(x["interactXZ",]) ==1 )
-#' stopifnot(sum(x["interactAB",]) ==1 )
-#'
-linfct_matrix_contrasts <- function(linfct, contrasts, p.message = FALSE) {
+#' @noRd
+.linfct_matrix_contrasts <- function(linfct, contrasts, p.message = FALSE) {
   # one coefficient vector per group; computed contrasts join them so later contrasts can use earlier ones
   terms <- stats::setNames(lapply(seq_len(nrow(linfct)), function(i) linfct[i, ]), rownames(linfct))
   computed <- character(0)
@@ -333,17 +276,9 @@ linfct_matrix_contrasts <- function(linfct, contrasts, p.message = FALSE) {
 #'   `std.error`, `statistic`, `p.value`, `conf.low` and `conf.high`; the estimates are `NA` for rows that use a
 #'   coefficient the model could not estimate
 #'
-#' @export
-#' @family modelling
-#' @keywords internal
-#' @examples
-#' m <- sim_make_model_lm( "factors")
-#' linfct <- linfct_from_model(m)$linfct_factors
-#' compute_contrast(m, linfct, confint = 0.95)
-#' compute_contrast(m, linfct, confint = 0.99)
-#'
 #' @srrstats {RE7.1} Tests recover exact group differences and exact paired-design means.
-compute_contrast <- function(m, linfct, confint = 0.95) {
+#' @noRd
+.compute_estimable_contrast <- function(m, linfct, confint = 0.95) {
   if (nrow(linfct) == 0L) {
     return(dplyr::bind_rows(list()))
   }
@@ -380,23 +315,8 @@ compute_contrast <- function(m, linfct, confint = 0.95) {
 #' @return a tibble with one row per row of `linfct` and columns `lhs`, `estimate`, `std.error`, `df`,
 #'   `statistic`, `conf.low`, `conf.high`, `p.value` and `sigma`; `NA` (with a warning) if `linfct` has no rows or
 #'   the model is rank-deficient
-#' @family modelling
-#' @export
-#' @keywords internal
-#' @examplesIf requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)
-#'
-#' mb <- sim_make_model_lmer("interaction")
-#' summary(mb)
-#'
-#' linfct <- linfct_from_model(mb)
-#' names(linfct)
-#' compute_lmer_contrast(mb, linfct$linfct_factors)
-#' compute_lmer_contrast(mb, linfct$linfct_interactions)
-#' length(lme4::fixef(mb))
-#' lmerTest::contest(mb, c( 0 ,1 , 0 , 0),joint = FALSE)
-#' summary(mb)
-#'
-compute_lmer_contrast <- function(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger")) {
+#' @noRd
+.compute_lmer_contrast <- function(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger")) {
   rlang::check_installed(c("lme4", "lmerTest"), reason = "for mixed model contrasts.")
   ddf <- match.arg(ddf)
   if (nrow(linfct) == 0L) {
@@ -477,20 +397,8 @@ pivot_model_contrasts_to_wide <- function(
 #' @return a tibble with one row per subject and row of `linfct`, holding the `subject_id` columns, the columns
 #'   returned by `contrastfun`, and `isSingular`, `sigma.model` and `df.residual.model`; subjects whose contrasts
 #'   failed are dropped with a warning
-#' @export
-#' @keywords internal
-#' @examples
-#' modelSummary_A <- sim_build_models_lm()
-#' m <- get_complete_model_fit(modelSummary_A$model_df)
-#'
-#' linfct <- linfct_from_model(m$linear_model[[1]], as_list = FALSE)
-#' factor_contrasts <- linfct_matrix_contrasts(linfct, c(A_vs_B = "TreatmentA - TreatmentB"))
-#'
-#' factor_levelContrasts <- contrasts_linfct( m,
-#'         factor_contrasts,
-#'         subject_id = "protein_Id",
-#'         contrastfun = prolfqua::compute_contrast)
-contrasts_linfct <- function(models, linfct, subject_id = "protein_Id", contrastfun = prolfqua::compute_lmer_contrast) {
+#' @noRd
+.contrasts_linfct <- function(models, linfct, subject_id = "protein_Id", contrastfun = .compute_lmer_contrast) {
   modelcol <- "linear_model"
 
   # Normalize: if linfct is a matrix, replicate it for each model
@@ -501,19 +409,14 @@ contrasts_linfct <- function(models, linfct, subject_id = "protein_Id", contrast
     abort_prolfqua("`linfct` must be a matrix or a list with one element per model.")
   }
 
-  interaction_models <- vector(mode = "list", length = nrow(models))
   pb <- .make_progress(nrow(models), label = "contrasts")
-  contrast_warnings <- character(0)
-  for (i in seq_along(models[[modelcol]])) {
-    interaction_models[[i]] <- withCallingHandlers(
-      contrastfun(models[[modelcol]][[i]], linfct = linfct[[i]]),
-      warning = function(w) {
-        contrast_warnings <<- c(contrast_warnings, conditionMessage(w))
-        invokeRestart("muffleWarning")
-      }
-    )
+  computed <- purrr::map2(models[[modelcol]], linfct, function(model, l) {
+    res <- .fit_capturing_warnings(contrastfun, model, linfct = l)
     pb$tick()
-  }
+    res
+  })
+  interaction_models <- purrr::map(computed, "fit")
+  contrast_warnings <- as.character(unlist(purrr::map(computed, "warnings")))
   interaction_model_matrix <- models
   interaction_model_matrix$contrast <- interaction_models
 

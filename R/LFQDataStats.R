@@ -61,8 +61,7 @@
 #' # Group size 1
 #' bb <- prolfqua::sim_lfq_data_peptide_config(n_per_group = 1)
 #' lfq1 <- LFQData$new(bb$data, bb$config)
-#' table_factors_size(lfq1$data_long(), lfq1$file_name(),
-#'   lfq1$sample_name(), lfq1$factor_keys(), lfq1$relevant_factor_keys())
+#' lfq1$factors()
 #' lfqdata <- LFQData$new(bb$data, bb$config)
 #' lfqstats <- lfqdata$get_Stats()
 #'
@@ -95,7 +94,7 @@ LFQDataStats <- R6::R6Class(
         "CV"
       }
 
-      tb <- table_factors_size(
+      tb <- .table_factors_size(
         lfqdata$data_long(),
         lfqdata$file_name(),
         lfqdata$sample_name(),
@@ -111,13 +110,13 @@ LFQDataStats <- R6::R6Class(
       }
 
       if (stats == "interaction") {
-        self$statsdf <- prolfqua::summarize_stats(self$lfq)
+        self$statsdf <- .summarize_stats(self$lfq)
       } else if (stats == "all") {
-        self$statsdf <- prolfqua::summarize_stats(self$lfq, factor_key = NULL)
+        self$statsdf <- .summarize_stats(self$lfq, factor_key = NULL)
       } else if (stats == "everything") {
         self$statsdf <- bind_rows(
-          prolfqua::summarize_stats(self$lfq),
-          prolfqua::summarize_stats(self$lfq, factor_key = NULL)
+          .summarize_stats(self$lfq),
+          .summarize_stats(self$lfq, factor_key = NULL)
         )
       }
     },
@@ -145,7 +144,7 @@ LFQDataStats <- R6::R6Class(
     #' Determine CV or sd for the quantiles
     #' @param probs for which quantile to determine CV or sd
     stats_quantiles = function(probs = c(0.1, 0.25, 0.5, 0.75, 0.9)) {
-      res <- prolfqua::summarize_stats_quantiles(
+      res <- .summarize_stats_quantiles(
         self$stats(),
         self$lfq$relevant_factor_keys(),
         stats = self$stat,
@@ -158,7 +157,7 @@ LFQDataStats <- R6::R6Class(
     #' @param ggstat either density or ecdf
     #' @return ggplot
     density = function(ggstat = c("density", "ecdf")) {
-      prolfqua::plot_stat_density(
+      .plot_stat_density(
         self$stats(),
         self$lfq$factor_keys()[1],
         stat = self$stat,
@@ -170,7 +169,7 @@ LFQDataStats <- R6::R6Class(
     #' @param ggstat either density of ecdf
     #' @return ggplot
     density_median = function(ggstat = c("density", "ecdf")) {
-      prolfqua::plot_stat_density_median(
+      .plot_stat_density_median(
         self$stats(),
         self$lfq$factor_keys()[1],
         stat = self$stat,
@@ -182,7 +181,7 @@ LFQDataStats <- R6::R6Class(
     #' @param ggstat either density of ecdf
     #' @return ggplot
     violin = function() {
-      prolfqua::plot_stat_violin(self$stats(), self$lfq$relevant_factor_keys(), stat = self$stat)
+      .plot_stat_violin(self$stats(), self$lfq$relevant_factor_keys(), stat = self$stat)
     },
     #' @description
     #' plot violinplot of CV or sd for the 50% of low intensity data and 50% of high intensity data
@@ -190,7 +189,7 @@ LFQDataStats <- R6::R6Class(
     #' @return ggplot
     #'
     violin_median = function() {
-      prolfqua::plot_stat_violin_median(self$stats(), self$lfq$factor_keys()[1], stat = self$stat)
+      .plot_stat_violin_median(self$stats(), self$lfq$factor_keys()[1], stat = self$stat)
     },
     #' @description
     #' plot sd vs mean
@@ -198,7 +197,7 @@ LFQDataStats <- R6::R6Class(
     #' @return ggplot
     #'
     stdv_vs_mean = function(size = 200) {
-      prolfqua::plot_stdv_vs_mean(self$stats(), self$lfq$relevant_factor_keys(), size = size)
+      .plot_stdv_vs_mean(self$stats(), self$lfq$relevant_factor_keys(), size = size)
     },
     #' @description
     #' compute sample size for entire dataset
@@ -219,7 +218,7 @@ LFQDataStats <- R6::R6Class(
         )
       }
       res <- self$stats_quantiles(probs)
-      res <- lfq_power_t_test_quantiles(res$long, delta = delta, power = power, sig.level = sig.level)
+      res <- .lfq_power_t_test_quantiles(res$long, delta = delta, power = power, sig.level = sig.level)
       res
     },
     #' @description
@@ -236,7 +235,7 @@ LFQDataStats <- R6::R6Class(
         abort_bad_argument("lfqdata", "be transformed, e.g. with `get_Transformer()$log2()`, before `power_t_test()`")
       }
 
-      res <- prolfqua::lfq_power_t_test_proteins(
+      res <- .lfq_power_t_test_proteins(
         self$stats(),
         delta = delta,
         power = power,
@@ -265,7 +264,7 @@ LFQDataStats <- R6::R6Class(
           "be transformed, e.g. with `get_Transformer()$log2()`, before `power_fdr_pilot()`"
         )
       }
-      pooled <- poolvar(summarize_stats(self$lfq), self$lfq$get_config())
+      pooled <- .poolvar(.summarize_stats(self$lfq), self$lfq$get_config())
       if (!any(is.finite(pooled$df) & pooled$df > 0)) {
         abort_bad_argument("lfqdata", "have within-group replication; power_fdr_pilot needs replicates")
       }

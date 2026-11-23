@@ -182,8 +182,8 @@ test_that("moderated_p_limma leaves NA variances out of the prior", {
     std.error = c(0.38, 0.33, 0.4, 0.4, 0.41, NA),
     diff = c(0.8, -0.6, 0.2, 1.2, -0.9, 2)
   )
-  with_na <- moderated_p_limma(contrast_df)
-  reference <- moderated_p_limma(contrast_df[1:5, ])
+  with_na <- .moderated_p_limma(contrast_df)
+  reference <- .moderated_p_limma(contrast_df[1:5, ])
   expect_equal(with_na$moderated.p.value[1:5], reference$moderated.p.value)
   expect_true(is.na(with_na$moderated.p.value[6]))
 })
@@ -223,7 +223,7 @@ test_that("moderation with equal variances ignores an NA residual df for the pri
     std.error = rep(0.3, 5),
     diff = c(0.6, -0.3, 0.15, 0.9, -0.6)
   )
-  res <- moderated_p_limma(contrast_df)
+  res <- .moderated_p_limma(contrast_df)
   expect_true(all(is.finite(res$moderated.df.prior)))
   expect_true(all(is.finite(res$moderated.p.value[!is.na(contrast_df$df)])))
 })

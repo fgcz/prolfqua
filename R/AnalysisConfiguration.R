@@ -237,22 +237,12 @@ list_to_analysis_configuration <- function(dd) {
 
 
 #' Make reduced hierarchy configuration
-#' @export
-#' @keywords internal
 #' @param config AnalysisConfiguration
 #' @param work_intensity work intensity column
 #' @param hierarchy new reduced hierarchy
-#' @family configuration
 #' @return AnalysisConfiguration with reduced hierarchy
-#' @examples
-#' bb <- prolfqua::sim_lfq_data_peptide_config()
-#'
-#' red <- make_reduced_hierarchy_config(bb$config,
-#'  "testintensity",
-#'  bb$config$hierarchy[1])
-#' stopifnot(red$get_response() == "testintensity")
-#' stopifnot(length(red$hierarchy) == 1)
-make_reduced_hierarchy_config <- function(config, work_intensity, hierarchy) {
+#' @noRd
+.make_reduced_hierarchy_config <- function(config, work_intensity, hierarchy) {
   new_config <- config$clone(deep = TRUE)
   new_config$hierarchy <- hierarchy
   new_config$work_intensity <- work_intensity

@@ -39,9 +39,7 @@ stopifnot(min(xd$nr_features_exp) == 1)
 \seealso{
 Other hierarchy counting:
 \code{\link{HierarchyCountsSample}},
-\code{\link[=hierarchy_counts]{hierarchy_counts()}},
 \code{\link[=nr_children_experiment]{nr_children_experiment()}},
-\code{\link[=nr_obs_sample]{nr_obs_sample()}},
-\code{\link[=summarize_hierarchy]{summarize_hierarchy()}}
+\code{\link[=nr_obs_sample]{nr_obs_sample()}}
 }
 \concept{hierarchy counting}

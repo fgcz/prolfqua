@@ -1,19 +1,19 @@
-#' Keep the `top_n` most variable features for the intensity heatmap.
+#' Keep the `n_most_variable` most variable features for the intensity heatmap.
 #'
 #' Ranks features by their prolfqua variability statistic (CV for untransformed
 #' data, sd for transformed data; see LFQDataStats) and keeps the most variable.
 #' The heatmap clusters rows with stats::hclust, which errors above 65536
 #' features, so this keeps clustering feasible (and the plot legible) for
 #' peptide-list / entrapment searches with tens of thousands of degenerate
-#' protein groups. `top_n = NULL` / non-finite keeps all features.
+#' protein groups. `n_most_variable = NULL` / non-finite keeps all features.
 #' Returns a subset of wide$data in the original row order.
 #' @param lfqdata [LFQData] object with the data and its configuration
 #' @param wide wide-format data, row identifiers and sample annotations
-#' @param top_n maximum number of variable features to retain
+#' @param n_most_variable maximum number of variable features to retain
 #' @noRd
-.select_most_variable_features <- function(lfqdata, wide, top_n) {
+.select_most_variable_features <- function(lfqdata, wide, n_most_variable) {
   mat <- wide$data
-  if (is.null(top_n) || !is.finite(top_n) || nrow(mat) <= top_n) {
+  if (is.null(n_most_variable) || !is.finite(n_most_variable) || nrow(mat) <= n_most_variable) {
     return(mat)
   }
   lfqstats <- lfqdata$get_Stats(stats = "all")
@@ -27,7 +27,7 @@
     by = keys,
     relationship = "one-to-one"
   )
-  keep <- utils::head(order(ranked[[metric]], decreasing = TRUE, na.last = TRUE), top_n)
+  keep <- utils::head(order(ranked[[metric]], decreasing = TRUE, na.last = TRUE), n_most_variable)
   mat[sort(keep), , drop = FALSE]
 }
 
@@ -72,8 +72,6 @@
 #' stopifnot(class(lfqplotter$sample_correlation()) == "list")
 #' stopifnot(methods::is(lfqplotter$raster(), "Heatmap"))
 #' stopifnot("upset" == class(lfqplotter$upset_missing()))
-#' wide <- lfqdata$data_wide(as.matrix = TRUE)
-#' stopifnot(class(prolfqua::plot_sample_correlation(wide$data)) == "list")
 #'
 #'
 LFQDataPlotter <- R6::R6Class(
@@ -110,7 +108,7 @@ LFQDataPlotter <- R6::R6Class(
     ) {
       arrange <- match.arg(arrange)
       wide <- self$lfq$data_wide(as.matrix = TRUE)
-      fig <- prolfqua::plot_raster(
+      fig <- .plot_raster(
         wide$data,
         wide$annotation,
         self$lfq$factor_keys(),
@@ -135,12 +133,15 @@ LFQDataPlotter <- R6::R6Class(
     #' Without the z-scoring, the proteins would group according
     #' to their abundance, e.g., high abundant proteins would be one cluster.
     #'
-    #' Only the \code{top_n} most variable features are shown. Row clustering
-    #' uses \code{stats::hclust}, which errors above 65536 features, so the rows
-    #' are ranked by their variability statistic (CV for untransformed data, sd
-    #' for transformed data; see \code{\link{LFQDataStats}}) and the most
-    #' variable are kept. This keeps the heatmap feasible and legible for
+    #' By default only the \code{n_most_variable} most variable features are shown and the rows are clustered.
+    #' Row clustering uses \code{stats::hclust}, which errors above 65536 features, so the rows are ranked by
+    #' their variability statistic (CV for untransformed data, sd for transformed data; see
+    #' \code{\link{LFQDataStats}}) and the most variable are kept. This keeps the heatmap feasible and legible for
     #' peptide-list / entrapment searches with tens of thousands of features.
+    #'
+    #' With \code{row_order}, the heatmap shows exactly these features in this order, without clustering. Use it
+    #' to compare two states of the same data row by row, e.g. before and after imputation: imputation changes the
+    #' per-feature sd, so the most variable set and the clustering would differ between the two heatmaps.
     #'
     #' @param na_fraction maximum fraction of missing values per row. The default
     #'   keeps every row that can be meaningfully z-scored.
@@ -148,19 +149,42 @@ LFQDataPlotter <- R6::R6Class(
     #' @param max_rownames_chars maximum displayed row label length
     #' @param max_sample_label_chars maximum displayed sample label length.
     #'   Labels keep their suffix because sample prefixes are often shared.
-    #' @param top_n keep the \code{top_n} most variable features (default 1000);
-    #'   \code{NULL} or \code{Inf} keeps all features.
+    #' @param n_most_variable keep the \code{n_most_variable} most variable features (default 1000);
+    #'   \code{NULL} or \code{Inf} keeps all features. Not together with \code{row_order}.
+    #' @param row_order feature IDs (rownames of \code{LFQData$data_wide()}) to show, in this order, without row
+    #'   clustering; default \code{NULL} selects and clusters the most variable features.
+    #' @param top_n deprecated, use \code{n_most_variable}
     #' @return ComplexHeatmap::Heatmap
     heatmap = function(
       na_fraction = 1,
       rownames = FALSE,
       max_rownames_chars = 60,
       max_sample_label_chars = 20,
-      top_n = 1000
+      n_most_variable = 1000,
+      row_order = NULL,
+      top_n
     ) {
+      if (!missing(top_n)) {
+        n_most_variable <- .deprecate_arg("top_n", "n_most_variable", top_n)
+      }
       wide <- self$lfq$data_wide(as.matrix = TRUE)
-      data <- .select_most_variable_features(self$lfq, wide, top_n)
-      fig <- prolfqua::plot_heatmap(
+      if (is.null(row_order)) {
+        data <- .select_most_variable_features(self$lfq, wide, n_most_variable)
+      } else {
+        if (!missing(n_most_variable) || !missing(top_n)) {
+          abort_bad_argument("row_order", "be NULL when `n_most_variable` is given; use one of the two")
+        }
+        unknown <- setdiff(row_order, rownames(wide$data))
+        if (length(unknown) > 0L) {
+          abort_bad_argument(
+            "row_order",
+            "hold feature IDs of `data_wide()`",
+            not = paste0("unknown IDs ", toString(unknown))
+          )
+        }
+        data <- wide$data[row_order, , drop = FALSE]
+      }
+      fig <- .plot_heatmap(
         data,
         wide$annotation,
         self$lfq$factor_keys(),
@@ -168,7 +192,8 @@ LFQDataPlotter <- R6::R6Class(
         na_fraction = na_fraction,
         show_rownames = rownames,
         max_rownames_chars = max_rownames_chars,
-        max_sample_label_chars = max_sample_label_chars
+        max_sample_label_chars = max_sample_label_chars,
+        cluster_rows = is.null(row_order)
       )
       fig
     },
@@ -178,16 +203,17 @@ LFQDataPlotter <- R6::R6Class(
     #' The Spearman correlation among all samples
     #' is computed. Then the euclidean distance is used to compute the distances.
     #'
-    #' @seealso \code{\link{plot_heatmap_cor}}
     #'
     #' @param max_sample_label_chars maximum displayed sample label length.
     #'   Labels keep their suffix because sample prefixes are often shared.
-    #' @param method correlation method or function, see \code{\link{plot_heatmap_cor}}
+    #' @param method correlation method: \code{"pearson"} (default), \code{"spearman"} or \code{"kendall"} for
+    #'   \code{stats::cor()} on pairwise complete observations, or a function of the matrix returning a
+    #'   sample-by-sample correlation matrix
     #' @return ComplexHeatmap::Heatmap
     #'
     heatmap_cor = function(max_sample_label_chars = 20, method = "pearson") {
       wide <- self$lfq$data_wide(as.matrix = TRUE)
-      fig <- prolfqua::plot_heatmap_cor(
+      fig <- .plot_heatmap_cor(
         wide$data,
         wide$annotation,
         self$lfq$factor_keys(),
@@ -204,7 +230,6 @@ LFQDataPlotter <- R6::R6Class(
     #' Features with missing values are removed. To keep all features, impute
     #' first, e.g. with \code{\link{AggregateLimpa}} in \code{impute_only} mode.
     #'
-    #' @seealso \code{\link{plot_pca}}
     #'
     #' @param add_txt show sample names
     #' @param PC default c(1,2) - first and second principal component
@@ -212,7 +237,7 @@ LFQDataPlotter <- R6::R6Class(
     #' @return ggplot
     pca = function(PC = c(1, 2), add_txt = TRUE, nudge = 0.1) {
       wide <- self$lfq$data_wide(as.matrix = TRUE)
-      fig <- prolfqua::plot_pca(
+      fig <- .plot_pca(
         wide$data,
         wide$annotation,
         self$lfq$sample_name(),
@@ -238,7 +263,7 @@ LFQDataPlotter <- R6::R6Class(
     #' @param facet enable facet wrap if hierarchy_depth less then hierarchy length.
     #' @return tibble with column boxplots containing ggplot objects
     boxplots = function(facet = TRUE) {
-      prolfqua::plot_hierarchies_boxplot_df(
+      .plot_hierarchies_boxplot_df(
         self$lfq$data_long(),
         self$lfq,
         hierarchy = self$lfq$relevant_hierarchy_keys(),
@@ -249,7 +274,7 @@ LFQDataPlotter <- R6::R6Class(
     #' histogram of intensities given number of missing in conditions
     #' @return ggplot
     missingness_histogram = function() {
-      prolfqua::missingness_histogram(self$lfq)
+      .missingness_histogram(self$lfq)
     },
     #' @description
     #' Deprecated; use `$missingness_histogram()`.
@@ -264,7 +289,7 @@ LFQDataPlotter <- R6::R6Class(
     #' @return ComplexHeatmap::Heatmap
     na_heatmap = function() {
       wide <- self$lfq$data_wide(as.matrix = TRUE)
-      prolfqua::plot_na_heatmap(
+      .plot_na_heatmap(
         wide$data,
         wide$annotation,
         self$lfq$factor_keys(),
@@ -279,7 +304,7 @@ LFQDataPlotter <- R6::R6Class(
     #'   display.
     #' @return ggplot
     intensity_distribution_density = function(legend = NA, max_legend_samples = 16) {
-      prolfqua::plot_intensity_distribution_density(
+      .plot_intensity_distribution_density(
         self$lfq$data_long(),
         self$lfq$sample_name(),
         self$lfq$response(),
@@ -292,7 +317,7 @@ LFQDataPlotter <- R6::R6Class(
     #' Violinplot showing distribution of intensities in all samples
     #' @return ggplot
     intensity_distribution_violin = function() {
-      prolfqua::plot_intensity_distribution_violin(
+      .plot_intensity_distribution_violin(
         self$lfq$data_long(),
         self$lfq$sample_name(),
         self$lfq$response(),
@@ -314,22 +339,24 @@ LFQDataPlotter <- R6::R6Class(
         lfq <- lfq$get_copy()
         lfq$set_data(dplyr::filter(lfq$data_long(), .data[[sample_col]] %in% .env$limit))
       }
-      prolfqua::pairs_smooth(lfq$data_wide(as.matrix = TRUE)$data)
+      .pairs_smooth(lfq$data_wide(as.matrix = TRUE)$data)
       NULL
     },
     #' @description
     #' plot of sample correlations
-    #' @param method correlation method or function, see \code{\link{plot_heatmap_cor}}
+    #' @param method correlation method: \code{"pearson"} (default), \code{"spearman"} or \code{"kendall"} for
+    #'   \code{stats::cor()} on pairwise complete observations, or a function of the matrix returning a
+    #'   sample-by-sample correlation matrix
     #' @return NULL
     sample_correlation = function(method = "pearson") {
-      prolfqua::plot_sample_correlation(self$lfq$data_wide(as.matrix = TRUE)$data, method = method)
+      .plot_sample_correlation(self$lfq$data_wide(as.matrix = TRUE)$data, method = method)
     },
     #' @description
     #' upset plot based on presence absence information
     #' @return plot
     upset_missing = function() {
       rlang::check_installed("UpSetR", reason = "for UpSet plots.")
-      pups <- prolfqua::upset_missing_stats(self$lfq)
+      pups <- .upset_missing_stats(self$lfq)
       res <- UpSetR::upset(pups$data, order.by = "freq", nsets = pups$nsets)
       res
     },
@@ -361,7 +388,7 @@ LFQDataPlotter <- R6::R6Class(
       for (i in seq_len(nrow(xnested))) {
         pb$tick()
         .render_plot_to_device(
-          prolfqua::plot_hierarchies_boxplot(xnested$data[[i]], ids[i], self$lfq, facet_grid_on = facet_grid_on)
+          .plot_hierarchies_boxplot(xnested$data[[i]], ids[i], self$lfq, facet_grid_on = facet_grid_on)
         )
       }
       invisible(fpath)

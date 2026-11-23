@@ -106,7 +106,7 @@ plot_lrt_diagnostics <- function(result, model_name, model_name_int, path) {
 #' @return
 #' a object of class \code{\link{Model}}
 #' @family modelling
-#' @seealso \code{\link{model_analyse}}, \code{\link{strategy_lmer}} \code{\link{strategy_lm}}
+#' @seealso \code{\link{strategy_lmer}}, \code{\link{strategy_lm}}
 #'
 #' @export
 #' @examplesIf requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)
@@ -131,7 +131,7 @@ plot_lrt_diagnostics <- function(result, model_name, model_name_int, path) {
 #'  LFQData$new(D$data, D$config),
 #'  formula_randomPeptide,
 #'  model_name = model_name)
-#' model_summary(mod)
+#' head(mod$get_coefficients())
 #'
 #'
 #' @srrstats {G2.14b} Fits omit missing responses; the model's provenance counts them per subject and build_model()
@@ -166,7 +166,7 @@ build_model <- function(
       abort_missing_columns(missing)
     }
   }
-  modelling_result <- model_analyse(nested_data, model_strategy, model_name = model_name, subject_id = subject_id)
+  modelling_result <- .model_analyse(nested_data, model_strategy, model_name = model_name, subject_id = subject_id)
   Model$new(
     model_df = modelling_result$model_df,
     model_strategy = model_strategy,
@@ -454,29 +454,6 @@ impute_from_model <- function(model, lfqdata) {
     function(v) all(newdata[[v]] %in% fit$xlevels[[v]]),
     logical(1)
   ))
-}
-
-
-#' Summarize modelling and error reporting
-#' @param mod model table see \code{\link{build_model}}
-#' @return a list with the tables `exists` (counts of subjects with and without a model fit) and `isSingular`
-#'   (counts of singular and non-singular fits)
-#' @keywords internal
-#' @family modelling
-#' @export
-#' @examplesIf requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)
-#' D <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 20, weight_missing = 0.1)
-#' formula_rp <- strategy_lmer("abundance ~ group_ + (1 | peptide_Id) + (1 | sampleName)")
-#' mod <- prolfqua::build_model(
-#'   LFQData$new(D$data, D$config), formula_rp)
-#' res <- model_summary(mod)
-#' stopifnot(is.list(res))
-#' stopifnot(all(c("exists", "isSingular") %in% names(res)))
-model_summary <- function(mod) {
-  res <- list()
-  res$exists <- table(mod$model_df$has_model_fit)
-  res$isSingular <- table(mod$model_df$isSingular)
-  res
 }
 
 
@@ -874,14 +851,8 @@ impute_refit_singular <- function(
 #' @param complete_models model table, the `model_df` of [model_analyse()]
 #' @return the rows of `complete_models` that have a model fit, the maximal number of estimated coefficients and
 #'   more than one residual degree of freedom
-#' @keywords internal
-#' @family modelling
-#' @export
-#' @examplesIf requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)
-#' x <- sim_build_models_lmer(model = "factors", n_proteins = 10)
-#' cfits <- get_complete_model_fit(x$model_df)
-#' stopifnot(nrow(cfits) == 6)
-get_complete_model_fit <- function(complete_models) {
+#' @noRd
+.get_complete_model_fit <- function(complete_models) {
   complete_models <- complete_models |> dplyr::filter(.data$has_model_fit)
   # One maximum over all fits: model_df is grouped by subject, so max() inside filter() would be per fit.
   max_coef <- max(complete_models$nr_coef_not_NA)
@@ -909,25 +880,13 @@ get_complete_model_fit <- function(complete_models) {
 #' @return a list with `model_name` and `model_df`, a tibble with one row per subject holding the nested `data`,
 #'   the fitted `linear_model` (the error message for a failed fit), `fit_warnings`, `has_model_fit`,
 #'   `isSingular`, `df.residual`, `sigma`, `nr_coef`, `nr_coef_not_NA`, `converged` and `iterations`
-#' @export
-#' @family modelling
-#' @keywords internal
-#' @examplesIf requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)
-#'
-#' x <- sim_lfq_data_peptide_config()
-#' formula_randomPeptide <-
-#'   strategy_lmer("abundance  ~ group_ + (1 | peptide_Id)")
-#' mr <- model_analyse( x$data,
-#'  formula_randomPeptide,
-#'  subject_id = x$config$hierarchy_keys_depth())
-#' stopifnot(nrow(get_complete_model_fit(mr$model_df)) == 6)
-#'
 #' @srrstats {RE3.1} model_analyse keeps each subject's fit error and fit warnings (e.g. non-convergence) in
 #'   model_df and the model's provenance; the one summary warning per step can be suppressed while $provenance()
 #'   keeps the record.
 #' @srrstats {RE4.7} model_df keeps per subject `converged` and `iterations` (rlm, glm and Firth, lmer optimizer,
 #'   logistf; NA where the backend keeps no status, e.g. rfit), counted as `not_converged` in the fit status.
-model_analyse <- function(
+#' @noRd
+.model_analyse <- function(
   pepIntensity,
   model_strategy,
   subject_id = "protein_Id",
@@ -978,20 +937,22 @@ model_analyse <- function(
 }
 
 
-#' Run one fit and return it with the warnings it raised (muffled), for recording in the model's provenance
+#' Run one fit and return it with the warnings it raised, for recording in the model's provenance
+#'
+#' `purrr::quietly()` returns the warnings as a value; it also captures messages and printed output, which are
+#' passed on unchanged so the console shows what it showed before.
 #' @param fun fitting function
 #' @param ... passed to fun
 #' @noRd
 .fit_capturing_warnings <- function(fun, ...) {
-  warnings <- character(0)
-  fit <- withCallingHandlers(
-    fun(...),
-    warning = function(w) {
-      warnings <<- c(warnings, conditionMessage(w))
-      invokeRestart("muffleWarning")
-    }
-  )
-  list(fit = fit, warnings = unique(warnings))
+  captured <- purrr::quietly(fun)(...)
+  if (nzchar(captured$output)) {
+    cat(captured$output, "\n", sep = "")
+  }
+  for (msg in captured$messages) {
+    message(msg, appendLF = FALSE)
+  }
+  list(fit = captured$result, warnings = unique(captured$warnings))
 }
 
 #' Record the per-subject fit outcomes of a model_df in a provenance log

@@ -68,7 +68,7 @@ test_that("strategy_binomial matches an independent quasibinomial fit", {
     nrow = 1,
     dimnames = list("B_vs_A", names(stats::coef(fit)))
   )
-  contrast <- compute_contrast(fit, linfct)
+  contrast <- .compute_estimable_contrast(fit, linfct)
   expect_equal(contrast$estimate, unname(stats::coef(fit)[["group_B"]]))
   expect_equal(
     contrast$std.error,
@@ -160,8 +160,8 @@ test_that("moderated_p_limma applies an optional posterior variance floor", {
     diff = c(0.8, -0.6, 0.2, 1.2, -0.9)
   )
 
-  unbounded <- moderated_p_limma(contrast_df)
-  bounded <- moderated_p_limma(contrast_df, variance_floor = 1)
+  unbounded <- .moderated_p_limma(contrast_df)
+  bounded <- .moderated_p_limma(contrast_df, variance_floor = 1)
 
   expect_true(any(unbounded$moderated.var.post < 1))
   expect_true(all(bounded$moderated.var.post >= 1))
@@ -172,9 +172,9 @@ test_that("moderated_p_limma applies an optional posterior variance floor", {
     contrast_df$statistic[bounded_rows] * contrast_df$sigma[bounded_rows]
   )
 
-  unchanged <- moderated_p_limma(contrast_df, variance_floor = NULL)
+  unchanged <- .moderated_p_limma(contrast_df, variance_floor = NULL)
   expect_equal(unchanged, unbounded)
-  expect_error(moderated_p_limma(contrast_df, variance_floor = Inf), "positive number")
+  expect_error(.moderated_p_limma(contrast_df, variance_floor = Inf), "positive number")
 })
 
 test_that("moderated_p_limma variance floor keeps the prior df of rows above the floor", {
@@ -186,8 +186,8 @@ test_that("moderated_p_limma variance floor keeps the prior df of rows above the
   )
   contrast_df$std.error <- contrast_df$diff / contrast_df$statistic
 
-  unbounded <- moderated_p_limma(contrast_df)
-  bounded <- moderated_p_limma(contrast_df, variance_floor = 1)
+  unbounded <- .moderated_p_limma(contrast_df)
+  bounded <- .moderated_p_limma(contrast_df, variance_floor = 1)
   above <- unbounded$moderated.var.post >= 1
   expect_true(any(above) && any(!above))
 

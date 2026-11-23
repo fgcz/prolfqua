@@ -6,7 +6,7 @@
 
 test_that("log transforms set zeros to NA and return which", {
   for (fun in list(log, log2, log10)) {
-    res <- transform_work_intensity(data.frame(x = c(0, 1)), "x", fun, "f")
+    res <- .transform_work_intensity(data.frame(x = c(0, 1)), "x", fun, "f")
     expect_identical(res$data$f_x, c(NA, 0))
     expect_identical(res$zeros, c(TRUE, FALSE))
   }
@@ -14,7 +14,7 @@ test_that("log transforms set zeros to NA and return which", {
 
 test_that("log transforms warn before negative values become NaN", {
   withCallingHandlers(
-    expect_warning(transform_work_intensity(data.frame(x = c(-1, 1)), "x", log2), "negative values.*NaN"),
+    expect_warning(.transform_work_intensity(data.frame(x = c(-1, 1)), "x", log2), "negative values.*NaN"),
     warning = function(w) {
       if (grepl("NaNs produced", conditionMessage(w), fixed = TRUE)) invokeRestart("muffleWarning")
     }
@@ -28,7 +28,7 @@ test_that("repeated log transformation warns", {
 })
 
 test_that("zero MAD warns and skips division by zero", {
-  expect_warning(result <- robust_scale(matrix(1, 3, 3)), "MAD values are zero")
+  expect_warning(result <- .robust_scale(matrix(1, 3, 3)), "MAD values are zero")
   expect_true(all(is.finite(result)))
 })
 
@@ -58,7 +58,7 @@ test_that("empty heatmaps warn with the plotting function name", {
   skip_if_not_installed("ComplexHeatmap")
   skip_if_not_installed("circlize")
   expect_warning(
-    plot_heatmap(matrix(numeric(), 0, 2), data.frame(), "group", "sample"),
+    .plot_heatmap(matrix(numeric(), 0, 2), data.frame(), "group", "sample"),
     "plot_heatmap: the dataset has no rows"
   )
 })
@@ -67,7 +67,7 @@ test_that("single-row rasters warn with the plotting function name", {
   skip_if_not_installed("ComplexHeatmap")
   skip_if_not_installed("circlize")
   expect_warning(
-    plot_raster(matrix(1, 1, 2), data.frame(), "group", "sample"),
+    .plot_raster(matrix(1, 1, 2), data.frame(), "group", "sample"),
     "plot_raster: the dataset needs at least two rows"
   )
 })
@@ -82,20 +82,10 @@ test_that("Firth ANOVA histogram reports its unimplemented method", {
   expect_warning(model$anova_histogram(), "`anova_histogram\\(\\)` is not implemented")
 })
 
-test_that("copying an absent package script warns", {
-  expect_warning(script_copy_helper_vec("not-a-package-file", workdir = tempdir()), "Could not copy script file")
-})
-
-test_that("copying a script over an existing file without overwrite warns", {
-  path <- withr::local_tempdir()
-  file.create(file.path(path, "CITATION"))
-  expect_warning(script_copy_helper_vec("CITATION", workdir = path, overwrite = FALSE), "Could not copy script file")
-})
-
 test_that("failed contrasts report how many proteins were dropped", {
   models <- tibble::tibble(protein_Id = "p1", linear_model = list(NULL), isSingular = TRUE, sigma = 1, df.residual = 3)
   expect_warning(
-    contrasts_linfct(models, matrix(1), contrastfun = function(...) NA),
+    .contrasts_linfct(models, matrix(1), contrastfun = function(...) NA),
     "contrasts_linfct: dropped 1 of 1 proteins"
   )
 })
@@ -104,22 +94,18 @@ test_that("mixed-model contrast dimension mismatches warn", {
   skip_if_not_installed("lmerTest")
   skip_if_not_installed("lme4")
   model <- lmerTest::lmer(Reaction ~ Days + (1 | Subject), data = lme4::sleepstudy)
-  expect_warning(compute_lmer_contrast(model, matrix(1, 1, 3)), "rank-deficient")
+  expect_warning(.compute_lmer_contrast(model, matrix(1, 1, 3)), "rank-deficient")
 })
 
 test_that("empty mixed-model contrasts warn", {
   skip_if_not_installed("lmerTest")
   skip_if_not_installed("lme4")
   model <- lmerTest::lmer(Reaction ~ Days + (1 | Subject), data = lme4::sleepstudy)
-  expect_warning(compute_lmer_contrast(model, matrix(numeric(), 0, 2)), "No estimable contrast")
+  expect_warning(.compute_lmer_contrast(model, matrix(numeric(), 0, 2)), "No estimable contrast")
 })
 
 test_that("accession parsing warns when no accessions match", {
   expect_warning(get_uniprot_id_from_fasta_header(data.frame(protein_Id = "not-an-accession")), "No SwissProt")
-})
-
-test_that("conversion warns when there are no row names to preserve", {
-  expect_warning(matrix_to_tibble(matrix(1, 2, 2)), "No row names to preserve")
 })
 
 test_that("heatmaps warn when every feature has zero variation", {
@@ -127,7 +113,7 @@ test_that("heatmaps warn when every feature has zero variation", {
   skip_if_not_installed("circlize")
   x <- matrix(1, 2, 3, dimnames = list(NULL, paste0("s", 1:3)))
   expect_warning(
-    plot_heatmap(x, data.frame(sample = paste0("s", 1:3), group = "A"), "group", "sample"),
+    .plot_heatmap(x, data.frame(sample = paste0("s", 1:3), group = "A"), "group", "sample"),
     "No features have enough observed variation"
   )
 })

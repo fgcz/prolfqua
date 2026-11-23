@@ -13,11 +13,7 @@ R6 class representing modelling result
 \dontshow{if (requireNamespace("logistf", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
-istar$data <- prolfqua::encode_bin_resp(LFQData$new(istar$data, istar$config))
-istar$config$bin_resp <- "bin_resp"
-tmp <- LFQData$new(istar$data, istar$config)
-formula <- paste0(tmp$get_config()$bin_resp , "~ group_")
-mod <- build_model_logistf(tmp, formula)
+mod <- build_model_glm_protein(LFQData$new(istar$data, istar$config), "~ group_")
 tmp <- mod$get_coefficients()
 stopifnot(nrow(tmp) == 30)
 mod$coef_histogram()
@@ -78,44 +74,25 @@ Other modelling:
 \code{\link[=build_model_limma_voom]{build_model_limma_voom()}},
 \code{\link[=build_model_limma_voom_impute]{build_model_limma_voom_impute()}},
 \code{\link[=build_model_limpa]{build_model_limpa()}},
-\code{\link[=build_model_logistf]{build_model_logistf()}},
 \code{\link[=compute_borrowed_variance]{compute_borrowed_variance()}},
 \code{\link[=compute_borrowed_variance_limma]{compute_borrowed_variance_limma()}},
-\code{\link[=compute_contrast]{compute_contrast()}},
-\code{\link[=compute_lmer_contrast]{compute_lmer_contrast()}},
 \code{\link[=df.residual.rfit_prolfqua]{df.residual.rfit_prolfqua()}},
-\code{\link[=get_anova_df]{get_anova_df()}},
-\code{\link[=get_complete_model_fit]{get_complete_model_fit()}},
-\code{\link[=get_p_values_pbeta]{get_p_values_pbeta()}},
 \code{\link[=group_label]{group_label()}},
 \code{\link[=impute_from_model]{impute_from_model()}},
 \code{\link[=impute_refit_singular]{impute_refit_singular()}},
-\code{\link[=linfct_from_model]{linfct_from_model()}},
-\code{\link[=linfct_matrix_contrasts]{linfct_matrix_contrasts()}},
 \code{\link[=list_facades]{list_facades()}},
 \code{\link[=lookup_facade]{lookup_facade()}},
 \code{\link[=lr_test]{lr_test()}},
 \code{\link[=merge_contrasts_results]{merge_contrasts_results()}},
-\code{\link[=model_analyse]{model_analyse()}},
-\code{\link[=model_summary]{model_summary()}},
-\code{\link[=moderated_p_deqms]{moderated_p_deqms()}},
-\code{\link[=moderated_p_deqms_long]{moderated_p_deqms_long()}},
-\code{\link[=moderated_p_limma]{moderated_p_limma()}},
 \code{\link[=new_imputed_model]{new_imputed_model()}},
 \code{\link[=nobs.rfit_prolfqua]{nobs.rfit_prolfqua()}},
 \code{\link[=pivot_model_contrasts_to_wide]{pivot_model_contrasts_to_wide()}},
 \code{\link{prolfqua_analysis_methods}},
 \code{\link[=register_facade]{register_facade()}},
 \code{\link[=sigma.rfit_prolfqua]{sigma.rfit_prolfqua()}},
-\code{\link[=sim_build_models_lm]{sim_build_models_lm()}},
-\code{\link[=sim_build_models_lmer]{sim_build_models_lmer()}},
-\code{\link[=sim_build_models_logistf]{sim_build_models_logistf()}},
-\code{\link[=sim_make_model_lm]{sim_make_model_lm()}},
-\code{\link[=sim_make_model_lmer]{sim_make_model_lmer()}},
 \code{\link[=strategy_limma]{strategy_limma()}},
 \code{\link[=strategy_limpa]{strategy_limpa()}},
 \code{\link[=strategy_logistf]{strategy_logistf()}},
-\code{\link[=summary_ropeca_median_p_scaled]{summary_ropeca_median_p_scaled()}},
 \code{\link[=vcov.rfit_prolfqua]{vcov.rfit_prolfqua()}}
 }
 \concept{modelling}
@@ -125,8 +102,7 @@ Other modelling:
 \section{Public fields}{
   \if{html}{\out{<div class="r6-fields">}}
   \describe{
-    \item{\code{models}}{\code{\link{model_analyse}} result: \code{model_df}, one
-fitted model per subject, and the \code{strategy}}
+    \item{\code{models}}{list with \code{model_df}, one fitted model per subject, and the \code{strategy}}
 
     \item{\code{model_name}}{name of model}
 
@@ -173,8 +149,8 @@ fitted model per subject, and the \code{strategy}}
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{models}}{\code{\link{model_analyse}} result with a \code{model_df}
-data.frame and the \code{strategy}}
+      \item{\code{models}}{list with a \code{model_df} data.frame (one fitted model per subject) and the
+\code{strategy}}
       \item{\code{model_name}}{name of model}
       \item{\code{subject_id}}{subject column name}
       \item{\code{p.adjust}}{method to adjust p-values}

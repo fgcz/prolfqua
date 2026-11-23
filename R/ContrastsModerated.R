@@ -99,13 +99,12 @@ ContrastsModerated <- R6::R6Class(
     },
     #' @description
     #' applies limma moderation
-    #' @seealso \code{\link{moderated_p_limma}}
     #' @param all should all columns be returned (default FALSE)
     get_contrasts = function(all = FALSE) {
       contrast_result <- self$Contrast$get_contrasts(all = FALSE) |>
         dplyr::group_by(dplyr::across(dplyr::all_of("contrast"))) |>
         dplyr::group_split() |>
-        purrr::map(moderated_p_limma, estimate = "diff", variance_floor = self$variance_floor) |>
+        purrr::map(.moderated_p_limma, estimate = "diff", variance_floor = self$variance_floor) |>
         purrr::list_rbind()
       contrast_result <- .finalize_moderated_columns(contrast_result, self$p.adjust, all)
       contrast_result <- dplyr::ungroup(contrast_result)

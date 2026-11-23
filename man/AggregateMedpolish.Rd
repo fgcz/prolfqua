@@ -43,7 +43,9 @@ Other LFQData:
 \section{Public fields}{
   \if{html}{\out{<div class="r6-fields">}}
   \describe{
-    \item{\code{control}}{convergence controls, see \code{\link{estimate_intensity}}}
+    \item{\code{control}}{convergence controls of \code{stats::medpolish}: \code{maxiter} (default 10) and
+\code{eps} (default 0.01; the polish stops when the sum of absolute residuals changes by less than
+\code{eps} times that sum)}
   }
   \if{html}{\out{</div>}}
 }
@@ -76,8 +78,10 @@ Other LFQData:
     \describe{
       \item{\code{lfq}}{LFQData}
       \item{\code{prefix}}{default protein}
-      \item{\code{control}}{named list of convergence controls merged over the defaults, see
-\code{\link{estimate_intensity}}}
+      \item{\code{control}}{named list merged over the defaults; convergence controls of \code{stats::medpolish}:
+\code{maxiter} (default 10) and
+\code{eps} (default 0.01; the polish stops when the sum of absolute residuals changes by less than
+\code{eps} times that sum)}
     }
     \if{html}{\out{</div>}}
   }

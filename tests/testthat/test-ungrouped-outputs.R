@@ -16,7 +16,7 @@ test_that("adjust_p_values() returns ungrouped data with per-contrast BH adjustm
 test_that("summarize_hierarchy() and HierarchyCountsSample return ungrouped data", {
   lfq <- .ungrouped_lfq()
   expect_false(dplyr::is_grouped_df(lfq$summarize_hierarchy()))
-  by_group <- summarize_hierarchy(lfq$data_long(), lfq$hierarchy_keys(), factors = "group_")
+  by_group <- .summarize_hierarchy(lfq$data_long(), lfq$hierarchy_keys(), factors = "group_")
   expect_false(dplyr::is_grouped_df(by_group))
   counts <- HierarchyCountsSample$new(lfq$data_long(), lfq$get_config())
   expect_false(dplyr::is_grouped_df(counts$wide()))
@@ -25,8 +25,8 @@ test_that("summarize_hierarchy() and HierarchyCountsSample return ungrouped data
 
 test_that("missingness_per_condition() and _cumsum() return ungrouped data", {
   lfq <- .ungrouped_lfq()
-  expect_false(dplyr::is_grouped_df(missingness_per_condition(lfq)$data))
-  expect_false(dplyr::is_grouped_df(missingness_per_condition_cumsum(lfq)$data))
+  expect_false(dplyr::is_grouped_df(.missingness_per_condition(lfq)$data))
+  expect_false(dplyr::is_grouped_df(.missingness_per_condition_cumsum(lfq)$data))
 })
 
 test_that("barplot_threshold() summaries and duplicate counts are ungrouped", {
@@ -48,7 +48,7 @@ test_that("barplot_threshold() summaries and duplicate counts are ungrouped", {
 test_that("table_factors_size returns an ungrouped tibble for two factors", {
   sim <- sim_lfq_data_2factor_config(n_proteins = 5)
   lfq <- LFQData$new(sim$data, sim$config)
-  res <- table_factors_size(
+  res <- .table_factors_size(
     lfq$data_long(),
     lfq$file_name(),
     lfq$sample_name(),
@@ -62,9 +62,9 @@ test_that("table_factors_size returns an ungrouped tibble for two factors", {
 test_that("summarize_stats_quantiles returns ungrouped quantiles per factor level (review D4)", {
   sim <- sim_lfq_data_2factor_config(n_proteins = 20)
   lfq <- LFQData$new(sim$data, sim$config)
-  stats <- summarize_stats(lfq)
+  stats <- .summarize_stats(lfq)
   probs <- c(0.25, 0.5, 0.9)
-  res <- summarize_stats_quantiles(stats, lfq$relevant_factor_keys(), probs = probs)
+  res <- .summarize_stats_quantiles(stats, lfq$relevant_factor_keys(), probs = probs)
   expect_false(dplyr::is_grouped_df(res$long))
   expect_identical(colnames(res$long), c(lfq$relevant_factor_keys(), "probs", "quantiles"))
   levels_n <- nrow(dplyr::distinct(stats, dplyr::across(dplyr::all_of(lfq$relevant_factor_keys()))))

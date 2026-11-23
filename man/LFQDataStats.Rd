@@ -64,8 +64,7 @@ runallfuncs(lfqstats)
 # Group size 1
 bb <- prolfqua::sim_lfq_data_peptide_config(n_per_group = 1)
 lfq1 <- LFQData$new(bb$data, bb$config)
-table_factors_size(lfq1$data_long(), lfq1$file_name(),
-  lfq1$sample_name(), lfq1$factor_keys(), lfq1$relevant_factor_keys())
+lfq1$factors()
 lfqdata <- LFQData$new(bb$data, bb$config)
 lfqstats <- lfqdata$get_Stats()
 

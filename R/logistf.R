@@ -7,7 +7,7 @@
   }
   lfq_missing <- lfqdata$get_copy()
   lfq_missing$complete_cases()
-  lfq_missing$set_data(prolfqua::encode_bin_resp(lfq_missing))
+  lfq_missing$set_data(.encode_bin_resp(lfq_missing))
   lfq_missing$set_config_value("bin_resp", "bin_resp")
   lfq_missing
 }
@@ -35,7 +35,7 @@ build_model_glm_protein <- function(lfqdata, modelstr, control = list()) {
   .assert_aggregated_facade_input(lfqdata, "build_model_glm_protein")
   lfq_missing <- .prepare_detection_lfqdata(lfqdata)
   formula <- paste(lfq_missing$get_config()$bin_resp, modelstr)
-  build_model_logistf(lfq_missing, formula, control = control)
+  .build_model_logistf(lfq_missing, formula, control = control)
 }
 
 
@@ -47,28 +47,14 @@ build_model_glm_protein <- function(lfqdata, modelstr, control = list()) {
 #' @param formula model formula with the binary response
 #' @param control convergence controls, see \code{\link{strategy_logistf}}
 #' @return a [ModelFirth] object holding one Firth logistic model per subject
-#' @export
-#' @family modelling
-#' @keywords internal
-#' @examplesIf requireNamespace("logistf", quietly = TRUE)
-#' istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 10, with_missing = TRUE,
-#'   weight_missing = 0.5, seed = 3)
-#' istar$data <- prolfqua::encode_bin_resp(LFQData$new(istar$data, istar$config))
-#' istar$config$bin_resp <- "bin_resp"
-#' tmp <- LFQData$new(istar$data, istar$config)
-#' formula <- paste0(tmp$get_config()$bin_resp , "~ group_")
-#' xx <- build_model_logistf(tmp, formula)
-#'
-#' contrasts <- c(AvsB = "group_A - group_B")
-#' m <- xx$models$model_df$linear_model[[1]]
-#' linfct_matrix_contrasts(linfct_from_model(m)$linfct_factors, contrasts)
-build_model_logistf <- function(data, formula, control = list()) {
+#' @noRd
+.build_model_logistf <- function(data, formula, control = list()) {
   if (!inherits(data, "LFQData")) {
     abort_bad_argument("data", "be an LFQData object")
   }
   .assert_aggregated_facade_input(data, "build_model_logistf")
   strategy <- strategy_logistf(formula, control = control)
-  models <- model_analyse(
+  models <- .model_analyse(
     data$data_long(),
     strategy,
     model_name = "logistf",
@@ -80,68 +66,6 @@ build_model_logistf <- function(data, formula, control = list()) {
   .record_model_fits(model$get_provenance_log(), models$model_df, data$subject_id(), strategy, model$model_name)
   model$get_provenance_log()$report()
   model
-}
-
-
-#' Build Firth logistic models on simulated data for testing
-#' @inheritParams sim_build_models_lm
-#' @return a [ModelFirth] object fitted with [build_model_logistf()]
-#' @family modelling
-#' @export
-#' @keywords internal
-#' @examplesIf requireNamespace("logistf", quietly = TRUE)
-#' modi <- sim_build_models_logistf(model = "interaction", weight_missing = 1)
-#' stopifnot(nrow(modi$models$model_df) == 10)
-#' mod2 <- sim_build_models_logistf(model = "parallel2", weight_missing = 1)
-#' mod2$models$model_df$linear_model[[1]]
-#' mod3 <- sim_build_models_logistf(model = "parallel3", weight_missing = 1)
-#' modf <- sim_build_models_logistf(model = "factors", weight_missing = 1)
-
-sim_build_models_logistf <- function(
-  model = c("parallel2", "parallel3", "factors", "interaction"),
-  n_proteins = 10,
-  with_missing = TRUE,
-  weight_missing = 1,
-  Nprot
-) {
-  if (!missing(Nprot)) {
-    n_proteins <- .deprecate_arg("Nprot", "n_proteins", Nprot)
-  }
-  model <- match.arg(model)
-  if (model != "parallel3") {
-    istar <- prolfqua::sim_lfq_data_2factor_config(
-      n_proteins = n_proteins,
-      with_missing = with_missing,
-      weight_missing = weight_missing
-    )
-  } else {
-    istar <- prolfqua::sim_lfq_data_protein_config(
-      n_proteins = n_proteins,
-      with_missing = with_missing,
-      weight_missing = weight_missing
-    )
-  }
-  istar$data <- encode_bin_resp(LFQData$new(istar$data, istar$config))
-  istar$config$bin_resp <- "bin_resp"
-  istar <- prolfqua::LFQData$new(istar$data, istar$config)
-
-  model <- if (model == "factors") {
-    "~ Treatment + Background"
-  } else if (model == "interaction") {
-    "~ Treatment * Background"
-  } else if (model == "parallel2") {
-    "~ Treatment"
-  } else if (model == "parallel3") {
-    "~ group_"
-  } else {
-    NULL
-  }
-  model_function <- paste0(istar$get_config()$bin_resp, model)
-  mod <- build_model_logistf(
-    istar,
-    model_function
-  )
-  mod
 }
 
 
@@ -215,9 +139,12 @@ StrategyLogistf <- R6::R6Class(
 #'
 #' istar <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 10, with_missing = TRUE,
 #'   weight_missing = 0.5, seed = 3)
-#' istar$data <- encode_bin_resp(LFQData$new(istar$data, istar$config))
-#' istar$config$bin_resp <- "bin_resp"
-#' istar <- LFQData$new(istar$data, istar$config)
+#' lfq <- LFQData$new(istar$data, istar$config)
+#' detection <- lfq$data_long()
+#' detection$bin_resp <- as.integer(!is.na(detection[[lfq$response()]]))
+#' config <- lfq$get_config()
+#' config$bin_resp <- "bin_resp"
+#' istar <- LFQData$new(detection, config)
 #' df <- istar$summarize_hierarchy()
 #' df2 <- df[df[[ncol(df)]] > 1, ]
 #' istar2 <- istar$get_subset(df2)

@@ -31,7 +31,7 @@ lfqTrans <- lfqcopy$get_Transformer()
 x <- lfqTrans$intensity_array(log2)
 
 x$lfq$is_transformed()
-x <- x$intensity_matrix(robust_scale)
+x <- x$intensity_matrix()
 plotter <- x$lfq$get_Plotter()
 plotter$intensity_distribution_density()
 
@@ -41,7 +41,7 @@ lfqcopy <- lfqdata$get_copy()
 lfqTrans <- lfqcopy$get_Transformer()
 x <- lfqTrans$intensity_array(asinh)
 mads1 <- mean(x$get_scales()$mads)
-x <- lfqTrans$intensity_matrix(robust_scale, force = TRUE)
+x <- lfqTrans$intensity_matrix(force = TRUE)
 mads2 <- mean(x$get_scales()$mads)
 stopifnot(abs(mads1 - mads2) < 1e-8)
 
@@ -324,15 +324,15 @@ Names must match the configured sample IDs exactly and may be in any order.}
   pass a function which works with matrices, e.g., vsn::justvsn
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{LFQDataTransformer$intensity_matrix(.func = robust_scale, force = FALSE)}
+    \preformatted{LFQDataTransformer$intensity_matrix(.func = .robust_scale, force = FALSE)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
       \item{\code{.func}}{any function taking a matrix and returning a matrix
-(columns sample, rows feature, e.g. \code{base::scale()}), default
-\code{robust_scale}}
+(columns sample, rows feature, e.g. \code{base::scale()}); default: robust scaling, which centres each
+sample on its median and scales it by its MAD, as \verb{$robscale()}}
       \item{\code{force}}{transformation on data already transformed}
     }
     \if{html}{\out{</div>}}

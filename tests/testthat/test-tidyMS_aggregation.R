@@ -153,8 +153,8 @@ test_that("rlm and medpolish aggregation produce the same (protein, sample) rows
     lfq <- prolfqua::LFQData$new(dd$data, dd$config)
     lfq <- lfq$get_Transformer()$log2()$lfq
 
-    bbMed <- suppressMessages(prolfqua::estimate_intensity(lfq, method = "medpolish"))
-    bbRob <- suppressMessages(prolfqua::estimate_intensity(lfq, method = "rlm"))
+    bbMed <- suppressMessages(.estimate_intensity(lfq, method = "medpolish"))
+    bbRob <- suppressMessages(.estimate_intensity(lfq, method = "rlm"))
 
     keycols <- c(bbMed$config$hierarchy_keys(), bbMed$config$sample_name)
     keyM <- dplyr::distinct(bbMed$data, dplyr::across(dplyr::all_of(keycols)))
@@ -206,7 +206,7 @@ test_that("medpolish and rlm aggregation return unnamed estimates, so LFQData dr
   lfq <- prolfqua::LFQData$new(dd$data, dd$config)
   lfq <- suppressMessages(lfq$get_Transformer()$log2()$lfq)
   for (method in c("medpolish", "rlm")) {
-    res <- suppressWarnings(suppressMessages(prolfqua::estimate_intensity(lfq, method = method)))
+    res <- suppressWarnings(suppressMessages(.estimate_intensity(lfq, method = method)))
     response <- res$config$get_response()
     expect_null(attributes(res$data[[response]]), info = method)
   }
@@ -216,7 +216,7 @@ test_that("estimate_intensity medpolish equals stats::medpolish on the pivoted f
   sim <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 6, weight_missing = 0.3, seed = 11)
   lfq <- suppressMessages(prolfqua::LFQData$new(sim$data, sim$config))
   lfq <- suppressMessages(lfq$get_Transformer()$log2()$lfq)
-  res <- estimate_intensity(lfq, method = "medpolish")
+  res <- .estimate_intensity(lfq, method = "medpolish")
   expect_identical(
     colnames(res$data)[1:4],
     c("protein_Id", "sampleName", "group_", "sample")

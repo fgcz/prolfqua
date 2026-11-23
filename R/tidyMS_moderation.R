@@ -6,20 +6,6 @@
 #' @param estimate name of the effect-estimate column
 #' @param robust passed to [limma::squeezeVar()]: estimate the prior robustly
 #' @param confint confidence level of the moderated intervals
-#' @export
-#' @family modelling
-#' @keywords internal
-#'
-#' @examples
-#' contrast_df <- data.frame(
-#'   sigma = c(0.25, 0.32, 0.28, 0.40, 0.35),
-#'   df = rep(6, 5),
-#'   statistic = c(2.1, -1.8, 0.5, 3.0, -2.2),
-#'   std.error = c(0.8 / 2.1, 0.6 / 1.8, 0.2 / 0.5, 1.2 / 3.0, 0.9 / 2.2),
-#'   diff = c(0.8, -0.6, 0.2, 1.2, -0.9)
-#' )
-#' res <- moderated_p_limma(contrast_df)
-#' "moderated.p.value" %in% colnames(res)
 #' @param variance_floor optional positive lower bound for posterior variances
 #' @return `contrast_df`, ungrouped, with the added columns `moderated.var.post`, `moderated.var.prior`,
 #'   `moderated.df.prior`, `moderated.std.error`, `moderated.statistic`, `moderated.df.total`,
@@ -29,7 +15,8 @@
 #' @srrstatsTODO {G5.4b} test-reference-implementations.R compares lm, limma, lmer, rlm, rfit and deqms with
 #'   stats::lm, limma, lmerTest, MASS, Rfit and stored DEqMS output; limit: ropeca_nested is not compared with PECA
 #'   (not installed).
-moderated_p_limma <- function(
+#' @noRd
+.moderated_p_limma <- function(
   contrast_df,
   df = "df",
   estimate = "diff",
@@ -185,25 +172,8 @@ adjust_p_values <- function(
 #' @param max.n limit number of peptides per protein.
 #' @return a numeric vector of p-values, the beta-distribution probability that the median of
 #'   `min(n.obs, max.n)` uniform p-values is at most `median.p.value`
-#' @export
-#' @family modelling
-#' @keywords internal
-#' @examples
-#' plot(get_p_values_pbeta(0.1,1:10,10), ylim=c(0,0.1))
-#' plot(get_p_values_pbeta(0.1,1:10,3), ylim=c(0,0.1))
-#' plot(get_p_values_pbeta(0.3,1:30, 3), ylim=c(0,0.1))
-#' abline(h=.05,col = 2)
-#' plot(seq(0.0,1.0,length=30),get_p_values_pbeta(seq(0.0,1.0,length=30),rep(10,30)))
-#' abline(0,1)
-#' plot(seq(0.0,1.0,length=30),get_p_values_pbeta(seq(0.0,1.0,length=30),rep(10,30),3))
-#' abline(0,1)
-#' stopifnot(isTRUE(all.equal(get_p_values_pbeta(0.3, 10, 3), 0.216, tolerance = 1e-4)))
-#' stopifnot(isTRUE(all.equal(get_p_values_pbeta(0, 10, 3), 0, tolerance = 1e-4)))
-#' stopifnot(isTRUE(all.equal(get_p_values_pbeta(1, 10, 3), 1, tolerance = 1e-4)))
-#' symmetric <- all.equal(get_p_values_pbeta(1, 10, 3), get_p_values_pbeta(1, 3, 10), tolerance = 1e-4)
-#' stopifnot(isTRUE(symmetric))
-#'
-get_p_values_pbeta <- function(median.p.value, n.obs, max.n = 10) {
+#' @noRd
+.get_p_values_pbeta <- function(median.p.value, n.obs, max.n = 10) {
   # beta distribution of the median of n.obs uniform p-values; both shapes equal n.obs / 2 + 0.5
   shape <- pmin(n.obs, max.n) / 2 + 0.5
   pbeta(median.p.value, shape1 = shape, shape2 = shape)
@@ -221,65 +191,11 @@ get_p_values_pbeta <- function(median.p.value, n.obs, max.n = 10) {
 #' @param statistic statistic name of column with statistic (typically t-statistics)
 #' @param p.value name of column with moderated.p.value
 #' @param max.n used to limit the number of peptides in probability computation.
-#' @export
-#' @family modelling
-#' @keywords internal
 #' @return data.frame with columns
 #'
 #'
-#' @examples
-#'
-#' set.seed(10)
-#' nrPep <- 10000
-#' nrProtein <- 800
-#' p.value <- runif(nrPep)
-#' estimate <- rnorm(nrPep)
-#' avgAbd <- runif(nrPep)
-#' protein_Id <- sample(1:800, size = nrPep,
-#'   replace = TRUE, prob = dexp(seq(0,5,length = 800)))
-#'
-#' plot(table(table(protein_Id)))
-#'
-#' testdata <- data.frame(contrast = "contrast1",
-#'   protein_Id = protein_Id,
-#'   estimate = estimate,
-#'   pseudo_estimate = estimate,
-#'   statistic = estimate / 0.5,
-#'   p.value = p.value,
-#'   avgAbd = avgAbd )
-#'
-#' xx30 <- summary_ropeca_median_p_scaled(testdata,
-#'                                     subject_id = "protein_Id",
-#'                                     estimate = "estimate",
-#'                                     p.value = "p.value",
-#'                                     max.n = 30)
-#'
-#' xx2 <- summary_ropeca_median_p_scaled(testdata,
-#'                                     subject_id = "protein_Id",
-#'                                     estimate = "estimate",
-#'                                     p.value = "p.value",
-#'                                     max.n = 1)
-#'
-#' stopifnot(isTRUE(all.equal(mad(xx2$estimate, na.rm = TRUE), 0.384409, tolerance = 1e-4)))
-#' stopifnot(isTRUE(all.equal(median(xx2$estimate), -0.006874857, tolerance = 1e-4)))
-#' stopifnot(isTRUE(all.equal(xx2$beta.based.significance[1], 0.819, tolerance = 1e-3)))
-#' stopifnot(isTRUE(all.equal(xx2$beta.based.significance[2], 0.9234362, tolerance = 1e-3)))
-#'
-#' # Uniform distribution
-#' hist(testdata$p.value)
-#' hist(xx30$median.p.scaled, breaks = 20)
-#' hist(xx2$median.p.scaled, breaks = 20)
-#' # shows that beta.based.significance has NO uniform distribution
-#' # although H0 is true for all cases.
-#'
-#' hist(xx30$beta.based.significance, breaks = 20)
-#' hist(xx2$beta.based.significance, breaks = 20)
-#'
-#' hist(xx2$median.p.value, breaks = 20)
-#' hist(xx2$beta.based.significance, breaks = 20)
-#' hist(estimate)
-#'
-summary_ropeca_median_p_scaled <- function(
+#' @noRd
+.summary_ropeca_median_p_scaled <- function(
   contrasts_data,
   contrast = "contrast",
   subject_id = "protein_Id",
@@ -308,7 +224,7 @@ summary_ropeca_median_p_scaled <- function(
   summarized.protein <- summarized.protein |>
     dplyr::mutate(
       median.p.value = 1 - abs(.data$median.p.scaled),
-      beta.based.significance = get_p_values_pbeta(.data$median.p.value, .data$n_not_na, max.n = max.n),
+      beta.based.significance = .get_p_values_pbeta(.data$median.p.value, .data$n_not_na, max.n = max.n),
       n.beta = pmin(.data$n_not_na, max.n),
       isSingular = FALSE
     )

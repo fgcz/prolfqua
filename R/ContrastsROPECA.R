@@ -124,7 +124,6 @@ ContrastsROPECA <- R6::R6Class(
     },
     #' @description
     #' get contrasts
-    #' @seealso \code{\link{summary_ropeca_median_p_scaled}}
     #' @param all should all columns be returned (default FALSE)
     #' @param global use a global linear function (determined by get_linfct)
     #' @return data.frame
@@ -132,7 +131,7 @@ ContrastsROPECA <- R6::R6Class(
       if (is.null(self$contrast_result)) {
         contrast_result <- self$Contrast$get_contrasts(all = FALSE)
 
-        contrast_result <- summary_ropeca_median_p_scaled(
+        contrast_result <- .summary_ropeca_median_p_scaled(
           contrast_result,
           contrast = "contrast",
           subject_id = self$subject_id[length(self$subject_id) - 1],

@@ -70,10 +70,10 @@ test_that("list_to_contrast_configuration restores roles and methods", {
 test_that("make_interaction_column keeps its levels and values (review B5)", {
   xx <- data.frame(A = c("a", "b", "a"), B = c("d", "d", "e"))
   expect_identical(
-    make_interaction_column(xx, c("B", "A"))$interaction,
+    .make_interaction_column(xx, c("B", "A"))$interaction,
     factor(c("Bd.Aa", "Bd.Ab", "Be.Aa"), levels = c("Bd.Aa", "Be.Aa", "Bd.Ab", "Be.Ab"))
   )
-  expect_identical(make_interaction_column(xx, "A")$interaction, factor(c("Aa", "Ab", "Aa")))
+  expect_identical(.make_interaction_column(xx, "A")$interaction, factor(c("Aa", "Ab", "Aa")))
 })
 
 test_that("table_facade returns a kable table, or the data frame with kable = FALSE", {

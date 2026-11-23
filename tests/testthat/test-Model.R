@@ -98,7 +98,7 @@ test_that("get_complete_model_fit drops fits with fewer coefficients than the fu
   first <- unique(bb$data$protein_Id)[1]
   bb$data$abundance[bb$data$protein_Id == first & bb$data$group_ == "A"] <- NA
   mod <- build_model(bb$data, strategy_lm("abundance ~ group_"), subject_id = bb$config$hierarchy_keys())
-  complete <- get_complete_model_fit(mod$model_df)
+  complete <- .get_complete_model_fit(mod$model_df)
   expect_setequal(complete$protein_Id, setdiff(unique(bb$data$protein_Id), first))
   expect_false(first %in% mod$get_anova()$protein_Id)
   expect_false(first %in% mod$get_coefficients()$protein_Id)
@@ -171,19 +171,19 @@ test_that("Model (lm strategy with weights)", {
 test_that("build_model_logistf requires aggregated input", {
   istar <- sim_lfq_data_peptide_config(n_proteins = 10, with_missing = TRUE, weight_missing = 0.5, seed = 3)
   lfq <- LFQData$new(istar$data, istar$config)
-  lfq$set_data(encode_bin_resp(lfq))
+  lfq$set_data(.encode_bin_resp(lfq))
   lfq$set_config_value("bin_resp", "bin_resp")
-  expect_error(build_model_logistf(lfq, "bin_resp ~ group_"), "requires aggregated LFQData")
+  expect_error(.build_model_logistf(lfq, "bin_resp ~ group_"), "requires aggregated LFQData")
 })
 
 test_that("ModelFirth", {
   skip_if_not_installed("logistf")
   istar <- sim_lfq_data_protein_config(n_proteins = 10, with_missing = TRUE, weight_missing = 0.5, seed = 3)
   lfq <- LFQData$new(istar$data, istar$config)
-  lfq$set_data(encode_bin_resp(lfq))
+  lfq$set_data(.encode_bin_resp(lfq))
   lfq$set_config_value("bin_resp", "bin_resp")
   formula <- paste0(lfq$get_config()$bin_resp, "~ group_")
-  mod <- build_model_logistf(lfq, formula)
+  mod <- .build_model_logistf(lfq, formula)
 
   coefs <- mod$get_coefficients()
   expect_s3_class(coefs, "data.frame")

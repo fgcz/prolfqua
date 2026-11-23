@@ -1,4 +1,4 @@
-# summarize_stats() against a per-group dplyr::summarize() reference
+# .summarize_stats() against a per-group dplyr::summarize() reference
 
 reference_summarize_stats <- function(lfqdata, factor_key) {
   resp <- lfqdata$response()
@@ -29,13 +29,13 @@ test_that("summarize_stats equals per-group summaries, including empty and singl
   lfq <- suppressMessages(prolfqua::LFQData$new(sim$data, sim$config))
 
   for (factor_key in list(lfq$relevant_factor_keys(), NULL)) {
-    got <- summarize_stats(lfq, factor_key = factor_key)
+    got <- .summarize_stats(lfq, factor_key = factor_key)
     expected <- reference_summarize_stats(lfq, factor_key)
     keys <- setdiff(colnames(expected), stat_columns)
     expect_identical(as.data.frame(got[keys]), as.data.frame(expected[keys]))
     expect_equal(as.data.frame(got[stat_columns]), as.data.frame(expected[stat_columns]), tolerance = 1e-12)
   }
-  empty <- summarize_stats(lfq)
+  empty <- .summarize_stats(lfq)
   empty <- empty[empty$protein_Id == ids[1], ]
   expect_true(all(is.nan(empty$meanAbundance)))
   expect_true(all(is.na(empty$medianAbundance) & is.na(empty$sd)))

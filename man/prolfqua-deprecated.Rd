@@ -43,18 +43,48 @@ Functions:
 \itemize{
 \item \code{LFQDataToSummarizedExperiment()}: use \code{\link[=lfqdata_to_summarized_experiment]{lfqdata_to_summarized_experiment()}}
 \item \code{LR_test()}: use \code{\link[=lr_test]{lr_test()}}
-\item \code{lfq_power_t_test_quantiles_V2()}: use \code{\link[=lfq_power_t_test_quantiles]{lfq_power_t_test_quantiles()}}
+\item \code{lfq_power_t_test_quantiles_V2()}: use \code{LFQData$get_Stats()$power_t_test_quantiles()}
 \item \code{R6_extract_values()}: use \code{\link[=r6_extract_values]{r6_extract_values()}}
 \item \code{list_to_AnalysisConfiguration()}: use \code{\link[=list_to_analysis_configuration]{list_to_analysis_configuration()}}
 \item \code{list_to_ContrastConfiguration()}: use \code{\link[=list_to_contrast_configuration]{list_to_contrast_configuration()}}
-\item \code{summary_ROPECA_median_p_scaled()}: use \code{\link[=summary_ropeca_median_p_scaled]{summary_ropeca_median_p_scaled()}}
-\item \code{missigness_histogram()} and \code{LFQDataPlotter$missigness_histogram()}: use \code{\link[=missingness_histogram]{missingness_histogram()}} and
-\code{LFQDataPlotter$missingness_histogram()}
+\item \code{summary_ROPECA_median_p_scaled()}: use \code{build_contrast_analysis(method = "ropeca_nested")}
+\item \code{missigness_histogram()} and \code{LFQDataPlotter$missigness_histogram()}: use
+\code{LFQData$get_Plotter()$missingness_histogram()}
 }
 
-Simulator arguments of \code{\link[=sim_lfq_data]{sim_lfq_data()}}, \code{\link[=sim_lfq_data_peptide_config]{sim_lfq_data_peptide_config()}}, \code{\link[=sim_lfq_data_protein_config]{sim_lfq_data_protein_config()}},
-\code{\link[=sim_lfq_data_2factor_config]{sim_lfq_data_2factor_config()}}, \code{\link[=sim_build_models_lm]{sim_build_models_lm()}}, \code{\link[=sim_build_models_lmer]{sim_build_models_lmer()}} and
-\code{\link[=sim_build_models_logistf]{sim_build_models_logistf()}}:
+Helpers unexported in prolfqua 1.9.5. They were documented only on internal help pages; each has a public
+route, and the deprecation warning names it. Their help pages are kept for this release.
+\itemize{
+\item \code{LFQData} methods: \code{complete_cases()}, \code{hierarchy_counts()}, \code{summarize_hierarchy()}, \code{sample_subset()}
+(\verb{$get_sample()}), \code{tidy_to_wide_config()} (\verb{$data_wide()}), \code{table_factors()} and \code{table_factors_size()}
+(\verb{$factors()})
+\item \code{LFQData$get_Plotter()}: \code{plot_heatmap()}, \code{plot_heatmap_cor()}, \code{plot_hierarchies_boxplot()},
+\code{plot_hierarchies_boxplot_df()}, \code{plot_intensity_distribution_violin()}, \code{plot_intensity_distribution_density()},
+\code{plot_na_heatmap()}, \code{plot_pca()}, \code{plot_raster()}, \code{plot_sample_correlation()}, \code{pairs_smooth()},
+\code{panel_cor()}, \code{missingness_histogram()}, \code{upset_missing_stats()}
+\item \code{LFQData$get_Stats()}: \code{summarize_stats()}, \code{summarize_stats_quantiles()}, \code{lfq_power_t_test_proteins()},
+\code{lfq_power_t_test_quantiles()}, \code{plot_stat_density()}, \code{plot_stat_density_median()}, \code{plot_stat_violin()},
+\code{plot_stat_violin_median()}, \code{plot_stdv_vs_mean()}, \code{poolvar()}, \code{compute_pooled()}
+\item \code{LFQData$get_Summariser()}: \code{missingness_per_condition()}, \code{missingness_per_condition_cumsum()}
+\item \code{LFQData$get_Transformer()}: \code{robust_scale()}, \code{get_robscales()}, \code{scale_with_subset()},
+\code{apply_to_response_matrix()}, \code{transform_work_intensity()}, \code{response_matrix_as_tibble()}
+\item \code{LFQData$get_Aggregator()}: \code{estimate_intensity()}, \code{aggregate_intensity_top_n()},
+\code{rank_peptide_by_intensity()}, \code{plot_estimate()}, \code{plot_hierarchies_line()}, \code{make_reduced_hierarchy_config()}
+\item \code{\link[=build_contrast_analysis]{build_contrast_analysis()}} and the \link{Model} and \link{Contrasts} classes: \code{compute_contrast()},
+\code{compute_lmer_contrast()}, \code{contrasts_linfct()}, \code{linfct_from_model()}, \code{linfct_matrix_contrasts()},
+\code{get_complete_model_fit()}, \code{get_anova_df()}, \code{model_analyse()}, \code{model_summary()}, \code{build_model_logistf()},
+\code{encode_bin_resp()}, \code{make_interaction_column()}, \code{moderated_p_limma()}, \code{moderated_p_deqms()},
+\code{moderated_p_deqms_long()}, \code{summary_ropeca_median_p_scaled()}, \code{get_p_values_pbeta()}, \code{multigroup_volcano()}
+\item simulation helpers for tests, use \code{\link[=sim_lfq_data_protein_config]{sim_lfq_data_protein_config()}} or \code{\link[=sim_lfq_data_peptide_config]{sim_lfq_data_peptide_config()}} with
+\code{\link[=build_contrast_analysis]{build_contrast_analysis()}}: \code{sim_build_models_lm()}, \code{sim_build_models_lmer()}, \code{sim_build_models_logistf()},
+\code{sim_make_model_lm()}, \code{sim_make_model_lmer()}
+\item moved to prolfquapp: \code{script_copy_helper_vec()}, \code{separate_hierarchy()}
+\item \code{get_contrast()}: removed; only prolfquatakeoutmissing used it, which has its own copy
+\item \code{matrix_to_tibble()}: use \code{tibble::as_tibble(x, rownames = )}
+}
+
+Simulator arguments of \code{\link[=sim_lfq_data]{sim_lfq_data()}}, \code{\link[=sim_lfq_data_peptide_config]{sim_lfq_data_peptide_config()}}, \code{\link[=sim_lfq_data_protein_config]{sim_lfq_data_protein_config()}} and
+\code{\link[=sim_lfq_data_2factor_config]{sim_lfq_data_2factor_config()}}:
 \itemize{
 \item \code{Nprot}: use \code{n_proteins}
 \item \code{N}: use \code{n_per_group}
@@ -62,7 +92,7 @@ Simulator arguments of \code{\link[=sim_lfq_data]{sim_lfq_data()}}, \code{\link[
 \item \code{TWO}: use \code{two_factor}
 }
 
-Arguments of \code{\link[=volcano_plotly]{volcano_plotly()}} and \code{\link[=multigroup_volcano]{multigroup_volcano()}}:
+Argument of \code{\link[=volcano_plotly]{volcano_plotly()}}:
 \itemize{
 \item \code{.data}: use \code{data}
 }

@@ -84,26 +84,3 @@ test_that("sim_lfq_data respects the mean_prot argument", {
   # higher mean_prot must shift abundances up; previously log(20) was hardcoded
   expect_gt(mean(high$abundance, na.rm = TRUE), mean(low$abundance, na.rm = TRUE))
 })
-
-test_that("separate_hierarchy splits hierarchy keys at the separator into their configured columns", {
-  bb <- sim_lfq_data_peptide_config(n_proteins = 3)
-  lfq <- LFQData$new(bb$data, bb$config)
-  config <- lfq$get_config()$clone(deep = TRUE)
-  data <- lfq$data_long()
-  data$protein_Id[1] <- "noseparator"
-
-  res <- separate_hierarchy(data, config)
-  expect_identical(colnames(res)[4:6], c("protein_Id", "proteinID", "idtype2"))
-  parts <- strsplit(data$protein_Id[-1], "~", fixed = TRUE)
-  expect_identical(res$proteinID[-1], vapply(parts, `[`, character(1), 1))
-  expect_identical(res$idtype2[-1], vapply(parts, `[`, character(1), 2))
-  # too few parts fill from the start
-  expect_identical(res$proteinID[1], "noseparator")
-  expect_true(is.na(res$idtype2[1]))
-  # keys below the hierarchy depth are left alone
-  expect_false("peptideID" %in% colnames(res))
-
-  config$hierarchy_depth <- 2
-  deeper <- separate_hierarchy(data, config)
-  expect_identical(deeper$peptideID, data$peptide_Id)
-})

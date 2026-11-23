@@ -16,6 +16,66 @@ navbar:
       href: https://github.com/fgcz/prolfqua
       aria-label: GitHub repository
 
+reference:
+  - title: Differential expression analysis
+    desc: One call fits a model per protein and tests the contrasts; each method is a facade class.
+    contents:
+      - build_contrast_analysis
+      - prolfqua_analysis_methods
+      - list_facades
+      - lookup_facade
+      - register_facade
+      - ContrastsFacadeBase
+      - FACADE_REGISTRY
+      - ends_with("Facade")
+      - merge_contrasts_results
+      - pivot_model_contrasts_to_wide
+      - impute_from_model
+  - title: Data container
+    desc: LFQData and the objects returned by its get_ methods.
+    contents:
+      - has_concept("LFQData")
+      - LFQDataTransformer
+      - MissingHelpers
+  - title: Configuration
+    contents:
+      - has_concept("configuration")
+      - list_to_analysis_configuration
+      - center_to_reference_cfg
+  - title: Contrast definitions
+    contents:
+      - has_concept("contrasts")
+  - title: Models, strategies and contrasts
+    desc: The steps behind the facades, for inspecting or changing one of them.
+    contents:
+      - has_concept("modelling")
+      - ModelInterface
+      - ContrastsInterface
+      - starts_with("strategy_")
+      - starts_with("Strategy")
+      - adjust_p_values
+  - title: Statistics and sample size
+    contents:
+      - has_concept("stats")
+      - has_concept("hierarchy counting")
+      - has_concept("summary")
+      - summarize_stats_factors
+      - which_missing
+  - title: Plotting
+    contents:
+      - has_concept("plotting")
+      - volcano_plotly
+  - title: Simulated data
+    contents:
+      - starts_with("sim_lfq_data")
+  - title: Utilities
+    contents:
+      - has_concept("utilities")
+      - find_package_file
+  - title: Data
+    contents:
+      - has_concept("data")
+
 articles:
   - title: Vignettes
     navbar: Vignettes

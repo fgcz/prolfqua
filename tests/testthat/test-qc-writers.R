@@ -9,10 +9,10 @@ log2_peptide_lfqdata <- function(n_proteins) {
 test_that("one aggregation plot and one boxplot do not grow with the number of proteins", {
   plot_sizes <- function(n_proteins) {
     lfq <- log2_peptide_lfqdata(n_proteins)
-    agg <- estimate_intensity(lfq, method = "medpolish")
+    agg <- .estimate_intensity(lfq, method = "medpolish")
     lfq_agg <- suppressMessages(prolfqua::LFQData$new(agg$data, agg$config))
     c(
-      estimate = length(serialize(plot_estimate(lfq, lfq_agg)$plots[[1]], NULL)),
+      estimate = length(serialize(.plot_estimate(lfq, lfq_agg)$plots[[1]], NULL)),
       boxplot = length(serialize(lfq$get_Plotter()$boxplots()$boxplot[[1]], NULL))
     )
   }

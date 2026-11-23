@@ -60,7 +60,7 @@ AggregatorBase <- R6::R6Class(
     #' @param show.legend default FALSE
     #' @return data.frame
     plot = function(subset = NULL, show.legend = FALSE) {
-      invisible(prolfqua::plot_estimate(self$lfq, private$.plotted(subset), show.legend = show.legend))
+      invisible(.plot_estimate(self$lfq, private$.plotted(subset), show.legend = show.legend))
     },
     #' @description
     #' writes plots to folder
@@ -128,14 +128,18 @@ AggregateMedpolish <- R6::R6Class(
   "AggregateMedpolish",
   inherit = AggregatorBase,
   public = list(
-    #' @field control convergence controls, see \code{\link{estimate_intensity}}
+    #' @field control convergence controls of \code{stats::medpolish}: \code{maxiter} (default 10) and
+    #'   \code{eps} (default 0.01; the polish stops when the sum of absolute residuals changes by less than
+    #'   \code{eps} times that sum)
     control = NULL,
     #' @description
     #' initialize
     #' @param lfq LFQData
     #' @param prefix default protein
-    #' @param control named list of convergence controls merged over the defaults, see
-    #'   \code{\link{estimate_intensity}}
+    #' @param control named list merged over the defaults; convergence controls of \code{stats::medpolish}:
+    #'   \code{maxiter} (default 10) and
+    #'   \code{eps} (default 0.01; the polish stops when the sum of absolute residuals changes by less than
+    #'   \code{eps} times that sum)
     initialize = function(lfq, prefix = "protein", control = list()) {
       self$control <- .aggregation_control("medpolish", control)
       super$initialize(lfq, prefix)
@@ -144,7 +148,7 @@ AggregateMedpolish <- R6::R6Class(
     #' run median polish aggregation
     #' @return LFQData
     aggregate = function() {
-      res <- estimate_intensity(self$lfq, method = "medpolish", control = self$control)
+      res <- .estimate_intensity(self$lfq, method = "medpolish", control = self$control)
       private$.set_result(.aggregated_with_failures(res, self$prefix, "medpolish"))
     }
   ),
@@ -187,14 +191,16 @@ AggregateRlm <- R6::R6Class(
   "AggregateRlm",
   inherit = AggregatorBase,
   public = list(
-    #' @field control convergence controls, see \code{\link{estimate_intensity}}
+    #' @field control convergence controls of \code{MASS::rlm}: \code{maxit} (default 20) and \code{acc}
+    #'   (default 1e-4, relative change of the IRLS residuals)
     control = NULL,
     #' @description
     #' initialize
     #' @param lfq LFQData
     #' @param prefix default protein
-    #' @param control named list of convergence controls merged over the defaults, see
-    #'   \code{\link{estimate_intensity}}
+    #' @param control named list merged over the defaults; convergence controls of \code{MASS::rlm}: \code{maxit}
+    #'   (default 20) and \code{acc}
+    #'   (default 1e-4, relative change of the IRLS residuals)
     initialize = function(lfq, prefix = "protein", control = list()) {
       self$control <- .aggregation_control("rlm", control)
       super$initialize(lfq, prefix)
@@ -203,7 +209,7 @@ AggregateRlm <- R6::R6Class(
     #' run robust regression aggregation
     #' @return LFQData
     aggregate = function() {
-      res <- estimate_intensity(self$lfq, method = "rlm", control = self$control)
+      res <- .estimate_intensity(self$lfq, method = "rlm", control = self$control)
       private$.set_result(.aggregated_with_failures(res, self$prefix, "rlm"))
     }
   ),
@@ -277,12 +283,12 @@ AggregateTopN <- R6::R6Class(
         }
         fun(x, na.rm = TRUE)
       }
-      ranked <- rank_peptide_by_intensity(
+      ranked <- .rank_peptide_by_intensity(
         self$lfq$data_long(),
         self$lfq$response(),
         self$lfq$hierarchy_keys()
       )
-      res_topn <- aggregate_intensity_top_n(ranked, self$lfq, .func = .func, N = self$N)
+      res_topn <- .aggregate_intensity_top_n(ranked, self$lfq, .func = .func, N = self$N)
       private$.set_result(LFQData$new(res_topn$data, res_topn$config, prefix = self$prefix))
     }
   ),
@@ -308,11 +314,11 @@ AggregateTopN <- R6::R6Class(
     newconfig <- config$clone(deep = TRUE)
     newconfig$work_intensity <- "limpa"
   } else {
-    newconfig <- make_reduced_hierarchy_config(config, "limpa", config$hierarchy_keys_depth(names = FALSE))
+    newconfig <- .make_reduced_hierarchy_config(config, "limpa", config$hierarchy_keys_depth(names = FALSE))
   }
   # rows of E are the united hierarchy keys; pivot_longer keeps row-major order,
   # which the transposed standard error and observation count matrices match
-  long_data <- response_matrix_as_tibble(elist$E, "limpa", newconfig)
+  long_data <- .response_matrix_as_tibble(elist$E, "limpa", newconfig)
   long_data$limpa_se <- as.vector(t(elist$other$standard.error))
   long_data <- dplyr::left_join(
     long_data,

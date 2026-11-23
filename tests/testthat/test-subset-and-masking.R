@@ -41,8 +41,8 @@ test_that("a data column named N does not replace the top-N argument", {
   lfq <- .masking_lfq()
   sum_na <- function(x, name = FALSE) if (name) "sum" else sum(x, na.rm = TRUE)
   top_n <- function(l) {
-    ranked <- rank_peptide_by_intensity(l$data_long(), l$response(), l$hierarchy_keys())
-    aggregate_intensity_top_n(ranked, l, .func = sum_na, N = 3)$data
+    ranked <- .rank_peptide_by_intensity(l$data_long(), l$response(), l$hierarchy_keys())
+    .aggregate_intensity_top_n(ranked, l, .func = sum_na, N = 3)$data
   }
   expect_equal(nrow(top_n(.with_column(lfq, "N", 0))), nrow(top_n(lfq)))
 })

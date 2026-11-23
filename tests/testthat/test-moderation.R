@@ -12,7 +12,7 @@ test_that("moderated_p_limma moderates via limma::squeezeVar", {
     std.error = std_error,
     diff = diff
   )
-  res <- prolfqua::moderated_p_limma(contrast_df)
+  res <- .moderated_p_limma(contrast_df)
   sv <- limma::squeezeVar(contrast_df$sigma^2, df = contrast_df$df)
 
   expect_equal(res$moderated.var.post, sv$var.post, tolerance = 1e-10)
@@ -28,7 +28,7 @@ test_that("moderated_p_limma honors custom columns and confidence levels", {
     effect = c(0.8, -0.6, 0.2, 1.2, -0.9)
   )
 
-  result <- moderated_p_limma(
+  result <- .moderated_p_limma(
     contrast_df,
     df = "residual_df",
     estimate = "effect",
@@ -72,7 +72,7 @@ test_that("moderated_p_limma rejects invalid variance floors", {
   purrr::walk(
     invalid_floors,
     ~ expect_error(
-      moderated_p_limma(
+      .moderated_p_limma(
         contrast_df,
         variance_floor = .x
       ),

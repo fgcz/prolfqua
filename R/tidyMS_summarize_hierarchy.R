@@ -8,19 +8,8 @@
 #' @return a tibble with the distinct combinations of the file name, sample name and factor columns, sorted by
 #'   sample name
 #'
-#' @export
-#' @keywords internal
-#' @family configuration
-#' @examples
-#'
-#' istar <- sim_lfq_data_peptide_config()
-#' lfq <- LFQData$new(istar$data, istar$config)
-#' xx <- table_factors(lfq$data_long(), lfq$file_name(), lfq$sample_name(), lfq$factor_keys())
-#' xt <- xx |> dplyr::group_by(!!!rlang::syms(lfq$factor_keys())) |>
-#'  dplyr::summarize(n = dplyr::n())
-#' stopifnot(all(xt$n == 4))
-#'
-table_factors <- function(pdata, file_name, sample_name, factor_keys) {
+#' @noRd
+.table_factors <- function(pdata, file_name, sample_name, factor_keys) {
   factors_table <- pdata |>
     dplyr::select(dplyr::all_of(c(file_name, sample_name, factor_keys))) |>
     dplyr::distinct() |>
@@ -37,19 +26,9 @@ table_factors <- function(pdata, file_name, sample_name, factor_keys) {
 #' @return a tibble with one row per combination of the `factor_keys_depth` levels and a column `n` with the
 #'   number of samples
 #'
-#' @export
-#' @keywords internal
-#' @family configuration
-#' @examples
-#'
-#' istar <- sim_lfq_data_peptide_config()
-#' lfq <- LFQData$new(istar$data, istar$config)
-#' xx <- table_factors_size(lfq$data_long(), lfq$file_name(),
-#'   lfq$sample_name(), lfq$factor_keys(), lfq$relevant_factor_keys())
-#' stopifnot(all(xx$n == 4))
-#'
-table_factors_size <- function(pdata, file_name, sample_name, factor_keys, factor_keys_depth) {
-  xx <- table_factors(pdata, file_name, sample_name, factor_keys)
+#' @noRd
+.table_factors_size <- function(pdata, file_name, sample_name, factor_keys, factor_keys_depth) {
+  xx <- .table_factors(pdata, file_name, sample_name, factor_keys)
   xx <- xx |>
     dplyr::group_by(dplyr::across(dplyr::all_of(factor_keys_depth))) |>
     dplyr::summarize(n = dplyr::n(), .groups = "drop")
@@ -66,23 +45,8 @@ table_factors_size <- function(pdata, file_name, sample_name, factor_keys, facto
 #' @param pdata data.frame
 #' @param hierarchy_keys character vector - all hierarchy column names
 #' @return a one-row tibble with one column per hierarchy key holding the number of distinct elements
-#' @export
-#' @keywords internal
-#' @family summary
-#' @family hierarchy counting
-#' @examples
-#'
-#' bb <- prolfqua::sim_lfq_data_peptide_config()
-#' lfq <- LFQData$new(bb$data, bb$config)
-#'
-#' x <- hierarchy_counts(lfq$data_long(), lfq$hierarchy_keys())
-#' x$protein_Id
-#' stopifnot(ncol(x) == length(lfq$hierarchy_keys()))
-#' # select non existing protein
-#' data0 <- lfq$data_long() |> dplyr::filter(protein_Id == "XYZ")
-#' tmp <- hierarchy_counts(data0, lfq$hierarchy_keys())
-#' stopifnot(tmp$protein_Id == 0)
-hierarchy_counts <- function(pdata, hierarchy_keys) {
+#' @noRd
+.hierarchy_counts <- function(pdata, hierarchy_keys) {
   res <- pdata |>
     dplyr::summarise(across(all_of(hierarchy_keys), n_distinct))
   res
@@ -164,10 +128,6 @@ HierarchyCountsSample <- R6::R6Class(
 #' hierarchy levels, in columns named `<level>_n`. Counts experiment-wide,
 #' whether observed or not.
 #'
-#' @export
-#' @keywords internal
-#' @family summary
-#' @family hierarchy counting
 #' @param pdata data.frame
 #' @param hierarchy_keys character vector - all hierarchy column names
 #' @param hierarchy character vector - hierarchy level to group by (default hierarchy_keys)
@@ -175,16 +135,8 @@ HierarchyCountsSample <- R6::R6Class(
 #' @return a tibble with one row per combination of the `factors` and `hierarchy` columns and, for each other
 #'   hierarchy level, a column `<level>_n` with the number of its distinct entries
 #'
-#' @examples
-#'
-#' bb <- sim_lfq_data_peptide_config()
-#' lfq <- LFQData$new(bb$data, bb$config)
-#' summarize_hierarchy(lfq$data_long(), lfq$hierarchy_keys())
-#' summarize_hierarchy(lfq$data_long(), lfq$hierarchy_keys(), factors = character())
-#' summarize_hierarchy(lfq$data_long(), lfq$hierarchy_keys(),
-#'  hierarchy = lfq$relevant_hierarchy_keys())
-#'
-summarize_hierarchy <- function(
+#' @noRd
+.summarize_hierarchy <- function(
   pdata,
   hierarchy_keys,
   hierarchy = hierarchy_keys,

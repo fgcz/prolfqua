@@ -54,9 +54,7 @@ xp$nrPeptides |> table()
 \seealso{
 Other hierarchy counting:
 \code{\link{HierarchyCountsSample}},
-\code{\link[=hierarchy_counts]{hierarchy_counts()}},
 \code{\link[=nr_children_experiment]{nr_children_experiment()}},
-\code{\link[=nr_features_experiment]{nr_features_experiment()}},
-\code{\link[=summarize_hierarchy]{summarize_hierarchy()}}
+\code{\link[=nr_features_experiment]{nr_features_experiment()}}
 }
 \concept{hierarchy counting}

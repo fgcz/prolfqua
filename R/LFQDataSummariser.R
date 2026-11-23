@@ -75,31 +75,31 @@ LFQDataSummariser <- R6::R6Class(
     #' @description
     #' missing stats per condition
     missingness_per_group = function() {
-      prolfqua::missingness_per_condition(self$lfq)$data
+      .missingness_per_condition(self$lfq)$data
     },
     #' @description
     #' missing stats per condition as cumulative sum
     missingness_per_group_cumsum = function() {
-      prolfqua::missingness_per_condition_cumsum(self$lfq)$data
+      .missingness_per_condition_cumsum(self$lfq)$data
     },
     #' @description
     #' barplot with number of features with 1,2, etc missing in condition
     #' @return ggplot
     plot_missingness_per_group = function() {
-      prolfqua::missingness_per_condition(self$lfq)$figure
+      .missingness_per_condition(self$lfq)$figure
     },
     #' @description
     #' barplot with cumulative sum of features with 1,2, etc missing in condition
     #' @return ggplot
     plot_missingness_per_group_cumsum = function() {
-      prolfqua::missingness_per_condition_cumsum(self$lfq)$figure
+      .missingness_per_condition_cumsum(self$lfq)$figure
     },
     #' @description
     #' Does roll up to highest hierarchy and
     #' Computes the percent abundance of proteins overall and within each group
     #' @return data frame
     percentage_abundance = function() {
-      dall <- prolfqua::summarize_stats(self$lfq, factor_key = NULL)
+      dall <- .summarize_stats(self$lfq, factor_key = NULL)
       dfac <- prolfqua::summarize_stats_factors(self$lfq)
       all <- dplyr::bind_rows(dfac, dall)
       res <- all |>

@@ -397,18 +397,8 @@ sim_lfq_data_2factor_config <- function(
 #' @param weight_missing weight controlling simulated missingness
 #' @param Nprot deprecated; use `n_proteins`
 #' @return a [Model] object with one linear model per simulated protein, fitted with [build_model()]
-#' @family modelling
-#' @export
-#' @keywords internal
-#' @examples
-#' modi <- sim_build_models_lm(model = "interaction", weight_missing = 1)
-#' stopifnot(nrow(modi$model_df) == 10)
-#' mod2 <- sim_build_models_lm(model = "parallel2", weight_missing = 1)
-#' mod2$model_df$linear_model[[1]]
-#' mod3 <- sim_build_models_lm(model = "parallel3", weight_missing = 1)
-#' modf <- sim_build_models_lm(model = "factors", weight_missing = 1)
-#'
-sim_build_models_lm <- function(
+#' @noRd
+.sim_build_models_lm <- function(
   model = c("parallel2", "parallel3", "factors", "interaction"),
   n_proteins = 10,
   with_missing = TRUE,
@@ -422,22 +412,9 @@ sim_build_models_lm <- function(
 }
 
 #' Build mixed-effects models on simulated data for testing
-#' @inheritParams sim_build_models_lm
 #' @return a [Model] object with one mixed-effects model per simulated protein, fitted with [build_model()]
-#' @family modelling
-#' @export
-#' @keywords internal
-#' @examplesIf requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)
-#' modi <- sim_build_models_lmer(model = "interaction", weight_missing = 1)
-#' stopifnot(sum(modi$model_df$has_model_fit) == 6)
-#' mod2 <- sim_build_models_lmer(model = "parallel2", weight_missing = 1)
-#' stopifnot(sum(mod2$model_df$has_model_fit) == 6)
-#' mod4 <- sim_build_models_lmer(model = "parallel3", weight_missing = 1)
-#' stopifnot(sum(mod4$model_df$has_model_fit) == 6)
-#' modf <- sim_build_models_lmer(model = "factors", weight_missing = 1)
-#' stopifnot(sum(modf$model_df$has_model_fit) == 6)
-#'
-sim_build_models_lmer <- function(
+#' @noRd
+.sim_build_models_lmer <- function(
   model = c("parallel2", "parallel3", "factors", "interaction"),
   n_proteins = 10,
   with_missing = TRUE,
@@ -454,33 +431,18 @@ sim_build_models_lmer <- function(
 #' Fit a linear model to simulated data for examples
 #' @param model design: `"parallel2"`, `"parallel3"`, `"factors"` or `"interaction"`
 #' @return an `lm` object fitted to one simulated protein
-#' @family modelling
-#' @export
-#' @keywords internal
-#' @examplesIf requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)
-#' m <- sim_make_model_lm()
-#' mi <- sim_make_model_lm("interaction")
-#' stopifnot(length(coefficients(summary(mi))[,"Estimate"]) == 4)
-#' mf <- sim_make_model_lmer("factors")
-#' m2 <- sim_make_model_lmer("parallel2")
-#' m3 <- sim_make_model_lmer("parallel3")
-sim_make_model_lm <- function(model = c("parallel2", "parallel3", "factors", "interaction")) {
-  sim_build_models_lm(model = match.arg(model), n_proteins = 1, with_missing = FALSE)$model_df$linear_model[[1]]
+#' @noRd
+.sim_make_model_lm <- function(model = c("parallel2", "parallel3", "factors", "interaction")) {
+  .sim_build_models_lm(model = match.arg(model), n_proteins = 1, with_missing = FALSE)$model_df$linear_model[[1]]
 }
 
 
 #' Fit a mixed-effects model to simulated data for examples
 #' @param model design: `"parallel2"`, `"parallel3"`, `"factors"` or `"interaction"`
 #' @return an `lmerModLmerTest` object, the first successful fit among ten simulated proteins
-#' @family modelling
-#' @export
-#' @keywords internal
-#' @examplesIf requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)
-#' mf <- sim_make_model_lmer("factors")
-#' mi <- sim_make_model_lmer("interaction")
-#'
-sim_make_model_lmer <- function(model = c("parallel2", "parallel3", "factors", "interaction")) {
-  model_df <- sim_build_models_lmer(model = match.arg(model), n_proteins = 10, with_missing = FALSE)$model_df
+#' @noRd
+.sim_make_model_lmer <- function(model = c("parallel2", "parallel3", "factors", "interaction")) {
+  model_df <- .sim_build_models_lmer(model = match.arg(model), n_proteins = 10, with_missing = FALSE)$model_df
   # first protein with a successful fit (isSingular is NA where the fit failed)
   model_df$linear_model[!is.na(model_df$isSingular)][[1]]
 }

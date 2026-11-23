@@ -113,7 +113,8 @@ backend does not accept raise a classed error}
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{...}}{passed to \code{\link{compute_contrast}}}
+      \item{\code{...}}{\code{m} (fitted model), \code{linfct} (contrast weights on its coefficients) and
+\code{confint}, the confidence level (default 0.95)}
     }
     \if{html}{\out{</div>}}
   }

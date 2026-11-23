@@ -212,7 +212,7 @@ test_that("simulators require a missingness weight in [0, 1]", {
 })
 
 test_that("ANOVA test choices match exactly", {
-  expect_error(get_anova_df("bad"), class = "prolfqua_error_bad_argument")
+  expect_error(.get_anova_df("bad"), class = "prolfqua_error_bad_argument")
 })
 
 test_that("ANOVA extractors retain the supported GLM test choices", {
@@ -221,7 +221,7 @@ test_that("ANOVA extractors retain the supported GLM test choices", {
     expected <- stats::anova(model, test = method)
     colnames(expected) <- make.names(colnames(expected))
     expected <- data.frame(factor = rownames(expected), expected)
-    for (extractor in list(get_anova_df(method), AnovaExtractor$new(method))) {
+    for (extractor in list(.get_anova_df(method), AnovaExtractor$new(method))) {
       expect_equal(extractor$fun(model), expected)
       expect_equal(extractor$col_pval, grep("^Pr", names(expected), value = TRUE))
     }
@@ -246,7 +246,7 @@ test_that("scalar selectors reject even the complete vector of allowed choices",
     regexp = "`method` must be one character string",
     class = "prolfqua_error_bad_argument"
   )
-  expect_error(get_anova_df(c("F", "Chisq")), class = "prolfqua_error_bad_argument")
+  expect_error(.get_anova_df(c("F", "Chisq")), class = "prolfqua_error_bad_argument")
   model <- ModelFirth$new(list(model_df = data.frame()))
   expect_error(model$anova_histogram(c("p.value", "FDR")), class = "prolfqua_error_bad_argument")
   expect_warning(expect_null(model$anova_histogram()), "`anova_histogram\\(\\)` is not implemented")

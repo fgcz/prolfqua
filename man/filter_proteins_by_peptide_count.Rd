@@ -44,11 +44,7 @@ stopifnot(all(filtered$data[[filtered$name]] >= 2))
 \seealso{
 Other preprocessing:
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link[=apply_to_response_matrix]{apply_to_response_matrix()}},
-\code{\link[=get_robscales]{get_robscales()}},
-\code{\link[=nr_B_in_A]{nr_B_in_A()}},
-\code{\link[=robust_scale]{robust_scale()}},
-\code{\link[=scale_with_subset]{scale_with_subset()}}
+\code{\link[=nr_B_in_A]{nr_B_in_A()}}
 }
 \concept{preprocessing}
 \keyword{internal}

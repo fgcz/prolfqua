@@ -1,5 +1,9 @@
 # prolfqua 1.9.5
 
+## New features
+
+- `LFQDataPlotter$heatmap(row_order = )` draws exactly the given features, in the given order and without row clustering, so two heatmaps of the same features can be compared row by row, e.g. before and after imputation (imputation changes the per-feature sd, so the most variable features and their clustering would differ). `row_order` cannot be combined with `n_most_variable`; an unknown feature ID is an error that names it.
+
 ## Behaviour changes
 
 - prolfqua is label-free only: the isotope label is gone. `setup_analysis()` no longer adds an `isotopeLabel` column, so `data_long()`, the wide rowdata and annotation, `hierarchy_counts()`, `summarize_stats()`, the missingness tables and every result table come without it, and `data_wide(as.matrix = TRUE)` row names are the united hierarchy keys (`P1`, not `P1~lfq~light`). An `isotopeLabel` column in the input is an unconfigured column and is dropped; input with two labels per feature and sample fails as duplicate observations. `hierarchy_counts()` returns one row, also for empty input (counts of 0).
@@ -33,8 +37,8 @@
 - The duplicate-key check run before modelling and aggregation (`build_model()`, `build_model_limma()`, the facades and the aggregators), and `print()` of an `LFQData`, count distinct keys by hashing instead of comparing rows; on precursor-level tables with millions of rows this takes a fraction of a second instead of seconds and no longer needs several GB of extra memory.
 - `write_plots()` of the aggregators and `LFQDataPlotter$write_boxplots()` build and write one protein at a time, so their memory use no longer grows with the number of proteins (300 proteins: peak 0.33 GB instead of 0.84 GB).
 - `summarize_stats()`, and with it `get_Stats()`, the heatmap feature selection and the limit of detection of the impute methods, computes all groups in one pass: 0.2 s instead of 10.5 s for 67,000 peptides in 12 samples.
-- Median-polish aggregation is about 5 times faster (2,000 proteins: 1.4 s instead of 7.4 s) and rlm aggregation about a quarter faster.
-- Wald contrasts of the methods that fit one model per protein (lm, rlm, rfit, lm_impute, rfit_impute, deqms, ropeca) are computed once per protein instead of once per contrast row, and contrasts naming a group a protein lacks are skipped without raising and catching an error; the lm method on 5,000 proteins takes 3.7 s instead of 9.4 s.
+- Median-polish aggregation is about 4.5 times faster (2,000 proteins: 1.6 s instead of 7.4 s) and rlm aggregation about a fifth faster.
+- Wald contrasts of the methods that fit one model per protein (lm, rlm, rfit, lm_impute, rfit_impute, deqms, ropeca) are computed once per protein instead of once per contrast row, and contrasts naming a group a protein lacks are skipped without raising and catching an error; the lm method on 5,000 proteins takes 4.9 s instead of 9.4 s.
 
 ## Deprecated
 
@@ -42,9 +46,14 @@
 - Simulator arguments renamed: `Nprot` to `n_proteins`, `N` to `n_per_group`, `PEPTIDE` to `peptide`, `TWO` to `two_factor` in `sim_lfq_data()`, `sim_lfq_data_peptide_config()`, `sim_lfq_data_protein_config()`, `sim_lfq_data_2factor_config()` and `sim_build_models_lm()`, `_lmer()`, `_logistf()`. The old arguments still work and warn.
 - `volcano_plotly()` and `multigroup_volcano()` take their data as `data`; `.data`, which shadowed the tidy-eval pronoun, still works and warns.
 - `merge_contrasts_results(model_name = )` is deprecated: it was never used, and the merged model keeps its name `<prefer>_<add>`. Passing it warns.
+- The 73 functions that were exported but documented only on internal help pages are deprecated and will be removed from the exports; prolfqua's interface is `build_contrast_analysis()`, `LFQData` with its `get_*()` objects, and the model and contrast classes. Each still works, warns, and names its public route, e.g. `summarize_stats()`: `LFQData$get_Stats()$stats()`; `plot_pca()`: `LFQData$get_Plotter()$pca()`; `estimate_intensity()`: `LFQData$get_Aggregator("medpolish")$aggregate()`; `compute_contrast()`, `linfct_from_model()`: `build_contrast_analysis()` and `Contrasts$get_linfct()`. The full list, grouped by route, is in `?"prolfqua-deprecated"`. This includes `lfq_power_t_test_quantiles()`, `summary_ropeca_median_p_scaled()` and `missingness_histogram()`, the new names of three functions renamed above; their old names now point to the R6 methods as well.
+- `script_copy_helper_vec()` and `separate_hierarchy()` moved to prolfquapp; `get_contrast()` is deprecated without replacement (only prolfquatakeoutmissing used it, which has its own copy); for `matrix_to_tibble()` use `tibble::as_tibble(x, rownames = )`.
+- `LFQDataPlotter$heatmap(top_n = )` is renamed `n_most_variable`, since it keeps the features with the largest sd (or CV); `top_n` still works and warns.
 
 ## Documentation
 
+- `?ContrastsFacadeBase` is a public help page: how a facade for a new modelling backend is written and registered with `register_facade()`, with a working example.
+- The reference index of the pkgdown site groups the help pages by topic. The article "Under the hood" explains how contrast strings become weights on the model coefficients with `Contrasts$get_linfct()`, and the imputation vignette draws its before and after heatmaps with `LFQDataPlotter$heatmap(row_order = )`.
 - Help pages render Markdown, so code and links that showed as literal backticks or brackets now format; every exported function documents its return value; titles are in sentence case and `lfqdata` arguments share one description.
 - Every argument of the exported functions is documented, and the `sim_build_models_logistf()` example checks the fitted models instead of a field that does not exist.
 - `?prolfqua` has a Resources section: memory per row, run time per protein for the matrix and per-subject backends, retained fitted models, and the cost of `null_split_check()`. `LFQData$get_config()` says it returns the configuration of the object itself, not a copy, and the `all` and `global` arguments that only keep the `ContrastsInterface` signature say that they are ignored.

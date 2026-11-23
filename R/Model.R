@@ -80,7 +80,7 @@ Model <- R6::R6Class(
     #' return model coefficient table
     get_coefficients = function() {
       lmermodel <- "linear_model"
-      complete_models <- get_complete_model_fit(self$model_df)
+      complete_models <- .get_complete_model_fit(self$model_df)
       # Extract coefficients
       .coef_df <- function(x) {
         coefficients <- .fit_coef(x)
@@ -105,7 +105,7 @@ Model <- R6::R6Class(
     #' return anova table
     get_anova = function() {
       lmermodel <- "linear_model"
-      complete_models <- get_complete_model_fit(self$model_df)
+      complete_models <- .get_complete_model_fit(self$model_df)
 
       model_anova <- complete_models |>
         dplyr::mutate(Anova_model = purrr::map(.data[[lmermodel]], self$model_strategy$anova_df$fun))

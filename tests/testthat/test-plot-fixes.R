@@ -41,12 +41,12 @@ test_that("histogram_diff() draws each contrast's own median once per panel", {
 test_that("volcano colours: up to 4 levels keep the palette, more levels still build", {
   expect_equal(.contrast_colour_values("colour", letters[1:3]), c("#000000", "#E69F00", "#0072B2", "#D55E00"))
   expect_length(.contrast_colour_values("colour", letters[1:6]), 6)
-  p <- multigroup_volcano(.volcano_input(6), effect = "logFC", significance = "adj p", contrast = "Condition")
+  p <- .multigroup_volcano_labelled(.volcano_input(6), effect = "logFC", significance = "adj p", contrast = "Condition")
   expect_no_error(ggplot2::ggplot_build(p))
 })
 
 test_that("volcano accepts a non-syntactic significance column", {
-  p <- multigroup_volcano(
+  p <- .multigroup_volcano_labelled(
     .volcano_input(2),
     effect = "logFC",
     significance = "adj p",
@@ -62,7 +62,7 @@ test_that("plot_stat_violin_median() shows median and quartiles as one point ran
   istar <- sim_lfq_data_peptide_config(n_proteins = 20, with_missing = FALSE, seed = 1)
   lfq <- LFQData$new(istar$data, istar$config)
   stats <- lfq$get_Stats()$stats()
-  p <- plot_stat_violin_median(stats, "group_", stat = "meanAbundance")
+  p <- .plot_stat_violin_median(stats, "group_", stat = "meanAbundance")
   expect_length(p$layers, 2)
   summary_layer <- ggplot2::layer_data(p, 2)
   expect_false(anyNA(summary_layer$ymin))
@@ -74,7 +74,7 @@ test_that("beeswarm point sizes stay within 1 to 4 mm for large child counts", {
   lfq <- LFQData$new(istar$data, istar$config)
   pdata <- lfq$data_long()[lfq$data_long()$protein_Id == lfq$data_long()$protein_Id[1], ]
   pdata[[lfq$nr_children_col()]] <- rep(c(1, 40), length.out = nrow(pdata))
-  p <- plot_hierarchies_boxplot(pdata, "protein", lfq, beeswarm = TRUE, show_mean = FALSE)
+  p <- .plot_hierarchies_boxplot(pdata, "protein", lfq, beeswarm = TRUE, show_mean = FALSE)
   sizes <- ggplot2::layer_data(p, 2)$size
   expect_true(all(sizes >= 1 & sizes <= 4))
 })

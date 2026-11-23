@@ -102,7 +102,7 @@ test_that("remove_small_intensities re-establishes explicit missing rows", {
 
   response <- filtered$response()
   expect_gt(sum(is.na(filtered$data_long()[[response]])), 0)
-  expect_equal(nrow(filtered$data_long()), nrow(prolfqua::complete_cases(filtered)))
+  expect_equal(nrow(filtered$data_long()), nrow(.complete_cases(filtered)))
 })
 
 test_that("LFQData data_wide conversion", {
@@ -323,14 +323,14 @@ test_that("Transformer and Summariser deep-clone their input", {
 })
 
 test_that("tidy_to_wide_config takes the row keys", {
-  default <- tidy_to_wide_config(lfqdata, as.matrix = TRUE)
+  default <- .tidy_to_wide_config(lfqdata, as.matrix = TRUE)
   expect_equal(colnames(default$rowdata), lfqdata$hierarchy_keys())
   united <- do.call(paste, c(default$rowdata, sep = "~lfq~"))
   expect_identical(rownames(default$data), united)
 
   # a reduced key set must still identify one value per sample
   expect_error(
-    tidy_to_wide_config(lfqdata, row_keys = lfqdata$hierarchy_keys()[1]),
+    .tidy_to_wide_config(lfqdata, row_keys = lfqdata$hierarchy_keys()[1]),
     class = "prolfqua_error_bad_argument"
   )
 })
@@ -349,11 +349,11 @@ test_that("lfqdata_to_summarized_experiment returns a SummarizedExperiment", {
   expect_equal(ncol(se), nrow(lfqdata$data_wide()$annotation))
 })
 
-test_that("lfqdata_from_wide inverts tidy_to_wide_config", {
+test_that("lfqdata_from_wide inverts .tidy_to_wide_config", {
   istar <- sim_lfq_data_peptide_config(n_proteins = 10)
   lfq <- LFQData$new(istar$data, istar$config)
-  wide <- tidy_to_wide_config(lfq, as.matrix = TRUE)
-  nr <- tidy_to_wide_config(lfq, as.matrix = TRUE, value = lfq$nr_children_col())
+  wide <- .tidy_to_wide_config(lfq, as.matrix = TRUE)
+  nr <- .tidy_to_wide_config(lfq, as.matrix = TRUE, value = lfq$nr_children_col())
   values <- stats::setNames(list(wide$data, nr$data), c(lfq$response(), lfq$nr_children_col()))
   back <- lfqdata_from_wide(values, wide$rowdata, wide$annotation, lfq$get_config())
   expect_s3_class(back, "LFQData")

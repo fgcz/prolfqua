@@ -313,7 +313,7 @@ test_that("detection preparation completes sparse LFQData before encoding missin
 
   lfq_sparse <- lfqdata$get_copy()
   lfq_sparse$set_data(lfq_sparse$data_long()[!is.na(lfq_sparse$data_long()[[response]]), ])
-  expect_setequal(unique(prolfqua::encode_bin_resp(lfq_sparse)$bin_resp), 1L)
+  expect_setequal(unique(.encode_bin_resp(lfq_sparse)$bin_resp), 1L)
 
   lfq_missing <- prolfqua:::.prepare_detection_lfqdata(lfq_sparse)
   expect_setequal(unique(lfq_missing$data_long()$bin_resp), c(0L, 1L))

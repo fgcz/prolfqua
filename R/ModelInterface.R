@@ -61,7 +61,7 @@ ModelInterface <- R6::R6Class(
     coef_volcano = function() {
       volcano_plot <- private$coef_table() |>
         dplyr::filter(factor != "(Intercept)") |>
-        prolfqua::multigroup_volcano(
+        .multigroup_volcano_labelled(
           effect = "Estimate",
           significance = private$coef_pvalue,
           contrast = "factor",

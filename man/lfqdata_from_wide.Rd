@@ -25,7 +25,7 @@ plus the file name and factor columns}
 LFQData
 }
 \description{
-The inverse of \code{\link[=tidy_to_wide_config]{tidy_to_wide_config()}}: feature x sample matrices, their row
+The inverse of \code{LFQData$data_wide()}: feature x sample matrices, their row
 annotation and their sample annotation back to long-format LFQData. Row \code{i}
 of every matrix belongs to row \code{i} of \code{rowdata}; matrix column names are the
 sample names.
@@ -33,7 +33,7 @@ sample names.
 \examples{
 dd <- prolfqua::sim_lfq_data_peptide_config()
 lfqdata <- prolfqua::LFQData$new(dd$data, dd$config)
-wide <- tidy_to_wide_config(lfqdata, as.matrix = TRUE)
+wide <- lfqdata$data_wide(as.matrix = TRUE)
 back <- lfqdata_from_wide(wide$data, wide$rowdata, wide$annotation, lfqdata$get_config())
 stopifnot(nrow(back$data_long()) == nrow(lfqdata$data_long()))
 }

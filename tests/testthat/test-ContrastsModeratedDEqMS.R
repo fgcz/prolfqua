@@ -39,7 +39,7 @@ test_that("moderated_p_deqms works on simulated data", {
 
   # Test single-group moderation
   result <- muffle_warnings_matching(
-    moderated_p_deqms(contrast_result, count_col = "nrPeptides"),
+    .moderated_p_deqms(contrast_result, count_col = "nrPeptides"),
     loess_ties_warning
   )
 
@@ -222,7 +222,7 @@ test_that("moderated_p_deqms predicts the prior for proteins left out of the loe
     diff = c(0.6, -0.5, 0.2, 0.9, -0.7, 0.3, -0.1, 0.8, 0.6, 0.3),
     count = c(1, 2, 3, 4, 5, 6, 7, 8, 3, 4)
   )
-  expect_no_warning(res <- moderated_p_deqms(mm, count_col = "count"))
+  expect_no_warning(res <- .moderated_p_deqms(mm, count_col = "count"))
   # row 9 (sigma 0) is not fitted; its prior comes from the curve at count 3, as for row 3
   expect_equal(res$moderated.var.prior[9], res$moderated.var.prior[3])
   # row 10 has no residual degrees of freedom: no moderated statistics
@@ -232,10 +232,10 @@ test_that("moderated_p_deqms predicts the prior for proteins left out of the loe
 
 test_that("moderated_p_deqms_long reports warnings of the per-contrast fits as prolfqua_fit_failed", {
   mm <- data.frame(contrast = c("a", "a", "b", "b"), diff = c(1, -1, 2, 0), n = 1)
-  local_mocked_bindings(moderated_p_deqms = function(mm, ...) {
+  local_mocked_bindings(.moderated_p_deqms = function(mm, ...) {
     warning("loess trouble")
     mm
   })
-  expect_warning(res <- moderated_p_deqms_long(mm, count_col = "n"), "loess trouble", class = "prolfqua_fit_failed")
+  expect_warning(res <- .moderated_p_deqms_long(mm, count_col = "n"), "loess trouble", class = "prolfqua_fit_failed")
   expect_equal(nrow(res), 4)
 })

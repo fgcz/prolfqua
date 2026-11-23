@@ -27,20 +27,6 @@ ggplot2::ggplot(mtcars, ggplot2::aes(wt, mpg)) +
 Other plotting:
 \code{\link{ContrastsPlotter}},
 \code{\link{INTERNAL_FUNCTIONS_BY_FAMILY}},
-\code{\link[=missingness_histogram]{missingness_histogram()}},
-\code{\link[=missingness_per_condition]{missingness_per_condition()}},
-\code{\link[=missingness_per_condition_cumsum]{missingness_per_condition_cumsum()}},
-\code{\link[=plot_estimate]{plot_estimate()}},
-\code{\link[=plot_heatmap]{plot_heatmap()}},
-\code{\link[=plot_heatmap_cor]{plot_heatmap_cor()}},
-\code{\link[=plot_hierarchies_boxplot_df]{plot_hierarchies_boxplot_df()}},
-\code{\link[=plot_hierarchies_line]{plot_hierarchies_line()}},
-\code{\link[=plot_intensity_distribution_violin]{plot_intensity_distribution_violin()}},
-\code{\link[=plot_na_heatmap]{plot_na_heatmap()}},
-\code{\link[=plot_pca]{plot_pca()}},
-\code{\link[=plot_raster]{plot_raster()}},
-\code{\link[=plot_sample_correlation]{plot_sample_correlation()}},
-\code{\link[=upset_interaction_missing_stats]{upset_interaction_missing_stats()}},
-\code{\link[=upset_missing_stats]{upset_missing_stats()}}
+\code{\link[=upset_interaction_missing_stats]{upset_interaction_missing_stats()}}
 }
 \concept{plotting}

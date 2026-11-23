@@ -6,7 +6,7 @@ test_that("plot_hierarchies_boxplot", {
     dplyr::group_by(dplyr::across(dplyr::all_of(lfq$relevant_hierarchy_keys()))) |>
     tidyr::nest()
 
-  p <- plot_hierarchies_boxplot(
+  p <- .plot_hierarchies_boxplot(
     xnested$data[[3]],
     xnested$protein_Id[[3]],
     lfq,
@@ -14,9 +14,9 @@ test_that("plot_hierarchies_boxplot", {
   )
   expect_true("ggplot" %in% class(p))
 
-  p <- plot_hierarchies_boxplot(xnested$data[[3]], xnested$protein_Id[[3]], lfq)
+  p <- .plot_hierarchies_boxplot(xnested$data[[3]], xnested$protein_Id[[3]], lfq)
   expect_true("ggplot" %in% class(p))
-  p <- plot_hierarchies_boxplot(
+  p <- .plot_hierarchies_boxplot(
     xnested$data[[3]],
     xnested$protein_Id[[3]],
     lfq,
@@ -38,7 +38,7 @@ test_that("density legend is suppressed automatically for many samples", {
   expect_true(prolfqua:::.show_sample_legend(pdata, "sample", TRUE, 16))
   expect_false(prolfqua:::.show_sample_legend(pdata, "sample", FALSE, 16))
 
-  p <- plot_intensity_distribution_density(
+  p <- .plot_intensity_distribution_density(
     pdata,
     sample_name = "sample",
     response = "abundance",
@@ -59,7 +59,7 @@ test_that("density plot carries sample keys for plotly hover highlighting", {
   withr::local_seed(1)
   pdata$abundance <- c(stats::rnorm(30, mean = 10), stats::rnorm(30, mean = 12))
 
-  p <- plot_intensity_distribution_density(
+  p <- .plot_intensity_distribution_density(
     pdata,
     sample_name = "sample",
     response = "abundance",
@@ -80,7 +80,7 @@ test_that("PCA sample labels repel and are not clipped", {
     group = rep(c("control", "treated"), each = 3)
   )
 
-  p <- plot_pca(
+  p <- .plot_pca(
     matrix,
     annotation,
     sample_name = "sample",
@@ -110,7 +110,7 @@ test_that("plot_pca errors when no complete features remain", {
   )
 
   expect_error(
-    suppressMessages(plot_pca(
+    suppressMessages(.plot_pca(
       matrix,
       annotation,
       sample_name = "sample",
@@ -127,7 +127,7 @@ test_that("plot_pca errors with too few samples instead of returning NULL", {
   annotation <- data.frame(sample = colnames(matrix), group = c("a", "b"))
 
   expect_error(
-    plot_pca(matrix, annotation, sample_name = "sample", factor_keys = "group"),
+    .plot_pca(matrix, annotation, sample_name = "sample", factor_keys = "group"),
     "at least 3 samples"
   )
 })
@@ -142,7 +142,7 @@ test_that("plot_pca errors on duplicated sample names", {
   )
 
   expect_error(
-    plot_pca(matrix, annotation, sample_name = "sample", factor_keys = "group"),
+    .plot_pca(matrix, annotation, sample_name = "sample", factor_keys = "group"),
     "duplicated sample names"
   )
 })
@@ -160,7 +160,7 @@ test_that("plot_pca joins explicitly and handles a single factor key", {
   # explicit by = sample_name => no "Joining, by" message; single factor key
   # (factor_keys[2] is NA) must not add a shape scale.
   expect_no_message(
-    p <- plot_pca(matrix, annotation, sample_name = "sample", factor_keys = "group")
+    p <- .plot_pca(matrix, annotation, sample_name = "sample", factor_keys = "group")
   )
   expect_s3_class(p, "ggplot")
   expect_equal(nrow(p$data), ncol(matrix))
@@ -185,7 +185,7 @@ test_that("heatmap row labels are truncated without changing matrix row names", 
     group = rep(c("control", "treated"), each = 2)
   )
 
-  p <- plot_raster(
+  p <- .plot_raster(
     matrix,
     annotation,
     factor_keys = "group",
@@ -228,7 +228,7 @@ test_that("correlation heatmap sample labels keep informative suffixes", {
   skip_if_not_installed("circlize")
   data <- test_long_sample_heatmap_data()
 
-  p <- plot_heatmap_cor(
+  p <- .plot_heatmap_cor(
     data$matrix,
     data$annotation,
     factor_keys = "group",
@@ -250,7 +250,7 @@ test_that("abundance heatmap sample labels keep informative suffixes", {
   skip_if_not_installed("circlize")
   data <- test_long_sample_heatmap_data()
 
-  p <- plot_heatmap(
+  p <- .plot_heatmap(
     data$matrix,
     data$annotation,
     factor_keys = "group",
@@ -272,7 +272,7 @@ test_that("raster sample labels keep informative suffixes", {
   skip_if_not_installed("circlize")
   data <- test_long_sample_heatmap_data()
 
-  p <- plot_raster(
+  p <- .plot_raster(
     data$matrix,
     data$annotation,
     factor_keys = "group",
@@ -295,7 +295,7 @@ test_that("abundance heatmap shows missing values in light gray", {
   data <- test_long_sample_heatmap_data()
   data$matrix[1, 1] <- NA
 
-  p <- plot_heatmap(
+  p <- .plot_heatmap(
     data$matrix,
     data$annotation,
     factor_keys = "group",
@@ -322,7 +322,7 @@ test_that("abundance heatmap draws sparse one-row matrices with all-NA columns",
     group = c("control", "treated", "treated", "control", "treated", "treated")
   )
 
-  p <- plot_heatmap(
+  p <- .plot_heatmap(
     matrix,
     annotation,
     factor_keys = "group",
@@ -351,7 +351,7 @@ test_that("abundance heatmap keeps partially observed rows and drops rows that c
     group = rep(c("bait", "control"), each = 4)
   )
 
-  p <- plot_heatmap(
+  p <- .plot_heatmap(
     matrix,
     annotation,
     factor_keys = "group",
@@ -416,12 +416,12 @@ test_that("group colours are deterministic and shared across heatmap, na-heatmap
   expect_identical(heat1, heat2)
 
   # na-heatmap shares the same annotation colours
-  na_h <- plot_na_heatmap(wide$data, wide$annotation, fk, sn)
+  na_h <- .plot_na_heatmap(wide$data, wide$annotation, fk, sn)
   na_colors <- na_h@top_annotation@anno_list[[key]]@color_mapping@colors
   expect_identical(na_colors[order(names(na_colors))], heat1[order(names(heat1))])
 
   # PCA colours each group with the same colour as the heatmap annotation
-  pca <- plot_pca(wide$data, wide$annotation, sn, fk)
+  pca <- .plot_pca(wide$data, wide$annotation, sn, fk)
   build <- ggplot2::ggplot_build(pca)
   pca_map <- tapply(build$data[[1]]$colour, as.character(build$plot$data[[key]]), unique)
   for (lev in names(pca_map)) {
@@ -478,15 +478,15 @@ test_that("heatmap keeps only the top_n most variable features", {
   n_all <- nrow(wide$data)
   expect_gt(n_all, 3)
 
-  # top_n >= feature count (or NULL / Inf) keeps every feature.
-  expect_equal(nrow(prolfqua:::.select_most_variable_features(lfq, wide, top_n = n_all + 10)), n_all)
-  expect_equal(nrow(prolfqua:::.select_most_variable_features(lfq, wide, top_n = NULL)), n_all)
-  expect_equal(nrow(prolfqua:::.select_most_variable_features(lfq, wide, top_n = Inf)), n_all)
+  # n_most_variable >= feature count (or NULL / Inf) keeps every feature.
+  expect_equal(nrow(prolfqua:::.select_most_variable_features(lfq, wide, n_most_variable = n_all + 10)), n_all)
+  expect_equal(nrow(prolfqua:::.select_most_variable_features(lfq, wide, n_most_variable = NULL)), n_all)
+  expect_equal(nrow(prolfqua:::.select_most_variable_features(lfq, wide, n_most_variable = Inf)), n_all)
 
-  # top_n < feature count keeps exactly top_n rows, and they are the ones with
+  # n_most_variable < feature count keeps exactly n_most_variable rows, and they are the ones with
   # the highest variability statistic (CV here — untransformed data).
   k <- 3L
-  sub <- prolfqua:::.select_most_variable_features(lfq, wide, top_n = k)
+  sub <- prolfqua:::.select_most_variable_features(lfq, wide, n_most_variable = k)
   expect_equal(nrow(sub), k)
 
   st <- lfq$get_Stats(stats = "all")
@@ -502,8 +502,28 @@ test_that("heatmap keeps only the top_n most variable features", {
   expect_gte(min(kept, na.rm = TRUE), max(dropped, na.rm = TRUE))
 
   # end-to-end through the plotter: no hclust blow-up, returns a Heatmap.
-  p <- lfq$get_Plotter()$heatmap(top_n = k)
+  p <- lfq$get_Plotter()$heatmap(n_most_variable = k)
   expect_s4_class(p, "Heatmap")
+  expect_warning(p <- lfq$get_Plotter()$heatmap(top_n = k), "n_most_variable", class = "deprecatedWarning")
+  expect_equal(nrow(p@matrix), k)
+})
+
+test_that("heatmap row_order shows exactly the given features in that order, without clustering", {
+  istar <- sim_lfq_data_protein_config(n_proteins = 20)
+  lfq <- LFQData$new(istar$data, istar$config)
+  plotter <- lfq$get_Plotter()
+  ids <- rownames(lfq$data_wide(as.matrix = TRUE)$data)
+  wanted <- rev(ids[c(2, 5, 9, 11)])
+  p <- plotter$heatmap(row_order = wanted)
+  expect_s4_class(p, "Heatmap")
+  expect_identical(rownames(p@matrix), wanted)
+
+  expect_error(
+    plotter$heatmap(row_order = c(wanted, "not_a_feature")),
+    "not_a_feature",
+    class = "prolfqua_error_bad_argument"
+  )
+  expect_error(plotter$heatmap(row_order = wanted, n_most_variable = 2), class = "prolfqua_error_bad_argument")
 })
 
 # Graphics devices: PDF writers must leave the caller's open device open and current.
@@ -592,12 +612,12 @@ test_that("volcano labels and correlation plot text use readable default sizes",
     colour = "observed",
     name = c("x", "y", "z")
   )
-  p <- multigroup_volcano(dat, colour = NULL, label = "name")
+  p <- .multigroup_volcano_labelled(dat, colour = NULL, label = "name")
   text_layer <- Filter(function(l) inherits(l$geom, "GeomTextRepel"), p$layers)
   expect_length(text_layer, 1L)
   expect_identical(text_layer[[1]]$aes_params$size, 3)
-  expect_false(any(c("tl.cex", "number.cex") %in% names(formals(plot_sample_correlation))))
-  expect_true("..." %in% names(formals(plot_sample_correlation)))
+  expect_false(any(c("tl.cex", "number.cex") %in% names(formals(.plot_sample_correlation))))
+  expect_true("..." %in% names(formals(.plot_sample_correlation)))
 })
 
 test_that("PDF writers append .pdf only when the name lacks it", {
@@ -636,13 +656,13 @@ test_that("plot_pca draws only valid shapes for a second factor with many levels
     subject = paste0("p", seq_len(n))
   )
   m <- withr::with_seed(1, matrix(rnorm(20 * n), nrow = 20, dimnames = list(NULL, annot$sample)))
-  p <- plot_pca(m, annot, "sample", c("group", "subject"))
+  p <- .plot_pca(m, annot, "sample", c("group", "subject"))
   shapes <- ggplot2::layer_data(p, 1)$shape
   expect_true(is.null(shapes) || all(shapes %in% 0:25))
 
   few <- annot[1:6, ]
   few$subject <- rep(c("p1", "p2", "p3"), 2)
-  p <- plot_pca(m[, few$sample], few, "sample", c("group", "subject"))
+  p <- .plot_pca(m[, few$sample], few, "sample", c("group", "subject"))
   expect_setequal(unique(ggplot2::layer_data(p, 1)$shape), c(16, 17, 15))
 })
 
@@ -651,7 +671,7 @@ test_that("plot_heatmap_cor maps `color` from the lowest to the highest correlat
   skip_if_not_installed("circlize")
   data <- test_long_sample_heatmap_data()
   heatmap <- function(...) {
-    plot_heatmap_cor(data$matrix, data$annotation, factor_keys = "group", sample_name = "sample", ...)
+    .plot_heatmap_cor(data$matrix, data$annotation, factor_keys = "group", sample_name = "sample", ...)
   }
   rgb_at <- function(p, value) grDevices::col2rgb(p@matrix_color_mapping@col_fun(value))
   p <- heatmap(color = c("blue", "yellow"))

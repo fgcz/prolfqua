@@ -6,11 +6,7 @@
 #' @examplesIf requireNamespace("logistf", quietly = TRUE)
 #' istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 10, with_missing = TRUE,
 #'   weight_missing = 0.5, seed = 3)
-#' istar$data <- prolfqua::encode_bin_resp(LFQData$new(istar$data, istar$config))
-#' istar$config$bin_resp <- "bin_resp"
-#' tmp <- LFQData$new(istar$data, istar$config)
-#' formula <- paste0(tmp$get_config()$bin_resp , "~ group_")
-#' mod <- build_model_logistf(tmp, formula)
+#' mod <- build_model_glm_protein(LFQData$new(istar$data, istar$config), "~ group_")
 #' tmp <- mod$get_coefficients()
 #' stopifnot(nrow(tmp) == 30)
 #' mod$coef_histogram()
@@ -24,8 +20,7 @@ ModelFirth <- R6::R6Class(
   "ModelFirth",
   inherit = ModelInterface,
   public = list(
-    #' @field models \code{\link{model_analyse}} result: \code{model_df}, one
-    #'   fitted model per subject, and the \code{strategy}
+    #' @field models list with \code{model_df}, one fitted model per subject, and the \code{strategy}
     models = NULL,
     #' @field model_name name of model
     model_name = character(),
@@ -35,8 +30,8 @@ ModelFirth <- R6::R6Class(
     p.adjust = NULL,
     #' @description
     #' initialize
-    #' @param models \code{\link{model_analyse}} result with a \code{model_df}
-    #'   data.frame and the \code{strategy}
+    #' @param models list with a \code{model_df} data.frame (one fitted model per subject) and the
+    #'   \code{strategy}
     #' @param model_name name of model
     #' @param subject_id subject column name
     #' @param p.adjust method to adjust p-values
@@ -48,7 +43,7 @@ ModelFirth <- R6::R6Class(
       p.adjust = prolfqua::adjust_p_values
     ) {
       if (!is.list(models) || !is.data.frame(models$model_df)) {
-        abort_bad_argument("models", "be a model_analyse() result with a model_df data.frame")
+        abort_bad_argument("models", "be a list of fitted models with a model_df data.frame")
       }
       self$models <- models
       self$model_name <- model_name

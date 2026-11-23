@@ -60,7 +60,7 @@ StrategyBase <- R6::R6Class(
     initialize = function(modelstr, model_name = "Model", control = list()) {
       self$formula <- .as_model_formula(modelstr)
       self$model_name <- model_name
-      self$anova_df <- get_anova_df(test = "F")
+      self$anova_df <- .get_anova_df(test = "F")
       allowed <- if (length(control) > 0L) private$control_names() else names(private$control_defaults())
       self$control <- .merge_control(control, private$control_defaults(), allowed)
     },
@@ -84,8 +84,9 @@ StrategyBase <- R6::R6Class(
     },
 
     #' @description Compute contrasts from fitted model
-    #' @param ... passed to \code{\link{compute_contrast}}
-    contrast_fun = function(...) compute_contrast(...),
+    #' @param ... \code{m} (fitted model), \code{linfct} (contrast weights on its coefficients) and
+    #'   \code{confint}, the confidence level (default 0.95)
+    contrast_fun = function(...) .compute_estimable_contrast(...),
 
     #' @description Get residual degrees of freedom
     #' @param model fitted model
@@ -137,8 +138,9 @@ StrategyLmer <- R6::R6Class(
     isSingular = function(model) lme4::isSingular(model),
 
     #' @description Compute contrasts from fitted model
-    #' @param ... passed to \code{\link{compute_lmer_contrast}}
-    contrast_fun = function(...) compute_lmer_contrast(...)
+    #' @param ... \code{model} (fitted model), \code{linfct} (contrast weights on its coefficients) and
+    #'   \code{ddf}, the denominator degrees of freedom: \code{"Satterthwaite"} (default) or \code{"Kenward-Roger"}
+    contrast_fun = function(...) .compute_lmer_contrast(...)
   ),
   private = list(
     prepare = function(x) {
@@ -347,12 +349,7 @@ AnovaExtractor <- R6::R6Class(
 #' @param test one case-sensitive test choice: "F", "Chisq", "LRT", "Rao" or "Cp".
 #'   The fitted model's ANOVA method must support the chosen test.
 #' @return An \code{\link{AnovaExtractor}} object.
-#' @keywords internal
-#' @family modelling
-#' @export
-#' @examples
-#' x <- get_anova_df(test = "F")
-#' x <- get_anova_df(test = "Chisq")
-get_anova_df <- function(test = "F") {
+#' @noRd
+.get_anova_df <- function(test = "F") {
   AnovaExtractor$new(test = test)
 }

@@ -59,7 +59,7 @@ summarize_variance_explained <- function(lfqdata, modelstr = NULL) {
   }
   subject_id <- lfqdata$hierarchy_keys()
   model <- build_model(lfqdata, strategy_lm(modelstr), subject_id = subject_id)
-  fits <- get_complete_model_fit(model$model_df)
+  fits <- .get_complete_model_fit(model$model_df)
   n_features <- nrow(model$model_df)
   if (nrow(fits) == 0L) {
     abort_prolfqua(

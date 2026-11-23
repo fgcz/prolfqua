@@ -1,4 +1,4 @@
-# linfct_matrix_contrasts and compute_contrast (per-protein Wald contrast helpers)
+# .linfct_matrix_contrasts and .compute_estimable_contrast (per-protein Wald contrast helpers)
 
 test_that("linfct_matrix_contrasts resolves self-referencing contrasts", {
   Contr <- c(
@@ -10,20 +10,20 @@ test_that("linfct_matrix_contrasts resolves self-referencing contrasts", {
     "interactAB" = "IntoflintoA - IntoflintoB"
   )
   withr::local_seed(42)
-  additive <- linfct_matrix_contrasts(linfct_from_model(sim_make_model_lm("factors"), as_list = FALSE), Contr)
+  additive <- .linfct_matrix_contrasts(.linfct_from_model(.sim_make_model_lm("factors"), as_list = FALSE), Contr)
   expect_equal(sum(additive["interactXZ", ]), 0)
   expect_equal(sum(additive["interactAB", ]), 0)
-  interaction <- linfct_matrix_contrasts(linfct_from_model(sim_make_model_lm("interaction"), as_list = FALSE), Contr)
+  interaction <- .linfct_matrix_contrasts(.linfct_from_model(.sim_make_model_lm("interaction"), as_list = FALSE), Contr)
   expect_equal(sum(interaction["interactXZ", ]), 1)
   expect_equal(sum(interaction["interactAB", ]), 1)
 })
 
 test_that("linfct_matrix_contrasts reports failed contrasts and keeps the valid ones", {
-  linfct <- linfct_from_model(sim_make_model_lm("parallel3"), as_list = FALSE)
+  linfct <- .linfct_from_model(.sim_make_model_lm("parallel3"), as_list = FALSE)
   contrasts <- c(valid = "group_A - group_Ctrl", invalid = "nonexistent_group - group_Ctrl")
   expect_warning(
     expect_message(
-      res <- linfct_matrix_contrasts(linfct, contrasts, p.message = TRUE),
+      res <- .linfct_matrix_contrasts(linfct, contrasts, p.message = TRUE),
       "valid=group_A - group_Ctrl"
     ),
     "computed 1/2 contrasts; failed 1: invalid"
@@ -41,7 +41,7 @@ test_that("compute_contrast returns NA for contrasts on non-estimable coefficien
   linfct <- matrix(0, nrow = 2, ncol = 3, dimnames = list(c("AvsB", "AvsC"), c("(Intercept)", "groupB", "groupC")))
   linfct["AvsB", ] <- c(0, -1, 0)
   linfct["AvsC", ] <- c(0, 0, -1)
-  res <- compute_contrast(m, linfct, confint = 0.95)
+  res <- .compute_estimable_contrast(m, linfct, confint = 0.95)
   expect_identical(res$lhs, c("AvsB", "AvsC"))
   expect_false(anyNA(res[1, c("estimate", "std.error", "p.value")]))
   expect_true(all(is.na(res[2, c("estimate", "std.error", "p.value")])))
@@ -57,7 +57,7 @@ test_that("compute_contrast returns NA for contrasts on non-estimable coefficien
   expect_gte(length(na_names), 2)
   linfct <- matrix(0, nrow = 1, ncol = length(coefficients(m)), dimnames = list("cancel", names(coefficients(m))))
   linfct[1, na_names[1:2]] <- c(1, -1)
-  res <- compute_contrast(m, linfct, confint = 0.95)
+  res <- .compute_estimable_contrast(m, linfct, confint = 0.95)
   expect_true(is.na(res$estimate))
   expect_true(is.na(res$p.value))
 })
@@ -72,7 +72,7 @@ test_that("compute_contrast matches summary.lm and the hand-computed Wald test n
   # lm drops the empty level C, so groupC is a linfct column the model does not estimate
   linfct <- rbind(B = c(0, 1, 0), C = c(0, 0, 1), mix = c(1, 0.5, 0))
   colnames(linfct) <- c("(Intercept)", "groupB", "groupC")
-  res <- compute_contrast(m, linfct, confint = 0.9)
+  res <- .compute_estimable_contrast(m, linfct, confint = 0.9)
 
   ref <- summary(m)$coefficients["groupB", ]
   expect_equal(res$estimate[1], unname(ref["Estimate"]))
@@ -92,8 +92,8 @@ test_that("compute_contrast matches summary.lm and the hand-computed Wald test n
 })
 
 test_that("linfct_matrix_contrasts names an unnamed contrast contrast_<i>", {
-  linfct <- linfct_from_model(sim_make_model_lm("parallel3"), as_list = FALSE)
-  res <- expect_no_warning(linfct_matrix_contrasts(linfct, c("group_A - group_Ctrl", AB = "group_A - group_B")))
+  linfct <- .linfct_from_model(.sim_make_model_lm("parallel3"), as_list = FALSE)
+  res <- expect_no_warning(.linfct_matrix_contrasts(linfct, c("group_A - group_Ctrl", AB = "group_A - group_B")))
   expect_identical(rownames(res), c("contrast_1", "AB"))
   expect_equal(res["contrast_1", ], linfct["group_A", ] - linfct["group_Ctrl", ])
 })

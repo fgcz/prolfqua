@@ -154,7 +154,7 @@ test_that("errors carry class prolfqua_error", {
     class = "prolfqua_error_bad_argument"
   )
   expect_error(
-    prolfqua::contrasts_linfct(data.frame(protein_Id = c("p1", "p2")), linfct = list(1)),
+    .contrasts_linfct(data.frame(protein_Id = c("p1", "p2")), linfct = list(1)),
     class = "prolfqua_error"
   )
 })
@@ -164,7 +164,7 @@ test_that("plot_pca rejects a PC argument of the wrong length", {
   x <- matrix(rnorm(20), nrow = 5, dimnames = list(NULL, paste0("s", 1:4)))
   annot <- data.frame(sample = paste0("s", 1:4), group = c("a", "a", "b", "b"))
   expect_error(
-    prolfqua::plot_pca(x, annot, sample_name = "sample", factor_keys = "group", PC = 1),
+    .plot_pca(x, annot, sample_name = "sample", factor_keys = "group", PC = 1),
     class = "prolfqua_error_bad_argument"
   )
 })
@@ -273,7 +273,7 @@ test_that("abstract strategy fitting fails with a classed error", {
 })
 
 test_that("Firth model builder checks class before hierarchy access", {
-  expect_error(build_model_logistf(list(), "y ~ x"), class = "prolfqua_error_bad_argument")
+  expect_error(.build_model_logistf(list(), "y ~ x"), class = "prolfqua_error_bad_argument")
 })
 
 test_that("detection preprocessing requires LFQData", {
@@ -315,7 +315,7 @@ test_that("contrast calculation rejects an all-zero coefficient vector", {
   model <- stats::lm(Sepal.Length ~ Species, data = iris)
   zero <- matrix(0, nrow = 1, ncol = length(stats::coef(model)), dimnames = list("zero", names(stats::coef(model))))
   expect_error(
-    compute_contrast(model, zero),
+    .compute_estimable_contrast(model, zero),
     regexp = "`linfct` must have a non-zero coefficient in every row",
     class = "prolfqua_error"
   )
@@ -396,7 +396,7 @@ test_that("NA heatmap annotation cannot name unknown samples", {
   skip_if_not_installed("ComplexHeatmap")
   skip_if_not_installed("circlize")
   expect_error(
-    plot_na_heatmap(matrix(1, dimnames = list(NULL, "s1")), data.frame(sample = "s2"), "group", "sample"),
+    .plot_na_heatmap(matrix(1, dimnames = list(NULL, "s1")), data.frame(sample = "s2"), "group", "sample"),
     class = "prolfqua_error_bad_argument"
   )
 })
@@ -404,11 +404,7 @@ test_that("NA heatmap annotation cannot name unknown samples", {
 test_that("PCA rejects a requested component beyond the available rank", {
   x <- matrix(seq_len(8), nrow = 2, dimnames = list(NULL, paste0("s", 1:4)))
   annot <- data.frame(sample = paste0("s", 1:4), group = "A")
-  expect_error(plot_pca(x, annot, "sample", "group", PC = c(1, 3)), class = "prolfqua_error")
-})
-
-test_that("matrix conversion rejects other object types", {
-  expect_error(matrix_to_tibble(list()), class = "prolfqua_error_bad_argument")
+  expect_error(.plot_pca(x, annot, "sample", "group", PC = c(1, 3)), class = "prolfqua_error")
 })
 
 test_that("missing contrast columns raise a classed error", {

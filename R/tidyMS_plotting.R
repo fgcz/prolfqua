@@ -287,18 +287,9 @@ theme_prolfqua <- function(grid = FALSE, base_size = 12) {
 #' @return `plot_intensity_distribution_violin()`: a ggplot object with one violin of the intensities per sample
 #'   and the median marked.
 #'
-#' @export
-#'
-#' @keywords internal
 #' @import ggplot2
-#' @family plotting
-#' @examples
-#' istar <- sim_lfq_data_peptide_config()
-#' lfq <- LFQData$new(istar$data, istar$config)
-#' plot_intensity_distribution_violin(
-#'   lfq$data_long(), lfq$sample_name(), lfq$response(), lfq$is_transformed())
-#'
-plot_intensity_distribution_violin <- function(pdata, sample_name, response, is_transformed = FALSE) {
+#' @noRd
+.plot_intensity_distribution_violin <- function(pdata, sample_name, response, is_transformed = FALSE) {
   p <- ggplot(pdata, aes(x = .data[[sample_name]], y = .data[[response]])) +
     theme_prolfqua() +
     geom_violin(linewidth = 0.3) +
@@ -321,17 +312,8 @@ plot_intensity_distribution_violin <- function(pdata, sample_name, response, is_
 #'   display.
 #' @return `plot_intensity_distribution_density()`: a ggplot object with one density line of the intensities per
 #'   sample.
-#' @export
-#' @keywords internal
-#' @family plotting
-#' @rdname plot_intensity_distribution_violin
-#' @examples
-#' istar <- sim_lfq_data_peptide_config()
-#' lfq <- LFQData$new(istar$data, istar$config)
-#' plot_intensity_distribution_density(
-#'   lfq$data_long(), lfq$sample_name(), lfq$response(), lfq$is_transformed())
-#'
-plot_intensity_distribution_density <- function(
+#' @noRd
+.plot_intensity_distribution_density <- function(
   pdata,
   sample_name,
   response,
@@ -375,16 +357,8 @@ plot_intensity_distribution_density <- function(
 #' @return invisibly, the list returned by [corrplot::corrplot.mixed()] with the correlation matrix `corr` and the
 #'   cell positions `corrPos`; called for its side effect of drawing the plot
 #'
-#' @export
-#' @keywords internal
-#' @family plotting
-#' @rdname plot_sample_correlation
-#' @examplesIf requireNamespace("corrplot", quietly = TRUE)
-#' istar <- sim_lfq_data_peptide_config()
-#' lfq <- LFQData$new(istar$data, istar$config)
-#' lfq <- lfq$get_Transformer()$log2()$lfq
-#' plot_sample_correlation(lfq$data_wide(as.matrix = TRUE)$data)
-plot_sample_correlation <- function(matrix, method = "pearson", ...) {
+#' @noRd
+.plot_sample_correlation <- function(matrix, method = "pearson", ...) {
   rlang::check_installed("corrplot", reason = "for sample correlation plots.")
   M <- .sample_correlation(matrix, method)
   # up to 12 samples the lower panel shows the correlation values, otherwise pies (corrplot defaults otherwise)
@@ -415,23 +389,8 @@ plot_sample_correlation <- function(matrix, method = "pearson", ...) {
 #' @return a ggplot object with boxplots of the intensities in `pdata` per combination of factor levels, optionally
 #'   with the individual points and the means
 #'
-#' @export
-#' @keywords internal
-#' @examples
-#'
-#' istar <- sim_lfq_data_peptide_config()
-#' lfq <- LFQData$new(istar$data, istar$config)
-#' res <- plot_hierarchies_boxplot_df(lfq$data_long(), lfq)
-#' res$boxplot[[1]]
-#'
-#' xnested <- lfq$data_long() |>
-#'   dplyr::group_by(across(all_of(lfq$relevant_hierarchy_keys()))) |> tidyr::nest()
-#' p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],
-#'   lfq, beeswarm = FALSE, show_mean = TRUE)
-#' p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],
-#'   lfq, beeswarm = TRUE)
-#' p
-plot_hierarchies_boxplot <- function(
+#' @noRd
+.plot_hierarchies_boxplot <- function(
   pdata,
   title,
   lfqdata,
@@ -478,7 +437,7 @@ plot_hierarchies_boxplot <- function(
   beeswarm,
   show_mean
 ) {
-  pdata <- prolfqua::make_interaction_column(pdata, c(factor_keys))
+  pdata <- .make_interaction_column(pdata, c(factor_keys))
   pdata$size <- ifelse(pdata[[nr_children_col]] == 0, 2, pdata[[nr_children_col]])
   pdata[[nr_children_col]] <- as.factor(pdata[[nr_children_col]])
   p <- ggplot(pdata, aes(x = .data[["interaction"]], y = .data[[response]])) +
@@ -527,28 +486,14 @@ plot_hierarchies_boxplot <- function(
 
 
 #' Generate feature-level boxplots for all proteins
-#' @export
 #' @param pdata data.frame
 #' @param lfqdata [LFQData] object with the data and its configuration
 #' @param hierarchy e.g. protein_Id default relevant_hierarchy_keys
 #' @param facet_grid_on default NULL
 #' @return a tibble with one row per element of `hierarchy`, a column (named after the `hierarchy` columns joined
 #'   by `+`) identifying it, and a list column `boxplot` of ggplot objects made by [plot_hierarchies_boxplot()]
-#' @family plotting
-#' @keywords internal
-#' @examples
-#'
-#' istar <- sim_lfq_data_peptide_config()
-#' lfq <- LFQData$new(istar$data, istar$config)
-#' res <- plot_hierarchies_boxplot_df(lfq$data_long(), lfq)
-#' res$boxplot[[1]]
-#'
-#' lfq2 <- LFQData$new(
-#'   istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 2)),
-#'   istar$config)
-#' res <- plot_hierarchies_boxplot_df(lfq2$data_long(), lfq2)
-#' res$boxplot[[1]]
-plot_hierarchies_boxplot_df <- function(
+#' @noRd
+.plot_hierarchies_boxplot_df <- function(
   pdata,
   lfqdata,
   hierarchy = lfqdata$relevant_hierarchy_keys(),
@@ -564,7 +509,7 @@ plot_hierarchies_boxplot_df <- function(
       boxplot = map2(
         data,
         .data[[newcol]],
-        plot_hierarchies_boxplot,
+        .plot_hierarchies_boxplot,
         lfqdata = lfqdata,
         facet_grid_on = facet_grid_on,
         pb = pb
@@ -617,27 +562,8 @@ plot_hierarchies_boxplot_df <- function(
 #'   pairwise complete observations, or a function of the matrix returning a sample-by-sample correlation matrix
 #' @param ... passed to [ComplexHeatmap::Heatmap()]
 #' @return invisibly, a ComplexHeatmap `Heatmap` object of the clustered sample correlations (or R^2 values)
-#' @export
-#' @keywords internal
-#' @family plotting
-#' @examplesIf requireNamespace("ComplexHeatmap", quietly = TRUE) && requireNamespace("circlize", quietly = TRUE)
-#'
-#' istar <- sim_lfq_data_protein_config()
-#' lfq <- LFQData$new(istar$data, istar$config)
-#' wide <- lfq$data_wide(as.matrix = TRUE)
-#' pheat_map <- plot_heatmap_cor(wide$data, wide$annotation,
-#'   lfq$factor_keys(), lfq$sample_name())
-#' stopifnot(methods::is(pheat_map, "Heatmap"))
-#' pheat_map <- plot_heatmap_cor(wide$data, wide$annotation,
-#'   lfq$factor_keys(), lfq$sample_name(), R2 = TRUE)
-#' stopifnot(methods::is(pheat_map, "Heatmap"))
-#' # rank correlation, or any function returning a correlation matrix
-#' spearman <- plot_heatmap_cor(wide$data, wide$annotation,
-#'   lfq$factor_keys(), lfq$sample_name(), method = "spearman")
-#' complete <- plot_heatmap_cor(wide$data, wide$annotation,
-#'   lfq$factor_keys(), lfq$sample_name(), method = function(x) stats::cor(x, use = "complete.obs"))
-#'
-plot_heatmap_cor <- function(
+#' @noRd
+.plot_heatmap_cor <- function(
   matrix,
   annotation,
   factor_keys,
@@ -684,21 +610,13 @@ plot_heatmap_cor <- function(
 #' @param max_rownames_chars maximum displayed row label length
 #' @param max_sample_label_chars maximum displayed sample label length. Labels
 #'   keep their suffix because sample prefixes are often shared.
+#' @param cluster_rows if TRUE (default) order the rows by hierarchical clustering; FALSE keeps the row order of
+#'   `matrix`
 #' @param ... passed to [ComplexHeatmap::Heatmap()]
 #' @return invisibly, a ComplexHeatmap `Heatmap` object of the row z-scored data; `NULL` with a warning if
 #'   `matrix` has no rows or no row can be z-scored
-#' @export
-#' @keywords internal
-#' @family plotting
-#' @examplesIf requireNamespace("ComplexHeatmap", quietly = TRUE) && requireNamespace("circlize", quietly = TRUE)
-#'
-#' istar <- sim_lfq_data_protein_config()
-#' lfq <- LFQData$new(istar$data, istar$config)
-#' wide <- lfq$data_wide(as.matrix = TRUE)
-#' p <- plot_heatmap(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name())
-#' stopifnot(methods::is(p, "Heatmap"))
-#'
-plot_heatmap <- function(
+#' @noRd
+.plot_heatmap <- function(
   matrix,
   annotation,
   factor_keys,
@@ -707,6 +625,7 @@ plot_heatmap <- function(
   show_rownames = FALSE,
   max_rownames_chars = 60,
   max_sample_label_chars = 20,
+  cluster_rows = TRUE,
   ...
 ) {
   rlang::check_installed(c("ComplexHeatmap", "circlize"), reason = "for heatmaps.")
@@ -724,7 +643,7 @@ plot_heatmap <- function(
     warning("No features have enough observed variation for a row z-scored heatmap.")
     return(NULL)
   }
-  plot_data <- .cluster_heatmap_rows(resdataf)
+  plot_data <- if (cluster_rows) .cluster_heatmap_rows(resdataf) else resdataf
   res <- .annotated_heatmap(
     plot_data,
     "row z-score",
@@ -755,21 +674,8 @@ plot_heatmap <- function(
 #' @param ... additional arguments passed to [ComplexHeatmap::Heatmap()]
 #' @return invisibly, a ComplexHeatmap `Heatmap` object of the abundances with rows ordered by `arrange` and
 #'   unclustered columns; `NULL` with a warning if `matrix` has fewer than two rows
-#' @keywords internal
-#'
-#' @family plotting
-#' @export
-#' @examplesIf requireNamespace("ComplexHeatmap", quietly = TRUE) && requireNamespace("circlize", quietly = TRUE)
-#'
-#' istar <- sim_lfq_data_protein_config()
-#' lfq <- LFQData$new(istar$data, istar$config)
-#' wide <- lfq$data_wide(as.matrix = TRUE)
-#' rs <- plot_raster(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name())
-#' stopifnot(methods::is(rs, "Heatmap"))
-#' rs <- plot_raster(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name(), "var")
-#' stopifnot(methods::is(rs, "Heatmap"))
-#'
-plot_raster <- function(
+#' @noRd
+.plot_raster <- function(
   matrix,
   annotation,
   factor_keys,
@@ -820,18 +726,8 @@ plot_raster <- function(
 #' @param distance distance method for clustering
 #' @return a ComplexHeatmap `Heatmap` object marking the missing values of the rows that have any; `NULL` if fewer
 #'   than two such rows
-#' @export
-#' @keywords internal
-#' @family plotting
-#' @examplesIf requireNamespace("ComplexHeatmap", quietly = TRUE) && requireNamespace("circlize", quietly = TRUE)
-#'
-#' istar <- sim_lfq_data_peptide_config()
-#' lfq <- LFQData$new(istar$data, istar$config)
-#' wide <- lfq$data_wide(as.matrix = TRUE)
-#' tmp <- plot_na_heatmap(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name())
-#' stopifnot(methods::is(tmp, "Heatmap"))
-#'
-plot_na_heatmap <- function(matrix, annotation, factor_keys, sample_name, limitrows = 10000, distance = "binary") {
+#' @noRd
+.plot_na_heatmap <- function(matrix, annotation, factor_keys, sample_name, limitrows = 10000, distance = "binary") {
   rlang::check_installed(c("ComplexHeatmap", "circlize"), reason = "for heatmaps.")
   if (!all(annotation[[sample_name]] %in% colnames(matrix))) {
     abort_bad_argument("annotation", "name only samples that are columns of `matrix`")
@@ -882,21 +778,8 @@ plot_na_heatmap <- function(matrix, annotation, factor_keys, sample_name, limitr
 #' @param nudge label nudge distance
 #' @return a ggplot object of the sample scores on the principal components `PC`, coloured by the first and shaped
 #'   by the second of `factor_keys`
-#' @export
-#' @keywords internal
-#' @family plotting
-#' @examples
-#'
-#' istar <- sim_lfq_data_protein_config(with_missing = TRUE, weight_missing = .8, n_proteins = 3000)
-#' lfq <- LFQData$new(istar$data, istar$config)
-#' wide <- lfq$data_wide(as.matrix = TRUE)
-#' tmp <- plot_pca(wide$data, wide$annotation, lfq$sample_name(), lfq$factor_keys(),
-#'   add_txt = TRUE, nudge = 0.01)
-#' stopifnot("ggplot" %in% class(tmp))
-#' tmp <- plot_pca(wide$data, wide$annotation, lfq$sample_name(), lfq$factor_keys())
-#' stopifnot("ggplot" %in% class(tmp))
-#'
-plot_pca <- function(matrix, annotation, sample_name, factor_keys, PC = c(1, 2), add_txt = FALSE, nudge = 0.1) {
+#' @noRd
+.plot_pca <- function(matrix, annotation, sample_name, factor_keys, PC = c(1, 2), add_txt = FALSE, nudge = 0.1) {
   if (length(PC) != 2) {
     abort_bad_argument("PC", "be two principal component numbers", not = toString(PC))
   }

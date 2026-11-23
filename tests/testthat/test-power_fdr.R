@@ -148,12 +148,12 @@ test_that("small prior df quadrature agrees with integrated normal-mixture power
 test_that("LFQData pilot planning pools observed within-group variances", {
   sim <- sim_lfq_data_protein_config(n_proteins = 20, seed = 42)
   lfq <- LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq
-  pooled <- poolvar(summarize_stats(lfq), lfq$get_config())
+  pooled <- .poolvar(.summarize_stats(lfq), lfq$get_config())
   expected <- power_fdr_prior_n(pooled$var, pooled$df, delta_mean = 0.1, max_n = 30)
   actual <- lfq$get_Stats(stats = "all")$power_fdr_pilot(delta_mean = 0.1, max_n = 30)
   expect_equal(actual, expected)
   expect_equal(lfq$get_Stats(stats = "interaction")$power_fdr_pilot(0.1, max_n = 30), expected)
-  expect_equal(sum(pooled$df), sum(pmax(summarize_stats(lfq)$nrMeasured - 1, 0)))
+  expect_equal(sum(pooled$df), sum(pmax(.summarize_stats(lfq)$nrMeasured - 1, 0)))
   data <- lfq$data_long()
   first <- !duplicated(data[, c(lfq$hierarchy_keys(), lfq$relevant_factor_keys())])
   lfq$set_data(data[first, ])
@@ -217,7 +217,7 @@ test_that("power methods error on untransformed data", {
 
 test_that("lfq_power_t_test_proteins gives the power.t.test sample size, floored at min.n", {
   stats_res <- data.frame(protein_Id = c("tiny", "unit"), sd = c(0.01, 1))
-  res <- lfq_power_t_test_proteins(stats_res, delta = 1, power = 0.8, sig.level = 0.05, min.n = 1.5)
+  res <- .lfq_power_t_test_proteins(stats_res, delta = 1, power = 0.8, sig.level = 0.05, min.n = 1.5)
   # n for delta = sd = 1 at 80% power and 5% two-sided level
   expect_equal(res$N_exact[res$protein_Id == "unit"], 16.71476814, tolerance = 1e-8)
   expect_equal(res$N[res$protein_Id == "unit"], 17)
@@ -225,7 +225,7 @@ test_that("lfq_power_t_test_proteins gives the power.t.test sample size, floored
   expect_equal(res$N_exact[res$protein_Id == "tiny"], 1.5, tolerance = 1e-4)
   expect_equal(res$N[res$protein_Id == "tiny"], 2)
   # one row per protein and delta
-  expect_equal(nrow(lfq_power_t_test_proteins(stats_res, delta = c(0.5, 1, 2))), 6)
+  expect_equal(nrow(.lfq_power_t_test_proteins(stats_res, delta = c(0.5, 1, 2))), 6)
 })
 
 test_that("LFQDataStats power methods equal power.t.test on the protein and quantile standard deviations", {
