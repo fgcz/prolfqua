@@ -552,12 +552,7 @@ results_peptide <- bind_rows(
   dplyr::mutate(
     significant = FDR < 0.1 & abs(diff) > 0.5
   )
-```
 
-    ## Warning: Zero sample variances detected, have been offset away from zero
-    ## Warning: Zero sample variances detected, have been offset away from zero
-
-``` r
 results_peptide |>
   dplyr::count(modelName, name = "n_results")
 ```
@@ -609,12 +604,6 @@ only.
 
 ``` r
 fa_hurdle <- ContrastsHurdleFacade$new(fa_lm_impute, fa_binomial_firth)
-```
-
-    ## Warning: Zero sample variances detected, have been offset away from zero
-    ## Warning: Zero sample variances detected, have been offset away from zero
-
-``` r
 results_hurdle <- fa_hurdle$get_contrasts()
 
 results_hurdle |>
@@ -664,12 +653,6 @@ fa_hurdle_nested <- build_contrast_analysis(
   contrasts,
   method = "hurdle_nested"
 )
-```
-
-    ## Warning: Zero sample variances detected, have been offset away from zero
-    ## Warning: Zero sample variances detected, have been offset away from zero
-
-``` r
 fa_hurdle_nested$get_contrasts() |>
   dplyr::count(contrast, hurdle_components, name = "n_results")
 ```

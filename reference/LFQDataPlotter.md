@@ -429,7 +429,8 @@ pairsplot of intensities
 
 - `max`:
 
-  maximal number of samples to show
+  maximal number of samples to show; with more samples, `max` evenly
+  spaced samples are shown
 
 #### Returns
 

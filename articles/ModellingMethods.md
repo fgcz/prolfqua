@@ -79,9 +79,9 @@ The warnings come from single proteins: `lmer_nested` cannot fit a
 protein with one peptide, because its random peptide effect needs at
 least two; `rlm` stops at its iteration limit for one protein;
 `ropeca_nested` cannot fit a peptide observed in one group only; and the
-moderation steps report limma’s and DEqMS’s notes on the variance fit.
-Each analysis keeps the other proteins and records the failures, which
-`$provenance()` lists:
+DEqMS moderation reports its note on the variance fit. Each analysis
+keeps the other proteins and records the failures, which `$provenance()`
+lists:
 
 ``` r
 analyses$lmer_nested$provenance()
@@ -300,7 +300,7 @@ head(confint(analysis))
 #> 6 2kfAGV~3196 group_Ctrl   -0.215     0.0453     8  -0.320   -0.111
 formula(analysis)
 #> medpolish ~ group_
-#> <environment: 0x6077e6268508>
+#> <environment: 0x5ca55e363af8>
 head(nobs(analysis))
 #> # A tibble: 6 × 2
 #>   protein_Id   nobs

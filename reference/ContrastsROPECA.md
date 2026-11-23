@@ -215,10 +215,6 @@ get contrasts
 
   should all columns be returned (default FALSE)
 
-- `global`:
-
-  use a global linear function (determined by get_linfct)
-
 #### Returns
 
 data.frame

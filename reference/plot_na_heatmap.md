@@ -35,7 +35,7 @@ plot_na_heatmap(
 
 - limitrows:
 
-  max rows to display
+  max rows to display; above it, `limitrows` evenly spaced rows
 
 - distance:
 

@@ -100,7 +100,8 @@ the same dispatch path as the built-in facades.</p>
 level of the contrasts, <code>subject_id</code> equal to the hierarchy keys,
 <em>e.g.</em> protein -&gt; protein FC, peptide -&gt; peptide FC) or
 <code>"nested"</code> (child-level input, parent-level contrasts, <em>e.g.</em>
-peptide -&gt; protein FC). Any other value is an error.</p></dd>
+peptide -&gt; protein FC). Any other value is an error. It must match the class: a facade class for nested
+input sets its private field <code>.needs = "nested"</code>, because the class checks its input shape itself.</p></dd>
 
 
 <dt id="arg-package">package<a class="anchor" aria-label="anchor" href="#arg-package"></a></dt>

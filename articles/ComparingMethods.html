@@ -1070,11 +1070,9 @@ not from the number of peptides.</p>
 <span>  <span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>    significant <span class="op">=</span> <span class="va">FDR</span> <span class="op">&lt;</span> <span class="fl">0.1</span> <span class="op">&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">diff</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0.5</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: Zero sample variances detected, have been offset away from zero</span></span>
-<span><span class="co">## Warning: Zero sample variances detected, have been offset away from zero</span></span></code></pre>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">results_peptide</span> <span class="op">|&gt;</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="va">results_peptide</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">modelName</span>, name <span class="op">=</span> <span class="st">"n_results"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 4 × 2</span></span></span>
 <span><span class="co">##   modelName             n_results</span></span>
@@ -1083,7 +1081,7 @@ not from the number of peptides.</p>
 <span><span class="co">## <span style="color: #BCBCBC;">2</span> lmer_nested                 102</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">3</span> ropecaV2_nested             157</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">4</span> ropeca_nested               157</span></span></code></pre>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># the detection model gives no p-value for proteins detected in every sample</span></span>
 <span><span class="va">results_peptide</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">p.value</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -1118,12 +1116,9 @@ only keeps that component’s p-value; a protein detected in every sample
 keeps its intensity p-value. <code>diff</code> comes from the intensity
 component, so <code>lm_impute</code> is the better partner: it also
 estimates <code>diff</code> for proteins detected in one group only.</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fa_hurdle</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/ContrastsHurdleFacade.html">ContrastsHurdleFacade</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">fa_lm_impute</span>, <span class="va">fa_binomial_firth</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: Zero sample variances detected, have been offset away from zero</span></span>
-<span><span class="co">## Warning: Zero sample variances detected, have been offset away from zero</span></span></code></pre>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">results_hurdle</span> <span class="op">&lt;-</span> <span class="va">fa_hurdle</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fa_hurdle</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/ContrastsHurdleFacade.html">ContrastsHurdleFacade</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">fa_lm_impute</span>, <span class="va">fa_binomial_firth</span><span class="op">)</span></span>
+<span><span class="va">results_hurdle</span> <span class="op">&lt;-</span> <span class="va">fa_hurdle</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">results_hurdle</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">contrast</span>, <span class="va">hurdle_components</span>, name <span class="op">=</span> <span class="st">"n_results"</span><span class="op">)</span></span></code></pre></div>
@@ -1134,7 +1129,7 @@ estimates <code>diff</code> for proteins detected in one group only.</p>
 <span><span class="co">## <span style="color: #BCBCBC;">2</span> A_vs_Ctrl intensity                14</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">3</span> B_vs_Ctrl both                     66</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">4</span> B_vs_Ctrl intensity                14</span></span></code></pre>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results_hurdle</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_min</a></span><span class="op">(</span>order_by <span class="op">=</span> <span class="va">p.value</span>, n <span class="op">=</span> <span class="fl">5</span>, by <span class="op">=</span> <span class="va">contrast</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span></span>
@@ -1159,17 +1154,14 @@ estimates <code>diff</code> for proteins detected in one group only.</p>
 peptide data in one call: median polish, <code>lm_impute</code>,
 <code>binomial_firth_nested</code> for detection, and the Fisher
 combination.</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fa_hurdle_nested</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_contrast_analysis.html">build_contrast_analysis</a></span><span class="op">(</span></span>
 <span>  <span class="va">lfq_peptide</span>,</span>
 <span>  <span class="st">"~ group_"</span>,</span>
 <span>  <span class="va">contrasts</span>,</span>
 <span>  method <span class="op">=</span> <span class="st">"hurdle_nested"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: Zero sample variances detected, have been offset away from zero</span></span>
-<span><span class="co">## Warning: Zero sample variances detected, have been offset away from zero</span></span></code></pre>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fa_hurdle_nested</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">fa_hurdle_nested</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">contrast</span>, <span class="va">hurdle_components</span>, name <span class="op">=</span> <span class="st">"n_results"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 4 × 3</span></span></span>
 <span><span class="co">##   contrast  hurdle_components n_results</span></span>
@@ -1202,7 +1194,7 @@ together.</p>
 <div class="section level2">
 <h2 id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## R version 4.6.2 (2026-10-29)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu</span></span>

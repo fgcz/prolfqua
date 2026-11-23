@@ -59,7 +59,8 @@
   be one of …”, “Can’t find column `x` in `data`.”) and name the
   function you called instead of prolfqua’s internal checker. Condition
   classes are unchanged; about 30 error and warning messages were
-  reworded.
+  reworded. A misspelt `method` lists the methods once and names the
+  value given; before, the list appeared twice.
 - Joins inside prolfqua check that their lookup keys are unique: a
   duplicated subject, contrast or sample key in an input (for instance
   two rows for one protein and contrast passed to
@@ -68,13 +69,25 @@
 - [`list_to_analysis_configuration()`](https://fgcz.github.io/prolfqua/reference/list_to_analysis_configuration.md)
   stops with a prolfqua error naming the keys that are not configuration
   fields (also method names such as `hierarchy_keys`); before, it failed
-  with base R’s “cannot add bindings to a locked environment”.
+  with base R’s “cannot add bindings to a locked environment”. In the
+  older nested format, keys of the `parameter` block that are not fields
+  (also method names such as `set_response`) are skipped, as other
+  unknown keys there always were; before, a method name failed with
+  “cannot change value of locked binding”.
 - [`moderated_p_deqms_long()`](https://fgcz.github.io/prolfqua/reference/moderated_p_deqms_long.md)
   (used by the deqms methods) reports problems of its per-contrast
   variance fits as a `prolfqua_fit_failed` warning, like the other
-  fitting steps; before, the warning had no class. The limma methods
-  keep limma’s own warning text (e.g. “Partial NA coefficients”) in
-  `$provenance()` instead of matching and dropping it.
+  fitting steps; before, the warning had no class. In the limma methods,
+  limma’s warning about proteins without estimable coefficients is their
+  “singular fits” (or “refit at the limit of detection”) entry in
+  `$provenance()`, found from the coefficients, not from limma’s text;
+  any other limma warning while fitting is a `prolfqua_fit_failed`
+  warning with limma’s text as the reason, where before it was a message
+  hidden by `prolfqua.verbose = FALSE`. The variance moderation of
+  `binomial_firth_nested` and `hurdle_nested` reports zero dispersions
+  as a message instead of limma’s unclassed “Zero sample variances
+  detected” warning (a warning of class `prolfqua_fit_failed` when more
+  than half are zero); results are unchanged.
 - Plots: volcano, MA and score plots draw smaller, more transparent
   points, so dense regions stay readable;
   `ContrastsPlotter$barplot_threshold()` fills bars with the
@@ -163,6 +176,14 @@
   `stdv_vs_mean()`; sd and CV are `NA` for features with fewer than two
   values) and
   [`missingness_histogram()`](https://fgcz.github.io/prolfqua/reference/missingness_histogram.md).
+- Log transforms (`LFQDataTransformer$log2()`, `$intensity_array()`) of
+  negative intensities give one warning of class
+  `prolfqua_negative_intensity` and `NaN`; before, an unclassed warning
+  was followed by R’s “NaNs produced”.
+- `LFQDataPlotter$na_heatmap()` (more than 10,000 rows with missing
+  values) and `LFQDataPlotter$pairs_smooth()` (more than `max` samples)
+  show evenly spaced rows or samples instead of a random selection, so
+  the plot is the same on every call.
 
 ### Bug fixes
 
@@ -238,7 +259,22 @@
   of detection of the impute methods, computes all groups in one pass:
   0.2 s instead of 10.5 s for 67,000 peptides in 12 samples.
 - Median-polish aggregation is about 4.5 times faster (2,000 proteins:
-  1.6 s instead of 7.4 s) and rlm aggregation about a fifth faster.
+  1.6 s instead of 7.4 s); rlm aggregation fits each protein in base R
+  and is about 3.4 times faster than in the earlier development versions
+  (2,000 proteins: 2.2 s instead of 7.5 s).
+- Precursor-scale input (4.8 million rows) no longer makes a copy of the
+  long table in the checks every analysis runs before fitting: the
+  full-rank check of the design takes 0.04 s and no extra memory instead
+  of 2.4 s and 1.4 GB, the check of the contrast groups needs 0.1 GB
+  instead of 0.3 GB, and
+  [`nr_obs_sample()`](https://fgcz.github.io/prolfqua/reference/nr_obs_sample.md)
+  0.45 GB instead of 0.65 GB. `LFQDataTransformer$robscale()` scales in
+  long format: 0.5 s and 0.25 GB instead of 3.9 s and 1.6 GB. Results
+  are unchanged.
+- `LFQDataStats$power_fdr_pilot()` pools the variances of all features
+  at once: 0.1 s instead of 67 s for 100,000 peptides.
+  `Model$get_coefficients()` binds the coefficients of all fits once and
+  is about twice as fast (5,000 proteins: 1.6 s instead of 3.6 s).
 - Wald contrasts of the methods that fit one model per protein (lm, rlm,
   rfit, lm_impute, rfit_impute, deqms, ropeca) are computed once per
   protein instead of once per contrast row, and contrasts naming a group
@@ -375,8 +411,9 @@
   of
   [`null_split_check()`](https://fgcz.github.io/prolfqua/reference/null_split_check.md).
   `LFQData$get_config()` says it returns the configuration of the object
-  itself, not a copy, and the `all` and `global` arguments that only
-  keep the `ContrastsInterface` signature say that they are ignored.
+  itself, not a copy, and the ignored `all` argument (kept for the
+  `ContrastsInterface` signature) and `global` argument (kept for
+  compatibility with `Contrasts$get_linfct()`) say so.
 - [`?build_model_limma_voom`](https://fgcz.github.io/prolfqua/reference/build_model_limma_voom.md)
   derives the vooma precision weights and the external weights (peptide
   counts per protein and sample), and states when the fit equals

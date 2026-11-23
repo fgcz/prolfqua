@@ -146,7 +146,6 @@ lfqdata$rename_response("transformedIntensity")
 
 strat <- strategy_limma("transformedIntensity ~ group_")
 mod <- build_model_limma_impute(lfqdata, strat)
-#> fit (limmaImputed): 1 limma warnings (e.g. Partial NA coefficients for 2 probe(s)): raised by limma while fitting all proteins; kept verbatim
 #> fit (limmaImputed): 2 refit at the limit of detection (e.g. 7cbcrd~0495, nKkahQ~2435): fit failed, singular or missing a group; missing responses imputed at the LOD
 #> fit (limmaImputed): 118 missing responses dropped (e.g. 0EfVhX~7161, 0m5WN4~3543, 7QuTub~5556, 9VUkAq~8655, At886V~0359, ...): NA response (missing observation) left out of the fit
 #> See $provenance().

@@ -213,8 +213,9 @@ get linear functions from contrasts
 
 - `global`:
 
-  ignored; kept for the `ContrastsInterface` signature. The linear
-  functions come from the wrapped contrast object
+  ignored; kept for compatibility with
+  `Contrasts$get_linfct(global = )`. The linear functions come from the
+  wrapped contrast object
 
 ------------------------------------------------------------------------
 

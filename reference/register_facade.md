@@ -38,7 +38,9 @@ register_facade(
   contrasts, `subject_id` equal to the hierarchy keys, *e.g.* protein
   -\> protein FC, peptide -\> peptide FC) or `"nested"` (child-level
   input, parent-level contrasts, *e.g.* peptide -\> protein FC). Any
-  other value is an error.
+  other value is an error. It must match the class: a facade class for
+  nested input sets its private field `.needs = "nested"`, because the
+  class checks its input shape itself.
 
 - package:
 
