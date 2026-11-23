@@ -62,7 +62,7 @@ names(analyses) <- names(facades)
 results <- lapply(analyses, function(fa) fa$get_contrasts())
 ```
 
-The warnings come from single proteins: `lmer_nested` cannot fit a protein with one peptide, because its random peptide effect needs at least two; `rlm` stops at its iteration limit for one protein; `ropeca_nested` cannot fit a peptide observed in one group only; and the moderation steps report limma's and DEqMS's notes on the variance fit. Each analysis keeps the other proteins and records the failures, which `$provenance()` lists:
+The warnings come from single proteins: `lmer_nested` cannot fit a protein with one peptide, because its random peptide effect needs at least two; `rlm` stops at its iteration limit for one protein; `ropeca_nested` cannot fit a peptide observed in one group only; and the DEqMS moderation reports its note on the variance fit. Each analysis keeps the other proteins and records the failures, which `$provenance()` lists:
 
 ```{r provenance}
 analyses$lmer_nested$provenance()

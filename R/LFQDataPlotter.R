@@ -330,7 +330,7 @@ LFQDataPlotter <- R6::R6Class(
     },
     #' @description
     #' pairsplot of intensities
-    #' @param max maximal number of samples to show
+    #' @param max maximal number of samples to show; with more samples, `max` evenly spaced samples are shown
     #' @return NULL
     pairs_smooth = function(max = 10) {
       lfq <- self$lfq
@@ -339,7 +339,7 @@ LFQDataPlotter <- R6::R6Class(
         distinct() |>
         pull()
       if (length(samples) > max) {
-        limit <- samples |> sample(max)
+        limit <- samples[round(seq(1, length(samples), length.out = max))]
         lfq <- lfq$get_copy()
         lfq$set_data(dplyr::filter(lfq$data_long(), .data[[sample_col]] %in% .env$limit))
       }
@@ -386,9 +386,7 @@ LFQDataPlotter <- R6::R6Class(
       inform_prolfqua("write_boxplots: writing ", fpath)
       pb <- .make_progress(nrow(xnested))
 
-      grDevices::pdf(fpath, width = width, height = height)
-      pdf_dev <- grDevices::dev.cur()
-      on.exit(.dev_close(pdf_dev), add = TRUE)
+      withr::local_pdf(fpath, width = width, height = height)
       for (i in seq_len(nrow(xnested))) {
         pb$tick()
         .render_plot_to_device(
@@ -408,9 +406,7 @@ LFQDataPlotter <- R6::R6Class(
     write_pdf = function(fig, path_qc, fig_name, width = 7, height = 7) {
       fpath <- file.path(path_qc, paste0(self$prefix, fig_name, if (!.has_pdf_suffix(fig_name)) ".pdf"))
       inform_prolfqua("write_pdf: writing ", fpath)
-      grDevices::pdf(fpath, width = width, height = height)
-      pdf_dev <- grDevices::dev.cur()
-      on.exit(.dev_close(pdf_dev), add = TRUE)
+      withr::local_pdf(fpath, width = width, height = height)
       .render_plot_to_device(fig)
       invisible(fpath)
     }

@@ -224,8 +224,8 @@ Other modelling:
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{global}}{ignored; kept for the \code{ContrastsInterface} signature. The linear functions come from the wrapped
-contrast object}
+      \item{\code{global}}{ignored; kept for compatibility with \code{Contrasts$get_linfct(global = )}. The linear functions
+come from the wrapped contrast object}
     }
     \if{html}{\out{</div>}}
   }

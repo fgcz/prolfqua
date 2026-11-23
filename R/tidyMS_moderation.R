@@ -37,7 +37,7 @@
     # no subject has a variance (all failed or with zero residual variance): no prior, nothing to moderate
     squeezed_var <- list(var.post = rep(NA_real_, nrow(contrast_df)), var.prior = NA_real_, df.prior = NA_real_)
   } else {
-    squeezed_var <- limma::squeezeVar(contrast_df$sigma^2, df = contrast_df[[df]], robust = robust)
+    squeezed_var <- .squeeze_var(contrast_df$sigma^2, contrast_df[[df]], robust)
   }
   if (all(is.infinite(squeezed_var$df.prior))) {
     # count only rows with a variance; NA variances (zero residual variance, failed fits) are not in the prior
@@ -63,6 +63,46 @@
   contrast_df$moderated.conf.low <- contrast_df[[estimate]] - conf_quantile * contrast_df$moderated.std.error
   contrast_df$moderated.conf.high <- contrast_df[[estimate]] + conf_quantile * contrast_df$moderated.std.error
   dplyr::ungroup(contrast_df)
+}
+
+#' limma::squeezeVar() with its zero-variance warnings classified
+#'
+#' limma's prior fit warns only about exactly zero variances: when they are more than half of the variances
+#' ("eBayes unreliable") and when it offsets them from zero. Detection models (binomial_firth_nested,
+#' hurdle_nested) keep zero dispersions by design, so a few zeros are a note (a message, hidden with
+#' `prolfqua.verbose = FALSE`); a zero median is a `prolfqua_fit_failed` warning. Results are unchanged.
+#' @param variance residual variances
+#' @param df residual degrees of freedom
+#' @param robust passed to [limma::squeezeVar()]
+#' @return the [limma::squeezeVar()] result
+#' @noRd
+.squeeze_var <- function(variance, df, robust) {
+  used <- is.finite(variance) & is.finite(df) & df > 1e-15
+  n_zero <- sum(variance[used] == 0)
+  withCallingHandlers(
+    limma::squeezeVar(variance, df = df, robust = robust),
+    warning = function(w) {
+      if (n_zero == 0L) {
+        return()
+      }
+      if (stats::median(variance[used]) > 0) {
+        inform_prolfqua(
+          "variance moderation: ",
+          n_zero,
+          " of ",
+          sum(used),
+          " variances are zero and were offset from zero to ",
+          "estimate the prior"
+        )
+      } else {
+        rlang::warn(
+          paste0("variance moderation: ", n_zero, " of ", sum(used), " variances are zero; the prior is unreliable"),
+          class = "prolfqua_fit_failed"
+        )
+      }
+      invokeRestart("muffleWarning")
+    }
+  )
 }
 
 #' Finalize moderated contrast columns (prune raw stats, promote moderated, FDR).

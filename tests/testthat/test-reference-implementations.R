@@ -168,11 +168,7 @@ test_that("IonStar spike-in fold changes are recovered by lm and limma", {
   )
   expected <- log2(c(b_vs_a = 4.5 / 3, c_vs_b = 6 / 4.5, d_vs_c = 7.5 / 6, e_vs_d = 9 / 7.5))
   for (method in c("lm", "limma")) {
-    # A few proteins miss a whole dilution level; limma reports their partial coefficients.
-    res <- muffle_warnings_matching(
-      build_contrast_analysis(proteins, "~ dilution.", contrasts, method)$get_contrasts(),
-      partial_na_warning
-    )
+    res <- build_contrast_analysis(proteins, "~ dilution.", contrasts, method)$get_contrasts()
     for (contrast in names(contrasts)) {
       rows <- res[res$contrast == contrast, ]
       ecoli <- stats::median(rows$diff[grepl("ECOLI", rows$protein_Id)])

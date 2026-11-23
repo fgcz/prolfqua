@@ -9,7 +9,7 @@
 NULL
 
 # Removing low intensities leaves some proteins with one group; their fits fail as expected.
-ASSUMPTION_WARNINGS <- paste(rlm_convergence_warning, partial_na_warning, one_group_warning, sep = "|")
+ASSUMPTION_WARNINGS <- paste(rlm_convergence_warning, one_group_warning, sep = "|")
 
 assumption_contrasts <- function(method, lfqdata) {
   muffle_warnings_matching(

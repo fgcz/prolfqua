@@ -357,7 +357,7 @@ compute_borrowed_variance_limma <- function(fit) {
 #' @param model ModelLimma
 #' @param setup matrix data and metadata returned by .lfqdata_to_elist
 #' @param refit row indices refit at the limit of detection
-#' @param fit_warnings warning texts limma raised while fitting all proteins
+#' @param fit_warnings warning texts limma raised while fitting all proteins; failures unless rows are singular
 #' @noRd
 .record_limma_fits <- function(model, setup, refit = integer(0), fit_warnings = character(0)) {
   log <- model$get_provenance_log()
@@ -365,7 +365,13 @@ compute_borrowed_variance_limma <- function(fit) {
   ids <- .key_ids(setup$rowdata, setup$subject_id)
   singular <- rowSums(is.na(model$fit$coefficients)) > 0
   log$record(step, "singular fits", ids[singular], "coefficients not estimable (Partial NA coefficients)")
-  log$record(step, "limma warnings", fit_warnings, "raised by limma while fitting all proteins; kept verbatim")
+  # lmFit warns about the rows with NA coefficients, recorded as singular fits or refit at the LOD; a warning without
+  # such rows concerns the matrix fit of all subjects
+  if (!any(singular) && length(refit) == 0L) {
+    for (w in unique(fit_warnings)) {
+      log$record(step, "fits with a limma warning", ids, w, failure = TRUE)
+    }
+  }
   log$record(
     step,
     "refit at the limit of detection",
@@ -922,7 +928,7 @@ ContrastsLimma <- R6::R6Class(
     },
     #' @description
     #' get linear functions from contrasts
-    #' @param global ignored; kept for the `ContrastsInterface` signature
+    #' @param global ignored; kept for compatibility with `Contrasts$get_linfct(global = )`
     #' @param avg logical, also compute avgAbd linfct
     get_linfct = function(global = TRUE, avg = TRUE) {
       linfct <- .linfct(self$model$dummy_model, self$contrasts, avg = avg)

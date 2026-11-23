@@ -29,15 +29,39 @@
 }
 
 #' pooled variance
+#'
+#' The values of `.compute_pooled()` for every feature, computed with grouped sums over all features at once.
 #' @param res1 per-group statistics from [summarize_stats()]
 #' @param config AnalysisConfiguration of the data
+#' @return one row per feature, in the order of first appearance in `res1`: the hierarchy keys, the pooled
+#'   statistics and the first factor key set to `"pooled"`
 #' @noRd
 .poolvar <- function(res1, config) {
-  resp <- res1 |> nest(data = -all_of(config$hierarchy_keys()))
-  pooled <- purrr::list_rbind(purrr::map(resp$data, .compute_pooled))
-  resp$data <- NULL
-  resp <- bind_cols(resp, pooled)
-  resp <- resp |> mutate(!!config$factor_keys()[1] := "pooled")
+  grouped <- dplyr::group_by(res1, dplyr::across(dplyr::all_of(config$hierarchy_keys())))
+  id <- dplyr::group_indices(grouped)
+  first <- id[!duplicated(id)]
+  # sums per feature, in row order within each feature (as sum() per feature), features in order of appearance
+  sum_by <- function(x) unname(rowsum(x, id, reorder = TRUE)[first, 1])
+  measured <- res1$nrMeasured
+  observed <- measured > 0L
+  replicated <- measured > 1L
+  n_measured <- sum_by(measured * observed)
+  mean_all <- sum_by(ifelse(observed, res1$meanAbundance * measured, 0)) / n_measured
+  pool_n <- sum_by(measured * replicated)
+  n_groups <- sum_by(as.integer(replicated))
+  pool_var <- sum_by(ifelse(replicated, (measured - 1L) * res1$var, 0)) / (pool_n - n_groups)
+  pool_mean <- sum_by(ifelse(replicated, res1$meanAbundance * measured, 0)) / pool_n
+  resp <- dplyr::group_keys(grouped)[first, ]
+  resp$n.groups <- n_groups
+  resp$n <- pool_n
+  resp$df <- pool_n - n_groups
+  resp$sd <- sqrt(pool_var)
+  resp$sdT <- sqrt(pool_var * 2 / (pool_n / n_groups))
+  resp$var <- pool_var
+  resp$mean <- ifelse(is.na(pool_mean), mean_all, pool_mean)
+  resp$meanAll <- mean_all
+  resp$nrMeasured <- n_measured
+  resp[[config$factor_keys()[1]]] <- "pooled"
   resp
 }
 

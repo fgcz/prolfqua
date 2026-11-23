@@ -47,10 +47,10 @@
 .assert_contrast_groups <- function(lfqdata, contrasts) {
   factor_keys <- lfqdata$factor_keys()
   data <- lfqdata$data_long()
-  data <- data[!is.na(data[[lfqdata$response()]]), , drop = FALSE]
+  observed <- !is.na(data[[lfqdata$response()]])
   with_data <- unlist(lapply(
     intersect(factor_keys, colnames(data)),
-    function(key) paste0(key, unique(data[[key]]))
+    function(key) paste0(key, unique(data[[key]][observed]))
   ))
   contrast_names <- names(contrasts)
   exprs <- lapply(seq_along(contrasts), function(i) {
@@ -872,7 +872,8 @@ ContrastsDEqMSVoomFacade <- R6::R6Class(
 #'   level of the contrasts, \code{subject_id} equal to the hierarchy keys,
 #'   \emph{e.g.} protein -> protein FC, peptide -> peptide FC) or
 #'   \code{"nested"} (child-level input, parent-level contrasts, \emph{e.g.}
-#'   peptide -> protein FC). Any other value is an error.
+#'   peptide -> protein FC). Any other value is an error. It must match the class: a facade class for nested
+#'   input sets its private field \code{.needs = "nested"}, because the class checks its input shape itself.
 #' @param package package the facade class lives in. Defaults to
 #'   \code{"prolfqua"}.
 #' @param needs_saint_annotation \code{TRUE} if the backend requires

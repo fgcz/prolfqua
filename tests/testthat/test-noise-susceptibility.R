@@ -15,8 +15,6 @@ NOISE_WARNINGS <- paste(
   loess_ties_warning,
   single_peptide_warning,
   one_group_warning,
-  partial_na_warning,
-  "Zero sample variances detected",
   sep = "|"
 )
 # limpa estimates protein quantities and weights iteratively; trivial input noise moves its results at ~1e-5.

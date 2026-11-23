@@ -83,12 +83,18 @@ Model <- R6::R6Class(
     #' @description
     #' return model coefficient table
     get_coefficients = function() {
-      lmermodel <- "linear_model"
-      complete_models <- .get_complete_model_fit(self$model_df)
-      # Extract coefficients
-      .coef_df <- function(x) {
-        coefficients <- .fit_coef(x)
-        statistic <- coefficients$estimate / coefficients$std.error
+      # one .fit_coef() per fit and one bind, as .model_coef.Model(); one tibble per fit was slower than the fits
+      fits <- dplyr::ungroup(.get_complete_model_fit(self$model_df))
+      coefficients <- .bind_fit_results(
+        fits,
+        c(self$subject_id, "isSingular", "nr_coef"),
+        lapply(fits$linear_model, .fit_coef),
+        # integer df keeps lm's integer residual df; lmer's double df wins in the bind
+        tibble::tibble(term = character(), estimate = double(), std.error = double(), df = integer())
+      )
+      statistic <- coefficients$estimate / coefficients$std.error
+      result <- dplyr::bind_cols(
+        coefficients[self$subject_id],
         tibble::tibble(
           factor = coefficients$term,
           Estimate = coefficients$estimate,
@@ -96,14 +102,10 @@ Model <- R6::R6Class(
           df = coefficients$df,
           t.value = statistic,
           Pr...t.. = 2 * stats::pt(-abs(statistic), df = coefficients$df)
-        )
-      }
-      model_coeff <- complete_models |>
-        dplyr::mutate(Coeffs_model = purrr::map(.data[[lmermodel]], .coef_df))
-      model_coeff <- model_coeff |>
-        dplyr::select(dplyr::all_of(self$subject_id), "Coeffs_model", isSingular, nr_coef)
-      model_coeff <- tidyr::unnest(model_coeff, cols = c(Coeffs_model))
-      model_coeff
+        ),
+        coefficients[c("isSingular", "nr_coef")]
+      )
+      dplyr::group_by(result, dplyr::across(dplyr::all_of(self$subject_id)))
     },
     #' @description
     #' return anova table

@@ -7,16 +7,6 @@ facade_methods_fit <- function(method = "lm", lfq = facade_methods_input()) {
   build_contrast_analysis(lfq, "~ group_", c(A_vs_Ctrl = "group_A - group_Ctrl"), method)
 }
 
-# limma::squeezeVar() warns about zero sample variances in limma 3.68 but not in 3.99;
-# these tests are about printing and accessors, not about that warning.
-muffle_limma_zero_variance <- function(expr) {
-  withCallingHandlers(expr, warning = function(w) {
-    if (grepl("Zero sample variances detected", conditionMessage(w), fixed = TRUE)) {
-      invokeRestart("muffleWarning")
-    }
-  })
-}
-
 test_that("internal fit accessors align omitted observations and aliased coefficients", {
   data <- iris
   data$Sepal.Length[c(2, 8)] <- NA_real_
@@ -151,7 +141,7 @@ test_that("hurdle printing and summaries describe both component models", {
   sim <- sim_lfq_data_peptide_config(n_proteins = 20, weight_missing = 0.4, seed = 42)
   lfq <- LFQData$new(sim$data, sim$config)
   lfq <- lfq$get_Transformer()$log2()$lfq
-  facade <- muffle_limma_zero_variance(facade_methods_fit("hurdle_nested", lfq))
+  facade <- facade_methods_fit("hurdle_nested", lfq)
   expect_output(print(facade), "intensity formula:")
   expect_output(print(facade), "detection formula:")
   result <- summary(facade)
@@ -193,7 +183,7 @@ test_that("public coefficient accessors preserve limma estimates and rfit counts
 test_that("a hurdle result has no single coefficient table or formula", {
   sim <- sim_lfq_data_peptide_config(n_proteins = 20, weight_missing = 0.4, seed = 42)
   lfq <- LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq
-  facade <- muffle_limma_zero_variance(facade_methods_fit("hurdle_nested", lfq))
+  facade <- facade_methods_fit("hurdle_nested", lfq)
   for (method in list(stats::coef, stats::confint, stats::formula, stats::nobs)) {
     expect_error(method(facade), "x\\$contrast\\$detection", class = "prolfqua_error_not_available")
   }
@@ -258,12 +248,7 @@ test_that("analysis plots return visible ggplots across model families", {
   peptide <- LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq
   for (method in c("lm", "limma", "ropeca_nested", "hurdle_nested")) {
     input <- if (lookup_facade(method)$needs == "nested") peptide else facade_methods_input()
-    # The hurdle fixture includes perfectly detected proteins, whose detection
-    # sample variances are zero. No other warnings are expected here.
-    facade <- muffle_warnings_matching(
-      facade_methods_fit(method, input),
-      pattern = "Zero sample variances detected"
-    )
+    facade <- facade_methods_fit(method, input)
     for (type in c("volcano", "ma")) {
       output <- withVisible(graphics::plot(facade, type = type))
       expect_s3_class(output$value, "ggplot")
@@ -281,7 +266,6 @@ facade_fixture_warnings <- paste(
   one_group_warning,
   rlm_convergence_warning,
   loess_ties_warning,
-  "Zero sample variances detected",
   sep = "|"
 )
 
@@ -504,7 +488,7 @@ for (method in c("lm", "limma", "lmer_nested", "firth", "binomial_nested", "bino
       skip_if_not_installed(package)
     }
     facade <- muffle_warnings_matching(facade_method_case(method), facade_fixture_warnings)
-    plot <- muffle_warnings_matching(graphics::plot(facade, type = "fitted"), "Zero sample variances detected")
+    plot <- graphics::plot(facade, type = "fitted")
     expect_s3_class(plot, "ggplot")
     expect_no_error(ggplot2::ggplot_build(plot))
     expect_true(all(c("response", "subject", "group") %in% names(plot$data)))

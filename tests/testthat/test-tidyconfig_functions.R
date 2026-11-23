@@ -103,6 +103,12 @@ test_that("list_to_analysis_configuration names unknown keys and method names in
   # the legacy parameter block keeps only known fields
   legacy <- list_to_analysis_configuration(list(table = list(sep = "~"), parameter = list(old_parameter = 1)))
   expect_identical(legacy$sep, "~")
+  # a method name in the parameter block is skipped like any other non-field (before: locked-binding error)
+  legacy <- list_to_analysis_configuration(
+    list(table = list(sep = "~"), parameter = list(set_response = 1, clone = 1, factor_depth = 2))
+  )
+  expect_true(is.function(legacy$set_response))
+  expect_identical(legacy$factor_depth, 2)
 })
 
 test_that("list_to_analysis_configuration loads configurations stored with the removed isotope_label", {

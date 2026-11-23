@@ -401,7 +401,7 @@ display.}
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{max}}{maximal number of samples to show}
+      \item{\code{max}}{maximal number of samples to show; with more samples, \code{max} evenly spaced samples are shown}
     }
     \if{html}{\out{</div>}}
   }

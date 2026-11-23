@@ -160,6 +160,25 @@ test_that("LFQData pilot planning pools observed within-group variances", {
   expect_error(lfq$get_Stats()$power_fdr_pilot(0.1), "needs replicates", class = "prolfqua_error_bad_argument")
 })
 
+test_that("pooled variances equal the per-feature computation, also without replicates or measurements", {
+  config <- sim_lfq_data_protein_config(n_proteins = 2, seed = 1)$config
+  res1 <- tibble::tibble(
+    protein_Id = c("P2", "P2", "P1", "P1", "P3", "P3", "P4", "P4"),
+    group_ = rep(c("A", "B"), 4),
+    nrMeasured = c(3L, 2L, 4L, 1L, 1L, 0L, 0L, 0L),
+    meanAbundance = c(10, 12, 9, 8, 7, NaN, NaN, NaN),
+    var = c(1, 2, 0.5, NA, NA, NA, NA, NA)
+  )
+  features <- split(res1, factor(res1$protein_Id, levels = unique(res1$protein_Id)))
+  expected <- dplyr::bind_rows(lapply(features, .compute_pooled))
+  actual <- .poolvar(res1, config)
+  expect_identical(actual$protein_Id, c("P2", "P1", "P3", "P4"))
+  expect_identical(as.data.frame(actual[names(expected)]), expected)
+  expect_identical(actual$group_, rep("pooled", 4))
+  expect_identical(actual$n, c(5L, 4L, 0L, 0L))
+  expect_identical(actual$mean[3:4], c(7, NaN))
+})
+
 fdr_reference <- function(fun, ...) {
   grDevices::pdf(NULL)
   device <- grDevices::dev.cur()

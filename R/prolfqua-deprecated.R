@@ -426,7 +426,7 @@ plot_intensity_distribution_density <- function(
 #' @param annotation data.frame - sample annotation
 #' @param factor_keys character vector - factor column names for annotation
 #' @param sample_name character - sample name column
-#' @param limitrows max rows to display
+#' @param limitrows max rows to display; above it, `limitrows` evenly spaced rows
 #' @param distance distance method for clustering
 #' @return a ComplexHeatmap `Heatmap` object marking the missing values of the rows that have any; `NULL` if fewer
 #'   than two such rows

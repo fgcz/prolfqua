@@ -98,7 +98,13 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
   tryCatch(
     rlang::arg_match(arg, values = values, error_arg = arg_nm),
     error = function(e) {
-      abort_bad_argument(arg_nm, paste0("be one of ", toString(paste0("\"", values, "\""))), parent = e, call = call)
+      # without `parent = e`: rlang's message would list the values a second time
+      abort_bad_argument(
+        arg_nm,
+        paste0("be one of ", toString(paste0("\"", values, "\""))),
+        not = paste0("\"", arg, "\""),
+        call = call
+      )
     }
   )
 }
@@ -253,7 +259,8 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
     return(invisible(lfqdata))
   }
   fixed <- stats::reformulate(labels, intercept = attr(model_terms, "intercept") == 1L)
-  samples <- unique(lfqdata$data_long()[, unique(c(lfqdata$sample_name(), all.vars(fixed))), drop = FALSE])
+  # distinct(), not unique(): unique.data.frame() pastes every row into a string (GBs at millions of rows)
+  samples <- dplyr::distinct(lfqdata$data_long()[, unique(c(lfqdata$sample_name(), all.vars(fixed))), drop = FALSE])
   design <- stats::model.matrix(fixed, data = as.data.frame(samples))
   decomposition <- qr(design)
   if (decomposition$rank < ncol(design)) {

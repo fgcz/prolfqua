@@ -350,44 +350,42 @@ test_that("aggregated facades error on peptide-level LFQData", {
 # ---- get_missing with data that has missingness ----
 
 test_that("get_missing returns non-empty for data with missing groups", {
-  muffle_warnings_matching(partial_na_warning, expr = {
-    # Simulate with missingness so some proteins can't be estimated
-    istar <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 80, seed = 42)
+  # Simulate with missingness so some proteins can't be estimated
+  istar <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 80, seed = 42)
 
-    lfq_peptide <- prolfqua::LFQData$new(istar$data, istar$config)
-    lfq_peptide <- lfq_peptide$get_Transformer()$log2()$lfq
-    aggregator <- prolfqua::AggregateMedpolish$new(lfq_peptide, "protein")
-    lfq_protein <- aggregator$aggregate()
+  lfq_peptide <- prolfqua::LFQData$new(istar$data, istar$config)
+  lfq_peptide <- lfq_peptide$get_Transformer()$log2()$lfq
+  aggregator <- prolfqua::AggregateMedpolish$new(lfq_peptide, "protein")
+  lfq_protein <- aggregator$aggregate()
 
-    contrasts2 <- c("A_vs_Ctrl" = "group_A - group_Ctrl", "B_vs_Ctrl" = "group_B - group_Ctrl")
+  contrasts2 <- c("A_vs_Ctrl" = "group_A - group_Ctrl", "B_vs_Ctrl" = "group_B - group_Ctrl")
 
-    fa_lm <- prolfqua::ContrastsLMFacade$new(lfq_protein, MODELSTR, contrasts2)
-    fa_limma <- prolfqua::ContrastsLimmaFacade$new(lfq_protein, MODELSTR, contrasts2)
+  fa_lm <- prolfqua::ContrastsLMFacade$new(lfq_protein, MODELSTR, contrasts2)
+  fa_limma <- prolfqua::ContrastsLimmaFacade$new(lfq_protein, MODELSTR, contrasts2)
 
-    # lm should have missing proteins (it drops unfittable ones)
-    missing_lm <- fa_lm$get_missing()
-    expect_true(is.data.frame(missing_lm))
-    expect_true("protein_Id" %in% colnames(missing_lm))
-    expect_true("contrast" %in% colnames(missing_lm))
+  # lm should have missing proteins (it drops unfittable ones)
+  missing_lm <- fa_lm$get_missing()
+  expect_true(is.data.frame(missing_lm))
+  expect_true("protein_Id" %in% colnames(missing_lm))
+  expect_true("contrast" %in% colnames(missing_lm))
 
-    # limma should also have missing proteins (NA diff rows are filtered)
-    limma_missing <- fa_limma$get_missing()
-    expect_true(is.data.frame(limma_missing))
-    expect_true("protein_Id" %in% colnames(limma_missing))
+  # limma should also have missing proteins (NA diff rows are filtered)
+  limma_missing <- fa_limma$get_missing()
+  expect_true(is.data.frame(limma_missing))
+  expect_true("protein_Id" %in% colnames(limma_missing))
 
-    # limma get_contrasts must have no NA diff
-    limma_res <- fa_limma$get_contrasts()
-    expect_true(!any(is.na(limma_res$diff)))
+  # limma get_contrasts must have no NA diff
+  limma_res <- fa_limma$get_contrasts()
+  expect_true(!any(is.na(limma_res$diff)))
 
-    # get_missing + get_contrasts should cover all input proteins x contrasts
-    n_input_proteins <- dplyr::n_distinct(lfq_protein$data_long()$protein_Id)
-    n_contrasts <- length(contrasts2)
-    for (fa in list(fa_lm, fa_limma)) {
-      n_estimated <- nrow(fa$get_contrasts())
-      n_missing <- nrow(fa$get_missing())
-      expect_equal(n_estimated + n_missing, n_input_proteins * n_contrasts)
-    }
-  })
+  # get_missing + get_contrasts should cover all input proteins x contrasts
+  n_input_proteins <- dplyr::n_distinct(lfq_protein$data_long()$protein_Id)
+  n_contrasts <- length(contrasts2)
+  for (fa in list(fa_lm, fa_limma)) {
+    n_estimated <- nrow(fa$get_contrasts())
+    n_missing <- nrow(fa$get_missing())
+    expect_equal(n_estimated + n_missing, n_input_proteins * n_contrasts)
+  }
 })
 
 test_that("get_missing returns empty data.frame when all proteins are estimable", {

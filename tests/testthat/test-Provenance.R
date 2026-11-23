@@ -190,14 +190,38 @@ test_that("limma records non-estimable coefficients as singular fits; lm_impute 
   expect_length(limma$messages, 0L)
   singular <- limma$result$model$provenance()
   expect_equal(singular$ids[singular$event == "singular fits"], list(fixture$target))
-  # limma's own warning text is kept in the provenance, not matched against a pattern
-  expect_match(unlist(singular$ids[singular$event == "limma warnings"]), "Partial NA coefficients", all = FALSE)
+  # limma's warning about the NA coefficients is the singular-fit entry, not a second one
+  expect_false("fits with a limma warning" %in% singular$event)
+  expect_false(any(singular$failure))
   for (method in c("lm_impute", "limma_impute")) {
     imputed <- prov_fit_warnings(build_contrast_analysis(fixture$lfq, "~ group_", contrasts, method))
     expect_length(imputed$messages, 0L)
     entries <- imputed$result$model$provenance()
     expect_equal(entries$ids[entries$event == "refit at the limit of detection"], list(fixture$target), label = method)
+    expect_false("fits with a limma warning" %in% entries$event)
   }
+})
+
+test_that("a limma warning without singular rows is a fit failure with limma's text as the reason", {
+  withr::local_options(prolfqua.verbose = FALSE)
+  sim <- sim_lfq_data_protein_config(n_proteins = 10, with_missing = FALSE, seed = 3)
+  lfq <- LFQData$new(sim$data, sim$config)
+  fit_limma <- .fit_limma
+  local_mocked_bindings(.fit_limma = function(...) {
+    warning("limma trouble")
+    fit_limma(...)
+  })
+  expect_warning(
+    facade <- build_contrast_analysis(lfq, "~ group_", c(AvsC = "group_A - group_Ctrl"), "limma"),
+    "limma trouble",
+    class = "prolfqua_fit_failed"
+  )
+  entries <- facade$model$provenance()
+  failed <- entries[entries$event == "fits with a limma warning", ]
+  expect_equal(nrow(failed), 1L)
+  expect_true(failed$failure)
+  expect_equal(failed$reason, "limma trouble")
+  expect_equal(failed$n, 10L)
 })
 
 test_that("rlm non-convergence and lmer failures each give one warning for the fitting step", {
@@ -253,12 +277,12 @@ test_that("hurdle_nested reads the input, the aggregated data and both component
   sim <- sim_lfq_data_peptide_config(n_proteins = 20, weight_missing = 0.4, seed = 42)
   withr::local_options(prolfqua.verbose = FALSE)
   lfq <- LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq
-  facade <- suppressWarnings(build_contrast_analysis(
+  facade <- build_contrast_analysis(
     lfq,
     "~ group_",
     c(AvsC = "group_A - group_Ctrl"),
     "hurdle_nested"
-  ))
+  )
   sources <- unique(facade$.recorded_provenance()$source)
   expect_true(all(sources %in% c("input data", "aggregated data", "model (intensity)", "model (detection)")))
   expect_true("model (intensity)" %in% sources)

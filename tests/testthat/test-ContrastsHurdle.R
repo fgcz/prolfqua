@@ -23,7 +23,7 @@ hurdle_components_fixture <- function() {
   lfq_protein <- suppressWarnings(lfq_peptide$get_Aggregator()$aggregate())
   contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl", "B_vs_Ctrl" = "group_B - group_Ctrl")
   fit <- function(lfqdata, method) {
-    suppressWarnings(build_contrast_analysis(lfqdata, "~ group_", contrasts, method = method))
+    build_contrast_analysis(lfqdata, "~ group_", contrasts, method = method)
   }
   list(
     lfq_peptide = lfq_peptide,
@@ -51,7 +51,7 @@ fully_detected_proteins <- function(lfq_peptide) {
 
 # Component get_contrasts() warns about zero sample variances on the simulated data.
 new_hurdle <- function(intensity, detection) {
-  suppressWarnings(ContrastsHurdleFacade$new(intensity, detection))
+  ContrastsHurdleFacade$new(intensity, detection)
 }
 
 test_that("hurdle p-values are Fisher's combination of the component p-values", {
@@ -158,8 +158,8 @@ test_that("hurdle supports a two-factor design", {
     "background" = "BackgroundZ - BackgroundX"
   )
   modelstr <- "~ Treatment * Background"
-  intensity <- suppressWarnings(build_contrast_analysis(lfq_protein, modelstr, contrasts, method = "lm_impute"))
-  detection <- suppressWarnings(build_contrast_analysis(lfq_peptide, modelstr, contrasts, method = "binomial_nested"))
+  intensity <- build_contrast_analysis(lfq_protein, modelstr, contrasts, method = "lm_impute")
+  detection <- build_contrast_analysis(lfq_peptide, modelstr, contrasts, method = "binomial_nested")
   res <- new_hurdle(intensity, detection)$get_contrasts()
   expect_setequal(unique(res$contrast), names(contrasts))
   for (ct in names(contrasts)) {
@@ -169,12 +169,12 @@ test_that("hurdle supports a two-factor design", {
 })
 
 test_that("mismatched components raise errors", {
-  one_contrast <- suppressWarnings(build_contrast_analysis(
+  one_contrast <- build_contrast_analysis(
     fx$lfq_peptide,
     "~ group_",
     fx$contrasts[1],
     method = "binomial_firth_nested"
-  ))
+  )
   expect_error(new_hurdle(fx$lm, one_contrast), "same contrasts")
 
   renamed <- dplyr::rename(fx$binomial_firth_nested$get_contrasts(), protein = "protein_Id")
@@ -185,12 +185,11 @@ test_that("mismatched components raise errors", {
 })
 
 test_that("hurdle_nested builds both components from peptide input", {
-  facade <- suppressWarnings(build_contrast_analysis(
-    fx$lfq_peptide,
-    "~ group_",
-    fx$contrasts,
-    method = "hurdle_nested"
-  ))
+  # the intensity component aggregates the fixture's peptides; medpolish does not converge for two proteins
+  facade <- muffle_warnings_matching(
+    build_contrast_analysis(fx$lfq_peptide, "~ group_", fx$contrasts, method = "hurdle_nested"),
+    "medpolish\\(\\) did not converge"
+  )
   expect_r6_class(facade, "ContrastsHurdleNestedFacade")
   res <- facade$get_contrasts()
   expect_setequal(unique(res$modelName), "hurdle_nested")

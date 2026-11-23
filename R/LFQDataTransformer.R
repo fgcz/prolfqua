@@ -291,33 +291,35 @@ LFQDataTransformer <- R6::R6Class(
 #' @return list with `data` (data.frame), `colname` (new column name) and `zeros` (logical, rows whose zero
 #'   intensity became `NA`)
 #' @details For `log`, `log2` and `log10`, zero intensities mean "not detected" and become `NA`; LFQData records
-#'   them in its provenance. Negative intensities give `NaN` with a warning, which fitting and aggregation then
-#'   reject.
+#'   them in its provenance. Negative intensities become `NaN` with one `prolfqua_negative_intensity` warning;
+#'   fitting and aggregation then reject them.
 #' @noRd
 .transform_work_intensity <- function(pdata, response, .func, .funcname = NULL) {
   newcol <- paste(.funcname %||% deparse(match.call()$.func), response, sep = "_")
   vals <- pdata[[response]]
   zeros <- rep(FALSE, nrow(pdata))
   if (identical(.func, log2) || identical(.func, log) || identical(.func, log10)) {
-    n_neg <- sum(vals < 0, na.rm = TRUE)
-    if (n_neg > 0) {
-      warning(
-        "Log transform: ",
-        n_neg,
-        " negative values in `",
-        response,
-        "` will produce NaN. Consider filtering or using asinh."
+    negative <- !is.na(vals) & vals < 0
+    if (any(negative)) {
+      rlang::warn(
+        paste0(
+          "Log transform: ",
+          sum(negative),
+          " negative values in `",
+          response,
+          "` become NaN. Consider filtering or using asinh."
+        ),
+        class = "prolfqua_negative_intensity"
       )
+      vals[negative] <- NaN
     }
     # 0 means not detected: a missing observation, not -Inf.
     zeros <- !is.na(vals) & vals == 0
     pdata[[response]][zeros] <- NA
+    vals[zeros] <- NA
   }
 
-  pdata <- pdata |>
-    dplyr::mutate(
-      !!newcol := .func(.data[[response]])
-    )
+  pdata[[newcol]] <- .func(vals)
   inform_prolfqua("Transformed response column added: ", newcol)
   list(data = pdata, colname = newcol, zeros = zeros)
 }
@@ -366,12 +368,24 @@ LFQDataTransformer <- R6::R6Class(
 #' @keywords internal
 #'
 .get_robscales <- function(data, dim = 2) {
-  empty <- apply(data, dim, function(x) all(is.na(x)))
+  .robscales(asplit(data, dim), if (dim == 2) "sample" else "row", dimnames(data)[[dim]])
+}
+
+#' Medians and MADs of each element of a list of numeric vectors
+#'
+#' The MAD of each vector is computed after subtracting its median.
+#' @param values list of numeric vectors, one per sample (or row)
+#' @param unit what an element is, for the error message
+#' @param labels element names for the error message
+#' @return a list with the numeric vectors `medians` and `mads`, named as `values`
+#' @noRd
+.robscales <- function(values, unit, labels = names(values)) {
+  empty <- vapply(values, function(x) all(is.na(x)), logical(1), USE.NAMES = FALSE)
   if (any(empty)) {
-    labels <- dimnames(data)[[dim]] %||% as.character(seq_along(empty))
+    labels <- labels %||% as.character(seq_along(empty))
     abort_prolfqua(
       "Robust scaling needs at least one non-missing value per ",
-      if (dim == 2) "sample" else "row",
+      unit,
       "; none in ",
       toString(paste0("`", labels[empty], "`")),
       ". Remove ",
@@ -380,20 +394,27 @@ LFQDataTransformer <- R6::R6Class(
       class = "prolfqua_error_bad_argument"
     )
   }
-  medians <- apply(data, dim, median, na.rm = TRUE)
-  data <- sweep(data, dim, medians, "-")
-  mads <- apply(data, dim, mad, na.rm = TRUE)
+  medians <- vapply(values, stats::median, numeric(1), na.rm = TRUE)
+  mads <- vapply(
+    seq_along(values),
+    function(i) stats::mad(values[[i]] - medians[[i]], na.rm = TRUE),
+    numeric(1)
+  )
+  names(mads) <- names(medians)
   list(medians = medians, mads = mads)
 }
 
 #' Compute the median and MAD of each sample
+#'
+#' From the long data, without the wide matrix; samples sorted as the columns of `data_wide()`.
 #' @param lfqdata [LFQData] object with the data and its configuration
 #' @return a list with the numeric vectors `medians` and `mads`, with one element per sample
 #' @noRd
 .lfqdata_robscales <- function(lfqdata) {
-  data <- .tidy_to_wide_config(lfqdata, as.matrix = TRUE)$data
-  scales <- .get_robscales(data)
-  scales
+  data <- lfqdata$data_long()
+  sample <- data[[lfqdata$sample_name()]]
+  samples <- sort(unique(sample), method = "radix")
+  .robscales(split(data[[lfqdata$response()]], factor(sample, levels = samples)), "sample")
 }
 
 
@@ -469,15 +490,17 @@ LFQDataTransformer <- R6::R6Class(
 #' @noRd
 .scale_with_subset <- function(lfqdata, lfqsubset, preserve_mean = FALSE, colname = NULL) {
   scaled_name <- make.names(paste(lfqdata$response(), "subset_scaled", sep = "_"))
-  scales <- .get_robscales(.tidy_to_wide_config(lfqsubset, as.matrix = TRUE)$data)
-  mat <- .apply_robscales(
-    .tidy_to_wide_config(lfqdata, as.matrix = TRUE)$data,
-    scales,
-    preserve_mean,
-    2,
-    "Skipping the scaling step in `scale_with_subset()`: one or more MAD values are zero."
-  )
-  data <- .response_matrix_as_tibble(mat, scaled_name, lfqdata$get_config(), lfqdata$data_long())
+  scales <- .lfqdata_robscales(lfqsubset)
+  # long format, no wide matrix: centre and scale each value by the scales of its sample
+  data <- lfqdata$data_long()
+  idx <- match(as.character(data[[lfqdata$sample_name()]]), names(scales$medians))
+  scaled <- data[[lfqdata$response()]] - unname(scales$medians)[idx]
+  if (any(.is_zero(scales$mads))) {
+    warning("Skipping the scaling step in `scale_with_subset()`: one or more MAD values are zero.")
+  } else {
+    scaled <- scaled / unname(scales$mads / mean(scales$mads))[idx]
+  }
+  data[[scaled_name]] <- scaled + if (preserve_mean) mean(scales$medians) else 0
   if (!is.null(colname)) {
     data <- dplyr::rename(data, !!colname := dplyr::all_of(scaled_name))
   }

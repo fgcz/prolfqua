@@ -230,7 +230,7 @@ wrapping with \code{\link{ContrastsModeratedDEqMS}}.}
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{global}}{ignored; kept for the \code{ContrastsInterface} signature}
+      \item{\code{global}}{ignored; kept for compatibility with \code{Contrasts$get_linfct(global = )}}
       \item{\code{avg}}{logical, also compute avgAbd linfct}
     }
     \if{html}{\out{</div>}}

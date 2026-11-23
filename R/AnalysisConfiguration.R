@@ -193,20 +193,7 @@ list_to_analysis_configuration <- function(dd) {
   config <- AnalysisConfiguration$new()
   fields <- names(Filter(function(x) !is.function(x) && !is.environment(x), as.list(config)))
   if (!is.null(dd$table)) {
-    # Old nested format (backwards compat); its `parameter` block is filtered to known fields below
-    # configurations stored before prolfqua became label-free carry the removed `isotope_label`
-    dd$table$isotope_label <- NULL
-    .assert_configuration_keys(names(dd$table), fields)
-    for (i in names(dd$table)) {
-      config[[i]] <- dd$table[[i]]
-    }
-    if (!is.null(dd$parameter)) {
-      for (i in names(dd$parameter)) {
-        if (i %in% names(config)) {
-          config[[i]] <- dd$parameter[[i]]
-        }
-      }
-    }
+    .set_nested_configuration(config, dd, fields)
   } else {
     # New flat format
     dd$isotope_label <- NULL
@@ -223,18 +210,42 @@ list_to_analysis_configuration <- function(dd) {
   config
 }
 
+#' Set a configuration from the old nested format
+#'
+#' Keys of the `table` block must be configuration fields; keys of the `parameter` block that are not fields
+#' (for example method names) are skipped, as before.
+#' @param config AnalysisConfiguration to set
+#' @param dd list with `table` and `parameter` elements
+#' @param fields configuration fields
+#' @param call calling environment named in errors
+#' @return `config`, invisibly
+#' @noRd
+.set_nested_configuration <- function(config, dd, fields, call = rlang::caller_env()) {
+  # configurations stored before prolfqua became label-free carry the removed `isotope_label`
+  dd$table$isotope_label <- NULL
+  .assert_configuration_keys(names(dd$table), fields, call = call)
+  for (i in names(dd$table)) {
+    config[[i]] <- dd$table[[i]]
+  }
+  for (i in intersect(names(dd$parameter), fields)) {
+    config[[i]] <- dd$parameter[[i]]
+  }
+  invisible(config)
+}
+
 #' Abort unless every key names a field of AnalysisConfiguration
 #' @param keys list names to set on the configuration
 #' @param fields configuration fields
+#' @param call calling environment named in the error
 #' @noRd
-.assert_configuration_keys <- function(keys, fields) {
+.assert_configuration_keys <- function(keys, fields, call = rlang::caller_env()) {
   unknown <- setdiff(keys, fields)
   if (length(unknown) > 0) {
     abort_bad_argument(
       "dd",
       "name only AnalysisConfiguration fields",
       not = paste0("unknown keys ", toString(unknown)),
-      call = rlang::caller_env()
+      call = call
     )
   }
 }

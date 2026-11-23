@@ -128,7 +128,6 @@ ContrastsROPECA <- R6::R6Class(
     #' @description
     #' get contrasts
     #' @param all should all columns be returned (default FALSE)
-    #' @param global use a global linear function (determined by get_linfct)
     #' @return data.frame
     get_contrasts = function(all = FALSE) {
       if (is.null(self$contrast_result)) {

@@ -77,9 +77,7 @@ AggregatorBase <- R6::R6Class(
       estimate_aes <- .estimate_aes(self$lfq$sample_name(), lfq_agg$response())
       pb <- .make_progress(nrow(plot_data))
       filepath <- file.path(qcpath, paste0(self$prefix, "_aggregation_plot.pdf"))
-      grDevices::pdf(filepath, width = width, height = height)
-      pdf_dev <- grDevices::dev.cur()
-      on.exit(.dev_close(pdf_dev), add = TRUE)
+      withr::local_pdf(filepath, width = width, height = height)
       for (i in seq_len(nrow(plot_data))) {
         .render_plot_to_device(.estimate_plot(plot_data, i, self$lfq, estimate_aes, show.legend))
         pb$tick()

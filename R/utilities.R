@@ -13,20 +13,6 @@
   requireNamespace(pkg, quietly = TRUE)
 }
 
-#' Close graphics device `which` and make the previously active device current
-#'
-#' again, as withr::local_pdf() does when its frame exits.
-#' @param which graphics device number
-#' @noRd
-.dev_close <- function(which) {
-  prev <- grDevices::dev.prev(which)
-  grDevices::dev.off(which)
-  if (prev != which) {
-    grDevices::dev.set(prev)
-  }
-  invisible(prev)
-}
-
 #' Internal helper for rendering ggplot/ComplexHeatmap objects to an open graphics device.
 #' @param x ggplot or ComplexHeatmap object to draw
 #' @noRd

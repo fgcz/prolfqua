@@ -16,10 +16,6 @@ muffle_warnings_matching <- function(expr, pattern) {
 # has too few distinct counts near count 2 for a local quadratic fit
 loess_ties_warning <- "pseudoinverse used|neighborhood radius|reciprocal condition number"
 
-# plain limma on simulated data where some proteins miss a whole group: limma
-# reports their NA coefficients; the *_impute methods refit exactly these
-partial_na_warning <- "^Partial NA coefficients"
-
 # proteins observed in one group only: their initial fit fails; the *_impute
 # methods rescue exactly these, and plain methods report them in get_missing()
 one_group_warning <- "contrasts can be applied only to factors with 2 or more levels"

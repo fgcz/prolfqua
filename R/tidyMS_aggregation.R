@@ -114,88 +114,71 @@ plot_hierarchies_line_default <- function(
 }
 
 #' Estimate protein intensities by robust peptide regression
+#'
+#' Base R per subject (the subject loop calls it thousands of times): `MASS::rlm()` of the response on sample and
+#' feature effects, feature effects with sum contrasts, so a sample effect is the mean over the features.
 #' @param pdata long-format measurement table
 #' @param response name of the numeric response column
-#' @param feature child-feature identifier column
+#' @param feature child-feature identifier column(s); several columns are joined with `"_"`, as `tidyr::unite()`
 #' @param samples name of the sample identifier column
 #' @param control `maxit` and `acc` of \code{MASS::rlm}
+#' @return one row per sample of `pdata`, in order of appearance: `samples`, `mean.<response>`, `lmrob` and
+#'   `weights`; `NA` for samples without an observed response
 #' @noRd
 .rlm_estimate <- function(pdata, response, feature, samples = "samples", control = .aggregation_control("rlm")) {
-  data <- pdata |>
-    select(all_of(c(samples, feature, response))) |>
-    na.omit() |>
-    droplevels()
-  expname <- paste0("mean.", response)
+  sample_id <- pdata[[samples]]
+  observed <- !is.na(pdata[[response]]) & !is.na(sample_id)
+  data <- data.frame(
+    sample_id[observed],
+    do.call(paste, c(unname(as.list(pdata[feature])), sep = "_"))[observed],
+    stringsAsFactors = FALSE
+  )
+  names(data) <- c(samples, "feature")
+  data <- droplevels(data)
+  y <- pdata[[response]][observed]
+  usamples <- unique(data[[samples]])
+  sid <- match(data[[samples]], usamples)
+  per_sample_mean <- function(x) vapply(split(x, sid), mean, numeric(1), USE.NAMES = FALSE)
+  mean_y <- per_sample_mean(y)
 
   ## All branches hand off here so the output schema is identical: a single, fixed column order
-  ## (samples, mean.<response>, lmrob, weights) with one row per sample present in the input.
-  ## The final left_join re-establishes samples dropped by na.omit, so downstream
-  ## unnest()/.reestablish_condition() always bind the same columns and never lose a sample.
-  all_samples <- pdata |>
-    dplyr::select(all_of(samples)) |>
-    distinct()
-  finalize <- function(per_sample) {
-    per_sample <- per_sample |>
-      dplyr::select(all_of(c(samples, expname, "lmrob", "weights")))
-    dplyr::left_join(all_samples, per_sample, by = samples, relationship = "one-to-many")
+  ## (samples, mean.<response>, lmrob, weights) with one row per sample present in the input, also for samples
+  ## without an observed response, so downstream unnest()/.reestablish_condition() always bind the same columns.
+  all_samples <- unique(sample_id)
+  finalize <- function(lmrob, weights) {
+    idx <- match(all_samples, usamples)
+    tibble(
+      !!samples := all_samples,
+      !!paste0("mean.", response) := mean_y[idx],
+      lmrob = lmrob[idx],
+      weights = weights[idx]
+    )
   }
 
-  ## If there is only 1 peptide for all samples use the response of that peptide directly
-  if (length(unique(data[[feature]])) == 1L) {
-    per_sample <- data |>
-      dplyr::mutate(lmrob = .data[[response]], weights = 1) |>
-      rename(!!expname := all_of(response))
-    return(finalize(per_sample))
-  }
-
-  ## model-matrix breaks on factors with 1 level so make vector of ones (will be intercept)
-  if (length(unique(data[[samples]])) == 1L) {
-    per_sample <- data |>
-      summarize(
-        lmrob = mean(.data[[response]]),
-        !!expname := mean(.data[[response]]),
-        weights = 1,
-        .by = all_of(samples)
-      )
-    return(finalize(per_sample))
+  ## If there is only 1 peptide for all samples, or only one sample, use the mean response per sample directly
+  ## (model.matrix breaks on factors with 1 level)
+  if (length(unique(data$feature)) == 1L || length(usamples) == 1L) {
+    return(finalize(mean_y, rep(1, length(usamples))))
   }
 
   ## sum contrast on peptide level so sample effect will be mean over all peptides instead of reference level
-  formula <- as.formula(paste0("~ -1 + ", samples, " + ", feature))
-  contr.arg <- list("contr.sum")
-  names(contr.arg) <- feature
-  X <- model.matrix(formula, data = data, contrasts.arg = contr.arg)
+  formula <- as.formula(paste0("~ -1 + ", samples, " + feature"))
+  X <- model.matrix(formula, data = data, contrasts.arg = list(feature = "contr.sum"))
   ## MASS::rlm breaks on aliased columns: keep the columns of full rank found by the pivoted QR of the
-  ## least-squares fit. .lm.fit() reports coefficients in pivoted order, so select by pivot and rank.
-  y <- data[[response]]
+  ## least-squares fit. .lm.fit() reports coefficients in pivoted order, so select by pivot and rank; the sample
+  ## columns keep X of rank at least one.
   fit <- .lm.fit(X, y)
   X <- X[, sort(fit$pivot[seq_len(fit$rank)]), drop = FALSE]
-  ## Last step is always rlm if X > has some columns left
-  if (ncol(X) > 0) {
-    fit <- MASS::rlm(X, y, maxit = control$maxit, acc = control$acc)
-    data$residuals <- fit$residuals
-    usamples <- unique(data[[samples]])
-    coef_names <- paste0(samples, usamples)
-    lmrob <- tibble(!!samples := usamples, lmrob = unname(fit$coefficients[coef_names]))
-
-    sumdata <- data |>
-      select(-all_of(feature)) |>
-      dplyr::summarize(!!expname := mean(.data[[response]]), weights = 1 / mean(residuals^2), .by = all_of(samples))
-    if (any(is.infinite(sumdata$weights) | is.na(sumdata$weights) | sumdata$weights > 10e6)) {
-      sumdata$weights <- 1
-    }
-
-    res <- inner_join(sumdata, lmrob, by = samples, relationship = "one-to-one")
-    if (sum(is.na(res[[expname]])) < sum(is.na(res$lmrob))) {
-      res$lmrob <- res[[expname]]
-    }
-  } else {
-    res <- data |>
-      select(-all_of(feature)) |>
-      dplyr::summarize(!!expname := mean(.data[[response]]), lmrob = mean(.data[[response]]), .by = all_of(samples))
-    res$weights <- 1
+  fit <- MASS::rlm(X, y, maxit = control$maxit, acc = control$acc)
+  lmrob <- unname(fit$coefficients[paste0(samples, usamples)])
+  weights <- 1 / per_sample_mean(fit$residuals^2)
+  if (any(is.infinite(weights) | is.na(weights) | weights > 10e6)) {
+    weights <- rep(1, length(usamples))
   }
-  finalize(res)
+  if (sum(is.na(mean_y)) < sum(is.na(lmrob))) {
+    lmrob <- mean_y
+  }
+  finalize(lmrob, weights)
 }
 
 #' Count measured children per parent and sample after aggregation
@@ -268,7 +251,7 @@ plot_hierarchies_line_default <- function(
   estimate <- if (method == "medpolish") {
     function(d) .medpolish_estimate(d, response, feature, sname, control)
   } else {
-    function(d) .rlm_estimate(unite(d, "feature", all_of(feature)), response, "feature", sname, control)
+    function(d) .rlm_estimate(d, response, feature, sname, control)
   }
 
   xnested <- data |>
@@ -464,7 +447,8 @@ nr_obs_sample <- function(
   nr_children_col,
   new_child = nr_children_col
 ) {
-  data <- data[!is.na(data[[response]]), ]
+  observed <- !is.na(data[[response]])
+  data <- data[observed, unique(c(hierarchy_keys_depth, file_name, nr_children_col)), drop = FALSE]
   nr_children <- data |>
     group_by(across(all_of(c(hierarchy_keys_depth, file_name)))) |>
     summarize(!!new_child := sum(.data[[nr_children_col]], na.rm = TRUE), .groups = "drop")

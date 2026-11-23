@@ -22,7 +22,7 @@ plot_na_heatmap(
 
 \item{sample_name}{character - sample name column}
 
-\item{limitrows}{max rows to display}
+\item{limitrows}{max rows to display; above it, \code{limitrows} evenly spaced rows}
 
 \item{distance}{distance method for clustering}
 }

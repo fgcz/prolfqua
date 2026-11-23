@@ -240,10 +240,7 @@ test_that("merge_contrasts_results works with ContrastsLimma", {
   lProt$rename_response("transformedIntensity")
 
   strat <- prolfqua::strategy_limma("transformedIntensity ~ group_")
-  mod <- muffle_warnings_matching(
-    prolfqua::build_model_limma(lProt, strat),
-    partial_na_warning
-  )
+  mod <- prolfqua::build_model_limma(lProt, strat)
   Contr <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
   contr_limma <- prolfqua::ContrastsLimma$new(mod, Contr)
 
@@ -345,10 +342,7 @@ test_that("build_model_limma_impute recovers failed proteins", {
   lfqdata$rename_response("transformedIntensity")
   strat <- prolfqua::strategy_limma("transformedIntensity ~ group_")
 
-  mod_na <- muffle_warnings_matching(
-    prolfqua::build_model_limma(lfqdata, strat),
-    partial_na_warning
-  )
+  mod_na <- prolfqua::build_model_limma(lfqdata, strat)
   mod_imp <- prolfqua::build_model_limma_impute(lfqdata, strat)
 
   na_count_plain <- sum(rowSums(is.na(mod_na$fit$coefficients)) > 0)
@@ -388,10 +382,7 @@ test_that("limma_impute fold changes match plain limma for non-imputed proteins"
   lfqdata$rename_response("transformedIntensity")
   contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 
-  fa_plain <- muffle_warnings_matching(
-    prolfqua::ContrastsLimmaFacade$new(lfqdata, "~ group_", contrasts),
-    partial_na_warning
-  )
+  fa_plain <- prolfqua::ContrastsLimmaFacade$new(lfqdata, "~ group_", contrasts)
   fa_imp <- prolfqua::ContrastsLimmaImputeFacade$new(lfqdata, "~ group_", contrasts)
 
   res_plain <- fa_plain$get_contrasts()
@@ -445,10 +436,7 @@ test_that("df correction: imputed proteins do not use inflated df", {
   lfqdata$rename_response("transformedIntensity")
   strat <- prolfqua::strategy_limma("transformedIntensity ~ group_")
 
-  mod_na <- muffle_warnings_matching(
-    prolfqua::build_model_limma(lfqdata, strat),
-    partial_na_warning
-  )
+  mod_na <- prolfqua::build_model_limma(lfqdata, strat)
   mod_imp <- prolfqua::build_model_limma_impute(lfqdata, strat)
 
   # Identify which proteins were imputed (had NA coefficients in plain fit)
@@ -585,10 +573,7 @@ test_that("limma_voom_impute recovers more proteins than limma_voom", {
   lfqdata$rename_response("transformedIntensity")
   contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 
-  fa_voom <- muffle_warnings_matching(
-    prolfqua::ContrastsLimmaVoomFacade$new(lfqdata, "~ group_", contrasts),
-    partial_na_warning
-  )
+  fa_voom <- prolfqua::ContrastsLimmaVoomFacade$new(lfqdata, "~ group_", contrasts)
   fa_voom_imp <- prolfqua::ContrastsLimmaVoomImputeFacade$new(lfqdata, "~ group_", contrasts)
 
   res_voom <- fa_voom$get_contrasts()
@@ -603,11 +588,7 @@ test_that("build_contrast_analysis dispatches deqms_voom", {
   lfqdata$rename_response("transformedIntensity")
   contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 
-  # one simulated protein misses a whole group, which limma reports as partial NA coefficients
-  fa <- muffle_warnings_matching(
-    prolfqua::build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "deqms_voom"),
-    "Partial NA coefficients"
-  )
+  fa <- prolfqua::build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "deqms_voom")
   expect_true(inherits(fa, "ContrastsDEqMSVoomFacade"))
   expect_no_warning(res <- fa$get_contrasts())
   expect_equal(nrow(res), 30)
@@ -649,10 +630,7 @@ test_that("limma_impute flags LOD-rescued proteins via estimate_type", {
   contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 
   # Plain limma: no imputed_proteins, modelName is the facade key, all observed.
-  fa_plain <- muffle_warnings_matching(
-    prolfqua::ContrastsLimmaFacade$new(lfqdata, "~ group_", contrasts),
-    partial_na_warning
-  )
+  fa_plain <- prolfqua::ContrastsLimmaFacade$new(lfqdata, "~ group_", contrasts)
   res_plain <- fa_plain$get_contrasts()
   expect_setequal(unique(res_plain$modelName), "limma")
   expect_setequal(unique(res_plain$estimate_type), "observed")

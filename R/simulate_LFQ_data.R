@@ -277,7 +277,8 @@ sim_lfq_data_peptide_config <- function(
 #' @srrstats {G2.4a} Counts (`n_proteins`, `n_per_group`, `n_splits`, `n_features`) must be whole numbers and are
 #'   converted with `as.integer()` (`.assert_count()`, test-input-types.R).
 #' @srrstats {G5.1} Documented simulators and bundled datasets are publicly available for tests and examples.
-#' @srrstats {G5.5} Simulators use explicit reproducible seeds and restore the calling RNG state.
+#' @srrstats {G5.5} The `_config` simulators take a seed (default 1234) and restore the calling RNG state; the
+#'   low-level `sim_lfq_data()` draws from the caller's RNG, and the tests seed it with `withr::with_seed()`.
 sim_lfq_data_protein_config <- function(
   n_proteins = 10,
   with_missing = TRUE,

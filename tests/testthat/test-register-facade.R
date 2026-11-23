@@ -91,3 +91,21 @@ test_that("built-in facades check their input shape themselves, not through the 
     "ContrastsROPECANestedFacade requires LFQData with additional hierarchy"
   )
 })
+
+test_that("the registry's needs equals the .needs field of each built-in facade class", {
+  class_needs <- function(generator) {
+    while (!is.null(generator)) {
+      if (".needs" %in% names(generator$private_fields)) {
+        return(generator$private_fields$.needs)
+      }
+      generator <- generator$get_inherit()
+    }
+    NA_character_
+  }
+  builtin <- Filter(function(facade) facade$package == "prolfqua", list_facades())
+  expect_length(builtin, 20L)
+  for (name in names(builtin)) {
+    generator <- get(builtin[[name]]$class, envir = asNamespace("prolfqua"))
+    expect_equal(class_needs(generator), builtin[[name]]$needs, label = name)
+  }
+})

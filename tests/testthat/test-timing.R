@@ -21,7 +21,7 @@ test_that("lm and limma fit noiseless data at least as fast as noisy data (exten
       system.time(
         muffle_warnings_matching(
           build_contrast_analysis(lfqdata, "~ group_", RECOVERY_CONTRASTS, method),
-          "Zero sample variances detected|essentially perfect fit"
+          "essentially perfect fit"
         )
       )[["elapsed"]]
     ))

@@ -463,6 +463,9 @@ test_that("error helpers name the calling function in the header, not themselves
   cnd <- rlang::catch_cnd(user_choice("lmm"))
   expect_identical(rlang::call_name(cnd$call), "user_choice")
   expect_match(conditionMessage(cnd), "`method` must be one of \"lm\", \"limma\".", fixed = TRUE)
+  expect_match(conditionMessage(cnd), "You supplied \"lmm\".", fixed = TRUE)
+  # the values are listed once
+  expect_length(gregexpr("\"limma\"", conditionMessage(cnd), fixed = TRUE)[[1]], 1L)
 
   cnd <- rlang::catch_cnd(sim_lfq_data_peptide_config(n_proteins = -1))
   expect_identical(rlang::call_name(cnd$call), "sim_lfq_data_peptide_config")

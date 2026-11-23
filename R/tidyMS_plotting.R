@@ -723,7 +723,7 @@ theme_prolfqua <- function(grid = FALSE, base_size = 12) {
 #' @param annotation data.frame - sample annotation
 #' @param factor_keys character vector - factor column names for annotation
 #' @param sample_name character - sample name column
-#' @param limitrows max rows to display
+#' @param limitrows max rows to display; above it, `limitrows` evenly spaced rows
 #' @param distance distance method for clustering
 #' @return a ComplexHeatmap `Heatmap` object marking the missing values of the rows that have any; `NULL` if fewer
 #'   than two such rows
@@ -741,7 +741,8 @@ theme_prolfqua <- function(grid = FALSE, base_size = 12) {
   if (nrow(matrix) > 1) {
     matrix <- if (nrow(matrix) > limitrows) {
       inform_prolfqua("limiting nr of rows to: ", limitrows)
-      matrix[sample(seq_len(nrow(matrix)), limitrows), ]
+      # evenly spaced rows: the same plot on every call
+      matrix[round(seq(1, nrow(matrix), length.out = limitrows)), , drop = FALSE]
     } else {
       matrix
     }

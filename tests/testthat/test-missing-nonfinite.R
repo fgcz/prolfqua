@@ -92,7 +92,7 @@ test_that("a protein with an all-NA response is absent from the contrasts and li
   for (method in c("lm", "limma")) {
     facade <- muffle_warnings_matching(
       build_contrast_analysis(all_na, "~ group_", MD_CONTRASTS, method),
-      paste(one_group_warning, partial_na_warning, sep = "|")
+      one_group_warning
     )
     expect_false(target %in% facade$get_contrasts()$protein_Id, label = method)
     expect_true(target %in% facade$get_missing()$protein_Id, label = method)
@@ -202,7 +202,6 @@ test_that("contrast tables contain no Inf or NaN", {
       build_contrast_analysis(protein, "~ group_", MD_CONTRASTS, method)$get_contrasts(),
       paste(
         one_group_warning,
-        partial_na_warning,
         loess_ties_warning,
         rlm_convergence_warning,
         "essentially perfect fit",

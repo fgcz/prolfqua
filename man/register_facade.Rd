@@ -23,7 +23,8 @@ register_facade(
 level of the contrasts, \code{subject_id} equal to the hierarchy keys,
 \emph{e.g.} protein -> protein FC, peptide -> peptide FC) or
 \code{"nested"} (child-level input, parent-level contrasts, \emph{e.g.}
-peptide -> protein FC). Any other value is an error.}
+peptide -> protein FC). Any other value is an error. It must match the class: a facade class for nested
+input sets its private field \code{.needs = "nested"}, because the class checks its input shape itself.}
 
 \item{package}{package the facade class lives in. Defaults to
 \code{"prolfqua"}.}

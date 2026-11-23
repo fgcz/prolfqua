@@ -81,3 +81,29 @@ test_that("moderated_p_limma rejects invalid variance floors", {
     )
   )
 })
+
+test_that("zero variances in the moderation prior are a note; a zero median is a fit failure", {
+  withr::local_options(prolfqua.verbose = TRUE)
+  # limma 3.68 warns about zero variances, limma 3.99 does not: the mock fixes the warning
+  local_mocked_bindings(
+    squeezeVar = function(var, df, robust) {
+      warning("limma note")
+      list(var.post = var, var.prior = 1, df.prior = 4)
+    },
+    .package = "limma"
+  )
+  expect_no_warning(
+    expect_message(
+      .squeeze_var(c(0, 1, 2, 3), rep(4, 4), FALSE),
+      "1 of 4 variances are zero",
+      class = "prolfqua_message"
+    )
+  )
+  expect_warning(
+    .squeeze_var(c(0, 0, 0, 1), rep(4, 4), FALSE),
+    "the prior is unreliable",
+    class = "prolfqua_fit_failed"
+  )
+  # without zero variances the warning is not one of these two and passes unchanged
+  expect_warning(.squeeze_var(c(1, 2, 3), rep(4, 3), FALSE), "limma note")
+})

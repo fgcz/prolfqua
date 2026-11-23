@@ -13,13 +13,14 @@ test_that("log transforms set zeros to NA and return which", {
   }
 })
 
-test_that("log transforms warn before negative values become NaN", {
-  withCallingHandlers(
-    expect_warning(.transform_work_intensity(data.frame(x = c(-1, 1)), "x", log2), "negative values.*NaN"),
-    warning = function(w) {
-      if (grepl("NaNs produced", conditionMessage(w), fixed = TRUE)) invokeRestart("muffleWarning")
-    }
+test_that("log transforms give one classed warning when negative values become NaN", {
+  expect_warning(
+    res <- .transform_work_intensity(data.frame(x = c(-1, 1, 0)), "x", log2),
+    "1 negative values.*become NaN",
+    class = "prolfqua_negative_intensity"
   )
+  expect_identical(res$data$log2_x, c(NaN, 0, NA))
+  expect_identical(res$data$x, c(-1, 1, NA))
 })
 
 test_that("repeated log transformation warns", {

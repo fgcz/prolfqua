@@ -234,7 +234,6 @@ Other modelling:
     \if{html}{\out{<div class="arguments">}}
     \describe{
       \item{\code{all}}{should all columns be returned (default FALSE)}
-      \item{\code{global}}{use a global linear function (determined by get_linfct)}
     }
     \if{html}{\out{</div>}}
   }

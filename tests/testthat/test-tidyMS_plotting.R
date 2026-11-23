@@ -717,3 +717,26 @@ test_that("intensity density and aggregation plots drop missing intensities with
   aggregator$aggregate()
   expect_no_warning(ggplot2::ggplot_build(aggregator$plot()$plots[[1]]))
 })
+
+test_that("the missing-value heatmap and the pairs plot select the same rows and samples on every call", {
+  skip_if_not_installed("ComplexHeatmap")
+  skip_if_not_installed("circlize")
+  sim <- sim_lfq_data_peptide_config(n_proteins = 20, weight_missing = 0.4, seed = 7)
+  lfq <- LFQData$new(sim$data, sim$config)
+  wide <- lfq$data_wide(as.matrix = TRUE)
+  heatmap_rows <- function() {
+    withr::local_options(prolfqua.verbose = FALSE)
+    rownames(.plot_na_heatmap(wide$data, wide$annotation, lfq$factor_keys(), lfq$sample_name(), limitrows = 5)@matrix)
+  }
+  rows <- heatmap_rows()
+  expect_length(rows, 5L)
+  expect_setequal(heatmap_rows(), rows)
+
+  seen <- new.env()
+  local_mocked_bindings(.pairs_smooth = function(dat) assign("samples", colnames(dat), envir = seen))
+  lfq$get_Plotter()$pairs_smooth(max = 3)
+  first <- seen$samples
+  lfq$get_Plotter()$pairs_smooth(max = 3)
+  expect_length(first, 3L)
+  expect_identical(seen$samples, first)
+})
