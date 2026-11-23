@@ -1,4 +1,18 @@
-# Statistical standards compliance: prolfqua 1.9.4
+# Statistical standards compliance: prolfqua 1.9.5
+
+**Status at 8c8dca4b (2026-11-23):** every standard of the three categories is tagged in the code, as met (`@srrstats`) or not applicable with a reason (`@srrstatsNA`); none is left as `@srrstatsTODO`. `srr::srr_stats_pre_submit()` passes. The tags in the code are authoritative.
+
+| Standards | Total | Met | NA | TODO |
+|---|---:|---:|---:|---:|
+| General | 68 | 64 | 4 | 0 |
+| Regression | 48 | 44 | 4 | 0 |
+| EDA | 34 | 32 | 2 | 0 |
+
+Not applicable: G2.14a, G5.4c, G5.11, G5.11a, RE4.14, RE4.15, RE6.3, RE7.4 ([R/srr-stats-standards.R](../R/srr-stats-standards.R)); EA2.2b, EA5.6 ([R/srr-stats-eda.R](../R/srr-stats-eda.R)).
+
+The sections below are the assessment history: the assessment of 2026-11-17, then the blocks B–H and the rOpenSci self-review waves 1–7 that closed the partial standards. A row shows the state when it was last assessed; where it says partial or TODO, the tag in the code has since become `@srrstats`.
+
+## Assessment history (2026-11-17 to 2026-11-23)
 
 Assessment date: 2026-11-17. The selected categories are **Regression and Supervised Learning** (`regression`) and, since 2026-11-20, **Exploratory Data Analysis** (`eda`), alongside the mandatory General standards. The package fits regressions to proteomics features, computes contrasts and uncertainty, and adjusts for multiple testing. This assessment follows the requested `stats-standards-compliance` skill and the follow-up review with `package-standards` and `stats-standards`. No other category was requested or scored in this pass.
 
