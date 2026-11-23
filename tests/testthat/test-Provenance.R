@@ -208,6 +208,8 @@ test_that("rlm non-convergence and lmer failures each give one warning for the f
   rlm <- prov_fit_warnings(build_contrast_analysis(protein, "~ group_", c(AvsC = "group_A - group_Ctrl"), "rlm"))
   expect_length(rlm$messages, 1L)
   expect_match(rlm$messages, "fits with a warning.*'rlm' failed to converge")
+  skip_if_not_installed("lme4")
+  skip_if_not_installed("lmerTest")
   lmer <- suppressMessages(prov_fit_warnings(build_contrast_analysis(
     peptide,
     "~ group_ + (1 | peptide_Id) + (1 | sampleName)",

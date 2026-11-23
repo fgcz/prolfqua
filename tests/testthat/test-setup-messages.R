@@ -19,7 +19,7 @@ raw_setup_input <- function() {
     protein = rep(c("P1", "P1", "P2"), 4),
     source = "db",
     peptide = rep(c("a", "b", "c"), 4),
-    group = factor(rep(c("A", "A", "B", "B"), each = 3)),
+    group = factor(rep(c("A", "A", "B", "B"), each = 3), levels = c("B", "A", "C"), ordered = TRUE),
     extra = 1,
     intensity = c(10, 11, 12, 10, 11, NA, 13, 14, 15, 13, 14, 15)
   )
@@ -38,10 +38,16 @@ test_that("each setup transformation is announced", {
   input <- raw_setup_input()
   messages <- setup_messages(input$data, input$config)
   expect_true(any(grepl("`protein_Id`: columns `protein`, `source` united", messages)))
-  expect_true(any(grepl("Factor `group_`: factor column `group` converted to character", messages)))
+  expect_true(any(grepl(
+    "Factor `group_`: ordered column `group` kept as an unordered factor with levels B, A",
+    messages
+  )))
   expect_true(any(grepl("creating sampleName", messages)))
   expect_true(any(grepl("dropped [0-9]+ unconfigured columns: .*extra", messages)))
   expect_true(any(grepl("added 1 rows with NA response", messages)))
+  input$data$group <- rep(c(1L, 1L, 2L, 2L), each = 3)[-6]
+  messages <- setup_messages(input$data, input$config)
+  expect_true(any(grepl("Factor `group_`: integer column `group` converted to character labels", messages)))
 })
 
 test_that("input already in the configured form gets no transformation messages", {

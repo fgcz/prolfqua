@@ -36,13 +36,16 @@
 #'   Keys and column names are case sensitive and must match exactly. The
 #'   authoritative list is \code{names(\link{list_facades}())}. Defaults to
 #'   \code{"lm"}.
-#' @param ... additional arguments forwarded to the underlying strategy function
-#'   (e.g. \code{trend}, \code{robust} for \code{strategy_limma})
+#' @param ... arguments of the method's facade constructor, e.g. \code{weights}, \code{trend} and \code{robust}
+#'   for the limma methods or \code{control} for the iterative fits; each facade's help page lists them
+#'   (\code{\link{ContrastsLimmaFacade}}, \code{\link{ContrastsRLMFacade}}, ...). An argument the facade does
+#'   not take is an error.
 #' @details The formula is translated into a design matrix with R's current
 #'   contrast options (normally treatment coding). Configured predictors are
-#'   categorical labels; their reference level is normally the first sorted
-#'   level. Each contrast expression combines group-level coefficient weights,
-#'   rather than referring directly to design-matrix coefficient names. For
+#'   categorical labels; their reference level is the first level of a factor
+#'   column, or the first sorted label of a character column. Each contrast
+#'   expression combines group-level coefficient weights, rather than referring
+#'   directly to design-matrix coefficient names. For
 #'   example, \code{"group_A - group_Ctrl"} subtracts the control group mean
 #'   from the A group mean, including the reference coefficient as needed.
 #'   Interaction cell means are named with a colon and quoted with backticks
@@ -102,7 +105,7 @@
 #' @srrstats {RE4.12} Modelling aggregation and detection encoding, their retained responses and lack of inverses
 #'   are documented; preceding user transformations retain their input columns.
 #' @family modelling
-#' @examplesIf requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)
+#' @examplesIf all(vapply(c("lme4", "lmerTest", "logistf"), requireNamespace, logical(1), quietly = TRUE))
 #' istar <- sim_lfq_data_protein_config(n_proteins = 20)
 #' lfqdata <- LFQData$new(istar$data, istar$config)
 #' lfqdata$rename_response("transformedIntensity")
@@ -139,8 +142,10 @@
 #' @srrstats {G1.6} The ComparingMethods article compares implementations from other R packages (limma, DEqMS, limpa,
 #'   MASS, Rfit, lme4, logistf) wrapped by prolfqua on one dataset; MSstats, msqrob2 and proDA comparisons are in
 #'   prolfquabenchmark.
-#' @srrstatsTODO {G2.1a} The builder documents LFQData, formula strings and named contrasts; limit: types are not
-#'   exhaustive API-wide.
+#' @srrstats {G2.1a} The help pages state the expected type of vector inputs: here `lfqdata` (LFQData), `modelstr`
+#'   (one formula string), `contrasts` (named character vector) and `method` (one string); the simulators,
+#'   `LFQData$new()`, `null_split_check()`, the sample-size methods and the strategies state "one TRUE/FALSE", "one
+#'   positive whole number" or "numeric vector".
 #' @srrstats {G2.3b} Builder help explicitly requires case-sensitive method keys and column names.
 #' @srrstats {RE1.0} The builder takes a validated RHS formula and strategies retain the full response formula.
 #' @srrstats {RE2.1} `method` is the missing-value control (drop per fit, LOD imputation, detection models); NA is a

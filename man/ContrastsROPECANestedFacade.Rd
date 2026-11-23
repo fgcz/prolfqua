@@ -132,7 +132,7 @@ Other modelling:
   initialize
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{ContrastsROPECANestedFacade$new(lfqdata, modelstr, contrasts, ...)}
+    \preformatted{ContrastsROPECANestedFacade$new(lfqdata, modelstr, contrasts)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
@@ -141,7 +141,6 @@ Other modelling:
       \item{\code{lfqdata}}{nested LFQData (peptide-level)}
       \item{\code{modelstr}}{model formula string (e.g. "~ group_")}
       \item{\code{contrasts}}{named character vector of contrasts}
-      \item{\code{...}}{passed to \code{\link{strategy_lm}}}
     }
     \if{html}{\out{</div>}}
   }

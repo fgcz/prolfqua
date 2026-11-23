@@ -262,3 +262,13 @@ test_that("robscale_subset aborts on mismatched transformation state", {
   ref <- x$lfq$get_copy()$get_Transformer()$log2()$lfq
   expect_error(x$lfq$get_Transformer()$robscale_subset(ref), class = "prolfqua_error_bad_argument")
 })
+
+test_that("robscale aborts on a sample without values and names it", {
+  sim <- sim_lfq_data_protein_config(n_proteins = 10, seed = 1)
+  samples <- unique(sim$data[[sim$config$sample_name]])
+  sim$data[[sim$config$get_response()]][sim$data[[sim$config$sample_name]] == samples[2]] <- NA
+  lfq <- LFQData$new(sim$data, sim$config)
+  expect_error(lfq$get_Transformer()$robscale(), samples[2], class = "prolfqua_error_bad_argument")
+  expect_error(lfq$get_Transformer()$robscale_subset(lfq), samples[2], class = "prolfqua_error_bad_argument")
+  expect_error(.robust_scale(cbind(a = c(1, 2, 3), b = NA_real_)), "`b`", class = "prolfqua_error_bad_argument")
+})

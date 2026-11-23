@@ -39,9 +39,14 @@
 #' @param data long-format measurement data frame
 #' @param configuration AnalysisConfiguration defining the column roles
 #' @noRd
-#' @srrstats {G2.4c} Configured factor columns are explicitly converted with as.character.
-#' @srrstats {G2.4e} Factor labels are explicitly converted with as.character instead of using integer codes.
-#' @srrstats {G2.5} Setup documents and enforces character labels for both ordered and unordered predictor factors.
+#' @srrstats {G2.4c} Configured factor source columns that are not factors (numeric, logical) are explicitly
+#'   converted with as.character().
+#' @srrstats {G2.4d} Factor source columns stay factors: `factor(ordered = FALSE)` and `droplevels()` keep the supplied
+#'   level order, which sets the reference level of the design (test-input-types.R).
+#' @srrstats {G2.4e} Factor labels are used, never integer codes: factors keep their labels and other columns are
+#'   converted with as.character().
+#' @srrstats {G2.5} Setup documents that predictor factors are unordered: an ordered factor becomes unordered, with a
+#'   message, keeping its level order.
 .setup_factor_columns <- function(data, configuration) {
   if (length(configuration$factors) == 0) {
     abort_invalid_config(c(
@@ -66,21 +71,37 @@
     } else {
       newname <- configuration$factor_keys()[i]
       source <- data[[configuration$factors[[i]]]]
-      if (!is.character(source)) {
-        inform_prolfqua(
-          "Factor `",
-          newname,
-          "`: ",
-          class(source)[1],
-          " column `",
-          configuration$factors[[i]],
-          "` converted to character labels."
-        )
+      if (is.factor(source)) {
+        # the level order sets the reference level of the design; unused levels would give empty design columns
+        labels <- droplevels(factor(source, ordered = FALSE))
+        if (is.ordered(source) || nlevels(labels) < nlevels(source)) {
+          inform_prolfqua(
+            "Factor `",
+            newname,
+            "`: ",
+            class(source)[1],
+            " column `",
+            configuration$factors[[i]],
+            "` kept as an unordered factor with levels ",
+            toString(levels(labels)),
+            "."
+          )
+        }
+      } else {
+        if (!is.character(source)) {
+          inform_prolfqua(
+            "Factor `",
+            newname,
+            "`: ",
+            class(source)[1],
+            " column `",
+            configuration$factors[[i]],
+            "` converted to character labels."
+          )
+        }
+        labels <- as.character(source)
       }
-      data <- dplyr::mutate(
-        data,
-        !!newname := as.character(.data[[configuration$factors[[i]]]])
-      )
+      data <- dplyr::mutate(data, !!newname := labels)
     }
   }
   data
@@ -222,9 +243,12 @@
 #'   \item several configured hierarchy or factor source columns are united into
 #'     one key column (separator `configuration$sep`); avoid by configuring one
 #'     column per key;
-#'   \item factor source columns that are not character (numeric, factor,
-#'     ordered) are converted to character labels; ordered levels and their
-#'     ordering are not retained; avoid by supplying character columns;
+#'   \item factor source columns of class factor stay factors, so their level
+#'     order sets the reference level of the design; an ordered factor becomes
+#'     unordered and unused levels are dropped (both announced); numeric or
+#'     logical source columns are converted to character labels (announced),
+#'     whose reference level is the first sorted label; avoid by supplying
+#'     character or unordered factor columns;
 #'     names of \code{configuration$factors} become the predictor column names;
 #'   \item a missing sample name is derived from the file name; avoid by
 #'     supplying the sample name column;
@@ -271,14 +295,10 @@
 #'
 #' adata <- setup_analysis(data, config)
 #'
-#' @srrstatsTODO {G2.4} Setup explicitly converts categorical predictors; specialized input conversion is not fully
-#'   audited.
-#' @srrstatsTODO {G2.4d} Design matrices factor categorical labels as documented; limit: setup discards supplied level
-#'   order.
 #' @srrstats {G2.9} Setup announces conversion of factor columns to character, united key columns, inserted default
 #'   columns and dropped unconfigured columns; `LFQData$new()` announces dropped response attributes.
-#' @srrstats {RE1.2} Setup help documents categorical predictors, numeric coercion and loss of ordered-factor
-#'   semantics.
+#' @srrstats {RE1.2} Setup help documents categorical predictors, numeric coercion, kept level order and the
+#'   conversion of ordered factors to unordered ones.
 #' @srrstats {RE1.3a} Setup help states retained columns, discarded attributes, categorical conversion and inserted
 #'   defaults.
 #' @srrstats {RE2.0} Every setup transformation is documented in Details, announced by a message or warning when
@@ -286,6 +306,8 @@
 #'   is skipped when the input already has the configured form (test-setup-messages.R).
 setup_analysis <- function(data, configuration, debug = FALSE) {
   .assert_response_data(data, configuration)
+  .assert_flag(debug)
+  data <- .drop_response_attributes(data, configuration$get_response())
   .validate_setup_file_name(data, configuration)
   required <- unique(c(unlist(configuration$hierarchy), unlist(configuration$factors)))
   missing <- setdiff(required, names(data))

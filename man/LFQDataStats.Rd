@@ -301,10 +301,11 @@ information}
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{probs}}{quantiles of sd for which sample size should be computed}
-      \item{\code{delta}}{effect size}
-      \item{\code{power}}{power of test}
-      \item{\code{sig.level}}{significance level.}
+      \item{\code{probs}}{numeric vector of probabilities in [0, 1]: the quantiles of the sd for which sample sizes are
+computed}
+      \item{\code{delta}}{numeric vector of positive effect sizes (differences on the response scale)}
+      \item{\code{power}}{one number in (0, 1), the power of the test}
+      \item{\code{sig.level}}{one number in (0, 1), the significance level}
     }
     \if{html}{\out{</div>}}
   }
@@ -323,9 +324,9 @@ information}
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{delta}}{effect size}
-      \item{\code{power}}{power of test}
-      \item{\code{sig.level}}{significance level.}
+      \item{\code{delta}}{numeric vector of positive effect sizes (differences on the response scale)}
+      \item{\code{power}}{one number in (0, 1), the power of the test}
+      \item{\code{sig.level}}{one number in (0, 1), the significance level}
     }
     \if{html}{\out{</div>}}
   }

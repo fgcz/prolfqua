@@ -16,13 +16,13 @@ sim_lfq_data_protein_config(
 \arguments{
 \item{n_proteins}{one positive whole number of proteins to simulate}
 
-\item{with_missing}{add missing values, default TRUE}
+\item{with_missing}{one TRUE/FALSE: add missing values (default TRUE)}
 
 \item{weight_missing}{one number in [0, 1]; greater weight means more missingness}
 
-\item{seed}{seed for reproducibility, if NULL no seed is set.}
+\item{seed}{NULL or one whole number; NULL sets no seed}
 
-\item{paired}{if TRUE, add a paired subject factor to the design}
+\item{paired}{one TRUE/FALSE: add a paired subject factor to the design}
 
 \item{Nprot}{deprecated; use \code{n_proteins}}
 }

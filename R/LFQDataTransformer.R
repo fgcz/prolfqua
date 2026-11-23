@@ -314,7 +314,7 @@ LFQDataTransformer <- R6::R6Class(
     dplyr::mutate(
       !!newcol := .func(.data[[response]])
     )
-  inform_prolfqua("Column added : ", newcol)
+  inform_prolfqua("Transformed response column added: ", newcol)
   list(data = pdata, colname = newcol, zeros = zeros)
 }
 
@@ -362,6 +362,20 @@ LFQDataTransformer <- R6::R6Class(
 #' @keywords internal
 #'
 .get_robscales <- function(data, dim = 2) {
+  empty <- apply(data, dim, function(x) all(is.na(x)))
+  if (any(empty)) {
+    labels <- dimnames(data)[[dim]] %||% as.character(seq_along(empty))
+    abort_prolfqua(
+      "Robust scaling needs at least one non-missing value per ",
+      if (dim == 2) "sample" else "row",
+      "; none in ",
+      toString(paste0("`", labels[empty], "`")),
+      ". Remove ",
+      if (sum(empty) == 1L) "it" else "them",
+      " before scaling.",
+      class = "prolfqua_error_bad_argument"
+    )
+  }
   medians <- apply(data, dim, median, na.rm = TRUE)
   data <- sweep(data, dim, medians, "-")
   mads <- apply(data, dim, mad, na.rm = TRUE)

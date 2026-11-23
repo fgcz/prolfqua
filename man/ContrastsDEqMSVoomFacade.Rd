@@ -137,8 +137,7 @@ Other modelling:
   modelstr,
   contrasts,
   span = 0.5,
-  plot = FALSE,
-  ...
+  plot = FALSE
 )}
     \if{html}{\out{</div>}}
   }
@@ -150,7 +149,6 @@ Other modelling:
       \item{\code{contrasts}}{named character vector of contrasts}
       \item{\code{span}}{lowess smoother span for vooma trend (default 0.5)}
       \item{\code{plot}}{logical; if TRUE, plot the mean-variance trend}
-      \item{\code{...}}{passed to \code{\link{strategy_limma}} (e.g. trend, robust)}
     }
     \if{html}{\out{</div>}}
   }

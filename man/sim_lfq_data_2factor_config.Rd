@@ -19,15 +19,16 @@ sim_lfq_data_2factor_config(
 \arguments{
 \item{n_proteins}{one positive whole number of proteins to simulate}
 
-\item{with_missing}{add missing values, default TRUE}
+\item{with_missing}{one TRUE/FALSE: add missing values (default TRUE)}
 
 \item{weight_missing}{one number in [0, 1]; greater weight means more missingness}
 
-\item{peptide}{if TRUE, simulate peptide-level data; if FALSE, protein-level}
+\item{peptide}{one TRUE/FALSE: TRUE simulates peptide-level data, FALSE protein-level data}
 
-\item{seed}{seed for reproducibility, if NULL no seed is set.}
+\item{seed}{NULL or one whole number; NULL sets no seed}
 
-\item{two_factor}{if TRUE, model \code{Treatment} and \code{Background} as two factors; if FALSE, as one combined factor}
+\item{two_factor}{one TRUE/FALSE: TRUE models \code{Treatment} and \code{Background} as two factors, FALSE as one combined
+factor}
 
 \item{Nprot, PEPTIDE, TWO}{deprecated; use \code{n_proteins}, \code{peptide} and \code{two_factor}}
 }

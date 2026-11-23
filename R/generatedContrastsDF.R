@@ -169,9 +169,18 @@ generate_contrasts <- function(primary_levels, secondary_levels, interactions = 
 #' @family contrasts
 #' @examples
 #'
-#' data("x5463yzwer453bbb", package = "prolfqua")
-#' annotation_add_contrasts(x5463yzwer453bbb, "factor_A", "factor_B", "primary")
-#' annotation_add_contrasts(x5463yzwer453bbb, "factor_B", "factor_A", "secondary")
+#' # 2 genotypes x 3 time points x 6 replicates
+#' design <- expand.grid(
+#'   rep = 1:6, factor_B = c("T0", "T150", "T300"), factor_A = c("WT", "KO"),
+#'   stringsAsFactors = FALSE
+#' )
+#' annotation <- data.frame(
+#'   Name = paste(design$factor_A, design$factor_B, design$rep, sep = "_"),
+#'   factor_A = design$factor_A,
+#'   factor_B = design$factor_B
+#' )
+#' annotation_add_contrasts(annotation, "factor_A", "factor_B", "primary")
+#' annotation_add_contrasts(annotation, "factor_B", "factor_A", "secondary")
 annotation_add_contrasts <- function(
   df,
   primary_col,

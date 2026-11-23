@@ -1,7 +1,8 @@
 #' Statistical condition checks
 #'
-#' @srrstatsTODO {G5.2a} Warnings identify their operation and errors are classed; limit: some informative messages share
-#'   wording.
+#' @srrstats {G5.2a} Message texts are unique: informative messages and warnings name their operation. Limit: an
+#'   argument check reused across functions (e.g. "`lfqdata` must be an LFQData object") keeps one wording; the error
+#'   header names the function that was called.
 #' @noRd
 
 test_that("log transforms set zeros to NA and return which", {

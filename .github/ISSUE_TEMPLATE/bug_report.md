@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Create a report to help us improve
+about: Report a bug in prolfqua
 title: ''
 labels: ''
 assignees: ''
@@ -10,29 +10,23 @@ assignees: ''
 **Describe the bug**
 A clear and concise description of what the bug is.
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+**Reproducible example**
+A minimal example that shows the bug, ideally made with [reprex](https://reprex.tidyverse.org/). Simulated data (`sim_lfq_data_peptide_config()`, `sim_lfq_data_protein_config()`) or a small subset of your data is enough.
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+```r
+library(prolfqua)
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+```
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+**Expected behaviour**
+What you expected to happen instead.
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+**Session information**
+Paste the output of `sessionInfo()`, including the prolfqua version.
+
+```
+sessionInfo()
+```
 
 **Additional context**
-Add any other context about the problem here.
+Anything else that helps to understand the problem.

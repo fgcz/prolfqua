@@ -509,6 +509,8 @@ test_that("heatmap keeps only the top_n most variable features", {
 })
 
 test_that("heatmap row_order shows exactly the given features in that order, without clustering", {
+  skip_if_not_installed("ComplexHeatmap")
+  skip_if_not_installed("circlize")
   istar <- sim_lfq_data_protein_config(n_proteins = 20)
   lfq <- LFQData$new(istar$data, istar$config)
   plotter <- lfq$get_Plotter()

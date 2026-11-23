@@ -149,7 +149,8 @@ Other modelling:
   contrasts,
   plot = FALSE,
   span = NULL,
-  ...
+  trend = FALSE,
+  robust = FALSE
 )}
     \if{html}{\out{</div>}}
   }
@@ -164,7 +165,7 @@ external predictor.}
       \item{\code{contrasts}}{named character vector of contrasts}
       \item{\code{plot}}{logical; if TRUE, plot the vooma mean-variance trend}
       \item{\code{span}}{lowess smoother span (NULL = auto)}
-      \item{\code{...}}{passed to \code{\link{strategy_limpa}} (e.g. trend, robust)}
+      \item{\code{trend, robust}}{passed to \code{\link[limma]{eBayes}}, see \code{\link{strategy_limpa}}}
     }
     \if{html}{\out{</div>}}
   }

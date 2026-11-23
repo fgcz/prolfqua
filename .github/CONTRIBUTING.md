@@ -5,13 +5,11 @@
 [repo]: https://github.com/fgcz/prolfqua
 [issues]: https://github.com/fgcz/prolfqua/issues
 [website]: https://fgcz.github.io/prolfqua/
-[email]: mailto:wew@fgcz.ethz.ch
+[email]: mailto:witold.wolski@fgcz.uzh.ch
 
 ## Code of conduct
 
-Please note that this package is released with a [Contributor Code of
-Conduct](https://fgcz.github.io/prolfqua/CODE_OF_CONDUCT.html). By contributing
-to the package, you agree to abide by its terms.
+Please note that this package is released with a [Contributor Code of Conduct](https://ropensci.org/code-of-conduct/). By contributing to this project, you agree to abide by its terms.
 
 ## How you can contribute
 
@@ -37,10 +35,6 @@ Have an idea for a new prolfqua feature? Take a look at the [documentation][webs
 * Keep the scope as narrow as possible.
 
 See below if you want to contribute code for your idea as well.
-
-### Get support for your metabolic cart
-
-Do you want your metabolic cart to be supported by the prolfqua package? Consider sending me example raw data files via [mail][email].
 
 ### Report a bug
 
@@ -74,7 +68,7 @@ Care to fix bugs or implement new functionality for prolfqua? Awesome! Have a lo
 We try to follow the [GitHub flow](https://guides.github.com/introduction/flow/) for development.
 
 1. Fork [this repo][repo] and clone it to your computer. To learn more about this process, see [this guide](https://guides.github.com/activities/forking/).
-2. If you have forked and cloned the project before and it has been a while since you worked on it, [pull changes from the original repo](https://help.github.com/articles/merging-an-upstream-repository-into-your-fork/) to your clone by using `git pull upstream master`.
+2. If you have forked and cloned the project before and it has been a while since you worked on it, [pull changes from the original repo](https://help.github.com/articles/merging-an-upstream-repository-into-your-fork/) to your clone by using `git pull upstream main`.
 3. Open the RStudio project file (`.Rproj`).
 4. Make your changes:
     * Write your code.

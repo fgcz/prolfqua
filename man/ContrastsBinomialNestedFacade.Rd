@@ -67,7 +67,7 @@ head(facade$get_contrasts())
   contrasts,
   prior_count = 0.1,
   binomial_bound = TRUE,
-  ...
+  control = list()
 )}
     \if{html}{\out{</div>}}
   }
@@ -79,7 +79,7 @@ head(facade$get_contrasts())
       \item{\code{contrasts}}{named contrast expressions}
       \item{\code{prior_count}}{non-negative symmetric pseudo-count}
       \item{\code{binomial_bound}}{bound posterior dispersion below by one}
-      \item{\code{...}}{passed to \code{\link{strategy_binomial}}}
+      \item{\code{control}}{named list of convergence controls, see \code{\link{strategy_binomial}}}
     }
     \if{html}{\out{</div>}}
   }

@@ -139,8 +139,8 @@ get_uniprot_id_from_fasta_header <- function(df, idcolumn = "protein_Id") {
   )
 
   if (!is.null(label)) {
-    effect_values <- labeled_data[, effect]
-    significance_values <- labeled_data[, significance]
+    effect_values <- labeled_data[[effect]]
+    significance_values <- labeled_data[[significance]]
     significant_subset <- subset(
       labeled_data,
       (effect_values < xintercept[1] | xintercept[2] < effect_values) & significance_values < yintercept

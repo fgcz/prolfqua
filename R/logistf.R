@@ -77,7 +77,7 @@ build_model_glm_protein <- function(lfqdata, modelstr, control = list()) {
 #' @return An R6 class generator.
 #' @export
 #' @family modelling
-#' @examples
+#' @examplesIf requireNamespace("logistf", quietly = TRUE)
 #' strat <- StrategyLogistf$new("bin_resp ~ condition")
 #' strat$formula
 StrategyLogistf <- R6::R6Class(
@@ -92,9 +92,15 @@ StrategyLogistf <- R6::R6Class(
       super$initialize(modelstr, model_name, control = control)
     },
 
-    #' @description Get residual degrees of freedom
+    #' @description Degrees of freedom of the Wald tests: `Inf`, so contrasts use the normal distribution (z), as
+    #'   the coefficient table, `confint()` and logistf itself do
     #' @param model fitted model
-    df_residual = function(model) model$n - length(model$coefficients),
+    df_residual = function(model) Inf,
+
+    #' @description Check if model is singular (NA coefficients or fewer than two observations beyond the
+    #'   coefficients)
+    #' @param model fitted model
+    isSingular = function(model) anyNA(stats::coefficients(model)) || model$n - length(model$coefficients) < 2,
 
     #' @description Get residual standard error (always 1 for logistic)
     #' @param model fitted model
@@ -103,16 +109,13 @@ StrategyLogistf <- R6::R6Class(
   private = list(
     # Collapse identical predictor rows into frequency weights.
     prepare = function(x) {
-      rlang::check_installed("logistf", reason = "for Firth logistic regression.")
       predictor_vars <- all.vars(update(self$formula, . ~ .))
       x |>
         dplyr::group_by(dplyr::across(dplyr::all_of(predictor_vars))) |>
         dplyr::summarize(Freq = dplyr::n(), .groups = "drop")
     },
-    control_names = function() {
-      rlang::check_installed("logistf", reason = "for Firth logistic regression.")
-      names(formals(logistf::logistf.control))
-    },
+    check_packages = function() rlang::check_installed("logistf", reason = "for Firth logistic regression."),
+    control_names = function() names(formals(logistf::logistf.control)),
     fit = function(DFT) {
       logistf::logistf(
         self$formula,

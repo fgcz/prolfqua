@@ -16,8 +16,8 @@
 #' @importFrom stats .lm.fit glm model.matrix residuals
 #' @importFrom tidyr nest nesting unite unnest
 #' @importFrom tidyr pivot_wider pivot_longer
-#' @importFrom tibble add_column as_tibble column_to_rownames tibble
-#' @importFrom stats anova coef coefficients confint cor.test delete.response
+#' @importFrom tibble add_column as_tibble tibble
+#' @importFrom stats anova coef coefficients cor.test delete.response
 #'   df.residual ecdf formula lm mad median medpolish
 #' @importFrom stats na.omit p.adjust pbeta power.t.test prcomp predict pt qt
 #'   quantile sd setNames sigma terms update vcov
@@ -57,6 +57,7 @@ utils::globalVariables(c(
 #' @family summary
 #' @family utilities
 #' @name INTERNAL_FUNCTIONS_BY_FAMILY
+#' @keywords internal
 #'
 #' @return A documentation topic.
 NULL
@@ -64,23 +65,10 @@ NULL
 #' Package Data
 #' @family data
 #' @name PACKAGE_DATA
+#' @keywords datasets
 #' @return A documentation topic.
 NULL
 
-
-#' Factor annotation of 36 samples
-#'
-#' Sample annotation table with two factors (`factor_A`: MI / MINOCA,
-#' `factor_B`: sampling time T0 / T150 / T300), used to demonstrate how
-#' contrasts are derived from the factor levels. See `inst/script/README.md`
-#' for its origin.
-#'
-#' @format A tibble with 36 rows and the columns `Relative Path`, `Name`,
-#'   `Group`, `factor_A`, `factor_B`.
-#' @family data
-#' @docType data
-#' @keywords internal
-x5463yzwer453bbb <- NULL
 
 #' Reference input for the robust summarisation check (87 percent)
 #'

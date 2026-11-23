@@ -26,7 +26,6 @@ Other data:
 \code{\link{PACKAGE_DATA}},
 \code{\link{data_checksummarizationrobust87}},
 \code{\link{data_checksummarizerobust69}},
-\code{\link{data_ionstar}},
-\code{\link{x5463yzwer453bbb}}
+\code{\link{data_ionstar}}
 }
 \concept{data}

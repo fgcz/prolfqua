@@ -7,9 +7,9 @@
 which_missing(x, weight_missing = 0.2)
 }
 \arguments{
-\item{x}{vector of intensities}
+\item{x}{numeric vector of intensities without NA}
 
-\item{weight_missing}{greater weight more missing}
+\item{weight_missing}{one number in [0, 1]; greater weight means more missing values}
 }
 \value{
 A logical vector indicating which values are missing.

@@ -20,17 +20,18 @@ not as \code{method} requires.}
 
 \item{method}{facade name passed to \code{\link[=build_contrast_analysis]{build_contrast_analysis()}}.}
 
-\item{n_splits}{number of distinct random splits.}
+\item{n_splits}{one positive whole number of distinct random splits.}
 
 \item{strata}{factor keys within whose levels the samples are split; the
 model is \verb{~ <strata> + pseudo_group_}. \code{character(0)} splits all samples
 as one group; subset \code{lfqdata} to one condition first.}
 
-\item{n_features}{number of randomly chosen top-level features
-(\code{hierarchy_keys()[1]}) to test; \code{NULL} (default) tests all.}
+\item{n_features}{\code{NULL} (default) tests all top-level features
+(\code{hierarchy_keys()[1]}); one positive whole number tests that many,
+chosen at random.}
 
 \item{seed}{\code{NULL} (default) uses the current random number generator state;
-otherwise the draws run under \code{\link[withr:with_seed]{withr::with_seed()}}.}
+one whole number runs the draws under \code{\link[withr:with_seed]{withr::with_seed()}}.}
 
 \item{...}{further arguments to \code{\link[=build_contrast_analysis]{build_contrast_analysis()}}.}
 }

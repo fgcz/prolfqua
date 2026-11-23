@@ -136,7 +136,7 @@ Other modelling:
   initialize
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{ContrastsRfitFacade$new(lfqdata, modelstr, contrasts, ...)}
+    \preformatted{ContrastsRfitFacade$new(lfqdata, modelstr, contrasts, control = list())}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
@@ -145,7 +145,7 @@ Other modelling:
       \item{\code{lfqdata}}{\link{LFQData} object with the data and its configuration}
       \item{\code{modelstr}}{model formula string (e.g. "~ group_")}
       \item{\code{contrasts}}{named character vector of contrasts}
-      \item{\code{...}}{passed to \code{\link{strategy_rfit}}}
+      \item{\code{control}}{named list of convergence controls, see \code{\link{strategy_rfit}}}
     }
     \if{html}{\out{</div>}}
   }

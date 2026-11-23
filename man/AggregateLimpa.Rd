@@ -18,6 +18,11 @@ The output LFQData contains three value columns:
 \item standard error (in \code{config$opt_se}) - per-protein, per-sample posterior SEs
 \item observation count (in \code{config$nr_children}) - number of observed precursors
 }
+
+limpa's iterative steps run with limpa's defaults: \code{limpa::dpc()} estimates the detection probability curve
+in 2 iterations on a subset of 2000 rows, and \code{limpa::dpcQuant()} optimises each protein with its own
+settings. Only the slope bound \code{dpc_slope} is exposed. limpa returns no convergence status for these fits, so
+a changed setting could not be checked; the fit status of limpa analyses reports \code{not_converged} as NA.
 }
 \examples{
 \dontshow{if (requireNamespace("limpa", quietly = TRUE)) withAutoprint(\{ # examplesIf}

@@ -1,9 +1,10 @@
 #' Statistical condition checks
 #'
-#' @srrstatsTODO {G5.2} Condition tests exercise validation and warning paths; test-power_fdr.R covers all
-#'   planning-input errors and test-warnings.R covers raw pilot input; limit: informative-message paths lack tests.
-#' @srrstatsTODO {G5.2b} Coverage-guided condition tests trigger new checks; limit: informative-message paths
-#'   remain.
+#' @srrstats {G5.2} Error and warning behaviour is demonstrated by tests: every error class, the classed warnings,
+#'   and each informative message of class `prolfqua_message` (this file, test-input-types.R, test-power_fdr.R,
+#'   test-warnings.R).
+#' @srrstats {G5.2b} Tests trigger each condition and compare it with the expected message text and class, including
+#'   the informative messages of the plot writers, PCA, aggregation and limpa (this file).
 #' @noRd
 
 # Typed error conditions raised at prolfqua's public boundaries.
@@ -135,7 +136,7 @@ test_that("informative messages carry class prolfqua_message", {
 
   expect_message(
     lfq$get_Transformer()$log2(),
-    "Column added",
+    "Transformed response column added",
     class = "prolfqua_message"
   )
 })
@@ -465,4 +466,120 @@ test_that("error helpers name the calling function in the header, not themselves
 
   cnd <- rlang::catch_cnd(sim_lfq_data_peptide_config(n_proteins = -1))
   expect_identical(rlang::call_name(cnd$call), "sim_lfq_data_peptide_config")
+})
+
+test_that("a missing Suggests package stops the strategy before any subject is fitted", {
+  missing_package <- function(pkg, ...) {
+    rlang::abort(paste("needs", toString(pkg)), class = "test_package_missing")
+  }
+  local_mocked_bindings(check_installed = missing_package, .package = "rlang")
+  expect_error(strategy_logistf("~ group_"), "logistf", class = "test_package_missing")
+  expect_error(strategy_lmer("~ group_ + (1 | peptide_Id)"), "lmerTest", class = "test_package_missing")
+  expect_error(strategy_rfit("~ group_"), "Rfit", class = "test_package_missing")
+  sim <- sim_lfq_data_protein_config(n_proteins = 5, seed = 1)
+  lfq <- LFQData$new(sim$data, sim$config)
+  # the error is the package check itself, not a per-protein failure
+  expect_error(
+    build_contrast_analysis(lfq, "~ group_", c(AvsCtrl = "group_A - group_Ctrl"), method = "firth"),
+    "needs logistf",
+    class = "test_package_missing"
+  )
+})
+
+test_that("each informative message is triggered by its condition", {
+  withr::local_options(prolfqua.verbose = TRUE)
+  dir <- withr::local_tempdir()
+  informs <- function(expr, regexp) expect_message(expr, regexp, class = "prolfqua_message")
+
+  pep <- sim_lfq_data_peptide_config(n_proteins = 10, weight_missing = 0.4, seed = 3)
+  raw <- suppressMessages(LFQData$new(pep$data, pep$config))
+  informs(raw$get_Aggregator("topN")$aggregate(), "Columns added")
+  peptides <- suppressMessages(raw$get_Transformer()$log2()$lfq)
+  informs(peptides$get_copy()$filter_proteins_by_peptide_count(), "filter_proteins_by_peptide_count: column added")
+  informs(peptides$get_Plotter()$pca(), "PCA: removed [0-9]+ of [0-9]+ features with missing values")
+
+  plotter <- peptides$get_Plotter()
+  informs(plotter$write_pdf(ggplot2::ggplot(), dir, "empty"), "write_pdf: writing")
+  informs(
+    plot_lrt_diagnostics(
+      data.frame(likelihood_ratio_test.pValue = seq(0.05, 0.95, by = 0.1)),
+      "full",
+      "reduced",
+      dir
+    ),
+    "writing figure"
+  )
+
+  wide <- peptides$data_wide(as.matrix = TRUE)
+  skip_if_not_installed("ComplexHeatmap")
+  skip_if_not_installed("circlize")
+  informs(
+    .plot_na_heatmap(wide$data, wide$annotation, peptides$factor_keys(), peptides$sample_name(), limitrows = 3),
+    "limiting nr of rows to: 3"
+  )
+})
+
+test_that("write_boxplots and the PCA shape limit announce themselves", {
+  withr::local_options(prolfqua.verbose = TRUE)
+  dir <- withr::local_tempdir()
+  prot <- sim_lfq_data_protein_config(n_proteins = 2, with_missing = FALSE, seed = 1)
+  lfq <- suppressMessages(LFQData$new(prot$data, prot$config))
+  expect_message(lfq$get_Plotter()$write_boxplots(dir), "write_boxplots: writing", class = "prolfqua_message")
+
+  # a second factor with more levels than there are point shapes (21 samples, one level each) is not used for shapes
+  pep <- sim_lfq_data_peptide_config(n_proteins = 5, with_missing = FALSE, n_per_group = 7, seed = 1)
+  peptides <- suppressMessages(LFQData$new(pep$data, pep$config))
+  data <- peptides$data_long()
+  data$batch_ <- data[[peptides$sample_name()]]
+  config <- peptides$get_config()$clone(deep = TRUE)
+  config$factors[["batch_"]] <- "batch_"
+  wide <- LFQData$new(data, config)$data_wide(as.matrix = TRUE)
+  expect_message(
+    .plot_pca(wide$data, wide$annotation, peptides$sample_name(), c("group_", "batch_")),
+    "points are not shaped by it",
+    class = "prolfqua_message"
+  )
+})
+
+test_that("borrowing a covariance from fits with different coefficients falls back to sigma, with a warning", {
+  withr::local_seed(1)
+  data <- data.frame(y = stats::rnorm(9), g = factor(rep(c("a", "b", "c"), each = 3)))
+  full <- stats::lm(y ~ g, data = data)
+  reduced <- stats::lm(y ~ g, data = droplevels(data[data$g != "c", ]))
+  model_df <- tibble::tibble(
+    has_model_fit = TRUE,
+    df.residual = c(stats::df.residual(full), stats::df.residual(reduced)),
+    isSingular = FALSE,
+    sigma = c(stats::sigma(full), stats::sigma(reduced)),
+    linear_model = list(full, reduced)
+  )
+  expect_warning(
+    borrowed <- compute_borrowed_variance(model_df, method = "vcov"),
+    "Coefficient names of `vcov\\(\\)` differ"
+  )
+  expect_identical(borrowed$method, "sigma")
+})
+
+test_that("an lmer contrast with more weights than fixed effects warns and gives NA", {
+  skip_if_not_installed("lme4")
+  skip_if_not_installed("lmerTest")
+  mb <- muffle_warnings_matching(.sim_make_model_lmer("interaction"), single_peptide_warning)
+  linfct <- .linfct_from_model(mb)$linfct_factors
+  wider <- cbind(linfct, extra = 0)
+  expect_warning(res <- .compute_lmer_contrast(mb, wider), "The model is rank-deficient")
+  expect_true(is.na(res))
+})
+
+test_that("limpa in impute_only mode says that it draws no aggregation plots", {
+  skip_if_not_installed("limpa")
+  withr::local_options(prolfqua.verbose = TRUE)
+  pep <- sim_lfq_data_peptide_config(n_proteins = 10, seed = 1)
+  lfq <- suppressMessages(LFQData$new(pep$data, pep$config)$get_Transformer()$log2()$lfq)
+  agg <- AggregateLimpa$new(lfq, impute_only = TRUE)
+  expect_message(agg$plot(), "AggregateLimpa\\$plot: aggregation plots not available", class = "prolfqua_message")
+  expect_message(
+    agg$write_plots(withr::local_tempdir()),
+    "AggregateLimpa\\$write_plots: aggregation plots not available",
+    class = "prolfqua_message"
+  )
 })

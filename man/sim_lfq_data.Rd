@@ -19,21 +19,24 @@ sim_lfq_data(
 )
 }
 \arguments{
-\item{n_proteins}{number of proteins}
+\item{n_proteins}{one positive whole number of proteins}
 
-\item{n_per_group}{group size}
+\item{n_per_group}{one positive whole number of samples per group}
 
-\item{fc}{D - down regulation N - matrix,  U -  regulation}
+\item{fc}{named list with one named numeric vector per group: fold changes of the down (D), up (U) and not (N)
+regulated proteins}
 
-\item{prop}{proportion of down (D), up (U) and not regulated (N)}
+\item{prop}{named list with one named numeric vector per group: percentages of down (D), up (U) and not (N)
+regulated proteins}
 
-\item{mean_prot}{mean protein abundance on the natural scale}
+\item{mean_prot}{one positive number, the mean protein abundance on the natural scale}
 
-\item{sdlog}{standard deviation of the log-normal abundance distribution}
+\item{sdlog}{one non-negative number, the standard deviation of the log-normal abundance distribution}
 
-\item{probability_of_success}{probability of success for the geometric distribution of peptide counts}
+\item{probability_of_success}{one number in (0, 1], the probability of success of the geometric distribution of
+peptide counts}
 
-\item{peptide}{if TRUE, simulate peptide-level data; if FALSE, protein-level}
+\item{peptide}{one TRUE/FALSE: TRUE simulates peptide-level data, FALSE protein-level data}
 
 \item{Nprot, N, PEPTIDE}{deprecated; use \code{n_proteins}, \code{n_per_group} and \code{peptide}}
 }

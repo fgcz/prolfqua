@@ -256,6 +256,8 @@ test_that("build_model_impute rejects input and strategies outside its contract"
     class = "prolfqua_error"
   )
 
+  skip_if_not_installed("lme4")
+  skip_if_not_installed("lmerTest")
   protein_sim <- sim_lfq_data_protein_config(n_proteins = 4, with_missing = FALSE, seed = 1, paired = TRUE)
   protein_level <- LFQData$new(protein_sim$data, protein_sim$config)
   expect_error(

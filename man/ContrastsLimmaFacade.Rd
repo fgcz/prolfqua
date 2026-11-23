@@ -132,7 +132,8 @@ Other modelling:
   modelstr,
   contrasts,
   weights = lfqdata$nr_children_col(),
-  ...
+  trend = FALSE,
+  robust = FALSE
 )}
     \if{html}{\out{</div>}}
   }
@@ -144,7 +145,7 @@ Other modelling:
       \item{\code{contrasts}}{named character vector of contrasts}
       \item{\code{weights}}{column name for per-observation weights (default:
 \code{lfqdata$nr_children_col()}). Pass \code{NULL} for unweighted.}
-      \item{\code{...}}{passed to \code{\link{strategy_limma}} (e.g. trend, robust)}
+      \item{\code{trend, robust}}{passed to \code{\link[limma]{eBayes}}, see \code{\link{strategy_limma}}}
     }
     \if{html}{\out{</div>}}
   }

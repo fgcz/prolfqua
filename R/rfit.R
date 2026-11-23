@@ -78,7 +78,7 @@ sigma.rfit_prolfqua <- function(object, ...) {
 #' @return An R6 class generator.
 #' @export
 #' @family modelling
-#' @examples
+#' @examplesIf requireNamespace("Rfit", quietly = TRUE)
 #' strat <- StrategyRfit$new("Intensity ~ condition", model_name = "parallel design")
 #' strat$formula
 StrategyRfit <- R6::R6Class(
@@ -96,10 +96,7 @@ StrategyRfit <- R6::R6Class(
   ),
   private = list(
     control_defaults = function() list(maxit = 200, reltol = .Machine$double.eps^(3 / 4)),
-    prepare = function(x) {
-      rlang::check_installed("Rfit", reason = "for the rfit backend.")
-      x
-    },
+    check_packages = function() rlang::check_installed("Rfit", reason = "for the rfit backend."),
     # Fit rfit, augmenting the fit so the classic contrast path can introspect it.
     fit = function(x) {
       fit <- Rfit::rfit(self$formula, data = x, control = self$control)
@@ -139,7 +136,7 @@ StrategyRfit <- R6::R6Class(
 #' @export
 #' @family modelling
 #' @return a \code{\link{StrategyRfit}} object
-#' @examples
+#' @examplesIf requireNamespace("Rfit", quietly = TRUE)
 #' tmp <- strategy_rfit("Intensity ~ condition", model_name = "parallel design")
 #' tmp$formula
 #' @param control for \code{strategy_rfit()}: \code{maxit} (default 200) and \code{reltol} (default

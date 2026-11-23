@@ -442,7 +442,8 @@
     failed = sum(!has_fit),
     singular = NA_integer_,
     imputed = sum(.matrix_imputed_subjects(model)),
-    not_converged = 0L
+    # limma's least-squares fit is closed form; limpa's iterative fits (dpc, dpcQuant) report no convergence status
+    not_converged = if (is.null(model$fit$EList)) 0L else NA_integer_
   )
 }
 

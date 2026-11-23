@@ -80,6 +80,9 @@ test_that("every unexported helper is still exported for one release and depreca
   exports <- getNamespaceExports("prolfqua")
   expect_length(deprecated_helpers, 73)
   expect_setequal(intersect(deprecated_helpers, exports), deprecated_helpers)
+  expect_true("ContrastsFacadeBase" %in% exports)
+  # covr rewrites function bodies, so the first call is its counter, not .Deprecated()
+  skip_on_covr()
   first_call <- vapply(
     deprecated_helpers,
     function(f) {
@@ -88,7 +91,6 @@ test_that("every unexported helper is still exported for one release and depreca
     character(1)
   )
   expect_true(all(first_call == ".Deprecated"), info = toString(names(first_call)[first_call != ".Deprecated"]))
-  expect_true("ContrastsFacadeBase" %in% exports)
 })
 
 test_that("deprecated helpers forward the call unchanged and name the public route", {

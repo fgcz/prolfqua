@@ -12,9 +12,9 @@
 #'   `moderated.p.value`, `moderated.conf.low` and `moderated.conf.high`
 #' @srrstats {G5.4} Tests compare moderation to squeezeVar, detection to glm/logistf and Hurdle to Fisher combination.
 #'   test-power_fdr.R compares FDR planning with power.t.test, analytic normal mixing and ssize.fdr.
-#' @srrstatsTODO {G5.4b} test-reference-implementations.R compares lm, limma, lmer, rlm, rfit and deqms with
-#'   stats::lm, limma, lmerTest, MASS, Rfit and stored DEqMS output; limit: ropeca_nested is not compared with PECA
-#'   (not installed).
+#' @srrstats {G5.4b} test-reference-implementations.R compares the re-implemented methods with the original software:
+#'   lm, limma, lmer, rlm, rfit and deqms with stats::lm, limma, lmerTest, MASS, Rfit and stored DEqMS output. ROPECA
+#'   is a derivation (G5.4a), not a re-implementation.
 #' @noRd
 .moderated_p_limma <- function(
   contrast_df,
@@ -193,7 +193,9 @@ adjust_p_values <- function(
 #' @param max.n used to limit the number of peptides in probability computation.
 #' @return data.frame with columns
 #'
-#'
+#' @srrstats {G5.4a} ROPECA (ropeca_nested) is a derivation of PECA/ROPECA: per-peptide linear models, the median
+#'   peptide fold change and a beta-distribution p-value of the median scaled p-value. test-Contrasts.R compares it
+#'   with an independent per-peptide `stats::lm()`, median and `pbeta()` calculation and pins its conservative null.
 #' @noRd
 .summary_ropeca_median_p_scaled <- function(
   contrasts_data,

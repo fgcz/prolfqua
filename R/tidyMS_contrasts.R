@@ -172,8 +172,11 @@ parse_contrast_sides <- function(contrasts) {
 }
 
 #' Evaluate one contrast expression on the group coefficient vectors
+#'
+#' A contrast is arithmetic (`+ - * /`, parentheses, numbers) on group and earlier contrast names and names at
+#' least one of them, so its value has one weight per coefficient. Any other function is refused before evaluation.
 #' @param contrast contrast expression, e.g. "group_A - group_B"
-#' @param terms named list of coefficient vectors (groups and earlier contrasts)
+#' @param terms named list of coefficient vectors (groups and earlier contrasts), all of the same length
 #' @return the coefficient vector of the contrast, or the reason it could not be computed (character)
 #' @noRd
 .eval_contrast <- function(contrast, terms) {
@@ -181,12 +184,25 @@ parse_contrast_sides <- function(contrasts) {
   if (inherits(expr, "error")) {
     return(conditionMessage(expr))
   }
+  functions <- setdiff(all.names(expr), all.vars(expr))
+  refused <- setdiff(functions, c("+", "-", "*", "/", "("))
+  if (length(refused) > 0) {
+    abort_bad_argument(
+      "contrasts",
+      "use only + - * / and parentheses on group names",
+      not = sprintf("`%s`, which calls %s", contrast, toString(paste0("`", refused, "`")))
+    )
+  }
+  if (length(all.vars(expr)) == 0) {
+    abort_bad_argument("contrasts", "name at least one group", not = sprintf("`%s`", contrast))
+  }
   # a group missing from this model (partial design) is reported without raising an error
   unknown <- setdiff(all.vars(expr), names(terms))
   if (length(unknown) > 0) {
     return(paste0("not in the model: ", toString(unknown)))
   }
-  value <- tryCatch(eval(expr, terms, baseenv()), error = function(e) e)
+  operators <- list2env(list(`+` = `+`, `-` = `-`, `*` = `*`, `/` = `/`, `(` = `(`), parent = emptyenv())
+  value <- tryCatch(eval(expr, terms, operators), error = function(e) e)
   if (inherits(value, "error")) {
     return(conditionMessage(value))
   }
@@ -317,7 +333,6 @@ parse_contrast_sides <- function(contrasts) {
 #'   the model is rank-deficient
 #' @noRd
 .compute_lmer_contrast <- function(model, linfct, ddf = c("Satterthwaite", "Kenward-Roger")) {
-  rlang::check_installed(c("lme4", "lmerTest"), reason = "for mixed model contrasts.")
   ddf <- match.arg(ddf)
   if (nrow(linfct) == 0L) {
     # `linfct_matrix_contrasts()` drops a contrast whose coefficients this

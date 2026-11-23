@@ -32,8 +32,10 @@ Keys and column names are case sensitive and must match exactly. The
 authoritative list is \code{names(\link{list_facades}())}. Defaults to
 \code{"lm"}.}
 
-\item{...}{additional arguments forwarded to the underlying strategy function
-(e.g. \code{trend}, \code{robust} for \code{strategy_limma})}
+\item{...}{arguments of the method's facade constructor, e.g. \code{weights}, \code{trend} and \code{robust}
+for the limma methods or \code{control} for the iterative fits; each facade's help page lists them
+(\code{\link{ContrastsLimmaFacade}}, \code{\link{ContrastsRLMFacade}}, ...). An argument the facade does
+not take is an error.}
 }
 \value{
 a facade object of the class registered for \code{method}, see
@@ -56,9 +58,10 @@ with \code{\link{AggregateLimpa}}.
 
 The formula is translated into a design matrix with R's current
 contrast options (normally treatment coding). Configured predictors are
-categorical labels; their reference level is normally the first sorted
-level. Each contrast expression combines group-level coefficient weights,
-rather than referring directly to design-matrix coefficient names. For
+categorical labels; their reference level is the first level of a factor
+column, or the first sorted label of a character column. Each contrast
+expression combines group-level coefficient weights, rather than referring
+directly to design-matrix coefficient names. For
 example, \code{"group_A - group_Ctrl"} subtracts the control group mean
 from the A group mean, including the reference coefficient as needed.
 Interaction cell means are named with a colon and quoted with backticks
@@ -117,7 +120,7 @@ prolfquabenchmark.
 }
 
 \examples{
-\dontshow{if (requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)) withAutoprint(\{ # examplesIf}
+\dontshow{if (all(vapply(c("lme4", "lmerTest", "logistf"), requireNamespace, logical(1), quietly = TRUE))) withAutoprint(\{ # examplesIf}
 istar <- sim_lfq_data_protein_config(n_proteins = 20)
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata$rename_response("transformedIntensity")

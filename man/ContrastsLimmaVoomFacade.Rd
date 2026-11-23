@@ -137,7 +137,8 @@ Other modelling:
   weights = lfqdata$nr_children_col(),
   span = 0.5,
   plot = FALSE,
-  ...
+  trend = FALSE,
+  robust = FALSE
 )}
     \if{html}{\out{</div>}}
   }
@@ -151,7 +152,7 @@ Other modelling:
 \code{lfqdata$nr_children_col()}). Pass \code{NULL} for unweighted.}
       \item{\code{span}}{lowess smoother span for vooma trend (default 0.5)}
       \item{\code{plot}}{logical; if TRUE, plot the mean-variance trend}
-      \item{\code{...}}{passed to \code{\link{strategy_limma}} (e.g. trend, robust)}
+      \item{\code{trend, robust}}{passed to \code{\link[limma]{eBayes}}, see \code{\link{strategy_limma}}}
     }
     \if{html}{\out{</div>}}
   }

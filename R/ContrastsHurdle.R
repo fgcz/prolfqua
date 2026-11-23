@@ -198,8 +198,7 @@ ContrastsHurdleNestedFacade <- R6::R6Class(
     #' @param lfqdata nested LFQData (peptide-level, log2-transformed)
     #' @param modelstr model formula string (e.g. "~ group_")
     #' @param contrasts named character vector of contrasts
-    #' @param ... ignored; accepted for dispatch compatibility with other facades
-    initialize = function(lfqdata, modelstr, contrasts, ...) {
+    initialize = function(lfqdata, modelstr, contrasts) {
       private$.setup(lfqdata, contrasts, "hurdle_nested", modelstr)
       lfq_protein <- lfqdata$get_Aggregator("medpolish")$aggregate()
       # get_missing() compares against the aggregated protein-level data.

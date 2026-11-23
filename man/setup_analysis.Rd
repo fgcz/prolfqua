@@ -34,9 +34,12 @@ says so with a message (class \code{prolfqua_message}) or warning:
 \item several configured hierarchy or factor source columns are united into
 one key column (separator \code{configuration$sep}); avoid by configuring one
 column per key;
-\item factor source columns that are not character (numeric, factor,
-ordered) are converted to character labels; ordered levels and their
-ordering are not retained; avoid by supplying character columns;
+\item factor source columns of class factor stay factors, so their level
+order sets the reference level of the design; an ordered factor becomes
+unordered and unused levels are dropped (both announced); numeric or
+logical source columns are converted to character labels (announced),
+whose reference level is the first sorted label; avoid by supplying
+character or unordered factor columns;
 names of \code{configuration$factors} become the predictor column names;
 \item a missing sample name is derived from the file name; avoid by
 supplying the sample name column;

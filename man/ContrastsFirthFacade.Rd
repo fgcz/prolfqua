@@ -12,6 +12,11 @@ Encapsulates the pipeline: encode missingness ->
 
 Requires aggregated (protein-level) LFQData. For nested peptide-level
 input use \code{\link{ContrastsBinomialFirthNestedFacade}}.
+
+Contrasts are Wald tests on the log odds of detection with the normal reference distribution (z, \code{df = Inf}),
+as in the coefficient table, \code{confint()} and \code{\link[logistf]{logistf}} itself. With few samples the test
+is conservative: in a null simulation with 10 samples per group and detection probability 0.5, 4.1\% of the
+p-values fell below 0.05.
 }
 \examples{
 \dontshow{if (requireNamespace("logistf", quietly = TRUE)) withAutoprint(\{ # examplesIf}
@@ -131,7 +136,7 @@ Other modelling:
   initialize
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{ContrastsFirthFacade$new(lfqdata, modelstr, contrasts, control = list(), ...)}
+    \preformatted{ContrastsFirthFacade$new(lfqdata, modelstr, contrasts, control = list())}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
@@ -141,7 +146,6 @@ Other modelling:
       \item{\code{modelstr}}{model formula string (e.g. "~ group_")}
       \item{\code{contrasts}}{named character vector of contrasts}
       \item{\code{control}}{convergence controls of \code{\link[logistf]{logistf}}, see \code{\link{strategy_logistf}}}
-      \item{\code{...}}{ignored; accepted for dispatch compatibility with other facades}
     }
     \if{html}{\out{</div>}}
   }

@@ -17,9 +17,12 @@ test_that("strategies keep their documented defaults and merge user controls", {
   expect_equal(strategy_rlm("y ~ g", control = list(maxit = 5))$control, list(maxit = 5, acc = 1e-4))
   expect_equal(strategy_binomial("~ g")$control, list(epsilon = 1e-8, maxit = 25))
   expect_equal(strategy_binomial_firth("~ g")$control, list(maxit = 100, tol = 1e-8))
-  expect_equal(strategy_rfit("y ~ g")$control, list(maxit = 200, reltol = .Machine$double.eps^(3 / 4)))
-  expect_equal(strategy_lmer("y ~ g + (1 | p)")$control, list())
   expect_equal(strategy_lm("y ~ g")$control, list())
+  skip_if_not_installed("Rfit")
+  expect_equal(strategy_rfit("y ~ g")$control, list(maxit = 200, reltol = .Machine$double.eps^(3 / 4)))
+  skip_if_not_installed("lme4")
+  skip_if_not_installed("lmerTest")
+  expect_equal(strategy_lmer("y ~ g + (1 | p)")$control, list())
 })
 
 test_that("unknown or unnamed controls raise a classed error", {
@@ -28,6 +31,7 @@ test_that("unknown or unnamed controls raise a classed error", {
   expect_error(strategy_binomial_firth("~ g", control = list(epsilon = 1)), class = "prolfqua_error_bad_argument")
   expect_error(StrategyBase$new("y ~ g", control = list(maxit = 1)), "nothing", class = "prolfqua_error_bad_argument")
   skip_if_not_installed("lme4")
+  skip_if_not_installed("lmerTest")
   expect_error(strategy_lmer("y ~ g + (1 | p)", control = list(nonsense = 1)), class = "prolfqua_error_bad_argument")
 })
 

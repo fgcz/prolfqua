@@ -70,10 +70,16 @@ test_that("analysis print and summary round to digits and show column classes", 
   expect_false(isTRUE(all.equal(table3$effect, table6$effect, tolerance = 0)))
 })
 
-test_that("duplicate sample and hierarchy keys are rejected at model and aggregation entry", {
+test_that("duplicate sample and hierarchy keys are rejected at data, model and aggregation entry", {
   lfq <- eda_fixture()
   data <- lfq$data_long()
-  doubled <- LFQData$new(rbind(data, data[1:3, ]), lfq$get_config())
+  expect_error(
+    LFQData$new(rbind(data, data[1:3, ]), lfq$get_config()),
+    "More than one row for 3",
+    class = "prolfqua_error_duplicate_keys"
+  )
+  expect_error(LFQData$new(data[, -1], lfq$get_config()), class = "prolfqua_error_missing_column")
+  doubled <- lfq$get_copy()$set_data(rbind(data, data[1:3, ]))
   expect_error(
     build_contrast_analysis(doubled, "~ group_ + (1 | peptide_Id)", c(AvsC = "group_A - group_Ctrl"), "lmer_nested"),
     class = "prolfqua_error_duplicate_keys"

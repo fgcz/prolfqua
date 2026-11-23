@@ -11,8 +11,10 @@ Encapsulates everything needed to fit per-protein Firth's bias-reduced
 logistic regression via \code{\link[logistf]{logistf}} and extract contrasts.
 }
 \examples{
+\dontshow{if (requireNamespace("logistf", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 strat <- StrategyLogistf$new("bin_resp ~ condition")
 strat$formula
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other modelling:
@@ -95,6 +97,7 @@ Other modelling:
   \itemize{
     \item \href{#method-StrategyLogistf-initialize}{\code{StrategyLogistf$new()}}
     \item \href{#method-StrategyLogistf-df_residual}{\code{StrategyLogistf$df_residual()}}
+    \item \href{#method-StrategyLogistf-isSingular}{\code{StrategyLogistf$isSingular()}}
     \item \href{#method-StrategyLogistf-sigma}{\code{StrategyLogistf$sigma()}}
     \item \href{#method-StrategyLogistf-clone}{\code{StrategyLogistf$clone()}}
   }
@@ -102,7 +105,6 @@ Other modelling:
 \if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="contrast_fun"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-contrast_fun'><code>StrategyBase$contrast_fun()</code></a></span></li>
-  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="isSingular"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-isSingular'><code>StrategyBase$isSingular()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="model_fun"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun'><code>StrategyBase$model_fun()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="zero_residual_variance"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-zero_residual_variance'><code>StrategyBase$zero_residual_variance()</code></a></span></li>
 </ul>
@@ -132,10 +134,31 @@ Other modelling:
 \if{html}{\out{<a id="method-StrategyLogistf-df_residual"></a>}}
 \if{latex}{\out{\hypertarget{method-StrategyLogistf-df_residual}{}}}
 \subsection{\code{StrategyLogistf$df_residual()}}{
-  Get residual degrees of freedom
+  Degrees of freedom of the Wald tests: \code{Inf}, so contrasts use the normal distribution (z), as
+the coefficient table, \code{confint()} and logistf itself do
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{StrategyLogistf$df_residual(model)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{model}}{fitted model}
+    }
+    \if{html}{\out{</div>}}
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-StrategyLogistf-isSingular"></a>}}
+\if{latex}{\out{\hypertarget{method-StrategyLogistf-isSingular}{}}}
+\subsection{\code{StrategyLogistf$isSingular()}}{
+  Check if model is singular (NA coefficients or fewer than two observations beyond the
+coefficients)
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{StrategyLogistf$isSingular(model)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{

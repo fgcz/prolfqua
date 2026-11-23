@@ -379,7 +379,7 @@ LFQDataPlotter <- R6::R6Class(
       ids <- xnested[[paste(hierarchy, collapse = "+")]]
       facet_grid_on <- .boxplot_facet(self$lfq, TRUE)
 
-      inform_prolfqua("writing ", fpath)
+      inform_prolfqua("write_boxplots: writing ", fpath)
       pb <- .make_progress(nrow(xnested))
 
       grDevices::pdf(fpath, width = width, height = height)
@@ -403,7 +403,7 @@ LFQDataPlotter <- R6::R6Class(
     #' @return path the file was written to
     write_pdf = function(fig, path_qc, fig_name, width = 7, height = 7) {
       fpath <- file.path(path_qc, paste0(self$prefix, fig_name, if (!.has_pdf_suffix(fig_name)) ".pdf"))
-      inform_prolfqua("writing ", fpath)
+      inform_prolfqua("write_pdf: writing ", fpath)
       grDevices::pdf(fpath, width = width, height = height)
       pdf_dev <- grDevices::dev.cur()
       on.exit(.dev_close(pdf_dev), add = TRUE)

@@ -6,6 +6,7 @@ RFIT_MODELSTR <- "~ group_"
 
 
 test_that("strategy_rfit constructs a StrategyRfit", {
+  skip_if_not_installed("Rfit")
   strat <- prolfqua::strategy_rfit("Intensity ~ group_")
   expect_true(inherits(strat, "StrategyRfit"))
   expect_equal(strat$formula, stats::as.formula("Intensity ~ group_"))

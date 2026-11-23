@@ -58,8 +58,9 @@ StrategyBase <- R6::R6Class(
     #' @param control named list of convergence controls merged over the strategy's defaults; names the
     #'   backend does not accept raise a classed error
     initialize = function(modelstr, model_name = "Model", control = list()) {
+      private$check_packages()
       self$formula <- .as_model_formula(modelstr)
-      self$model_name <- model_name
+      self$model_name <- .assert_string(model_name)
       self$anova_df <- .get_anova_df(test = "F")
       allowed <- if (length(control) > 0L) private$control_names() else names(private$control_defaults())
       self$control <- .merge_control(control, private$control_defaults(), allowed)
@@ -103,6 +104,8 @@ StrategyBase <- R6::R6Class(
     zero_residual_variance = function(sigma, scale) .zero_residual_variance(sigma, scale)
   ),
   private = list(
+    # Suggests packages the backend needs, checked once when the strategy is created, not per subject
+    check_packages = function() invisible(NULL),
     # convergence controls of the backend and their defaults; non-iterative fits have none
     control_defaults = function() list(),
     control_names = function() names(private$control_defaults()),
@@ -143,14 +146,8 @@ StrategyLmer <- R6::R6Class(
     contrast_fun = function(...) .compute_lmer_contrast(...)
   ),
   private = list(
-    prepare = function(x) {
-      rlang::check_installed(c("lme4", "lmerTest"), reason = "for mixed models.")
-      x
-    },
-    control_names = function() {
-      rlang::check_installed("lme4", reason = "for mixed models.")
-      names(formals(lme4::lmerControl))
-    },
+    check_packages = function() rlang::check_installed(c("lme4", "lmerTest"), reason = "for mixed models."),
+    control_names = function() names(formals(lme4::lmerControl)),
     fit = function(x) lmerTest::lmer(self$formula, data = x, control = do.call(lme4::lmerControl, self$control))
   )
 )
@@ -163,7 +160,7 @@ StrategyLmer <- R6::R6Class(
 #' @export
 #' @family modelling
 #' @return a \code{\link{StrategyLmer}} object
-#' @examples
+#' @examplesIf requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)
 #' modelFunction <- strategy_lmer("abundanceC ~ group_ + (1|peptide_Id)",
 #'   model_name = "random_example")
 #' modelFunction$formula

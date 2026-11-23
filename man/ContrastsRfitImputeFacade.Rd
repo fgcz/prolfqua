@@ -163,7 +163,7 @@ Other modelling:
   contrasts,
   lod = NULL,
   df_method = c("observed", "borrowed"),
-  ...
+  control = list()
 )}
     \if{html}{\out{</div>}}
   }
@@ -176,7 +176,7 @@ Other modelling:
       \item{\code{lod}}{numeric limit of detection; if NULL, auto-computed from data}
       \item{\code{df_method}}{"observed" uses max(n_observed - p, 1);
 "borrowed" uses median df from successful fits}
-      \item{\code{...}}{passed to \code{\link{strategy_rfit}}}
+      \item{\code{control}}{named list of convergence controls, see \code{\link{strategy_rfit}}}
     }
     \if{html}{\out{</div>}}
   }

@@ -201,10 +201,11 @@ LFQDataStats <- R6::R6Class(
     },
     #' @description
     #' compute sample size for entire dataset
-    #' @param probs quantiles of sd for which sample size should be computed
-    #' @param delta effect size
-    #' @param power power of test
-    #' @param sig.level significance level.
+    #' @param probs numeric vector of probabilities in \[0, 1\]: the quantiles of the sd for which sample sizes are
+    #'   computed
+    #' @param delta numeric vector of positive effect sizes (differences on the response scale)
+    #' @param power one number in (0, 1), the power of the test
+    #' @param sig.level one number in (0, 1), the significance level
     power_t_test_quantiles = function(
       probs = c(0.1, 0.25, 0.5, 0.75, 0.9),
       delta = c(0.59, 1, 2),
@@ -223,9 +224,9 @@ LFQDataStats <- R6::R6Class(
     },
     #' @description
     #' compute sample for each protein
-    #' @param delta effect size
-    #' @param power power of test
-    #' @param sig.level significance level.
+    #' @param delta numeric vector of positive effect sizes (differences on the response scale)
+    #' @param power one number in (0, 1), the power of the test
+    #' @param sig.level one number in (0, 1), the significance level
     power_t_test = function(
       delta = c(0.59, 1, 2),
       power = 0.8,

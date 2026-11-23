@@ -62,3 +62,35 @@ jobs:
           name: goodpractice-${{ runner.os }}-R-${{ matrix.r-version }}
           path: goodpractice-report
           if-no-files-found: warn
+
+  # Tests and examples must run, or skip, when no Suggests package is installed.
+  R-CMD-check-hard-deps:
+    runs-on: ubuntu-latest
+    env:
+      _R_CHECK_FORCE_SUGGESTS_: false
+
+    steps:
+      - uses: actions/checkout@v6.0.3
+
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.6'
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcurl4-openssl-dev libicu-dev
+
+      - name: Install hard dependencies only
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          dependencies: '"hard"'
+          extra-packages: any::rcmdcheck, any::testthat, any::knitr, any::rmarkdown
+          needs: check
+
+      - name: R CMD check without Suggests
+        uses: r-lib/actions/check-r-package@v2
+        with:
+          args: 'c("--no-manual", "--as-cran", "--ignore-vignettes")'
+          build_args: 'c("--no-build-vignettes")'

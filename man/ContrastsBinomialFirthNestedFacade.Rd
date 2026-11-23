@@ -62,7 +62,7 @@ head(facade$get_contrasts())
   modelstr,
   contrasts,
   binomial_bound = TRUE,
-  ...
+  control = list()
 )}
     \if{html}{\out{</div>}}
   }
@@ -73,7 +73,7 @@ head(facade$get_contrasts())
       \item{\code{modelstr}}{right-hand-side model formula}
       \item{\code{contrasts}}{named contrast expressions}
       \item{\code{binomial_bound}}{bound posterior dispersion below by one}
-      \item{\code{...}}{passed to \code{\link{strategy_binomial_firth}}}
+      \item{\code{control}}{named list of convergence controls, see \code{\link{strategy_binomial_firth}}}
     }
     \if{html}{\out{</div>}}
   }

@@ -209,3 +209,7 @@ URL = {https://doi.org/10.1021/acs.jproteome.2c00441},
 eprint = {https://doi.org/10.1021/acs.jproteome.2c00441}
 }
 ```
+
+# Code of Conduct
+
+Please note that this package is released with a [Contributor Code of Conduct](https://ropensci.org/code-of-conduct/). By contributing to this project, you agree to abide by its terms.

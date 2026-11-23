@@ -5,15 +5,16 @@ Version: 1.9.5
 Authors@R: c(
     person("Witold", "Wolski",
         email = "witold.wolski@fgcz.uzh.ch",
-        role = "aut",
+        role = c("aut", "cre"),
         comment = c(ORCID = "0000-0002-6468-120X")),
+    person("Jonas", "Grossmann",
+        role = "ctb"),
     person("Functional Genomics Center Zurich",
         role = "fnd",
         comment = c(ROR = "04tgr1802")),
-    person("Christian", "Panse",
-        email = "cp@fgcz.ethz.ch",
-        role = "cre",
-        comment = c(ORCID = "0000-0003-1975-3064")))
+    person("University of Zurich",
+        role = "cph",
+        comment = c(ROR = "02crff812")))
 Description: Covers the steps of a mass spectrometry based label-free
     quantification (LFQ) analysis: quality control, normalization, aggregation
     of peptides to proteins, modelling, hypothesis testing and sample size
@@ -60,6 +61,7 @@ Suggests:
     covr,
     crosstalk,
     cyclocomp,
+    data.table,
     devtools,
     ggbeeswarm,
     goodpractice,

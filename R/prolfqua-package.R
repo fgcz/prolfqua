@@ -52,6 +52,20 @@
 #' (constant or noiseless response) keeps its estimated difference, but its
 #' test statistics are `NA`, with a `prolfqua_zero_variance` warning, and it is
 #' left out of the variance moderation prior.
+#' @section Input types and conversion:
+#' \code{\link{LFQData}}`$new()` accepts a long table as data.frame, tibble or
+#' data.table and stores it as a tibble. The response must be numeric; it is
+#' stored as a plain double, without extra classes or attributes such as `I()`,
+#' units or labels (announced). In \code{\link{setup_analysis}}, factor columns
+#' stay factors, so their level order sets the reference level of the design;
+#' ordered factors become unordered and unused levels are dropped (announced).
+#' Numeric, logical or Date factor columns become character labels (announced),
+#' whose reference level is the first sorted label. Hierarchy columns are used by
+#' their labels. List columns holding the response or a hierarchy, factor or
+#' sample column are refused with a `prolfqua_error_bad_argument`; other list
+#' columns are dropped by setup. Single-valued arguments (flags, counts, seeds,
+#' probabilities) must have length one; counts must be whole numbers and are
+#' converted to integer.
 #' @section Provenance:
 #' Each \code{LFQData}, model and analysis records the problems and dropped
 #' items that happen in it; \code{$provenance()} returns them as a table (step,
@@ -149,6 +163,9 @@
 #' @srrstats {G1.3} Package Glossary and column_description define workflow terms, test interpretation and
 #'   assumptions.
 #' @srrstats {G1.4} The exported API is documented with roxygen2, including R6 methods.
+#' @srrstats {G2.4} Section "Input types and conversion" states the conversion rules: tables to tibble, the response
+#'   to double, factor columns kept with their level order, other factor columns to character labels, counts to
+#'   integer; each conversion that changes the data is announced (test-input-types.R).
 #' @srrstats {G1.5} Section "Benchmarks" names prolfquabenchmark as the code reproducing the performance claims of
 #'   Wolski et al. (2023). Limit: that code lives in a companion package, because it depends on MSstats, msqrob2 and
 #'   proDA, which prolfqua does not need.

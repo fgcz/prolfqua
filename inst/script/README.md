@@ -15,9 +15,3 @@ Most examples, tests and vignettes use simulated data (`sim_lfq_data_peptide_con
 - Content: log2 peptide areas (`log2Area`, `peptide_Id`, `sampleName`) of a single protein, 20 rows each
 - Source: one protein each, taken from an FGCZ label-free quantification dataset, as reference input for the robust summarisation (median polish, rlm)
 - Used by: `tests/testthat/test-tidyMS_aggregation.R`
-
-## x5463yzwer453bbb
-
-- Content: sample annotation table of 36 samples with the columns `Relative Path`, `Name`, `Group`, `factor_A` (MI / MINOCA) and `factor_B` (sampling time T0 / T150 / T300)
-- Source: sample annotation of an FGCZ proteomics order (raw files `20250429_*`); only file names and the two factors are kept
-- Used by: examples of `annotation_add_contrasts()` and the article `ContrastsFromFactors.Rmd`

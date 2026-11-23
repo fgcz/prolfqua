@@ -131,10 +131,10 @@ Other LFQData:
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{data}}{data.frame}
-      \item{\code{config}}{configuration}
-      \item{\code{prefix}}{will be use as output prefix}
-      \item{\code{setup}}{is data setup needed, default = FALSE, if TRUE, calls \code{\link{setup_analysis}} on data first.}
+      \item{\code{data}}{long-format data.frame, tibble or data.table; stored as a tibble}
+      \item{\code{config}}{AnalysisConfiguration naming the column roles}
+      \item{\code{prefix}}{one character string, used as output prefix}
+      \item{\code{setup}}{one TRUE/FALSE, default FALSE; TRUE calls \code{\link{setup_analysis}} on data first}
       \item{\code{provenance}}{internal: record of an LFQData this one continues (the same data transformed or
 subset); a copy is kept. NULL starts a new record.}
     }

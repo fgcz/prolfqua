@@ -17,13 +17,13 @@ sim_lfq_data_peptide_config(
 \arguments{
 \item{n_proteins}{one positive whole number of proteins to simulate}
 
-\item{with_missing}{add missing values, default TRUE}
+\item{with_missing}{one TRUE/FALSE: add missing values (default TRUE)}
 
 \item{weight_missing}{one number in [0, 1]; greater weight means more missingness}
 
-\item{seed}{seed for reproducibility, if NULL no seed is set.}
+\item{seed}{NULL or one whole number; NULL sets no seed}
 
-\item{n_per_group}{number of replicates per group}
+\item{n_per_group}{one positive whole number of replicates per group}
 
 \item{Nprot, N}{deprecated; use \code{n_proteins} and \code{n_per_group}}
 }

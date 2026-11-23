@@ -134,7 +134,7 @@ Other modelling:
   initialize
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{ContrastsHurdleNestedFacade$new(lfqdata, modelstr, contrasts, ...)}
+    \preformatted{ContrastsHurdleNestedFacade$new(lfqdata, modelstr, contrasts)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
@@ -143,7 +143,6 @@ Other modelling:
       \item{\code{lfqdata}}{nested LFQData (peptide-level, log2-transformed)}
       \item{\code{modelstr}}{model formula string (e.g. "~ group_")}
       \item{\code{contrasts}}{named character vector of contrasts}
-      \item{\code{...}}{ignored; accepted for dispatch compatibility with other facades}
     }
     \if{html}{\out{</div>}}
   }

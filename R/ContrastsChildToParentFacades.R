@@ -71,11 +71,11 @@ ContrastsLmerNestedFacade <- R6::R6Class(
     #'   formula already containing random-effect bars is passed through
     #'   unchanged.
     #' @param contrasts named character vector of contrasts
-    #' @param ... passed to \code{\link{strategy_lmer}}
-    initialize = function(lfqdata, modelstr, contrasts, ...) {
+    #' @param control named list of convergence controls, see \code{\link{strategy_lmer}}
+    initialize = function(lfqdata, modelstr, contrasts, control = list()) {
       private$.setup(lfqdata, contrasts, "lmer_nested", modelstr)
       full_formula <- paste(lfqdata$response(), .augment_lmer_nested_modelstr(modelstr, lfqdata))
-      strat <- strategy_lmer(full_formula, ...)
+      strat <- strategy_lmer(full_formula, control = control)
       self$model <- build_model(lfqdata, strat)
       self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts, model_name = "lmer_nested"))
     }
@@ -116,10 +116,9 @@ ContrastsROPECANestedFacade <- R6::R6Class(
     #' @param lfqdata nested LFQData (peptide-level)
     #' @param modelstr model formula string (e.g. "~ group_")
     #' @param contrasts named character vector of contrasts
-    #' @param ... passed to \code{\link{strategy_lm}}
-    initialize = function(lfqdata, modelstr, contrasts, ...) {
+    initialize = function(lfqdata, modelstr, contrasts) {
       full_formula <- private$.setup(lfqdata, contrasts, "ropeca_nested", modelstr)
-      strat <- strategy_lm(full_formula, ...)
+      strat <- strategy_lm(full_formula)
       subject_id <- lfqdata$hierarchy_keys()
       self$model <- build_model(lfqdata, strat, subject_id = subject_id)
       self$contrast <- ContrastsROPECA$new(Contrasts$new(self$model, contrasts))
@@ -215,10 +214,9 @@ ContrastsROPECAV2NestedFacade <- R6::R6Class(
     #' @param lfqdata nested LFQData (peptide-level)
     #' @param modelstr model formula string (e.g. "~ group_")
     #' @param contrasts named character vector of contrasts
-    #' @param ... passed to \code{\link{strategy_lm}}
-    initialize = function(lfqdata, modelstr, contrasts, ...) {
+    initialize = function(lfqdata, modelstr, contrasts) {
       full_formula <- private$.setup(lfqdata, contrasts, "ropecaV2_nested", modelstr)
-      strat <- strategy_lm(full_formula, ...)
+      strat <- strategy_lm(full_formula)
       subject_id <- lfqdata$hierarchy_keys()
       self$model <- build_model(lfqdata, strat, subject_id = subject_id)
       rho <- .ropeca_v2_rho(self$model$model_df, subject_id, lfqdata$sample_name())
@@ -294,17 +292,17 @@ ContrastsBinomialNestedFacade <- R6::R6Class(
     #' @param contrasts named contrast expressions
     #' @param prior_count non-negative symmetric pseudo-count
     #' @param binomial_bound bound posterior dispersion below by one
-    #' @param ... passed to \code{\link{strategy_binomial}}
+    #' @param control named list of convergence controls, see \code{\link{strategy_binomial}}
     initialize = function(
       lfqdata,
       modelstr,
       contrasts,
       prior_count = 0.1,
       binomial_bound = TRUE,
-      ...
+      control = list()
     ) {
       private$.setup(lfqdata, contrasts, "binomial_nested", modelstr)
-      strategy <- strategy_binomial(modelstr, prior_count = prior_count, ...)
+      strategy <- strategy_binomial(modelstr, prior_count = prior_count, control = control)
       fitted <- .fit_detection_counts(lfqdata, strategy, contrasts, binomial_bound)
       self$model <- fitted$model
       self$contrast <- fitted$contrast
@@ -343,10 +341,10 @@ ContrastsBinomialFirthNestedFacade <- R6::R6Class(
     #' @param modelstr right-hand-side model formula
     #' @param contrasts named contrast expressions
     #' @param binomial_bound bound posterior dispersion below by one
-    #' @param ... passed to \code{\link{strategy_binomial_firth}}
-    initialize = function(lfqdata, modelstr, contrasts, binomial_bound = TRUE, ...) {
+    #' @param control named list of convergence controls, see \code{\link{strategy_binomial_firth}}
+    initialize = function(lfqdata, modelstr, contrasts, binomial_bound = TRUE, control = list()) {
       private$.setup(lfqdata, contrasts, "binomial_firth_nested", modelstr)
-      strategy <- strategy_binomial_firth(modelstr, ...)
+      strategy <- strategy_binomial_firth(modelstr, control = control)
       fitted <- .fit_detection_counts(lfqdata, strategy, contrasts, binomial_bound)
       self$model <- fitted$model
       self$contrast <- fitted$contrast
@@ -430,7 +428,7 @@ ContrastsLimpaNestedFacade <- R6::R6Class(
     #'   (default 0.8)
     #' @param plot logical; if TRUE, plot the vooma mean-variance trend
     #' @param span lowess smoother span (NULL = auto)
-    #' @param ... passed to \code{\link{strategy_limpa}} (e.g. trend, robust)
+    #' @param trend,robust passed to \code{\link[limma]{eBayes}}, see \code{\link{strategy_limpa}}
     initialize = function(
       lfqdata,
       modelstr,
@@ -439,13 +437,20 @@ ContrastsLimpaNestedFacade <- R6::R6Class(
       dpc_slope = 0.8,
       plot = FALSE,
       span = NULL,
-      ...
+      trend = FALSE,
+      robust = FALSE
     ) {
       private$.setup(lfqdata, contrasts, "limpa_nested", modelstr)
       lfq_agg <- AggregateLimpa$new(lfqdata, prefix = prefix, dpc_slope = dpc_slope)$aggregate()
       # get_missing() compares against the aggregated protein-level data.
       self$.lfqdata <- lfq_agg
-      strat <- strategy_limpa(paste(lfq_agg$response(), modelstr), plot = plot, span = span, ...)
+      strat <- strategy_limpa(
+        paste(lfq_agg$response(), modelstr),
+        plot = plot,
+        span = span,
+        trend = trend,
+        robust = robust
+      )
       self$model <- build_model_limpa(lfq_agg, strat)
       self$contrast <- ContrastsLimma$new(self$model, contrasts, model_name = "limpa_nested")
       self$.drop_na_diff <- TRUE

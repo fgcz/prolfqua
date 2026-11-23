@@ -10,14 +10,15 @@
 #' @param lfqdata the model input: a normalized [LFQData] object, aggregated or
 #'   not as `method` requires.
 #' @param method facade name passed to [build_contrast_analysis()].
-#' @param n_splits number of distinct random splits.
+#' @param n_splits one positive whole number of distinct random splits.
 #' @param strata factor keys within whose levels the samples are split; the
 #'   model is `~ <strata> + pseudo_group_`. `character(0)` splits all samples
 #'   as one group; subset `lfqdata` to one condition first.
-#' @param n_features number of randomly chosen top-level features
-#'   (`hierarchy_keys()[1]`) to test; `NULL` (default) tests all.
+#' @param n_features `NULL` (default) tests all top-level features
+#'   (`hierarchy_keys()[1]`); one positive whole number tests that many,
+#'   chosen at random.
 #' @param seed `NULL` (default) uses the current random number generator state;
-#'   otherwise the draws run under [withr::with_seed()].
+#'   one whole number runs the draws under [withr::with_seed()].
 #' @param ... further arguments to [build_contrast_analysis()].
 #' @return A tibble with one row per split: `split`, `n` (tests with a
 #'   p-value), `p_below_0.05`, `p_below_0.01` (shares of p-values),
@@ -59,9 +60,11 @@ null_split_check <- function(
   if (!inherits(lfqdata, "LFQData")) {
     abort_bad_argument("lfqdata", "be an LFQData object")
   }
-  if (!is.numeric(n_splits) || length(n_splits) != 1L || n_splits < 1) {
-    abort_bad_argument("n_splits", "be a single number >= 1", not = toString(n_splits))
+  n_splits <- .assert_count(n_splits)
+  if (!is.null(n_features)) {
+    n_features <- .assert_count(n_features)
   }
+  .assert_seed(seed)
   unknown <- setdiff(strata, lfqdata$factor_keys())
   if (length(unknown) > 0L) {
     abort_bad_argument(

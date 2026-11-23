@@ -107,10 +107,12 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
 #' @param modelstr one formula string or a formula
 #' @param call the call shown in the error header
 #' @noRd
-#' @srrstatsTODO {G2.0} Formula and scalar lengths are checked here, and tidyMS_power_fdr.R checks all planning
-#'   input lengths; limit: not all exported controls have been audited.
-#' @srrstatsTODO {G2.6} Strategies accept formula objects and strings; limit: specialized vector classes are not fully
-#'   tested.
+#' @srrstats {G2.0} Lengths of single-valued inputs are asserted: formulas here, contrasts, and flags, strings, counts,
+#'   seeds and numbers through the `.assert_*()` helpers; tidyMS_power_fdr.R checks all planning inputs
+#'   (test-input-types.R, test-power_fdr.R).
+#' @srrstats {G2.6} One-dimensional inputs are pre-processed regardless of class: formulas are accepted as objects or
+#'   strings, the response becomes a plain double (`I()`, units, labelled, integer), and factor and hierarchy columns
+#'   of class factor, Date or `I()` are used by their labels (test-input-types.R).
 .as_model_formula <- function(modelstr, call = rlang::caller_env()) {
   is_string <- is.character(modelstr) && length(modelstr) == 1 && !is.na(modelstr) && grepl("~", modelstr, fixed = TRUE)
   if (!(inherits(modelstr, "formula") || is_string)) {
@@ -145,12 +147,13 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
 #' @param config AnalysisConfiguration
 #' @param call the call shown in the error header
 #' @noRd
-#' @srrstatsTODO {G2.1} LFQData/setup_analysis check data, configuration and response types; tidyMS_power_fdr.R
-#'   rejects non-real numeric inputs and matrices; limit: the API audit is incomplete.
-#' @srrstatsTODO {G2.4b} Numeric responses/counts are required and limma explicitly converts; no general conversion
-#'   policy.
-#' @srrstatsTODO {G2.12} Nonnumeric responses including lists are rejected; limit: other list columns lack a complete
-#'   contract.
+#' @srrstats {G2.1} `LFQData$new()` and `setup_analysis()` check the data, configuration and response types; flags,
+#'   strings, counts, seeds and numbers of the exported functions and strategies are checked by `.assert_flag()`,
+#'   `.assert_string()`, `.assert_count()`, `.assert_seed()` and `.assert_number()`; tidyMS_power_fdr.R rejects non-real
+#'   numeric inputs and matrices (test-input-types.R, test-power_fdr.R).
+#' @srrstats {G2.12} List columns are rejected with a classed error when they hold the response or a configured
+#'   hierarchy, factor or sample column; unconfigured list columns are dropped by setup, with a message
+#'   (test-input-types.R).
 #' @srrstats {G5.8} Tests cover invalid types, designs, sparse inputs, empty inputs, non-finite responses, NA keys and
 #'   all-NA or constant responses (test-input-validation.R, test-missing-nonfinite.R).
 .assert_response_data <- function(data, config, call = rlang::caller_env()) {
@@ -166,6 +169,19 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
   }
   if (!is.numeric(data[[response]])) {
     abort_bad_argument("response", paste0("be numeric (column `", response, "`)"), call = call)
+  }
+  configured <- intersect(
+    unique(c(unlist(config$hierarchy), unlist(config$factors), config$file_name, config$sample_name)),
+    names(data)
+  )
+  list_columns <- configured[vapply(configured, function(col) is.list(data[[col]]), logical(1))]
+  if (length(list_columns) > 0L) {
+    abort_bad_argument(
+      "data",
+      "have atomic hierarchy, factor and sample columns",
+      not = paste("list columns", toString(paste0("`", list_columns, "`"))),
+      call = call
+    )
   }
 }
 
@@ -288,8 +304,8 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
 #' @param weight_missing one number in \[0, 1\]
 #' @param call the call shown in the error header
 #' @noRd
-#' @srrstatsTODO {G2.2} Scalar simulation arguments are enforced; limit: some thresholds and weights still need length
-#'   checks.
+#' @srrstats {G2.2} Parameters expected to be univariate reject vectors: simulator sizes, missingness weights, seeds,
+#'   flags, strings, `n_splits`, `n_features`, `power` and `sig.level` (`.assert_*()` helpers, test-input-types.R).
 .assert_simulation_args <- function(n_proteins, weight_missing, call = rlang::caller_env()) {
   if (!.is_finite_number(n_proteins) || !all(n_proteins > 0, n_proteins == floor(n_proteins))) {
     abort_bad_argument("n_proteins", "be one positive whole number", call = call)
@@ -304,6 +320,66 @@ abort_prolfqua <- function(..., class = NULL, call = rlang::caller_env()) {
 #' @noRd
 .is_finite_number <- function(x) {
   is.numeric(x) && length(x) == 1 && is.finite(x)
+}
+
+#' Abort unless an argument is one TRUE or FALSE
+#' @param x value to check
+#' @param arg argument name for the error
+#' @param call the call shown in the error header
+#' @return `x`, invisibly
+#' @noRd
+.assert_flag <- function(x, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+  if (!(is.logical(x) && length(x) == 1L && !is.na(x))) {
+    abort_bad_argument(arg, "be one TRUE or FALSE", call = call)
+  }
+  invisible(x)
+}
+
+#' Abort unless an argument is one character string
+#' @inheritParams .assert_flag
+#' @return `x`, invisibly
+#' @noRd
+.assert_string <- function(x, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+  if (!(is.character(x) && length(x) == 1L && !is.na(x))) {
+    abort_bad_argument(arg, "be one character string", call = call)
+  }
+  invisible(x)
+}
+
+#' Check a count: one whole number of at least `min`
+#' @inheritParams .assert_flag
+#' @param min smallest allowed value
+#' @return `x` converted with `as.integer()`
+#' @noRd
+.assert_count <- function(x, min = 1L, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+  if (!.is_finite_number(x) || x != floor(x) || x < min) {
+    abort_bad_argument(arg, sprintf("be one whole number of at least %d", min), not = toString(x), call = call)
+  }
+  as.integer(x)
+}
+
+#' Abort unless a seed is NULL or one whole number
+#' @inheritParams .assert_flag
+#' @return `x`, invisibly
+#' @noRd
+.assert_seed <- function(x, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+  if (!is.null(x) && (!.is_finite_number(x) || x != floor(x))) {
+    abort_bad_argument(arg, "be NULL or one whole number", call = call)
+  }
+  invisible(x)
+}
+
+#' Abort unless an argument is one finite number for which `valid` is TRUE
+#' @inheritParams .assert_flag
+#' @param must the requirement, as in `abort_bad_argument()`, e.g. "be one number in (0, 1)"
+#' @param valid predicate on the number
+#' @return `x`, invisibly
+#' @noRd
+.assert_number <- function(x, must, valid = function(v) TRUE, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+  if (!.is_finite_number(x) || !isTRUE(valid(x))) {
+    abort_bad_argument(arg, must, not = toString(x), call = call)
+  }
+  invisible(x)
 }
 
 

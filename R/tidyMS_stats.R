@@ -147,6 +147,9 @@ summarize_stats_factors <- function(lfqdata) {
   probs = c(0.1, 0.25, 0.5, 0.75, 0.9)
 ) {
   stats <- match.arg(stats)
+  if (!is.numeric(probs) || length(probs) == 0L || anyNA(probs) || any(probs < 0 | probs > 1)) {
+    abort_bad_argument("probs", "be a vector of numbers in [0, 1]", not = toString(probs))
+  }
 
   sd_quantile_res2 <- stats_res |>
     dplyr::filter(!is.na(.data[[stats]])) |>
@@ -173,6 +176,11 @@ summarize_stats_factors <- function(lfqdata) {
 #' @param min.n minimum sample count per group
 #' @noRd
 .power_t_test_n <- function(sd, delta, power, sig.level, min.n) {
+  if (!is.numeric(delta) || length(delta) == 0L || !all(is.finite(delta)) || any(delta <= 0)) {
+    abort_bad_argument("delta", "be a vector of positive finite numbers", not = toString(delta))
+  }
+  .assert_number(power, "be one number strictly between zero and one", function(v) v > 0 && v < 1)
+  .assert_number(sig.level, "be one number strictly between zero and one", function(v) v > 0 && v < 1)
   min_sd <- purrr::map_dbl(delta, function(d) {
     power.t.test(delta = d, n = min.n, sd = NULL, power = power, sig.level = sig.level)$sd
   })

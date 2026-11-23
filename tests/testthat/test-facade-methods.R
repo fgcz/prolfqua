@@ -432,6 +432,12 @@ test_that("limpa imputation flags describe observations rather than the model la
   expect_identical(stats::fitted(facade)$imputed, values$imputed)
 })
 
+test_that("limpa analyses report no convergence status; the closed-form limma fit has none unconverged", {
+  skip_if_not_installed("limpa")
+  expect_true(is.na(.facade_fit_status(facade_method_case("limpa"))$not_converged))
+  expect_identical(.facade_fit_status(facade_method_case("limma"))$not_converged, 0L)
+})
+
 test_that("fitted lm cell means and intervals match prediction for one and two factors", {
   for (two_factors in c(FALSE, TRUE)) {
     lfq <- facade_methods_input()

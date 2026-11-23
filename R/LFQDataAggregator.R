@@ -360,6 +360,11 @@ AggregateTopN <- R6::R6Class(
 #'   \item observation count (in \code{config$nr_children}) - number of observed precursors
 #' }
 #'
+#' limpa's iterative steps run with limpa's defaults: \code{limpa::dpc()} estimates the detection probability curve
+#' in 2 iterations on a subset of 2000 rows, and \code{limpa::dpcQuant()} optimises each protein with its own
+#' settings. Only the slope bound \code{dpc_slope} is exposed. limpa returns no convergence status for these fits, so
+#' a changed setting could not be checked; the fit status of limpa analyses reports \code{not_converged} as NA.
+#'
 #' @return An R6 class generator.
 #' @export
 #' @family LFQData

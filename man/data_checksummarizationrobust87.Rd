@@ -20,8 +20,7 @@ Other data:
 \code{\link{PACKAGE_DATA}},
 \code{\link{data_checksummarizerobust69}},
 \code{\link{data_ionstar}},
-\code{\link[=prolfqua_data]{prolfqua_data()}},
-\code{\link{x5463yzwer453bbb}}
+\code{\link[=prolfqua_data]{prolfqua_data()}}
 }
 \concept{data}
 \keyword{internal}

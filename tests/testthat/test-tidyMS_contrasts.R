@@ -31,6 +31,31 @@ test_that("linfct_matrix_contrasts reports failed contrasts and keeps the valid 
   expect_identical(rownames(res), "valid")
 })
 
+test_that("linfct_matrix_contrasts refuses calls and scalars and drops unparsable or non-numeric contrasts", {
+  linfct <- .linfct_from_model(.sim_make_model_lm("parallel3"), as_list = FALSE)
+  # a constant would be recycled over the coefficients and shift the rows after it
+  expect_error(
+    .linfct_matrix_contrasts(linfct, c(one = "1")),
+    "at least one group",
+    class = "prolfqua_error_bad_argument"
+  )
+  expect_error(
+    .linfct_matrix_contrasts(linfct, c(call = "group_A - mean(group_Ctrl)")),
+    "`mean`",
+    class = "prolfqua_error_bad_argument"
+  )
+  expect_warning(
+    res <- .linfct_matrix_contrasts(linfct, c(valid = "group_A - group_Ctrl", broken = "group_A -")),
+    "failed 1: broken"
+  )
+  expect_identical(rownames(res), "valid")
+  expect_warning(
+    res <- .linfct_matrix_contrasts(linfct, c(text = "group_A - 'Ctrl'", valid = "group_A - group_Ctrl")),
+    "non-numeric argument"
+  )
+  expect_identical(rownames(res), "valid")
+})
+
 test_that("compute_contrast returns NA for contrasts on non-estimable coefficients", {
   withr::local_seed(42)
   df <- data.frame(

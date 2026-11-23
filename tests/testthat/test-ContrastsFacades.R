@@ -447,6 +447,35 @@ test_that("a contrast naming a group without samples is a typed error", {
   expect_gt(nrow(fa$get_contrasts()), 0)
 })
 
+test_that("contrasts that are not group arithmetic are refused when the facade is built", {
+  lfq <- make_protein_lfqdata()$lfqdata
+  refused <- function(contrasts, regexp) {
+    expect_error(
+      prolfqua::build_contrast_analysis(lfq, MODELSTR, contrasts, method = "lm"),
+      regexp = regexp,
+      class = "prolfqua_error_bad_argument"
+    )
+  }
+  refused(c(AvsCtrl = "grp_A - group_Ctrl"), "`grp_A`")
+  refused(c(AvsA = "group_A - group_A"), "groups cancel")
+  refused(c(AvsCtrl = "group_A - group_Ctrl", none = "AvsCtrl - AvsCtrl"), "contrast `none`")
+  refused(c(one = "1"), "name at least one group")
+  refused(c(AvsCtrl = "group_A - group_Ctrl + Sys.getpid()"), "`Sys.getpid`")
+  refused(c(AvsCtrl = "group_A -"), "valid R expressions")
+  fa <- prolfqua::build_contrast_analysis(
+    lfq,
+    MODELSTR,
+    c(AvsCtrl = "group_A - group_Ctrl", half = "AvsCtrl / 2", mean = "(group_A + group_B) / 2 - group_Ctrl"),
+    method = "lm"
+  )
+  res <- fa$get_contrasts()
+  expect_equal(
+    res$diff[res$contrast == "half"],
+    res$diff[res$contrast == "AvsCtrl"] / 2,
+    tolerance = 1e-12
+  )
+})
+
 test_that("the firth facade keeps a protein key not named protein_Id", {
   skip_if_not_installed("logistf")
   istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 20, weight_missing = 0.5, seed = 42)
@@ -468,4 +497,34 @@ test_that(".compute_missing keys missing pairs by the configured contrast column
   missing <- prolfqua:::.compute_missing(lfq, "AvsCtrl", result, contrast_col = "Bait")
   expect_equal(colnames(missing), c("protein_Id", "Bait"))
   expect_equal(missing$protein_Id, proteins[1])
+})
+
+test_that("facade constructors name their arguments instead of taking ...", {
+  for (name in names(list_facades())) {
+    entry <- lookup_facade(name)
+    if (!identical(entry$package, "prolfqua")) {
+      next
+    }
+    generator <- getExportedValue("prolfqua", entry$class)
+    expect_false("..." %in% names(formals(generator$public_methods$initialize)), label = entry$class)
+  }
+  lfq <- make_protein_lfqdata()$lfqdata
+  contrasts <- c(AvsCtrl = "group_A - group_Ctrl")
+  expect_error(build_contrast_analysis(lfq, MODELSTR, contrasts, method = "lm", trend = TRUE), "unused argument")
+  skip_if_not_installed("logistf")
+  expect_error(build_contrast_analysis(lfq, MODELSTR, contrasts, method = "firth", trend = TRUE), "unused argument")
+})
+
+test_that("limma trend and robust and the rlm controls reach the fit", {
+  lfq <- make_protein_lfqdata()$lfqdata
+  contrasts <- c(AvsCtrl = "group_A - group_Ctrl")
+  default <- build_contrast_analysis(lfq, MODELSTR, contrasts, method = "limma")$get_contrasts()
+  trended <- build_contrast_analysis(lfq, MODELSTR, contrasts, method = "limma", trend = TRUE)$get_contrasts()
+  expect_false(isTRUE(all.equal(default$p.value, trended$p.value)))
+  expect_equal(default$diff, trended$diff)
+  expect_error(
+    build_contrast_analysis(lfq, MODELSTR, contrasts, method = "rlm", control = list(no_such_control = 1)),
+    "no_such_control",
+    class = "prolfqua_error_bad_argument"
+  )
 })

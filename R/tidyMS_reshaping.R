@@ -142,9 +142,12 @@
 #' wide <- lfqdata$data_wide(as.matrix = TRUE)
 #' back <- lfqdata_from_wide(wide$data, wide$rowdata, wide$annotation, lfqdata$get_config())
 #' stopifnot(nrow(back$data_long()) == nrow(lfqdata$data_long()))
-#' @srrstatsTODO {G2.7} Long data frames and wide matrices are supported; limit: no SummarizedExperiment input adapter.
-#' @srrstatsTODO {G2.10} Most extraction uses names and [[; limit: cross-class data.frame/tibble/data.table tests are
-#'   incomplete.
+#' @srrstats {G2.7} Long tables as data.frame, tibble or data.table (`LFQData$new()`) and wide matrices
+#'   (`lfqdata_from_wide()`) are accepted; data.table input gives the same results as data.frame
+#'   (test-input-types.R). Limit: no SummarizedExperiment or QFeatures input; `lfqdata_to_summarized_experiment()`
+#'   exports to it.
+#' @srrstats {G2.10} `LFQData$new()` stores its input as a tibble, and columns are extracted by name with `[[`, so
+#'   column extraction does not depend on the input class (test-input-types.R).
 lfqdata_from_wide <- function(values, rowdata, annotation, config, prefix = "ms") {
   if (is.matrix(values)) {
     values <- stats::setNames(list(values), config$get_response())

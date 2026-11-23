@@ -75,6 +75,16 @@ test_that("filter_proteins_by_peptide_count counts the second hierarchy level wi
   expect_gt(nrow(prolfqua_data("data_ionstar")$filtered()$data), 0)
 })
 
+test_that("the packaged IonStar peptides aggregate to proteins", {
+  ionstar <- prolfqua_data("data_ionstar")$filtered()
+  peptides <- LFQData$new(ionstar$data, ionstar$config)$get_Transformer()$log2()$lfq
+  proteins <- muffle_warnings_matching(peptides$get_Aggregator()$aggregate(), "medpolish")
+  n_proteins <- dplyr::n_distinct(ionstar$data[[ionstar$config$hierarchy_keys()[1]]])
+  expect_equal(dplyr::n_distinct(proteins$data_long()[[proteins$hierarchy_keys()]]), n_proteins)
+  observed <- proteins$data_long()[!is.na(proteins$data_long()[[proteins$response()]]), ]
+  expect_true(all(observed[[proteins$get_config()$nr_children]] >= 1))
+})
+
 test_that("rename_response and the is_transformed setter return the object", {
   lfq <- lfqdata$get_copy()
   expect_identical(lfq$is_transformed(TRUE), lfq)
@@ -211,10 +221,10 @@ test_that("sample offsets adjust the log2 response by sample ID", {
   adjusted <- tr$lfq$data_long()
   expect_equal(adjusted[[tr$lfq$response()]], c(8, 7, 12, NA, 6, 12))
   expect_equal(diff(adjusted[[tr$lfq$response()]][c(1, 3, 5)]), diff(data$log2_intensity[c(1, 3, 5)]))
-  expect_identical(adjusted[names(data)], data)
+  expect_identical(adjusted[names(data)], tibble::as_tibble(data))
   expect_true(tr$lfq$is_transformed())
   expect_identical(tr$lfq$prefix, "protein_")
-  expect_identical(lfq$data_long(), data)
+  expect_identical(lfq$data_long(), tibble::as_tibble(data))
   expect_identical(lfq$get_config()$work_intensity, "log2_intensity")
 })
 

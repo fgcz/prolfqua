@@ -15,14 +15,17 @@
 #' Simulate protein-level data with two groups
 #' @return A data frame containing simulated LFQ data.
 #' @export
-#' @param n_proteins number of proteins
-#' @param n_per_group group size
-#' @param fc D - down regulation N - matrix,  U -  regulation
-#' @param prop proportion of down (D), up (U) and not regulated (N)
-#' @param mean_prot mean protein abundance on the natural scale
-#' @param sdlog standard deviation of the log-normal abundance distribution
-#' @param probability_of_success probability of success for the geometric distribution of peptide counts
-#' @param peptide if TRUE, simulate peptide-level data; if FALSE, protein-level
+#' @param n_proteins one positive whole number of proteins
+#' @param n_per_group one positive whole number of samples per group
+#' @param fc named list with one named numeric vector per group: fold changes of the down (D), up (U) and not (N)
+#'   regulated proteins
+#' @param prop named list with one named numeric vector per group: percentages of down (D), up (U) and not (N)
+#'   regulated proteins
+#' @param mean_prot one positive number, the mean protein abundance on the natural scale
+#' @param sdlog one non-negative number, the standard deviation of the log-normal abundance distribution
+#' @param probability_of_success one number in (0, 1], the probability of success of the geometric distribution of
+#'   peptide counts
+#' @param peptide one TRUE/FALSE: TRUE simulates peptide-level data, FALSE protein-level data
 #' @param Nprot,N,PEPTIDE deprecated; use `n_proteins`, `n_per_group` and `peptide`
 #' @examples
 #'
@@ -52,6 +55,12 @@ sim_lfq_data <- function(
   if (!missing(PEPTIDE)) {
     peptide <- .deprecate_arg("PEPTIDE", "peptide", PEPTIDE)
   }
+  n_proteins <- .assert_count(n_proteins)
+  n_per_group <- .assert_count(n_per_group)
+  .assert_number(mean_prot, "be one positive number", function(v) v > 0)
+  .assert_number(sdlog, "be one non-negative number", function(v) v >= 0)
+  .assert_number(probability_of_success, "be one number in (0, 1]", function(v) v > 0 && v <= 1)
+  .assert_flag(peptide)
   proteins <- stringi::stri_rand_strings(n_proteins, 6)
   idtype2 <- .generate_random_string(n_proteins, 4)
   # simulate number of peptides per protein
@@ -132,8 +141,8 @@ sim_lfq_data <- function(
 #' Draw missing values for an intensity vector based on its values
 #' @return A logical vector indicating which values are missing.
 #' @export
-#' @param x vector of intensities
-#' @param weight_missing greater weight more missing
+#' @param x numeric vector of intensities without NA
+#' @param weight_missing one number in \[0, 1\]; greater weight means more missing values
 #' @examples
 #' which_missing(2**rnorm(10,2,0.4))
 #'
@@ -141,6 +150,7 @@ which_missing <- function(x, weight_missing = 0.2) {
   if (!is.numeric(x) || anyNA(x)) {
     abort_bad_argument("x", "be a numeric vector without NA")
   }
+  .assert_number(weight_missing, "be one number in [0, 1]", function(v) v >= 0 && v <= 1)
   missing_prop <- pnorm(x, mean = mean(x), sd = sd(x))
   # sample TRUE or FALSE with propability in missing_prop
   samplemiss <- function(missing_prop) {
@@ -186,10 +196,10 @@ which_missing <- function(x, weight_missing = 0.2) {
 
 #' Simulate data, protein and peptide, with config
 #' @param n_proteins one positive whole number of proteins to simulate
-#' @param with_missing add missing values, default TRUE
+#' @param with_missing one TRUE/FALSE: add missing values (default TRUE)
 #' @param weight_missing one number in \[0, 1\]; greater weight means more missingness
-#' @param seed seed for reproducibility, if NULL no seed is set.
-#' @param n_per_group number of replicates per group
+#' @param seed NULL or one whole number; NULL sets no seed
+#' @param n_per_group one positive whole number of replicates per group
 #' @param Nprot,N deprecated; use `n_proteins` and `n_per_group`
 #' @return A list containing simulated data and an analysis configuration.
 #' @export
@@ -214,6 +224,9 @@ sim_lfq_data_peptide_config <- function(
     n_per_group <- .deprecate_arg("N", "n_per_group", N)
   }
   .assert_simulation_args(n_proteins, weight_missing)
+  .assert_flag(with_missing)
+  .assert_seed(seed)
+  n_per_group <- .assert_count(n_per_group)
   .with_sim_seed(seed, {
     data <- sim_lfq_data(n_proteins = n_proteins, peptide = TRUE, n_per_group = n_per_group)
 
@@ -226,10 +239,10 @@ sim_lfq_data_peptide_config <- function(
 }
 #' Simulate data, protein, with config
 #' @param n_proteins one positive whole number of proteins to simulate
-#' @param with_missing add missing values, default TRUE
+#' @param with_missing one TRUE/FALSE: add missing values (default TRUE)
 #' @param weight_missing one number in \[0, 1\]; greater weight means more missingness
-#' @param seed seed for reproducibility, if NULL no seed is set.
-#' @param paired if TRUE, add a paired subject factor to the design
+#' @param seed NULL or one whole number; NULL sets no seed
+#' @param paired one TRUE/FALSE: add a paired subject factor to the design
 #' @param Nprot deprecated; use `n_proteins`
 #' @return A list containing simulated data and an analysis configuration.
 #' @export
@@ -244,10 +257,11 @@ sim_lfq_data_peptide_config <- function(
 #' xp <- sim_lfq_data_protein_config(with_missing = FALSE, paired = TRUE)
 #' stopifnot(length(xp$config$factors) == 2)
 #' stopifnot(nrow(xp$data) == nrow(x$data))
-#' @srrstatsTODO {G2.0a} Simulator scalar sizes and missingness ranges are documented; limit: not all API multiplicities
-#'   are.
-#' @srrstatsTODO {G2.4a} n_proteins is validated as a whole number; limit: other public count/size arguments are not all
-#'   validated.
+#' @srrstats {G2.0a} The help pages state the expected length of every vector input of the simulators,
+#'   `LFQData$new()`, `null_split_check()`, the sample-size methods and the strategies ("one TRUE/FALSE", "one positive
+#'   whole number", "numeric vector").
+#' @srrstats {G2.4a} Counts (`n_proteins`, `n_per_group`, `n_splits`, `n_features`) must be whole numbers and are
+#'   converted with `as.integer()` (`.assert_count()`, test-input-types.R).
 #' @srrstats {G5.1} Documented simulators and bundled datasets are publicly available for tests and examples.
 #' @srrstats {G5.5} Simulators use explicit reproducible seeds and restore the calling RNG state.
 sim_lfq_data_protein_config <- function(
@@ -262,6 +276,9 @@ sim_lfq_data_protein_config <- function(
     n_proteins <- .deprecate_arg("Nprot", "n_proteins", Nprot)
   }
   .assert_simulation_args(n_proteins, weight_missing)
+  .assert_flag(with_missing)
+  .assert_seed(seed)
+  .assert_flag(paired)
   .with_sim_seed(seed, {
     data <- sim_lfq_data(n_proteins = n_proteins, peptide = FALSE)
     if (paired) {
@@ -281,11 +298,12 @@ sim_lfq_data_protein_config <- function(
 
 #' Simulate data, protein, with config with 2 factors Treatment and Background
 #' @param n_proteins one positive whole number of proteins to simulate
-#' @param with_missing add missing values, default TRUE
+#' @param with_missing one TRUE/FALSE: add missing values (default TRUE)
 #' @param weight_missing one number in \[0, 1\]; greater weight means more missingness
-#' @param peptide if TRUE, simulate peptide-level data; if FALSE, protein-level
-#' @param seed seed for reproducibility, if NULL no seed is set.
-#' @param two_factor if TRUE, model `Treatment` and `Background` as two factors; if FALSE, as one combined factor
+#' @param peptide one TRUE/FALSE: TRUE simulates peptide-level data, FALSE protein-level data
+#' @param seed NULL or one whole number; NULL sets no seed
+#' @param two_factor one TRUE/FALSE: TRUE models `Treatment` and `Background` as two factors, FALSE as one combined
+#'   factor
 #' @param Nprot,PEPTIDE,TWO deprecated; use `n_proteins`, `peptide` and `two_factor`
 #' @return A list containing simulated data and an analysis configuration.
 #' @export
@@ -322,6 +340,10 @@ sim_lfq_data_2factor_config <- function(
     two_factor <- .deprecate_arg("TWO", "two_factor", TWO)
   }
   .assert_simulation_args(n_proteins, weight_missing)
+  .assert_flag(with_missing)
+  .assert_flag(peptide)
+  .assert_seed(seed)
+  .assert_flag(two_factor)
   .with_sim_seed(seed, {
     res <- sim_lfq_data(
       n_proteins = n_proteins,

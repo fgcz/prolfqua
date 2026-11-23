@@ -16,6 +16,19 @@
 - `list_to_analysis_configuration()` stops with a prolfqua error naming the keys that are not configuration fields (also method names such as `hierarchy_keys`); before, it failed with base R's "cannot add bindings to a locked environment".
 - `moderated_p_deqms_long()` (used by the deqms methods) reports problems of its per-contrast variance fits as a `prolfqua_fit_failed` warning, like the other fitting steps; before, the warning had no class. The limma methods keep limma's own warning text (e.g. "Partial NA coefficients") in `$provenance()` instead of matching and dropping it.
 - Plots: volcano, MA and score plots draw smaller, more transparent points, so dense regions stay readable; `ContrastsPlotter$barplot_threshold()` fills bars with the colour-blind safe palette; score-plot reference lines are black and red regardless of the global `palette()`. `plot_pca()` shapes the second factor with 19 distinguishable shapes and, when that factor has more levels, drops the shape mapping with a message; before, factors with more than 25 levels drew invalid shapes or no points.
+- Bad input fails where it enters, with a classed error (`prolfqua_error_bad_argument` unless noted), instead of giving wrong numbers or failing later:
+  - `robscale()`, `robscale_subset()` and `get_scales()` stop and name the samples without any measured value; before, one such sample made every scaled value `NA`, without a warning.
+  - `LFQData$new()` without setup stops on missing key columns and on more than one row per sample and hierarchy key (`prolfqua_error_duplicate_keys`); before, `get_Stats()` counted the duplicates as replicates.
+  - `build_contrast_analysis()` and the facades check the contrasts when the analysis is built. A name that is neither a group (a factor key followed by a level) nor an earlier contrast (e.g. the typo `grp_A`), a contrast whose groups cancel (`group_A - group_A`), a constant, and anything other than `+ - * /` and parentheses (e.g. a function call) are errors. Before, a misspelt group was dropped with a warning and the analysis then failed with an unclassed error, and a contrast string could call any R function.
+  - Single-valued arguments are checked: those of the simulators (`n_proteins`, `n_per_group`, `seed`, `with_missing`, ...), `which_missing()`, `LFQData$new()` (`prefix`, `setup`), `setup_analysis(debug)`, `null_split_check()` (`n_splits`, `n_features`, `seed`), the sample-size methods (`delta`, `power`, `sig.level`, `probs`) and the strategies (`model_name`, `trend`, `robust`). Counts must be whole numbers.
+  - List columns holding the response or a hierarchy, factor or sample column are refused.
+- `setup_analysis()` keeps factor columns as factors, so their level order sets the reference level of the design and the order of the groups; an ordered factor becomes unordered and unused levels are dropped, both with a message. Before, factor columns became character labels in sorted order. Contrasts do not change; the coefficients of factor input are relative to its first level.
+- `LFQData$new()` stores its data as a tibble, also for data.frame and data.table input, and stores the response as double, also when it is an integer.
+- Facade constructors name their arguments instead of taking `...`: the limma and limpa methods take `trend` and `robust`, the iterative fits (`rlm`, `rfit`, `rfit_impute`, `lmer_nested`, `binomial_nested`, `binomial_firth_nested`, `firth`) take `control`. `build_contrast_analysis()` passes its `...` to them, so an argument the method does not take is an error; before, `firth` and `hurdle_nested` ignored every further argument, including `control`.
+- A Suggests package a method needs (lme4 and lmerTest, logistf, Rfit) is checked once, before any protein is fitted; before, a missing package failed inside the fit of the first protein.
+- The `firth` method tests contrasts with the normal distribution (Wald z, `df = Inf`), as its coefficient table, `confint()` and logistf do; before, contrasts used t with n - p degrees of freedom. p-values are smaller, most with few samples; the test stays conservative at small sample sizes. `binomial_firth_nested` and `hurdle_nested`, which moderate an estimated dispersion, keep their t tests.
+- The fit status of limpa analyses reports `not_converged` as `NA` instead of 0: limpa returns no convergence status.
+- Informative messages name their operation: "Transformed response column added", "filter_proteins_by_peptide_count: column added", "write_boxplots: writing", "write_pdf: writing".
 
 ## Bug fixes
 
@@ -31,6 +44,8 @@
 - `AggregatorBase$write_plots()` (and the aggregators' `write_plots()`) uses its `show.legend` argument; before, the legend was never shown.
 - `linfct_matrix_contrasts()` names an unnamed contrast `contrast_<i>`; before, it dropped it with the warning "LHS of `:=` must be a string".
 - Aggregation plots from `plot_estimate()` and `AggregatorBase$plot()`, and boxplots from `LFQDataPlotter$boxplots()`, no longer carry the whole data set: `saveRDS()` of one aggregation plot of 300 proteins writes 11 MB instead of 2 GB.
+- `null_split_check(n_splits = 2.5)` stops with an error; before, it ran 98 splits.
+- The packaged IonStar peptides (`prolfqua_data("data_ionstar")`) carry the `nr_children` column their configuration names, so they aggregate to proteins; before, aggregation stopped with "Column `nr_children` not found".
 
 ## Performance
 
@@ -50,12 +65,19 @@
 - `script_copy_helper_vec()` and `separate_hierarchy()` moved to prolfquapp; `get_contrast()` is deprecated without replacement (only prolfquatakeoutmissing used it, which has its own copy); for `matrix_to_tibble()` use `tibble::as_tibble(x, rownames = )`.
 - `LFQDataPlotter$heatmap(top_n = )` is renamed `n_most_variable`, since it keeps the features with the largest sd (or CV); `top_n` still works and warns.
 
+## Removed
+
+- The example dataset `x5463yzwer453bbb` (an annotation table of 36 samples). The `annotation_add_contrasts()` example and the article "Contrasts from factors" build their annotation table with `expand.grid()`.
+- The old test script in `inst/issue71` is no longer installed.
+
 ## Documentation
 
 - `?ContrastsFacadeBase` is a public help page: how a facade for a new modelling backend is written and registered with `register_facade()`, with a working example.
 - The reference index of the pkgdown site groups the help pages by topic. The article "Under the hood" explains how contrast strings become weights on the model coefficients with `Contrasts$get_linfct()`, and the imputation vignette draws its before and after heatmaps with `LFQDataPlotter$heatmap(row_order = )`.
 - Help pages render Markdown, so code and links that showed as literal backticks or brackets now format; every exported function documents its return value; titles are in sentence case and `lfqdata` arguments share one description.
 - Every argument of the exported functions is documented, and the `sim_build_models_logistf()` example checks the fitted models instead of a field that does not exist.
+- `?prolfqua` has a section "Input types and conversion": which table classes are accepted, and how the response, factor and hierarchy columns are converted. `?AggregateLimpa` documents the defaults of limpa's iterative steps and why they are not exposed; `?ContrastsFirthFacade` documents its Wald z test. The help pages of the simulators, `LFQData$new()`, `null_split_check()` and the sample-size methods state the type and length of each argument.
+- The maintainer is Witold Wolski, the copyright holder the University of Zurich; Jonas Grossmann is listed as contributor. prolfqua follows the rOpenSci Code of Conduct.
 - `?prolfqua` has a Resources section: memory per row, run time per protein for the matrix and per-subject backends, retained fitted models, and the cost of `null_split_check()`. `LFQData$get_config()` says it returns the configuration of the object itself, not a copy, and the `all` and `global` arguments that only keep the `ContrastsInterface` signature say that they are ignored.
 
 # prolfqua 1.9.4

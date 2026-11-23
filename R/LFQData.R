@@ -99,17 +99,27 @@ LFQData <- R6::R6Class(
     prefix = "",
     #' @description
     #' initialize
-    #' @param data data.frame
-    #' @param config configuration
-    #' @param prefix will be use as output prefix
-    #' @param setup is data setup needed, default = FALSE, if TRUE, calls \code{\link{setup_analysis}} on data first.
+    #' @param data long-format data.frame, tibble or data.table; stored as a tibble
+    #' @param config AnalysisConfiguration naming the column roles
+    #' @param prefix one character string, used as output prefix
+    #' @param setup one TRUE/FALSE, default FALSE; TRUE calls \code{\link{setup_analysis}} on data first
     #' @param provenance internal: record of an LFQData this one continues (the same data transformed or
     #'   subset); a copy is kept. NULL starts a new record.
     initialize = function(data, config, prefix = "ms_", setup = FALSE, provenance = NULL) {
       .assert_response_data(data, config)
+      .assert_string(prefix)
+      .assert_flag(setup)
+      # one class for every input (data.frame, tibble, data.table), so column extraction behaves the same
+      data <- tibble::as_tibble(data)
       private$.data <- if (setup) {
         setup_analysis(data, config)
       } else {
+        keys <- c(config$file_name, config$hierarchy_keys())
+        missing_keys <- setdiff(keys, names(data))
+        if (length(missing_keys) > 0L) {
+          abort_missing_columns(missing_keys)
+        }
+        .assert_unique_keys(data, keys)
         data
       }
       private$.data <- .drop_response_attributes(private$.data, config$get_response())
@@ -296,7 +306,7 @@ LFQData <- R6::R6Class(
         child = child,
         threshold = threshold
       )
-      inform_prolfqua("Column added : ", filtered$name)
+      inform_prolfqua("filter_proteins_by_peptide_count: column added: ", filtered$name)
       private$.data <- filtered$data
       private$.provenance$record(
         "filter_proteins_by_peptide_count",
@@ -508,15 +518,20 @@ LFQData <- R6::R6Class(
   )
 )
 
-#' Drop extra classes and attributes (AsIs, units, labels) from the response
+#' Store the response as a plain double: drop extra classes and attributes (AsIs, units, labels), convert integers
 #' @param data long-format data
 #' @param response response column
 #' @noRd
 #' @srrstats {EA2.6} A response with extra classes or attributes (e.g. `I()`, units, labelled) becomes a plain
 #'   numeric vector at `LFQData$new()`, with a message, so transformations and models see the values only.
+#' @srrstats {G2.4b} The response is converted with `as.numeric()` to double, also when it is an integer count, in
+#'   `LFQData$new()` and `setup_analysis()` (test-input-types.R).
 .drop_response_attributes <- function(data, response) {
   values <- data[[response]]
   if (is.null(attributes(values))) {
+    if (is.integer(values)) {
+      data[[response]] <- as.numeric(values)
+    }
     return(data)
   }
   inform_prolfqua(

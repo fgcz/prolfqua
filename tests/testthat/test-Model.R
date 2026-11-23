@@ -237,11 +237,12 @@ test_that("firth contrasts equal logistf::logistf() fitted on one protein's dete
     contrast <- c(0, 0, -1)
     estimate <- sum(contrast * stats::coef(ref))
     std_error <- sqrt(drop(t(contrast) %*% stats::vcov(ref) %*% contrast))
-    df <- ref$n - length(stats::coef(ref))
     row <- ct[ct$protein_Id == protein, ]
     expect_equal(row$diff, estimate, tolerance = 1e-6)
     expect_equal(row$std.error, std_error, tolerance = 1e-6)
-    expect_equal(row$df, df)
-    expect_equal(row$p.value, 2 * stats::pt(abs(estimate / std_error), df, lower.tail = FALSE), tolerance = 1e-6)
+    # Wald z, as logistf reports it: the contrast is one coefficient, so its p-value is logistf's own
+    expect_equal(row$df, Inf)
+    expect_equal(row$p.value, 2 * stats::pnorm(abs(estimate / std_error), lower.tail = FALSE), tolerance = 1e-6)
+    expect_equal(row$p.value, unname(ref$prob[3]), tolerance = 1e-6)
   }
 })

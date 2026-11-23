@@ -121,3 +121,4 @@ Other utilities:
 \concept{stats}
 \concept{summary}
 \concept{utilities}
+\keyword{internal}

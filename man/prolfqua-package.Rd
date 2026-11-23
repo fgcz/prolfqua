@@ -77,6 +77,23 @@ test statistics are \code{NA}, with a \code{prolfqua_zero_variance} warning, and
 left out of the variance moderation prior.
 }
 
+\section{Input types and conversion}{
+
+\code{\link{LFQData}}\verb{$new()} accepts a long table as data.frame, tibble or
+data.table and stores it as a tibble. The response must be numeric; it is
+stored as a plain double, without extra classes or attributes such as \code{I()},
+units or labels (announced). In \code{\link{setup_analysis}}, factor columns
+stay factors, so their level order sets the reference level of the design;
+ordered factors become unordered and unused levels are dropped (announced).
+Numeric, logical or Date factor columns become character labels (announced),
+whose reference level is the first sorted label. Hierarchy columns are used by
+their labels. List columns holding the response or a hierarchy, factor or
+sample column are refused with a \code{prolfqua_error_bad_argument}; other list
+columns are dropped by setup. Single-valued arguments (flags, counts, seeds,
+probabilities) must have length one; counts must be whole numbers and are
+converted to integer.
+}
+
 \section{Provenance}{
 
 Each \code{LFQData}, model and analysis records the problems and dropped
@@ -183,7 +200,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Christian Panse \email{cp@fgcz.ethz.ch} (\href{https://orcid.org/0000-0003-1975-3064}{ORCID})
+\strong{Maintainer}: Witold Wolski \email{witold.wolski@fgcz.uzh.ch} (\href{https://orcid.org/0000-0002-6468-120X}{ORCID})
 
 Authors:
 \itemize{
@@ -192,7 +209,9 @@ Authors:
 
 Other contributors:
 \itemize{
+  \item Jonas Grossmann [contributor]
   \item Functional Genomics Center Zurich (\href{https://ror.org/04tgr1802}{ROR}) [funder]
+  \item University of Zurich (\href{https://ror.org/02crff812}{ROR}) [copyright holder]
 }
 
 }

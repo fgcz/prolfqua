@@ -33,10 +33,10 @@ StrategyLimpa <- R6::R6Class(
     #' @param modelstr,model_name,trend,robust,plot,span see \code{\link{strategy_limpa}}
     initialize = function(modelstr, model_name = "limpa", trend = FALSE, robust = FALSE, plot = FALSE, span = NULL) {
       self$formula <- .as_model_formula(modelstr)
-      self$model_name <- model_name
-      self$trend <- trend
-      self$robust <- robust
-      self$plot <- plot
+      self$model_name <- .assert_string(model_name)
+      self$trend <- .assert_flag(trend)
+      self$robust <- .assert_flag(robust)
+      self$plot <- .assert_flag(plot)
       self$span <- span
     }
   )

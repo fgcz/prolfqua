@@ -114,15 +114,23 @@ knitr::kable(no_int, row.names = FALSE)
 In a typical prolfquapp workflow, you start with a sample annotation table that has columns for the two factors. `annotation_add_contrasts` creates a united Group column, generates all contrasts, and binds them alongside the annotation:
 
 ```{r annotation_example}
-# x5463yzwer453bbb is a bundled example annotation table
-# with factor_A (MI / MINOCA) and factor_B (T0 / T150 / T300)
-data("x5463yzwer453bbb", package = "prolfqua")
-head(x5463yzwer453bbb[, c("Name", "Group", "factor_A", "factor_B")])
+# an annotation table of 36 samples: factor_A (genotype WT / KO),
+# factor_B (time T0 / T150 / T300), 6 replicates each
+design <- expand.grid(
+  rep = 1:6, factor_B = c("T0", "T150", "T300"), factor_A = c("WT", "KO"),
+  stringsAsFactors = FALSE
+)
+annotation <- data.frame(
+  Name = paste(design$factor_A, design$factor_B, design$rep, sep = "_"),
+  factor_A = design$factor_A,
+  factor_B = design$factor_B
+)
+head(annotation)
 ```
 
 ```{r annotation_add_contrasts}
 result <- annotation_add_contrasts(
-  x5463yzwer453bbb,
+  annotation,
   primary_col = "factor_A",
   secondary_col = "factor_B",
   prefix = "primary"
@@ -140,7 +148,7 @@ Swapping primary and secondary factors gives contrasts from the other perspectiv
 
 ```{r annotation_swapped}
 result2 <- annotation_add_contrasts(
-  x5463yzwer453bbb,
+  annotation,
   primary_col = "factor_B",
   secondary_col = "factor_A",
   prefix = "secondary"
