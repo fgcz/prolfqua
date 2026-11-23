@@ -186,11 +186,15 @@ array with keys
 
 ### `AnalysisConfiguration$factor_keys_depth()`
 
-Get factor keys till factorDepth
+Get the first `factor_depth` factor keys
 
 #### Usage
 
     AnalysisConfiguration$factor_keys_depth()
+
+#### Returns
+
+character vector of factor column names
 
 ------------------------------------------------------------------------
 

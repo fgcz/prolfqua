@@ -2,13 +2,16 @@
 
 ## Authors
 
-- **Witold Wolski**. Author. [](https://orcid.org/0000-0002-6468-120X)
+- **Witold Wolski**. Author, maintainer.
+  [](https://orcid.org/0000-0002-6468-120X)
+
+- **Jonas Grossmann**. Contributor.
 
 - **Functional Genomics Center Zurich**. Funder.
   [![ROR](https://raw.githubusercontent.com/ror-community/ror-logos/main/ror-icon-rgb.svg)](https://ror.org/04tgr1802)
 
-- **Christian Panse**. Maintainer.
-  [](https://orcid.org/0000-0003-1975-3064)
+- **University of Zurich**. Copyright holder.
+  [![ROR](https://raw.githubusercontent.com/ror-community/ror-logos/main/ror-icon-rgb.svg)](https://ror.org/02crff812)
 
 ## Citation
 

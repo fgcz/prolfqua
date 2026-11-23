@@ -95,6 +95,8 @@ Other modelling:
 
 - [`StrategyLogistf$df_residual()`](#method-StrategyLogistf-df_residual)
 
+- [`StrategyLogistf$isSingular()`](#method-StrategyLogistf-isSingular)
+
 - [`StrategyLogistf$sigma()`](#method-StrategyLogistf-sigma)
 
 - [`StrategyLogistf$clone()`](#method-StrategyLogistf-clone)
@@ -102,7 +104,6 @@ Other modelling:
 Inherited methods
 
 - [`StrategyBase$contrast_fun()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-contrast_fun)
-- [`StrategyBase$isSingular()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-isSingular)
 - [`StrategyBase$model_fun()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-model_fun)
 - [`StrategyBase$zero_residual_variance()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-zero_residual_variance)
 
@@ -135,11 +136,31 @@ Create a new StrategyLogistf
 
 ### `StrategyLogistf$df_residual()`
 
-Get residual degrees of freedom
+Degrees of freedom of the Wald tests: `Inf`, so contrasts use the normal
+distribution (z), as the coefficient table,
+[`confint()`](https://rdrr.io/r/stats/confint.html) and logistf itself
+do
 
 #### Usage
 
     StrategyLogistf$df_residual(model)
+
+#### Arguments
+
+- `model`:
+
+  fitted model
+
+------------------------------------------------------------------------
+
+### `StrategyLogistf$isSingular()`
+
+Check if model is singular (NA coefficients or fewer than two
+observations beyond the coefficients)
+
+#### Usage
+
+    StrategyLogistf$isSingular(model)
 
 #### Arguments
 
@@ -185,5 +206,5 @@ The objects of this class are cloneable with this method.
 strat <- StrategyLogistf$new("bin_resp ~ condition")
 strat$formula
 #> bin_resp ~ condition
-#> <environment: 0x63b308afff58>
+#> <environment: 0x6416391959c8>
 ```

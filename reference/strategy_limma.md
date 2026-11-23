@@ -45,7 +45,9 @@ strategy_limma(
 
 ## Value
 
-The computed result.
+a
+[StrategyLimma](https://fgcz.github.io/prolfqua/reference/StrategyLimma.md)
+object holding the formula, model name, `eBayes()` options and weights.
 
 ## See also
 
@@ -126,7 +128,7 @@ Other modelling:
 strat <- strategy_limma("abundance ~ group_")
 strat$formula
 #> abundance ~ group_
-#> <environment: 0x63b30e0f3df8>
+#> <environment: 0x64163cfc7008>
 strat$model_name
 #> [1] "limma"
 ```

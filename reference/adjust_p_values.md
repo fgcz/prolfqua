@@ -1,6 +1,7 @@
 # Adjust p-values for multiple testing
 
-Adjust p-values for multiple testing
+Benjamini-Hochberg false discovery rate, computed separately within each
+contrast (or other group).
 
 ## Usage
 
@@ -34,7 +35,8 @@ adjust_p_values(
 
 ## Value
 
-The computed result.
+`contrast_df`, ungrouped, with the Benjamini-Hochberg adjusted p-values
+in the column `newname`, adjusted within each group of `group_by_col`.
 
 ## Examples
 

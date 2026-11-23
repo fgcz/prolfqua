@@ -54,11 +54,44 @@ input_for <- function(method) {
 model_for <- function(method) {
   if (method == "lmer_nested") "~ group_ + (1 | peptide_Id) + (1 | sampleName)" else "~ group_"
 }
-results <- lapply(names(facades), function(method) {
-  fa <- build_contrast_analysis(input_for(method), model_for(method), contrasts, method = method)
-  fa$get_contrasts()
+analyses <- lapply(names(facades), function(method) {
+  build_contrast_analysis(input_for(method), model_for(method), contrasts, method = method)
 })
-names(results) <- names(facades)
+#> Warning: fit (Model): 8 fits failed (e.g. 2kfAGV~3196, f0Cvvj~0425, fylZqB~9801, GpgE28~7718, KVkccD~9390, ...): Error: grouping factors must have > 1 sampled level
+#> See $provenance().
+#> Warning: fit (Model): 1 fits with a warning (e.g. joOg0p~8820): 'rlm' failed to converge in 20 steps
+#> See $provenance().
+#> Warning: fit (Model): 1 fits failed (e.g. joOg0p~8820~zzRiJpQz): Error in `contrasts<-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]): contrasts can be applied only to factors with 2 or more levels
+#> See $provenance().
+#> fit (Model): 1 fits failed (e.g. joOg0p~8820~zzRiJpQz): Error in `contrasts<-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]): contrasts can be applied only to factors with 2 or more levels
+#> See $provenance().
+names(analyses) <- names(facades)
+results <- lapply(analyses, function(fa) fa$get_contrasts())
+#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups.
+#> contrast=A_vs_Ctrl (pseudoinverse used at -0.01585; neighborhood radius 1.6008;
+#> reciprocal condition number 0; There are other near singularities as well. 1)
+#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups.
+#> contrast=A_vs_Ctrl (pseudoinverse used at -0.01585; neighborhood radius 1.6008;
+#> reciprocal condition number 0; There are other near singularities as well. 1)
+```
+
+The warnings come from single proteins: `lmer_nested` cannot fit a
+protein with one peptide, because its random peptide effect needs at
+least two; `rlm` stops at its iteration limit for one protein;
+`ropeca_nested` cannot fit a peptide observed in one group only; and the
+moderation steps report limma’s and DEqMS’s notes on the variance fit.
+Each analysis keeps the other proteins and records the failures, which
+`$provenance()` lists:
+
+``` r
+analyses$lmer_nested$provenance()
+#> # A tibble: 4 × 8
+#>   source    step        event                    n ids   reason failure response
+#>   <chr>     <chr>       <chr>                <int> <lis> <chr>  <lgl>   <chr>   
+#> 1 model     fit (Model) fits failed              8 <chr> Error… TRUE    NA      
+#> 2 model     fit (Model) singular fits           12 <chr> coeff… FALSE   NA      
+#> 3 model     fit (Model) missing responses d…    84 <chr> NA re… FALSE   NA      
+#> 4 contrasts get_missing subjects absent fro…     8 <chr> fit f… FALSE   NA
 ```
 
 ## One line per method
@@ -267,7 +300,7 @@ head(confint(analysis))
 #> 6 2kfAGV~3196 group_Ctrl   -0.215     0.0453     8  -0.320   -0.111
 formula(analysis)
 #> medpolish ~ group_
-#> <environment: 0x62144daa7b20>
+#> <environment: 0x6077e6268508>
 head(nobs(analysis))
 #> # A tibble: 6 × 2
 #>   protein_Id   nobs

@@ -24,10 +24,11 @@ estimate_intensity(lfqdata, method = c("medpolish", "rlm"), control = list())
 - control:
 
   convergence controls merged over the defaults. medpolish: `maxiter`
-  (default 10) and `eps` (default 0.01, the change of the sum of
-  absolute residuals that stops the polish, on the log2 scale of the
-  input); rlm: `maxit` (default 20) and `acc` (default 1e-4, relative
-  change of the IRLS residuals).
+  (default 10) and `eps` (default 0.01; the polish stops when the sum of
+  absolute residuals changes by less than `eps` times that sum, a
+  relative criterion independent of the input scale); rlm: `maxit`
+  (default 20) and `acc` (default 1e-4, relative change of the IRLS
+  residuals).
 
 ## Value
 

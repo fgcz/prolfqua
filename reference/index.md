@@ -96,7 +96,7 @@ LFQData and the objects returned by its get\_ methods.
 - [`LFQData`](https://fgcz.github.io/prolfqua/reference/LFQData.md) :
   LFQData R6 class
 - [`LFQDataPlotter`](https://fgcz.github.io/prolfqua/reference/LFQDataPlotter.md)
-  : LFQDataPlotter —- Create various visualization of the LFQdata
+  : Plot LFQData
 - [`LFQDataStats`](https://fgcz.github.io/prolfqua/reference/LFQDataStats.md)
   : Decorates LFQData with methods to compute statistics of interactions
 - [`LFQDataSummariser`](https://fgcz.github.io/prolfqua/reference/LFQDataSummariser.md)
@@ -120,9 +120,6 @@ LFQData and the objects returned by its get\_ methods.
 - [`ContrastConfiguration`](https://fgcz.github.io/prolfqua/reference/ContrastConfiguration.md)
   : Contrast Configuration
 
-- [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md)
-  : Internal Functions by category
-
 - [`list_to_contrast_configuration()`](https://fgcz.github.io/prolfqua/reference/list_to_contrast_configuration.md)
   : Rebuild a ContrastConfiguration from a list
 
@@ -143,17 +140,17 @@ LFQData and the objects returned by its get\_ methods.
 ## Contrast definitions
 
 - [`annotation_add_contrasts()`](https://fgcz.github.io/prolfqua/reference/annotation_add_contrasts.md)
-  : DRY function: process and export annotated contrasts
+  : Add the contrasts of a two-factor design to a sample annotation
 - [`generate_contrasts()`](https://fgcz.github.io/prolfqua/reference/generate_contrasts.md)
-  : Combined generate_contrasts
+  : All contrasts of a two-factor design
 - [`generate_contrasts_for_factor()`](https://fgcz.github.io/prolfqua/reference/generate_contrasts_for_factor.md)
-  : Single-factor contrasts (pairwise comparisons)
+  : Pairwise contrasts of one factor
 - [`interaction_contrasts()`](https://fgcz.github.io/prolfqua/reference/interaction_contrasts.md)
-  : Interaction contrasts (difference of differences)
+  : Interaction contrasts of a two-factor design
 - [`level_specific_contrasts()`](https://fgcz.github.io/prolfqua/reference/level_specific_contrasts.md)
-  : Level-specific contrasts (per secondary level)
+  : Level-specific contrasts of a two-factor design
 - [`main_effect_contrasts()`](https://fgcz.github.io/prolfqua/reference/main_effect_contrasts.md)
-  : Main effects contrasts
+  : Main-effect contrasts of a two-factor design
 
 ## Models, strategies and contrasts
 
@@ -170,7 +167,7 @@ The steps behind the facades, for inspecting or changing one of them.
 - [`ContrastsFacadeBase`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.md)
   : Base class for contrast analysis facades
 - [`ContrastsFirth`](https://fgcz.github.io/prolfqua/reference/ContrastsFirth.md)
-  : Estimate contrasts using Wald Test
+  : Contrasts of Firth logistic regression models
 - [`ContrastsFirthFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsFirthFacade.md)
   : Firth logistic missingness contrast analysis facade
 - [`ContrastsHurdleFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsHurdleFacade.md)
@@ -207,7 +204,8 @@ The steps behind the facades, for inspecting or changing one of them.
 - [`ContrastsRLMFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsRLMFacade.md)
   : RLM contrast analysis facade
 - [`ContrastsROPECA`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECA.md)
-  : ROPECA reproducibility-optimization method
+  : Protein contrasts from the median peptide p-value (PECA/ROPECA
+  derivation)
 - [`ContrastsROPECANestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECANestedFacade.md)
   : ROPECA contrast analysis facade for nested input
 - [`ContrastsROPECAV2`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECAV2.md)
@@ -220,12 +218,10 @@ The steps behind the facades, for inspecting or changing one of them.
   : Rfit rank-regression contrast analysis with LOD imputation facade
 - [`ContrastsTable`](https://fgcz.github.io/prolfqua/reference/ContrastsTable.md)
   : Hold results when contrasts are added
-- [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md)
-  : Internal Functions by category
 - [`Model`](https://fgcz.github.io/prolfqua/reference/Model.md) : R6
   class representing modelling result
 - [`ModelFirth`](https://fgcz.github.io/prolfqua/reference/ModelFirth.md)
-  : R6 class representing modelling result
+  : Firth logistic regression models of detection
 - [`ModelLimma`](https://fgcz.github.io/prolfqua/reference/ModelLimma.md)
   : R6 class representing a limma modelling result
 - [`StrategyLM`](https://fgcz.github.io/prolfqua/reference/StrategyLM.md)
@@ -263,7 +259,7 @@ The steps behind the facades, for inspecting or changing one of them.
 - [`df.residual(`*`<rfit_prolfqua>`*`)`](https://fgcz.github.io/prolfqua/reference/df.residual.rfit_prolfqua.md)
   : Residual degrees of freedom for an augmented rfit fit
 - [`group_label()`](https://fgcz.github.io/prolfqua/reference/group_label.md)
-  : Build group labels from two factor levels
+  : Group labels of a two-factor design
 - [`impute_from_model()`](https://fgcz.github.io/prolfqua/reference/impute_from_model.md)
   : Fill missing responses with predictions from per-subject linear
   models
@@ -325,8 +321,6 @@ The steps behind the facades, for inspecting or changing one of them.
 
 ## Statistics and sample size
 
-- [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md)
-  : Internal Functions by category
 - [`fdr_sig_level()`](https://fgcz.github.io/prolfqua/reference/fdr_sig_level.md)
   : Per-test significance level for FDR-controlled sample-size planning
 - [`null_split_check()`](https://fgcz.github.io/prolfqua/reference/null_split_check.md)
@@ -355,12 +349,10 @@ The steps behind the facades, for inspecting or changing one of them.
 
 - [`ContrastsPlotter`](https://fgcz.github.io/prolfqua/reference/ContrastsPlotter.md)
   : Plot contrasts
-- [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md)
-  : Internal Functions by category
 - [`theme_prolfqua()`](https://fgcz.github.io/prolfqua/reference/theme_prolfqua.md)
   : Prism-style ggplot theme used by all prolfqua plots
 - [`upset_interaction_missing_stats()`](https://fgcz.github.io/prolfqua/reference/upset_interaction_missing_stats.md)
-  : UpSetR plot from interaction_missing_stats
+  : Prepare data for an UpSet plot of observations per group
 - [`volcano_plotly()`](https://fgcz.github.io/prolfqua/reference/volcano_plotly.md)
   : Interactive volcano plots with plotly
 
@@ -369,25 +361,22 @@ The steps behind the facades, for inspecting or changing one of them.
 - [`sim_lfq_data()`](https://fgcz.github.io/prolfqua/reference/sim_lfq_data.md)
   : Simulate protein-level data with two groups
 - [`sim_lfq_data_2factor_config()`](https://fgcz.github.io/prolfqua/reference/sim_lfq_data_2factor_config.md)
-  : Simulate data, protein, with config with 2 factors Treatment and
-  Background
+  : Simulate a two-factor design with its configuration
 - [`sim_lfq_data_peptide_config()`](https://fgcz.github.io/prolfqua/reference/sim_lfq_data_peptide_config.md)
-  : Simulate data, protein and peptide, with config
+  : Simulate peptide-level data with its configuration
 - [`sim_lfq_data_protein_config()`](https://fgcz.github.io/prolfqua/reference/sim_lfq_data_protein_config.md)
-  : Simulate data, protein, with config
+  : Simulate protein-level data with its configuration
 
 ## Utilities
 
-- [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md)
-  : Internal Functions by category
 - [`get_uniprot_id_from_fasta_header()`](https://fgcz.github.io/prolfqua/reference/get_uniprot_id_from_fasta_header.md)
-  : Extracts uniprot ID
+  : Extract UniProt accessions from FASTA headers
 - [`is_contaminant()`](https://fgcz.github.io/prolfqua/reference/is_contaminant.md)
   : Detect contaminant identifiers
 - [`is_decoy()`](https://fgcz.github.io/prolfqua/reference/is_decoy.md)
   : Detect decoy / reverse-database identifiers
 - [`table_facade()`](https://fgcz.github.io/prolfqua/reference/table_facade.md)
-  : Table facade to easily switch implementations
+  : Format a table for reports
 - [`find_package_file()`](https://fgcz.github.io/prolfqua/reference/find_package_file.md)
   : Find a file stored in a package
 

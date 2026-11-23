@@ -1,6 +1,11 @@
 # Simulate protein-level data with two groups
 
-Simulate protein-level data with two groups
+Draws protein abundances from a log-normal distribution and multiplies
+them by group-specific fold changes for down-, up- and not-regulated
+proteins; with `peptide = TRUE`, each protein gets a geometric number of
+peptides. The `_config` variants add an
+[AnalysisConfiguration](https://fgcz.github.io/prolfqua/reference/AnalysisConfiguration.md)
+and missing values.
 
 ## Usage
 
@@ -24,36 +29,40 @@ sim_lfq_data(
 
 - n_proteins:
 
-  number of proteins
+  one positive whole number of proteins
 
 - n_per_group:
 
-  group size
+  one positive whole number of samples per group
 
 - fc:
 
-  D - down regulation N - matrix, U - regulation
+  named list with one named numeric vector per group: fold changes of
+  the down (D), up (U) and not (N) regulated proteins
 
 - prop:
 
-  proportion of down (D), up (U) and not regulated (N)
+  named list with one named numeric vector per group: percentages of
+  down (D), up (U) and not (N) regulated proteins
 
 - mean_prot:
 
-  mean protein abundance on the natural scale
+  one positive number, the mean protein abundance on the natural scale
 
 - sdlog:
 
-  standard deviation of the log-normal abundance distribution
+  one non-negative number, the standard deviation of the log-normal
+  abundance distribution
 
 - probability_of_success:
 
-  probability of success for the geometric distribution of peptide
-  counts
+  one number in (0, 1\], the probability of success of the geometric
+  distribution of peptide counts
 
 - peptide:
 
-  if TRUE, simulate peptide-level data; if FALSE, protein-level
+  one TRUE/FALSE: TRUE simulates peptide-level data, FALSE protein-level
+  data
 
 - Nprot, N, PEPTIDE:
 

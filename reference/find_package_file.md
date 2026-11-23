@@ -1,6 +1,7 @@
 # Find a file stored in a package
 
-Find a file stored in a package
+Looks for `file` in the installed package and, for a source package, in
+its `inst/` folder.
 
 ## Usage
 
@@ -20,7 +21,8 @@ find_package_file(packagename, file)
 
 ## Value
 
-The computed result.
+the path to `file` in the installed package (or in its `inst/` folder of
+a source package), or `NULL` if the file does not exist.
 
 ## Examples
 

@@ -165,7 +165,7 @@ initialize
       contrasts,
       lod = NULL,
       df_method = c("observed", "borrowed"),
-      ...
+      control = list()
     )
 
 #### Arguments
@@ -191,9 +191,9 @@ initialize
   "observed" uses max(n_observed - p, 1); "borrowed" uses median df from
   successful fits
 
-- `...`:
+- `control`:
 
-  passed to
+  named list of convergence controls, see
   [`strategy_rfit`](https://fgcz.github.io/prolfqua/reference/strategy.md)
 
 ------------------------------------------------------------------------

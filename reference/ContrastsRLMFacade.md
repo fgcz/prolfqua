@@ -126,7 +126,7 @@ initialize
 
 #### Usage
 
-    ContrastsRLMFacade$new(lfqdata, modelstr, contrasts, ...)
+    ContrastsRLMFacade$new(lfqdata, modelstr, contrasts, control = list())
 
 #### Arguments
 
@@ -143,9 +143,9 @@ initialize
 
   named character vector of contrasts
 
-- `...`:
+- `control`:
 
-  passed to
+  named list of convergence controls, see
   [`strategy_rlm`](https://fgcz.github.io/prolfqua/reference/strategy.md)
 
 ------------------------------------------------------------------------

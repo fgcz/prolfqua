@@ -121,15 +121,11 @@ istar <- prolfqua::sim_lfq_data_peptide_config()
 data <- istar$data |> dplyr::filter(protein_Id %in% sample(protein_Id, 100))
 lfqdata <- LFQData$new(data, istar$config)
 lfqTrans <- lfqdata$clone()$get_Transformer()$log2()$robscale()$lfq
-#> Column added : log2_abundance
+#> Transformed response column added: log2_abundance
 
 agg <- AggregateMedpolish$new(lfqTrans, "protein")
 agg$aggregate()
 p <- agg$plot()
 p$plots[[1]]
-#> Warning: Removed 7 rows containing missing values or values outside the scale range
-#> (`geom_point()`).
-#> Warning: Removed 4 rows containing missing values or values outside the scale range
-#> (`geom_line()`).
 
 ```

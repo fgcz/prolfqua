@@ -1,6 +1,8 @@
 # Load a dataset from prolfqua
 
-Load a dataset from prolfqua
+Returns a packaged dataset as a value instead of creating it in the
+calling environment, as
+[`utils::data()`](https://rdrr.io/r/utils/data.html) does.
 
 ## Usage
 
@@ -20,7 +22,8 @@ prolfqua_data(datastr, package = "prolfqua")
 
 ## Value
 
-The computed result.
+the dataset `datastr` of `package`, loaded without attaching it to the
+global environment.
 
 ## See also
 
@@ -28,8 +31,7 @@ Other data:
 [`PACKAGE_DATA`](https://fgcz.github.io/prolfqua/reference/PACKAGE_DATA.md),
 [`data_checksummarizationrobust87`](https://fgcz.github.io/prolfqua/reference/data_checksummarizationrobust87.md),
 [`data_checksummarizerobust69`](https://fgcz.github.io/prolfqua/reference/data_checksummarizerobust69.md),
-[`data_ionstar`](https://fgcz.github.io/prolfqua/reference/data_ionstar.md),
-[`x5463yzwer453bbb`](https://fgcz.github.io/prolfqua/reference/x5463yzwer453bbb.md)
+[`data_ionstar`](https://fgcz.github.io/prolfqua/reference/data_ionstar.md)
 
 ## Examples
 

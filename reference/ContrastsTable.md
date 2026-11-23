@@ -1,6 +1,12 @@
 # Hold results when contrasts are added
 
-Hold results when contrasts are added
+A contrast object around a ready-made contrast table, for example the
+result of
+[`merge_contrasts_results()`](https://fgcz.github.io/prolfqua/reference/merge_contrasts_results.md).
+It provides the shared methods of
+[ContrastsInterface](https://fgcz.github.io/prolfqua/reference/ContrastsInterface.md)
+(plots, wide format, ranking) but no linear functions, because no model
+stands behind it.
 
 ## Value
 

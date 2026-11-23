@@ -147,7 +147,8 @@ initialize
       contrasts,
       plot = FALSE,
       span = NULL,
-      ...
+      trend = FALSE,
+      robust = FALSE
     )
 
 #### Arguments
@@ -175,11 +176,10 @@ initialize
 
   lowess smoother span (NULL = auto)
 
-- `...`:
+- `trend, robust`:
 
-  passed to
+  passed to [`eBayes`](https://rdrr.io/pkg/limma/man/ebayes.html), see
   [`strategy_limpa`](https://fgcz.github.io/prolfqua/reference/strategy_limpa.md)
-  (e.g. trend, robust)
 
 ------------------------------------------------------------------------
 
@@ -207,7 +207,7 @@ istar <- prolfqua::sim_lfq_data_peptide_config()
 #> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata <- lfqdata$get_Transformer()$log2()$lfq
-#> Column added : log2_abundance
+#> Transformed response column added: log2_abundance
 agg <- AggregateLimpa$new(lfqdata, "protein")
 lfq_agg <- agg$aggregate()
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")

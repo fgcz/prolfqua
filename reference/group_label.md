@@ -1,6 +1,9 @@
-# Build group labels from two factor levels
+# Group labels of a two-factor design
 
-Build group labels from two factor levels
+Names the cell of a two-factor design as `G_<primary>_<secondary>`, the
+group names that the contrast generators
+([`generate_contrasts()`](https://fgcz.github.io/prolfqua/reference/generate_contrasts.md)
+and its parts) use in their contrast strings.
 
 ## Usage
 

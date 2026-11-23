@@ -1,6 +1,10 @@
 # Build protein models from data
 
-Build protein models from data
+Fits the model of `model_strategy` once per subject (by default per
+protein) and returns the fits with their status. Failed fits are kept as
+rows without a model.
+[`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
+calls it for the per-subject backends.
 
 ## Usage
 

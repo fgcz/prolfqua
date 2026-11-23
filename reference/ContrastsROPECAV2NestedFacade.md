@@ -140,7 +140,7 @@ initialize
 
 #### Usage
 
-    ContrastsROPECAV2NestedFacade$new(lfqdata, modelstr, contrasts, ...)
+    ContrastsROPECAV2NestedFacade$new(lfqdata, modelstr, contrasts)
 
 #### Arguments
 
@@ -155,11 +155,6 @@ initialize
 - `contrasts`:
 
   named character vector of contrasts
-
-- `...`:
-
-  passed to
-  [`strategy_lm`](https://fgcz.github.io/prolfqua/reference/strategy.md)
 
 ------------------------------------------------------------------------
 
@@ -245,7 +240,7 @@ istar <- sim_lfq_data_peptide_config()
 #> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata <- lfqdata$get_Transformer()$log2()$lfq
-#> Column added : log2_abundance
+#> Transformed response column added: log2_abundance
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 fa <- ContrastsROPECAV2NestedFacade$new(lfqdata, "~ group_", contrasts)
 #> fit (Model): 36 missing responses dropped (e.g. 0EfVhX~0087~ITLb4x1q, 0EfVhX~0087~ahQLlQY7, 0EfVhX~0087~dJkdz7so, 7cbcrd~5725~D5dQ4nKk, 9VUkAq~4703~eIC06D7g, ...): NA response (missing observation) left out of the fit

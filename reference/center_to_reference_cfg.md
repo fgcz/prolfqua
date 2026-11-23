@@ -21,7 +21,9 @@ center_to_reference_cfg(lfqdata, lfqdareference)
 
 ## Value
 
-The computed result.
+invisibly, a copy of `lfqdata` whose response
+`centered_abundance_by_median` is centred per sample to the median of
+the reference subset.
 
 ## Examples
 

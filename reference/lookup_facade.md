@@ -1,6 +1,8 @@
 # Look up a contrast facade by short name
 
-Look up a contrast facade by short name
+Returns the registry entry of a method of
+[`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md),
+including the input it needs (`"aggregated"` or `"nested"`).
 
 ## Usage
 

@@ -1,6 +1,14 @@
 # LFQData R6 class
 
-LFQData R6 class
+The data container of prolfqua: one table in long format, one row per
+feature (for example peptide) and sample, plus an
+[AnalysisConfiguration](https://fgcz.github.io/prolfqua/reference/AnalysisConfiguration.md)
+that names the hierarchy, factor, sample and response columns. Its
+decorators (`get_Transformer()`, `get_Aggregator()`, `get_Stats()`,
+`get_Plotter()`, `get_Summariser()`) transform, aggregate, summarise and
+plot the data, and
+[`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
+fits models to it.
 
 ## Value
 
@@ -138,21 +146,21 @@ initialize
 
 - `data`:
 
-  data.frame
+  long-format data.frame, tibble or data.table; stored as a tibble
 
 - `config`:
 
-  configuration
+  AnalysisConfiguration naming the column roles
 
 - `prefix`:
 
-  will be use as output prefix
+  one character string, used as output prefix
 
 - `setup`:
 
-  is data setup needed, default = FALSE, if TRUE, calls
+  one TRUE/FALSE, default FALSE; TRUE calls
   [`setup_analysis`](https://fgcz.github.io/prolfqua/reference/setup_analysis.md)
-  on data first.
+  on data first
 
 - `provenance`:
 
@@ -705,7 +713,7 @@ get Summariser
 
 #### Returns
 
-LFQDataSummarizer
+LFQDataSummariser
 
 ------------------------------------------------------------------------
 
@@ -794,7 +802,7 @@ istar <- sim_lfq_data_peptide_config()
 #> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata$filter_proteins_by_peptide_count()
-#> Column added : nr_peptide_Id_IN_protein_Id
+#> filter_proteins_by_peptide_count: column added: nr_peptide_Id_IN_protein_Id
 #> filter_proteins_by_peptide_count: 4 protein_Id removed (e.g. 7cbcrd~5725, 9VUkAq~4703, CGzoYe~2147, DoWup2~5896): fewer than 2 peptide_Id
 #> See $provenance().
 tmp <- lfqdata$data_wide()

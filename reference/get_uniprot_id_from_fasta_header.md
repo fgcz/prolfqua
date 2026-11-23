@@ -1,6 +1,8 @@
-# Extracts uniprot ID
+# Extract UniProt accessions from FASTA headers
 
-Extracts uniprot ID
+Parses UniProt FASTA headers such as `sp|P12345|PROT1_HUMAN` in
+`idcolumn` and adds the accession as the column `UniprotID`; identifiers
+that are not FASTA headers get `NA`.
 
 ## Usage
 

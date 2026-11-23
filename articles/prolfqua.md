@@ -28,6 +28,10 @@ The vignettes of this package, in reading order:
     [`impute_from_model()`](https://fgcz.github.io/prolfqua/reference/impute_from_model.md)
 8.  [QC and sample size
     estimation](https://fgcz.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.md)
+9.  [Transforming and calibrating LFQ
+    data](https://fgcz.github.io/prolfqua/articles/TransformingLFQData.md):
+    the active response, and calibration against internal standards or
+    external calibrants
 
 The package website <https://fgcz.github.io/prolfqua/> has three more
 articles:
@@ -65,11 +69,12 @@ build_contrast_analysis() is a factory: the method key selects the
 model, and every model rolls out with the same interface.
 
 The `method` argument selects the model: linear models (`lm`, `rlm`,
-`rfit`), limma and limma-voom, DEqMS variance moderation, limpa’s
-detection probability model, Firth logistic and binomial models of
-detection, mixed models and ROPECA on peptide-level data, a hurdle model
-combining intensity and detection, and variants that impute groups
-without observations at the limit of detection.
+`rfit`), limma and limma-voom (Smyth 2004), DEqMS variance moderation,
+limpa’s detection probability model, Firth logistic and binomial models
+of detection, mixed models (as in MSqRob, Goeminne, Gevaert, and Clement
+2016) and a derivation of ROPECA (Suomi and Elo 2017) on peptide-level
+data, a hurdle model combining intensity and detection, and variants
+that impute groups without observations at the limit of detection.
 
 Every method returns an object with the same interface:
 `get_contrasts()`, `get_Plotter()`, `get_missing()` and `to_wide()`.
@@ -253,6 +258,20 @@ sessionInfo()
 ```
 
 ## References
+
+Goeminne, Ludger JE, Kris Gevaert, and Lieven Clement. 2016.
+“Peptide-Level Robust Ridge Regression Improves Estimation, Sensitivity,
+and Specificity in Data-Dependent Quantitative Label-Free Shotgun
+Proteomics.” *Molecular & Cellular Proteomics* 15 (2): 657–68.
+
+Smyth, Gordon K. 2004. “Linear Models and Empirical Bayes Methods for
+Assessing Differential Expression in Microarray Experiments.”
+*Statistical Applications in Genetics and Molecular Biology* 3 (1):
+1–25.
+
+Suomi, Tomi, and Laura L Elo. 2017. “Enhanced Differential Expression
+Statistics for Data-Independent Acquisition Proteomics.” *Scientific
+Reports* 7: 5869.
 
 Wolski, Witold E., Paolo Nanni, Jonas Grossmann, Maria d’Errico, Ralph
 Schlapbach, and Christian Panse. 2023. “prolfqua: A Comprehensive

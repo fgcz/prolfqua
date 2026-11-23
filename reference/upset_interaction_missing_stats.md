@@ -1,6 +1,9 @@
-# UpSetR plot from interaction_missing_stats
+# Prepare data for an UpSet plot of observations per group
 
-UpSetR plot from interaction_missing_stats
+Marks, for each protein and factor level, whether it has at least `tr`
+observations, in the input format of
+[`UpSetR::upset()`](https://rdrr.io/pkg/UpSetR/man/upset.html), to show
+which proteins are observed in which groups.
 
 ## Usage
 
@@ -21,7 +24,9 @@ upset_interaction_missing_stats(lfqdata, tr = 2)
 
 ## Value
 
-The computed result.
+a list with `data`, a data.frame with one row per hierarchy element and
+one 0/1 column per factor level (1 when at least `tr` observations), and
+`nsets`, the number of factor-level columns.
 
 ## See also
 

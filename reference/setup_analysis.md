@@ -44,10 +44,13 @@ data says so with a message (class `prolfqua_message`) or warning:
   one key column (separator `configuration$sep`); avoid by configuring
   one column per key;
 
-- factor source columns that are not character (numeric, factor,
-  ordered) are converted to character labels; ordered levels and their
-  ordering are not retained; avoid by supplying character columns; names
-  of `configuration$factors` become the predictor column names;
+- factor source columns of class factor stay factors, so their level
+  order sets the reference level of the design; an ordered factor
+  becomes unordered and unused levels are dropped (both announced);
+  numeric or logical source columns are converted to character labels
+  (announced), whose reference level is the first sorted label; avoid by
+  supplying character or unordered factor columns; names of
+  `configuration$factors` become the predictor column names;
 
 - a missing sample name is derived from the file name; avoid by
   supplying the sample name column;

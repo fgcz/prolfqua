@@ -1,6 +1,8 @@
 # Draw missing values for an intensity vector based on its values
 
-Draw missing values for an intensity vector based on its values
+Each value goes missing at random with a probability that falls with its
+intensity (through its normal quantile), so low intensities go missing
+more often, as in LFQ data.
 
 ## Usage
 
@@ -12,11 +14,11 @@ which_missing(x, weight_missing = 0.2)
 
 - x:
 
-  vector of intensities
+  numeric vector of intensities without NA
 
 - weight_missing:
 
-  greater weight more missing
+  one number in \[0, 1\]; greater weight means more missing values
 
 ## Value
 

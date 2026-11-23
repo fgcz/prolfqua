@@ -483,7 +483,12 @@ fa_lmer <- build_contrast_analysis(
   contrasts,
   method = "lmer_nested"
 )
+```
 
+    ## Warning: fit (Model): 29 fits failed (e.g. 0CubNR~0890, 4Y4DYT~0927, 6TevMr~7550, 8mS8sK~0150, 99UwKB~2192, ...): Error: grouping factors must have > 1 sampled level
+    ## See $provenance().
+
+``` r
 fa_ropeca <- build_contrast_analysis(
   lfq_peptide,
   "~ group_",
@@ -506,9 +511,26 @@ fa_binomial_firth <- build_contrast_analysis(
 )
 ```
 
+`lmer_nested` cannot fit proteins with a single peptide, because its
+random peptide effect needs at least two; the warning lists them, and
+`$provenance()` records them:
+
+``` r
+fa_lmer$provenance()
+```
+
+    ## # A tibble: 5 × 8
+    ##   source    step        event                    n ids   reason failure response
+    ##   <chr>     <chr>       <chr>                <int> <lis> <chr>  <lgl>   <chr>   
+    ## 1 model     fit (Model) fits failed             29 <chr> Error… TRUE    NA      
+    ## 2 model     fit (Model) singular fits           49 <chr> coeff… FALSE   NA      
+    ## 3 model     fit (Model) missing responses d…   391 <chr> NA re… FALSE   NA      
+    ## 4 contrasts get_missing subjects absent fro…    29 <chr> fit f… FALSE   NA      
+    ## 5 contrasts get_missing subjects absent fro…    29 <chr> fit f… FALSE   NA
+
 `ropeca_nested` and `ropecaV2_nested` aggregate peptide evidence back to
 proteins; `ropecaV2_nested` estimates the correlation of the peptides of
-a protein from the residuals, here 0.03, so that proteins with many
+a protein from the residuals, here 0.06, so that proteins with many
 peptides are not reported as more significant. In contrast,
 `lmer_nested` models the nested peptide structure directly before
 reporting protein-level contrasts. `binomial_firth_nested` also reports
@@ -530,7 +552,12 @@ results_peptide <- bind_rows(
   dplyr::mutate(
     significant = FDR < 0.1 & abs(diff) > 0.5
   )
+```
 
+    ## Warning: Zero sample variances detected, have been offset away from zero
+    ## Warning: Zero sample variances detected, have been offset away from zero
+
+``` r
 results_peptide |>
   dplyr::count(modelName, name = "n_results")
 ```
@@ -544,7 +571,10 @@ results_peptide |>
     ## 4 ropeca_nested               157
 
 ``` r
-ggplot(results_peptide, aes(x = diff, y = -log10(p.value), color = significant)) +
+# the detection model gives no p-value for proteins detected in every sample
+results_peptide |>
+  dplyr::filter(!is.na(p.value)) |>
+  ggplot(aes(x = diff, y = -log10(p.value), color = significant)) +
   geom_point(alpha = 0.6, size = 1.2) +
   facet_grid(contrast ~ modelName, scales = "free_y") +
   geom_vline(xintercept = c(-0.5, 0.5), linetype = "dashed", color = "grey60") +
@@ -579,6 +609,12 @@ only.
 
 ``` r
 fa_hurdle <- ContrastsHurdleFacade$new(fa_lm_impute, fa_binomial_firth)
+```
+
+    ## Warning: Zero sample variances detected, have been offset away from zero
+    ## Warning: Zero sample variances detected, have been offset away from zero
+
+``` r
 results_hurdle <- fa_hurdle$get_contrasts()
 
 results_hurdle |>
@@ -609,12 +645,12 @@ results_hurdle |>
     ##  2 A_vs_Ct… KVkccD~18… -0.524          1.99e- 9      -1.88e+ 0             0.251
     ##  3 A_vs_Ct… 4Y4DYT~09…  0.583          1.99e- 8       8.51e-16             1    
     ##  4 A_vs_Ct… 0CubNR~08…  0.674          4.07e- 8       1.35e+ 0             0.449
-    ##  5 A_vs_Ct… 6TevMr~75…  0.765          4.26e- 8      -2.15e-15             1.000
-    ##  6 B_vs_Ct… fylZqB~38…  0.717          1.66e-10       0                    1    
-    ##  7 B_vs_Ct… f0Cvvj~66…  0.345          3.71e-10       1.97e-31           NaN    
-    ##  8 B_vs_Ct… XxJoJB~72…  0.587          2.82e- 9       0                    1    
-    ##  9 B_vs_Ct… DOwxjj~62…  0.294          1.44e- 7      -3.94e-31             1    
-    ## 10 B_vs_Ct… TR3Ksv~14… -0.413          4.18e- 7       0                    1    
+    ##  5 A_vs_Ct… 6TevMr~75…  0.765          4.26e- 8      -2.11e-15             1.000
+    ##  6 B_vs_Ct… fylZqB~38…  0.717          1.66e-10      -9.86e-32             1    
+    ##  7 B_vs_Ct… f0Cvvj~66…  0.345          3.71e-10       0                  NaN    
+    ##  8 B_vs_Ct… XxJoJB~72…  0.587          2.82e- 9      -9.86e-32             1    
+    ##  9 B_vs_Ct… DOwxjj~62…  0.294          1.44e- 7       1.97e-31             1    
+    ## 10 B_vs_Ct… TR3Ksv~14… -0.413          4.18e- 7      -9.86e-32             1    
     ## # ℹ 2 more variables: p.value <dbl>, FDR <dbl>
 
 The `hurdle_nested` method does all of this from the peptide data in one
@@ -628,6 +664,12 @@ fa_hurdle_nested <- build_contrast_analysis(
   contrasts,
   method = "hurdle_nested"
 )
+```
+
+    ## Warning: Zero sample variances detected, have been offset away from zero
+    ## Warning: Zero sample variances detected, have been offset away from zero
+
+``` r
 fa_hurdle_nested$get_contrasts() |>
   dplyr::count(contrast, hurdle_components, name = "n_results")
 ```

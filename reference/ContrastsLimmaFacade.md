@@ -129,7 +129,8 @@ initialize
       modelstr,
       contrasts,
       weights = lfqdata$nr_children_col(),
-      ...
+      trend = FALSE,
+      robust = FALSE
     )
 
 #### Arguments
@@ -152,11 +153,10 @@ initialize
   column name for per-observation weights (default:
   `lfqdata$nr_children_col()`). Pass `NULL` for unweighted.
 
-- `...`:
+- `trend, robust`:
 
-  passed to
+  passed to [`eBayes`](https://rdrr.io/pkg/limma/man/ebayes.html), see
   [`strategy_limma`](https://fgcz.github.io/prolfqua/reference/strategy_limma.md)
-  (e.g. trend, robust)
 
 ------------------------------------------------------------------------
 

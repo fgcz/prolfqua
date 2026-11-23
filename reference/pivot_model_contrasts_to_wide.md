@@ -1,6 +1,8 @@
 # Pivot long-format model contrasts to wide format
 
-Pivot long-format model contrasts to wide format
+Turns a contrast table with one row per subject and contrast into one
+row per subject, as used by the `to_wide()` method of the contrast
+classes.
 
 ## Usage
 
@@ -33,7 +35,8 @@ pivot_model_contrasts_to_wide(
 
 ## Value
 
-Contrast definitions or contrast results.
+A tibble with one row per subject and one column per value column and
+contrast, named `<column>.<contrast>`.
 
 ## See also
 

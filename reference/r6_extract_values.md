@@ -1,6 +1,10 @@
 # Extract all value slots in an R6 object
 
-Extract all value slots in an R6 object
+Turns an R6 object, such as an
+[AnalysisConfiguration](https://fgcz.github.io/prolfqua/reference/AnalysisConfiguration.md),
+into a plain list that can be written to YAML;
+[`list_to_analysis_configuration()`](https://fgcz.github.io/prolfqua/reference/list_to_analysis_configuration.md)
+reads it back.
 
 ## Usage
 
@@ -16,7 +20,8 @@ r6_extract_values(r6class)
 
 ## Value
 
-The computed result.
+a named list with the value fields of `r6class`; fields holding other R6
+objects become nested lists, functions and environments are dropped.
 
 ## See also
 

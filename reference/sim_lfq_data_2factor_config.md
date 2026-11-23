@@ -1,7 +1,10 @@
-# Simulate data, protein, with config with 2 factors Treatment and Background
+# Simulate a two-factor design with its configuration
 
-Simulate data, protein, with config with 2 factors Treatment and
-Background
+Simulated protein (or peptide) intensities for a 2 x 2 design of
+`Treatment` and `Background` with four samples per cell, returned with a
+matching
+[AnalysisConfiguration](https://fgcz.github.io/prolfqua/reference/AnalysisConfiguration.md),
+ready for `LFQData$new()`.
 
 ## Usage
 
@@ -27,7 +30,7 @@ sim_lfq_data_2factor_config(
 
 - with_missing:
 
-  add missing values, default TRUE
+  one TRUE/FALSE: add missing values (default TRUE)
 
 - weight_missing:
 
@@ -35,16 +38,17 @@ sim_lfq_data_2factor_config(
 
 - peptide:
 
-  if TRUE, simulate peptide-level data; if FALSE, protein-level
+  one TRUE/FALSE: TRUE simulates peptide-level data, FALSE protein-level
+  data
 
 - seed:
 
-  seed for reproducibility, if NULL no seed is set.
+  NULL or one whole number; NULL sets no seed
 
 - two_factor:
 
-  if TRUE, model `Treatment` and `Background` as two factors; if FALSE,
-  as one combined factor
+  one TRUE/FALSE: TRUE models `Treatment` and `Background` as two
+  factors, FALSE as one combined factor
 
 - Nprot, PEPTIDE, TWO:
 

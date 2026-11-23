@@ -38,7 +38,7 @@ null_split_check(
 
 - n_splits:
 
-  number of distinct random splits.
+  one positive whole number of distinct random splits.
 
 - strata:
 
@@ -48,13 +48,13 @@ null_split_check(
 
 - n_features:
 
-  number of randomly chosen top-level features (`hierarchy_keys()[1]`)
-  to test; `NULL` (default) tests all.
+  `NULL` (default) tests all top-level features (`hierarchy_keys()[1]`);
+  one positive whole number tests that many, chosen at random.
 
 - seed:
 
-  `NULL` (default) uses the current random number generator state;
-  otherwise the draws run under
+  `NULL` (default) uses the current random number generator state; one
+  whole number runs the draws under
   [`withr::with_seed()`](https://withr.r-lib.org/reference/with_seed.html).
 
 - ...:

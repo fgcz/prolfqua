@@ -1,6 +1,8 @@
 # Compute variance, sd and related statistics for all factor levels
 
-Compute variance, sd and related statistics for all factor levels
+Summary statistics per protein for every level of the relevant factors
+and of their interaction, in one table; used to judge variability and
+missingness per group.
 
 ## Usage
 
@@ -17,7 +19,12 @@ summarize_stats_factors(lfqdata)
 
 ## Value
 
-The computed result.
+a tibble with one row per hierarchy element and factor level: the
+statistics of `LFQData$get_Stats()$stats()` (`nrReplicates`,
+`nrMeasured`, `nrNAs`, `sd`, `var`, `meanAbundance`, `medianAbundance`,
+`CV` for untransformed data) for the interaction of all relevant factors
+and, with more than one factor, for each factor alone; `interaction`
+names the level.
 
 ## Examples
 

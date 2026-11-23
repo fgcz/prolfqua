@@ -129,7 +129,7 @@ initialize
 
 #### Usage
 
-    ContrastsHurdleNestedFacade$new(lfqdata, modelstr, contrasts, ...)
+    ContrastsHurdleNestedFacade$new(lfqdata, modelstr, contrasts)
 
 #### Arguments
 
@@ -144,10 +144,6 @@ initialize
 - `contrasts`:
 
   named character vector of contrasts
-
-- `...`:
-
-  ignored; accepted for dispatch compatibility with other facades
 
 ------------------------------------------------------------------------
 
@@ -175,7 +171,7 @@ istar <- sim_lfq_data_peptide_config(n_proteins = 20, weight_missing = 0.5, seed
 #> setup_analysis: added 205 rows with NA response for feature and sample combinations absent from the input.
 lfq_peptide <- LFQData$new(istar$data, istar$config)
 lfq_peptide <- lfq_peptide$get_Transformer()$log2()$lfq
-#> Column added : log2_abundance
+#> Transformed response column added: log2_abundance
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 facade <- build_contrast_analysis(lfq_peptide, "~ group_", contrasts, method = "hurdle_nested")
 #> Warning: aggregate (medpolish): 1 subjects with estimation warning (e.g. 4JK499~3111): medpolish() did not converge in 10 iterations

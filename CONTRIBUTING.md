@@ -3,8 +3,8 @@
 ## Code of conduct
 
 Please note that this package is released with a [Contributor Code of
-Conduct](https://fgcz.github.io/prolfqua/CODE_OF_CONDUCT.html). By
-contributing to the package, you agree to abide by its terms.
+Conduct](https://ropensci.org/code-of-conduct/). By contributing to this
+project, you agree to abide by its terms.
 
 ## How you can contribute
 
@@ -29,7 +29,7 @@ a solution. Still stuck? Post your question as an [issue on
 GitHub](https://github.com/fgcz/prolfqua/issues).
 
 Want to ask a question in private? Contact the package maintainer by
-[mail](mailto:wew@fgcz.ethz.ch).
+[mail](mailto:witold.wolski@fgcz.uzh.ch).
 
 ### Propose an idea
 
@@ -44,12 +44,6 @@ to implement your idea, it helps to:
 - Keep the scope as narrow as possible.
 
 See below if you want to contribute code for your idea as well.
-
-### Get support for your metabolic cart
-
-Do you want your metabolic cart to be supported by the prolfqua package?
-Consider sending me example raw data files via
-[mail](mailto:wew@fgcz.ethz.ch).
 
 ### Report a bug
 
@@ -114,7 +108,7 @@ flow](https://guides.github.com/introduction/flow/) for development.
 2.  If you have forked and cloned the project before and it has been a
     while since you worked on it, [pull changes from the original
     repo](https://help.github.com/articles/merging-an-upstream-repository-into-your-fork/)
-    to your clone by using `git pull upstream master`.
+    to your clone by using `git pull upstream main`.
 3.  Open the RStudio project file (`.Rproj`).
 4.  Make your changes:
     - Write your code.

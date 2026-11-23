@@ -35,7 +35,8 @@ nr_features_experiment(
 
 ## Value
 
-The computed result.
+a tibble with one row per hierarchy element: `hierarchy_keys_depth` and
+`name_nr_child`, the number of distinct child features, observed or not.
 
 ## See also
 

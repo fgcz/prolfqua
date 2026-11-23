@@ -1,6 +1,7 @@
-# Level-specific contrasts (per secondary level)
+# Level-specific contrasts of a two-factor design
 
-Level-specific contrasts (per secondary level)
+For every pair of primary levels, their difference within each secondary
+level.
 
 ## Usage
 
@@ -20,7 +21,8 @@ level_specific_contrasts(primary_levels, secondary_levels)
 
 ## Value
 
-Contrast definitions or contrast results.
+A named list of contrast strings, one per pair of primary levels and
+secondary level, named `<high>_vs_<low>_at_<secondary>`.
 
 ## See also
 
@@ -34,9 +36,7 @@ Other contrasts:
 ## Examples
 
 ``` r
-# example code
-
-primary_levels <- c("MI", "MINOCAM")
+primary_levels <- c("KO", "WT")
 secondary_levels <- c("T0", "T150", "T300")
 x2 <- level_specific_contrasts(primary_levels, secondary_levels)
 x3 <- level_specific_contrasts(secondary_levels, primary_levels)

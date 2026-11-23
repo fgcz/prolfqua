@@ -1,6 +1,11 @@
-# Simulate data, protein and peptide, with config
+# Simulate peptide-level data with its configuration
 
-Simulate data, protein and peptide, with config
+Simulated peptide intensities of proteins in three groups (A, B, Ctrl),
+with missing values that are more likely at low intensity (see
+[`which_missing()`](https://fgcz.github.io/prolfqua/reference/which_missing.md)),
+returned with a matching
+[AnalysisConfiguration](https://fgcz.github.io/prolfqua/reference/AnalysisConfiguration.md),
+ready for `LFQData$new()`.
 
 ## Usage
 
@@ -24,7 +29,7 @@ sim_lfq_data_peptide_config(
 
 - with_missing:
 
-  add missing values, default TRUE
+  one TRUE/FALSE: add missing values (default TRUE)
 
 - weight_missing:
 
@@ -32,11 +37,11 @@ sim_lfq_data_peptide_config(
 
 - seed:
 
-  seed for reproducibility, if NULL no seed is set.
+  NULL or one whole number; NULL sets no seed
 
 - n_per_group:
 
-  number of replicates per group
+  one positive whole number of replicates per group
 
 - Nprot, N:
 

@@ -126,10 +126,6 @@ agg$aggregate()
 #> Columns added : srm_meanInt srm_meanIntRank
 p <- agg$plot()
 p$plots[[1]]
-#> Warning: Removed 7 rows containing missing values or values outside the scale range
-#> (`geom_point()`).
-#> Warning: Removed 4 rows containing missing values or values outside the scale range
-#> (`geom_line()`).
 
 
 agg_mean <- AggregateTopN$new(lfqdata, "protein", N = 3, func = "mean")
@@ -139,14 +135,6 @@ protPlotter <- agg_mean$lfq_agg$get_Plotter()
 protPlotter$heatmap()
 
 agg_mean$write_plots(tempdir())
-#> Warning: Removed 7 rows containing missing values or values outside the scale range
-#> (`geom_point()`).
-#> Warning: Removed 4 rows containing missing values or values outside the scale range
-#> (`geom_line()`).
-#> Warning: Removed 2 rows containing missing values or values outside the scale range
-#> (`geom_point()`).
-#> Warning: Removed 1 row containing missing values or values outside the scale range
-#> (`geom_line()`).
 #> Warning: Removed 1 row containing missing values or values outside the scale range
 #> (`geom_line()`).
 #> Warning: Removed 2 rows containing missing values or values outside the scale range
@@ -154,29 +142,7 @@ agg_mean$write_plots(tempdir())
 #> Warning: Removed 1 row containing missing values or values outside the scale range
 #> (`geom_point()`).
 #> Warning: Removed 1 row containing missing values or values outside the scale range
-#> (`geom_point()`).
-#> Warning: Removed 5 rows containing missing values or values outside the scale range
-#> (`geom_point()`).
-#> Warning: Removed 3 rows containing missing values or values outside the scale range
 #> (`geom_line()`).
 #> Warning: Removed 1 row containing missing values or values outside the scale range
 #> (`geom_point()`).
-#> Warning: Removed 1 row containing missing values or values outside the scale range
-#> (`geom_line()`).
-#> Warning: Removed 1 row containing missing values or values outside the scale range
-#> (`geom_line()`).
-#> Warning: Removed 1 row containing missing values or values outside the scale range
-#> (`geom_point()`).
-#> Warning: Removed 8 rows containing missing values or values outside the scale range
-#> (`geom_point()`).
-#> Warning: Removed 6 rows containing missing values or values outside the scale range
-#> (`geom_line()`).
-#> Warning: Removed 3 rows containing missing values or values outside the scale range
-#> (`geom_point()`).
-#> Warning: Removed 2 rows containing missing values or values outside the scale range
-#> (`geom_line()`).
-#> Warning: Removed 9 rows containing missing values or values outside the scale range
-#> (`geom_point()`).
-#> Warning: Removed 7 rows containing missing values or values outside the scale range
-#> (`geom_line()`).
 ```

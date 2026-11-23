@@ -47,7 +47,10 @@ strategy_limpa(
 
 ## Value
 
-The computed result.
+a
+[StrategyLimpa](https://fgcz.github.io/prolfqua/reference/StrategyLimpa.md)
+object holding the formula, model name, `eBayes()` options, plot flag
+and span.
 
 ## See also
 
@@ -128,7 +131,7 @@ Other modelling:
 strat <- strategy_limpa("abundance ~ group_")
 strat$formula
 #> abundance ~ group_
-#> <environment: 0x63b3213ae8d8>
+#> <environment: 0x64162ce59f18>
 strat$model_name
 #> [1] "limpa"
 ```

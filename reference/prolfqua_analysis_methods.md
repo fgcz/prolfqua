@@ -146,8 +146,13 @@ with `prediction` on the fitting scale (probabilities for detection
 models; mixed models at population level, without random effects) and
 `imputed` (the subject's fit is a limit-of-detection refit). Hurdle
 results predict per component. The fit status counts subjects that did
-not converge (`not_converged`); per subject, `converged` and
-`iterations` are columns of the model table (`analysis$model$model_df`).
+not converge (`not_converged`). Per subject, `converged` and
+`iterations` are columns of the model table: `analysis$model$model_df`
+for per-subject backends, `analysis$model$models$model_df` for `firth`;
+hurdle results keep one table per component
+(`analysis$contrast$intensity$model`,
+`analysis$contrast$detection$model`). Matrix backends (limma, deqms,
+limpa) keep no per-subject status.
 
 ## See also
 
@@ -295,7 +300,7 @@ head(stats::confint(analysis))
 #> 6 2kfAGV~7674 group_Ctrl     0.123     0.863     9    -1.83      2.07
 stats::formula(analysis)
 #> abundance ~ group_
-#> <environment: 0x63b311bd2a60>
+#> <environment: 0x64162a686490>
 head(stats::nobs(analysis))
 #> # A tibble: 6 × 2
 #>   protein_Id   nobs

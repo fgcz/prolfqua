@@ -399,7 +399,7 @@ Sample size for each protein
 x |> ggplot2::ggplot(ggplot2::aes(x = N)) +
   ggplot2::geom_histogram() +
   ggplot2::facet_wrap(~delta) +
-  ggplot2::xlim(0,100) +
+  ggplot2::coord_cartesian(xlim = c(0, 100)) +
   prolfqua::theme_prolfqua()
 ```
 

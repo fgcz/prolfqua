@@ -59,7 +59,7 @@ Fit the Firth-penalized nested detection-count model and its contrasts.
       modelstr,
       contrasts,
       binomial_bound = TRUE,
-      ...
+      control = list()
     )
 
 #### Arguments
@@ -81,9 +81,9 @@ Fit the Firth-penalized nested detection-count model and its contrasts.
 
   bound posterior dispersion below by one
 
-- `...`:
+- `control`:
 
-  passed to
+  named list of convergence controls, see
   [`strategy_binomial_firth`](https://fgcz.github.io/prolfqua/reference/strategy_binomial_firth.md)
 
 ------------------------------------------------------------------------

@@ -7,17 +7,17 @@ single function, build_contrast_analysis(), fits a model per protein and
 computes contrasts with one of many methods: linear, robust and
 rank-based regression, 'limma' and 'limma'-voom, 'DEqMS' variance
 moderation, the detection probability model of 'limpa', Firth logistic
-and binomial models of detection, mixed models and ROPECA on
-peptide-level data, a hurdle model combining intensity and detection,
-and variants that impute groups without observations at the limit of
-detection. All methods return their results through the same interface
-and columns, so they can be compared and combined. Models simple designs
-with one explanatory variable as well as experiments with several
-factors. Intended for proteomics core facilities and researchers
-analysing protein or peptide intensities quantified with MaxQuant,
-DIA-NN, Spectronaut, FragPipe or similar software. Developed while
-analysing dozens of proteomics datasets at the Functional Genomics
-Center Zurich.
+and binomial models of detection, mixed models and a median-peptide test
+derived from ROPECA on peptide-level data, a hurdle model combining
+intensity and detection, and variants that impute groups without
+observations at the limit of detection. All methods return their results
+through the same interface and columns, so they can be compared and
+combined. Models simple designs with one explanatory variable as well as
+experiments with several factors. Intended for proteomics core
+facilities and researchers analysing protein or peptide intensities
+quantified with MaxQuant, DIA-NN, Spectronaut, FragPipe or similar
+software. Developed while analysing dozens of proteomics datasets at the
+Functional Genomics Center Zurich.
 
 ## Audience
 
@@ -51,9 +51,15 @@ one laptop; times scale with the machine.
   aggregates, takes about 1.5 s per 1,000 proteins.
 
 - Per-subject backends fit one model per protein or peptide on a single
-  thread: about 1.7 ms per protein for `lm`, 2 to 3 ms per peptide for
-  the ROPECA methods, 10 ms per protein for `hurdle_nested` and 16 ms
-  for `lmer_nested`, which is about three minutes at 10,000 proteins.
+  thread, contrasts included: about 1 ms per protein for `lm`, 1 ms per
+  peptide for the ROPECA methods, 5 ms per protein for `hurdle_nested`
+  and 10 to 16 ms for `lmer_nested`, which is two to three minutes at
+  10,000 proteins.
+
+- Aggregation of peptides to proteins takes about 1 ms per protein with
+  median polish and 4 ms with `rlm`. The QC writers take about 0.1 s
+  (`write_plots()`) and 0.2 s (`write_boxplots()`) per protein, one page
+  each; `write_plots(subset = )` limits their cost.
 
 - Per-subject backends keep every fitted model (about 9 KB per protein
   for `lm`, 40 KB for `lmer_nested`), so that
@@ -100,6 +106,25 @@ rows (`prolfqua_error_bad_argument`). A subject whose residual variance
 is zero (constant or noiseless response) keeps its estimated difference,
 but its test statistics are `NA`, with a `prolfqua_zero_variance`
 warning, and it is left out of the variance moderation prior.
+
+## Input types and conversion
+
+[`LFQData`](https://fgcz.github.io/prolfqua/reference/LFQData.md)`$new()`
+accepts a long table as data.frame, tibble or data.table and stores it
+as a tibble. The response must be numeric; it is stored as a plain
+double, without extra classes or attributes such as
+[`I()`](https://rdrr.io/r/base/AsIs.html), units or labels (announced).
+In
+[`setup_analysis`](https://fgcz.github.io/prolfqua/reference/setup_analysis.md),
+factor columns stay factors, so their level order sets the reference
+level of the design; ordered factors become unordered and unused levels
+are dropped (announced). Numeric, logical or Date factor columns become
+character labels (announced), whose reference level is the first sorted
+label. Hierarchy columns are used by their labels. List columns holding
+the response or a hierarchy, factor or sample column are refused with a
+`prolfqua_error_bad_argument`; other list columns are dropped by setup.
+Single-valued arguments (flags, counts, seeds, probabilities) must have
+length one; counts must be whole numbers and are converted to integer.
 
 ## Provenance
 
@@ -266,8 +291,8 @@ Useful links:
 
 ## Author
 
-**Maintainer**: Christian Panse <cp@fgcz.ethz.ch>
-([ORCID](https://orcid.org/0000-0003-1975-3064))
+**Maintainer**: Witold Wolski <witold.wolski@fgcz.uzh.ch>
+([ORCID](https://orcid.org/0000-0002-6468-120X))
 
 Authors:
 
@@ -276,5 +301,10 @@ Authors:
 
 Other contributors:
 
+- Jonas Grossmann \[contributor\]
+
 - Functional Genomics Center Zurich ([ROR](https://ror.org/04tgr1802))
   \[funder\]
+
+- University of Zurich ([ROR](https://ror.org/02crff812)) \[copyright
+  holder\]

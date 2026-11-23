@@ -1,6 +1,11 @@
 # Reconstruct a configuration from minimal YAML
 
-Reconstruct a configuration from minimal YAML
+The inverse of
+[`r6_extract_values()`](https://fgcz.github.io/prolfqua/reference/r6_extract_values.md):
+rebuilds an
+[AnalysisConfiguration](https://fgcz.github.io/prolfqua/reference/AnalysisConfiguration.md)
+from the list read from a YAML file, in the current flat format or the
+older nested one. Unknown keys raise an error.
 
 ## Usage
 
@@ -17,7 +22,9 @@ list_to_analysis_configuration(dd)
 
 ## Value
 
-The computed result.
+an
+[AnalysisConfiguration](https://fgcz.github.io/prolfqua/reference/AnalysisConfiguration.md)
+with the fields set from `dd`.
 
 ## Examples
 

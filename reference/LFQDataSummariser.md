@@ -1,6 +1,10 @@
 # Summarize LFQData
 
-Summarize LFQData
+Counts and summaries of an
+[LFQData](https://fgcz.github.io/prolfqua/reference/LFQData.md) object:
+features per hierarchy level overall and per sample, missing values per
+protein and group, and the percentage abundance of proteins. Obtained
+with `LFQData$get_Summariser()`.
 
 ## Value
 

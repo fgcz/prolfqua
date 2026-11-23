@@ -1,4 +1,4 @@
 # License
 
-    YEAR: 2024
-    COPYRIGHT HOLDER: Witold Wolski
+    YEAR: 2018-2026
+    COPYRIGHT HOLDER: University of Zurich

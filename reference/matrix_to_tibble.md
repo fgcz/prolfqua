@@ -24,7 +24,9 @@ matrix_to_tibble(x, preserve_row_names = "row.names", ...)
 
 ## Value
 
-The computed result.
+a tibble with the columns of `x`, preceded by a column
+`preserve_row_names` holding the row names unless `preserve_row_names`
+is `NULL`.
 
 ## Note
 

@@ -1,6 +1,11 @@
 # R6 class representing modelling result
 
-R6 class representing modelling result
+Holds one fitted model per subject (for example protein) from
+[`build_model()`](https://fgcz.github.io/prolfqua/reference/build_model.md),
+together with the model table (`model_df`: fit, residual degrees of
+freedom, sigma, convergence) and accessors for coefficients, ANOVA
+tables and their plots. Contrasts are computed from it with
+[Contrasts](https://fgcz.github.io/prolfqua/reference/Contrasts.md).
 
 ## Value
 
@@ -214,7 +219,7 @@ istar <- sim_lfq_data_peptide_config(n_proteins = 20)
 #> setup_analysis: added 110 rows with NA response for feature and sample combinations absent from the input.
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata <- lfqdata$get_Transformer()$log2()$lfq
-#> Column added : log2_abundance
+#> Transformed response column added: log2_abundance
 model_name <- "f_condtion_r_peptide"
 formula_randomPeptide <-
   strategy_lmer(paste0(lfqdata$response(), " ~ group_ + (1 | peptide_Id)"),

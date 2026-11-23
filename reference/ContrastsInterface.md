@@ -1,6 +1,11 @@
 # Base class for all Contrasts classes
 
-Base class for all Contrasts classes
+Defines the methods every contrast class provides. Subclasses implement
+`get_contrasts()`; the shared methods (`get_Plotter()`, `to_wide()`,
+`get_rank()`, `get_ora()`, `filter_significant()`, `get_missing()`)
+build on it, so they behave the same for every modelling backend.
+Contrast objects are usually obtained from
+[`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md).
 
 ## Value
 

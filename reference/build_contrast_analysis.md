@@ -44,15 +44,20 @@ build_contrast_analysis(lfqdata, modelstr, contrasts, method = "lm", ...)
   `"hurdle_nested"`, combining intensity and detection. Downstream
   packages may add more via
   [`register_facade`](https://fgcz.github.io/prolfqua/reference/register_facade.md).
-  The Keys and column names are case sensitive and must match exactly.
-  The authoritative list is
+  Method names are case sensitive and must match exactly, as must the
+  factor and column names in `modelstr` and `contrasts`. The
+  authoritative list is
   `names(`[`list_facades`](https://fgcz.github.io/prolfqua/reference/list_facades.md)`())`.
   Defaults to `"lm"`.
 
 - ...:
 
-  additional arguments forwarded to the underlying strategy function
-  (e.g. `trend`, `robust` for `strategy_limma`)
+  arguments of the method's facade constructor, e.g. `weights`, `trend`
+  and `robust` for the limma methods or `control` for the iterative
+  fits; each facade's help page lists them
+  ([`ContrastsLimmaFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsLimmaFacade.md),
+  [`ContrastsRLMFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsRLMFacade.md),
+  ...). An argument the facade does not take is an error.
 
 ## Value
 
@@ -69,14 +74,15 @@ with
 
 The formula is translated into a design matrix with R's current contrast
 options (normally treatment coding). Configured predictors are
-categorical labels; their reference level is normally the first sorted
-level. Each contrast expression combines group-level coefficient
-weights, rather than referring directly to design-matrix coefficient
-names. For example, `"group_A - group_Ctrl"` subtracts the control group
-mean from the A group mean, including the reference coefficient as
-needed. Interaction cell means are named with a colon and quoted with
-backticks inside expressions. See the *Under the hood* article for
-worked one-factor and `~ A * B` design matrices and linear functions.
+categorical labels; their reference level is the first level of a factor
+column, or the first sorted label of a character column. Each contrast
+expression combines group-level coefficient weights, rather than
+referring directly to design-matrix coefficient names. For example,
+`"group_A - group_Ctrl"` subtracts the control group mean from the A
+group mean, including the reference coefficient as needed. Interaction
+cell means are named with a colon and quoted with backticks inside
+expressions. See the *Under the hood* article for worked one-factor and
+`~ A * B` design matrices and linear functions.
 
 Internally, `limpa_nested` and `hurdle_nested` aggregate child features
 to proteins. Detection methods (`binomial_nested`,
@@ -98,9 +104,9 @@ With a fixed design and fixed observations per protein, the per-protein
 `lm` and `lmer_nested` fitting loops grow approximately linearly with
 the number of proteins and run sequentially. `limma` fits the expression
 matrix in one call and has lower per-protein overhead. Single-run
-elapsed seconds for 500, 1000 and 2000 proteins were respectively 0.173,
-0.288 and 0.592 for `lm`; 0.077, 0.043 and 0.050 for `limma`; and 7.902,
-15.314 and 29.667 for `lmer_nested` (R 4.6.2, arm64 macOS, 12 samples,
+elapsed seconds for 500, 1000 and 2000 proteins were respectively 0.317,
+0.429 and 0.911 for `lm`; 0.061, 0.057 and 0.059 for `limma`; and 8.18,
+15.76 and 31.50 for `lmer_nested` (R 4.6.2, arm64 macOS, 12 samples,
 three peptides per protein for the nested model, no missing responses).
 These timings cover facade construction, including fitting, but exclude
 lazy contrast extraction. They are illustrative timings, not guarantees:
@@ -116,9 +122,12 @@ Reproduction code and environment details are in
   `limma_voom` (limma), `deqms` (DEqMS), `limpa` and `limpa_nested`
   (limpa), `lmer_nested` (lme4, lmerTest), `firth` (logistf).
 
-- Reimplementation in R of a published method: `ropeca_nested`, ROPECA
-  (Suomi and Elo 2017, Bioconductor package PECA), on peptide-level
-  models of any design.
+- Derivation of a published method: `ropeca_nested` follows the
+  peptide-median method of PECA and ROPECA (Suomi and Elo 2017,
+  Bioconductor package PECA) without its ROTS step, on per-peptide
+  linear models of any design;
+  [`ContrastsROPECANestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECANestedFacade.md)
+  lists what differs and compares it with PECA.
 
 - First implementations of new methods: the `_impute` methods
   (`lm_impute`, `rfit_impute`, `limma_impute`, `limma_voom_impute`),
@@ -277,7 +286,7 @@ istar_pep <- sim_lfq_data_peptide_config()
 #> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
 lfqdata_pep <- LFQData$new(istar_pep$data, istar_pep$config)
 lfqdata_pep <- lfqdata_pep$get_Transformer()$log2()$lfq
-#> Column added : log2_abundance
+#> Transformed response column added: log2_abundance
 
 fa_lmer <- build_contrast_analysis(
   lfqdata_pep,
@@ -329,14 +338,14 @@ fa_firth <- build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "fi
 head(fa_firth$get_contrasts())
 #> # A tibble: 6 × 16
 #>   modelName estimate_type protein_Id  contrast  sigma    df      diff   FDR
-#>   <chr>     <chr>         <chr>       <chr>     <dbl> <int>     <dbl> <dbl>
-#> 1 firth     observed      0EfVhX~5954 A_vs_Ctrl     1     9  1.07e-15     1
-#> 2 firth     observed      0m5WN4~1448 A_vs_Ctrl     1     9 -2.20e+ 0     1
-#> 3 firth     observed      7cbcrd~8305 A_vs_Ctrl     1     9  1.07e-15     1
-#> 4 firth     observed      9VUkAq~4562 A_vs_Ctrl     1     9 -1.35e+ 0     1
-#> 5 firth     observed      At886V~3296 A_vs_Ctrl     1     9  5.58e-16     1
-#> 6 firth     observed      BEJI92~9143 A_vs_Ctrl     1     9 -1.35e+ 0     1
+#>   <chr>     <chr>         <chr>       <chr>     <dbl> <dbl>     <dbl> <dbl>
+#> 1 firth     observed      0EfVhX~5954 A_vs_Ctrl     1   Inf  4.27e-16 1    
+#> 2 firth     observed      0m5WN4~1448 A_vs_Ctrl     1   Inf -2.20e+ 0 0.878
+#> 3 firth     observed      7cbcrd~8305 A_vs_Ctrl     1   Inf  4.27e-16 1    
+#> 4 firth     observed      9VUkAq~4562 A_vs_Ctrl     1   Inf -1.35e+ 0 1    
+#> 5 firth     observed      At886V~3296 A_vs_Ctrl     1   Inf  5.58e-16 1    
+#> 6 firth     observed      BEJI92~9143 A_vs_Ctrl     1   Inf -1.35e+ 0 1    
 #> # ℹ 8 more variables: std.error <dbl>, statistic <dbl>, p.value <dbl>,
 #> #   conf.low <dbl>, conf.high <dbl>, avgAbd <dbl>, std.error.unmoderated <dbl>,
-#> #   df.unmoderated <int>
+#> #   df.unmoderated <dbl>
 ```

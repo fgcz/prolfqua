@@ -17,12 +17,13 @@ lfqdata_from_wide(values, rowdata, annotation, config, prefix = "ms")
 
   a matrix (features in rows, samples in columns), stored under
   `config$get_response()`, or a named list of such matrices with
-  identical dimensions and column names; list names are the value
-  columns
+  identical dimensions, row names and column names; list names are the
+  value columns
 
 - rowdata:
 
-  data.frame with one row per matrix row and the hierarchy key columns
+  data.frame with one row per matrix row and the hierarchy key columns,
+  which must identify each row uniquely
 
 - annotation:
 

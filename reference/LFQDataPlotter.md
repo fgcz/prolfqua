@@ -1,6 +1,12 @@
-# LFQDataPlotter —- Create various visualization of the LFQdata
+# Plot LFQData
 
-LFQDataPlotter —- Create various visualization of the LFQdata
+Plots of an
+[LFQData](https://fgcz.github.io/prolfqua/reference/LFQData.md) object:
+intensity distributions, boxplots per protein, heatmaps of intensities,
+correlations and missing values, PCA, pairs plots and UpSet plots of
+missingness. Obtained with `LFQData$get_Plotter()`; the `write_*`
+methods write per-protein plots to PDF files. Create various
+visualization of the LFQData
 
 ## Value
 

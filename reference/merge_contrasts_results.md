@@ -28,7 +28,11 @@ merge_contrasts_results(prefer, add, model_name)
 
 ## Value
 
-Contrast definitions or contrast results.
+A list of three
+[ContrastsTable](https://fgcz.github.io/prolfqua/reference/ContrastsTable.md)
+objects: `merged`, all contrasts of `prefer` plus those of `add` for
+subjects missing from `prefer`; `more`, only the added contrasts;
+`same`, the contrasts of `add` for subjects that `prefer` already has.
 
 ## See also
 

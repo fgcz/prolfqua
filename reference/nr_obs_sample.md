@@ -46,7 +46,9 @@ nr_obs_sample(
 
 ## Value
 
-The computed result.
+a tibble with one row per hierarchy element and sample:
+`hierarchy_keys_depth`, `file_name` and `new_child`, the sum of
+`nr_children_col` over rows with an observed response.
 
 ## See also
 

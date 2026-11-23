@@ -1,6 +1,12 @@
 # Limma moderated contrasts
 
-Limma moderated contrasts
+Wraps a contrast object such as
+[Contrasts](https://fgcz.github.io/prolfqua/reference/Contrasts.md) and
+replaces its standard errors and p-values with limma's empirical Bayes
+moderation: per-subject residual variances are shrunk towards a common
+prior
+([`limma::squeezeVar()`](https://rdrr.io/pkg/limma/man/squeezeVar.html)),
+which adds prior degrees of freedom. Fold changes are unchanged.
 
 ## Value
 

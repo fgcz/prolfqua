@@ -6,8 +6,6 @@
   prolfqua](https://fgcz.github.io/prolfqua/articles/prolfqua.md):
 - [Importing your data:
   AnalysisConfiguration](https://fgcz.github.io/prolfqua/articles/CreatingConfigurations.md):
-- [Transforming and calibrating LFQ
-  data](https://fgcz.github.io/prolfqua/articles/TransformingLFQData.md):
 - [Comparing Two Groups with
   prolfqua](https://fgcz.github.io/prolfqua/articles/Comparing2Groups.md):
 - [All modelling methods at a
@@ -20,6 +18,8 @@
   PCA](https://fgcz.github.io/prolfqua/articles/ModelBasedImputation.md):
 - [QC and Sample Size
   Estimation](https://fgcz.github.io/prolfqua/articles/QualityControlAndSampleSizeEstimation.md):
+- [Transforming and calibrating LFQ
+  data](https://fgcz.github.io/prolfqua/articles/TransformingLFQData.md):
 
 ### More articles
 

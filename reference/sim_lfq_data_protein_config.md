@@ -1,6 +1,11 @@
-# Simulate data, protein, with config
+# Simulate protein-level data with its configuration
 
-Simulate data, protein, with config
+Simulated protein intensities in three groups (A, B, Ctrl), with missing
+values that are more likely at low intensity (see
+[`which_missing()`](https://fgcz.github.io/prolfqua/reference/which_missing.md)),
+returned with a matching
+[AnalysisConfiguration](https://fgcz.github.io/prolfqua/reference/AnalysisConfiguration.md),
+ready for `LFQData$new()`.
 
 ## Usage
 
@@ -23,7 +28,7 @@ sim_lfq_data_protein_config(
 
 - with_missing:
 
-  add missing values, default TRUE
+  one TRUE/FALSE: add missing values (default TRUE)
 
 - weight_missing:
 
@@ -31,11 +36,11 @@ sim_lfq_data_protein_config(
 
 - seed:
 
-  seed for reproducibility, if NULL no seed is set.
+  NULL or one whole number; NULL sets no seed
 
 - paired:
 
-  if TRUE, add a paired subject factor to the design
+  one TRUE/FALSE: add a paired subject factor to the design
 
 - Nprot:
 

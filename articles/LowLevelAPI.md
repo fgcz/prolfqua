@@ -304,6 +304,12 @@ the other steps stay the same.
 
 ``` r
 mod_rlm <- build_model(lfq, strategy_rlm(paste(lfq$response(), "~ group_")))
+```
+
+    ## Warning: fit (Model): 7 fits with a warning (e.g. bzNYQZ~9486, cnCfON~9769, LMQBev~8107, McjZyZ~3638, oXGLMQ~9289, ...): 'rlm' failed to converge in 20 steps
+    ## See $provenance().
+
+``` r
 contr_rlm <- ContrastsModerated$new(Contrasts$new(mod_rlm, contrasts, model_name = "rlm"))
 head(contr_rlm$get_contrasts()[, c("protein_Id", "contrast", "diff", "p.value", "FDR")])
 ```

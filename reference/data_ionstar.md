@@ -5,7 +5,8 @@ with E. coli spike-in dilution series (dilutions a to e, 4 replicates
 each), processed with MaxQuant. An R6 object holding the data, its
 [`AnalysisConfiguration`](https://fgcz.github.io/prolfqua/reference/AnalysisConfiguration.md),
 and the methods `filtered()`, `normalized()` and `subset_normalized()`.
-See `inst/script/README.md` for its origin.
+See `system.file("script", "README.md", package = "prolfqua")` for its
+origin.
 
 ## Usage
 
@@ -28,5 +29,4 @@ Other data:
 [`PACKAGE_DATA`](https://fgcz.github.io/prolfqua/reference/PACKAGE_DATA.md),
 [`data_checksummarizationrobust87`](https://fgcz.github.io/prolfqua/reference/data_checksummarizationrobust87.md),
 [`data_checksummarizerobust69`](https://fgcz.github.io/prolfqua/reference/data_checksummarizerobust69.md),
-[`prolfqua_data()`](https://fgcz.github.io/prolfqua/reference/prolfqua_data.md),
-[`x5463yzwer453bbb`](https://fgcz.github.io/prolfqua/reference/x5463yzwer453bbb.md)
+[`prolfqua_data()`](https://fgcz.github.io/prolfqua/reference/prolfqua_data.md)

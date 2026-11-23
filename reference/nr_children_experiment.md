@@ -44,7 +44,8 @@ nr_children_experiment(
 
 ## Value
 
-The computed result.
+a tibble with one row per hierarchy element: `hierarchy_keys_depth` and
+`name_nr_child`, the largest per-sample count of observed children.
 
 ## See also
 

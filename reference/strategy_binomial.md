@@ -1,6 +1,9 @@
 # Create a quasibinomial detection-count strategy
 
-Create a quasibinomial detection-count strategy
+Models, per protein, how many of its peptides are detected in each
+sample with a quasibinomial GLM; a small pseudo-count avoids infinite
+estimates when all or none are detected. Used by the `binomial_nested`
+method.
 
 ## Usage
 
@@ -47,5 +50,5 @@ object.
 strategy <- strategy_binomial("~ group_", prior_count = 0.1)
 strategy$formula
 #> cbind(.detected, .undetected) ~ group_
-#> <environment: 0x63b3207f7010>
+#> <environment: 0x64162ad08ba0>
 ```

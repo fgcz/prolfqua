@@ -135,7 +135,8 @@ initialize
       weights = lfqdata$nr_children_col(),
       span = 0.5,
       plot = FALSE,
-      ...
+      trend = FALSE,
+      robust = FALSE
     )
 
 #### Arguments
@@ -166,11 +167,10 @@ initialize
 
   logical; if TRUE, plot the mean-variance trend
 
-- `...`:
+- `trend, robust`:
 
-  passed to
+  passed to [`eBayes`](https://rdrr.io/pkg/limma/man/ebayes.html), see
   [`strategy_limma`](https://fgcz.github.io/prolfqua/reference/strategy_limma.md)
-  (e.g. trend, robust)
 
 ------------------------------------------------------------------------
 

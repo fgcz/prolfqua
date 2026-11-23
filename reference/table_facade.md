@@ -1,6 +1,8 @@
-# Table facade to easily switch implementations
+# Format a table for reports
 
-Table facade to easily switch implementations
+Formats a table for reports with
+[`knitr::kable()`](https://rdrr.io/pkg/knitr/man/kable.html), or returns
+it unchanged, so report code does not depend on the table package.
 
 ## Usage
 

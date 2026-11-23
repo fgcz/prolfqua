@@ -1,6 +1,13 @@
-# Estimate contrasts using Wald Test
+# Contrasts of Firth logistic regression models
 
-Estimate contrasts using Wald Test
+Wald tests of contrasts of
+[ModelFirth](https://fgcz.github.io/prolfqua/reference/ModelFirth.md)
+fits, one per subject and contrast, on the log-odds scale of protein
+detection. The reference distribution is normal (`df = Inf`), as in the
+coefficient table of logistf and
+[`confint()`](https://rdrr.io/r/stats/confint.html). Used by the `firth`
+method of
+[`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md).
 
 ## Value
 
@@ -295,6 +302,7 @@ ctr$get_linfct()
 #>     sigma: function (model) 
 #>     zero_residual_variance: function (sigma, scale) 
 #>   Private:
+#>     check_packages: function () 
 #>     control_defaults: function () 
 #>     control_names: function () 
 #>     fit: function (DFT) 
@@ -303,29 +311,29 @@ ctr$get_linfct()
 ctr$get_contrasts()
 #> # A tibble: 20 × 16
 #>    modelName estimate_type protein_Id  contrast sigma    df      diff   FDR
-#>    <chr>     <chr>         <chr>       <chr>    <dbl> <int>     <dbl> <dbl>
-#>  1 firth     observed      7IZdVV~0841 Avs          1     9 -2.20e+ 0 0.769
-#>  2 firth     observed      7IZdVV~0841 AvsCtrl      1     9 -2.94e-17 1    
-#>  3 firth     observed      AZPG26~2091 Avs          1     9  2.75e-16 1    
-#>  4 firth     observed      AZPG26~2091 AvsCtrl      1     9  5.58e-16 1    
-#>  5 firth     observed      AoNKbb~6908 Avs          1     9  8.47e- 1 0.769
-#>  6 firth     observed      AoNKbb~6908 AvsCtrl      1     9 -1.35e+ 0 1    
-#>  7 firth     observed      EnbuYk~0350 Avs          1     9  1.69e+ 0 0.769
-#>  8 firth     observed      EnbuYk~0350 AvsCtrl      1     9  8.47e- 1 1    
-#>  9 firth     observed      JnEDsz~4938 Avs          1     9  1.35e+ 0 0.769
-#> 10 firth     observed      JnEDsz~4938 AvsCtrl      1     9 -8.47e- 1 1    
-#> 11 firth     observed      NNASGK~1417 Avs          1     9  1.52e-15 1    
-#> 12 firth     observed      NNASGK~1417 AvsCtrl      1     9  1.07e-15 1    
-#> 13 firth     observed      XYrp6h~5793 Avs          1     9  1.52e-15 1    
-#> 14 firth     observed      XYrp6h~5793 AvsCtrl      1     9  1.07e-15 1    
-#> 15 firth     observed      quTD7H~4566 Avs          1     9  3.04e+ 0 0.769
-#> 16 firth     observed      quTD7H~4566 AvsCtrl      1     9  2.20e+ 0 1    
-#> 17 firth     observed      tCZCHm~6695 Avs          1     9  1.35e+ 0 0.769
-#> 18 firth     observed      tCZCHm~6695 AvsCtrl      1     9 -4.13e-16 1    
-#> 19 firth     observed      tHE075~8231 Avs          1     9  8.47e- 1 0.769
-#> 20 firth     observed      tHE075~8231 AvsCtrl      1     9  8.47e- 1 1    
+#>    <chr>     <chr>         <chr>       <chr>    <dbl> <dbl>     <dbl> <dbl>
+#>  1 firth     observed      7IZdVV~0841 Avs          1   Inf -2.20e+ 0 0.732
+#>  2 firth     observed      7IZdVV~0841 AvsCtrl      1   Inf  3.22e-16 1    
+#>  3 firth     observed      AZPG26~2091 Avs          1   Inf  2.75e-16 1    
+#>  4 firth     observed      AZPG26~2091 AvsCtrl      1   Inf  5.58e-16 1    
+#>  5 firth     observed      AoNKbb~6908 Avs          1   Inf  8.47e- 1 0.746
+#>  6 firth     observed      AoNKbb~6908 AvsCtrl      1   Inf -1.35e+ 0 1    
+#>  7 firth     observed      EnbuYk~0350 Avs          1   Inf  1.69e+ 0 0.732
+#>  8 firth     observed      EnbuYk~0350 AvsCtrl      1   Inf  8.47e- 1 1    
+#>  9 firth     observed      JnEDsz~4938 Avs          1   Inf  1.35e+ 0 0.746
+#> 10 firth     observed      JnEDsz~4938 AvsCtrl      1   Inf -8.47e- 1 1    
+#> 11 firth     observed      NNASGK~1417 Avs          1   Inf -1.26e-15 1    
+#> 12 firth     observed      NNASGK~1417 AvsCtrl      1   Inf  4.27e-16 1    
+#> 13 firth     observed      XYrp6h~5793 Avs          1   Inf -1.26e-15 1    
+#> 14 firth     observed      XYrp6h~5793 AvsCtrl      1   Inf  4.27e-16 1    
+#> 15 firth     observed      quTD7H~4566 Avs          1   Inf  3.04e+ 0 0.732
+#> 16 firth     observed      quTD7H~4566 AvsCtrl      1   Inf  2.20e+ 0 1    
+#> 17 firth     observed      tCZCHm~6695 Avs          1   Inf  1.35e+ 0 0.746
+#> 18 firth     observed      tCZCHm~6695 AvsCtrl      1   Inf  2.16e-15 1    
+#> 19 firth     observed      tHE075~8231 Avs          1   Inf  8.47e- 1 0.746
+#> 20 firth     observed      tHE075~8231 AvsCtrl      1   Inf  8.47e- 1 1    
 #> # ℹ 8 more variables: std.error <dbl>, statistic <dbl>, p.value <dbl>,
 #> #   conf.low <dbl>, conf.high <dbl>, avgAbd <dbl>, std.error.unmoderated <dbl>,
-#> #   df.unmoderated <int>
+#> #   df.unmoderated <dbl>
 pl <- ctr$get_Plotter()
 ```

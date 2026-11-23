@@ -145,7 +145,8 @@ initialize
       dpc_slope = 0.8,
       plot = FALSE,
       span = NULL,
-      ...
+      trend = FALSE,
+      robust = FALSE
     )
 
 #### Arguments
@@ -180,11 +181,10 @@ initialize
 
   lowess smoother span (NULL = auto)
 
-- `...`:
+- `trend, robust`:
 
-  passed to
+  passed to [`eBayes`](https://rdrr.io/pkg/limma/man/ebayes.html), see
   [`strategy_limpa`](https://fgcz.github.io/prolfqua/reference/strategy_limpa.md)
-  (e.g. trend, robust)
 
 ------------------------------------------------------------------------
 
@@ -217,7 +217,7 @@ if (requireNamespace("limpa", quietly = TRUE)) {
 #> creating sampleName from file_name column
 #> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
 #> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
-#> Column added : log2_abundance
+#> Transformed response column added: log2_abundance
 #> # A tibble: 6 × 16
 #>   modelName    estimate_type protein_Id  contrast     diff      FDR
 #>   <chr>        <chr>         <chr>       <chr>       <dbl>    <dbl>

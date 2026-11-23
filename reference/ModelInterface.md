@@ -1,6 +1,10 @@
 # R6 interface class representing modelling result
 
-R6 interface class representing modelling result
+Defines the methods every model class provides: coefficients, ANOVA
+tables, their plots and the provenance log of the fit.
+[Model](https://fgcz.github.io/prolfqua/reference/Model.md),
+[ModelFirth](https://fgcz.github.io/prolfqua/reference/ModelFirth.md)
+and the limma-based models implement it.
 
 ## Value
 

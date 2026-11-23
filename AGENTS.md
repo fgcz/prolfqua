@@ -244,7 +244,7 @@ downstream packages.
 - **When fixing a bug, first add a test that reproduces it**, then fix.
   This ensures regressions are caught.
 
-58 test files in `tests/testthat/`; the main ones: - `test-LFQData.R` —
+60 test files in `tests/testthat/`; the main ones: - `test-LFQData.R` —
 Core data container and decorators - `test-Model.R` — Model fitting and
 coefficient extraction - `test-Contrasts.R` — Contrast computation (Wald
 test path) - `test-ContrastsFacades.R` — All facade classes and

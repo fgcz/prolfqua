@@ -240,19 +240,21 @@ compute sample size for entire dataset
 
 - `probs`:
 
-  quantiles of sd for which sample size should be computed
+  numeric vector of probabilities in \[0, 1\]: the quantiles of the sd
+  for which sample sizes are computed
 
 - `delta`:
 
-  effect size
+  numeric vector of positive effect sizes (differences on the response
+  scale)
 
 - `power`:
 
-  power of test
+  one number in (0, 1), the power of the test
 
 - `sig.level`:
 
-  significance level.
+  one number in (0, 1), the significance level
 
 ------------------------------------------------------------------------
 
@@ -268,15 +270,16 @@ compute sample for each protein
 
 - `delta`:
 
-  effect size
+  numeric vector of positive effect sizes (differences on the response
+  scale)
 
 - `power`:
 
-  power of test
+  one number in (0, 1), the power of the test
 
 - `sig.level`:
 
-  significance level.
+  one number in (0, 1), the significance level
 
 ------------------------------------------------------------------------
 
@@ -383,10 +386,6 @@ lfqdata <- LFQData$new(bb$data, bb$config)
 lfqstats <- lfqdata$get_Stats()
 stopifnot(ncol(lfqstats$stats_wide()) == 30)
 lfqstats$violin()
-#> Warning: Removed 2 rows containing non-finite outside the scale range
-#> (`stat_ydensity()`).
-#> Warning: Removed 2 rows containing non-finite outside the scale range
-#> (`stat_summary()`).
 
 runallfuncs(lfqstats)
 x <- lfqstats
@@ -430,10 +429,6 @@ lfqstats <- lfqdata$get_Stats()
 
 # stopifnot(ncol(lfqstats$stats_wide()) == 30)
 lfqstats$violin()
-#> Warning: Removed 2 rows containing non-finite outside the scale range
-#> (`stat_ydensity()`).
-#> Warning: Removed 2 rows containing non-finite outside the scale range
-#> (`stat_summary()`).
 
 runallfuncs(lfqstats)
 ```

@@ -130,8 +130,7 @@ initialize
       lfqdata,
       modelstr,
       contrasts,
-      weights = lfqdata$nr_children_col(),
-      ...
+      weights = lfqdata$nr_children_col()
     )
 
 #### Arguments
@@ -153,11 +152,6 @@ initialize
 
   column name for per-observation weights (default:
   `lfqdata$nr_children_col()`). Pass `NULL` for unweighted.
-
-- `...`:
-
-  passed to
-  [`strategy_lm`](https://fgcz.github.io/prolfqua/reference/strategy.md)
 
 ------------------------------------------------------------------------
 

@@ -1,6 +1,10 @@
 # Create a Firth-penalized quasibinomial detection-count strategy
 
-Create a Firth-penalized quasibinomial detection-count strategy
+As
+[`strategy_binomial()`](https://fgcz.github.io/prolfqua/reference/strategy_binomial.md),
+with Firth's penalty instead of a pseudo-count, so estimates stay finite
+when all or none of a protein's peptides are detected. Used by the
+`binomial_firth_nested` method.
 
 ## Usage
 
@@ -41,5 +45,5 @@ object.
 strategy <- strategy_binomial_firth("~ group_")
 strategy$formula
 #> cbind(.detected, .undetected) ~ group_
-#> <environment: 0x63b31dda5728>
+#> <environment: 0x64163b74cfe8>
 ```

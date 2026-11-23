@@ -1,6 +1,9 @@
 # List currently registered contrast facades
 
-List currently registered contrast facades
+The methods
+[`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
+accepts: the built-in ones and those added by downstream packages with
+[`register_facade()`](https://fgcz.github.io/prolfqua/reference/register_facade.md).
 
 ## Usage
 

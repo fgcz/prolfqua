@@ -26,9 +26,13 @@ peptideAbundances <- prolfqua::sim_lfq_data(peptide = TRUE)
 
 ## Analyse simulated data with prolfqua
 
+Each simulated row is one peptide, so it counts as one child of its
+protein (`nr_children`).
+
 ``` r
 library(prolfqua)
 
+peptideAbundances$nr_children <- 1L
 config <- AnalysisConfiguration$new()
 config$file_name = "sample"
 config$factors["group_"] = "group"

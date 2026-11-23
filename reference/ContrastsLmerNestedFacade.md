@@ -135,7 +135,7 @@ initialize
 
 #### Usage
 
-    ContrastsLmerNestedFacade$new(lfqdata, modelstr, contrasts, ...)
+    ContrastsLmerNestedFacade$new(lfqdata, modelstr, contrasts, control = list())
 
 #### Arguments
 
@@ -154,9 +154,9 @@ initialize
 
   named character vector of contrasts
 
-- `...`:
+- `control`:
 
-  passed to
+  named list of convergence controls, see
   [`strategy_lmer`](https://fgcz.github.io/prolfqua/reference/strategy.md)
 
 ------------------------------------------------------------------------
@@ -185,7 +185,7 @@ istar <- sim_lfq_data_peptide_config()
 #> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata <- lfqdata$get_Transformer()$log2()$lfq
-#> Column added : log2_abundance
+#> Transformed response column added: log2_abundance
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 # Random effects derived from lfqdata; equivalent to passing the full
 # mixed-model formula explicitly.

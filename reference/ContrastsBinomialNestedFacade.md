@@ -63,7 +63,7 @@ Fit the nested detection-count model and its contrasts.
       contrasts,
       prior_count = 0.1,
       binomial_bound = TRUE,
-      ...
+      control = list()
     )
 
 #### Arguments
@@ -89,9 +89,9 @@ Fit the nested detection-count model and its contrasts.
 
   bound posterior dispersion below by one
 
-- `...`:
+- `control`:
 
-  passed to
+  named list of convergence controls, see
   [`strategy_binomial`](https://fgcz.github.io/prolfqua/reference/strategy_binomial.md)
 
 ------------------------------------------------------------------------

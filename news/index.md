@@ -86,6 +86,83 @@
   factor has more levels, drops the shape mapping with a message;
   before, factors with more than 25 levels drew invalid shapes or no
   points.
+- Bad input fails where it enters, with a classed error
+  (`prolfqua_error_bad_argument` unless noted), instead of giving wrong
+  numbers or failing later:
+  - `robscale()`, `robscale_subset()` and `get_scales()` stop and name
+    the samples without any measured value; before, one such sample made
+    every scaled value `NA`, without a warning.
+  - `LFQData$new()` without setup stops on missing key columns and on
+    more than one row per sample and hierarchy key
+    (`prolfqua_error_duplicate_keys`); before, `get_Stats()` counted the
+    duplicates as replicates.
+  - [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
+    and the facades check the contrasts when the analysis is built. A
+    name that is neither a group (a factor key followed by a level) nor
+    an earlier contrast (e.g. the typo `grp_A`), a contrast whose groups
+    cancel (`group_A - group_A`), a constant, and anything other than
+    `+ - * /` and parentheses (e.g. a function call) are errors. Before,
+    a misspelt group was dropped with a warning and the analysis then
+    failed with an unclassed error, and a contrast string could call any
+    R function.
+  - Single-valued arguments are checked: those of the simulators
+    (`n_proteins`, `n_per_group`, `seed`, `with_missing`, …),
+    [`which_missing()`](https://fgcz.github.io/prolfqua/reference/which_missing.md),
+    `LFQData$new()` (`prefix`, `setup`), `setup_analysis(debug)`,
+    [`null_split_check()`](https://fgcz.github.io/prolfqua/reference/null_split_check.md)
+    (`n_splits`, `n_features`, `seed`), the sample-size methods
+    (`delta`, `power`, `sig.level`, `probs`) and the strategies
+    (`model_name`, `trend`, `robust`). Counts must be whole numbers.
+  - List columns holding the response or a hierarchy, factor or sample
+    column are refused.
+  - [`lfqdata_from_wide()`](https://fgcz.github.io/prolfqua/reference/lfqdata_from_wide.md)
+    stops when `rowdata` repeats a hierarchy key or the value matrices
+    have different row names; before, repeated keys failed later in
+    `LFQData$new()` with a message about samples, and differing row
+    names went unnoticed.
+- [`setup_analysis()`](https://fgcz.github.io/prolfqua/reference/setup_analysis.md)
+  keeps factor columns as factors, so their level order sets the
+  reference level of the design and the order of the groups; an ordered
+  factor becomes unordered and unused levels are dropped, both with a
+  message. Before, factor columns became character labels in sorted
+  order. Contrasts do not change; the coefficients of factor input are
+  relative to its first level.
+- `LFQData$new()` stores its data as a tibble, also for data.frame and
+  data.table input, and stores the response as double, also when it is
+  an integer.
+- Facade constructors name their arguments instead of taking `...`: the
+  limma and limpa methods take `trend` and `robust`, the iterative fits
+  (`rlm`, `rfit`, `rfit_impute`, `lmer_nested`, `binomial_nested`,
+  `binomial_firth_nested`, `firth`) take `control`.
+  [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
+  passes its `...` to them, so an argument the method does not take is
+  an error; before, `firth` and `hurdle_nested` ignored every further
+  argument, including `control`.
+- A Suggests package a method needs (lme4 and lmerTest, logistf, Rfit)
+  is checked once, before any protein is fitted; before, a missing
+  package failed inside the fit of the first protein.
+- The `firth` method tests contrasts with the normal distribution (Wald
+  z, `df = Inf`), as its coefficient table,
+  [`confint()`](https://rdrr.io/r/stats/confint.html) and logistf do;
+  before, contrasts used t with n - p degrees of freedom. p-values are
+  smaller, most with few samples; the test stays conservative at small
+  sample sizes. `binomial_firth_nested` and `hurdle_nested`, which
+  moderate an estimated dispersion, keep their t tests.
+- The fit status of limpa analyses reports `not_converged` as `NA`
+  instead of 0: limpa returns no convergence status.
+- Informative messages name their operation: “Transformed response
+  column added”, “filter_proteins_by_peptide_count: column added”,
+  “write_boxplots: writing”, “write_pdf: writing”.
+- Plots of data with expected missing values leave them out without
+  ggplot2’s “Removed … rows” warning: the intensity density plot
+  (`LFQDataPlotter$intensity_distribution_density()`), the aggregation
+  plots (`AggregatorBase$plot()`,
+  [`plot_estimate()`](https://fgcz.github.io/prolfqua/reference/plot_estimate.md);
+  lines still break at missing values), the plots of `LFQDataStats`
+  (`violin()`, [`density()`](https://rdrr.io/r/stats/density.html),
+  `stdv_vs_mean()`; sd and CV are `NA` for features with fewer than two
+  values) and
+  [`missingness_histogram()`](https://fgcz.github.io/prolfqua/reference/missingness_histogram.md).
 
 ### Bug fixes
 
@@ -135,6 +212,12 @@
   `LFQDataPlotter$boxplots()`, no longer carry the whole data set:
   [`saveRDS()`](https://rdrr.io/r/base/readRDS.html) of one aggregation
   plot of 300 proteins writes 11 MB instead of 2 GB.
+- `null_split_check(n_splits = 2.5)` stops with an error; before, it ran
+  98 splits.
+- The packaged IonStar peptides (`prolfqua_data("data_ionstar")`) carry
+  the `nr_children` column their configuration names, so they aggregate
+  to proteins; before, aggregation stopped with “Column `nr_children`
+  not found”.
 
 ### Performance
 
@@ -240,6 +323,16 @@
   it keeps the features with the largest sd (or CV); `top_n` still works
   and warns.
 
+### Removed
+
+- The example dataset `x5463yzwer453bbb` (an annotation table of 36
+  samples). The
+  [`annotation_add_contrasts()`](https://fgcz.github.io/prolfqua/reference/annotation_add_contrasts.md)
+  example and the article “Contrasts from factors” build their
+  annotation table with
+  [`expand.grid()`](https://rdrr.io/r/base/expand.grid.html).
+- The old test script in `inst/issue71` is no longer installed.
+
 ### Documentation
 
 - [`?ContrastsFacadeBase`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.md)
@@ -261,6 +354,22 @@
   example checks the fitted models instead of a field that does not
   exist.
 - [`?prolfqua`](https://fgcz.github.io/prolfqua/reference/prolfqua-package.md)
+  has a section “Input types and conversion”: which table classes are
+  accepted, and how the response, factor and hierarchy columns are
+  converted.
+  [`?AggregateLimpa`](https://fgcz.github.io/prolfqua/reference/AggregateLimpa.md)
+  documents the defaults of limpa’s iterative steps and why they are not
+  exposed;
+  [`?ContrastsFirthFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsFirthFacade.md)
+  documents its Wald z test. The help pages of the simulators,
+  `LFQData$new()`,
+  [`null_split_check()`](https://fgcz.github.io/prolfqua/reference/null_split_check.md)
+  and the sample-size methods state the type and length of each
+  argument.
+- The maintainer is Witold Wolski, the copyright holder the University
+  of Zurich; Jonas Grossmann is listed as contributor. prolfqua follows
+  the rOpenSci Code of Conduct.
+- [`?prolfqua`](https://fgcz.github.io/prolfqua/reference/prolfqua-package.md)
   has a Resources section: memory per row, run time per protein for the
   matrix and per-subject backends, retained fitted models, and the cost
   of
@@ -268,6 +377,47 @@
   `LFQData$get_config()` says it returns the configuration of the object
   itself, not a copy, and the `all` and `global` arguments that only
   keep the `ContrastsInterface` signature say that they are ignored.
+- [`?build_model_limma_voom`](https://fgcz.github.io/prolfqua/reference/build_model_limma_voom.md)
+  derives the vooma precision weights and the external weights (peptide
+  counts per protein and sample), and states when the fit equals
+  [`limma::vooma()`](https://rdrr.io/pkg/limma/man/vooma.html) followed
+  by [`limma::lmFit()`](https://rdrr.io/pkg/limma/man/lmFit.html).
+- `ropeca_nested` is documented as a derivation of PECA and ROPECA:
+  [`?ContrastsROPECANestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECANestedFacade.md)
+  lists what differs (no ROTS step, any design, at most 10 peptides in
+  the beta correction) and compares it with PECA on the IonStar data:
+  the same fold changes, and the same p-values for proteins with an odd
+  number of peptides up to 10. The script is `data-raw/compare_peca.R`.
+- Every public help page has a description, and the return values of the
+  contrast generators,
+  [`merge_contrasts_results()`](https://fgcz.github.io/prolfqua/reference/merge_contrasts_results.md),
+  [`pivot_model_contrasts_to_wide()`](https://fgcz.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
+  [`volcano_plotly()`](https://fgcz.github.io/prolfqua/reference/volcano_plotly.md)
+  and 15 other functions say what they return. The contrast generator
+  examples and the article “Contrasts from factors” use neutral level
+  names (genotype WT, KO).
+- The README is built from `README.Rmd`, so its examples run; it has a
+  statement of need, a list of related packages and the same install
+  command as the vignettes. The vignette “Importing your data” points to
+  the prolfquapp readers for DIA-NN, MaxQuant, Spectronaut and FragPipe
+  output, shows
+  [`lfqdata_from_wide()`](https://fgcz.github.io/prolfqua/reference/lfqdata_from_wide.md),
+  and its text matches its code. The reading lists include “Transforming
+  and calibrating LFQ data”.
+- Vignettes no longer hide warnings. The remaining ones are fits that
+  fail for single proteins (for example `lmer_nested` on proteins with
+  one peptide); the vignettes explain them and show the record in
+  `$provenance()`.
+- Corrected help texts: the medpolish `eps` is a relative change of the
+  sum of absolute residuals;
+  [`?prolfqua_analysis_methods`](https://fgcz.github.io/prolfqua/reference/prolfqua_analysis_methods.md)
+  says where each backend keeps `converged` and `iterations`.
+- The run times in
+  [`?prolfqua`](https://fgcz.github.io/prolfqua/reference/prolfqua-package.md)
+  (Resources) and
+  [`?build_contrast_analysis`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
+  are measured again on this version, and the Resources section adds
+  aggregation and the QC writers.
 
 ## prolfqua 1.9.4
 

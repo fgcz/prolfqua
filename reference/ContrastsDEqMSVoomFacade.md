@@ -136,8 +136,7 @@ initialize
       modelstr,
       contrasts,
       span = 0.5,
-      plot = FALSE,
-      ...
+      plot = FALSE
     )
 
 #### Arguments
@@ -162,12 +161,6 @@ initialize
 - `plot`:
 
   logical; if TRUE, plot the mean-variance trend
-
-- `...`:
-
-  passed to
-  [`strategy_limma`](https://fgcz.github.io/prolfqua/reference/strategy_limma.md)
-  (e.g. trend, robust)
 
 ------------------------------------------------------------------------
 
@@ -202,7 +195,7 @@ fa <- ContrastsDEqMSVoomFacade$new(lfqdata, "~ group_", contrasts)
 #> fit (limma): 82 missing responses dropped (e.g. 0EfVhX~7161, 0m5WN4~3543, 7QuTub~5556, 7cbcrd~0495, 9VUkAq~8655, ...): NA response (missing observation) left out of the fit
 #> See $provenance().
 head(fa$get_contrasts())
-#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=A_vs_Ctrl (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17)
+#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=A_vs_Ctrl (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  7.3328e-17)
 #> # A tibble: 6 × 16
 #>   modelName  estimate_type contrast  protein_Id    diff std.error.unmoderated
 #>   <chr>      <chr>         <chr>     <chr>        <dbl>                 <dbl>

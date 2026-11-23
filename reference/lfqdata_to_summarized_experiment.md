@@ -1,6 +1,9 @@
 # Convert an LFQData object to a SummarizedExperiment
 
-For compatibility with Bioconductor
+Builds a `SummarizedExperiment` with the response as the assay `LFQ`
+(and the child counts as `nr_children` when present; features in rows,
+samples in columns), the hierarchy keys as row data and the sample
+annotation as column data, for use with Bioconductor packages.
 
 ## Usage
 
@@ -18,6 +21,10 @@ lfqdata_to_summarized_experiment(lfqdata)
 ## Value
 
 SummarizedExperiment (bioconductor)
+
+## Details
+
+For compatibility with Bioconductor
 
 ## See also
 

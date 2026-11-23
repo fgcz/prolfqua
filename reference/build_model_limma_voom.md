@@ -49,12 +49,40 @@ object
 
 ## Details
 
-When `strategy$weights` is set (e.g. to `nr_children`), these external
-weights enter the preliminary fit (so the trend estimation accounts for
-measurement precision) and are multiplied element-wise with the vooma
-weights for the final fit. See the voom integration notes in
-`../TODO/prolfqua/Archive/TODO_limma_voom_integration.md` for the
-mathematical basis.
+The weights follow [`vooma`](https://rdrr.io/pkg/limma/man/vooma.html)
+(Law et al. 2014,
+[doi:10.1186/gb-2014-15-2-r29](https://doi.org/10.1186/gb-2014-15-2-r29)
+):
+
+1.  a preliminary `lmFit()` gives the residual standard deviation
+    \\s_g\\ of each protein;
+
+2.  a lowess trend \\f\\ (span `span`) of \\\sqrt{s_g}\\ against the
+    mean log2 intensity is evaluated at each fitted value
+    \\\hat{y}\_{gj}\\;
+
+3.  since \\f^4\\ estimates the variance, the precision weight is
+    \\w\_{gj} = 1 / f(\hat{y}\_{gj})^4\\, and the final fit is weighted
+    least squares followed by `eBayes()`.
+
+The data are already on the log2 scale, so there is no library-size
+term. With `weights = NULL` and complete data the fit equals
+[`limma::vooma()`](https://rdrr.io/pkg/limma/man/vooma.html) followed by
+[`limma::lmFit()`](https://rdrr.io/pkg/limma/man/lmFit.html). In designs
+with group factors only, all samples of a group share one weight: fold
+changes equal those of unweighted limma, while standard errors and
+p-values change.
+
+External weights \\n\_{gj}\\ (`strategy$weights`, e.g. the `nr_children`
+column, the number of peptides per protein and sample) go beyond
+`vooma()`, which takes none. If a protein intensity averages \\n\_{gj}\\
+peptide measurements with independent errors, its variance is
+\\\sigma^2_g / n\_{gj}\\. The preliminary fit therefore uses \\n\_{gj}\\
+as weights, so the trend is estimated from weighted residuals, and the
+final fit uses \\n\_{gj} w\_{gj}\\. Only the relative size of
+\\n\_{gj}\\ matters: a constant weight gives the same result as none.
+`deqms_voom` uses no external weights, because DEqMS already moderates
+by the peptide count.
 
 ## See also
 

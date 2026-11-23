@@ -150,7 +150,16 @@ results_protein_2f <- bind_rows(
     rescued = dplyr::coalesce(rescued, FALSE),
     significant = FDR < 0.1 & abs(diff) > 0.5
   )
+```
 
+    ## Warning: moderated_p_deqms_long: condition messages in 3/3 groups.
+    ## contrast=T_C_gv_WT (pseudoinverse used at 1; neighborhood radius 1; reciprocal
+    ## condition number 4.7214e-17); contrast=T_C_gv_KO (pseudoinverse used at 1;
+    ## neighborhood radius 1; reciprocal condition number 2.9356e-17);
+    ## contrast=WT_KO_comp (pseudoinverse used at 1; neighborhood radius 1; reciprocal
+    ## condition number 6.0112e-17)
+
+``` r
 results_protein_2f |>
   dplyr::count(modelName, name = "n_results")
 ```
@@ -288,7 +297,16 @@ missing_all_2f <- dplyr::bind_rows(
   fa_deqms_2f$get_missing() |> dplyr::mutate(facade = "deqms"),
   fa_firth_protein_2f$get_missing() |> dplyr::mutate(facade = "firth")
 )
+```
 
+    ## Warning: moderated_p_deqms_long: condition messages in 3/3 groups.
+    ## contrast=T_C_gv_WT (pseudoinverse used at 1; neighborhood radius 1; reciprocal
+    ## condition number 4.7214e-17); contrast=T_C_gv_KO (pseudoinverse used at 1;
+    ## neighborhood radius 1; reciprocal condition number 2.9356e-17);
+    ## contrast=WT_KO_comp (pseudoinverse used at 1; neighborhood radius 1; reciprocal
+    ## condition number 6.0112e-17)
+
+``` r
 missing_all_2f |>
   dplyr::count(facade, contrast, name = "n_missing") |>
   knitr::kable(caption = "Number of missing protein x contrast pairs per facade")
@@ -411,14 +429,24 @@ fa_lmer_2f <- build_contrast_analysis(
   contrasts_2f,
   method = "lmer_nested"
 )
+```
 
+    ## Warning: fit (Model): 19 fits failed (e.g. 3psotQ~9012, 5uBCHn~9941, bPqM4p~9458, Buwx6N~6011, gGBBNq~4169, ...): Error: grouping factors must have > 1 sampled level
+    ## See $provenance().
+
+``` r
 fa_ropeca_2f <- build_contrast_analysis(
   lfq_peptide_2f,
   "~ Subgroup",
   contrasts_2f,
   method = "ropeca_nested"
 )
+```
 
+    ## Warning: fit (Model): 2 fits failed (e.g. DhfOov~8080~v1mk9WDG, LyASAE~0073~UfpAAF3b): Error in `contrasts<-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]): contrasts can be applied only to factors with 2 or more levels
+    ## See $provenance().
+
+``` r
 fa_binomial_firth_2f <- build_contrast_analysis(
   lfq_peptide_2f,
   "~ Subgroup",
@@ -426,6 +454,28 @@ fa_binomial_firth_2f <- build_contrast_analysis(
   method = "binomial_firth_nested"
 )
 ```
+
+The warnings name the proteins that could not be fitted: `lmer_nested`
+needs at least two peptides per protein for its random peptide effect,
+and `ropeca_nested` skips peptides observed in one group only. The other
+proteins are analysed, and `$provenance()` records the failures:
+
+``` r
+fa_lmer_2f$provenance()
+```
+
+    ## # A tibble: 9 × 8
+    ##   source    step        event                    n ids   reason failure response
+    ##   <chr>     <chr>       <chr>                <int> <lis> <chr>  <lgl>   <chr>   
+    ## 1 model     fit (Model) fits failed             19 <chr> Error… TRUE    NA      
+    ## 2 model     fit (Model) singular fits           60 <chr> coeff… FALSE   NA      
+    ## 3 model     fit (Model) missing responses d…  1338 <chr> NA re… FALSE   NA      
+    ## 4 contrasts get_missing subjects absent fro…    19 <chr> fit f… FALSE   NA      
+    ## 5 contrasts get_missing subjects absent fro…    19 <chr> fit f… FALSE   NA      
+    ## 6 contrasts get_missing subjects absent fro…    19 <chr> fit f… FALSE   NA      
+    ## 7 contrasts get_missing subjects absent fro…     1 <chr> contr… FALSE   NA      
+    ## 8 contrasts get_missing subjects absent fro…     2 <chr> contr… FALSE   NA      
+    ## 9 contrasts get_missing subjects absent fro…     1 <chr> contr… FALSE   NA
 
 ``` r
 results_peptide_2f <- bind_rows(

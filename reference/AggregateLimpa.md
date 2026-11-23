@@ -18,6 +18,15 @@ The output LFQData contains three value columns:
 - observation count (in `config$nr_children`) - number of observed
   precursors
 
+limpa's iterative steps run with limpa's defaults:
+[`limpa::dpc()`](https://rdrr.io/pkg/limpa/man/dpc.html) estimates the
+detection probability curve in 2 iterations on a subset of 2000 rows,
+and [`limpa::dpcQuant()`](https://rdrr.io/pkg/limpa/man/dpcQuant.html)
+optimises each protein with its own settings. Only the slope bound
+`dpc_slope` is exposed. limpa returns no convergence status for these
+fits, so a changed setting could not be checked; the fit status of limpa
+analyses reports `not_converged` as NA.
+
 ## Value
 
 An R6 class generator.
@@ -209,7 +218,7 @@ istar <- prolfqua::sim_lfq_data_peptide_config()
 #> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata <- lfqdata$get_Transformer()$log2()$lfq
-#> Column added : log2_abundance
+#> Transformed response column added: log2_abundance
 
 agg <- AggregateLimpa$new(lfqdata, "protein")
 agg$aggregate()

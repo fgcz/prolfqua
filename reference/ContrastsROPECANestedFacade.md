@@ -9,13 +9,49 @@ Encapsulates the pipeline:
 -\>
 [`ContrastsROPECA`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECA.md).
 
-ROPECA fits per-peptide linear models and aggregates peptide-level
-p-values to the protein level. Input must be nested LFQData (peptide
-subject_id strictly below the protein hierarchy).
+Input must be nested LFQData (peptide subject_id strictly below the
+protein hierarchy).
+
+`ropeca_nested` is a derivation of PECA and ROPECA (Suomi and Elo 2017,
+Scientific Reports 7, 5869; Bioconductor package PECA,
+[doi:10.18129/B9.bioc.PECA](https://doi.org/10.18129/B9.bioc.PECA) ). It
+fits one linear model per peptide, computes the contrast, takes the
+median of the signed peptide p-values per protein and corrects it with
+the beta distribution of the median of `n` uniform p-values, `n` being
+the number of peptides with a p-value, at most 10. The protein fold
+change is the median peptide fold change. What differs from PECA and
+ROPECA:
+
+- no ROTS (reproducibility-optimized test statistic) step: peptide
+  p-values come from ordinary linear models;
+
+- any fixed-effect design and contrast, not only two groups;
+
+- `n` is capped at 10, so proteins with more peptides get larger
+  p-values than in PECA;
+
+- with an even number of peptides, the median is taken of the signed
+  p-values, not of the t-statistics.
+
+The test is conservative under the null hypothesis; `ropecaV2_nested` is
+the calibrated variant.
 
 ## Value
 
 An R6 class generator.
+
+## Comparison with PECA
+
+On the IonStar data (`data_ionstar`, dilutions a and e, 767 peptides
+observed in all 8 samples, 123 proteins), `ropeca_nested` and
+`PECA::PECA_df(test = "t", type = "median")` give the same fold changes
+(largest difference 1e-14) and the same p-values for the 58 proteins
+with an odd number of peptides up to 10 (largest difference 3e-14). For
+the 50 proteins with an even number, the median ratio of the p-values is
+1.02 (Spearman correlation 0.99); for the 15 proteins with more than 10
+peptides, prolfqua's p-values are larger by a median factor of 1.43
+(Spearman correlation 0.87), because of the cap. Code:
+`data-raw/compare_peca.R` in the source repository.
 
 ## See also
 
@@ -133,7 +169,7 @@ initialize
 
 #### Usage
 
-    ContrastsROPECANestedFacade$new(lfqdata, modelstr, contrasts, ...)
+    ContrastsROPECANestedFacade$new(lfqdata, modelstr, contrasts)
 
 #### Arguments
 
@@ -148,11 +184,6 @@ initialize
 - `contrasts`:
 
   named character vector of contrasts
-
-- `...`:
-
-  passed to
-  [`strategy_lm`](https://fgcz.github.io/prolfqua/reference/strategy.md)
 
 ------------------------------------------------------------------------
 
@@ -246,7 +277,7 @@ istar <- sim_lfq_data_peptide_config()
 #> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
 lfqdata <- LFQData$new(istar$data, istar$config)
 lfqdata <- lfqdata$get_Transformer()$log2()$lfq
-#> Column added : log2_abundance
+#> Transformed response column added: log2_abundance
 contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 fa <- ContrastsROPECANestedFacade$new(lfqdata, "~ group_", contrasts)
 #> fit (Model): 36 missing responses dropped (e.g. 0EfVhX~0087~ITLb4x1q, 0EfVhX~0087~ahQLlQY7, 0EfVhX~0087~dJkdz7so, 7cbcrd~5725~D5dQ4nKk, 9VUkAq~4703~eIC06D7g, ...): NA response (missing observation) left out of the fit

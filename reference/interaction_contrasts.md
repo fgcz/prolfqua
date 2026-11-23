@@ -1,6 +1,8 @@
-# Interaction contrasts (difference of differences)
+# Interaction contrasts of a two-factor design
 
-Interaction contrasts (difference of differences)
+For every pair of primary levels and every pair of secondary levels, the
+difference of differences: does the primary difference change between
+the two secondary levels?
 
 ## Usage
 
@@ -20,7 +22,8 @@ interaction_contrasts(primary_levels, secondary_levels)
 
 ## Value
 
-Contrast definitions or contrast results.
+A named list of contrast strings, named
+`interaction_<high>_vs_<low>_at_<s2>_vs_<s1>`.
 
 ## See also
 
@@ -34,26 +37,26 @@ Other contrasts:
 ## Examples
 
 ``` r
-primary_levels <- c("MI", "MINOCAM")
+primary_levels <- c("KO", "WT")
 secondary_levels <- c("T0", "T150", "T300")
 interaction_contrasts(primary_levels, secondary_levels)
-#> $interaction_MINOCAM_vs_MI_at_T150_vs_T0
-#> [1] "(G_MINOCAM_T150 - G_MI_T150) - (G_MINOCAM_T0 - G_MI_T0)"
+#> $interaction_WT_vs_KO_at_T150_vs_T0
+#> [1] "(G_WT_T150 - G_KO_T150) - (G_WT_T0 - G_KO_T0)"
 #> 
-#> $interaction_MINOCAM_vs_MI_at_T300_vs_T0
-#> [1] "(G_MINOCAM_T300 - G_MI_T300) - (G_MINOCAM_T0 - G_MI_T0)"
+#> $interaction_WT_vs_KO_at_T300_vs_T0
+#> [1] "(G_WT_T300 - G_KO_T300) - (G_WT_T0 - G_KO_T0)"
 #> 
-#> $interaction_MINOCAM_vs_MI_at_T300_vs_T150
-#> [1] "(G_MINOCAM_T300 - G_MI_T300) - (G_MINOCAM_T150 - G_MI_T150)"
+#> $interaction_WT_vs_KO_at_T300_vs_T150
+#> [1] "(G_WT_T300 - G_KO_T300) - (G_WT_T150 - G_KO_T150)"
 #> 
 interaction_contrasts(secondary_levels, primary_levels)
-#> $interaction_T150_vs_T0_at_MINOCAM_vs_MI
-#> [1] "(G_T150_MINOCAM - G_T0_MINOCAM) - (G_T150_MI - G_T0_MI)"
+#> $interaction_T150_vs_T0_at_WT_vs_KO
+#> [1] "(G_T150_WT - G_T0_WT) - (G_T150_KO - G_T0_KO)"
 #> 
-#> $interaction_T300_vs_T0_at_MINOCAM_vs_MI
-#> [1] "(G_T300_MINOCAM - G_T0_MINOCAM) - (G_T300_MI - G_T0_MI)"
+#> $interaction_T300_vs_T0_at_WT_vs_KO
+#> [1] "(G_T300_WT - G_T0_WT) - (G_T300_KO - G_T0_KO)"
 #> 
-#> $interaction_T300_vs_T150_at_MINOCAM_vs_MI
-#> [1] "(G_T300_MINOCAM - G_T150_MINOCAM) - (G_T300_MI - G_T150_MI)"
+#> $interaction_T300_vs_T150_at_WT_vs_KO
+#> [1] "(G_T300_WT - G_T150_WT) - (G_T300_KO - G_T150_KO)"
 #> 
 ```

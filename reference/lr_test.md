@@ -1,6 +1,10 @@
 # Likelihood ratio test
 
-Likelihood ratio test
+Compares a complete and a reduced model per subject with a likelihood
+ratio test, for example to test a factor with several levels at once.
+Both model tables come from
+[`build_model()`](https://fgcz.github.io/prolfqua/reference/build_model.md)
+on the same data.
 
 ## Usage
 
@@ -44,7 +48,9 @@ lr_test(
 
 ## Value
 
-The computed result.
+a tibble with one row per subject: `subject_id` and
+`likelihood_ratio_test.pValue`, the p-value of the likelihood ratio test
+of the reduced against the complete model.
 
 ## See also
 
