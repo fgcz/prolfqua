@@ -58,12 +58,15 @@ test_that("ContrastsRfitFacade initialises and returns the standard schema", {
   fa <- prolfqua::ContrastsRfitFacade$new(lfqdata, RFIT_MODELSTR, RFIT_CONTRASTS)
 
   expect_true(inherits(fa, "ContrastsRfitFacade"))
-  expect_true(!is.null(fa$model))
-  expect_true(!is.null(fa$contrast))
+  expect_r6_class(fa$model, "Model")
+  expect_r6_class(fa$model$model_strategy, "StrategyRfit")
+  expect_r6_class(fa$contrast, "ContrastsModerated")
 
   res <- fa$get_contrasts()
   expect_true(is.data.frame(res))
-  expect_true(nrow(res) > 0)
+  # complete fixture: one row per protein and contrast
+  n_proteins <- dplyr::n_distinct(lfqdata$data_long()$protein_Id)
+  expect_equal(nrow(res), n_proteins * length(RFIT_CONTRASTS))
   for (col in c("modelName", "estimate_type", "contrast", "diff", "FDR", "p.value", "statistic", "std.error")) {
     expect_true(col %in% colnames(res), info = paste("missing column:", col))
   }
@@ -73,8 +76,8 @@ test_that("ContrastsRfitFacade initialises and returns the standard schema", {
   expect_true(all(res$modelName == "rfit"))
 
   expect_true(is.data.frame(fa$get_missing()))
-  expect_true(nrow(fa$to_wide()) > 0)
-  expect_true(!is.null(fa$get_Plotter()))
+  expect_equal(nrow(fa$to_wide()), n_proteins)
+  expect_r6_class(fa$get_Plotter(), "ContrastsPlotter")
 })
 
 
@@ -90,7 +93,8 @@ test_that("rfit fold-changes agree in sign and correlate with lm", {
     by = c("protein_Id", "contrast"),
     suffixes = c(".rfit", ".lm")
   )
-  expect_true(nrow(mrg) > 0)
+  # both backends estimate every protein and contrast of the complete fixture
+  expect_equal(nrow(mrg), dplyr::n_distinct(lfqdata$data_long()$protein_Id) * length(RFIT_CONTRASTS))
   expect_gt(mean(sign(mrg$diff.rfit) == sign(mrg$diff.lm)), 0.9)
   expect_gt(cor(mrg$diff.rfit, mrg$diff.lm), 0.9)
 })
@@ -117,7 +121,7 @@ test_that("rfit handles per-protein rank deficiency without crashing", {
   istar <- prolfqua::sim_lfq_data_2factor_config(n_proteins = 8, with_missing = FALSE)
   lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
   # Drop the Treatment=B / Background=Z cell for half the proteins. Those
-  # proteins are rank-deficient on the interaction term — lm fills NA; rfit
+  # proteins are rank-deficient on the interaction term - lm fills NA; rfit
   # zeros and then vcov() Cholesky-fails. The adapter detects this and
   # marks the affected proteins as failed fits, so contrast construction
   # still succeeds for the rest and the deficient ones surface via

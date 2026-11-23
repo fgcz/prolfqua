@@ -2,7 +2,7 @@
 % Please edit documentation in R/generatedContrastsDF.R
 \name{main_effect_contrasts}
 \alias{main_effect_contrasts}
-\title{Main effects contrasts}
+\title{Main-effect contrasts of a two-factor design}
 \usage{
 main_effect_contrasts(primary_levels, secondary_levels)
 }
@@ -12,13 +12,14 @@ main_effect_contrasts(primary_levels, secondary_levels)
 \item{secondary_levels}{character vector of secondary factor levels}
 }
 \value{
-Contrast definitions or contrast results.
+A named list of contrast strings, one per pair of primary levels, named \verb{<high>_vs_<low>}; groups are
+named by \code{\link[=group_label]{group_label()}}.
 }
 \description{
-Main effects contrasts
+For every pair of primary levels, the difference of their means averaged over all secondary levels.
 }
 \examples{
-primary_levels <- c("MI", "MINOCAM")
+primary_levels <- c("KO", "WT")
 secondary_levels <- c("T150", "T0", "T300")
 main_effect_contrasts(primary_levels, secondary_levels)
 main_effect_contrasts(secondary_levels, primary_levels)

@@ -84,7 +84,10 @@ test_that("ContrastsRfitImputeFacade returns the standard schema with facade tag
     expect_true(inherits(fa, "ContrastsRfitImputeFacade"))
     res <- fa$get_contrasts()
     expect_true(is.data.frame(res))
-    expect_true(nrow(res) > 0)
+    # a protein observed in one group only cannot be fitted; all others are estimated
+    observed <- dplyr::filter(lfqdata$data_long(), !is.na(.data$transformedIntensity))
+    n_estimable <- sum(tapply(observed$group_, observed$protein_Id, dplyr::n_distinct) >= 2)
+    expect_equal(nrow(res), n_estimable)
     for (col in c(
       "modelName",
       "estimate_type",
@@ -107,7 +110,7 @@ test_that("ContrastsRfitImputeFacade returns the standard schema with facade tag
 
     # Interface methods all work.
     expect_true(is.data.frame(fa$get_missing()))
-    expect_true(nrow(fa$to_wide()) > 0)
+    expect_equal(nrow(fa$to_wide()), n_estimable)
     expect_s3_class(fa$get_Plotter(), "ContrastsPlotter")
   })
 })

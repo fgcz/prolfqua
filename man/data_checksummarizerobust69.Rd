@@ -13,7 +13,7 @@ data_checksummarizerobust69
 }
 \description{
 log2 peptide areas of one protein, used by the tests of the robust
-(medpolish/rlm) protein summarisation. See \code{inst/script/README.md}.
+(medpolish/rlm) protein summarisation. See \code{system.file("script", "README.md", package = "prolfqua")}.
 }
 \seealso{
 Other data:

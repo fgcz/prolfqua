@@ -7,7 +7,8 @@
 An R6 class generator.
 }
 \description{
-Summarize LFQData
+Counts and summaries of an \link{LFQData} object: features per hierarchy level overall and per sample, missing values
+per protein and group, and the percentage abundance of proteins. Obtained with \code{LFQData$get_Summariser()}.
 }
 \examples{
 \dontshow{if (requireNamespace("UpSetR", quietly = TRUE)) withAutoprint(\{ # examplesIf}

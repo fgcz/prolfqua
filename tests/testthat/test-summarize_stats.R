@@ -41,3 +41,21 @@ test_that("summarize_stats equals per-group summaries, including empty and singl
   expect_true(all(is.na(empty$medianAbundance) & is.na(empty$sd)))
   expect_type(empty$nrMeasured, "integer")
 })
+
+test_that("get_Stats() drops to the first factor when every design cell has one sample", {
+  sim <- sim_lfq_data_2factor_config(n_proteins = 5, with_missing = FALSE)
+  first_per_cell <- sim$data |>
+    dplyr::distinct(.data$sample, .data$Treatment, .data$Background) |>
+    dplyr::slice_head(n = 1, by = c("Treatment", "Background"))
+  sim$data <- dplyr::filter(sim$data, .data$sample %in% first_per_cell$sample)
+  lfq <- LFQData$new(sim$data, sim$config)
+  expect_equal(lfq$get_config()$factor_depth, 2)
+
+  stats <- lfq$get_Stats()
+  expect_equal(stats$lfq$get_config()$factor_depth, 1)
+  expect_equal(lfq$get_config()$factor_depth, 2)
+  result <- stats$stats()
+  expect_true("Treatment" %in% colnames(result))
+  expect_false("Background" %in% colnames(result))
+  expect_true(all(result$nrReplicates[result$Treatment != "All"] == 2))
+})

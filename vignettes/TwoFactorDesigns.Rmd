@@ -12,7 +12,7 @@ editor_options:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 library(prolfqua)
 library(dplyr)
 library(ggplot2)
@@ -321,6 +321,12 @@ fa_binomial_firth_2f <- build_contrast_analysis(
   contrasts_2f,
   method = "binomial_firth_nested"
 )
+```
+
+The warnings name the proteins that could not be fitted: `lmer_nested` needs at least two peptides per protein for its random peptide effect, and `ropeca_nested` skips peptides observed in one group only. The other proteins are analysed, and `$provenance()` records the failures:
+
+```{r provenance_two_factor}
+fa_lmer_2f$provenance()
 ```
 
 ```{r collect_peptide_two_factor}

@@ -6,7 +6,7 @@
 \alias{prolfqua-package}
 \title{prolfqua: Proteomics Label Free Quantification}
 \description{
-Covers the steps of a mass spectrometry based label-free quantification (LFQ) analysis: quality control, normalization, aggregation of peptides to proteins, modelling, hypothesis testing and sample size estimation. A single function, build_contrast_analysis(), fits a model per protein and computes contrasts with one of many methods: linear, robust and rank-based regression, 'limma' and 'limma'-voom, 'DEqMS' variance moderation, the detection probability model of 'limpa', Firth logistic and binomial models of detection, mixed models and ROPECA on peptide-level data, a hurdle model combining intensity and detection, and variants that impute groups without observations at the limit of detection. All methods return their results through the same interface and columns, so they can be compared and combined. Models simple designs with one explanatory variable as well as experiments with several factors. Intended for proteomics core facilities and researchers analysing protein or peptide intensities quantified with MaxQuant, DIA-NN, Spectronaut, FragPipe or similar software. Developed while analysing dozens of proteomics datasets at the Functional Genomics Center Zurich.
+Covers the steps of a mass spectrometry based label-free quantification (LFQ) analysis: quality control, normalization, aggregation of peptides to proteins, modelling, hypothesis testing and sample size estimation. A single function, build_contrast_analysis(), fits a model per protein and computes contrasts with one of many methods: linear, robust and rank-based regression, 'limma' and 'limma'-voom, 'DEqMS' variance moderation, the detection probability model of 'limpa', Firth logistic and binomial models of detection, mixed models and a median-peptide test derived from ROPECA on peptide-level data, a hurdle model combining intensity and detection, and variants that impute groups without observations at the limit of detection. All methods return their results through the same interface and columns, so they can be compared and combined. Models simple designs with one explanatory variable as well as experiments with several factors. Intended for proteomics core facilities and researchers analysing protein or peptide intensities quantified with MaxQuant, DIA-NN, Spectronaut, FragPipe or similar software. Developed while analysing dozens of proteomics datasets at the Functional Genomics Center Zurich.
 }
 \section{Audience}{
 
@@ -34,9 +34,12 @@ sample grid, adding \code{NA} rows for absent combinations.
 \item Matrix backends (\code{limma}, \code{limma_impute}, \code{limma_voom}, \code{limma_voom_impute}, \code{deqms_voom}, \code{limpa})
 analyse 5,000 to 10,000 proteins in about a second or less; \code{limpa_nested}, which also aggregates, takes
 about 1.5 s per 1,000 proteins.
-\item Per-subject backends fit one model per protein or peptide on a single thread: about 1.7 ms per protein
-for \code{lm}, 2 to 3 ms per peptide for the ROPECA methods, 10 ms per protein for \code{hurdle_nested} and 16 ms for
-\code{lmer_nested}, which is about three minutes at 10,000 proteins.
+\item Per-subject backends fit one model per protein or peptide on a single thread, contrasts included: about
+1 ms per protein for \code{lm}, 1 ms per peptide for the ROPECA methods, 5 ms per protein for \code{hurdle_nested} and
+10 to 16 ms for \code{lmer_nested}, which is two to three minutes at 10,000 proteins.
+\item Aggregation of peptides to proteins takes about 1 ms per protein with median polish and 4 ms with \code{rlm}.
+The QC writers take about 0.1 s (\code{write_plots()}) and 0.2 s (\code{write_boxplots()}) per protein, one page each;
+\code{write_plots(subset = )} limits their cost.
 \item Per-subject backends keep every fitted model (about 9 KB per protein for \code{lm}, 40 KB for
 \code{lmer_nested}), so that \code{predict()}, \code{residuals()} and \code{vcov()} work on the analysis.
 \item \code{null_split_check()} repeats the whole analysis \code{n_splits} times (default 20); \code{n_features}

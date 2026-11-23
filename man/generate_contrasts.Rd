@@ -2,7 +2,7 @@
 % Please edit documentation in R/generatedContrastsDF.R
 \name{generate_contrasts}
 \alias{generate_contrasts}
-\title{Combined generate_contrasts}
+\title{All contrasts of a two-factor design}
 \usage{
 generate_contrasts(primary_levels, secondary_levels, interactions = TRUE)
 }
@@ -14,13 +14,13 @@ generate_contrasts(primary_levels, secondary_levels, interactions = TRUE)
 \item{interactions}{logical, if TRUE include interaction contrasts}
 }
 \value{
-Contrast definitions or contrast results.
+A data.frame with the columns \code{ContrastName} and \code{Contrast} (the contrast string), one row per contrast.
 }
 \description{
-Combined generate_contrasts
+Combines \code{\link[=main_effect_contrasts]{main_effect_contrasts()}}, \code{\link[=level_specific_contrasts]{level_specific_contrasts()}} and, optionally, \code{\link[=interaction_contrasts]{interaction_contrasts()}}.
 }
 \examples{
-primary_levels <- c("MI", "MINOCAM")
+primary_levels <- c("KO", "WT")
 secondary_levels <- c("T0", "T150", "T300")
 generate_contrasts(primary_levels, secondary_levels)
 generate_contrasts(secondary_levels, primary_levels)

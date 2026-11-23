@@ -2,7 +2,7 @@
 % Please edit documentation in R/generatedContrastsDF.R
 \name{level_specific_contrasts}
 \alias{level_specific_contrasts}
-\title{Level-specific contrasts (per secondary level)}
+\title{Level-specific contrasts of a two-factor design}
 \usage{
 level_specific_contrasts(primary_levels, secondary_levels)
 }
@@ -12,15 +12,14 @@ level_specific_contrasts(primary_levels, secondary_levels)
 \item{secondary_levels}{character vector of secondary factor levels}
 }
 \value{
-Contrast definitions or contrast results.
+A named list of contrast strings, one per pair of primary levels and secondary level, named
+\verb{<high>_vs_<low>_at_<secondary>}.
 }
 \description{
-Level-specific contrasts (per secondary level)
+For every pair of primary levels, their difference within each secondary level.
 }
 \examples{
-# example code
-
-primary_levels <- c("MI", "MINOCAM")
+primary_levels <- c("KO", "WT")
 secondary_levels <- c("T0", "T150", "T300")
 x2 <- level_specific_contrasts(primary_levels, secondary_levels)
 x3 <- level_specific_contrasts(secondary_levels, primary_levels)

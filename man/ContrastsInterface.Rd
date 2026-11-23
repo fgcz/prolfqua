@@ -7,7 +7,10 @@
 An R6 class generator.
 }
 \description{
-Base class for all Contrasts classes
+Defines the methods every contrast class provides. Subclasses implement \code{get_contrasts()}; the shared methods
+(\code{get_Plotter()}, \code{to_wide()}, \code{get_rank()}, \code{get_ora()}, \code{filter_significant()}, \code{get_missing()}) build on it,
+so they behave the same for every modelling backend. Contrast objects are usually obtained from
+\code{\link[=build_contrast_analysis]{build_contrast_analysis()}}.
 }
 \examples{
 int <- ContrastsInterface$new()

@@ -14,7 +14,8 @@ matrix_to_tibble(x, preserve_row_names = "row.names", ...)
 \item{...}{further parameters passed to as_tibble}
 }
 \value{
-The computed result.
+a tibble with the columns of \code{x}, preceded by a column \code{preserve_row_names} holding the row names
+unless \code{preserve_row_names} is \code{NULL}.
 }
 \description{
 Convert a matrix or data.frame to a tibble (taken from tidyquant)

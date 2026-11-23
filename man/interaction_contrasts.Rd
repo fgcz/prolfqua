@@ -2,7 +2,7 @@
 % Please edit documentation in R/generatedContrastsDF.R
 \name{interaction_contrasts}
 \alias{interaction_contrasts}
-\title{Interaction contrasts (difference of differences)}
+\title{Interaction contrasts of a two-factor design}
 \usage{
 interaction_contrasts(primary_levels, secondary_levels)
 }
@@ -12,13 +12,14 @@ interaction_contrasts(primary_levels, secondary_levels)
 \item{secondary_levels}{character vector of secondary factor levels}
 }
 \value{
-Contrast definitions or contrast results.
+A named list of contrast strings, named \verb{interaction_<high>_vs_<low>_at_<s2>_vs_<s1>}.
 }
 \description{
-Interaction contrasts (difference of differences)
+For every pair of primary levels and every pair of secondary levels, the difference of differences: does the
+primary difference change between the two secondary levels?
 }
 \examples{
-primary_levels <- c("MI", "MINOCAM")
+primary_levels <- c("KO", "WT")
 secondary_levels <- c("T0", "T150", "T300")
 interaction_contrasts(primary_levels, secondary_levels)
 interaction_contrasts(secondary_levels, primary_levels)

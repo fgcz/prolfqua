@@ -10,10 +10,14 @@ summarize_stats_factors(lfqdata)
 \item{lfqdata}{\link{LFQData} object with the data and its configuration}
 }
 \value{
-The computed result.
+a tibble with one row per hierarchy element and factor level: the statistics of
+\code{LFQData$get_Stats()$stats()} (\code{nrReplicates}, \code{nrMeasured}, \code{nrNAs}, \code{sd}, \code{var}, \code{meanAbundance},
+\code{medianAbundance}, \code{CV} for untransformed data) for the interaction of all relevant factors and, with more than
+one factor, for each factor alone; \code{interaction} names the level.
 }
 \description{
-Compute variance, sd and related statistics for all factor levels
+Summary statistics per protein for every level of the relevant factors and of their interaction, in one table;
+used to judge variability and missingness per group.
 }
 \examples{
 res2 <- prolfqua::sim_lfq_data_2factor_config()

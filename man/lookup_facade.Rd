@@ -15,7 +15,8 @@ Registry entry list with at least \code{class},
 \code{NULL} if no entry exists.
 }
 \description{
-Look up a contrast facade by short name
+Returns the registry entry of a method of \code{\link[=build_contrast_analysis]{build_contrast_analysis()}}, including the input it needs
+(\code{"aggregated"} or \code{"nested"}).
 }
 \examples{
 lookup_facade("lm")$class

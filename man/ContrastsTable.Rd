@@ -7,7 +7,9 @@
 An R6 class generator.
 }
 \description{
-Hold results when contrasts are added
+A contrast object around a ready-made contrast table, for example the result of \code{\link[=merge_contrasts_results]{merge_contrasts_results()}}. It
+provides the shared methods of \link{ContrastsInterface} (plots, wide format, ranking) but no linear functions, because
+no model stands behind it.
 }
 \examples{
 

@@ -285,104 +285,97 @@ facade_fixture_warnings <- paste(
   sep = "|"
 )
 
-facade_method_case <- function(method) {
-  sim <- sim_lfq_data_peptide_config(n_proteins = 20, seed = 42)
-  peptide <- LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq
-  if (method == "limpa") {
-    input <- AggregateLimpa$new(peptide, "protein")$aggregate()
-  } else if (lookup_facade(method)$needs == "nested") {
-    input <- peptide
-  } else {
-    input <- peptide$get_Aggregator()$aggregate()
-  }
-  model <- if (method == "lmer_nested") "~ group_ + (1 | peptide_Id) + (1 | sampleName)" else "~ group_"
-  build_contrast_analysis(input, model, c(A_vs_Ctrl = "group_A - group_Ctrl"), method)
-}
-
-facade_method_dependencies <- list(
-  rfit = "Rfit",
-  rfit_impute = "Rfit",
-  lmer_nested = c("lme4", "lmerTest"),
-  firth = "logistf",
-  limpa = "limpa",
-  limpa_nested = "limpa"
-)
-
 #' @srrstats {RE7.3} The registry loop tests supported accessors, covariance consistency and documented hurdle errors.
 #' @noRd
 NULL
 
-for (method in names(list_facades())) {
-  test_that(paste("standard analysis methods work for", method), {
+# print(), summary() and plot() of an analysis
+expect_analysis_overview <- function(facade, method) {
+  expect_output(print(facade), paste("prolfqua analysis:", method))
+  summary <- summary(facade)
+  expect_true(all(c("subjects", "fitted", "failed", "singular", "imputed") %in% names(summary$fit_status)))
+  expect_equal(summary$fit_status$fitted + summary$fit_status$failed, summary$fit_status$subjects)
+  expect_equal(summary$per_contrast$estimated, nrow(facade$get_contrasts()))
+  expect_equal(summary$per_contrast$missing, nrow(facade$get_missing()))
+  expect_s3_class(graphics::plot(facade), "ggplot")
+}
+
+for (method in setdiff(names(list_facades()), "hurdle_nested")) {
+  test_that(paste("print, summary, plot and the generic model accessors work for", method), {
     for (package in facade_method_dependencies[[method]]) {
       skip_if_not_installed(package)
     }
     muffle_warnings_matching(pattern = facade_fixture_warnings, expr = {
       facade <- facade_method_case(method)
-      expect_output(print(facade), paste("prolfqua analysis:", method))
-      summary <- summary(facade)
-      expect_true(all(c("subjects", "fitted", "failed", "singular", "imputed") %in% names(summary$fit_status)))
-      expect_equal(summary$fit_status$fitted + summary$fit_status$failed, summary$fit_status$subjects)
-      expect_equal(summary$per_contrast$estimated, nrow(facade$get_contrasts()))
-      expect_equal(summary$per_contrast$missing, nrow(facade$get_missing()))
-      expect_s3_class(graphics::plot(facade), "ggplot")
-      if (method == "hurdle_nested") {
-        for (accessor in list(
-          stats::coef,
-          stats::vcov,
-          stats::confint,
-          stats::formula,
-          stats::nobs,
-          stats::fitted,
-          stats::residuals
-        )) {
-          expect_error(accessor(facade), class = "prolfqua_error_not_available")
-        }
-      } else {
-        coefficients <- stats::coef(facade)
-        expect_named(coefficients, c(facade$model$subject_id, "term", "estimate", "std.error", "df"))
-        expect_gt(nrow(coefficients), 0L)
-        covariance <- stats::vcov(facade)
-        expect_named(covariance, c(facade$model$subject_id, "term", "term2", "covariance"))
-        diagonal <- covariance[covariance$term == covariance$term2, ]
-        compared <- dplyr::inner_join(diagonal, coefficients, by = c(facade$model$subject_id, "term"))
-        expect_equal(nrow(compared), sum(is.finite(coefficients$estimate)))
-        expect_equal(sqrt(compared$covariance), compared$std.error)
-        intervals <- stats::confint(facade)
-        expect_equal(intervals[, names(coefficients)], coefficients)
-        expect_true(all(c("conf.low", "conf.high") %in% names(intervals)))
-        expect_s3_class(stats::formula(facade), "formula")
-        observations <- stats::nobs(facade)
-        expect_named(observations, c(facade$model$subject_id, "nobs"))
-        expect_true(all(observations$nobs >= 0))
-        values <- stats::fitted(facade)
-        residuals <- stats::residuals(facade)
-        expect_true(all(
-          c(facade$model$subject_id, facade$.lfqdata$sample_name(), "response", "fitted", "imputed") %in% names(values)
-        ))
-        expect_equal(values$response, values$fitted + residuals$residual)
-        expect_false(anyNA(values[[facade$.lfqdata$sample_name()]]))
-        if (method %in% c("firth", "binomial_nested", "binomial_firth_nested")) {
-          expect_true(all(values$fitted >= 0 & values$fitted <= 1))
-        }
-        if (method == "lmer_nested") {
-          expect_true("peptide_Id" %in% names(values))
-          expect_match(paste(deparse(stats::formula(facade)), collapse = ""), "peptide_Id")
-          fits <- .model_fits(facade$model)
-          for (i in seq_len(nrow(fits))) {
-            expected <- lme4::fixef(fits$linear_model[[i]])
-            selected <- coefficients[coefficients$protein_Id == fits$protein_Id[i], ]
-            expect_equal(selected$term, names(expected))
-            expect_equal(selected$estimate, unname(expected))
-            table <- stats::coef(summary(fits$linear_model[[i]]))
-            expect_equal(selected$std.error, unname(table[, "Std. Error"]))
-            expect_equal(selected$df, unname(table[, "df"]))
-          }
-        }
+      expect_analysis_overview(facade, method)
+      coefficients <- stats::coef(facade)
+      expect_named(coefficients, c(facade$model$subject_id, "term", "estimate", "std.error", "df"))
+      expect_gt(nrow(coefficients), 0L)
+      covariance <- stats::vcov(facade)
+      expect_named(covariance, c(facade$model$subject_id, "term", "term2", "covariance"))
+      diagonal <- covariance[covariance$term == covariance$term2, ]
+      compared <- dplyr::inner_join(diagonal, coefficients, by = c(facade$model$subject_id, "term"))
+      expect_equal(nrow(compared), sum(is.finite(coefficients$estimate)))
+      expect_equal(sqrt(compared$covariance), compared$std.error)
+      intervals <- stats::confint(facade)
+      expect_equal(intervals[, names(coefficients)], coefficients)
+      expect_true(all(c("conf.low", "conf.high") %in% names(intervals)))
+      expect_s3_class(stats::formula(facade), "formula")
+      observations <- stats::nobs(facade)
+      expect_named(observations, c(facade$model$subject_id, "nobs"))
+      expect_true(all(observations$nobs >= 0))
+      values <- stats::fitted(facade)
+      residuals <- stats::residuals(facade)
+      expect_true(all(
+        c(facade$model$subject_id, facade$.lfqdata$sample_name(), "response", "fitted", "imputed") %in% names(values)
+      ))
+      expect_equal(values$response, values$fitted + residuals$residual)
+      expect_false(anyNA(values[[facade$.lfqdata$sample_name()]]))
+      if (method %in% c("firth", "binomial_nested", "binomial_firth_nested")) {
+        expect_true(all(values$fitted >= 0 & values$fitted <= 1))
       }
     })
   })
 }
+
+test_that("hurdle_nested prints, summarises and plots, and refuses the single-model accessors", {
+  muffle_warnings_matching(pattern = facade_fixture_warnings, expr = {
+    facade <- facade_method_case("hurdle_nested")
+    expect_analysis_overview(facade, "hurdle_nested")
+    for (accessor in list(
+      stats::coef,
+      stats::vcov,
+      stats::confint,
+      stats::formula,
+      stats::nobs,
+      stats::fitted,
+      stats::residuals
+    )) {
+      expect_error(accessor(facade), class = "prolfqua_error_not_available")
+    }
+  })
+})
+
+test_that("lmer_nested coefficients equal lme4::fixef() and the lmerTest coefficient table", {
+  skip_if_not_installed("lme4")
+  skip_if_not_installed("lmerTest")
+  muffle_warnings_matching(pattern = facade_fixture_warnings, expr = {
+    facade <- facade_method_case("lmer_nested")
+    coefficients <- stats::coef(facade)
+    expect_true("peptide_Id" %in% names(stats::fitted(facade)))
+    expect_match(paste(deparse(stats::formula(facade)), collapse = ""), "peptide_Id")
+    fits <- .model_fits(facade$model)
+    for (i in seq_len(nrow(fits))) {
+      expected <- lme4::fixef(fits$linear_model[[i]])
+      selected <- coefficients[coefficients$protein_Id == fits$protein_Id[i], ]
+      expect_equal(selected$term, names(expected))
+      expect_equal(selected$estimate, unname(expected))
+      table <- stats::coef(summary(fits$linear_model[[i]]))
+      expect_equal(selected$std.error, unname(table[, "Std. Error"]))
+      expect_equal(selected$df, unname(table[, "df"]))
+    }
+  })
+})
 
 test_that("analysis covariance matches each ordinary backend fit", {
   facade <- facade_methods_fit()

@@ -2,12 +2,14 @@
 % Please edit documentation in R/ContrastFirth.R
 \name{ContrastsFirth}
 \alias{ContrastsFirth}
-\title{Estimate contrasts using Wald Test}
+\title{Contrasts of Firth logistic regression models}
 \value{
 An R6 class generator.
 }
 \description{
-Estimate contrasts using Wald Test
+Wald tests of contrasts of \link{ModelFirth} fits, one per subject and contrast, on the log-odds scale of
+protein detection. The reference distribution is normal (\code{df = Inf}), as in the coefficient table of logistf
+and \code{confint()}. Used by the \code{firth} method of \code{\link[=build_contrast_analysis]{build_contrast_analysis()}}.
 }
 \examples{
 \dontshow{if (requireNamespace("logistf", quietly = TRUE)) withAutoprint(\{ # examplesIf}

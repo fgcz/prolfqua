@@ -10,10 +10,11 @@ list_to_analysis_configuration(dd)
 \item{dd}{list with table and parameter elements as produced by r6_extract_values}
 }
 \value{
-The computed result.
+an \link{AnalysisConfiguration} with the fields set from \code{dd}.
 }
 \description{
-Reconstruct a configuration from minimal YAML
+The inverse of \code{\link[=r6_extract_values]{r6_extract_values()}}: rebuilds an \link{AnalysisConfiguration} from the list read from a YAML file,
+in the current flat format or the older nested one. Unknown keys raise an error.
 }
 \examples{
 

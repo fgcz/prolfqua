@@ -2,7 +2,7 @@
 % Please edit documentation in R/generatedContrastsDF.R
 \name{group_label}
 \alias{group_label}
-\title{Build group labels from two factor levels}
+\title{Group labels of a two-factor design}
 \usage{
 group_label(primary, secondary)
 }
@@ -15,7 +15,8 @@ group_label(primary, secondary)
 A character vector with combined group labels.
 }
 \description{
-Build group labels from two factor levels
+Names the cell of a two-factor design as \verb{G_<primary>_<secondary>}, the group names that the contrast generators
+(\code{\link[=generate_contrasts]{generate_contrasts()}} and its parts) use in their contrast strings.
 }
 \examples{
 group_label("a", "b")

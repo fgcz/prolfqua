@@ -15,7 +15,9 @@ merge_contrasts_results(prefer, add, model_name)
 \code{prefer} and \code{add}}
 }
 \value{
-Contrast definitions or contrast results.
+A list of three \link{ContrastsTable} objects: \code{merged}, all contrasts of \code{prefer} plus those of \code{add} for
+subjects missing from \code{prefer}; \code{more}, only the added contrasts; \code{same}, the contrasts of \code{add} for subjects
+that \code{prefer} already has.
 }
 \description{
 Typically used to fill proteins missing from \code{\link{Contrasts}} with

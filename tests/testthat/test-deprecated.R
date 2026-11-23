@@ -3,22 +3,10 @@
 test_that("deprecated function names warn and return the same value as the new names", {
   sim <- sim_lfq_data_peptide_config(n_proteins = 5)
   lfq <- LFQData$new(sim$data, sim$config)
+  plotter <- lfq$get_Plotter()
   config_list <- r6_extract_values(sim$config)
-
-  expect_warning(old <- R6_extract_values(sim$config), "deprecated")
-  expect_identical(old, config_list)
-  expect_warning(old <- list_to_AnalysisConfiguration(config_list), "deprecated")
-  expect_identical(r6_extract_values(old), r6_extract_values(list_to_analysis_configuration(config_list)))
-
-  contrast_config <- ContrastConfiguration$new()
-  contrast_list <- r6_extract_values(contrast_config)
-  expect_warning(old <- list_to_ContrastConfiguration(contrast_list), "deprecated")
-  expect_identical(r6_extract_values(old), r6_extract_values(list_to_contrast_configuration(contrast_list)))
-
+  contrast_list <- r6_extract_values(ContrastConfiguration$new())
   quantiles <- .summarize_stats_quantiles(.summarize_stats(lfq), lfq$relevant_factor_keys(), probs = c(0.5, 0.8))
-  expect_warning(old <- lfq_power_t_test_quantiles_V2(quantiles$long), "deprecated")
-  expect_identical(old, .lfq_power_t_test_quantiles(quantiles$long))
-
   ropeca_input <- data.frame(
     contrast = "c1",
     protein_Id = rep(c("P1", "P2"), each = 3),
@@ -27,26 +15,44 @@ test_that("deprecated function names warn and return the same value as the new n
     p.value = c(0.01, 0.2, 0.03, 0.5, 0.04, 0.9),
     avgAbd = 1:6
   )
-  args <- list(ropeca_input, subject_id = "protein_Id", estimate = "estimate", p.value = "p.value")
-  expect_warning(old <- do.call(summary_ROPECA_median_p_scaled, args), "deprecated")
-  expect_identical(old, do.call(.summary_ropeca_median_p_scaled, args))
-
-  expect_warning(p <- missigness_histogram(lfq), "deprecated")
-  expect_s3_class(p, "ggplot")
-  expect_warning(p <- lfq$get_Plotter()$missigness_histogram(), "deprecated")
-  expect_s3_class(p, "ggplot")
-
+  ropeca_args <- list(ropeca_input, subject_id = "protein_Id", estimate = "estimate", p.value = "p.value")
   two_factor <- sim_lfq_data_2factor_config(n_proteins = 10, with_missing = FALSE)
   lfq2 <- LFQData$new(two_factor$data, two_factor$config)
   full <- build_model(lfq2, strategy_lm("abundance ~ Treatment + Background"))
   reduced <- build_model(lfq2, strategy_lm("abundance ~ Treatment"))
-  args <- list(full$model_df, "full", reduced$model_df, "reduced")
-  expect_warning(old <- do.call(LR_test, args), "lr_test")
-  expect_identical(old, do.call(lr_test, args))
+  lr_args <- list(full$model_df, "full", reduced$model_df, "reduced")
+  plot_data <- \(plot) plot$data
 
+  # one row per renamed function: old and new name, their arguments, and the part of the value both must agree on
+  renamed <- tibble::tribble(
+    ~old                             , ~new                              , ~args                , ~value            ,
+    "R6_extract_values"              , "r6_extract_values"               , list(sim$config)     , identity          ,
+    "list_to_AnalysisConfiguration"  , "list_to_analysis_configuration"  , list(config_list)    , r6_extract_values ,
+    "list_to_ContrastConfiguration"  , "list_to_contrast_configuration"  , list(contrast_list)  , r6_extract_values ,
+    "lfq_power_t_test_quantiles_V2"  , ".lfq_power_t_test_quantiles"     , list(quantiles$long) , identity          ,
+    "summary_ROPECA_median_p_scaled" , ".summary_ropeca_median_p_scaled" , ropeca_args          , identity          ,
+    "missigness_histogram"           , ".missingness_histogram"          , list(lfq)            , plot_data         ,
+    "plotter$missigness_histogram"   , "plotter$missingness_histogram"   , list()               , plot_data         ,
+    "LR_test"                        , "lr_test"                         , lr_args              , identity
+  )
+  for (i in seq_len(nrow(renamed))) {
+    args <- renamed$args[[i]]
+    value <- renamed$value[[i]]
+    expect_warning(
+      old <- do.call(eval(str2lang(renamed$old[i])), args),
+      class = "deprecatedWarning",
+      info = renamed$old[i]
+    )
+    expect_identical(value(old), value(do.call(eval(str2lang(renamed$new[i])), args)), info = renamed$old[i])
+  }
+})
+
+test_that("LFQDataToSummarizedExperiment warns and returns the value of lfqdata_to_summarized_experiment", {
   skip_if_not_installed("SummarizedExperiment")
   skip_if_not_installed("S4Vectors")
-  expect_warning(old <- LFQDataToSummarizedExperiment(lfq), "lfqdata_to_summarized_experiment")
+  sim <- sim_lfq_data_peptide_config(n_proteins = 5)
+  lfq <- LFQData$new(sim$data, sim$config)
+  expect_warning(old <- LFQDataToSummarizedExperiment(lfq), class = "deprecatedWarning")
   expect_identical(old, lfqdata_to_summarized_experiment(lfq))
 })
 

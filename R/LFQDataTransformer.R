@@ -2,6 +2,10 @@
 
 #' Decorate LFQData with Methods for transforming Intensities
 #'
+#' Transformations of the response of an [LFQData] object: log2, robust scaling (`robscale()`), centring to a
+#' reference subset, subtraction of sample offsets and any function applied to the intensity array or matrix.
+#' Obtained with `LFQData$get_Transformer()`; methods return the transformer, the result is in `$lfq`.
+#'
 #' @return An R6 class generator.
 #' @export
 #'
@@ -518,7 +522,8 @@ center_to_reference <- function(
 #' takes the median of the lfqdareference per sample and subtracts it from a copy of lfqdata
 #' @param lfqdata LFQData object containing the data to center
 #' @param lfqdareference LFQData object containing the reference subset
-#' @return The computed result.
+#' @return invisibly, a copy of `lfqdata` whose response `centered_abundance_by_median` is centred per sample to
+#'   the median of the reference subset.
 #' @export
 #' @examples
 #' # example code

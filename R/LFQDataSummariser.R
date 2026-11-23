@@ -1,6 +1,9 @@
 # LFQDataSummariser ----
 #' Summarize LFQData
 #'
+#' Counts and summaries of an [LFQData] object: features per hierarchy level overall and per sample, missing values
+#' per protein and group, and the percentage abundance of proteins. Obtained with `LFQData$get_Summariser()`.
+#'
 #' @return An R6 class generator.
 #' @export
 #' @family LFQData

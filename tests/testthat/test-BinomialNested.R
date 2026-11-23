@@ -274,7 +274,8 @@ test_that("binomial_nested supports multifactor contrasts and rejects aggregated
     binomial_bound = FALSE
   )
   result <- facade$get_contrasts()
-  expect_true(nrow(result) > 0)
+  # one row per protein and contrast
+  expect_equal(nrow(result), dplyr::n_distinct(lfqdata$data_long()$protein_Id) * length(contrasts))
   expect_setequal(unique(result$contrast), names(contrasts))
 
   protein <- sim_lfq_data_protein_config(n_proteins = 10, seed = 4)

@@ -9,79 +9,90 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
 bibliography:
   - prolfqua.bib
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 ```
 
+prolfqua works on one table in long format, one row per feature (protein, peptide or precursor) and sample, together with an `AnalysisConfiguration` that says which column holds what. This vignette builds both from a table you already have.
 
-# Creating a configuration for a file in wide data format
+# Output of quantification software
 
+For the output of common quantification software, the [prolfquapp](https://github.com/prolfqua/prolfquapp) package has readers that return a ready `LFQData` object together with the protein annotation:
 
-Frequently, the data are available in tables, where the rows represent proteins, and the columns do represent samples.
-The example shows such a table. The first column contains, the protein id, while the other columns store the intensities for sample A, B, C.
+- DIA-NN: `prolfquapp::preprocess_DIANN()`
+- MaxQuant: `prolfquapp::preprocess_MQ_peptide()`
+- Spectronaut: `prolfquapp::preprocess_BGS()`
+- FragPipe: `prolfquapp::preprocess_FP_PSM()`
+- MSstats-formatted tables: `prolfquapp::preprocess_MSstats()`
 
+They need the FASTA file used for the search. prolfquapp is installed from GitHub; see its README. The rest of this vignette shows how to build an `LFQData` object from any other table.
+
+# A table in wide format
+
+Frequently, the data are available in tables where the rows are proteins and the columns are samples.
+In the example, the first column holds the protein identifier and the other columns the intensities of samples A to D.
 
 ```{r sampleDataFrame}
-df <- data.frame(protein_Id = c("tr|A|HUMAN","tr|B|HUMAN","tr|C|HUMAN","tr|D|HUMAN"),
-                 Intensity_A = c(100,10000,10,NA),
-                 Intensity_B = c(NA, 9000, 20, 100),
-                 Intensity_C = c(200,8000,NA,150),
-                 Intensity_D = c(130,11000, 50, 50))
+df <- data.frame(
+  protein_Id = c("tr|A|HUMAN", "tr|B|HUMAN", "tr|C|HUMAN", "tr|D|HUMAN"),
+  Intensity_A = c(100, 10000, 10, NA),
+  Intensity_B = c(NA, 9000, 20, 100),
+  Intensity_C = c(200, 8000, NA, 150),
+  Intensity_D = c(130, 11000, 50, 50)
+)
 df
-
-
 ```
 
-
-This table can be converted into a table in the long format using:
+This table can be converted into a table in long format:
 
 ```{r pivot2Long}
-table_long <- tidyr::pivot_longer(df, starts_with("Intensity_"),names_to = "Sample", values_to = "Intensity")
+table_long <- tidyr::pivot_longer(df, dplyr::starts_with("Intensity_"), names_to = "Sample", values_to = "Intensity")
 table_long
 ```
 
-In addition you will need a table with the Sample annotations. In this example with have two groups A, B.
+In addition you need a table with the sample annotation. In this example there are three groups, A, B and C.
 
 ```{r annotationDataFrame}
-annot <- data.frame(Sample = c("Intensity_A", "Intensity_B", "Intensity_C", "Intensity_D"), Group = c("A","A","B","C"))
+annot <- data.frame(
+  Sample = c("Intensity_A", "Intensity_B", "Intensity_C", "Intensity_D"),
+  Group = c("A", "A", "B", "C")
+)
 ```
 
-Now you can annotate the samples in the table with the Intensities.
+Join the annotation to the intensities. Protein-level data should also say from how many peptides each protein intensity was computed in each sample; some methods use this count as a weight. It is unknown here, so it is set to 1.
 
 ```{r addAnnotation}
-table_long <- dplyr::inner_join(annot, table_long)
+table_long <- dplyr::inner_join(annot, table_long, by = "Sample")
+table_long$nr_children <- 1L
 ```
 
-We create a `AnalysisConfiguration` and start annotating the data frame, that is specifying which column contains which type of information.
+Create an `AnalysisConfiguration` and name the columns: which one identifies the sample and which one holds the intensities.
 
 ```{r createConfig}
 config <- prolfqua::AnalysisConfiguration$new()
-config$file_name = "Sample"
-config$work_intensity = "Intensity"
-
+config$file_name <- "Sample"
+config$work_intensity <- "Intensity"
 ```
 
 The columns identifying the measured features, which are proteins, peptides or precursors, are described using the named list `hierarchy`. The values of the list are the column names, while the names are arbitrary as long as they are valid R column names. Here we use the same names as the column names.
 
-The list `factors`, is used to point to the columns containing the factors of your analysis (Group).
-
+The list `factors` points to the columns with the explanatory variables of the analysis (Group).
 
 ```{r addFactors}
-config$hierarchy[["protein_Id"]]    <-  "protein_Id"
+config$hierarchy[["protein_Id"]] <- "protein_Id"
 config$factors[["Group"]] <- "Group"
-
 ```
 
+`setup_analysis()` checks the table against the configuration and completes it, and `LFQData$new()` creates the data object.
 
 ```{r buildLFQData}
 analysis_data <- prolfqua::setup_analysis(table_long, config)
 lfqdata <- prolfqua::LFQData$new(analysis_data, config)
 ```
-
 
 ```{r basicPlotting}
 lfqdata$hierarchy_counts()
@@ -89,59 +100,65 @@ smrz <- lfqdata$get_Summariser()
 smrz$plot_hierarchy_counts_sample()
 ```
 
+# A matrix with row and sample annotation
 
+When the intensities are already a matrix, with features in rows and samples in columns, plus a table describing the rows and one describing the samples, `lfqdata_from_wide()` builds the `LFQData` object directly. It is the inverse of `LFQData$data_wide(as.matrix = TRUE)`; row `i` of the matrix belongs to row `i` of the row table.
 
-# Creating a configuration for a file in long data format.
+```{r fromWide}
+intensities <- as.matrix(df[, -1])
+rowdata <- data.frame(protein_Id = df$protein_Id)
+samples <- data.frame(
+  sampleName = annot$Sample,
+  Sample = annot$Sample,
+  Group = annot$Group
+)
+children <- matrix(1L, nrow = nrow(intensities), ncol = ncol(intensities), dimnames = dimnames(intensities))
+from_wide <- prolfqua::lfqdata_from_wide(
+  list(Intensity = intensities, nr_children = children),
+  rowdata,
+  samples,
+  config
+)
+from_wide$hierarchy_counts()
+```
 
-Given for example a Peptide Quantification Report generated by Spectronaut (a table in long format), we demonstrate how to create a configuration that is required to use it with prolfqua. To do this, an `AnalysisConfiguration` has to be configured and some fields (fileName, hierarchy, factors, workingIntensity) need to defined.
-The configuration object describes the columns in the long table so that prolfqua functions know which columns to use.
+# A table in long format
+
+Long tables, such as the reports of Spectronaut, Skyline or DIA-NN, need only a configuration. Here a simulated peptide table stands in for such a report:
 
 ```{r readInData}
 dataLongFormat <- prolfqua::sim_lfq_data(n_proteins = 20, peptide = TRUE)
 head(dataLongFormat)
 ```
 
-We create a Table annotation object and start annotating the data we read. Since in this example we eventually want to do more filtering on data quality we will also define the ident_qValue in this `AnalysisConfiguration`.
+The sample is in the column `sample` and the intensity in `abundance`. Each row is one peptide, so it counts as one child of its protein:
 
 ```{r defineAnalysisTable}
+dataLongFormat$nr_children <- 1L
 config <- prolfqua::AnalysisConfiguration$new()
-config$file_name = "sample"
-config$work_intensity = "abundance"
-
+config$file_name <- "sample"
+config$work_intensity <- "abundance"
 ```
 
-The columns identifying the measured features, which are proteins, peptides or precursors, are described using the named list `hierarchy`. The values of the list are the column names, while the names are arbitrary as long as they are valid R column names. Here we use the same names as the column names.
-
-The list factors, is used to point to the columns containing the factors of your analysis (group).
-Here, we rename the column "R.Condition" to "Marker". In figures and legends generated by prolfqua the name "Marker" will then be used and not "R.Condition". The data.frame can also contain more than one factor.
-
+The hierarchy has two levels here, protein and peptide. The names of `factors` are the names used in model formulas, figures and legends; they can differ from the column names, for example `config$factors[["Condition"]] <- "R.Condition"` for a Spectronaut report. A table can hold several factors.
 
 ```{r defineHierarchyAndFactors}
-config$hierarchy[["proteinID"]]    <-  "proteinID"
-config$hierarchy[["peptideID"]]    <-  "peptideID"
+config$hierarchy[["proteinID"]] <- "proteinID"
+config$hierarchy[["peptideID"]] <- "peptideID"
 config$factors[["group"]] <- "group"
 ```
 
-
-Lastly, the function `setup_analysis`, creates from data frame in long format a data.frame compatible with your configuration. We can now run most of the function in the package using the data and configuration.
+`setup_analysis()` creates from the long table a table that matches the configuration, and `LFQData$new()` the data object, which is the start of every further analysis.
 
 ```{r mateDataAndConfig}
 analysis_data <- prolfqua::setup_analysis(dataLongFormat, config)
-
-lfq_tmp <- prolfqua::LFQData$new(analysis_data, config)
-lfq_tmp$summarize_hierarchy()
-
-```
-
-Now the analysis_data object is ready to generate the `LFQData` class instance. This object is the start for further analysis.
-
-```{r generateLFQData}
 lfqdata <- prolfqua::LFQData$new(analysis_data, config)
+lfqdata$summarize_hierarchy()
 ```
 
-With this, it is possible for example to use the `get_Summariser` function to visualize and summarise the data efficiently.
+With this, it is possible for example to use the `get_Summariser` function to visualize and summarise the data.
 
-```{r doBarPlotPerSample, fig.cap="Shown are how many precursors or proteins are found in each sample", fig.align=5, fig.height=5}
+```{r doBarPlotPerSample, fig.cap="Number of peptides found in each sample", fig.align="center", fig.height=5}
 smrz <- lfqdata$get_Summariser()
 smrz$plot_hierarchy_counts_sample()
 ```

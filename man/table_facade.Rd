@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{table_facade}
 \alias{table_facade}
-\title{Table facade to easily switch implementations}
+\title{Format a table for reports}
 \usage{
 table_facade(df, caption, digits = getOption("digits"), kable = TRUE)
 }
@@ -19,7 +19,8 @@ table_facade(df, caption, digits = getOption("digits"), kable = TRUE)
 a \code{knitr_kable} table, or \code{df} unchanged when \code{kable = FALSE}
 }
 \description{
-Table facade to easily switch implementations
+Formats a table for reports with \code{knitr::kable()}, or returns it unchanged, so report code does not depend on the
+table package.
 }
 \examples{
 \dontshow{if (requireNamespace("knitr", quietly = TRUE)) withAutoprint(\{ # examplesIf}

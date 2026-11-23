@@ -82,13 +82,13 @@ articles:
     contents:
       - prolfqua
       - CreatingConfigurations
-      - TransformingLFQData
       - Comparing2Groups
       - ModellingMethods
       - TwoFactorDesigns
       - ContrastsFromFactors
       - ModelBasedImputation
       - QualityControlAndSampleSizeEstimation
+      - TransformingLFQData
   - title: More articles
     navbar: More articles
     contents:

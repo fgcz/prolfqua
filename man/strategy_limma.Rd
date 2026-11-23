@@ -26,7 +26,7 @@ per-sample weights) or a numeric matrix (proteins x samples) passed to
 \code{\link[limma]{lmFit}}. Default \code{NULL} (no weights).}
 }
 \value{
-The computed result.
+a \link{StrategyLimma} object holding the formula, model name, \code{eBayes()} options and weights.
 }
 \description{
 Wrapper that returns a \code{\link{StrategyLimma}} R6 object.

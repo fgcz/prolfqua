@@ -2,7 +2,7 @@
 % Please edit documentation in R/tidyMS_missingness_summary.R
 \name{upset_interaction_missing_stats}
 \alias{upset_interaction_missing_stats}
-\title{UpSetR plot from interaction_missing_stats}
+\title{Prepare data for an UpSet plot of observations per group}
 \usage{
 upset_interaction_missing_stats(lfqdata, tr = 2)
 }
@@ -12,10 +12,12 @@ upset_interaction_missing_stats(lfqdata, tr = 2)
 \item{tr}{if less than tr observations in condition then missing}
 }
 \value{
-The computed result.
+a list with \code{data}, a data.frame with one row per hierarchy element and one 0/1 column per factor
+level (1 when at least \code{tr} observations), and \code{nsets}, the number of factor-level columns.
 }
 \description{
-UpSetR plot from interaction_missing_stats
+Marks, for each protein and factor level, whether it has at least \code{tr} observations, in the input format of
+\code{UpSetR::upset()}, to show which proteins are observed in which groups.
 }
 \examples{
 \dontshow{if (requireNamespace("UpSetR", quietly = TRUE)) withAutoprint(\{ # examplesIf}

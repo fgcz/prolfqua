@@ -13,8 +13,9 @@ estimate_intensity(lfqdata, method = c("medpolish", "rlm"), control = list())
 \code{MASS::rlm}, column \code{lmrob})}
 
 \item{control}{convergence controls merged over the defaults. medpolish: \code{maxiter} (default 10) and \code{eps}
-(default 0.01, the change of the sum of absolute residuals that stops the polish, on the log2 scale of the
-input); rlm: \code{maxit} (default 20) and \code{acc} (default 1e-4, relative change of the IRLS residuals).}
+(default 0.01; the polish stops when the sum of absolute residuals changes by less than \code{eps} times that sum,
+a relative criterion independent of the input scale); rlm: \code{maxit} (default 20) and \code{acc} (default 1e-4,
+relative change of the IRLS residuals).}
 }
 \value{
 returns list with data (data.frame), config (AnalysisConfiguration) and failures (tibble with the

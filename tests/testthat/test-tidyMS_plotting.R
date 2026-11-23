@@ -484,7 +484,7 @@ test_that("heatmap keeps only the top_n most variable features", {
   expect_equal(nrow(prolfqua:::.select_most_variable_features(lfq, wide, n_most_variable = Inf)), n_all)
 
   # n_most_variable < feature count keeps exactly n_most_variable rows, and they are the ones with
-  # the highest variability statistic (CV here — untransformed data).
+  # the highest variability statistic (CV here - untransformed data).
   k <- 3L
   sub <- prolfqua:::.select_most_variable_features(lfq, wide, n_most_variable = k)
   expect_equal(nrow(sub), k)
@@ -684,6 +684,21 @@ test_that("plot_heatmap_cor maps `color` from the lowest to the highest correlat
   expect_equal(rgb_at(default, max(default@matrix)), grDevices::col2rgb("red"))
 })
 
+test_that("plot_heatmap_cor(R2 = TRUE) shows squared correlations on a scale from 0", {
+  skip_if_not_installed("ComplexHeatmap")
+  skip_if_not_installed("circlize")
+  data <- test_long_sample_heatmap_data()
+  heatmap <- function(...) {
+    .plot_heatmap_cor(data$matrix, data$annotation, factor_keys = "group", sample_name = "sample", ...)
+  }
+  correlation <- heatmap()
+  squared <- heatmap(R2 = TRUE)
+  samples <- rownames(correlation@matrix)
+  expect_equal(squared@matrix[samples, samples], correlation@matrix[samples, samples]^2)
+  expect_equal(squared@column_title, "R^2")
+  expect_equal(grDevices::col2rgb(squared@matrix_color_mapping@col_fun(0)), grDevices::col2rgb("white"))
+})
+
 test_that("pca_plotly plots the requested principal components", {
   skip_if_not_installed("plotly")
   istar <- sim_lfq_data_protein_config(with_missing = FALSE)
@@ -691,4 +706,14 @@ test_that("pca_plotly plots the requested principal components", {
   layout <- plotly::plotly_build(lfq$get_Plotter()$pca_plotly(PC = c(2, 3)))$x$layout
   expect_match(layout$xaxis$title$text, "PC2")
   expect_match(layout$yaxis$title$text, "PC3")
+})
+
+test_that("intensity density and aggregation plots drop missing intensities without a warning", {
+  sim <- sim_lfq_data_peptide_config(n_proteins = 5, weight_missing = 0.5, seed = 1)
+  lfq <- LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq
+  expect_true(anyNA(lfq$data_long()[[lfq$response()]]))
+  expect_no_warning(ggplot2::ggplot_build(lfq$get_Plotter()$intensity_distribution_density()))
+  aggregator <- lfq$get_Aggregator()
+  aggregator$aggregate()
+  expect_no_warning(ggplot2::ggplot_build(aggregator$plot()$plots[[1]]))
 })

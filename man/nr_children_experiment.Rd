@@ -27,7 +27,8 @@ nr_children_experiment(
 \item{name_nr_child}{character - output column name}
 }
 \value{
-The computed result.
+a tibble with one row per hierarchy element: \code{hierarchy_keys_depth} and \code{name_nr_child}, the largest
+per-sample count of observed children.
 }
 \description{
 Aggregates nr_children per sample (via nr_obs_sample), then takes the max per hierarchy unit.

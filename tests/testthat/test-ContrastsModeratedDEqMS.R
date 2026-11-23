@@ -66,7 +66,8 @@ test_that("moderated_p_deqms works on simulated data", {
   )
 })
 
-test_that("ContrastsModeratedDEqMS works end-to-end", {
+# lm contrasts of 50 simulated proteins and their DEqMS moderation with the peptide counts
+deqms_fixture <- function() {
   istar <- sim_lfq_data_protein_config(n_proteins = 50)
   lProt <- LFQData$new(istar$data, istar$config)
   lProt$rename_response("transformedIntensity")
@@ -86,15 +87,19 @@ test_that("ContrastsModeratedDEqMS works end-to-end", {
     count_df = count_df,
     count_column = "nrPeptides"
   )
+  list(contrast = contrast, deqms = deqms)
+}
 
+test_that("ContrastsModeratedDEqMS get_contrasts() moderates the wrapped contrasts", {
+  fx <- deqms_fixture()
   muffle_warnings_matching(loess_ties_warning, expr = {
     # get_contrasts returns expected columns
-    x <- deqms$get_contrasts()
+    x <- fx$deqms$get_contrasts()
     expect_s3_class(x, "data.frame")
     expect_true(all(c("diff", "p.value", "FDR", "sigma", "statistic", "df", "conf.low", "conf.high") %in% colnames(x)))
     expect_true(all(x$p.value > 0 & x$p.value <= 1))
     expect_true(all(x$FDR >= 0 & x$FDR <= 1))
-    raw <- contrast$get_contrasts()
+    raw <- fx$contrast$get_contrasts()
     expect_equal(x$std.error.unmoderated, raw$std.error)
     expect_equal(x$df.unmoderated, raw$df)
     expect_equal(x$statistic, x$diff / x$std.error, tolerance = 1e-12)
@@ -104,28 +109,37 @@ test_that("ContrastsModeratedDEqMS works end-to-end", {
     # is carried through from the wrapped contrast.
     expect_false(any(grepl("_DEqMS", x$modelName)))
     expect_true("estimate_type" %in% colnames(x))
+  })
+})
 
+test_that("ContrastsModeratedDEqMS get_contrasts(all = TRUE) adds the moderated columns", {
+  fx <- deqms_fixture()
+  muffle_warnings_matching(loess_ties_warning, expr = {
     # get_contrasts(all = TRUE) returns both original and moderated columns
-    x_all <- deqms$get_contrasts(all = TRUE)
+    x_all <- fx$deqms$get_contrasts(all = TRUE)
     expect_true("moderated.statistic" %in% colnames(x_all))
     expect_true("moderated.p.value" %in% colnames(x_all))
     expect_true("FDR.moderated" %in% colnames(x_all))
+  })
+})
 
+test_that("ContrastsModeratedDEqMS delegates to the wrapped contrasts", {
+  fx <- deqms_fixture()
+  muffle_warnings_matching(loess_ties_warning, expr = {
     # get_contrast_sides delegates correctly
-    cs <- deqms$get_contrast_sides()
+    cs <- fx$deqms$get_contrast_sides()
     expect_s3_class(cs, "data.frame")
     expect_true(all(c("group_1", "group_2") %in% colnames(cs)))
 
     # get_linfct delegates
-    lf <- deqms$get_linfct()
-    expect_true(!is.null(lf))
+    expect_identical(fx$deqms$get_linfct(), fx$contrast$get_linfct())
 
     # to_wide returns wide format
-    tw <- deqms$to_wide()
+    tw <- fx$deqms$to_wide()
     expect_s3_class(tw, "data.frame")
 
     # get_Plotter returns ContrastsPlotter
-    pl <- deqms$get_Plotter()
+    pl <- fx$deqms$get_Plotter()
     expect_s3_class(pl, "ContrastsPlotter")
   })
 })
@@ -210,7 +224,9 @@ test_that("ContrastsModeratedDEqMS volcano renders", {
 
   pl <- deqms$get_Plotter()
   vp <- pl$volcano()
-  expect_true(!is.null(vp))
+  # one volcano per configured score, FDR by default
+  expect_named(vp, "FDR")
+  expect_s3_class(vp$FDR, "ggplot")
 })
 
 test_that("moderated_p_deqms predicts the prior for proteins left out of the loess fit", {

@@ -1,82 +1,85 @@
 # Test ContrastsPlotter R6 class
 
-test_that("ContrastsPlotter produces correct plot types", {
-  skip_if_not_installed("lme4")
-  skip_if_not_installed("lmerTest")
-  muffle_warnings_matching(single_peptide_warning, expr = {
-    istar <- sim_lfq_data_peptide_config(n_proteins = 20)
-    config <- istar$config
+# lm contrasts of 20 simulated proteins for two contrasts
+plotter_contrasts <- function() {
+  lfqdata <- protein_lfqdata_fixture(n_proteins = 20)
+  contrasts <- c(
+    "groupA_vs_Ctrl" = "group_A - group_Ctrl",
+    "groupB_vs_Ctrl" = "group_B - group_Ctrl"
+  )
+  build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "lm")$get_contrasts()
+}
 
-    modelFunction <- strategy_lmer(
-      "abundance ~ group_ + (1 | peptide_Id) + (1 | sample)"
-    )
-    mod <- build_model(istar$data, modelFunction, subject_id = config$hierarchy_keys_depth())
+new_contrasts_plotter <- function(contr = plotter_contrasts()) {
+  ContrastsPlotter$new(
+    contr,
+    "protein_Id",
+    volcano = list(list(score = "FDR", thresh = 0.1)),
+    histogram = list(
+      list(score = "p.value", breaks = seq(0, 1, by = 0.05)),
+      list(score = "FDR", breaks = seq(0, 1, by = 0.1))
+    ),
+    score = list(list(score = "statistic", thresh = 5))
+  )
+}
 
-    Contr <- c(
-      "groupA_vs_Ctrl" = "group_A - group_Ctrl",
-      "groupB_vs_Ctrl" = "group_B - group_Ctrl"
-    )
-    contrast <- Contrasts$new(mod, Contr)
-    contr <- contrast$get_contrasts()
+test_that("ContrastsPlotter does not expose the contrast table as a field", {
+  cp <- new_contrasts_plotter()
+  expect_setequal(intersect("contrast_df", names(cp)), character())
+})
 
-    cp <- ContrastsPlotter$new(
-      contr,
-      contrast$subject_id,
-      volcano = list(list(score = "FDR", thresh = 0.1)),
-      histogram = list(
-        list(score = "p.value", breaks = seq(0, 1, by = 0.05)),
-        list(score = "FDR", breaks = seq(0, 1, by = 0.1))
-      ),
-      score = list(list(score = "statistic", thresh = 5))
-    )
-    expect_setequal(intersect("contrast_df", names(cp)), character())
+test_that("ContrastsPlotter volcano returns a list of ggplots", {
+  res <- new_contrasts_plotter()$volcano()
+  expect_type(res, "list")
+  expect_s3_class(res$FDR, "ggplot")
+})
 
-    # volcano returns list of ggplots
-    res <- cp$volcano()
-    expect_type(res, "list")
-    expect_s3_class(res$FDR, "ggplot")
+test_that("ContrastsPlotter volcano_plotly returns a list of plotly objects", {
+  skip_if_not_installed("plotly")
+  res_plotly <- new_contrasts_plotter()$volcano_plotly()
+  expect_type(res_plotly, "list")
+  expect_s3_class(res_plotly$FDR, "plotly")
+})
 
-    # volcano_plotly returns list of plotly
-    res_plotly <- cp$volcano_plotly()
-    expect_type(res_plotly, "list")
-    expect_s3_class(res_plotly$FDR, "plotly")
+test_that("ContrastsPlotter ma_plot returns a ggplot", {
+  expect_s3_class(new_contrasts_plotter()$ma_plot(), "ggplot")
+})
 
-    # ma_plot returns ggplot
-    ma <- cp$ma_plot()
-    expect_s3_class(ma, "ggplot")
+test_that("ContrastsPlotter ma_plotly returns a plotly object", {
+  skip_if_not_installed("plotly")
+  expect_s3_class(new_contrasts_plotter()$ma_plotly(rank = TRUE), "plotly")
+})
 
-    # ma_plotly returns plotly
-    ma_pl <- cp$ma_plotly(rank = TRUE)
-    expect_s3_class(ma_pl, "plotly")
+test_that("ContrastsPlotter histogram returns a list of ggplots with the configured breaks", {
+  contr <- plotter_contrasts()
+  h <- new_contrasts_plotter(contr)$histogram()
+  expect_type(h, "list")
+  expect_s3_class(h$FDR, "ggplot")
+  expect_s3_class(h$p.value, "ggplot")
+  expect_equal(h$FDR$layers[[1]]$stat_params$breaks, seq(0, 1, by = 0.1))
+  # the old (from, to, by) triple under xlim is no longer read
+  old_spec <- ContrastsPlotter$new(
+    contr,
+    "protein_Id",
+    histogram = list(list(score = "FDR", xlim = c(0, 1, 0.05)))
+  )
+  expect_error(old_spec$histogram(), class = "prolfqua_error_bad_argument")
+})
 
-    # histogram returns list of ggplots
-    h <- cp$histogram()
-    expect_type(h, "list")
-    expect_s3_class(h$FDR, "ggplot")
-    expect_s3_class(h$p.value, "ggplot")
-    expect_equal(h$FDR$layers[[1]]$stat_params$breaks, seq(0, 1, by = 0.1))
-    # the old (from, to, by) triple under xlim is no longer read
-    old_spec <- ContrastsPlotter$new(
-      contr,
-      contrast$subject_id,
-      histogram = list(list(score = "FDR", xlim = c(0, 1, 0.05)))
-    )
-    expect_error(old_spec$histogram(), class = "prolfqua_error_bad_argument")
+test_that("ContrastsPlotter histogram_diff returns a ggplot", {
+  expect_s3_class(new_contrasts_plotter()$histogram_diff(), "ggplot")
+})
 
-    # histogram_diff returns ggplot
-    hd <- cp$histogram_diff()
-    expect_s3_class(hd, "ggplot")
+test_that("ContrastsPlotter score_plot returns a list of ggplots", {
+  sp <- new_contrasts_plotter()$score_plot(legend = FALSE)
+  expect_type(sp, "list")
+  expect_s3_class(sp$statistic, "ggplot")
+})
 
-    # score_plot returns list of ggplots
-    sp <- cp$score_plot(legend = FALSE)
-    expect_type(sp, "list")
-    expect_s3_class(sp$statistic, "ggplot")
-
-    # barplot_threshold returns list with plot element
-    bt <- cp$barplot_threshold()
-    expect_type(bt, "list")
-    expect_s3_class(bt$FDR$plot, "ggplot")
-  })
+test_that("ContrastsPlotter barplot_threshold returns a list with a plot element", {
+  bt <- new_contrasts_plotter()$barplot_threshold()
+  expect_type(bt, "list")
+  expect_s3_class(bt$FDR$plot, "ggplot")
 })
 
 test_that("volcano score names can differ from score columns", {

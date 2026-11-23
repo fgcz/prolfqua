@@ -26,7 +26,8 @@ number of detections, and glm's own defaults.}
 A \code{\link{StrategyBinomial}} object.
 }
 \description{
-Create a quasibinomial detection-count strategy
+Models, per protein, how many of its peptides are detected in each sample with a quasibinomial GLM; a small
+pseudo-count avoids infinite estimates when all or none are detected. Used by the \code{binomial_nested} method.
 }
 \examples{
 strategy <- strategy_binomial("~ group_", prior_count = 0.1)

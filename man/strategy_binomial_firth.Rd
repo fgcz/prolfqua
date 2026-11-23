@@ -23,7 +23,8 @@ about -10 to 10, so 1e-8 is far below any reported precision.}
 A \code{\link{StrategyBinomialFirth}} object.
 }
 \description{
-Create a Firth-penalized quasibinomial detection-count strategy
+As \code{\link[=strategy_binomial]{strategy_binomial()}}, with Firth's penalty instead of a pseudo-count, so estimates stay finite when all or
+none of a protein's peptides are detected. Used by the \code{binomial_firth_nested} method.
 }
 \examples{
 strategy <- strategy_binomial_firth("~ group_")

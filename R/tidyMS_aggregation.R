@@ -22,8 +22,9 @@ plot_hierarchies_line_default <- function(
   log_y = FALSE,
   show.legend = FALSE
 ) {
-  points <- geom_point(show.legend = show.legend)
-  lines <- geom_line(show.legend = show.legend)
+  # missing intensities are expected; lines still break at them
+  points <- geom_point(show.legend = show.legend, na.rm = TRUE)
+  lines <- geom_line(show.legend = show.legend, na.rm = TRUE)
   p <- ggplot(
     data,
     aes(x = .data[[sample]], y = .data[[intensity]], group = .data[[fragment]], color = .data[[peptide]])
@@ -240,8 +241,9 @@ plot_hierarchies_line_default <- function(
 #' @param method "medpolish" (Tukey's median polish, column `medpolish`) or "rlm" (robust regression with
 #'   `MASS::rlm`, column `lmrob`)
 #' @param control convergence controls merged over the defaults. medpolish: `maxiter` (default 10) and `eps`
-#'   (default 0.01, the change of the sum of absolute residuals that stops the polish, on the log2 scale of the
-#'   input); rlm: `maxit` (default 20) and `acc` (default 1e-4, relative change of the IRLS residuals).
+#'   (default 0.01; the polish stops when the sum of absolute residuals changes by less than `eps` times that sum,
+#'   a relative criterion independent of the input scale); rlm: `maxit` (default 20) and `acc` (default 1e-4,
+#'   relative change of the IRLS residuals).
 #' @return returns list with data (data.frame), config (AnalysisConfiguration) and failures (tibble with the
 #'   subject `id` and `warning` text of every warning raised while estimating one subject; the warnings are not
 #'   re-raised)
@@ -434,7 +436,8 @@ plot_hierarchies_line_default <- function(
 #' @param file_name character - file name column
 #' @param nr_children_col character - nr_children column name
 #' @param new_child character - output column name
-#' @return The computed result.
+#' @return a tibble with one row per hierarchy element and sample: `hierarchy_keys_depth`, `file_name` and
+#'   `new_child`, the sum of `nr_children_col` over rows with an observed response.
 #' @export
 #' @family hierarchy counting
 #' @examples
@@ -480,7 +483,8 @@ nr_obs_sample <- function(
 #' @param file_name character - file name column
 #' @param nr_children_col character - nr_children column name
 #' @param name_nr_child character - output column name
-#' @return The computed result.
+#' @return a tibble with one row per hierarchy element: `hierarchy_keys_depth` and `name_nr_child`, the largest
+#'   per-sample count of observed children.
 #' @export
 #' @family hierarchy counting
 #' @examples
@@ -524,7 +528,8 @@ nr_children_experiment <- function(
 #' @param hierarchy_keys character vector - all hierarchy column names
 #' @param hierarchy_keys_depth character vector - hierarchy columns at current depth
 #' @param name_nr_child character - output column name
-#' @return The computed result.
+#' @return a tibble with one row per hierarchy element: `hierarchy_keys_depth` and `name_nr_child`, the number
+#'   of distinct child features, observed or not.
 #' @export
 #' @family hierarchy counting
 #' @examples

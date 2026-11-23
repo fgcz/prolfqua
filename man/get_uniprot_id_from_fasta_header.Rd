@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{get_uniprot_id_from_fasta_header}
 \alias{get_uniprot_id_from_fasta_header}
-\title{Extracts uniprot ID}
+\title{Extract UniProt accessions from FASTA headers}
 \usage{
 get_uniprot_id_from_fasta_header(df, idcolumn = "protein_Id")
 }
@@ -15,7 +15,8 @@ get_uniprot_id_from_fasta_header(df, idcolumn = "protein_Id")
 data.frame
 }
 \description{
-Extracts uniprot ID
+Parses UniProt FASTA headers such as \code{sp|P12345|PROT1_HUMAN} in \code{idcolumn} and adds the accession as the
+column \code{UniprotID}; identifiers that are not FASTA headers get \code{NA}.
 }
 \examples{
 

@@ -17,9 +17,11 @@ test_that("build_model_limma returns ModelLimma", {
 
   expect_true(inherits(mod, "ModelLimma"))
   expect_true(inherits(mod, "ModelInterface"))
-  expect_true(!is.null(mod$fit))
-  expect_true(!is.null(mod$dummy_model))
-  expect_true(!is.null(mod$rowdata))
+  # one fit row per protein, one coefficient per level of group_
+  expect_s4_class(mod$fit, "MArrayLM")
+  expect_equal(dim(mod$fit$coefficients), c(20L, 3L))
+  expect_equal(names(stats::coef(mod$dummy_model)), colnames(mod$fit$coefficients))
+  expect_equal(mod$rowdata$protein_Id, rownames(mod$fit$coefficients))
 })
 
 test_that("ModelLimma$get_coefficients works", {
@@ -35,7 +37,9 @@ test_that("ModelLimma$get_coefficients works", {
   expect_true("Estimate" %in% colnames(coeffs))
   expect_true("Pr...t.." %in% colnames(coeffs))
   expect_true("factor" %in% colnames(coeffs))
-  expect_true(nrow(coeffs) > 0)
+  # 20 proteins x 3 coefficients
+  expect_equal(nrow(coeffs), 20 * 3)
+  expect_setequal(coeffs$factor, c("(Intercept)", "group_B", "group_Ctrl"))
 })
 
 test_that("ModelLimma$get_anova works", {
@@ -50,7 +54,9 @@ test_that("ModelLimma$get_anova works", {
   expect_true(is.data.frame(anova_tbl))
   expect_true("p.value" %in% colnames(anova_tbl))
   expect_true("F.value" %in% colnames(anova_tbl))
-  expect_true(nrow(anova_tbl) > 0)
+  # one F-test of the group_ coefficients per protein
+  expect_equal(nrow(anova_tbl), 20)
+  expect_setequal(anova_tbl$factor, "group_B+group_Ctrl")
 })
 
 test_that("ContrastsLimma produces valid results", {
@@ -245,7 +251,10 @@ test_that("merge_contrasts_results works with ContrastsLimma", {
 
   merged <- prolfqua::merge_contrasts_results(contr_limma, imp)
   expect_true(inherits(merged$merged, "ContrastsTable"))
-  expect_true(nrow(merged$merged$get_contrasts()) > 0)
+  # limma cannot estimate a protein without group A observations; the imputed lm analysis adds it
+  merged_contrasts <- merged$merged$get_contrasts()
+  expect_equal(nrow(merged_contrasts), dplyr::n_distinct(lProt$data_long()$protein_Id))
+  expect_equal(nrow(merged$more$get_contrasts()), sum(is.na(contr_limma$get_contrasts()$statistic)))
 })
 
 test_that("ContrastsLimma works with multiple contrasts", {
@@ -359,7 +368,9 @@ test_that("ContrastsLimmaImputeFacade end-to-end", {
 
   fa <- prolfqua::ContrastsLimmaImputeFacade$new(lfqdata, "~ group_", contrasts)
   res <- fa$get_contrasts()
-  expect_true(nrow(res) > 0)
+  # imputation gives every protein an estimate
+  n_proteins <- dplyr::n_distinct(lfqdata$data_long()$protein_Id)
+  expect_equal(nrow(res), n_proteins)
   expect_true(all(c("diff", "FDR", "p.value", "statistic") %in% colnames(res)))
 
   # get_Plotter returns a ContrastsPlotter
@@ -368,7 +379,7 @@ test_that("ContrastsLimmaImputeFacade end-to-end", {
 
   # to_wide works
   wide <- fa$to_wide()
-  expect_true(nrow(wide) > 0)
+  expect_equal(nrow(wide), n_proteins)
 })
 
 test_that("limma_impute fold changes match plain limma for non-imputed proteins", {
@@ -409,7 +420,7 @@ test_that("build_contrast_analysis dispatches limma_impute", {
   fa <- prolfqua::build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "limma_impute")
   expect_true(inherits(fa, "ContrastsLimmaImputeFacade"))
   res <- fa$get_contrasts()
-  expect_true(nrow(res) > 0)
+  expect_equal(nrow(res), dplyr::n_distinct(lfqdata$data_long()$protein_Id))
 })
 
 test_that("df_method borrowed works for limma_impute", {
@@ -425,7 +436,7 @@ test_that("df_method borrowed works for limma_impute", {
     df_method = "borrowed"
   )
   res <- fa$get_contrasts()
-  expect_true(nrow(res) > 0)
+  expect_equal(nrow(res), dplyr::n_distinct(lfqdata$data_long()$protein_Id))
 })
 
 test_that("df correction: imputed proteins do not use inflated df", {
@@ -471,34 +482,74 @@ test_that("build_model_limma_voom returns ModelLimma", {
 
   expect_true(inherits(mod, "ModelLimma"))
   expect_true(inherits(mod, "ModelInterface"))
-  expect_true(!is.null(mod$fit))
-  expect_true(!is.null(mod$dummy_model))
+  # one fit row and one row of vooma weights per protein
+  expect_s4_class(mod$fit, "MArrayLM")
+  expect_equal(dim(mod$fit$coefficients), c(20L, 3L))
+  expect_equal(dim(mod$weights), c(20L, dplyr::n_distinct(lProt$data_long()[[lProt$sample_name()]])))
+  expect_equal(names(stats::coef(mod$dummy_model)), colnames(mod$fit$coefficients))
 })
 
-test_that("build_model_limma_voom produces different weights than plain limma", {
-  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 30, weight_missing = 0)
-  lProt <- prolfqua::LFQData$new(istar$data, istar$config)
-  lProt$rename_response("transformedIntensity")
+# complete protein data and the limma::vooma() pipeline that the voom backends must reproduce
+vooma_reference <- function() {
+  sim <- prolfqua::sim_lfq_data_protein_config(
+    n_proteins = 200,
+    weight_missing = 0,
+    with_missing = FALSE,
+    seed = 5
+  )
+  lfqdata <- prolfqua::LFQData$new(sim$data, sim$config)
+  lfqdata$rename_response("transformedIntensity")
+  wide <- lfqdata$data_wide(as.matrix = TRUE)
+  design <- stats::model.matrix(~group_, data = wide$annotation)
+  voom <- limma::vooma(wide$data, design, span = 0.5)
+  fit <- limma::lmFit(voom, design)
+  # A - Ctrl with A as the intercept level
+  contrast_matrix <- matrix(c(0, 0, -1), ncol = 1, dimnames = list(colnames(design), "A_vs_Ctrl"))
+  top <- limma::topTable(
+    limma::eBayes(limma::contrasts.fit(fit, contrast_matrix)),
+    number = Inf,
+    sort.by = "none"
+  )
+  list(sim = sim, lfqdata = lfqdata, design = design, voom = voom, fit = fit, top = top)
+}
+
+test_that("limma_voom and limma_voom_impute equal limma::vooma() on complete data", {
+  ref <- vooma_reference()
+  expect_identical(colnames(ref$design), c("(Intercept)", "group_B", "group_Ctrl"))
   contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
 
-  fa_limma <- prolfqua::ContrastsLimmaFacade$new(lProt, "~ group_", contrasts)
-  fa_voom <- prolfqua::ContrastsLimmaVoomFacade$new(lProt, "~ group_", contrasts)
+  for (facade in list(prolfqua::ContrastsLimmaVoomFacade, prolfqua::ContrastsLimmaVoomImputeFacade)) {
+    fa <- facade$new(ref$lfqdata, "~ group_", contrasts, weights = NULL)
+    expect_equal(unname(fa$model$weights), unname(ref$voom$weights))
+    expect_equal(unname(fa$model$fit$stdev.unscaled), unname(ref$fit$stdev.unscaled))
+    res <- fa$get_contrasts()
+    expect_equal(res$diff, ref$top[res$protein_Id, "logFC"])
+    expect_equal(res$p.value, ref$top[res$protein_Id, "P.Value"])
+  }
+})
 
-  res_limma <- fa_limma$get_contrasts()
-  res_voom <- fa_voom$get_contrasts()
-
-  # Both should produce results
-
-  expect_true(nrow(res_voom) > 0)
-  expect_true(nrow(res_limma) > 0)
-
-  # Fold changes should be correlated but not identical (weights differ)
-  merged <- dplyr::inner_join(
-    dplyr::select(res_limma, protein_Id, diff_limma = diff),
-    dplyr::select(res_voom, protein_Id, diff_voom = diff),
-    by = "protein_Id"
+test_that("deqms_voom fits with the limma::vooma() weights", {
+  ref <- vooma_reference()
+  fa <- prolfqua::build_contrast_analysis(
+    ref$lfqdata,
+    "~ group_",
+    c("A_vs_Ctrl" = "group_A - group_Ctrl"),
+    method = "deqms_voom"
   )
-  expect_true(cor(merged$diff_limma, merged$diff_voom, use = "complete.obs") > 0.9)
+  expect_equal(unname(fa$model$weights), unname(ref$voom$weights))
+  expect_equal(unname(fa$model$fit$stdev.unscaled), unname(ref$fit$stdev.unscaled))
+})
+
+test_that("vooma weights change p-values but not one-factor fold changes", {
+  ref <- vooma_reference()
+  contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+  res_limma <- prolfqua::ContrastsLimmaFacade$new(ref$lfqdata, "~ group_", contrasts, weights = NULL)$get_contrasts()
+  res_voom <- prolfqua::ContrastsLimmaVoomFacade$new(ref$lfqdata, "~ group_", contrasts, weights = NULL)$get_contrasts()
+  res_voom <- res_voom[match(res_limma$protein_Id, res_voom$protein_Id), ]
+
+  # all samples of a group share one weight, so the group means stay unweighted means
+  expect_equal(res_voom$diff, res_limma$diff)
+  expect_gt(max(abs(res_voom$p.value - res_limma$p.value)), 1e-3)
 })
 
 test_that("build_contrast_analysis dispatches limma_voom", {
@@ -510,7 +561,8 @@ test_that("build_contrast_analysis dispatches limma_voom", {
   fa <- prolfqua::build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "limma_voom")
   expect_true(inherits(fa, "ContrastsLimmaVoomFacade"))
   res <- fa$get_contrasts()
-  expect_true(nrow(res) > 0)
+  # every protein is observed in groups A and Ctrl
+  expect_equal(nrow(res), dplyr::n_distinct(lfqdata$data_long()$protein_Id))
   expect_equal(unique(res$modelName), "limma_voom")
 })
 
@@ -523,7 +575,7 @@ test_that("build_contrast_analysis dispatches limma_voom_impute", {
   fa <- prolfqua::build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "limma_voom_impute")
   expect_true(inherits(fa, "ContrastsLimmaVoomImputeFacade"))
   res <- fa$get_contrasts()
-  expect_true(nrow(res) > 0)
+  expect_equal(nrow(res), dplyr::n_distinct(lfqdata$data_long()$protein_Id))
   expect_equal(unique(res$modelName), "limma_voom_impute")
 })
 
@@ -566,22 +618,24 @@ test_that("build_contrast_analysis dispatches deqms_voom", {
   expect_true(all(is.finite(res$p.value[!no_df])))
 })
 
-test_that("limma_voom with external weights (nr_children)", {
-  istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 20)
-  lfqdata <- prolfqua::LFQData$new(istar$data, istar$config)
-  lfqdata$rename_response("transformedIntensity")
+test_that("limma_voom external weights (nr_children) act as relative precisions", {
+  ref <- vooma_reference()
   contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+  res_none <- prolfqua::ContrastsLimmaVoomFacade$new(ref$lfqdata, "~ group_", contrasts, weights = NULL)$get_contrasts()
 
-  # With default weights (nr_children)
-  fa_wt <- prolfqua::ContrastsLimmaVoomFacade$new(lfqdata, "~ group_", contrasts)
-  # Without weights
-  fa_nowt <- prolfqua::ContrastsLimmaVoomFacade$new(lfqdata, "~ group_", contrasts, weights = NULL)
+  # a constant weight rescales the preliminary residual variance and the trend by the same factor
+  constant <- ref$sim
+  constant$data[[ref$lfqdata$nr_children_col()]] <- 3
+  lfq_constant <- prolfqua::LFQData$new(constant$data, constant$config)
+  lfq_constant$rename_response("transformedIntensity")
+  res_constant <- prolfqua::ContrastsLimmaVoomFacade$new(lfq_constant, "~ group_", contrasts)$get_contrasts()
+  res_constant <- res_constant[match(res_none$protein_Id, res_constant$protein_Id), ]
+  expect_equal(res_constant$p.value, res_none$p.value)
 
-  res_wt <- fa_wt$get_contrasts()
-  res_nowt <- fa_nowt$get_contrasts()
-
-  expect_true(nrow(res_wt) > 0)
-  expect_true(nrow(res_nowt) > 0)
+  # varying peptide counts per protein and sample change the fit
+  res_counts <- prolfqua::ContrastsLimmaVoomFacade$new(ref$lfqdata, "~ group_", contrasts)$get_contrasts()
+  res_counts <- res_counts[match(res_none$protein_Id, res_counts$protein_Id), ]
+  expect_gt(max(abs(res_counts$p.value - res_none$p.value)), 1e-3)
 })
 
 

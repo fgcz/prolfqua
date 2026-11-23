@@ -7,7 +7,9 @@
 An R6 class generator.
 }
 \description{
-R6 class representing modelling result
+Holds one fitted model per subject (for example protein) from \code{\link[=build_model]{build_model()}}, together with the model table
+(\code{model_df}: fit, residual degrees of freedom, sigma, convergence) and accessors for coefficients, ANOVA tables and
+their plots. Contrasts are computed from it with \link{Contrasts}.
 }
 \examples{
 \dontshow{if (requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)) withAutoprint(\{ # examplesIf}

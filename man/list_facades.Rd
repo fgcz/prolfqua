@@ -12,7 +12,8 @@ any entries added via \code{\link{register_facade}} from downstream
 packages.
 }
 \description{
-List currently registered contrast facades
+The methods \code{\link[=build_contrast_analysis]{build_contrast_analysis()}} accepts: the built-in ones and those added by downstream packages
+with \code{\link[=register_facade]{register_facade()}}.
 }
 \examples{
 head(names(list_facades()))

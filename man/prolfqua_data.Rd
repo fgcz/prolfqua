@@ -12,10 +12,10 @@ prolfqua_data(datastr, package = "prolfqua")
 \item{package}{default prolfqua}
 }
 \value{
-The computed result.
+the dataset \code{datastr} of \code{package}, loaded without attaching it to the global environment.
 }
 \description{
-Load a dataset from prolfqua
+Returns a packaged dataset as a value instead of creating it in the calling environment, as \code{\link[utils:data]{utils::data()}} does.
 }
 \examples{
 ionstar <- prolfqua_data("data_ionstar")

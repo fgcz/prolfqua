@@ -187,9 +187,8 @@ test_that("fixed-effect FDR sample sizes agree with ssize.fdr on a grid", {
   }
 })
 
-test_that("variance-prior FDR sample sizes agree with stable ssize.fdr cases", {
-  skip_if_not_installed("ssize.fdr")
-  grid <- expand.grid(df_prior = c(4, 12, 40), delta_se = c(0, 0.3), pi0 = c(0.9, 0.95))
+# each row: power_fdr_prior_n() within one sample of ssize.fdr::ssize.twoSampVary() on 5,000 F-distributed variances
+expect_prior_ssize_agrees <- function(grid) {
   for (i in seq_len(nrow(grid))) {
     x <- grid[i, ]
     var <- 0.5 * stats::qf((seq_len(5000) - 0.5) / 5000, df1 = 8, df2 = x$df_prior)
@@ -205,6 +204,22 @@ test_that("variance-prior FDR sample sizes agree with stable ssize.fdr cases", {
     )
     expect_lte(abs(actual$N - unname(reference$ssize[1, "ssize"])), 1)
   }
+}
+
+prior_ssize_grid <- expand.grid(df_prior = c(4, 12, 40), delta_se = c(0, 0.3), pi0 = c(0.9, 0.95))
+# delta_se > 0 integrates over the effect distribution, about 3 s per case
+prior_ssize_standard <- prior_ssize_grid$delta_se == 0 |
+  (prior_ssize_grid$df_prior == 12 & prior_ssize_grid$pi0 == 0.9)
+
+test_that("variance-prior FDR sample sizes agree with stable ssize.fdr cases", {
+  skip_if_not_installed("ssize.fdr")
+  expect_prior_ssize_agrees(prior_ssize_grid[prior_ssize_standard, ])
+})
+
+test_that("variance-prior FDR sample sizes agree with ssize.fdr on the full grid", {
+  skip_if_not_extended()
+  skip_if_not_installed("ssize.fdr")
+  expect_prior_ssize_agrees(prior_ssize_grid[!prior_ssize_standard, ])
 })
 
 test_that("power methods error on untransformed data", {

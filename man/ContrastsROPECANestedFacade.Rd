@@ -11,10 +11,32 @@ Encapsulates the pipeline: \code{\link{strategy_lm}} ->
 \code{\link{build_model}} -> \code{\link{Contrasts}} ->
 \code{\link{ContrastsROPECA}}.
 
-ROPECA fits per-peptide linear models and aggregates peptide-level
-p-values to the protein level. Input must be nested LFQData (peptide
-subject_id strictly below the protein hierarchy).
+Input must be nested LFQData (peptide subject_id strictly below the protein hierarchy).
+
+\code{ropeca_nested} is a derivation of PECA and ROPECA (Suomi and Elo 2017, Scientific Reports 7, 5869; Bioconductor
+package PECA, \doi{10.18129/B9.bioc.PECA}). It fits one linear model per peptide, computes the contrast, takes
+the median of the signed peptide p-values per protein and corrects it with the beta distribution of the median
+of \code{n} uniform p-values, \code{n} being the number of peptides with a p-value, at most 10. The protein fold change is
+the median peptide fold change. What differs from PECA and ROPECA:
+\itemize{
+\item no ROTS (reproducibility-optimized test statistic) step: peptide p-values come from ordinary linear
+models;
+\item any fixed-effect design and contrast, not only two groups;
+\item \code{n} is capped at 10, so proteins with more peptides get larger p-values than in PECA;
+\item with an even number of peptides, the median is taken of the signed p-values, not of the t-statistics.
 }
+The test is conservative under the null hypothesis; \code{ropecaV2_nested} is the calibrated variant.
+}
+\section{Comparison with PECA}{
+
+On the IonStar data (\code{data_ionstar}, dilutions a and e, 767 peptides observed in all 8 samples, 123 proteins),
+\code{ropeca_nested} and \code{PECA::PECA_df(test = "t", type = "median")} give the same fold changes (largest difference
+1e-14) and the same p-values for the 58 proteins with an odd number of peptides up to 10 (largest difference
+3e-14). For the 50 proteins with an even number, the median ratio of the p-values is 1.02 (Spearman correlation
+0.99); for the 15 proteins with more than 10 peptides, prolfqua's p-values are larger by a median factor of 1.43
+(Spearman correlation 0.87), because of the cap. Code: \code{data-raw/compare_peca.R} in the source repository.
+}
+
 \examples{
 istar <- sim_lfq_data_peptide_config()
 lfqdata <- LFQData$new(istar$data, istar$config)

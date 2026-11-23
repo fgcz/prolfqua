@@ -7,7 +7,8 @@
 An R6 class generator.
 }
 \description{
-R6 interface class representing modelling result
+Defines the methods every model class provides: coefficients, ANOVA tables, their plots and the provenance log of
+the fit. \link{Model}, \link{ModelFirth} and the limma-based models implement it.
 }
 \examples{
 

@@ -27,7 +27,7 @@ strategy_limpa(
 \item{span}{lowess smoother span (NULL = auto)}
 }
 \value{
-The computed result.
+a \link{StrategyLimpa} object holding the formula, model name, \code{eBayes()} options, plot flag and span.
 }
 \description{
 Wrapper that returns a \code{\link{StrategyLimpa}} R6 object.

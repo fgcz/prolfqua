@@ -1,6 +1,9 @@
 # ModelInterface -----
 #' R6 interface class representing modelling result
 #'
+#' Defines the methods every model class provides: coefficients, ANOVA tables, their plots and the provenance log of
+#' the fit. [Model], [ModelFirth] and the limma-based models implement it.
+#'
 #' @return An R6 class generator.
 #' @export
 #' @examples

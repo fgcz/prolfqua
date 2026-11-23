@@ -27,7 +27,8 @@ nr_obs_sample(
 \item{new_child}{character - output column name}
 }
 \value{
-The computed result.
+a tibble with one row per hierarchy element and sample: \code{hierarchy_keys_depth}, \code{file_name} and
+\code{new_child}, the sum of \code{nr_children_col} over rows with an observed response.
 }
 \description{
 For each hierarchy unit and sample, sums the \code{nr_children_col} column over

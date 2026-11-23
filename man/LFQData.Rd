@@ -7,7 +7,10 @@
 An R6 class generator.
 }
 \description{
-LFQData R6 class
+The data container of prolfqua: one table in long format, one row per feature (for example peptide) and sample,
+plus an \link{AnalysisConfiguration} that names the hierarchy, factor, sample and response columns. Its decorators
+(\code{get_Transformer()}, \code{get_Aggregator()}, \code{get_Stats()}, \code{get_Plotter()}, \code{get_Summariser()}) transform, aggregate,
+summarise and plot the data, and \code{\link[=build_contrast_analysis]{build_contrast_analysis()}} fits models to it.
 }
 \section{Missing Data Assumptions}{
 
@@ -721,7 +724,7 @@ changes nothing; renaming to another existing column is an error.
     \if{html}{\out{</div>}}
   }
   \subsection{Returns}{
-    LFQDataSummarizer
+    LFQDataSummariser
   }
 }
 

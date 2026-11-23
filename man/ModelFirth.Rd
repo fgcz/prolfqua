@@ -2,12 +2,13 @@
 % Please edit documentation in R/ModelFirth.R
 \name{ModelFirth}
 \alias{ModelFirth}
-\title{R6 class representing modelling result}
+\title{Firth logistic regression models of detection}
 \value{
 An R6 class generator.
 }
 \description{
-R6 class representing modelling result
+Holds one Firth logistic regression fit (logistf) per subject, modelling whether a protein is detected in a sample,
+with the model table in \code{models$model_df}. Contrasts are computed from it with \link{ContrastsFirth}.
 }
 \examples{
 \dontshow{if (requireNamespace("logistf", quietly = TRUE)) withAutoprint(\{ # examplesIf}

@@ -340,7 +340,8 @@ theme_prolfqua <- function(grid = FALSE, base_size = 12) {
     )
   ) +
     theme_prolfqua(grid = TRUE) +
-    geom_line(stat = "density")
+    # missing intensities are expected in LFQ data; drop them without a warning
+    geom_line(stat = "density", na.rm = TRUE)
   if (!is_transformed) {
     p <- p + scale_x_log10()
   }

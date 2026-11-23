@@ -60,8 +60,9 @@ test_that("AggregateLimpa produces protein-level LFQData with SE and n_obs", {
   expect_true(nchar(nr_col) > 0)
   expect_true(nr_col %in% colnames(lfq_agg$data_long()))
 
-  # DPC should be estimated
-  expect_true(!is.null(agg$dpc_result))
+  # DPC should be estimated: intercept and slope of the detection probability curve, from all samples
+  expect_named(agg$dpc_result$dpc, c("beta0", "beta1"))
+  expect_equal(agg$dpc_result$nsamples, dplyr::n_distinct(lfqdata$data_long()[[lfqdata$sample_name()]]))
 
   # Should be pivotable to wide
   wide <- lfq_agg$data_wide(as.matrix = TRUE)
@@ -112,15 +113,17 @@ test_that("build_model_limpa returns ModelLimma", {
 
   expect_true(inherits(mod, "ModelLimma"))
   expect_true(inherits(mod, "ModelInterface"))
-  expect_true(!is.null(mod$fit))
-  expect_true(!is.null(mod$dummy_model))
-  expect_true(!is.null(mod$rowdata))
+  # one fit row per protein, one coefficient per level of group_
+  expect_s4_class(mod$fit, "MArrayLM")
+  expect_equal(dim(mod$fit$coefficients), c(20L, 3L))
+  expect_equal(names(stats::coef(mod$dummy_model)), colnames(mod$fit$coefficients))
+  expect_equal(mod$rowdata$protein_Id, rownames(mod$fit$coefficients))
   expect_equal(mod$model_name, "limpa")
 
-  # Coefficients should work
+  # Coefficients should work: 20 proteins x 3 coefficients
   coeffs <- mod$get_coefficients()
   expect_true(is.data.frame(coeffs))
-  expect_true(nrow(coeffs) > 0)
+  expect_equal(nrow(coeffs), 20 * 3)
 })
 
 
@@ -144,7 +147,8 @@ test_that("ContrastsLimma works with limpa ModelLimma", {
   expect_true("diff" %in% colnames(res))
   expect_true("p.value" %in% colnames(res))
   expect_true("statistic" %in% colnames(res))
-  expect_true(nrow(res) > 0)
+  # limpa imputes every protein, so each one has a contrast
+  expect_equal(nrow(res), dplyr::n_distinct(lfq_agg$data_long()$protein_Id))
 })
 
 
@@ -167,7 +171,8 @@ test_that("ContrastsLimpaFacade end-to-end", {
   expect_true("FDR" %in% colnames(res))
   expect_true("modelName" %in% colnames(res))
   expect_true(all(res$modelName == "limpa"))
-  expect_true(nrow(res) > 0)
+  n_proteins <- dplyr::n_distinct(lfq_agg$data_long()$protein_Id)
+  expect_equal(nrow(res), n_proteins)
 
   # get_missing should work
   miss <- fa$get_missing()
@@ -176,6 +181,7 @@ test_that("ContrastsLimpaFacade end-to-end", {
   # to_wide should work
   wide <- fa$to_wide()
   expect_true(is.data.frame(wide))
+  expect_equal(nrow(wide), n_proteins)
 })
 
 
@@ -193,7 +199,7 @@ test_that("build_contrast_analysis with method='limpa' works", {
 
   expect_true(inherits(fa, "ContrastsLimpaFacade"))
   res <- fa$get_contrasts()
-  expect_true(nrow(res) > 0)
+  expect_equal(nrow(res), dplyr::n_distinct(lfq_agg$data_long()$protein_Id))
   expect_true("diff" %in% colnames(res))
 })
 
@@ -210,7 +216,8 @@ test_that("ContrastsLimpaNestedFacade end-to-end (precursor input)", {
   expect_true(inherits(fa, "ContrastsLimpaNestedFacade"))
   res <- fa$get_contrasts()
   expect_true(is.data.frame(res))
-  expect_true(nrow(res) > 0)
+  # one protein-level contrast per protein of the precursor input
+  expect_equal(nrow(res), dplyr::n_distinct(lfqdata$data_long()$protein_Id))
   expect_true(all(res$modelName == "limpa_nested"))
   expect_true("diff" %in% colnames(res))
   expect_true("p.value" %in% colnames(res))
@@ -229,7 +236,7 @@ test_that("build_contrast_analysis with method='limpa_nested' works", {
 
   expect_true(inherits(fa, "ContrastsLimpaNestedFacade"))
   res <- fa$get_contrasts()
-  expect_true(nrow(res) > 0)
+  expect_equal(nrow(res), dplyr::n_distinct(lfqdata$data_long()$protein_Id))
 })
 
 
@@ -248,7 +255,8 @@ test_that("ContrastsLimpaFacade accepts aggregated LFQData without opt_se", {
   fa <- prolfqua::ContrastsLimpaFacade$new(agg, "~ group_", contrasts)
   expect_true(inherits(fa, "ContrastsLimpaFacade"))
   res <- fa$get_contrasts()
-  expect_true(nrow(res) > 0)
+  # every medpolish protein is observed in groups A and Ctrl
+  expect_equal(nrow(res), dplyr::n_distinct(agg$data_long()$protein_Id))
   expect_true(all(res$modelName == "limpa"))
 })
 
@@ -283,4 +291,15 @@ test_that("limpa and limpa_nested equal limpa's own dpcQuant + dpcDE pipeline", 
     expect_equal(ct$diff, ref$logFC, tolerance = 1e-8)
     expect_equal(ct$p.value, ref$P.Value, tolerance = 1e-8)
   }
+  # a non-default span reaches limpa::voomaLmFitWithImputation()
+  fit_span <- limpa::dpcDE(protein_elist, design, plot = FALSE, span = 0.3)
+  reference_span <- limma::topTable(
+    limma::eBayes(limma::contrasts.fit(fit_span, contrast_matrix)),
+    coef = 1,
+    number = Inf,
+    sort.by = "none"
+  )
+  with_span <- ContrastsLimpaFacade$new(lfq_agg, "~ group_", contrasts, span = 0.3)$get_contrasts()
+  expect_equal(with_span$p.value, reference_span[with_span$protein_Id, "P.Value"], tolerance = 1e-8)
+  expect_gt(max(abs(with_span$p.value - reference[with_span$protein_Id, "P.Value"])), 1e-6)
 })

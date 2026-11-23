@@ -158,11 +158,14 @@ not flagged; set it to enable contaminant flagging / removal.}
 \if{html}{\out{<a id="method-AnalysisConfiguration-factor_keys_depth"></a>}}
 \if{latex}{\out{\hypertarget{method-AnalysisConfiguration-factor_keys_depth}{}}}
 \subsection{\code{AnalysisConfiguration$factor_keys_depth()}}{
-  Get factor keys till factorDepth
+  Get the first \code{factor_depth} factor keys
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{AnalysisConfiguration$factor_keys_depth()}
     \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    character vector of factor column names
   }
 }
 

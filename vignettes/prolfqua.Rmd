@@ -14,7 +14,7 @@ bibliography:
 ---
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE)
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", message = FALSE)
 ```
 
 ```{r HexSticker, echo=FALSE, out.width="50%", eval=TRUE}
@@ -33,6 +33,7 @@ The vignettes of this package, in reading order:
 6. [Contrasts from factors](ContrastsFromFactors.html)
 7. [Filling the gaps: model-based imputation for heatmaps and PCA](ModelBasedImputation.html): completing the data matrix with `impute_from_model()`
 8. [QC and sample size estimation](QualityControlAndSampleSizeEstimation.html)
+9. [Transforming and calibrating LFQ data](TransformingLFQData.html): the active response, and calibration against internal standards or external calibrants
 
 The package website <https://fgcz.github.io/prolfqua/> has three more articles:
 
@@ -50,7 +51,7 @@ The centre of the package is a factory, `build_contrast_analysis()`. It takes th
 knitr::include_graphics("../man/figures/prolfqua_factory.png")
 ```
 
-The `method` argument selects the model: linear models (`lm`, `rlm`, `rfit`), limma and limma-voom, DEqMS variance moderation, limpa's detection probability model, Firth logistic and binomial models of detection, mixed models and ROPECA on peptide-level data, a hurdle model combining intensity and detection, and variants that impute groups without observations at the limit of detection.
+The `method` argument selects the model: linear models (`lm`, `rlm`, `rfit`), limma and limma-voom [@Smyth2004], DEqMS variance moderation, limpa's detection probability model, Firth logistic and binomial models of detection, mixed models [as in MSqRob, @Goeminne2016] and a derivation of ROPECA [@Suomi2017b] on peptide-level data, a hurdle model combining intensity and detection, and variants that impute groups without observations at the limit of detection.
 
 Every method returns an object with the same interface: `get_contrasts()`, `get_Plotter()`, `get_missing()` and `to_wide()`. Results of different methods therefore have the same columns and can be compared or combined directly.
 

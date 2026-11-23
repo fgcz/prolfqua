@@ -69,7 +69,8 @@
     ggplot2::aes(x = .data[[mean_abundance]], fill = .data$nrNAs, colour = .data$nrNAs)
   ) +
     theme_prolfqua() +
-    ggplot2::geom_density(alpha = alpha, position = "identity") +
+    # proteins without any measured value have no mean abundance
+    ggplot2::geom_density(alpha = alpha, position = "identity", na.rm = TRUE) +
     .factors_facet(factors) +
     ggplot2::theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
@@ -135,9 +136,13 @@
 }
 
 
-#' UpSetR plot from interaction_missing_stats
+#' Prepare data for an UpSet plot of observations per group
 #'
-#' @return The computed result.
+#' Marks, for each protein and factor level, whether it has at least `tr` observations, in the input format of
+#' `UpSetR::upset()`, to show which proteins are observed in which groups.
+#'
+#' @return a list with `data`, a data.frame with one row per hierarchy element and one 0/1 column per factor
+#'   level (1 when at least `tr` observations), and `nsets`, the number of factor-level columns.
 #' @export
 #' @family plotting
 #' @family imputation

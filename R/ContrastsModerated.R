@@ -1,6 +1,10 @@
 # ContrastsModerated -----
 
 #' Limma moderated contrasts
+#'
+#' Wraps a contrast object such as [Contrasts] and replaces its standard errors and p-values with limma's empirical
+#' Bayes moderation: per-subject residual variances are shrunk towards a common prior (`limma::squeezeVar()`), which
+#' adds prior degrees of freedom. Fold changes are unchanged.
 #' @return An R6 class generator.
 #' @export
 #' @family modelling

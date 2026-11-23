@@ -38,11 +38,14 @@
 }
 
 #'
-#' ROPECA reproducibility-optimization method
+#' Protein contrasts from the median peptide p-value (PECA/ROPECA derivation)
 #'
-#' ROPECA optimizes the reproducibility of statistical testing
-#'  on peptide-level and aggregates the peptide-level changes
-#'   to determine differential protein-level expression.
+#' Aggregates peptide-level contrasts to the protein level. The protein fold change is the median peptide fold
+#' change; the protein p-value comes from the median of the signed peptide p-values, corrected with the beta
+#' distribution of the median of `n` uniform p-values (`n` peptides, at most 10). This follows the
+#' peptide-median method of PECA and ROPECA (Suomi and Elo 2017); unlike ROPECA, the peptide statistics are not
+#' reproducibility-optimized (no ROTS). [ContrastsROPECANestedFacade] lists the differences and compares the
+#' result with PECA.
 #'
 #' @return An R6 class generator.
 #' @export

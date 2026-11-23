@@ -2,7 +2,7 @@
 % Please edit documentation in R/simulate_LFQ_data.R
 \name{sim_lfq_data_peptide_config}
 \alias{sim_lfq_data_peptide_config}
-\title{Simulate data, protein and peptide, with config}
+\title{Simulate peptide-level data with its configuration}
 \usage{
 sim_lfq_data_peptide_config(
   n_proteins = 10,
@@ -31,7 +31,9 @@ sim_lfq_data_peptide_config(
 A list containing simulated data and an analysis configuration.
 }
 \description{
-Simulate data, protein and peptide, with config
+Simulated peptide intensities of proteins in three groups (A, B, Ctrl), with missing values that are more likely
+at low intensity (see \code{\link[=which_missing]{which_missing()}}), returned with a matching \link{AnalysisConfiguration}, ready for
+\code{LFQData$new()}.
 }
 \examples{
 

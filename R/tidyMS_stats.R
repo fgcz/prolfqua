@@ -115,8 +115,14 @@
 
 #' Compute variance, sd and related statistics for all factor levels
 #'
+#' Summary statistics per protein for every level of the relevant factors and of their interaction, in one table;
+#' used to judge variability and missingness per group.
+#'
 #' @param lfqdata [LFQData] object with the data and its configuration
-#' @return The computed result.
+#' @return a tibble with one row per hierarchy element and factor level: the statistics of
+#'   `LFQData$get_Stats()$stats()` (`nrReplicates`, `nrMeasured`, `nrNAs`, `sd`, `var`, `meanAbundance`,
+#'   `medianAbundance`, `CV` for untransformed data) for the interaction of all relevant factors and, with more than
+#'   one factor, for each factor alone; `interaction` names the level.
 #' @export
 #' @examples
 #' res2 <- prolfqua::sim_lfq_data_2factor_config()
@@ -243,7 +249,8 @@ summarize_stats_factors <- function(lfqdata) {
   ggstat <- match.arg(ggstat)
   p <- ggplot(pdata, aes(x = .data[[stat]], colour = .data[[factor_key]])) +
     theme_prolfqua(grid = TRUE) +
-    geom_line(stat = ggstat)
+    # statistics are NA for features with too few values; drop them without a warning
+    geom_line(stat = ggstat, na.rm = TRUE)
   p
 }
 #' Plot the density or ECDF of sd, mean or CV for intensities below and above the median
@@ -268,7 +275,7 @@ summarize_stats_factors <- function(lfqdata) {
     dplyr::mutate(top = ifelse(meanAbundance > median(meanAbundance, na.rm = TRUE), "top 50", "bottom 50"))
   p <- ggplot(top50, aes(x = .data[[stat]], colour = .data$top)) +
     theme_prolfqua(grid = TRUE) +
-    geom_line(stat = ggstat) +
+    geom_line(stat = ggstat, na.rm = TRUE) +
     facet_wrap(factor_key)
   p
 }
@@ -285,8 +292,9 @@ summarize_stats_factors <- function(lfqdata) {
   pdata <- pdata |> tidyr::unite("groups", dplyr::all_of(factor_keys_depth))
   p <- ggplot(pdata, aes(x = .data$groups, y = .data[[stat]])) +
     theme_prolfqua() +
-    geom_violin(linewidth = 0.3) +
-    ggplot2::stat_summary(fun = median, geom = "point", size = 1, color = "black")
+    # statistics are NA for features with too few values; drop them without a warning
+    geom_violin(linewidth = 0.3, na.rm = TRUE) +
+    ggplot2::stat_summary(fun = median, geom = "point", size = 1, color = "black", na.rm = TRUE)
   p
 }
 #' Violin plot of sd, CV or mean for intensities below and above the median
@@ -306,12 +314,13 @@ summarize_stats_factors <- function(lfqdata) {
 
   p <- ggplot(top50, aes(x = .data[[factor_key]], y = .data[[stat]])) +
     theme_prolfqua() +
-    geom_violin(linewidth = 0.3) +
+    geom_violin(linewidth = 0.3, na.rm = TRUE) +
     stat_summary(
       fun = stats::median,
       fun.min = function(x) stats::quantile(x, 0.25),
       fun.max = function(x) stats::quantile(x, 0.75),
-      geom = "pointrange"
+      geom = "pointrange",
+      na.rm = TRUE
     ) +
     facet_wrap("top")
   p
@@ -338,8 +347,9 @@ summarize_stats_factors <- function(lfqdata) {
 
   p <- ggplot(pdata, aes(x = meanAbundance, y = sd)) +
     theme_prolfqua(grid = TRUE) +
-    geom_point() +
-    geom_smooth(method = "loess", formula = y ~ x) +
+    # sd is NA for features with fewer than two values, and 0 or NA leave a log scale
+    geom_point(na.rm = TRUE) +
+    geom_smooth(method = "loess", formula = y ~ x, na.rm = TRUE) +
     facet_wrap(factor_keys_depth) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1))
   p

@@ -1,8 +1,8 @@
 # Convergence controls: settable per strategy and aggregation method, documented defaults, classed errors on
 # unknown names.
 
-#' @srrstats {RE3.3} Tests set iteration limits and tolerances for rlm, lmer, binomial, Firth, logistf, rfit and
-#'   the medpolish and rlm aggregation, and check that unknown control names are rejected.
+#' @srrstats {RE3.3} Tests set iteration limits, tolerances or optimizers for rlm, lmer, binomial, Firth, logistf,
+#'   rfit and the medpolish and rlm aggregation, and check that unknown control names are rejected.
 #' @noRd
 NULL
 
@@ -148,4 +148,41 @@ test_that("lmer fits record the optimizer status", {
   fitted <- model_df$has_model_fit
   expect_type(model_df$converged, "logical")
   expect_true(all(model_df$iterations[fitted] > 0L))
+})
+
+test_that("an lmer optimizer choice reaches lme4 through build_contrast_analysis", {
+  skip_if_not_installed("lme4")
+  skip_if_not_installed("lmerTest")
+  withr::local_options(prolfqua.verbose = FALSE)
+  facade <- suppressMessages(suppressWarnings(build_contrast_analysis(
+    conv_protein()$peptide,
+    "~ group_ + (1 | peptide_Id)",
+    c(AvsC = "group_A - group_Ctrl"),
+    "lmer_nested",
+    control = list(optimizer = "bobyqa")
+  )))
+  model_df <- facade$model$model_df
+  fits <- model_df$linear_model[model_df$has_model_fit]
+  expect_gt(length(fits), 0)
+  expect_true(all(vapply(fits, function(fit) fit@optinfo$optimizer, character(1)) == "bobyqa"))
+})
+
+test_that("a logistf iteration limit reaches logistf through build_contrast_analysis", {
+  skip_if_not_installed("logistf")
+  withr::local_options(prolfqua.verbose = FALSE)
+  sim <- sim_lfq_data_protein_config(n_proteins = 10, weight_missing = 0.4, seed = 42)
+  protein <- LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq
+  contrasts <- c(AvsC = "group_A - group_Ctrl")
+
+  default <- suppressWarnings(build_contrast_analysis(protein, "~ group_", contrasts, "firth"))
+  expect_true(all(default$model$models$model_df$converged))
+
+  expect_warning(
+    limited <- build_contrast_analysis(protein, "~ group_", contrasts, "firth", control = list(maxit = 1)),
+    "Maximum number of iterations",
+    class = "prolfqua_fit_failed"
+  )
+  model_df <- limited$model$models$model_df
+  expect_false(any(model_df$converged))
+  expect_true(all(model_df$iterations <= 1L))
 })

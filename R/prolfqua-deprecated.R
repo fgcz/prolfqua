@@ -947,8 +947,9 @@ response_matrix_as_tibble <- function(pdata, value, config, data = NULL, sep = "
 #' @param method "medpolish" (Tukey's median polish, column `medpolish`) or "rlm" (robust regression with
 #'   `MASS::rlm`, column `lmrob`)
 #' @param control convergence controls merged over the defaults. medpolish: `maxiter` (default 10) and `eps`
-#'   (default 0.01, the change of the sum of absolute residuals that stops the polish, on the log2 scale of the
-#'   input); rlm: `maxit` (default 20) and `acc` (default 1e-4, relative change of the IRLS residuals).
+#'   (default 0.01; the polish stops when the sum of absolute residuals changes by less than `eps` times that sum,
+#'   a relative criterion independent of the input scale); rlm: `maxit` (default 20) and `acc` (default 1e-4,
+#'   relative change of the IRLS residuals).
 #' @return returns list with data (data.frame), config (AnalysisConfiguration) and failures (tibble with the
 #'   subject `id` and `warning` text of every warning raised while estimating one subject; the warnings are not
 #'   re-raised)
@@ -1701,7 +1702,8 @@ get_contrast <- function(data, hierarchy_keys, contrasts) {
 #' @param x a matrix
 #' @param preserve_row_names give name to rownames column, if NULL discard rownames
 #' @param ... further parameters passed to as_tibble
-#' @return The computed result.
+#' @return a tibble with the columns of `x`, preceded by a column `preserve_row_names` holding the row names
+#'   unless `preserve_row_names` is `NULL`.
 #' @note Deprecated in prolfqua 1.9.5; use \code{tibble::as_tibble(x, rownames = )}. See \link{prolfqua-deprecated}.
 #' @keywords internal
 #' @export

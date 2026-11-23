@@ -10,10 +10,12 @@ r6_extract_values(r6class)
 \item{r6class}{r6 class}
 }
 \value{
-The computed result.
+a named list with the value fields of \code{r6class}; fields holding other R6 objects become nested
+lists, functions and environments are dropped.
 }
 \description{
-Extract all value slots in an R6 object
+Turns an R6 object, such as an \link{AnalysisConfiguration}, into a plain list that can be written to YAML;
+\code{\link[=list_to_analysis_configuration]{list_to_analysis_configuration()}} reads it back.
 }
 \examples{
 bb <- sim_lfq_data_peptide_config()

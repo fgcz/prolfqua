@@ -15,7 +15,7 @@ bibliography:
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 ```
 
 # Purpose
@@ -34,31 +34,31 @@ All contrast generation functions assume that the group levels in the fitted mod
 ```{r group_label}
 library(prolfqua)
 
-group_label("MI", "T0")
-group_label("MINOCA", "T300")
+group_label("WT", "T0")
+group_label("KO", "T300")
 ```
 
 This means that before fitting a model, the data must contain a grouping column with levels in this format. The `annotation_add_contrasts` function creates such a column automatically using `tidyr::unite`.
 
 # Building contrasts step by step
 
-Consider a two-factor design with disease type (MI, MINOCA) and time point (T0, T150, T300):
+Consider a two-factor design with genotype (WT, KO) and time point (T0, T150, T300):
 
 ```{r define_levels}
-primary_levels <- c("MI", "MINOCA")
+primary_levels <- c("WT", "KO")
 secondary_levels <- c("T0", "T150", "T300")
 ```
 
 ## Main effect contrasts
 
-Main effects average across all levels of the secondary factor. For example, the main effect of MINOCA vs MI is the average difference across all time points:
+Main effects average across all levels of the secondary factor. For example, the main effect of KO vs WT is the average difference across all time points:
 
 ```{r main_effects}
 me <- main_effect_contrasts(primary_levels, secondary_levels)
 data.frame(ContrastName = names(me), Contrast = unlist(me))
 ```
 
-Swapping the roles of primary and secondary gives main effects for time points averaged across disease types:
+Swapping the roles of primary and secondary gives main effects for time points averaged across genotypes:
 
 ```{r main_effects_swapped}
 me2 <- main_effect_contrasts(secondary_levels, primary_levels)

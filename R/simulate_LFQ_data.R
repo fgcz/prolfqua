@@ -13,6 +13,10 @@
 
 
 #' Simulate protein-level data with two groups
+#'
+#' Draws protein abundances from a log-normal distribution and multiplies them by group-specific fold changes for
+#' down-, up- and not-regulated proteins; with `peptide = TRUE`, each protein gets a geometric number of peptides.
+#' The `_config` variants add an [AnalysisConfiguration] and missing values.
 #' @return A data frame containing simulated LFQ data.
 #' @export
 #' @param n_proteins one positive whole number of proteins
@@ -139,6 +143,9 @@ sim_lfq_data <- function(
 
 
 #' Draw missing values for an intensity vector based on its values
+#'
+#' Each value goes missing at random with a probability that falls with its intensity (through its normal
+#' quantile), so low intensities go missing more often, as in LFQ data.
 #' @return A logical vector indicating which values are missing.
 #' @export
 #' @param x numeric vector of intensities without NA
@@ -194,7 +201,11 @@ which_missing <- function(x, weight_missing = 0.2) {
 }
 
 
-#' Simulate data, protein and peptide, with config
+#' Simulate peptide-level data with its configuration
+#'
+#' Simulated peptide intensities of proteins in three groups (A, B, Ctrl), with missing values that are more likely
+#' at low intensity (see [which_missing()]), returned with a matching [AnalysisConfiguration], ready for
+#' `LFQData$new()`.
 #' @param n_proteins one positive whole number of proteins to simulate
 #' @param with_missing one TRUE/FALSE: add missing values (default TRUE)
 #' @param weight_missing one number in \[0, 1\]; greater weight means more missingness
@@ -237,7 +248,10 @@ sim_lfq_data_peptide_config <- function(
     .sim_setup(data, list(group_ = "group"), peptide = TRUE)
   })
 }
-#' Simulate data, protein, with config
+#' Simulate protein-level data with its configuration
+#'
+#' Simulated protein intensities in three groups (A, B, Ctrl), with missing values that are more likely at low
+#' intensity (see [which_missing()]), returned with a matching [AnalysisConfiguration], ready for `LFQData$new()`.
 #' @param n_proteins one positive whole number of proteins to simulate
 #' @param with_missing one TRUE/FALSE: add missing values (default TRUE)
 #' @param weight_missing one number in \[0, 1\]; greater weight means more missingness
@@ -296,7 +310,10 @@ sim_lfq_data_protein_config <- function(
 }
 
 
-#' Simulate data, protein, with config with 2 factors Treatment and Background
+#' Simulate a two-factor design with its configuration
+#'
+#' Simulated protein (or peptide) intensities for a 2 x 2 design of `Treatment` and `Background` with four samples
+#' per cell, returned with a matching [AnalysisConfiguration], ready for `LFQData$new()`.
 #' @param n_proteins one positive whole number of proteins to simulate
 #' @param with_missing one TRUE/FALSE: add missing values (default TRUE)
 #' @param weight_missing one number in \[0, 1\]; greater weight means more missingness

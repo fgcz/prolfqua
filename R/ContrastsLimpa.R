@@ -52,7 +52,7 @@ StrategyLimpa <- R6::R6Class(
 #' @param robust logical, passed to \code{\link[limma]{eBayes}}
 #' @param plot logical, plot the vooma mean-variance trend
 #' @param span lowess smoother span (NULL = auto)
-#' @return The computed result.
+#' @return a [StrategyLimpa] object holding the formula, model name, `eBayes()` options, plot flag and span.
 #' @export
 #' @family modelling
 #' @examples

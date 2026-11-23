@@ -12,10 +12,11 @@ find_package_file(packagename, file)
 \item{file}{relative path to the file within the package}
 }
 \value{
-The computed result.
+the path to \code{file} in the installed package (or in its \verb{inst/} folder of a source package), or
+\code{NULL} if the file does not exist.
 }
 \description{
-Find a file stored in a package
+Looks for \code{file} in the installed package and, for a source package, in its \verb{inst/} folder.
 }
 \examples{
 find_package_file("prolfqua", "CITATION")

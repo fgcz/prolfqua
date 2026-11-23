@@ -33,6 +33,20 @@ raw_setup_input <- function() {
   list(data = data, config = config)
 }
 
+test_that("a factor named by several columns holds their united labels", {
+  withr::local_options(prolfqua.verbose = TRUE)
+  input <- raw_setup_input()
+  input$data$group <- as.character(input$data$group)
+  input$data$batch <- c(s1 = "x", s2 = "y", s3 = "x", s4 = "y")[input$data$run]
+  input$config$factors[["group_"]] <- c("group", "batch")
+  messages <- setup_messages(input$data, input$config)
+  expect_true(any(grepl("`group_`: columns `group`, `batch` united", messages)))
+  data <- suppressWarnings(suppressMessages(setup_analysis(input$data, input$config)))
+  samples <- dplyr::distinct(data, .data$run, .data$group_)
+  expected <- paste(c("A", "A", "B", "B"), c("x", "y", "x", "y"), sep = input$config$sep)
+  expect_equal(samples$group_[match(c("s1", "s2", "s3", "s4"), samples$run)], expected)
+})
+
 test_that("each setup transformation is announced", {
   withr::local_options(prolfqua.verbose = TRUE)
   input <- raw_setup_input()

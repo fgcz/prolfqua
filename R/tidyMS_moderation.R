@@ -128,7 +128,10 @@
 
 #' Adjust p-values for multiple testing
 #'
-#' @return The computed result.
+#' Benjamini-Hochberg false discovery rate, computed separately within each contrast (or other group).
+#'
+#' @return `contrast_df`, ungrouped, with the Benjamini-Hochberg adjusted p-values in the column `newname`,
+#'   adjusted within each group of `group_by_col`.
 #' @export
 #' @param contrast_df data.frame with p-values to adjust
 #' @param column name of column containing p-values

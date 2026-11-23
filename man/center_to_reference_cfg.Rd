@@ -12,7 +12,8 @@ center_to_reference_cfg(lfqdata, lfqdareference)
 \item{lfqdareference}{LFQData object containing the reference subset}
 }
 \value{
-The computed result.
+invisibly, a copy of \code{lfqdata} whose response \code{centered_abundance_by_median} is centred per sample to
+the median of the reference subset.
 }
 \description{
 takes the median of the lfqdareference per sample and subtracts it from a copy of lfqdata

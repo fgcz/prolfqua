@@ -15,9 +15,11 @@ AGGREGATED_RECOVERY_METHODS <- c(
   "lm_impute",
   "rlm",
   "rfit",
+  "rfit_impute",
   "limma",
   "limma_impute",
   "limma_voom",
+  "limma_voom_impute",
   "deqms",
   "deqms_voom",
   "limpa"
@@ -49,7 +51,7 @@ expect_recovery <- function(method, seeds, N = 4) {
 }
 
 skip_if_backend_missing <- function(method) {
-  if (method == "rfit") {
+  if (method %in% c("rfit", "rfit_impute")) {
     skip_if_not_installed("Rfit")
   }
   if (method == "limpa") {

@@ -15,7 +15,8 @@ which_missing(x, weight_missing = 0.2)
 A logical vector indicating which values are missing.
 }
 \description{
-Draw missing values for an intensity vector based on its values
+Each value goes missing at random with a probability that falls with its intensity (through its normal
+quantile), so low intensities go missing more often, as in LFQ data.
 }
 \examples{
 which_missing(2**rnorm(10,2,0.4))

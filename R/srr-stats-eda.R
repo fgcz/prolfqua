@@ -33,8 +33,6 @@ NULL
 #' NA_standards
 #'
 #' @srrstatsNA {EA2.2b} Index columns are identified through a class system (EA2.2a), not table attributes.
-#' @srrstatsNA {EA2.4} Input is one long table plus its configuration; no multi-table input exists.
-#' @srrstatsNA {EA2.5} As EA2.4: a single long table, whose index columns follow EA2.0-EA2.3.
 #' @srrstatsNA {EA5.6} No JavaScript library is bundled; interactive plots use the plotly package.
 #' @noRd
 NULL

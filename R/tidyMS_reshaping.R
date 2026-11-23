@@ -58,7 +58,7 @@
 }
 
 #' Input checks of lfqdata_from_wide(): `values` is a named list of matrices of one shape.
-#' @param values named list of feature-by-sample matrices with matching dimensions and column names
+#' @param values named list of feature-by-sample matrices with matching dimensions, row names and column names
 #' @noRd
 .check_wide_values <- function(values) {
   is_named_matrix_list <- is.list(values) &&
@@ -71,11 +71,15 @@
   first <- values[[1]]
   same_shape <- vapply(
     values,
-    function(m) identical(dim(m), dim(first)) && identical(colnames(m), colnames(first)),
+    function(m) {
+      identical(dim(m), dim(first)) &&
+        identical(colnames(m), colnames(first)) &&
+        identical(rownames(m), rownames(first))
+    },
     logical(1)
   )
   if (!all(same_shape)) {
-    abort_bad_argument("values", "hold matrices with identical dimensions and column names")
+    abort_bad_argument("values", "hold matrices with identical dimensions, row names and column names")
   }
   invisible(TRUE)
 }
@@ -98,6 +102,15 @@
   }
   if (nrow(rowdata) != nrow(first)) {
     abort_bad_argument("rowdata", "have one row per matrix row", not = paste(nrow(rowdata), "rows"))
+  }
+  # as_tibble() first: `[` with a character vector on a data.table would join, not select
+  keys <- tibble::as_tibble(rowdata)[config$hierarchy_keys()]
+  if (anyDuplicated(keys) > 0) {
+    abort_bad_argument(
+      "rowdata",
+      "have unique hierarchy keys, one row per matrix row",
+      not = paste(sum(duplicated(keys)), "duplicated rows")
+    )
   }
   samples <- as.character(annotation[[config$sample_name]])
   if (anyDuplicated(samples) > 0 || !setequal(colnames(first), samples)) {
@@ -126,9 +139,9 @@
 #'
 #' @param values a matrix (features in rows, samples in columns), stored under
 #'   `config$get_response()`, or a named list of such matrices with identical
-#'   dimensions and column names; list names are the value columns
+#'   dimensions, row names and column names; list names are the value columns
 #' @param rowdata data.frame with one row per matrix row and the hierarchy key
-#'   columns
+#'   columns, which must identify each row uniquely
 #' @param annotation data.frame with one row per sample: `config$sample_name`
 #'   plus the file name and factor columns
 #' @param config AnalysisConfiguration describing the result
@@ -148,6 +161,12 @@
 #'   exports to it.
 #' @srrstats {G2.10} `LFQData$new()` stores its input as a tibble, and columns are extracted by name with `[[`, so
 #'   column extraction does not depend on the input class (test-input-types.R).
+#' @srrstats {EA2.4} Multi-table input (value matrices, `rowdata`, `annotation`) is tied together by the
+#'   `AnalysisConfiguration` class, which names the index columns of each table: hierarchy keys for `rowdata`,
+#'   `sample_name` for `annotation` and the matrix columns.
+#' @srrstats {EA2.5} Each table's index columns are checked before joining: unique hierarchy keys with one `rowdata`
+#'   row per matrix row, unique sample names that equal the matrix column names, and identical row and column names
+#'   across value matrices (test-LFQData.R).
 lfqdata_from_wide <- function(values, rowdata, annotation, config, prefix = "ms") {
   if (is.matrix(values)) {
     values <- stats::setNames(list(values), config$get_response())

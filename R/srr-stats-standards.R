@@ -1,8 +1,8 @@
 #' Remaining statistical software standards
 #'
 #' Standards 0.3.0, General and Regression. Current evidence and feasibility
-#' are assessed separately in srr/standards-compliance.md. Both partial and unmet
-#' requirements retain TODO tags; only fully met standards use srrstats.
+#' are assessed separately in srr/standards-compliance.md. A partly met standard
+#' is tagged srrstats with its stated limit ("Limit: ...").
 #'
 #' @srrstatsVerbose TRUE
 #' @srrstats {G2.11} Columns with non-standard classes are processed by their values: the response loses extra
@@ -13,8 +13,9 @@
 #' @srrstats {RE2.2} Missing predictors (hierarchy, factor and sample keys) raise; missing responses are dropped per fit
 #'   or imputed, and `impute_from_model()` generates values for missing responses from models fitted without them.
 #' @srrstats {RE3.2} Convergence defaults are documented with their reasons in strategy_rlm(), strategy_lmer(),
-#'   strategy_binomial(), strategy_binomial_firth(), strategy_logistf(), strategy_rfit() and estimate_intensity():
-#'   the criteria are relative (rlm, glm, rfit, medpolish on the log2 scale) or in log odds (Firth). limpa's iterative
+#'   strategy_binomial(), strategy_binomial_firth(), strategy_logistf(), strategy_rfit(), AggregateMedpolish and
+#'   AggregateRlm: the criteria are relative (rlm, glm, rfit, and medpolish, which stops on a relative change of the
+#'   sum of absolute residuals) or in log odds (Firth). limpa's iterative
 #'   steps (dpc(), dpcQuant()) keep limpa's defaults, documented on AggregateLimpa; limpa reports no convergence
 #'   status, so the fit status of limpa analyses gives `not_converged` NA.
 #' @noRd
@@ -30,14 +31,13 @@ NULL
 #'   assets are required. Conditional download requirement is inapplicable to the existing test workflow.
 #' @srrstatsNA {G5.11a} No test workflow downloads extra assets. No download-failure skip policy is necessary unless
 #'   such a workflow is added.
-#' @srrstatsNA {RE4.14} No public extrapolation/forecasting interface is implemented. Statistical purpose is inference
-#'   on contrasts among experimental design groups; internal predict() is used only to fill missing responses for an
-#'   existing fitted design. -
-#' @srrstatsNA {RE4.15} No extrapolation/forecasting horizon is part of the public workflow; there is no forecast
-#'   interval whose growth could be characterized. -
-#' @srrstatsNA {RE6.3} No public forecasting/extrapolation workflow exists; model-versus-forecast display is outside
-#'   package scope. -
-#' @srrstatsNA {RE7.4} Forecast horizons and forecast error growth are outside the package public workflow, as for
-#'   RE4.15. -
+#' @srrstatsNA {RE4.14} No extrapolation or forecasting: all predictors are categorical design factors, so the public
+#'   `predict()` (`?prolfqua_analysis_methods`) returns values for observed design cells only; levels unknown to a
+#'   subject's fit give NA, and the `_impute` methods predict them from the LOD refit.
+#' @srrstatsNA {RE4.15} No forecast horizon: predictors are categorical design factors, so there is no forecast
+#'   interval whose growth with the horizon could be characterised.
+#' @srrstatsNA {RE6.3} No forecast to plot: predictors are categorical design factors, and `predict()` covers observed
+#'   design cells only.
+#' @srrstatsNA {RE7.4} No forecast horizon to test: predictors are categorical design factors, as for RE4.15.
 #' @noRd
 NULL

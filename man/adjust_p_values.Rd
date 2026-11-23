@@ -21,10 +21,11 @@ adjust_p_values(
 \item{newname}{name of the new column with adjusted p-values}
 }
 \value{
-The computed result.
+\code{contrast_df}, ungrouped, with the Benjamini-Hochberg adjusted p-values in the column \code{newname},
+adjusted within each group of \code{group_by_col}.
 }
 \description{
-Adjust p-values for multiple testing
+Benjamini-Hochberg false discovery rate, computed separately within each contrast (or other group).
 }
 \examples{
 

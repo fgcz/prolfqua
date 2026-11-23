@@ -2,6 +2,11 @@
 #'
 #' LFQData R6 class
 #'
+#' The data container of prolfqua: one table in long format, one row per feature (for example peptide) and sample,
+#' plus an [AnalysisConfiguration] that names the hierarchy, factor, sample and response columns. Its decorators
+#' (`get_Transformer()`, `get_Aggregator()`, `get_Stats()`, `get_Plotter()`, `get_Summariser()`) transform, aggregate,
+#' summarise and plot the data, and [build_contrast_analysis()] fits models to it.
+#'
 #' @section Missing Data Assumptions:
 #' The filtering and imputation methods in this package assume that
 #' missing values are Missing Completely At Random (MCAR) or Missing At
@@ -482,7 +487,7 @@ LFQData <- R6::R6Class(
     },
     #' @description
     #' get Summariser
-    #' @return LFQDataSummarizer
+    #' @return LFQDataSummariser
     get_Summariser = function() {
       LFQDataSummariser$new(self)
     },
@@ -567,6 +572,10 @@ plot.LFQData <- function(x, ...) {
 }
 
 #' Convert an LFQData object to a SummarizedExperiment
+#'
+#' Builds a `SummarizedExperiment` with the response as the assay `LFQ` (and the child counts as `nr_children`
+#' when present; features in rows, samples in columns), the hierarchy keys as row data and the sample annotation as
+#' column data, for use with Bioconductor packages.
 #'
 #' For compatibility with Bioconductor
 #' @param lfqdata [LFQData] object with the data and its configuration

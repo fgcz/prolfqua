@@ -1,5 +1,8 @@
 # Model -----
-#' R6 class representing modelling result
+#' Firth logistic regression models of detection
+#'
+#' Holds one Firth logistic regression fit (logistf) per subject, modelling whether a protein is detected in a sample,
+#' with the model table in `models$model_df`. Contrasts are computed from it with [ContrastsFirth].
 #'
 #' @export
 #' @family modelling

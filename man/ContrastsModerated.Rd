@@ -7,7 +7,9 @@
 An R6 class generator.
 }
 \description{
-Limma moderated contrasts
+Wraps a contrast object such as \link{Contrasts} and replaces its standard errors and p-values with limma's empirical
+Bayes moderation: per-subject residual variances are shrunk towards a common prior (\code{limma::squeezeVar()}), which
+adds prior degrees of freedom. Fold changes are unchanged.
 }
 \examples{
 

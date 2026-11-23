@@ -1,5 +1,10 @@
 # ContrastsInterface ----
 #' Base class for all Contrasts classes
+#'
+#' Defines the methods every contrast class provides. Subclasses implement `get_contrasts()`; the shared methods
+#' (`get_Plotter()`, `to_wide()`, `get_rank()`, `get_ora()`, `filter_significant()`, `get_missing()`) build on it,
+#' so they behave the same for every modelling backend. Contrast objects are usually obtained from
+#' [build_contrast_analysis()].
 #' @return An R6 class generator.
 #' @export
 #' @examples
@@ -272,7 +277,9 @@ ContrastsInterface <- R6::R6Class(
 #' @param add contrasts to add from if missing in prefer
 #' @param model_name deprecated and ignored; the merged model is named `<prefer>_<add>` after the model names of
 #'   `prefer` and `add`
-#' @return Contrast definitions or contrast results.
+#' @return A list of three [ContrastsTable] objects: `merged`, all contrasts of `prefer` plus those of `add` for
+#'   subjects missing from `prefer`; `more`, only the added contrasts; `same`, the contrasts of `add` for subjects
+#'   that `prefer` already has.
 #' @export
 #' @family modelling
 #'

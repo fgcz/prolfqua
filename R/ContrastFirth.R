@@ -12,7 +12,11 @@
 
 # Contrasts -----
 
-#' Estimate contrasts using Wald Test
+#' Contrasts of Firth logistic regression models
+#'
+#' Wald tests of contrasts of [ModelFirth] fits, one per subject and contrast, on the log-odds scale of
+#' protein detection. The reference distribution is normal (`df = Inf`), as in the coefficient table of logistf
+#' and `confint()`. Used by the `firth` method of [build_contrast_analysis()].
 #' @return An R6 class generator.
 #' @export
 #' @family modelling

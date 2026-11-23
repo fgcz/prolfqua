@@ -73,7 +73,7 @@ NULL
 #' Reference input for the robust summarisation check (87 percent)
 #'
 #' log2 peptide areas of one protein, used by the tests of the robust
-#' (medpolish/rlm) protein summarisation. See `inst/script/README.md`.
+#' (medpolish/rlm) protein summarisation. See `system.file("script", "README.md", package = "prolfqua")`.
 #'
 #' @format A data frame with 20 rows and the columns `log2Area`, `peptide_Id`,
 #'   `sampleName`.
@@ -85,7 +85,7 @@ data_checksummarizationrobust87 <- NULL
 #' Reference input for the robust summarisation check (69 percent)
 #'
 #' log2 peptide areas of one protein, used by the tests of the robust
-#' (medpolish/rlm) protein summarisation. See `inst/script/README.md`.
+#' (medpolish/rlm) protein summarisation. See `system.file("script", "README.md", package = "prolfqua")`.
 #'
 #' @format A data frame with 20 rows and the columns `log2Area`, `peptide_Id`,
 #'   `sampleName`.
@@ -101,7 +101,7 @@ data_checksummarizerobust69 <- NULL
 #' processed with MaxQuant. An R6 object holding the data, its
 #' \code{\link{AnalysisConfiguration}}, and the methods \code{filtered()},
 #' \code{normalized()} and \code{subset_normalized()}. See
-#' `inst/script/README.md` for its origin.
+#' `system.file("script", "README.md", package = "prolfqua")` for its origin.
 #'
 #' @format An R6 object of class `IonstarData`; `$data` is a data frame with
 #'   26520 rows.

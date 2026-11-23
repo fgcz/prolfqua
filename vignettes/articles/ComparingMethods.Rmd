@@ -12,7 +12,7 @@ editor_options:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 library(prolfqua)
 library(dplyr)
 library(ggplot2)
@@ -380,6 +380,12 @@ fa_binomial_firth <- build_contrast_analysis(
 )
 ```
 
+`lmer_nested` cannot fit proteins with a single peptide, because its random peptide effect needs at least two; the warning lists them, and `$provenance()` records them:
+
+```{r provenance_lmer}
+fa_lmer$provenance()
+```
+
 `ropeca_nested` and `ropecaV2_nested` aggregate peptide evidence back to
 proteins; `ropecaV2_nested` estimates the correlation of the peptides of a
 protein from the residuals, here `r round(fa_ropecaV2$contrast$rho, 2)`, so
@@ -410,7 +416,10 @@ results_peptide |>
 ```
 
 ```{r volcano_peptide, fig.height=8, fig.width=10, fig.cap="Volcano plots for the peptide-level facades. Rows are contrasts, columns are backends."}
-ggplot(results_peptide, aes(x = diff, y = -log10(p.value), color = significant)) +
+# the detection model gives no p-value for proteins detected in every sample
+results_peptide |>
+  dplyr::filter(!is.na(p.value)) |>
+  ggplot(aes(x = diff, y = -log10(p.value), color = significant)) +
   geom_point(alpha = 0.6, size = 1.2) +
   facet_grid(contrast ~ modelName, scales = "free_y") +
   geom_vline(xintercept = c(-0.5, 0.5), linetype = "dashed", color = "grey60") +

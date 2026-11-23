@@ -2,7 +2,7 @@
 % Please edit documentation in R/generatedContrastsDF.R
 \name{annotation_add_contrasts}
 \alias{annotation_add_contrasts}
-\title{DRY function: process and export annotated contrasts}
+\title{Add the contrasts of a two-factor design to a sample annotation}
 \usage{
 annotation_add_contrasts(
   df,
@@ -30,10 +30,13 @@ annotation_add_contrasts(
 \item{interactions}{logical, if TRUE include interaction contrasts}
 }
 \value{
-Contrast definitions or contrast results.
+A list with \code{annot}, the annotation with the \code{Group}, \code{ContrastName} and \code{Contrast} columns (the two factor
+columns are dropped), and \code{name}, a suggested file name \verb{DEA_<prefix>_<dataset_id>.csv}.
 }
 \description{
-DRY function: process and export annotated contrasts
+Unites the two factor columns into a \code{Group} column and appends the contrasts of \code{\link[=generate_contrasts]{generate_contrasts()}} as the
+columns \code{ContrastName} and \code{Contrast}, padded with \code{NA} to the number of samples, in the layout of a prolfquapp
+dataset annotation. Nothing is written to disk.
 }
 \examples{
 

@@ -21,7 +21,8 @@ nr_features_experiment(
 \item{name_nr_child}{character - output column name}
 }
 \value{
-The computed result.
+a tibble with one row per hierarchy element: \code{hierarchy_keys_depth} and \code{name_nr_child}, the number
+of distinct child features, observed or not.
 }
 \description{
 Counts the number of distinct entries of the hierarchy levels below

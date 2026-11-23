@@ -7,7 +7,9 @@
 An R6 class generator.
 }
 \description{
-Decorate LFQData with Methods for transforming Intensities
+Transformations of the response of an \link{LFQData} object: log2, robust scaling (\code{robscale()}), centring to a
+reference subset, subtraction of sample offsets and any function applied to the intensity array or matrix.
+Obtained with \code{LFQData$get_Transformer()}; methods return the transformer, the result is in \verb{$lfq}.
 }
 \section{Centring and contrasts}{
 

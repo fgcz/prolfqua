@@ -9,10 +9,10 @@ lfqdata_from_wide(values, rowdata, annotation, config, prefix = "ms")
 \arguments{
 \item{values}{a matrix (features in rows, samples in columns), stored under
 \code{config$get_response()}, or a named list of such matrices with identical
-dimensions and column names; list names are the value columns}
+dimensions, row names and column names; list names are the value columns}
 
 \item{rowdata}{data.frame with one row per matrix row and the hierarchy key
-columns}
+columns, which must identify each row uniquely}
 
 \item{annotation}{data.frame with one row per sample: \code{config$sample_name}
 plus the file name and factor columns}

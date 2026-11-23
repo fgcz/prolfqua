@@ -27,8 +27,9 @@ peptide-level models \code{"lmer_nested"}, \code{"ropeca_nested"},
 detection models \code{"firth"}, \code{"binomial_nested"},
 \code{"binomial_firth_nested"};
 the hurdle model \code{"hurdle_nested"}, combining intensity and detection.
-Downstream packages may add more via \code{\link{register_facade}}. The
-Keys and column names are case sensitive and must match exactly. The
+Downstream packages may add more via \code{\link{register_facade}}.
+Method names are case sensitive and must match exactly, as must the factor
+and column names in \code{modelstr} and \code{contrasts}. The
 authoritative list is \code{names(\link{list_facades}())}. Defaults to
 \code{"lm"}.}
 
@@ -87,8 +88,8 @@ With a fixed design and fixed observations per protein, the per-protein
 with the number of proteins and run sequentially. \code{limma} fits the
 expression matrix in one call and has lower per-protein overhead.
 Single-run elapsed seconds for 500, 1000 and 2000 proteins were respectively
-0.173, 0.288 and 0.592 for \code{lm}; 0.077, 0.043 and 0.050 for
-\code{limma}; and 7.902, 15.314 and 29.667 for \code{lmer_nested}
+0.317, 0.429 and 0.911 for \code{lm}; 0.061, 0.057 and 0.059 for
+\code{limma}; and 8.18, 15.76 and 31.50 for \code{lmer_nested}
 (R 4.6.2, arm64 macOS, 12 samples, three peptides per protein for the
 nested model, no missing responses). These timings cover facade
 construction, including fitting, but exclude lazy contrast extraction.
@@ -104,8 +105,9 @@ details are in \code{srr/benchmark-runtime.R} in the source repository.
 \code{lm} (stats), \code{rlm} (MASS), \code{rfit} (Rfit), \code{limma} and \code{limma_voom} (limma),
 \code{deqms} (DEqMS), \code{limpa} and \code{limpa_nested} (limpa), \code{lmer_nested} (lme4, lmerTest),
 \code{firth} (logistf).
-\item Reimplementation in R of a published method: \code{ropeca_nested}, ROPECA (Suomi and Elo 2017,
-Bioconductor package PECA), on peptide-level models of any design.
+\item Derivation of a published method: \code{ropeca_nested} follows the peptide-median method of PECA and
+ROPECA (Suomi and Elo 2017, Bioconductor package PECA) without its ROTS step, on per-peptide linear models
+of any design; \code{\link{ContrastsROPECANestedFacade}} lists what differs and compares it with PECA.
 \item First implementations of new methods: the \code{_impute} methods (\code{lm_impute},
 \code{rfit_impute}, \code{limma_impute}, \code{limma_voom_impute}), which refit groups without
 observations at the limit of detection with a borrowed variance (Wolski et al. 2023);

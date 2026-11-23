@@ -189,7 +189,8 @@ test_that("borrow_method vcov works", {
   )
   res <- fa$get_contrasts()
   expect_s3_class(res, "data.frame")
-  expect_true(nrow(res) > 0)
+  # imputation gives every protein an estimate
+  expect_equal(nrow(res), dplyr::n_distinct(lfqdata$data_long()$protein_Id))
 })
 
 
@@ -220,7 +221,7 @@ test_that("df_method borrowed works", {
   )
   res <- fa$get_contrasts()
   expect_s3_class(res, "data.frame")
-  expect_true(nrow(res) > 0)
+  expect_equal(nrow(res), dplyr::n_distinct(lfqdata$data_long()$protein_Id))
 })
 
 test_that("imputed fits identify observed and completed rows", {

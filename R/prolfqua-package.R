@@ -17,9 +17,12 @@
 #'   \item Matrix backends (`limma`, `limma_impute`, `limma_voom`, `limma_voom_impute`, `deqms_voom`, `limpa`)
 #'     analyse 5,000 to 10,000 proteins in about a second or less; `limpa_nested`, which also aggregates, takes
 #'     about 1.5 s per 1,000 proteins.
-#'   \item Per-subject backends fit one model per protein or peptide on a single thread: about 1.7 ms per protein
-#'     for `lm`, 2 to 3 ms per peptide for the ROPECA methods, 10 ms per protein for `hurdle_nested` and 16 ms for
-#'     `lmer_nested`, which is about three minutes at 10,000 proteins.
+#'   \item Per-subject backends fit one model per protein or peptide on a single thread, contrasts included: about
+#'     1 ms per protein for `lm`, 1 ms per peptide for the ROPECA methods, 5 ms per protein for `hurdle_nested` and
+#'     10 to 16 ms for `lmer_nested`, which is two to three minutes at 10,000 proteins.
+#'   \item Aggregation of peptides to proteins takes about 1 ms per protein with median polish and 4 ms with `rlm`.
+#'     The QC writers take about 0.1 s (`write_plots()`) and 0.2 s (`write_boxplots()`) per protein, one page each;
+#'     `write_plots(subset = )` limits their cost.
 #'   \item Per-subject backends keep every fitted model (about 9 KB per protein for `lm`, 40 KB for
 #'     `lmer_nested`), so that `predict()`, `residuals()` and `vcov()` work on the analysis.
 #'   \item \code{null_split_check()} repeats the whole analysis `n_splits` times (default 20); `n_features`

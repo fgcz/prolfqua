@@ -25,7 +25,6 @@ for (n in c(500L, 1000L, 2000L)) {
       )] +
       rnorm(12, sd = 0.2)[match(data$sample, paste0("s", 1:12))] +
       rnorm(nrow(data), sd = 0.2)
-    data$isotopeLabel <- "light"
     data$qValue <- 0
     data$nr_children <- if (nested) 1 else 3
     cfg <- AnalysisConfiguration$new()

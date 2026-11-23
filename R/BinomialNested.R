@@ -123,6 +123,9 @@ StrategyBinomial <- R6::R6Class(
 
 #' Create a quasibinomial detection-count strategy
 #'
+#' Models, per protein, how many of its peptides are detected in each sample with a quasibinomial GLM; a small
+#' pseudo-count avoids infinite estimates when all or none are detected. Used by the `binomial_nested` method.
+#'
 #' @param modelstr right-hand-side model formula
 #' @param prior_count non-negative symmetric pseudo-count
 #' @param model_name model identity
@@ -202,6 +205,9 @@ StrategyBinomialFirth <- R6::R6Class(
 
 
 #' Create a Firth-penalized quasibinomial detection-count strategy
+#'
+#' As [strategy_binomial()], with Firth's penalty instead of a pseudo-count, so estimates stay finite when all or
+#' none of a protein's peptides are detected. Used by the `binomial_firth_nested` method.
 #'
 #' @param modelstr right-hand-side model formula
 #' @param model_name model identity

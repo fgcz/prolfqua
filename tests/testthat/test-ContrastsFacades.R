@@ -27,7 +27,9 @@ MODELSTR_LMER <- "~ group_ + (1 | peptide_Id) + (1 | sampleName)"
 check_facade_interface <- function(fa) {
   res <- fa$get_contrasts()
   expect_true(is.data.frame(res))
-  expect_true(nrow(res) > 0)
+  # the fixtures are complete: one row per subject and contrast
+  n_subjects <- dplyr::n_distinct(fa$.lfqdata$data_long()[fa$.lfqdata$subject_id()])
+  expect_equal(nrow(res), n_subjects * length(fa$.contrast_names))
   expected_cols <- c("modelName", "estimate_type", "contrast", "diff", "FDR", "p.value")
   for (col in expected_cols) {
     expect_true(col %in% colnames(res), info = paste("missing column:", col))
@@ -43,10 +45,9 @@ check_facade_interface <- function(fa) {
 
   wide <- fa$to_wide()
   expect_true(is.data.frame(wide))
-  expect_true(nrow(wide) > 0)
+  expect_equal(nrow(wide), n_subjects)
 
-  plotter <- fa$get_Plotter()
-  expect_true(!is.null(plotter))
+  expect_r6_class(fa$get_Plotter(), "ContrastsPlotter")
 }
 
 # Regression: get_contrasts(), to_wide(), and get_Plotter() must all report the
@@ -73,8 +74,8 @@ test_that("ContrastsLimmaFacade initialises and returns correct structure", {
   fa <- prolfqua::ContrastsLimmaFacade$new(lfqdata, MODELSTR, CONTRASTS)
 
   expect_true(inherits(fa, "ContrastsLimmaFacade"))
-  expect_true(!is.null(fa$model))
-  expect_true(!is.null(fa$contrast))
+  expect_r6_class(fa$model, "ModelLimma")
+  expect_r6_class(fa$contrast, "ContrastsLimma")
   check_facade_interface(fa)
   expect_true(all(fa$get_contrasts()$modelName == "limma"))
 })
@@ -86,8 +87,8 @@ test_that("ContrastsLMFacade initialises and returns correct structure", {
   fa <- prolfqua::ContrastsLMFacade$new(lfqdata, MODELSTR, CONTRASTS)
 
   expect_true(inherits(fa, "ContrastsLMFacade"))
-  expect_true(!is.null(fa$model))
-  expect_true(!is.null(fa$contrast))
+  expect_r6_class(fa$model, "Model")
+  expect_r6_class(fa$contrast, "ContrastsModerated")
   check_facade_interface(fa)
   expect_true(all(fa$get_contrasts()$modelName == "lm"))
 })
@@ -100,8 +101,8 @@ test_that("ContrastsRLMFacade initialises and returns correct structure", {
     fa <- prolfqua::ContrastsRLMFacade$new(lfqdata, MODELSTR, CONTRASTS)
 
     expect_true(inherits(fa, "ContrastsRLMFacade"))
-    expect_true(!is.null(fa$model))
-    expect_true(!is.null(fa$contrast))
+    expect_r6_class(fa$model, "Model")
+    expect_r6_class(fa$contrast, "ContrastsModerated")
     check_facade_interface(fa)
     expect_true(all(fa$get_contrasts()$modelName == "rlm"))
   })
@@ -116,8 +117,8 @@ test_that("ContrastsLmerNestedFacade initialises and returns correct structure",
   fa <- prolfqua::ContrastsLmerNestedFacade$new(lfqdata, MODELSTR_LMER, CONTRASTS)
 
   expect_true(inherits(fa, "ContrastsLmerNestedFacade"))
-  expect_true(!is.null(fa$model))
-  expect_true(!is.null(fa$contrast))
+  expect_r6_class(fa$model, "Model")
+  expect_r6_class(fa$contrast, "ContrastsModerated")
   check_facade_interface(fa)
   expect_true(all(fa$get_contrasts()$modelName == "lmer_nested"))
 })
@@ -152,8 +153,8 @@ test_that("ContrastsDEqMSFacade initialises and returns correct structure", {
   fa <- prolfqua::ContrastsDEqMSFacade$new(lfqdata, MODELSTR, CONTRASTS)
 
   expect_true(inherits(fa, "ContrastsDEqMSFacade"))
-  expect_true(!is.null(fa$model))
-  expect_true(!is.null(fa$contrast))
+  expect_r6_class(fa$model, "Model")
+  expect_r6_class(fa$contrast, "ContrastsModeratedDEqMS")
   expect_equal(fa$contrast$count_column, "nrPeptides")
   check_facade_interface(fa)
   expect_true(all(fa$get_contrasts()$modelName == "deqms"))
@@ -166,8 +167,8 @@ test_that("ContrastsROPECANestedFacade initialises and returns correct structure
   fa <- prolfqua::ContrastsROPECANestedFacade$new(lfqdata, MODELSTR, CONTRASTS)
 
   expect_true(inherits(fa, "ContrastsROPECANestedFacade"))
-  expect_true(!is.null(fa$model))
-  expect_true(!is.null(fa$contrast))
+  expect_r6_class(fa$model, "Model")
+  expect_r6_class(fa$contrast, "ContrastsROPECA")
 
   # Facade normalises ROPECA output to standard column names
   check_facade_interface(fa)
@@ -290,7 +291,7 @@ test_that("build_contrast_analysis dispatches to ContrastsROPECANestedFacade for
   expect_true(inherits(fa, "ContrastsROPECANestedFacade"))
   res <- fa$get_contrasts()
   expect_true(is.data.frame(res))
-  expect_true(nrow(res) > 0)
+  expect_equal(nrow(res), dplyr::n_distinct(lfqdata$data_long()$protein_Id))
   # Standard column names, not ROPECA-specific ones
   expect_true("p.value" %in% colnames(res))
   expect_true("FDR" %in% colnames(res))
@@ -378,7 +379,7 @@ test_that("get_missing returns non-empty for data with missing groups", {
     limma_res <- fa_limma$get_contrasts()
     expect_true(!any(is.na(limma_res$diff)))
 
-    # get_missing + get_contrasts should cover all input proteins × contrasts
+    # get_missing + get_contrasts should cover all input proteins x contrasts
     n_input_proteins <- dplyr::n_distinct(lfq_protein$data_long()$protein_Id)
     n_contrasts <- length(contrasts2)
     for (fa in list(fa_lm, fa_limma)) {
@@ -390,7 +391,7 @@ test_that("get_missing returns non-empty for data with missing groups", {
 })
 
 test_that("get_missing returns empty data.frame when all proteins are estimable", {
-  # No missingness — all proteins should be estimable
+  # No missingness - all proteins should be estimable
   lfqdata <- make_protein_lfqdata()$lfqdata
   fa <- prolfqua::ContrastsLMFacade$new(lfqdata, MODELSTR, CONTRASTS)
   missing <- fa$get_missing()

@@ -365,7 +365,11 @@ parse_contrast_sides <- function(contrasts) {
 
 # computing contrast ----
 #' Pivot long-format model contrasts to wide format
-#' @return Contrast definitions or contrast results.
+#'
+#' Turns a contrast table with one row per subject and contrast into one row per subject, as used by the `to_wide()`
+#' method of the contrast classes.
+#' @return A tibble with one row per subject and one column per value column and contrast, named
+#'   `<column>.<contrast>`.
 #' @export
 #' @family modelling
 #' @param model_interaction_contrasts data.frame with contrast results in long format

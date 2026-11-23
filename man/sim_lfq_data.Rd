@@ -44,7 +44,9 @@ peptide counts}
 A data frame containing simulated LFQ data.
 }
 \description{
-Simulate protein-level data with two groups
+Draws protein abundances from a log-normal distribution and multiplies them by group-specific fold changes for
+down-, up- and not-regulated proteins; with \code{peptide = TRUE}, each protein gets a geometric number of peptides.
+The \verb{_config} variants add an \link{AnalysisConfiguration} and missing values.
 }
 \examples{
 

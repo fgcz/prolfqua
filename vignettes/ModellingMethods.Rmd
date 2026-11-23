@@ -12,7 +12,7 @@ vignette: >
 ---
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(collapse = TRUE, comment = "#>", message = FALSE, warning = FALSE)
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", message = FALSE)
 ```
 
 # Purpose
@@ -55,11 +55,17 @@ input_for <- function(method) {
 model_for <- function(method) {
   if (method == "lmer_nested") "~ group_ + (1 | peptide_Id) + (1 | sampleName)" else "~ group_"
 }
-results <- lapply(names(facades), function(method) {
-  fa <- build_contrast_analysis(input_for(method), model_for(method), contrasts, method = method)
-  fa$get_contrasts()
+analyses <- lapply(names(facades), function(method) {
+  build_contrast_analysis(input_for(method), model_for(method), contrasts, method = method)
 })
-names(results) <- names(facades)
+names(analyses) <- names(facades)
+results <- lapply(analyses, function(fa) fa$get_contrasts())
+```
+
+The warnings come from single proteins: `lmer_nested` cannot fit a protein with one peptide, because its random peptide effect needs at least two; `rlm` stops at its iteration limit for one protein; `ropeca_nested` cannot fit a peptide observed in one group only; and the moderation steps report limma's and DEqMS's notes on the variance fit. Each analysis keeps the other proteins and records the failures, which `$provenance()` lists:
+
+```{r provenance}
+analyses$lmer_nested$provenance()
 ```
 
 # One line per method

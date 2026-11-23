@@ -2,7 +2,7 @@
 % Please edit documentation in R/generatedContrastsDF.R
 \name{generate_contrasts_for_factor}
 \alias{generate_contrasts_for_factor}
-\title{Single-factor contrasts (pairwise comparisons)}
+\title{Pairwise contrasts of one factor}
 \usage{
 generate_contrasts_for_factor(levels)
 }
@@ -10,14 +10,13 @@ generate_contrasts_for_factor(levels)
 \item{levels}{character vector of factor levels}
 }
 \value{
-Contrast definitions or contrast results.
+A named list of contrast strings \code{"<high> - <low>"}, named \verb{<high>_vs_<low>}.
 }
 \description{
-Single-factor contrasts (pairwise comparisons)
+One contrast for every pair of levels: the later level minus the earlier one.
 }
 \examples{
-# example code
-primary_levels <- c("MI", "MINOCAM")
+primary_levels <- c("KO", "WT")
 secondary_levels <- c("T0", "T150", "T300")
 x2 <- level_specific_contrasts(primary_levels, secondary_levels)
 x3 <- level_specific_contrasts(secondary_levels, primary_levels)

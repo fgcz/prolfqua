@@ -6,43 +6,41 @@
 #' @noRd
 NULL
 
-aliased_protein_data <- function() {
-  sim <- sim_lfq_data_protein_config(n_proteins = 5, with_missing = FALSE, seed = 42)
+aliased_data <- function(simulate) {
+  sim <- simulate(n_proteins = 5, with_missing = FALSE, seed = 42)
   data <- sim$data
   data$batch <- c(A = "x", B = "y", Ctrl = "z")[data$group_]
   sim$config$factors[["batch"]] <- "batch"
   suppressMessages(LFQData$new(data, sim$config)$get_Transformer()$log2()$lfq)
 }
 
-test_that("a factor aliased with another is rejected for every aggregated method", {
+test_that("a factor aliased with another is rejected by every built-in method", {
   withr::local_options(prolfqua.verbose = FALSE)
-  lfq <- aliased_protein_data()
+  data <- list(
+    aggregated = aliased_data(sim_lfq_data_protein_config),
+    nested = aliased_data(sim_lfq_data_peptide_config)
+  )
   contrasts <- c(AvsC = "group_A - group_Ctrl")
-  for (method in c("lm", "rlm", "limma", "lm_impute", "deqms", "firth")) {
+  builtin <- Filter(function(facade) facade$package == "prolfqua", list_facades())
+  expect_length(builtin, 20)
+  # the design check runs before any backend package is needed
+  for (method in names(builtin)) {
     expect_error(
-      build_contrast_analysis(lfq, "~ group_ + batch", contrasts, method),
+      build_contrast_analysis(data[[builtin[[method]]$needs]], "~ group_ + batch", contrasts, method),
       "`batchy`, `batchz` are linear combinations",
       class = "prolfqua_error_collinear_design",
       label = method
     )
   }
-  expect_no_error(suppressWarnings(build_contrast_analysis(lfq, "~ group_", contrasts, "lm")))
+  expect_no_error(suppressWarnings(build_contrast_analysis(data$aggregated, "~ group_", contrasts, "lm")))
 })
 
 test_that("nested methods check the fixed effects only", {
   withr::local_options(prolfqua.verbose = FALSE)
-  sim <- sim_lfq_data_peptide_config(n_proteins = 5, with_missing = FALSE, seed = 42)
-  data <- sim$data
-  data$batch <- c(A = "x", B = "y", Ctrl = "z")[data$group_]
-  sim$config$factors[["batch"]] <- "batch"
-  peptide <- suppressMessages(LFQData$new(data, sim$config)$get_Transformer()$log2()$lfq)
-  contrasts <- c(AvsC = "group_A - group_Ctrl")
-  expect_error(
-    build_contrast_analysis(peptide, "~ group_ + batch", contrasts, "binomial_nested"),
-    class = "prolfqua_error_collinear_design"
-  )
   skip_if_not_installed("lme4")
   skip_if_not_installed("lmerTest")
+  peptide <- aliased_data(sim_lfq_data_peptide_config)
+  contrasts <- c(AvsC = "group_A - group_Ctrl")
   expect_error(
     build_contrast_analysis(peptide, "~ group_ + batch + (1 | peptide_Id)", contrasts, "lmer_nested"),
     class = "prolfqua_error_collinear_design"

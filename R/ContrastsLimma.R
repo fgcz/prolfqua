@@ -48,7 +48,7 @@ StrategyLimma <- R6::R6Class(
 #' @param weights either a character string (column name in annotation for
 #'   per-sample weights) or a numeric matrix (proteins x samples) passed to
 #'   \code{\link[limma]{lmFit}}. Default \code{NULL} (no weights).
-#' @return The computed result.
+#' @return a [StrategyLimma] object holding the formula, model name, `eBayes()` options and weights.
 #' @export
 #' @family modelling
 #' @examples
@@ -561,11 +561,26 @@ build_model_limma_impute <- function(
 #' (vooma) and fits a weighted least squares model via \code{\link[limma]{lmFit}}.
 #' For proteomics data that is already log2-transformed.
 #'
-#' When \code{strategy$weights} is set (e.g. to \code{nr_children}), these
-#' external weights enter the preliminary fit (so the trend estimation accounts
-#' for measurement precision) and are multiplied element-wise with the vooma
-#' weights for the final fit. See the voom integration notes in
-#' \code{../TODO/prolfqua/Archive/TODO_limma_voom_integration.md} for the mathematical basis.
+#' @details
+#' The weights follow \code{\link[limma]{vooma}} (Law et al. 2014, \doi{10.1186/gb-2014-15-2-r29}):
+#' \enumerate{
+#'   \item a preliminary \code{lmFit()} gives the residual standard deviation \eqn{s_g} of each protein;
+#'   \item a lowess trend \eqn{f} (span \code{span}) of \eqn{\sqrt{s_g}} against the mean log2 intensity is
+#'     evaluated at each fitted value \eqn{\hat{y}_{gj}};
+#'   \item since \eqn{f^4} estimates the variance, the precision weight is \eqn{w_{gj} = 1 / f(\hat{y}_{gj})^4},
+#'     and the final fit is weighted least squares followed by \code{eBayes()}.
+#' }
+#' The data are already on the log2 scale, so there is no library-size term. With \code{weights = NULL} and complete
+#' data the fit equals \code{limma::vooma()} followed by \code{limma::lmFit()}. In designs with group factors only, all
+#' samples of a group share one weight: fold changes equal those of unweighted limma, while standard errors and
+#' p-values change.
+#'
+#' External weights \eqn{n_{gj}} (\code{strategy$weights}, e.g. the \code{nr_children} column, the number of peptides
+#' per protein and sample) go beyond \code{vooma()}, which takes none. If a protein intensity averages \eqn{n_{gj}}
+#' peptide measurements with independent errors, its variance is \eqn{\sigma^2_g / n_{gj}}. The preliminary fit
+#' therefore uses \eqn{n_{gj}} as weights, so the trend is estimated from weighted residuals, and the final fit uses
+#' \eqn{n_{gj} w_{gj}}. Only the relative size of \eqn{n_{gj}} matters: a constant weight gives the same result as
+#' none. \code{deqms_voom} uses no external weights, because DEqMS already moderates by the peptide count.
 #'
 #' @param lfqdata an \code{\link{LFQData}} object (aggregated to protein level)
 #' @param strategy output of \code{\link{strategy_limma}}

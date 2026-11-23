@@ -27,10 +27,12 @@ lr_test(
 \item{path}{default NULL, set to a directory if you need to write diagnostic plots.}
 }
 \value{
-The computed result.
+a tibble with one row per subject: \code{subject_id} and \code{likelihood_ratio_test.pValue}, the p-value of
+the likelihood ratio test of the reduced against the complete model.
 }
 \description{
-Likelihood ratio test
+Compares a complete and a reduced model per subject with a likelihood ratio test, for example to test a factor
+with several levels at once. Both model tables come from \code{\link[=build_model]{build_model()}} on the same data.
 }
 \examples{
 data_2Factor <- prolfqua::sim_lfq_data_2factor_config(

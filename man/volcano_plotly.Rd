@@ -50,10 +50,11 @@ with the smallest positive observed value in the same score column.}
 \item{.data}{deprecated; use \code{data}}
 }
 \value{
-The requested plot, table, or transformed object.
+A list of plotly objects, one per contrast; combine them with \code{plotly::subplot()}.
 }
 \description{
-Interactive volcano plots with plotly
+One interactive volcano plot per contrast; points are linked across the plots with crosstalk, so selecting a
+protein highlights it in every contrast.
 }
 \examples{
 \dontshow{if (requireNamespace("plotly", quietly = TRUE) && requireNamespace("crosstalk", quietly = TRUE)) withAutoprint(\{ # examplesIf}

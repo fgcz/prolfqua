@@ -938,6 +938,9 @@ unregister_facade <- function(name) {
 
 #' Look up a contrast facade by short name
 #'
+#' Returns the registry entry of a method of [build_contrast_analysis()], including the input it needs
+#' (`"aggregated"` or `"nested"`).
+#'
 #' @param name short method name (e.g. \code{"lm"}, \code{"saint"}).
 #' @return Registry entry list with at least \code{class},
 #'   \code{needs}, \code{package}, \code{needs_saint_annotation}; or
@@ -958,6 +961,9 @@ lookup_facade <- function(name) {
 }
 
 #' List currently registered contrast facades
+#'
+#' The methods [build_contrast_analysis()] accepts: the built-in ones and those added by downstream packages
+#' with [register_facade()].
 #'
 #' @return A list mirroring \code{\link{FACADE_REGISTRY}} but reflecting
 #'   any entries added via \code{\link{register_facade}} from downstream

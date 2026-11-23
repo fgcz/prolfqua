@@ -39,7 +39,10 @@
   invisible(x)
 }
 
-#' Extracts uniprot ID
+#' Extract UniProt accessions from FASTA headers
+#'
+#' Parses UniProt FASTA headers such as `sp|P12345|PROT1_HUMAN` in `idcolumn` and adds the accession as the
+#' column `UniprotID`; identifiers that are not FASTA headers get `NA`.
 #'
 #' @export
 #' @family utilities
@@ -328,7 +331,10 @@ get_uniprot_id_from_fasta_header <- function(df, idcolumn = "protein_Id") {
 }
 
 
-#' Table facade to easily switch implementations
+#' Format a table for reports
+#'
+#' Formats a table for reports with `knitr::kable()`, or returns it unchanged, so report code does not depend on the
+#' table package.
 #' @return a `knitr_kable` table, or `df` unchanged when `kable = FALSE`
 #' @export
 #' @family utilities
@@ -426,6 +432,9 @@ table_facade <- function(df, caption, digits = getOption("digits"), kable = TRUE
 }
 
 #' Interactive volcano plots with plotly
+#'
+#' One interactive volcano plot per contrast; points are linked across the plots with crosstalk, so selecting a
+#' protein highlights it in every contrast.
 #' @param data data frame
 #' @param effect effect size x-axis
 #' @param significance significance
@@ -441,7 +450,7 @@ table_facade <- function(df, caption, digits = getOption("digits"), kable = TRUE
 #' @param title_size font size of the subplot title annotation
 #' @param group crosstalk group name for linked brushing
 #' @param .data deprecated; use `data`
-#' @return The requested plot, table, or transformed object.
+#' @return A list of plotly objects, one per contrast; combine them with `plotly::subplot()`.
 #' @export
 #' @examplesIf requireNamespace("plotly", quietly = TRUE) && requireNamespace("crosstalk", quietly = TRUE)
 #'
@@ -507,9 +516,11 @@ volcano_plotly <- function(
 
 
 #' Load a dataset from prolfqua
+#'
+#' Returns a packaged dataset as a value instead of creating it in the calling environment, as [utils::data()] does.
 #' @param datastr name of dataset
 #' @param package default prolfqua
-#' @return The computed result.
+#' @return the dataset `datastr` of `package`, loaded without attaching it to the global environment.
 #' @export
 #' @family data
 #' @examples

@@ -391,6 +391,24 @@ test_that("lfqdata_from_wide inverts .tidy_to_wide_config", {
     lfqdata_from_wide(wide$data, wide$rowdata[, "protein_Id", drop = FALSE], wide$annotation, lfq$get_config()),
     class = "prolfqua_error_missing_column"
   )
+
+  duplicated_rowdata <- wide$rowdata
+  duplicated_rowdata[2, ] <- duplicated_rowdata[1, ]
+  expect_error(
+    lfqdata_from_wide(wide$data, duplicated_rowdata, wide$annotation, lfq$get_config()),
+    class = "prolfqua_error_bad_argument"
+  )
+  renamed <- nr$data
+  rownames(renamed) <- rev(rownames(renamed))
+  expect_error(
+    lfqdata_from_wide(
+      stats::setNames(list(wide$data, renamed), c(lfq$response(), lfq$nr_children_col())),
+      wide$rowdata,
+      wide$annotation,
+      lfq$get_config()
+    ),
+    class = "prolfqua_error_bad_argument"
+  )
 })
 
 test_that("intensity_array can mark a back-transform as untransformed", {

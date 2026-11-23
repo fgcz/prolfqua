@@ -44,8 +44,11 @@
 #'   `predict()` returns `newdata` with `prediction` on the fitting scale (probabilities for detection models;
 #'   mixed models at population level, without random effects) and `imputed` (the subject's fit is a
 #'   limit-of-detection refit). Hurdle results predict per component.
-#'   The fit status counts subjects that did not converge (`not_converged`); per subject, `converged` and
-#'   `iterations` are columns of the model table (`analysis$model$model_df`).
+#'   The fit status counts subjects that did not converge (`not_converged`). Per subject, `converged` and
+#'   `iterations` are columns of the model table: `analysis$model$model_df` for per-subject backends,
+#'   `analysis$model$models$model_df` for `firth`; hurdle results keep one table per component
+#'   (`analysis$contrast$intensity$model`, `analysis$contrast$detection$model`). Matrix backends (limma, deqms,
+#'   limpa) keep no per-subject status.
 #' @name prolfqua_analysis_methods
 #' @family modelling
 #' @examples

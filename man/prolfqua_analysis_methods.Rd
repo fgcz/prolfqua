@@ -99,8 +99,11 @@ crossproduct. Failed matrix fits are omitted.
 \code{predict()} returns \code{newdata} with \code{prediction} on the fitting scale (probabilities for detection models;
 mixed models at population level, without random effects) and \code{imputed} (the subject's fit is a
 limit-of-detection refit). Hurdle results predict per component.
-The fit status counts subjects that did not converge (\code{not_converged}); per subject, \code{converged} and
-\code{iterations} are columns of the model table (\code{analysis$model$model_df}).
+The fit status counts subjects that did not converge (\code{not_converged}). Per subject, \code{converged} and
+\code{iterations} are columns of the model table: \code{analysis$model$model_df} for per-subject backends,
+\code{analysis$model$models$model_df} for \code{firth}; hurdle results keep one table per component
+(\code{analysis$contrast$intensity$model}, \code{analysis$contrast$detection$model}). Matrix backends (limma, deqms,
+limpa) keep no per-subject status.
 }
 \description{
 Standard R methods for results returned by \code{\link[=build_contrast_analysis]{build_contrast_analysis()}}.

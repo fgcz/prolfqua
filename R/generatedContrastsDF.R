@@ -1,4 +1,8 @@
-#' Build group labels from two factor levels
+#' Group labels of a two-factor design
+#'
+#' Names the cell of a two-factor design as `G_<primary>_<secondary>`, the group names that the contrast generators
+#' ([generate_contrasts()] and its parts) use in their contrast strings.
+#'
 #' @param primary character, primary factor level
 #' @param secondary character, secondary factor level
 #' @return A character vector with combined group labels.
@@ -9,16 +13,18 @@
 group_label <- function(primary, secondary) paste0("G_", primary, "_", secondary)
 
 
-# Generic function to build pairwise contrasts for any two factors
-# Main effect contrasts (averaged across all secondary levels)
-#' Main effects contrasts
+#' Main-effect contrasts of a two-factor design
+#'
+#' For every pair of primary levels, the difference of their means averaged over all secondary levels.
+#'
 #' @param primary_levels character vector of primary factor levels
 #' @param secondary_levels character vector of secondary factor levels
-#' @return Contrast definitions or contrast results.
+#' @return A named list of contrast strings, one per pair of primary levels, named `<high>_vs_<low>`; groups are
+#'   named by [group_label()].
 #' @export
 #' @family contrasts
 #' @examples
-#' primary_levels <- c("MI", "MINOCAM")
+#' primary_levels <- c("KO", "WT")
 #' secondary_levels <- c("T150", "T0", "T300")
 #' main_effect_contrasts(primary_levels, secondary_levels)
 #' main_effect_contrasts(secondary_levels, primary_levels)
@@ -42,16 +48,18 @@ main_effect_contrasts <- function(primary_levels, secondary_levels) {
   contrasts
 }
 
-#' Level-specific contrasts (per secondary level)
+#' Level-specific contrasts of a two-factor design
+#'
+#' For every pair of primary levels, their difference within each secondary level.
+#'
 #' @param primary_levels character vector of primary factor levels
 #' @param secondary_levels character vector of secondary factor levels
-#' @return Contrast definitions or contrast results.
+#' @return A named list of contrast strings, one per pair of primary levels and secondary level, named
+#'   `<high>_vs_<low>_at_<secondary>`.
 #' @export
 #' @family contrasts
 #' @examples
-#' # example code
-#'
-#' primary_levels <- c("MI", "MINOCAM")
+#' primary_levels <- c("KO", "WT")
 #' secondary_levels <- c("T0", "T150", "T300")
 #' x2 <- level_specific_contrasts(primary_levels, secondary_levels)
 #' x3 <- level_specific_contrasts(secondary_levels, primary_levels)
@@ -73,14 +81,18 @@ level_specific_contrasts <- function(primary_levels, secondary_levels) {
 }
 
 
-#' Interaction contrasts (difference of differences)
+#' Interaction contrasts of a two-factor design
+#'
+#' For every pair of primary levels and every pair of secondary levels, the difference of differences: does the
+#' primary difference change between the two secondary levels?
+#'
 #' @param primary_levels character vector of primary factor levels
 #' @param secondary_levels character vector of secondary factor levels
-#' @return Contrast definitions or contrast results.
+#' @return A named list of contrast strings, named `interaction_<high>_vs_<low>_at_<s2>_vs_<s1>`.
 #' @export
 #' @family contrasts
 #' @examples
-#' primary_levels <- c("MI", "MINOCAM")
+#' primary_levels <- c("KO", "WT")
 #' secondary_levels <- c("T0", "T150", "T300")
 #' interaction_contrasts(primary_levels, secondary_levels)
 #' interaction_contrasts(secondary_levels, primary_levels)
@@ -105,14 +117,16 @@ interaction_contrasts <- function(primary_levels, secondary_levels) {
   contrasts
 }
 
-#' Single-factor contrasts (pairwise comparisons)
+#' Pairwise contrasts of one factor
+#'
+#' One contrast for every pair of levels: the later level minus the earlier one.
+#'
 #' @param levels character vector of factor levels
-#' @return Contrast definitions or contrast results.
+#' @return A named list of contrast strings `"<high> - <low>"`, named `<high>_vs_<low>`.
 #' @export
 #' @family contrasts
 #' @examples
-#' # example code
-#' primary_levels <- c("MI", "MINOCAM")
+#' primary_levels <- c("KO", "WT")
 #' secondary_levels <- c("T0", "T150", "T300")
 #' x2 <- level_specific_contrasts(primary_levels, secondary_levels)
 #' x3 <- level_specific_contrasts(secondary_levels, primary_levels)
@@ -128,17 +142,18 @@ generate_contrasts_for_factor <- function(levels) {
   contrasts
 }
 
-# Combined generate_contrasts
-
-#' Combined generate_contrasts
+#' All contrasts of a two-factor design
+#'
+#' Combines [main_effect_contrasts()], [level_specific_contrasts()] and, optionally, [interaction_contrasts()].
+#'
 #' @param primary_levels character vector of primary factor levels
 #' @param secondary_levels character vector of secondary factor levels
 #' @param interactions logical, if TRUE include interaction contrasts
-#' @return Contrast definitions or contrast results.
+#' @return A data.frame with the columns `ContrastName` and `Contrast` (the contrast string), one row per contrast.
 #' @export
 #' @family contrasts
 #' @examples
-#' primary_levels <- c("MI", "MINOCAM")
+#' primary_levels <- c("KO", "WT")
 #' secondary_levels <- c("T0", "T150", "T300")
 #' generate_contrasts(primary_levels, secondary_levels)
 #' generate_contrasts(secondary_levels, primary_levels)
@@ -156,7 +171,12 @@ generate_contrasts <- function(primary_levels, secondary_levels, interactions = 
   res
 }
 
-#' DRY function: process and export annotated contrasts
+#' Add the contrasts of a two-factor design to a sample annotation
+#'
+#' Unites the two factor columns into a `Group` column and appends the contrasts of [generate_contrasts()] as the
+#' columns `ContrastName` and `Contrast`, padded with `NA` to the number of samples, in the layout of a prolfquapp
+#' dataset annotation. Nothing is written to disk.
+#'
 #' @param df data.frame with annotation data
 #' @param primary_col character, name of the primary factor column
 #' @param secondary_col character, name of the secondary factor column
@@ -164,7 +184,8 @@ generate_contrasts <- function(primary_levels, secondary_levels, interactions = 
 #' @param dataset_id character, dataset identifier for output naming
 #' @param decreasing logical, if TRUE sort factor levels in decreasing order
 #' @param interactions logical, if TRUE include interaction contrasts
-#' @return Contrast definitions or contrast results.
+#' @return A list with `annot`, the annotation with the `Group`, `ContrastName` and `Contrast` columns (the two factor
+#'   columns are dropped), and `name`, a suggested file name `DEA_<prefix>_<dataset_id>.csv`.
 #' @export
 #' @family contrasts
 #' @examples

@@ -1,6 +1,10 @@
 #' Likelihood ratio test
+#'
+#' Compares a complete and a reduced model per subject with a likelihood ratio test, for example to test a factor
+#' with several levels at once. Both model tables come from [build_model()] on the same data.
 #' @family modelling
-#' @return The computed result.
+#' @return a tibble with one row per subject: `subject_id` and `likelihood_ratio_test.pValue`, the p-value of
+#'   the likelihood ratio test of the reduced against the complete model.
 #' @export
 #' @param complete_models table with models (see build model)
 #' @param model_name name of model
@@ -98,6 +102,10 @@ plot_lrt_diagnostics <- function(result, model_name, model_name_int, path) {
 
 
 #' Build protein models from data
+#'
+#' Fits the model of `model_strategy` once per subject (by default per protein) and returns the fits with their
+#' status. Failed fits are kept as rows without a model. [build_contrast_analysis()] calls it for the per-subject
+#' backends.
 #'
 #' @param data data - a data frame or LFQData object
 #' @param model_strategy model strategy object (e.g. from strategy_lmer or strategy_lm)

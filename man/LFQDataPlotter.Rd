@@ -2,14 +2,15 @@
 % Please edit documentation in R/LFQDataPlotter.R
 \name{LFQDataPlotter}
 \alias{LFQDataPlotter}
-\title{LFQDataPlotter ----
-Create various visualization of the LFQdata}
+\title{Plot LFQData}
 \value{
 An R6 class generator.
 }
 \description{
-LFQDataPlotter ----
-Create various visualization of the LFQdata
+Plots of an \link{LFQData} object: intensity distributions, boxplots per protein, heatmaps of intensities, correlations
+and missing values, PCA, pairs plots and UpSet plots of missingness. Obtained with \code{LFQData$get_Plotter()}; the
+\verb{write_*} methods write per-protein plots to PDF files.
+Create various visualization of the LFQData
 }
 \examples{
 \dontshow{if (requireNamespace("ComplexHeatmap", quietly = TRUE) && requireNamespace("circlize", quietly = TRUE)) withAutoprint(\{ # examplesIf}

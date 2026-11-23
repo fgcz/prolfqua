@@ -20,7 +20,7 @@ E. coli spike-in dilution series (dilutions a to e, 4 replicates each),
 processed with MaxQuant. An R6 object holding the data, its
 \code{\link{AnalysisConfiguration}}, and the methods \code{filtered()},
 \code{normalized()} and \code{subset_normalized()}. See
-\code{inst/script/README.md} for its origin.
+\code{system.file("script", "README.md", package = "prolfqua")} for its origin.
 }
 \seealso{
 Other data:

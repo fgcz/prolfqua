@@ -18,7 +18,7 @@ bibliography:
 ## Simulate data
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+knitr::opts_chunk$set(message = FALSE)
 
 ```
 
@@ -43,9 +43,12 @@ peptideAbundances <- prolfqua::sim_lfq_data(peptide = TRUE)
 
 # Analyse simulated data with prolfqua
 
+Each simulated row is one peptide, so it counts as one child of its protein (`nr_children`).
+
 ```{r build_lfqdata}
 library(prolfqua)
 
+peptideAbundances$nr_children <- 1L
 config <- AnalysisConfiguration$new()
 config$file_name = "sample"
 config$factors["group_"] = "group"

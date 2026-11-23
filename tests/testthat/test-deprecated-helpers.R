@@ -114,6 +114,27 @@ test_that("deprecated helpers forward the call unchanged and name the public rou
 
   expect_warning(old <- suppressMessages(estimate_intensity(lfq_log)), class = "deprecatedWarning")
   expect_identical(old$data, suppressMessages(.estimate_intensity(lfq_log))$data)
+
+  expect_warning(old <- apply_to_response_matrix(lfq, log2), class = "deprecatedWarning")
+  expect_identical(old, .apply_to_response_matrix(lfq, log2))
+
+  protein <- sim_lfq_data_protein_config(n_proteins = 5, with_missing = FALSE)
+  lfq_protein <- LFQData$new(protein$data, protein$config)
+  lfq_protein$rename_response("transformedIntensity")
+  mod <- build_model(lfq_protein, strategy_lm("transformedIntensity ~ group_"))
+  expect_warning(old <- model_summary(mod), class = "deprecatedWarning")
+  expect_equal(old$exists, table(mod$model_df$has_model_fit))
+  expect_equal(old$isSingular, table(mod$model_df$isSingular))
+})
+
+test_that("the deprecated sim_build_models_logistf() still fits Firth models", {
+  skip_if_not_installed("logistf")
+  expect_warning(
+    mod <- suppressWarnings(sim_build_models_logistf(n_proteins = 5), classes = "prolfqua_fit_failed"),
+    class = "deprecatedWarning"
+  )
+  expect_s3_class(mod, "ModelFirth")
+  expect_equal(nrow(mod$models$model_df), 5)
 })
 
 test_that("helpers that leave prolfqua say where they went", {

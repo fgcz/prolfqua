@@ -1,30 +1,30 @@
 R version 4.6.2 (2026-10-29)
-                                                                                                  sysname 
-                                                                                                 "Darwin" 
-                                                                                                  release 
-                                                                                                 "25.6.0" 
-                                                                                                  version 
-"Darwin Kernel Version 25.6.0: Fri Jul 31 19:17:26 PDT 2026; root:xnu-12377.161.14~5/RELEASE_ARM64_T6041" 
-                                                                                                 nodename 
-                                                                                                "Mac.lan" 
-                                                                                                  machine 
-                                                                                                  "arm64" 
-                                                                                                    login 
-                                                                                                   "root" 
-                                                                                                     user 
-                                                                                                 "wolski" 
-                                                                                           effective_user 
-                                                                                                 "wolski" 
+                                                                                                 sysname 
+                                                                                                "Darwin" 
+                                                                                                 release 
+                                                                                                "27.2.0" 
+                                                                                                 version 
+"Darwin Kernel Version 27.2.0: Wed Oct 14 23:44:56 PDT 2026; root:xnu-13432.41.4~25/RELEASE_ARM64_T6041" 
+                                                                                                nodename 
+                                                                                               "Mac.lan" 
+                                                                                                 machine 
+                                                                                                 "arm64" 
+                                                                                                   login 
+                                                                                                  "root" 
+                                                                                                    user 
+                                                                                                "wolski" 
+                                                                                          effective_user 
+                                                                                                "wolski" 
 R version 4.6.2 (2026-10-29)
 Platform: aarch64-apple-darwin23
-Running under: macOS Tahoe 26.6.2
+Running under: macOS Golden Gate 27.2.1
 
 Matrix products: default
 BLAS:   /Library/Frameworks/R.framework/Versions/4.6/Resources/lib/libRblas.0.dylib 
 LAPACK: /Library/Frameworks/R.framework/Versions/4.6/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.1
 
 locale:
-[1] C.UTF-8/C.UTF-8/C.UTF-8/C/C.UTF-8/C.UTF-8
+[1] C/en_US.UTF-8/C/C/C/C
 
 time zone: Europe/Zurich
 tzcode source: internal
@@ -33,7 +33,7 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
-[1] prolfqua_1.9.4 testthat_3.3.2
+[1] prolfqua_1.9.5 testthat_3.3.2
 
 loaded via a namespace (and not attached):
  [1] generics_0.1.4      tidyr_1.3.2         stringi_1.8.9      
@@ -46,13 +46,13 @@ loaded via a namespace (and not attached):
 [22] Rdpack_2.6.6        cli_3.6.6           rlang_1.3.0        
 [25] rbibutils_2.4.1     ellipsis_0.3.3      splines_4.6.2      
 [28] withr_3.0.3         cachem_1.1.0        devtools_2.5.2     
-[31] otel_0.2.0          tools_4.6.2         nloptr_2.2.1       
+[31] otel_0.3.0          tools_4.6.2         nloptr_2.2.1       
 [34] memoise_2.0.1       minqa_1.2.8         dplyr_1.2.1        
-[37] ggplot2_4.0.3       boot_1.3-32         vctrs_0.7.3        
+[37] ggplot2_4.0.4       boot_1.3-32         vctrs_0.7.3        
 [40] R6_2.6.1            lifecycle_1.0.5     fs_2.1.0           
 [43] usethis_3.2.2       MASS_7.3-66         pkgconfig_2.0.3    
 [46] desc_1.4.3          lmerTest_3.2-1      pillar_1.11.1      
 [49] gtable_0.3.6        glue_1.8.1          Rcpp_1.1.2         
 [52] statmod_1.5.2       tibble_3.3.1        tidyselect_1.2.1   
 [55] rstudioapi_0.19.0   farver_2.1.2        nlme_3.1-171       
-[58] compiler_4.6.2      S7_0.2.2           
+[58] compiler_4.6.2      S7_1.0.0           

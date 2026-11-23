@@ -13,6 +13,11 @@ lfqdata_to_summarized_experiment(lfqdata)
 SummarizedExperiment (bioconductor)
 }
 \description{
+Builds a \code{SummarizedExperiment} with the response as the assay \code{LFQ} (and the child counts as \code{nr_children}
+when present; features in rows, samples in columns), the hierarchy keys as row data and the sample annotation as
+column data, for use with Bioconductor packages.
+}
+\details{
 For compatibility with Bioconductor
 }
 \examples{

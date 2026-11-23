@@ -2,7 +2,7 @@
 % Please edit documentation in R/simulate_LFQ_data.R
 \name{sim_lfq_data_2factor_config}
 \alias{sim_lfq_data_2factor_config}
-\title{Simulate data, protein, with config with 2 factors Treatment and Background}
+\title{Simulate a two-factor design with its configuration}
 \usage{
 sim_lfq_data_2factor_config(
   n_proteins = 10,
@@ -36,7 +36,8 @@ factor}
 A list containing simulated data and an analysis configuration.
 }
 \description{
-Simulate data, protein, with config with 2 factors Treatment and Background
+Simulated protein (or peptide) intensities for a 2 x 2 design of \code{Treatment} and \code{Background} with four samples
+per cell, returned with a matching \link{AnalysisConfiguration}, ready for \code{LFQData$new()}.
 }
 \examples{
 x <- sim_lfq_data_2factor_config(peptide = FALSE)

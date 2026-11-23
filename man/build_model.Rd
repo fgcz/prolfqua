@@ -29,7 +29,9 @@ build_model(
 a object of class \code{\link{Model}}
 }
 \description{
-Build protein models from data
+Fits the model of \code{model_strategy} once per subject (by default per protein) and returns the fits with their
+status. Failed fits are kept as rows without a model. \code{\link[=build_contrast_analysis]{build_contrast_analysis()}} calls it for the per-subject
+backends.
 }
 \examples{
 \dontshow{if (requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)) withAutoprint(\{ # examplesIf}

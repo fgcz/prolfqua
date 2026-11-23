@@ -38,6 +38,17 @@ hurdle_components_fixture <- function() {
 
 fx <- hurdle_components_fixture()
 
+# proteins detected in every sample once the peptide x sample grid is completed
+fully_detected_proteins <- function(lfq_peptide) {
+  completed <- lfq_peptide$get_copy()
+  completed$complete_cases()
+  completed$data_long() |>
+    dplyr::group_by(.data$protein_Id) |>
+    dplyr::summarise(full = !anyNA(.data[[completed$response()]]), .groups = "drop") |>
+    dplyr::filter(.data$full) |>
+    dplyr::pull("protein_Id")
+}
+
 # Component get_contrasts() warns about zero sample variances on the simulated data.
 new_hurdle <- function(intensity, detection) {
   suppressWarnings(ContrastsHurdleFacade$new(intensity, detection))
@@ -45,15 +56,17 @@ new_hurdle <- function(intensity, detection) {
 
 test_that("hurdle p-values are Fisher's combination of the component p-values", {
   res <- new_hurdle(fx$lm_impute, fx$binomial_firth_nested)$get_contrasts()
+  # fully detected proteins have no detection test; every other row combines both components
+  n_intensity_only <- length(fully_detected_proteins(fx$lfq_peptide)) * length(fx$contrasts)
   both <- res[res$hurdle_components == "both", ]
-  expect_true(nrow(both) > 0)
+  expect_equal(nrow(both), nrow(res) - n_intensity_only)
   chisq <- -2 * (log(both$p.value.intensity) + log(both$p.value.detection))
   expect_equal(both$chisq.hurdle, chisq)
   expect_equal(both$df.hurdle, rep(4, nrow(both)))
   expect_equal(both$p.value, stats::pchisq(chisq, 4, lower.tail = FALSE))
 
   intensity_only <- res[res$hurdle_components == "intensity", ]
-  expect_true(nrow(intensity_only) > 0)
+  expect_equal(nrow(intensity_only), n_intensity_only)
   expect_equal(intensity_only$df.hurdle, rep(2, nrow(intensity_only)))
   expect_equal(intensity_only$p.value, intensity_only$p.value.intensity)
 })
@@ -71,20 +84,16 @@ test_that("proteins absent from lm become detection-only rows", {
 })
 
 test_that("fully detected proteins keep their intensity p-value", {
-  completed <- fx$lfq_peptide$get_copy()
-  completed$complete_cases()
-  fully_detected <- completed$data_long() |>
-    dplyr::group_by(.data$protein_Id) |>
-    dplyr::summarise(full = !anyNA(.data[[completed$response()]]), .groups = "drop") |>
-    dplyr::filter(.data$full)
-  expect_true(nrow(fully_detected) > 0)
+  fully_detected <- fully_detected_proteins(fx$lfq_peptide)
+  # the seed-7 simulation detects 2 of its 60 proteins in every sample; the loop needs at least one
+  expect_length(fully_detected, 2)
 
   for (detection in list(fx$binomial_nested, fx$binomial_firth_nested)) {
     res <- new_hurdle(fx$lm_impute, detection)$get_contrasts()
-    full_rows <- res[res$protein_Id %in% fully_detected$protein_Id, ]
+    full_rows <- res[res$protein_Id %in% fully_detected, ]
     expect_true(all(full_rows$hurdle_components == "intensity"))
     expect_equal(full_rows$p.value, full_rows$p.value.intensity)
-    expect_true(all(res$hurdle_components[!res$protein_Id %in% fully_detected$protein_Id] == "both"))
+    expect_true(all(res$hurdle_components[!res$protein_Id %in% fully_detected] == "both"))
   }
 })
 
@@ -126,7 +135,11 @@ test_that("all intensity x detection pairings return the contrast schema", {
   wide <- hurdle$to_wide()
   expect_equal(nrow(wide), length(unique(hurdle$get_contrasts()$protein_Id)))
   expect_r6_class(hurdle$get_Plotter(), "ContrastsPlotter")
-  expect_true(nrow(hurdle$filter_significant(FDR_threshold = 0.5, diff_threshold = 0)) > 0)
+  contrasts <- hurdle$get_contrasts()
+  expect_identical(
+    hurdle$filter_significant(FDR_threshold = 0.5, diff_threshold = 0),
+    contrasts[which(contrasts$FDR < 0.5 & abs(contrasts$diff) > 0), ]
+  )
 })
 
 test_that("hurdle supports a two-factor design", {
@@ -195,7 +208,10 @@ test_that("hurdle_nested builds both components from peptide input", {
   expect_s3_class(facade$get_missing(), "data.frame")
   expect_s3_class(facade$to_wide(), "data.frame")
   expect_r6_class(facade$get_Plotter(), "ContrastsPlotter")
-  expect_true(nrow(facade$filter_significant(FDR_threshold = 0.5, diff_threshold = 0)) > 0)
+  expect_identical(
+    facade$filter_significant(FDR_threshold = 0.5, diff_threshold = 0),
+    res[which(res$FDR < 0.5 & abs(res$diff) > 0), ]
+  )
 
   entry <- lookup_facade("hurdle_nested")
   expect_equal(entry$class, "ContrastsHurdleNestedFacade")

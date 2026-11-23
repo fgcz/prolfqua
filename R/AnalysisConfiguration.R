@@ -104,7 +104,8 @@ AnalysisConfiguration <- R6::R6Class(
       names(self$factors)
     },
     #' @description
-    #' Get factor keys till factorDepth
+    #' Get the first `factor_depth` factor keys
+    #' @return character vector of factor column names
     factor_keys_depth = function() {
       res <- head(self$factors, n = self$factor_depth)
       names(res)
@@ -165,8 +166,11 @@ AnalysisConfiguration <- R6::R6Class(
 
 
 #' Reconstruct a configuration from minimal YAML
+#'
+#' The inverse of [r6_extract_values()]: rebuilds an [AnalysisConfiguration] from the list read from a YAML file,
+#' in the current flat format or the older nested one. Unknown keys raise an error.
 #' @param dd list with table and parameter elements as produced by r6_extract_values
-#' @return The computed result.
+#' @return an [AnalysisConfiguration] with the fields set from `dd`.
 #' @export
 #' @examples
 #'
@@ -252,9 +256,13 @@ list_to_analysis_configuration <- function(dd) {
 
 # Functions - Configuration ----
 #' Extract all value slots in an R6 object
+#'
+#' Turns an R6 object, such as an [AnalysisConfiguration], into a plain list that can be written to YAML;
+#' [list_to_analysis_configuration()] reads it back.
 #' @param r6class r6 class
 #' @family configuration
-#' @return The computed result.
+#' @return a named list with the value fields of `r6class`; fields holding other R6 objects become nested
+#'   lists, functions and environments are dropped.
 #' @export
 #' @examples
 #' bb <- sim_lfq_data_peptide_config()

@@ -1,6 +1,9 @@
 # ContrastsPlotter ----
 #' Plot contrasts
 #'
+#' Volcano plots, MA plots, histograms of p-values and fold changes, score plots and threshold bar plots for a
+#' table of contrasts with one row per subject and contrast. Obtained from `$get_Plotter()` of any contrast object.
+#'
 #' @return An R6 class generator.
 #' @export
 #' @family modelling
