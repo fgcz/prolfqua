@@ -26,5 +26,5 @@ A logical vector indicating which values are missing.
 
 ``` r
 which_missing(2**rnorm(10,2,0.4))
-#>  [1] FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE
+#>  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE
 ```

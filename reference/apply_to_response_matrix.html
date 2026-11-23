@@ -47,7 +47,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Apply function requiring a matrix to tidy table</h1>
-      <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/main/R/LFQDataTransformer.R" class="external-link"><code>R/LFQDataTransformer.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/main/R/prolfqua-deprecated.R" class="external-link"><code>R/prolfqua-deprecated.R</code></a></small>
       <div class="d-none name"><code>apply_to_response_matrix.Rd</code></div>
     </div>
 
@@ -81,36 +81,11 @@
     <p>list with <code>data</code> (data.frame) and <code>colname</code> (new column name)</p>
     </div>
     <div class="section level2">
-    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p>Other preprocessing:
-<code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
-<code><a href="filter_proteins_by_peptide_count.html">filter_proteins_by_peptide_count()</a></code>,
-<code><a href="get_robscales.html">get_robscales()</a></code>,
-<code><a href="nr_B_in_A.html">nr_B_in_A()</a></code>,
-<code><a href="robust_scale.html">robust_scale()</a></code>,
-<code><a href="scale_with_subset.html">scale_with_subset()</a></code></p></div>
+    <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
+    <p>Deprecated in prolfqua 1.9.5; use <code>LFQData$get_Transformer()$intensity_matrix()</code>. See
+<a href="prolfqua-deprecated.html">prolfqua-deprecated</a>.</p>
     </div>
 
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span>n_proteins <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from file_name column</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> setup_analysis: added 528 rows with NA response for feature and sample combinations absent from the input.</span>
-<span class="r-in"><span><span class="va">lfqdata</span> <span class="op">&lt;-</span> <span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">bb</span><span class="op">$</span><span class="va">data</span>, <span class="va">bb</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">apply_to_response_matrix</span><span class="op">(</span><span class="va">lfqdata</span>, .func <span class="op">=</span> <span class="fu">base</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="st">"abundance_base..scale"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">data</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">apply_to_response_matrix</span><span class="op">(</span><span class="va">lfqdata</span>, .func <span class="op">=</span> <span class="va">robust_scale</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"vsn"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">apply_to_response_matrix</span><span class="op">(</span><span class="va">lfqdata</span>, .func <span class="op">=</span> <span class="fu">vsn</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/vsn/man/justvsn.html" class="external-link">justvsn</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
-</code></pre></div>
-    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

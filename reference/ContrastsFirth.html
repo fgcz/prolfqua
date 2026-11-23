@@ -112,44 +112,25 @@
 <code><a href="build_model_limma_voom.html">build_model_limma_voom()</a></code>,
 <code><a href="build_model_limma_voom_impute.html">build_model_limma_voom_impute()</a></code>,
 <code><a href="build_model_limpa.html">build_model_limpa()</a></code>,
-<code><a href="build_model_logistf.html">build_model_logistf()</a></code>,
 <code><a href="compute_borrowed_variance.html">compute_borrowed_variance()</a></code>,
 <code><a href="compute_borrowed_variance_limma.html">compute_borrowed_variance_limma()</a></code>,
-<code><a href="compute_contrast.html">compute_contrast()</a></code>,
-<code><a href="compute_lmer_contrast.html">compute_lmer_contrast()</a></code>,
 <code><a href="df.residual.rfit_prolfqua.html">df.residual.rfit_prolfqua()</a></code>,
-<code><a href="get_anova_df.html">get_anova_df()</a></code>,
-<code><a href="get_complete_model_fit.html">get_complete_model_fit()</a></code>,
-<code><a href="get_p_values_pbeta.html">get_p_values_pbeta()</a></code>,
 <code><a href="group_label.html">group_label()</a></code>,
 <code><a href="impute_from_model.html">impute_from_model()</a></code>,
 <code><a href="impute_refit_singular.html">impute_refit_singular()</a></code>,
-<code><a href="linfct_from_model.html">linfct_from_model()</a></code>,
-<code><a href="linfct_matrix_contrasts.html">linfct_matrix_contrasts()</a></code>,
 <code><a href="list_facades.html">list_facades()</a></code>,
 <code><a href="lookup_facade.html">lookup_facade()</a></code>,
 <code><a href="lr_test.html">lr_test()</a></code>,
 <code><a href="merge_contrasts_results.html">merge_contrasts_results()</a></code>,
-<code><a href="model_analyse.html">model_analyse()</a></code>,
-<code><a href="model_summary.html">model_summary()</a></code>,
-<code><a href="moderated_p_deqms.html">moderated_p_deqms()</a></code>,
-<code><a href="moderated_p_deqms_long.html">moderated_p_deqms_long()</a></code>,
-<code><a href="moderated_p_limma.html">moderated_p_limma()</a></code>,
 <code><a href="new_imputed_model.html">new_imputed_model()</a></code>,
 <code><a href="nobs.rfit_prolfqua.html">nobs.rfit_prolfqua()</a></code>,
 <code><a href="pivot_model_contrasts_to_wide.html">pivot_model_contrasts_to_wide()</a></code>,
 <code><a href="prolfqua_analysis_methods.html">prolfqua_analysis_methods</a></code>,
 <code><a href="register_facade.html">register_facade()</a></code>,
 <code><a href="sigma.rfit_prolfqua.html">sigma.rfit_prolfqua()</a></code>,
-<code><a href="sim_build_models_lm.html">sim_build_models_lm()</a></code>,
-<code><a href="sim_build_models_lmer.html">sim_build_models_lmer()</a></code>,
-<code><a href="sim_build_models_logistf.html">sim_build_models_logistf()</a></code>,
-<code><a href="sim_make_model_lm.html">sim_make_model_lm()</a></code>,
-<code><a href="sim_make_model_lmer.html">sim_make_model_lmer()</a></code>,
 <code><a href="strategy_limma.html">strategy_limma()</a></code>,
 <code><a href="strategy_limpa.html">strategy_limpa()</a></code>,
 <code><a href="strategy.html">strategy_logistf()</a></code>,
-<code><a href="summary_ropeca_median_p_scaled.html">summary_ropeca_median_p_scaled()</a></code>,
 <code><a href="vcov.rfit_prolfqua.html">vcov.rfit_prolfqua()</a></code></p></div>
     </div>
     <div class="section level2">
@@ -306,11 +287,12 @@ untouched.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">modi</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_build_models_logistf.html">sim_build_models_logistf</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"parallel3"</span>, weight_missing <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_lfq_data_protein_config.html">sim_lfq_data_protein_config</a></span><span class="op">(</span>n_proteins <span class="op">=</span> <span class="fl">10</span>, weight_missing <span class="op">=</span> <span class="fl">1</span>, seed <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from file_name column</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> setup_analysis: dropped 5 unconfigured columns: average_prot_abundance, sd, mean, N, Replicate.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> setup_analysis: added 45 rows with NA response for feature and sample combinations absent from the input.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> setup_analysis: added 39 rows with NA response for feature and sample combinations absent from the input.</span>
+<span class="r-in"><span><span class="va">modi</span> <span class="op">&lt;-</span> <span class="fu"><a href="build_model_glm_protein.html">build_model_glm_protein</a></span><span class="op">(</span><span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">istar</span><span class="op">$</span><span class="va">data</span>, <span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span>, <span class="st">"~ group_"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>Avs <span class="op">=</span> <span class="st">"group_A - group_B"</span>, AvsCtrl <span class="op">=</span> <span class="st">"group_A - group_Ctrl"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">ctr</span> <span class="op">&lt;-</span> <span class="va">ContrastsFirth</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">modi</span>,<span class="va">contrasts</span><span class="op">)</span></span></span>
@@ -326,16 +308,16 @@ untouched.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   protein_Id [10]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    protein_Id  data     linear_model fit_warnings has_model_fit isSingular</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 0EfVhX~0087 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    <span style="color: #949494;">&lt;chr [0]&gt;</span>    TRUE          FALSE     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 7cbcrd~5725 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    <span style="color: #949494;">&lt;chr [0]&gt;</span>    TRUE          FALSE     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 9VUkAq~4703 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    <span style="color: #949494;">&lt;chr [0]&gt;</span>    TRUE          FALSE     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> BEJI92~5282 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    <span style="color: #949494;">&lt;chr [0]&gt;</span>    TRUE          FALSE     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> CGzoYe~2147 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    <span style="color: #949494;">&lt;chr [0]&gt;</span>    TRUE          FALSE     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> DoWup2~5896 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    <span style="color: #949494;">&lt;chr [0]&gt;</span>    TRUE          FALSE     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Fl4JiV~8625 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    <span style="color: #949494;">&lt;chr [0]&gt;</span>    TRUE          FALSE     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> HvIpHG~9079 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    <span style="color: #949494;">&lt;chr [0]&gt;</span>    TRUE          FALSE     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> JcKVfU~9653 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    <span style="color: #949494;">&lt;chr [0]&gt;</span>    TRUE          FALSE     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> SGIVBl~5782 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    <span style="color: #949494;">&lt;chr [0]&gt;</span>    TRUE          FALSE     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 7IZdVV~0841 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    <span style="color: #949494;">&lt;chr [0]&gt;</span>    TRUE          FALSE     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> AZPG26~2091 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    <span style="color: #949494;">&lt;chr [0]&gt;</span>    TRUE          FALSE     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> AoNKbb~6908 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    <span style="color: #949494;">&lt;chr [0]&gt;</span>    TRUE          FALSE     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> EnbuYk~0350 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    <span style="color: #949494;">&lt;chr [0]&gt;</span>    TRUE          FALSE     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> JnEDsz~4938 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    <span style="color: #949494;">&lt;chr [0]&gt;</span>    TRUE          FALSE     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> NNASGK~1417 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    <span style="color: #949494;">&lt;chr [0]&gt;</span>    TRUE          FALSE     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> XYrp6h~5793 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    <span style="color: #949494;">&lt;chr [0]&gt;</span>    TRUE          FALSE     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> quTD7H~4566 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    <span style="color: #949494;">&lt;chr [0]&gt;</span>    TRUE          FALSE     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> tCZCHm~6695 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    <span style="color: #949494;">&lt;chr [0]&gt;</span>    TRUE          FALSE     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> tHE075~8231 <span style="color: #949494;">&lt;tibble&gt;</span> <span style="color: #949494;">&lt;logistf&gt;</span>    <span style="color: #949494;">&lt;chr [0]&gt;</span>    TRUE          FALSE     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 7 more variables: df.residual &lt;dbl&gt;, sigma &lt;dbl&gt;, nr_coef &lt;int&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   nr_coef_not_NA &lt;int&gt;, converged &lt;lgl&gt;, iterations &lt;int&gt;, linfct &lt;list&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -368,26 +350,26 @@ untouched.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 20 × 16</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    modelName estimate_type protein_Id  contrast sigma    df      diff   FDR</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> firth     observed      0EfVhX~0087 Avs          1     9 -<span style="color: #BB0000;">8.47</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.769</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> firth     observed      0EfVhX~0087 AvsCtrl      1     9 -<span style="color: #BB0000;">8.47</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.769</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> firth     observed      7cbcrd~5725 Avs          1     9 -<span style="color: #BB0000;">3.99</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span> 1    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> firth     observed      7cbcrd~5725 AvsCtrl      1     9  8.47<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.769</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> firth     observed      9VUkAq~4703 Avs          1     9 -<span style="color: #BB0000;">8.47</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.769</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> firth     observed      9VUkAq~4703 AvsCtrl      1     9  8.47<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.769</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> firth     observed      BEJI92~5282 Avs          1     9  8.47<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.769</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> firth     observed      BEJI92~5282 AvsCtrl      1     9  2.20<span style="color: #949494;">e</span>+ 0 0.769</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> firth     observed      CGzoYe~2147 Avs          1     9 -<span style="color: #BB0000;">1.26</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span> 1    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> firth     observed      CGzoYe~2147 AvsCtrl      1     9  4.27<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span> 1    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> firth     observed      DoWup2~5896 Avs          1     9 -<span style="color: #BB0000;">1.35</span><span style="color: #949494;">e</span>+ 0 0.769</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> firth     observed      DoWup2~5896 AvsCtrl      1     9 -<span style="color: #BB0000;">3.04</span><span style="color: #949494;">e</span>+ 0 0.769</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> firth     observed      Fl4JiV~8625 Avs          1     9  8.47<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.769</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> firth     observed      Fl4JiV~8625 AvsCtrl      1     9  8.47<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.769</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> firth     observed      HvIpHG~9079 Avs          1     9 -<span style="color: #BB0000;">1.69</span><span style="color: #949494;">e</span>+ 0 0.769</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> firth     observed      HvIpHG~9079 AvsCtrl      1     9 -<span style="color: #BB0000;">1.69</span><span style="color: #949494;">e</span>+ 0 0.769</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> firth     observed      JcKVfU~9653 Avs          1     9 -<span style="color: #BB0000;">1.26</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span> 1    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> firth     observed      JcKVfU~9653 AvsCtrl      1     9  4.27<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span> 1    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> firth     observed      SGIVBl~5782 Avs          1     9  1.35<span style="color: #949494;">e</span>+ 0 0.769</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> firth     observed      SGIVBl~5782 AvsCtrl      1     9  2.16<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span> 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> firth     observed      7IZdVV~0841 Avs          1     9 -<span style="color: #BB0000;">2.20</span><span style="color: #949494;">e</span>+ 0 0.769</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> firth     observed      7IZdVV~0841 AvsCtrl      1     9 -<span style="color: #BB0000;">2.94</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-17</span> 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> firth     observed      AZPG26~2091 Avs          1     9  2.75<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span> 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> firth     observed      AZPG26~2091 AvsCtrl      1     9  5.58<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span> 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> firth     observed      AoNKbb~6908 Avs          1     9  8.47<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.769</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> firth     observed      AoNKbb~6908 AvsCtrl      1     9 -<span style="color: #BB0000;">1.35</span><span style="color: #949494;">e</span>+ 0 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> firth     observed      EnbuYk~0350 Avs          1     9  1.69<span style="color: #949494;">e</span>+ 0 0.769</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> firth     observed      EnbuYk~0350 AvsCtrl      1     9  8.47<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> firth     observed      JnEDsz~4938 Avs          1     9  1.35<span style="color: #949494;">e</span>+ 0 0.769</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> firth     observed      JnEDsz~4938 AvsCtrl      1     9 -<span style="color: #BB0000;">8.47</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> firth     observed      NNASGK~1417 Avs          1     9  1.52<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span> 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> firth     observed      NNASGK~1417 AvsCtrl      1     9  1.07<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span> 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> firth     observed      XYrp6h~5793 Avs          1     9  1.52<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span> 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> firth     observed      XYrp6h~5793 AvsCtrl      1     9  1.07<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span> 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> firth     observed      quTD7H~4566 Avs          1     9  3.04<span style="color: #949494;">e</span>+ 0 0.769</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> firth     observed      quTD7H~4566 AvsCtrl      1     9  2.20<span style="color: #949494;">e</span>+ 0 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> firth     observed      tCZCHm~6695 Avs          1     9  1.35<span style="color: #949494;">e</span>+ 0 0.769</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> firth     observed      tCZCHm~6695 AvsCtrl      1     9 -<span style="color: #BB0000;">4.13</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span> 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> firth     observed      tHE075~8231 Avs          1     9  8.47<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.769</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> firth     observed      tHE075~8231 AvsCtrl      1     9  8.47<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 1    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 8 more variables: std.error &lt;dbl&gt;, statistic &lt;dbl&gt;, p.value &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;, avgAbd &lt;dbl&gt;, std.error.unmoderated &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   df.unmoderated &lt;int&gt;</span></span>

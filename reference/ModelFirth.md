@@ -58,44 +58,25 @@ Other modelling:
 [`build_model_limma_voom()`](https://fgcz.github.io/prolfqua/reference/build_model_limma_voom.md),
 [`build_model_limma_voom_impute()`](https://fgcz.github.io/prolfqua/reference/build_model_limma_voom_impute.md),
 [`build_model_limpa()`](https://fgcz.github.io/prolfqua/reference/build_model_limpa.md),
-[`build_model_logistf()`](https://fgcz.github.io/prolfqua/reference/build_model_logistf.md),
 [`compute_borrowed_variance()`](https://fgcz.github.io/prolfqua/reference/compute_borrowed_variance.md),
 [`compute_borrowed_variance_limma()`](https://fgcz.github.io/prolfqua/reference/compute_borrowed_variance_limma.md),
-[`compute_contrast()`](https://fgcz.github.io/prolfqua/reference/compute_contrast.md),
-[`compute_lmer_contrast()`](https://fgcz.github.io/prolfqua/reference/compute_lmer_contrast.md),
 [`df.residual.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/df.residual.rfit_prolfqua.md),
-[`get_anova_df()`](https://fgcz.github.io/prolfqua/reference/get_anova_df.md),
-[`get_complete_model_fit()`](https://fgcz.github.io/prolfqua/reference/get_complete_model_fit.md),
-[`get_p_values_pbeta()`](https://fgcz.github.io/prolfqua/reference/get_p_values_pbeta.md),
 [`group_label()`](https://fgcz.github.io/prolfqua/reference/group_label.md),
 [`impute_from_model()`](https://fgcz.github.io/prolfqua/reference/impute_from_model.md),
 [`impute_refit_singular()`](https://fgcz.github.io/prolfqua/reference/impute_refit_singular.md),
-[`linfct_from_model()`](https://fgcz.github.io/prolfqua/reference/linfct_from_model.md),
-[`linfct_matrix_contrasts()`](https://fgcz.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
 [`list_facades()`](https://fgcz.github.io/prolfqua/reference/list_facades.md),
 [`lookup_facade()`](https://fgcz.github.io/prolfqua/reference/lookup_facade.md),
 [`lr_test()`](https://fgcz.github.io/prolfqua/reference/lr_test.md),
 [`merge_contrasts_results()`](https://fgcz.github.io/prolfqua/reference/merge_contrasts_results.md),
-[`model_analyse()`](https://fgcz.github.io/prolfqua/reference/model_analyse.md),
-[`model_summary()`](https://fgcz.github.io/prolfqua/reference/model_summary.md),
-[`moderated_p_deqms()`](https://fgcz.github.io/prolfqua/reference/moderated_p_deqms.md),
-[`moderated_p_deqms_long()`](https://fgcz.github.io/prolfqua/reference/moderated_p_deqms_long.md),
-[`moderated_p_limma()`](https://fgcz.github.io/prolfqua/reference/moderated_p_limma.md),
 [`new_imputed_model()`](https://fgcz.github.io/prolfqua/reference/new_imputed_model.md),
 [`nobs.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/nobs.rfit_prolfqua.md),
 [`pivot_model_contrasts_to_wide()`](https://fgcz.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
 [`prolfqua_analysis_methods`](https://fgcz.github.io/prolfqua/reference/prolfqua_analysis_methods.md),
 [`register_facade()`](https://fgcz.github.io/prolfqua/reference/register_facade.md),
 [`sigma.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/sigma.rfit_prolfqua.md),
-[`sim_build_models_lm()`](https://fgcz.github.io/prolfqua/reference/sim_build_models_lm.md),
-[`sim_build_models_lmer()`](https://fgcz.github.io/prolfqua/reference/sim_build_models_lmer.md),
-[`sim_build_models_logistf()`](https://fgcz.github.io/prolfqua/reference/sim_build_models_logistf.md),
-[`sim_make_model_lm()`](https://fgcz.github.io/prolfqua/reference/sim_make_model_lm.md),
-[`sim_make_model_lmer()`](https://fgcz.github.io/prolfqua/reference/sim_make_model_lmer.md),
 [`strategy_limma()`](https://fgcz.github.io/prolfqua/reference/strategy_limma.md),
 [`strategy_limpa()`](https://fgcz.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://fgcz.github.io/prolfqua/reference/strategy.md),
-[`summary_ropeca_median_p_scaled()`](https://fgcz.github.io/prolfqua/reference/summary_ropeca_median_p_scaled.md),
 [`vcov.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
 ## Super class
@@ -107,8 +88,7 @@ Other modelling:
 
 - `models`:
 
-  [`model_analyse`](https://fgcz.github.io/prolfqua/reference/model_analyse.md)
-  result: `model_df`, one fitted model per subject, and the `strategy`
+  list with `model_df`, one fitted model per subject, and the `strategy`
 
 - `model_name`:
 
@@ -163,8 +143,8 @@ initialize
 
 - `models`:
 
-  [`model_analyse`](https://fgcz.github.io/prolfqua/reference/model_analyse.md)
-  result with a `model_df` data.frame and the `strategy`
+  list with a `model_df` data.frame (one fitted model per subject) and
+  the `strategy`
 
 - `model_name`:
 
@@ -239,11 +219,7 @@ istar <- prolfqua::sim_lfq_data_protein_config(n_proteins = 10, with_missing = T
 #> creating sampleName from file_name column
 #> setup_analysis: dropped 5 unconfigured columns: average_prot_abundance, sd, mean, N, Replicate.
 #> setup_analysis: added 23 rows with NA response for feature and sample combinations absent from the input.
-istar$data <- prolfqua::encode_bin_resp(LFQData$new(istar$data, istar$config))
-istar$config$bin_resp <- "bin_resp"
-tmp <- LFQData$new(istar$data, istar$config)
-formula <- paste0(tmp$get_config()$bin_resp , "~ group_")
-mod <- build_model_logistf(tmp, formula)
+mod <- build_model_glm_protein(LFQData$new(istar$data, istar$config), "~ group_")
 tmp <- mod$get_coefficients()
 stopifnot(nrow(tmp) == 30)
 mod$coef_histogram()
@@ -258,16 +234,16 @@ mod$coef_pairs()
 #> # A tibble: 10 × 4
 #>    subject_id  `(Intercept)`   group_B group_Ctrl
 #>    <chr>               <dbl>     <dbl>      <dbl>
-#>  1 7IZdVV~0841         2.20   9.70e-16  -2.20e+ 0
-#>  2 AZPG26~2091         2.20   1.26e-15  -4.27e-16
-#>  3 AoNKbb~6908         2.20  -1.69e-16  -1.35e+ 0
-#>  4 EnbuYk~0350         0.847 -8.47e- 1   4.14e-16
-#>  5 JnEDsz~4938        -0.847 -1.35e+ 0  -4.18e-17
-#>  6 NNASGK~1417         2.20   1.26e-15  -4.27e-16
-#>  7 XYrp6h~5793         2.20   1.26e-15  -4.27e-16
+#>  1 7IZdVV~0841         2.20   5.68e-16  -2.20e+ 0
+#>  2 AZPG26~2091         2.20  -1.52e-15  -1.07e-15
+#>  3 AoNKbb~6908         2.20   3.56e-16  -1.35e+ 0
+#>  4 EnbuYk~0350         0.847 -8.47e- 1   1.18e-16
+#>  5 JnEDsz~4938        -0.847 -1.35e+ 0   1.18e-16
+#>  6 NNASGK~1417         2.20  -1.52e-15  -1.07e-15
+#>  7 XYrp6h~5793         2.20  -1.52e-15  -1.07e-15
 #>  8 quTD7H~4566         2.20  -1.35e+ 0  -2.20e+ 0
-#>  9 tCZCHm~6695         2.20  -1.35e+ 0  -2.16e-15
-#> 10 tHE075~8231         0.847  1.35e+ 0   1.59e-16
+#>  9 tCZCHm~6695         2.20  -1.35e+ 0   4.13e-16
+#> 10 tHE075~8231         0.847  1.35e+ 0   1.85e-16
 #> 
 #> $name
 #> [1] "Coef_Pairsplot_modelFirth.pdf"

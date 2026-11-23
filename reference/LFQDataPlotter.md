@@ -8,10 +8,6 @@ An R6 class generator.
 
 ## See also
 
-[`plot_heatmap_cor`](https://fgcz.github.io/prolfqua/reference/plot_heatmap_cor.md)
-
-[`plot_pca`](https://fgcz.github.io/prolfqua/reference/plot_pca.md)
-
 Other LFQData:
 [`AggregateLimpa`](https://fgcz.github.io/prolfqua/reference/AggregateLimpa.md),
 [`AggregateMedpolish`](https://fgcz.github.io/prolfqua/reference/AggregateMedpolish.md),
@@ -153,7 +149,8 @@ difference in the expression in the samples. Without the z-scoring, the
 proteins would group according to their abundance, e.g., high abundant
 proteins would be one cluster.
 
-Only the `top_n` most variable features are shown. Row clustering uses
+By default only the `n_most_variable` most variable features are shown
+and the rows are clustered. Row clustering uses
 [`stats::hclust`](https://rdrr.io/r/stats/hclust.html), which errors
 above 65536 features, so the rows are ranked by their variability
 statistic (CV for untransformed data, sd for transformed data; see
@@ -162,6 +159,12 @@ and the most variable are kept. This keeps the heatmap feasible and
 legible for peptide-list / entrapment searches with tens of thousands of
 features.
 
+With `row_order`, the heatmap shows exactly these features in this
+order, without clustering. Use it to compare two states of the same data
+row by row, e.g. before and after imputation: imputation changes the
+per-feature sd, so the most variable set and the clustering would differ
+between the two heatmaps.
+
 #### Usage
 
     LFQDataPlotter$heatmap(
@@ -169,7 +172,9 @@ features.
       rownames = FALSE,
       max_rownames_chars = 60,
       max_sample_label_chars = 20,
-      top_n = 1000
+      n_most_variable = 1000,
+      row_order = NULL,
+      top_n
     )
 
 #### Arguments
@@ -192,10 +197,20 @@ features.
   maximum displayed sample label length. Labels keep their suffix
   because sample prefixes are often shared.
 
+- `n_most_variable`:
+
+  keep the `n_most_variable` most variable features (default 1000);
+  `NULL` or `Inf` keeps all features. Not together with `row_order`.
+
+- `row_order`:
+
+  feature IDs (rownames of `LFQData$data_wide()`) to show, in this
+  order, without row clustering; default `NULL` selects and clusters the
+  most variable features.
+
 - `top_n`:
 
-  keep the `top_n` most variable features (default 1000); `NULL` or
-  `Inf` keeps all features.
+  deprecated, use `n_most_variable`
 
 #### Returns
 
@@ -223,8 +238,10 @@ euclidean distance is used to compute the distances.
 
 - `method`:
 
-  correlation method or function, see
-  [`plot_heatmap_cor`](https://fgcz.github.io/prolfqua/reference/plot_heatmap_cor.md)
+  correlation method: `"pearson"` (default), `"spearman"` or `"kendall"`
+  for [`stats::cor()`](https://rdrr.io/r/stats/cor.html) on pairwise
+  complete observations, or a function of the matrix returning a
+  sample-by-sample correlation matrix
 
 #### Returns
 
@@ -426,8 +443,10 @@ plot of sample correlations
 
 - `method`:
 
-  correlation method or function, see
-  [`plot_heatmap_cor`](https://fgcz.github.io/prolfqua/reference/plot_heatmap_cor.md)
+  correlation method: `"pearson"` (default), `"spearman"` or `"kendall"`
+  for [`stats::cor()`](https://rdrr.io/r/stats/cor.html) on pairwise
+  complete observations, or a function of the matrix returning a
+  sample-by-sample correlation matrix
 
 #### Returns
 
@@ -582,6 +601,4 @@ stopifnot("upset" == class(lfqplotter$upset_missing()))
 #> ℹ Please use the `linewidth` argument instead.
 #> ℹ The deprecated feature was likely used in the UpSetR package.
 #>   Please report the issue at <https://github.com/hms-dbmi/UpSetR/issues>.
-wide <- lfqdata$data_wide(as.matrix = TRUE)
-stopifnot(class(prolfqua::plot_sample_correlation(wide$data)) == "list")
 ```

@@ -24,36 +24,7 @@ hierarchy_counts(pdata, hierarchy_keys)
 a one-row tibble with one column per hierarchy key holding the number of
 distinct elements
 
-## See also
+## Note
 
-Other summary:
-[`HierarchyCountsSample`](https://fgcz.github.io/prolfqua/reference/HierarchyCountsSample.md),
-[`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`summarize_hierarchy()`](https://fgcz.github.io/prolfqua/reference/summarize_hierarchy.md)
-
-Other hierarchy counting:
-[`HierarchyCountsSample`](https://fgcz.github.io/prolfqua/reference/HierarchyCountsSample.md),
-[`nr_children_experiment()`](https://fgcz.github.io/prolfqua/reference/nr_children_experiment.md),
-[`nr_features_experiment()`](https://fgcz.github.io/prolfqua/reference/nr_features_experiment.md),
-[`nr_obs_sample()`](https://fgcz.github.io/prolfqua/reference/nr_obs_sample.md),
-[`summarize_hierarchy()`](https://fgcz.github.io/prolfqua/reference/summarize_hierarchy.md)
-
-## Examples
-
-``` r
-bb <- prolfqua::sim_lfq_data_peptide_config()
-#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
-#> creating sampleName from file_name column
-#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
-#> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
-lfq <- LFQData$new(bb$data, bb$config)
-
-x <- hierarchy_counts(lfq$data_long(), lfq$hierarchy_keys())
-x$protein_Id
-#> [1] 10
-stopifnot(ncol(x) == length(lfq$hierarchy_keys()))
-# select non existing protein
-data0 <- lfq$data_long() |> dplyr::filter(protein_Id == "XYZ")
-tmp <- hierarchy_counts(data0, lfq$hierarchy_keys())
-stopifnot(tmp$protein_Id == 0)
-```
+Deprecated in prolfqua 1.9.5; use `LFQData$hierarchy_counts()`. See
+[prolfqua-deprecated](https://fgcz.github.io/prolfqua/reference/prolfqua-deprecated.md).

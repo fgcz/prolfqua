@@ -47,7 +47,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Plot a heatmap without clustering (use to show NAs)</h1>
-      <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/main/R/tidyMS_plotting.R" class="external-link"><code>R/tidyMS_plotting.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/main/R/prolfqua-deprecated.R" class="external-link"><code>R/prolfqua-deprecated.R</code></a></small>
       <div class="d-none name"><code>plot_raster.Rd</code></div>
     </div>
 
@@ -122,43 +122,10 @@ keep their suffix because sample prefixes are often shared.</p></dd>
 unclustered columns; <code>NULL</code> with a warning if <code>matrix</code> has fewer than two rows</p>
     </div>
     <div class="section level2">
-    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p>Other plotting:
-<code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code>,
-<code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
-<code><a href="missingness_histogram.html">missingness_histogram()</a></code>,
-<code><a href="missingness_per_condition.html">missingness_per_condition()</a></code>,
-<code><a href="missingness_per_condition_cumsum.html">missingness_per_condition_cumsum()</a></code>,
-<code><a href="plot_estimate.html">plot_estimate()</a></code>,
-<code><a href="plot_heatmap.html">plot_heatmap()</a></code>,
-<code><a href="plot_heatmap_cor.html">plot_heatmap_cor()</a></code>,
-<code><a href="plot_hierarchies_boxplot_df.html">plot_hierarchies_boxplot_df()</a></code>,
-<code><a href="plot_hierarchies_line.html">plot_hierarchies_line()</a></code>,
-<code><a href="plot_intensity_distribution_violin.html">plot_intensity_distribution_violin()</a></code>,
-<code><a href="plot_na_heatmap.html">plot_na_heatmap()</a></code>,
-<code><a href="plot_pca.html">plot_pca()</a></code>,
-<code><a href="plot_sample_correlation.html">plot_sample_correlation()</a></code>,
-<code><a href="theme_prolfqua.html">theme_prolfqua()</a></code>,
-<code><a href="upset_interaction_missing_stats.html">upset_interaction_missing_stats()</a></code>,
-<code><a href="upset_missing_stats.html">upset_missing_stats()</a></code></p></div>
+    <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
+    <p>Deprecated in prolfqua 1.9.5; use <code>LFQData$get_Plotter()$raster()</code>. See <a href="prolfqua-deprecated.html">prolfqua-deprecated</a>.</p>
     </div>
 
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_lfq_data_protein_config.html">sim_lfq_data_protein_config</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from file_name column</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> setup_analysis: dropped 5 unconfigured columns: average_prot_abundance, sd, mean, N, Replicate.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> setup_analysis: added 16 rows with NA response for feature and sample combinations absent from the input.</span>
-<span class="r-in"><span><span class="va">lfq</span> <span class="op">&lt;-</span> <span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">istar</span><span class="op">$</span><span class="va">data</span>, <span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">wide</span> <span class="op">&lt;-</span> <span class="va">lfq</span><span class="op">$</span><span class="fu">data_wide</span><span class="op">(</span>as.matrix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">rs</span> <span class="op">&lt;-</span> <span class="fu">plot_raster</span><span class="op">(</span><span class="va">wide</span><span class="op">$</span><span class="va">data</span>, <span class="va">wide</span><span class="op">$</span><span class="va">annotation</span>, <span class="va">lfq</span><span class="op">$</span><span class="fu">factor_keys</span><span class="op">(</span><span class="op">)</span>, <span class="va">lfq</span><span class="op">$</span><span class="fu">sample_name</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu">methods</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/methods/is.html" class="external-link">is</a></span><span class="op">(</span><span class="va">rs</span>, <span class="st">"Heatmap"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">rs</span> <span class="op">&lt;-</span> <span class="fu">plot_raster</span><span class="op">(</span><span class="va">wide</span><span class="op">$</span><span class="va">data</span>, <span class="va">wide</span><span class="op">$</span><span class="va">annotation</span>, <span class="va">lfq</span><span class="op">$</span><span class="fu">factor_keys</span><span class="op">(</span><span class="op">)</span>, <span class="va">lfq</span><span class="op">$</span><span class="fu">sample_name</span><span class="op">(</span><span class="op">)</span>, <span class="st">"var"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu">methods</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/methods/is.html" class="external-link">is</a></span><span class="op">(</span><span class="va">rs</span>, <span class="st">"Heatmap"</span><span class="op">)</span><span class="op">)</span></span></span>
-</code></pre></div>
-    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

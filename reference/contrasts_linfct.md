@@ -9,7 +9,7 @@ contrasts_linfct(
   models,
   linfct,
   subject_id = "protein_Id",
-  contrastfun = prolfqua::compute_lmer_contrast
+  contrastfun = .compute_lmer_contrast
 )
 ```
 
@@ -42,23 +42,9 @@ a tibble with one row per subject and row of `linfct`, holding the
 `isSingular`, `sigma.model` and `df.residual.model`; subjects whose
 contrasts failed are dropped with a warning
 
-## Examples
+## Note
 
-``` r
-modelSummary_A <- sim_build_models_lm()
-#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
-#> creating sampleName from file_name column
-#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, group, mean, N, Replicate.
-#> setup_analysis: added 59 rows with NA response for feature and sample combinations absent from the input.
-#> fit (Model): 59 missing responses dropped (e.g. 0EfVhX~0087, 7cbcrd~5725, 9VUkAq~4703, BEJI92~5282, CGzoYe~2147, ...): NA response (missing observation) left out of the fit
-#> See $provenance().
-m <- get_complete_model_fit(modelSummary_A$model_df)
-
-linfct <- linfct_from_model(m$linear_model[[1]], as_list = FALSE)
-factor_contrasts <- linfct_matrix_contrasts(linfct, c(A_vs_B = "TreatmentA - TreatmentB"))
-
-factor_levelContrasts <- contrasts_linfct( m,
-        factor_contrasts,
-        subject_id = "protein_Id",
-        contrastfun = prolfqua::compute_contrast)
-```
+Deprecated in prolfqua 1.9.5; use
+[`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md).
+See
+[prolfqua-deprecated](https://fgcz.github.io/prolfqua/reference/prolfqua-deprecated.md).

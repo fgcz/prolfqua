@@ -24,26 +24,8 @@ encode_bin_resp(lfqdata, name = "bin_resp")
 a tibble of the long-format data with an added integer column `name`: 1
 if the response is observed, 0 if it is `NA`
 
-## Examples
+## Note
 
-``` r
-istar <- sim_lfq_data_peptide_config()
-#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
-#> creating sampleName from file_name column
-#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
-#> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
-lfq <- LFQData$new(istar$data, istar$config)
-lfq$set_data(encode_bin_resp(lfq))
-lfq$set_config_value("bin_resp", "bin_resp")
-lfq$data_long()[["bin_resp"]]
-#>   [1] 1 1 0 1 1 1 1 1 1 1 1 0 1 1 0 1 1 1 1 1 1 1 1 1 1 0 1 0 0 1 1 1 1 1 1 1 1
-#>  [38] 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 0 1 1 1 1
-#>  [75] 1 1 1 1 1 1 1 1 1 0 1 1 0 1 1 0 1 1 1 0 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-#> [112] 0 1 1 1 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1
-#> [149] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1
-#> [186] 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-#> [223] 1 1 1 1 0 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 0 1 1 1 0 1 1 1 1 0
-#> [260] 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 0 1 0 1 1 1 1 1 1 1 1 1 1
-#> [297] 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 0 1 1 1 1 1 1 1 0 1 1
-#> [334] 1 1 1
-```
+Deprecated in prolfqua 1.9.5; use
+`build_contrast_analysis(method = "firth")`. See
+[prolfqua-deprecated](https://fgcz.github.io/prolfqua/reference/prolfqua-deprecated.md).

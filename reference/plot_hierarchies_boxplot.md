@@ -53,40 +53,8 @@ a ggplot object with boxplots of the intensities in `pdata` per
 combination of factor levels, optionally with the individual points and
 the means
 
-## Examples
+## Note
 
-``` r
-istar <- sim_lfq_data_peptide_config()
-#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
-#> creating sampleName from file_name column
-#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
-#> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
-lfq <- LFQData$new(istar$data, istar$config)
-res <- plot_hierarchies_boxplot_df(lfq$data_long(), lfq)
-res$boxplot[[1]]
-#> Warning: Removed 7 rows containing non-finite outside the scale range
-#> (`stat_boxplot()`).
-#> Warning: Removed 7 rows containing non-finite outside the scale range
-#> (`stat_summary()`).
-#> Warning: Removed 7 rows containing non-finite outside the scale range
-#> (`stat_summary()`).
-#> Warning: Removed 7 rows containing missing values or values outside the scale range
-#> (`position_quasirandom()`).
-
-
-xnested <- lfq$data_long() |>
-  dplyr::group_by(across(all_of(lfq$relevant_hierarchy_keys()))) |> tidyr::nest()
-p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],
-  lfq, beeswarm = FALSE, show_mean = TRUE)
-p <- plot_hierarchies_boxplot(xnested$data[[1]], xnested$protein_Id[[1]],
-  lfq, beeswarm = TRUE)
-p
-#> Warning: Removed 7 rows containing non-finite outside the scale range
-#> (`stat_boxplot()`).
-#> Warning: Removed 7 rows containing non-finite outside the scale range
-#> (`stat_summary()`).
-#> Warning: Removed 7 rows containing non-finite outside the scale range
-#> (`stat_summary()`).
-#> Warning: Removed 7 rows containing missing values or values outside the scale range
-#> (`position_quasirandom()`).
-```
+Deprecated in prolfqua 1.9.5; use
+`LFQData$get_Plotter()$write_boxplots()`. See
+[prolfqua-deprecated](https://fgcz.github.io/prolfqua/reference/prolfqua-deprecated.md).

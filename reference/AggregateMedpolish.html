@@ -85,7 +85,9 @@ Works best with variance-stabilized (log-transformed) intensities.</p>
     <div class="section level2">
     <h2 id="public-fields">Public fields<a class="anchor" aria-label="anchor" href="#public-fields"></a></h2>
     <p></p><div class="r6-fields"><dl><dt><code>control</code></dt>
-<dd><p>convergence controls, see <code><a href="estimate_intensity.html">estimate_intensity</a></code></p></dd>
+<dd><p>convergence controls of <code><a href="https://rdrr.io/r/stats/medpolish.html" class="external-link">stats::medpolish</a></code>: <code>maxiter</code> (default 10) and
+<code>eps</code> (default 0.01; the polish stops when the sum of absolute residuals changes by less than
+<code>eps</code> times that sum)</p></dd>
 
 
 </dl><p></p></div>
@@ -114,8 +116,10 @@ Works best with variance-stabilized (log-transformed) intensities.</p>
 <dd><p>default protein</p></dd>
 
       <dt><code>control</code></dt>
-<dd><p>named list of convergence controls merged over the defaults, see
-<code><a href="estimate_intensity.html">estimate_intensity</a></code></p></dd>
+<dd><p>named list merged over the defaults; convergence controls of <code><a href="https://rdrr.io/r/stats/medpolish.html" class="external-link">stats::medpolish</a></code>:
+<code>maxiter</code> (default 10) and
+<code>eps</code> (default 0.01; the polish stops when the sum of absolute residuals changes by less than
+<code>eps</code> times that sum)</p></dd>
 
 
 </dl><p></p></div>

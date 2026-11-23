@@ -131,8 +131,8 @@ Compute contrasts from fitted model
 
 - `...`:
 
-  passed to
-  [`compute_contrast`](https://fgcz.github.io/prolfqua/reference/compute_contrast.md)
+  `m` (fitted model), `linfct` (contrast weights on its coefficients)
+  and `confint`, the confidence level (default 0.95)
 
 ------------------------------------------------------------------------
 

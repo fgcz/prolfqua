@@ -31,8 +31,11 @@ Other LFQData:
 
 - `control`:
 
-  convergence controls, see
-  [`estimate_intensity`](https://fgcz.github.io/prolfqua/reference/estimate_intensity.md)
+  convergence controls of
+  [`stats::medpolish`](https://rdrr.io/r/stats/medpolish.html):
+  `maxiter` (default 10) and `eps` (default 0.01; the polish stops when
+  the sum of absolute residuals changes by less than `eps` times that
+  sum)
 
 ## Methods
 
@@ -71,8 +74,11 @@ initialize
 
 - `control`:
 
-  named list of convergence controls merged over the defaults, see
-  [`estimate_intensity`](https://fgcz.github.io/prolfqua/reference/estimate_intensity.md)
+  named list merged over the defaults; convergence controls of
+  [`stats::medpolish`](https://rdrr.io/r/stats/medpolish.html):
+  `maxiter` (default 10) and `eps` (default 0.01; the polish stops when
+  the sum of absolute residuals changes by less than `eps` times that
+  sum)
 
 ------------------------------------------------------------------------
 

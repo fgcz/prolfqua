@@ -125,16 +125,12 @@ heatmaps with that row order, so each row shows the same protein before
 and after.
 
 ``` r
-before <- lfq$data_wide(as.matrix = TRUE)
 after <- filled$lfqdata$data_wide(as.matrix = TRUE)
 row_order <- rownames(after$data)[hclust(dist(t(scale(t(after$data)))))$order]
 ```
 
 ``` r
-ht_before <- plot_heatmap(
-  before$data, before$annotation, lfq$factor_keys(), lfq$sample_name(),
-  na_fraction = 1, row_order = row_order
-)
+ht_before <- lfq$get_Plotter()$heatmap(row_order = row_order)
 ht_before
 ```
 
@@ -144,10 +140,7 @@ grey.](ModelBasedImputation_files/figure-html/heatmapBefore-1.png)
 Before imputation: missing cells are grey.
 
 ``` r
-ht_after <- plot_heatmap(
-  after$data, after$annotation, lfq$factor_keys(), lfq$sample_name(),
-  na_fraction = 1, row_order = row_order
-)
+ht_after <- filled$lfqdata$get_Plotter()$heatmap(row_order = row_order)
 ht_after
 ```
 

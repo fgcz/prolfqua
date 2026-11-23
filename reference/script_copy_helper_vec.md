@@ -35,12 +35,8 @@ script_copy_helper_vec(
 
 paths of the copied files
 
-## Examples
+## Note
 
-``` r
-copied <- script_copy_helper_vec("CITATION", workdir = tempdir())
-#> copy /home/runner/work/_temp/Library/prolfqua/CITATION to /tmp/Rtmphj903L/CITATION
-#> your working directory now should contain: 1 new files:
-basename(copied)
-#> [1] "CITATION"
-```
+Deprecated in prolfqua 1.9.5; use
+`prolfquapp::script_copy_helper_vec()`. See
+[prolfqua-deprecated](https://fgcz.github.io/prolfqua/reference/prolfqua-deprecated.md).

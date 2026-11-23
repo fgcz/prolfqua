@@ -50,9 +50,235 @@
     </div>
 
     <div class="section level2">
-      <h2 id="all-functions">All functions<a class="anchor" aria-label="anchor" href="#all-functions"></a></h2>
+      <h2 id="differential-expression-analysis">Differential expression analysis<a class="anchor" aria-label="anchor" href="#differential-expression-analysis"></a></h2>
+
+      <div class="section-desc"><p>One call fits a model per protein and tests the contrasts; each method is a facade class.</p></div>
+
+      <dl></dl></div><div class="section level2">
 
 
+
+
+      <dl><dt>
+
+          <code><a href="build_contrast_analysis.html">build_contrast_analysis()</a></code>
+
+        </dt>
+        <dd>Build a contrast analysis using one of several statistical methods</dd>
+
+        <dt>
+
+          <code><a href="prolfqua_analysis_methods.html">print(<i>&lt;ContrastsFacadeBase&gt;</i>)</a></code> <code><a href="prolfqua_analysis_methods.html">summary(<i>&lt;ContrastsFacadeBase&gt;</i>)</a></code> <code><a href="prolfqua_analysis_methods.html">print(<i>&lt;summary.ContrastsFacadeBase&gt;</i>)</a></code> <code><a href="prolfqua_analysis_methods.html">coef(<i>&lt;ContrastsFacadeBase&gt;</i>)</a></code> <code><a href="prolfqua_analysis_methods.html">vcov(<i>&lt;ContrastsFacadeBase&gt;</i>)</a></code> <code><a href="prolfqua_analysis_methods.html">confint(<i>&lt;ContrastsFacadeBase&gt;</i>)</a></code> <code><a href="prolfqua_analysis_methods.html">formula(<i>&lt;ContrastsFacadeBase&gt;</i>)</a></code> <code><a href="prolfqua_analysis_methods.html">nobs(<i>&lt;ContrastsFacadeBase&gt;</i>)</a></code> <code><a href="prolfqua_analysis_methods.html">fitted(<i>&lt;ContrastsFacadeBase&gt;</i>)</a></code> <code><a href="prolfqua_analysis_methods.html">predict(<i>&lt;ContrastsFacadeBase&gt;</i>)</a></code> <code><a href="prolfqua_analysis_methods.html">residuals(<i>&lt;ContrastsFacadeBase&gt;</i>)</a></code> <code><a href="prolfqua_analysis_methods.html">plot(<i>&lt;ContrastsFacadeBase&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Inspect a fitted prolfqua analysis</dd>
+
+        <dt>
+
+          <code><a href="list_facades.html">list_facades()</a></code>
+
+        </dt>
+        <dd>List currently registered contrast facades</dd>
+
+        <dt>
+
+          <code><a href="lookup_facade.html">lookup_facade()</a></code>
+
+        </dt>
+        <dd>Look up a contrast facade by short name</dd>
+
+        <dt>
+
+          <code><a href="register_facade.html">register_facade()</a></code>
+
+        </dt>
+        <dd>Register a contrast facade class</dd>
+
+        <dt>
+
+          <code><a href="ContrastsFacadeBase.html">ContrastsFacadeBase</a></code>
+
+        </dt>
+        <dd>Base class for contrast analysis facades</dd>
+
+        <dt>
+
+          <code><a href="FACADE_REGISTRY.html">FACADE_REGISTRY</a></code>
+
+        </dt>
+        <dd>Registry of available contrast facade classes</dd>
+
+        <dt>
+
+          <code><a href="ContrastsBinomialFirthNestedFacade.html">ContrastsBinomialFirthNestedFacade</a></code>
+
+        </dt>
+        <dd>Firth-penalized detection-count facade for nested input</dd>
+
+        <dt>
+
+          <code><a href="ContrastsBinomialNestedFacade.html">ContrastsBinomialNestedFacade</a></code>
+
+        </dt>
+        <dd>Quasibinomial detection-count facade for nested input</dd>
+
+        <dt>
+
+          <code><a href="ContrastsDEqMSFacade.html">ContrastsDEqMSFacade</a></code>
+
+        </dt>
+        <dd>DEqMS contrast analysis facade</dd>
+
+        <dt>
+
+          <code><a href="ContrastsDEqMSVoomFacade.html">ContrastsDEqMSVoomFacade</a></code>
+
+        </dt>
+        <dd>DEqMS contrast analysis with vooma weights facade</dd>
+
+        <dt>
+
+          <code><a href="ContrastsFirthFacade.html">ContrastsFirthFacade</a></code>
+
+        </dt>
+        <dd>Firth logistic missingness contrast analysis facade</dd>
+
+        <dt>
+
+          <code><a href="ContrastsHurdleFacade.html">ContrastsHurdleFacade</a></code>
+
+        </dt>
+        <dd>Hurdle contrasts: intensity and detection combined with Fisher's method</dd>
+
+        <dt>
+
+          <code><a href="ContrastsHurdleNestedFacade.html">ContrastsHurdleNestedFacade</a></code>
+
+        </dt>
+        <dd>Hurdle contrast facade for nested input</dd>
+
+        <dt>
+
+          <code><a href="ContrastsLMFacade.html">ContrastsLMFacade</a></code>
+
+        </dt>
+        <dd>LM contrast analysis facade</dd>
+
+        <dt>
+
+          <code><a href="ContrastsLMImputeFacade.html">ContrastsLMImputeFacade</a></code>
+
+        </dt>
+        <dd>LM contrast analysis with LOD imputation facade</dd>
+
+        <dt>
+
+          <code><a href="ContrastsLimmaFacade.html">ContrastsLimmaFacade</a></code>
+
+        </dt>
+        <dd>Limma contrast analysis facade</dd>
+
+        <dt>
+
+          <code><a href="ContrastsLimmaImputeFacade.html">ContrastsLimmaImputeFacade</a></code>
+
+        </dt>
+        <dd>Limma contrast analysis with LOD imputation facade</dd>
+
+        <dt>
+
+          <code><a href="ContrastsLimmaVoomFacade.html">ContrastsLimmaVoomFacade</a></code>
+
+        </dt>
+        <dd>Limma-voom contrast analysis facade</dd>
+
+        <dt>
+
+          <code><a href="ContrastsLimmaVoomImputeFacade.html">ContrastsLimmaVoomImputeFacade</a></code>
+
+        </dt>
+        <dd>Limma-voom contrast analysis with LOD imputation facade</dd>
+
+        <dt>
+
+          <code><a href="ContrastsLimpaFacade.html">ContrastsLimpaFacade</a></code>
+
+        </dt>
+        <dd>Limpa contrast analysis facade</dd>
+
+        <dt>
+
+          <code><a href="ContrastsLimpaNestedFacade.html">ContrastsLimpaNestedFacade</a></code>
+
+        </dt>
+        <dd>Limpa contrast analysis facade for nested input</dd>
+
+        <dt>
+
+          <code><a href="ContrastsLmerNestedFacade.html">ContrastsLmerNestedFacade</a></code>
+
+        </dt>
+        <dd>Lmer (mixed-model) contrast analysis facade for nested input</dd>
+
+        <dt>
+
+          <code><a href="ContrastsRLMFacade.html">ContrastsRLMFacade</a></code>
+
+        </dt>
+        <dd>RLM contrast analysis facade</dd>
+
+        <dt>
+
+          <code><a href="ContrastsROPECANestedFacade.html">ContrastsROPECANestedFacade</a></code>
+
+        </dt>
+        <dd>ROPECA contrast analysis facade for nested input</dd>
+
+        <dt>
+
+          <code><a href="ContrastsROPECAV2NestedFacade.html">ContrastsROPECAV2NestedFacade</a></code>
+
+        </dt>
+        <dd>ROPECA V2 contrast analysis facade for nested input</dd>
+
+        <dt>
+
+          <code><a href="ContrastsRfitFacade.html">ContrastsRfitFacade</a></code>
+
+        </dt>
+        <dd>Rfit rank-based regression contrast analysis facade</dd>
+
+        <dt>
+
+          <code><a href="ContrastsRfitImputeFacade.html">ContrastsRfitImputeFacade</a></code>
+
+        </dt>
+        <dd>Rfit rank-regression contrast analysis with LOD imputation facade</dd>
+
+        <dt>
+
+          <code><a href="merge_contrasts_results.html">merge_contrasts_results()</a></code>
+
+        </dt>
+        <dd>Merge contrast results coming from two different model.</dd>
+
+        <dt>
+
+          <code><a href="pivot_model_contrasts_to_wide.html">pivot_model_contrasts_to_wide()</a></code>
+
+        </dt>
+        <dd>Pivot long-format model contrasts to wide format</dd>
+
+        <dt>
+
+          <code><a href="impute_from_model.html">impute_from_model()</a></code>
+
+        </dt>
+        <dd>Fill missing responses with predictions from per-subject linear models</dd>
+      </dl></div><div class="section level2">
+      <h2 id="data-container">Data container<a class="anchor" aria-label="anchor" href="#data-container"></a></h2>
+
+      <div class="section-desc"><p>LFQData and the objects returned by its get_ methods.</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -89,17 +315,82 @@
 
         <dt>
 
+          <code><a href="LFQData.html">LFQData</a></code>
+
+        </dt>
+        <dd>LFQData R6 class</dd>
+
+        <dt>
+
+          <code><a href="LFQDataPlotter.html">LFQDataPlotter</a></code>
+
+        </dt>
+        <dd>LFQDataPlotter —- Create various visualization of the LFQdata</dd>
+
+        <dt>
+
+          <code><a href="LFQDataStats.html">LFQDataStats</a></code>
+
+        </dt>
+        <dd>Decorates LFQData with methods to compute statistics of interactions</dd>
+
+        <dt>
+
+          <code><a href="LFQDataSummariser.html">LFQDataSummariser</a></code>
+
+        </dt>
+        <dd>Summarize LFQData</dd>
+
+        <dt>
+
+          <code><a href="lfqdata_from_wide.html">lfqdata_from_wide()</a></code>
+
+        </dt>
+        <dd>Build LFQData from wide matrices</dd>
+
+        <dt>
+
+          <code><a href="lfqdata_to_summarized_experiment.html">lfqdata_to_summarized_experiment()</a></code>
+
+        </dt>
+        <dd>Convert an LFQData object to a SummarizedExperiment</dd>
+
+        <dt>
+
+          <code><a href="plot.LFQData.html">plot(<i>&lt;LFQData&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Plot an LFQData object</dd>
+
+        <dt>
+
+          <code><a href="LFQDataTransformer.html">LFQDataTransformer</a></code>
+
+        </dt>
+        <dd>Decorate LFQData with Methods for transforming Intensities</dd>
+
+        <dt>
+
+          <code><a href="MissingHelpers.html">MissingHelpers</a></code>
+
+        </dt>
+        <dd>Group statistics and limit of detection</dd>
+      </dl></div><div class="section level2">
+      <h2 id="configuration">Configuration<a class="anchor" aria-label="anchor" href="#configuration"></a></h2>
+
+
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
           <code><a href="AnalysisConfiguration.html">AnalysisConfiguration</a></code>
 
         </dt>
         <dd>Analysis Configuration</dd>
-
-        <dt>
-
-          <code><a href="AnovaExtractor.html">AnovaExtractor</a></code>
-
-        </dt>
-        <dd>R6 class for extracting ANOVA results as a data frame</dd>
 
         <dt>
 
@@ -110,24 +401,119 @@
 
         <dt>
 
+          <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>
+
+        </dt>
+        <dd>Internal Functions by category</dd>
+
+        <dt>
+
+          <code><a href="list_to_contrast_configuration.html">list_to_contrast_configuration()</a></code>
+
+        </dt>
+        <dd>Rebuild a ContrastConfiguration from a list</dd>
+
+        <dt>
+
+          <code><a href="r6_extract_values.html">r6_extract_values()</a></code>
+
+        </dt>
+        <dd>Extract all value slots in an R6 object</dd>
+
+        <dt>
+
+          <code><a href="setup_analysis.html">setup_analysis()</a></code>
+
+        </dt>
+        <dd>Setup a tidy table compatible with a <code>AnalysisConfiguration</code></dd>
+
+        <dt>
+
+          <code><a href="list_to_analysis_configuration.html">list_to_analysis_configuration()</a></code>
+
+        </dt>
+        <dd>Reconstruct a configuration from minimal YAML</dd>
+
+        <dt>
+
+          <code><a href="center_to_reference_cfg.html">center_to_reference_cfg()</a></code>
+
+        </dt>
+        <dd>Center data to a reference subset</dd>
+      </dl></div><div class="section level2">
+      <h2 id="contrast-definitions">Contrast definitions<a class="anchor" aria-label="anchor" href="#contrast-definitions"></a></h2>
+
+
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="annotation_add_contrasts.html">annotation_add_contrasts()</a></code>
+
+        </dt>
+        <dd>DRY function: process and export annotated contrasts</dd>
+
+        <dt>
+
+          <code><a href="generate_contrasts.html">generate_contrasts()</a></code>
+
+        </dt>
+        <dd>Combined generate_contrasts</dd>
+
+        <dt>
+
+          <code><a href="generate_contrasts_for_factor.html">generate_contrasts_for_factor()</a></code>
+
+        </dt>
+        <dd>Single-factor contrasts (pairwise comparisons)</dd>
+
+        <dt>
+
+          <code><a href="interaction_contrasts.html">interaction_contrasts()</a></code>
+
+        </dt>
+        <dd>Interaction contrasts (difference of differences)</dd>
+
+        <dt>
+
+          <code><a href="level_specific_contrasts.html">level_specific_contrasts()</a></code>
+
+        </dt>
+        <dd>Level-specific contrasts (per secondary level)</dd>
+
+        <dt>
+
+          <code><a href="main_effect_contrasts.html">main_effect_contrasts()</a></code>
+
+        </dt>
+        <dd>Main effects contrasts</dd>
+      </dl></div><div class="section level2">
+      <h2 id="models-strategies-and-contrasts">Models, strategies and contrasts<a class="anchor" aria-label="anchor" href="#models-strategies-and-contrasts"></a></h2>
+
+      <div class="section-desc"><p>The steps behind the facades, for inspecting or changing one of them.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="AnovaExtractor.html">AnovaExtractor</a></code>
+
+        </dt>
+        <dd>R6 class for extracting ANOVA results as a data frame</dd>
+
+        <dt>
+
           <code><a href="Contrasts.html">Contrasts</a></code>
 
         </dt>
         <dd>Estimate contrasts using Wald Test</dd>
-
-        <dt>
-
-          <code><a href="ContrastsBinomialFirthNestedFacade.html">ContrastsBinomialFirthNestedFacade</a></code>
-
-        </dt>
-        <dd>Firth-penalized detection-count facade for nested input</dd>
-
-        <dt>
-
-          <code><a href="ContrastsBinomialNestedFacade.html">ContrastsBinomialNestedFacade</a></code>
-
-        </dt>
-        <dd>Quasibinomial detection-count facade for nested input</dd>
 
         <dt>
 
@@ -142,6 +528,13 @@
 
         </dt>
         <dd>DEqMS contrast analysis with vooma weights facade</dd>
+
+        <dt>
+
+          <code><a href="ContrastsFacadeBase.html">ContrastsFacadeBase</a></code>
+
+        </dt>
+        <dd>Base class for contrast analysis facades</dd>
 
         <dt>
 
@@ -170,13 +563,6 @@
 
         </dt>
         <dd>Hurdle contrast facade for nested input</dd>
-
-        <dt>
-
-          <code><a href="ContrastsInterface.html">ContrastsInterface</a></code>
-
-        </dt>
-        <dd>Base class for all Contrasts classes</dd>
 
         <dt>
 
@@ -327,66 +713,10 @@
 
         <dt>
 
-          <code><a href="FACADE_REGISTRY.html">FACADE_REGISTRY</a></code>
-
-        </dt>
-        <dd>Registry of available contrast facade classes</dd>
-
-        <dt>
-
-          <code><a href="HierarchyCountsSample.html">HierarchyCountsSample</a></code>
-
-        </dt>
-        <dd>Count distinct elements for each level of hierarchy per sample</dd>
-
-        <dt>
-
           <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>
 
         </dt>
         <dd>Internal Functions by category</dd>
-
-        <dt>
-
-          <code><a href="LFQData.html">LFQData</a></code>
-
-        </dt>
-        <dd>LFQData R6 class</dd>
-
-        <dt>
-
-          <code><a href="LFQDataPlotter.html">LFQDataPlotter</a></code>
-
-        </dt>
-        <dd>LFQDataPlotter —- Create various visualization of the LFQdata</dd>
-
-        <dt>
-
-          <code><a href="LFQDataStats.html">LFQDataStats</a></code>
-
-        </dt>
-        <dd>Decorates LFQData with methods to compute statistics of interactions</dd>
-
-        <dt>
-
-          <code><a href="LFQDataSummariser.html">LFQDataSummariser</a></code>
-
-        </dt>
-        <dd>Summarize LFQData</dd>
-
-        <dt>
-
-          <code><a href="LFQDataTransformer.html">LFQDataTransformer</a></code>
-
-        </dt>
-        <dd>Decorate LFQData with Methods for transforming Intensities</dd>
-
-        <dt>
-
-          <code><a href="MissingHelpers.html">MissingHelpers</a></code>
-
-        </dt>
-        <dd>Group statistics and limit of detection</dd>
 
         <dt>
 
@@ -404,38 +734,10 @@
 
         <dt>
 
-          <code><a href="ModelInterface.html">ModelInterface</a></code>
-
-        </dt>
-        <dd>R6 interface class representing modelling result</dd>
-
-        <dt>
-
           <code><a href="ModelLimma.html">ModelLimma</a></code>
 
         </dt>
         <dd>R6 class representing a limma modelling result</dd>
-
-        <dt>
-
-          <code><a href="PACKAGE_DATA.html">PACKAGE_DATA</a></code>
-
-        </dt>
-        <dd>Package Data</dd>
-
-        <dt>
-
-          <code><a href="StrategyBinomial.html">StrategyBinomial</a></code>
-
-        </dt>
-        <dd>Quasibinomial detection-count strategy</dd>
-
-        <dt>
-
-          <code><a href="StrategyBinomialFirth.html">StrategyBinomialFirth</a></code>
-
-        </dt>
-        <dd>Firth-penalized quasibinomial detection-count strategy</dd>
 
         <dt>
 
@@ -485,20 +787,6 @@
 
         </dt>
         <dd>Rank-based regression strategy (R6 class)</dd>
-
-        <dt>
-
-          <code><a href="adjust_p_values.html">adjust_p_values()</a></code>
-
-        </dt>
-        <dd>Adjust p-values for multiple testing</dd>
-
-        <dt>
-
-          <code><a href="annotation_add_contrasts.html">annotation_add_contrasts()</a></code>
-
-        </dt>
-        <dd>DRY function: process and export annotated contrasts</dd>
 
         <dt>
 
@@ -565,52 +853,10 @@
 
         <dt>
 
-          <code><a href="center_to_reference_cfg.html">center_to_reference_cfg()</a></code>
-
-        </dt>
-        <dd>Center data to a reference subset</dd>
-
-        <dt>
-
           <code><a href="df.residual.rfit_prolfqua.html">df.residual(<i>&lt;rfit_prolfqua&gt;</i>)</a></code>
 
         </dt>
         <dd>Residual degrees of freedom for an augmented rfit fit</dd>
-
-        <dt>
-
-          <code><a href="fdr_sig_level.html">fdr_sig_level()</a></code>
-
-        </dt>
-        <dd>Per-test significance level for FDR-controlled sample-size planning</dd>
-
-        <dt>
-
-          <code><a href="find_package_file.html">find_package_file()</a></code>
-
-        </dt>
-        <dd>Find a file stored in a package</dd>
-
-        <dt>
-
-          <code><a href="generate_contrasts.html">generate_contrasts()</a></code>
-
-        </dt>
-        <dd>Combined generate_contrasts</dd>
-
-        <dt>
-
-          <code><a href="generate_contrasts_for_factor.html">generate_contrasts_for_factor()</a></code>
-
-        </dt>
-        <dd>Single-factor contrasts (pairwise comparisons)</dd>
-
-        <dt>
-
-          <code><a href="get_uniprot_id_from_fasta_header.html">get_uniprot_id_from_fasta_header()</a></code>
-
-        </dt>
-        <dd>Extracts uniprot ID</dd>
 
         <dt>
 
@@ -628,66 +874,10 @@
 
         <dt>
 
-          <code><a href="interaction_contrasts.html">interaction_contrasts()</a></code>
-
-        </dt>
-        <dd>Interaction contrasts (difference of differences)</dd>
-
-        <dt>
-
-          <code><a href="is_contaminant.html">is_contaminant()</a></code>
-
-        </dt>
-        <dd>Detect contaminant identifiers</dd>
-
-        <dt>
-
-          <code><a href="is_decoy.html">is_decoy()</a></code>
-
-        </dt>
-        <dd>Detect decoy / reverse-database identifiers</dd>
-
-        <dt>
-
-          <code><a href="level_specific_contrasts.html">level_specific_contrasts()</a></code>
-
-        </dt>
-        <dd>Level-specific contrasts (per secondary level)</dd>
-
-        <dt>
-
-          <code><a href="lfqdata_from_wide.html">lfqdata_from_wide()</a></code>
-
-        </dt>
-        <dd>Build LFQData from wide matrices</dd>
-
-        <dt>
-
-          <code><a href="lfqdata_to_summarized_experiment.html">lfqdata_to_summarized_experiment()</a></code>
-
-        </dt>
-        <dd>Convert an LFQData object to a SummarizedExperiment</dd>
-
-        <dt>
-
           <code><a href="list_facades.html">list_facades()</a></code>
 
         </dt>
         <dd>List currently registered contrast facades</dd>
-
-        <dt>
-
-          <code><a href="list_to_analysis_configuration.html">list_to_analysis_configuration()</a></code>
-
-        </dt>
-        <dd>Reconstruct a configuration from minimal YAML</dd>
-
-        <dt>
-
-          <code><a href="list_to_contrast_configuration.html">list_to_contrast_configuration()</a></code>
-
-        </dt>
-        <dd>Rebuild a ContrastConfiguration from a list</dd>
 
         <dt>
 
@@ -705,20 +895,6 @@
 
         <dt>
 
-          <code><a href="main_effect_contrasts.html">main_effect_contrasts()</a></code>
-
-        </dt>
-        <dd>Main effects contrasts</dd>
-
-        <dt>
-
-          <code><a href="matrix_to_tibble.html">matrix_to_tibble()</a></code>
-
-        </dt>
-        <dd>Convert a matrix or data.frame to a tibble (taken from tidyquant)</dd>
-
-        <dt>
-
           <code><a href="merge_contrasts_results.html">merge_contrasts_results()</a></code>
 
         </dt>
@@ -730,6 +906,169 @@
 
         </dt>
         <dd>Number of observations in an augmented rfit fit</dd>
+
+        <dt>
+
+          <code><a href="pivot_model_contrasts_to_wide.html">pivot_model_contrasts_to_wide()</a></code>
+
+        </dt>
+        <dd>Pivot long-format model contrasts to wide format</dd>
+
+        <dt>
+
+          <code><a href="prolfqua_analysis_methods.html">print(<i>&lt;ContrastsFacadeBase&gt;</i>)</a></code> <code><a href="prolfqua_analysis_methods.html">summary(<i>&lt;ContrastsFacadeBase&gt;</i>)</a></code> <code><a href="prolfqua_analysis_methods.html">print(<i>&lt;summary.ContrastsFacadeBase&gt;</i>)</a></code> <code><a href="prolfqua_analysis_methods.html">coef(<i>&lt;ContrastsFacadeBase&gt;</i>)</a></code> <code><a href="prolfqua_analysis_methods.html">vcov(<i>&lt;ContrastsFacadeBase&gt;</i>)</a></code> <code><a href="prolfqua_analysis_methods.html">confint(<i>&lt;ContrastsFacadeBase&gt;</i>)</a></code> <code><a href="prolfqua_analysis_methods.html">formula(<i>&lt;ContrastsFacadeBase&gt;</i>)</a></code> <code><a href="prolfqua_analysis_methods.html">nobs(<i>&lt;ContrastsFacadeBase&gt;</i>)</a></code> <code><a href="prolfqua_analysis_methods.html">fitted(<i>&lt;ContrastsFacadeBase&gt;</i>)</a></code> <code><a href="prolfqua_analysis_methods.html">predict(<i>&lt;ContrastsFacadeBase&gt;</i>)</a></code> <code><a href="prolfqua_analysis_methods.html">residuals(<i>&lt;ContrastsFacadeBase&gt;</i>)</a></code> <code><a href="prolfqua_analysis_methods.html">plot(<i>&lt;ContrastsFacadeBase&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Inspect a fitted prolfqua analysis</dd>
+
+        <dt>
+
+          <code><a href="register_facade.html">register_facade()</a></code>
+
+        </dt>
+        <dd>Register a contrast facade class</dd>
+
+        <dt>
+
+          <code><a href="sigma.rfit_prolfqua.html">sigma(<i>&lt;rfit_prolfqua&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Scale estimate for an augmented rfit fit</dd>
+
+        <dt>
+
+          <code><a href="strategy.html">strategy_logistf()</a></code> <code><a href="strategy.html">strategy_rfit()</a></code> <code><a href="strategy.html">strategy_lmer()</a></code> <code><a href="strategy.html">strategy_lm()</a></code> <code><a href="strategy.html">strategy_rlm()</a></code>
+
+        </dt>
+        <dd>Create Firth's logistic regression strategy</dd>
+
+        <dt>
+
+          <code><a href="strategy_limma.html">strategy_limma()</a></code>
+
+        </dt>
+        <dd>Create limma modelling strategy</dd>
+
+        <dt>
+
+          <code><a href="strategy_limpa.html">strategy_limpa()</a></code>
+
+        </dt>
+        <dd>Create limpa modelling strategy</dd>
+
+        <dt>
+
+          <code><a href="vcov.rfit_prolfqua.html">vcov(<i>&lt;rfit_prolfqua&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Named variance-covariance matrix for an augmented rfit fit</dd>
+
+        <dt>
+
+          <code><a href="ModelInterface.html">ModelInterface</a></code>
+
+        </dt>
+        <dd>R6 interface class representing modelling result</dd>
+
+        <dt>
+
+          <code><a href="ContrastsInterface.html">ContrastsInterface</a></code>
+
+        </dt>
+        <dd>Base class for all Contrasts classes</dd>
+
+        <dt>
+
+          <code><a href="strategy_binomial.html">strategy_binomial()</a></code>
+
+        </dt>
+        <dd>Create a quasibinomial detection-count strategy</dd>
+
+        <dt>
+
+          <code><a href="strategy_binomial_firth.html">strategy_binomial_firth()</a></code>
+
+        </dt>
+        <dd>Create a Firth-penalized quasibinomial detection-count strategy</dd>
+
+        <dt>
+
+          <code><a href="StrategyBinomial.html">StrategyBinomial</a></code>
+
+        </dt>
+        <dd>Quasibinomial detection-count strategy</dd>
+
+        <dt>
+
+          <code><a href="StrategyBinomialFirth.html">StrategyBinomialFirth</a></code>
+
+        </dt>
+        <dd>Firth-penalized quasibinomial detection-count strategy</dd>
+
+        <dt>
+
+          <code><a href="adjust_p_values.html">adjust_p_values()</a></code>
+
+        </dt>
+        <dd>Adjust p-values for multiple testing</dd>
+      </dl></div><div class="section level2">
+      <h2 id="statistics-and-sample-size">Statistics and sample size<a class="anchor" aria-label="anchor" href="#statistics-and-sample-size"></a></h2>
+
+
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>
+
+        </dt>
+        <dd>Internal Functions by category</dd>
+
+        <dt>
+
+          <code><a href="fdr_sig_level.html">fdr_sig_level()</a></code>
+
+        </dt>
+        <dd>Per-test significance level for FDR-controlled sample-size planning</dd>
+
+        <dt>
+
+          <code><a href="null_split_check.html">null_split_check()</a></code>
+
+        </dt>
+        <dd>Null-split calibration check of normalization and model</dd>
+
+        <dt>
+
+          <code><a href="pooled_variance_explained.html">pooled_variance_explained()</a></code>
+
+        </dt>
+        <dd>Variance explained by each term, pooled over features</dd>
+
+        <dt>
+
+          <code><a href="power_fdr_prior_n.html">power_fdr_prior_n()</a></code>
+
+        </dt>
+        <dd>Plan sample size from a pilot variance prior and a planned effect distribution</dd>
+
+        <dt>
+
+          <code><a href="summarize_variance_explained.html">summarize_variance_explained()</a></code>
+
+        </dt>
+        <dd>Variance explained by the design, per feature</dd>
+
+        <dt>
+
+          <code><a href="HierarchyCountsSample.html">HierarchyCountsSample</a></code>
+
+        </dt>
+        <dd>Count distinct elements for each level of hierarchy per sample</dd>
 
         <dt>
 
@@ -754,82 +1093,72 @@
 
         <dt>
 
-          <code><a href="null_split_check.html">null_split_check()</a></code>
+          <code><a href="summarize_stats_factors.html">summarize_stats_factors()</a></code>
 
         </dt>
-        <dd>Null-split calibration check of normalization and model</dd>
+        <dd>Compute variance, sd and related statistics for all factor levels</dd>
 
         <dt>
 
-          <code><a href="pivot_model_contrasts_to_wide.html">pivot_model_contrasts_to_wide()</a></code>
+          <code><a href="which_missing.html">which_missing()</a></code>
 
         </dt>
-        <dd>Pivot long-format model contrasts to wide format</dd>
+        <dd>Draw missing values for an intensity vector based on its values</dd>
+      </dl></div><div class="section level2">
+      <h2 id="plotting">Plotting<a class="anchor" aria-label="anchor" href="#plotting"></a></h2>
+
+
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code>
+
+        </dt>
+        <dd>Plot contrasts</dd>
 
         <dt>
 
-          <code><a href="plot.LFQData.html">plot(<i>&lt;LFQData&gt;</i>)</a></code>
+          <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>
 
         </dt>
-        <dd>Plot an LFQData object</dd>
+        <dd>Internal Functions by category</dd>
 
         <dt>
 
-          <code><a href="pooled_variance_explained.html">pooled_variance_explained()</a></code>
+          <code><a href="theme_prolfqua.html">theme_prolfqua()</a></code>
 
         </dt>
-        <dd>Variance explained by each term, pooled over features</dd>
+        <dd>Prism-style ggplot theme used by all prolfqua plots</dd>
 
         <dt>
 
-          <code><a href="power_fdr_prior_n.html">power_fdr_prior_n()</a></code>
+          <code><a href="upset_interaction_missing_stats.html">upset_interaction_missing_stats()</a></code>
 
         </dt>
-        <dd>Plan sample size from a pilot variance prior and a planned effect distribution</dd>
+        <dd>UpSetR plot from interaction_missing_stats</dd>
 
         <dt>
 
-          <code><a href="prolfqua_analysis_methods.html">print(<i>&lt;ContrastsFacadeBase&gt;</i>)</a></code> <code><a href="prolfqua_analysis_methods.html">summary(<i>&lt;ContrastsFacadeBase&gt;</i>)</a></code> <code><a href="prolfqua_analysis_methods.html">print(<i>&lt;summary.ContrastsFacadeBase&gt;</i>)</a></code> <code><a href="prolfqua_analysis_methods.html">coef(<i>&lt;ContrastsFacadeBase&gt;</i>)</a></code> <code><a href="prolfqua_analysis_methods.html">vcov(<i>&lt;ContrastsFacadeBase&gt;</i>)</a></code> <code><a href="prolfqua_analysis_methods.html">confint(<i>&lt;ContrastsFacadeBase&gt;</i>)</a></code> <code><a href="prolfqua_analysis_methods.html">formula(<i>&lt;ContrastsFacadeBase&gt;</i>)</a></code> <code><a href="prolfqua_analysis_methods.html">nobs(<i>&lt;ContrastsFacadeBase&gt;</i>)</a></code> <code><a href="prolfqua_analysis_methods.html">fitted(<i>&lt;ContrastsFacadeBase&gt;</i>)</a></code> <code><a href="prolfqua_analysis_methods.html">predict(<i>&lt;ContrastsFacadeBase&gt;</i>)</a></code> <code><a href="prolfqua_analysis_methods.html">residuals(<i>&lt;ContrastsFacadeBase&gt;</i>)</a></code> <code><a href="prolfqua_analysis_methods.html">plot(<i>&lt;ContrastsFacadeBase&gt;</i>)</a></code>
+          <code><a href="volcano_plotly.html">volcano_plotly()</a></code>
 
         </dt>
-        <dd>Inspect a fitted prolfqua analysis</dd>
+        <dd>Interactive volcano plots with plotly</dd>
+      </dl></div><div class="section level2">
+      <h2 id="simulated-data">Simulated data<a class="anchor" aria-label="anchor" href="#simulated-data"></a></h2>
 
-        <dt>
 
-          <code><a href="prolfqua_data.html">prolfqua_data()</a></code>
 
-        </dt>
-        <dd>Load a dataset from prolfqua</dd>
+      <dl></dl></div><div class="section level2">
 
-        <dt>
 
-          <code><a href="r6_extract_values.html">r6_extract_values()</a></code>
 
-        </dt>
-        <dd>Extract all value slots in an R6 object</dd>
 
-        <dt>
-
-          <code><a href="register_facade.html">register_facade()</a></code>
-
-        </dt>
-        <dd>Register a contrast facade class</dd>
-
-        <dt>
-
-          <code><a href="setup_analysis.html">setup_analysis()</a></code>
-
-        </dt>
-        <dd>Setup a tidy table compatible with a <code>AnalysisConfiguration</code></dd>
-
-        <dt>
-
-          <code><a href="sigma.rfit_prolfqua.html">sigma(<i>&lt;rfit_prolfqua&gt;</i>)</a></code>
-
-        </dt>
-        <dd>Scale estimate for an augmented rfit fit</dd>
-
-        <dt>
+      <dl><dt>
 
           <code><a href="sim_lfq_data.html">sim_lfq_data()</a></code>
 
@@ -856,55 +1185,43 @@
 
         </dt>
         <dd>Simulate data, protein, with config</dd>
+      </dl></div><div class="section level2">
+      <h2 id="utilities">Utilities<a class="anchor" aria-label="anchor" href="#utilities"></a></h2>
+
+
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>
+
+        </dt>
+        <dd>Internal Functions by category</dd>
 
         <dt>
 
-          <code><a href="strategy.html">strategy_logistf()</a></code> <code><a href="strategy.html">strategy_rfit()</a></code> <code><a href="strategy.html">strategy_lmer()</a></code> <code><a href="strategy.html">strategy_lm()</a></code> <code><a href="strategy.html">strategy_rlm()</a></code>
+          <code><a href="get_uniprot_id_from_fasta_header.html">get_uniprot_id_from_fasta_header()</a></code>
 
         </dt>
-        <dd>Create Firth's logistic regression strategy</dd>
+        <dd>Extracts uniprot ID</dd>
 
         <dt>
 
-          <code><a href="strategy_binomial.html">strategy_binomial()</a></code>
+          <code><a href="is_contaminant.html">is_contaminant()</a></code>
 
         </dt>
-        <dd>Create a quasibinomial detection-count strategy</dd>
+        <dd>Detect contaminant identifiers</dd>
 
         <dt>
 
-          <code><a href="strategy_binomial_firth.html">strategy_binomial_firth()</a></code>
+          <code><a href="is_decoy.html">is_decoy()</a></code>
 
         </dt>
-        <dd>Create a Firth-penalized quasibinomial detection-count strategy</dd>
-
-        <dt>
-
-          <code><a href="strategy_limma.html">strategy_limma()</a></code>
-
-        </dt>
-        <dd>Create limma modelling strategy</dd>
-
-        <dt>
-
-          <code><a href="strategy_limpa.html">strategy_limpa()</a></code>
-
-        </dt>
-        <dd>Create limpa modelling strategy</dd>
-
-        <dt>
-
-          <code><a href="summarize_stats_factors.html">summarize_stats_factors()</a></code>
-
-        </dt>
-        <dd>Compute variance, sd and related statistics for all factor levels</dd>
-
-        <dt>
-
-          <code><a href="summarize_variance_explained.html">summarize_variance_explained()</a></code>
-
-        </dt>
-        <dd>Variance explained by the design, per feature</dd>
+        <dd>Detect decoy / reverse-database identifiers</dd>
 
         <dt>
 
@@ -915,40 +1232,36 @@
 
         <dt>
 
-          <code><a href="theme_prolfqua.html">theme_prolfqua()</a></code>
+          <code><a href="find_package_file.html">find_package_file()</a></code>
 
         </dt>
-        <dd>Prism-style ggplot theme used by all prolfqua plots</dd>
+        <dd>Find a file stored in a package</dd>
+      </dl></div><div class="section level2">
+      <h2 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a></h2>
+
+
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="PACKAGE_DATA.html">PACKAGE_DATA</a></code>
+
+        </dt>
+        <dd>Package Data</dd>
 
         <dt>
 
-          <code><a href="upset_interaction_missing_stats.html">upset_interaction_missing_stats()</a></code>
+          <code><a href="prolfqua_data.html">prolfqua_data()</a></code>
 
         </dt>
-        <dd>UpSetR plot from interaction_missing_stats</dd>
-
-        <dt>
-
-          <code><a href="vcov.rfit_prolfqua.html">vcov(<i>&lt;rfit_prolfqua&gt;</i>)</a></code>
-
-        </dt>
-        <dd>Named variance-covariance matrix for an augmented rfit fit</dd>
-
-        <dt>
-
-          <code><a href="volcano_plotly.html">volcano_plotly()</a></code>
-
-        </dt>
-        <dd>Interactive volcano plots with plotly</dd>
-
-        <dt>
-
-          <code><a href="which_missing.html">which_missing()</a></code>
-
-        </dt>
-        <dd>Draw missing values for an intensity vector based on its values</dd>
+        <dd>Load a dataset from prolfqua</dd>
       </dl></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">

@@ -418,14 +418,13 @@ bb <- prolfqua::sim_lfq_data_peptide_config(n_per_group = 1)
 #> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
 #> setup_analysis: added 8 rows with NA response for feature and sample combinations absent from the input.
 lfq1 <- LFQData$new(bb$data, bb$config)
-table_factors_size(lfq1$data_long(), lfq1$file_name(),
-  lfq1$sample_name(), lfq1$factor_keys(), lfq1$relevant_factor_keys())
-#> # A tibble: 3 × 2
-#>   group_     n
-#>   <chr>  <int>
-#> 1 A          1
-#> 2 B          1
-#> 3 Ctrl       1
+lfq1$factors()
+#> # A tibble: 3 × 3
+#>   sample  sampleName group_
+#>   <chr>   <chr>      <chr> 
+#> 1 A_V1    A_V1       A     
+#> 2 B_V1    B_V1       B     
+#> 3 Ctrl_V1 Ctrl_V1    Ctrl  
 lfqdata <- LFQData$new(bb$data, bb$config)
 lfqstats <- lfqdata$get_Stats()
 

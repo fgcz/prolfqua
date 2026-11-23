@@ -52,10 +52,8 @@ The computed result.
 
 Other hierarchy counting:
 [`HierarchyCountsSample`](https://fgcz.github.io/prolfqua/reference/HierarchyCountsSample.md),
-[`hierarchy_counts()`](https://fgcz.github.io/prolfqua/reference/hierarchy_counts.md),
 [`nr_children_experiment()`](https://fgcz.github.io/prolfqua/reference/nr_children_experiment.md),
-[`nr_features_experiment()`](https://fgcz.github.io/prolfqua/reference/nr_features_experiment.md),
-[`summarize_hierarchy()`](https://fgcz.github.io/prolfqua/reference/summarize_hierarchy.md)
+[`nr_features_experiment()`](https://fgcz.github.io/prolfqua/reference/nr_features_experiment.md)
 
 ## Examples
 

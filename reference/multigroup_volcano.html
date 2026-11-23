@@ -47,7 +47,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Volcano plot for multiple contrasts</h1>
-      <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/main/R/utilities.R" class="external-link"><code>R/utilities.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/main/R/prolfqua-deprecated.R" class="external-link"><code>R/prolfqua-deprecated.R</code></a></small>
       <div class="d-none name"><code>multigroup_volcano.Rd</code></div>
     </div>
 
@@ -140,34 +140,10 @@
     <p>a ggplot object with one volcano panel per contrast; if <code>label</code> is given, significant points are labelled</p>
     </div>
     <div class="section level2">
-    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p>Other utilities:
-<code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
-<code><a href="get_uniprot_id_from_fasta_header.html">get_uniprot_id_from_fasta_header()</a></code>,
-<code><a href="is_contaminant.html">is_contaminant()</a></code>,
-<code><a href="is_decoy.html">is_decoy()</a></code>,
-<code><a href="matrix_to_tibble.html">matrix_to_tibble()</a></code>,
-<code><a href="pairs_smooth.html">pairs_smooth()</a></code>,
-<code><a href="panel_cor.html">panel_cor()</a></code>,
-<code><a href="table_facade.html">table_facade()</a></code></p></div>
+    <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
+    <p>Deprecated in prolfqua 1.9.5; use <code>ModelInterface$coef_volcano()</code>. See <a href="prolfqua-deprecated.html">prolfqua-deprecated</a>.</p>
     </div>
 
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">show</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>logFC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, adj.P.Val <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  Condition <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>,<span class="st">"b"</span><span class="op">)</span><span class="op">)</span>, colour <span class="op">=</span> <span class="st">"forward"</span>, Name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">prolfqua</span><span class="fu">::</span><span class="fu">multigroup_volcano</span><span class="op">(</span> <span class="va">show</span>,</span></span>
-<span class="r-in"><span>effect<span class="op">=</span><span class="st">"logFC"</span>,</span></span>
-<span class="r-in"><span>significance <span class="op">=</span> <span class="st">"adj.P.Val"</span>,</span></span>
-<span class="r-in"><span>contrast<span class="op">=</span><span class="st">"Condition"</span>,</span></span>
-<span class="r-in"><span>colour<span class="op">=</span><span class="cn">NULL</span>,</span></span>
-<span class="r-in"><span>label<span class="op">=</span><span class="st">"Name"</span>,</span></span>
-<span class="r-in"><span>max_nr_significant_text <span class="op">=</span> <span class="fl">300</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="multigroup_volcano-1.png" alt="" width="700" height="433"></span>
-</code></pre></div>
-    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

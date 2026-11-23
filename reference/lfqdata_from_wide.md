@@ -1,10 +1,9 @@
 # Build LFQData from wide matrices
 
-The inverse of
-[`tidy_to_wide_config()`](https://fgcz.github.io/prolfqua/reference/tidy_to_wide_config.md):
-feature x sample matrices, their row annotation and their sample
-annotation back to long-format LFQData. Row `i` of every matrix belongs
-to row `i` of `rowdata`; matrix column names are the sample names.
+The inverse of `LFQData$data_wide()`: feature x sample matrices, their
+row annotation and their sample annotation back to long-format LFQData.
+Row `i` of every matrix belongs to row `i` of `rowdata`; matrix column
+names are the sample names.
 
 ## Usage
 
@@ -67,7 +66,7 @@ dd <- prolfqua::sim_lfq_data_peptide_config()
 #> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
 #> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
 lfqdata <- prolfqua::LFQData$new(dd$data, dd$config)
-wide <- tidy_to_wide_config(lfqdata, as.matrix = TRUE)
+wide <- lfqdata$data_wide(as.matrix = TRUE)
 back <- lfqdata_from_wide(wide$data, wide$rowdata, wide$annotation, lfqdata$get_config())
 stopifnot(nrow(back$data_long()) == nrow(lfqdata$data_long()))
 ```

@@ -1,4 +1,4 @@
-# Compute pooled variance
+# pooled variance
 
 following the documentation here:
 https://online.stat.psu.edu/stat500/lesson/7/7.3/7.3.1/7.3.1.1
@@ -6,16 +6,12 @@ https://online.stat.psu.edu/stat500/lesson/7/7.3/7.3.1/7.3.1.1
 ## Usage
 
 ``` r
-compute_pooled(x)
-
 poolvar(res1, config)
+
+compute_pooled(x)
 ```
 
 ## Arguments
-
-- x:
-
-  data.frame
 
 - res1:
 
@@ -26,52 +22,20 @@ poolvar(res1, config)
 
   AnalysisConfiguration of the data
 
+- x:
+
+  data.frame
+
 ## Value
 
 data.frame
 
-## See also
+## Note
 
-Other stats:
-[`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`fdr_sig_level()`](https://fgcz.github.io/prolfqua/reference/fdr_sig_level.md),
-[`lfq_power_t_test_proteins()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_proteins.md),
-[`lfq_power_t_test_quantiles()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_quantiles.md),
-[`null_split_check()`](https://fgcz.github.io/prolfqua/reference/null_split_check.md),
-[`plot_stat_density()`](https://fgcz.github.io/prolfqua/reference/plot_stat_density.md),
-[`plot_stat_density_median()`](https://fgcz.github.io/prolfqua/reference/plot_stat_density_median.md),
-[`plot_stat_violin()`](https://fgcz.github.io/prolfqua/reference/plot_stat_violin.md),
-[`plot_stat_violin_median()`](https://fgcz.github.io/prolfqua/reference/plot_stat_violin_median.md),
-[`plot_stdv_vs_mean()`](https://fgcz.github.io/prolfqua/reference/plot_stdv_vs_mean.md),
-[`pooled_variance_explained()`](https://fgcz.github.io/prolfqua/reference/pooled_variance_explained.md),
-[`power_fdr_prior_n()`](https://fgcz.github.io/prolfqua/reference/power_fdr_prior_n.md),
-[`summarize_stats()`](https://fgcz.github.io/prolfqua/reference/summarize_stats.md),
-[`summarize_variance_explained()`](https://fgcz.github.io/prolfqua/reference/summarize_variance_explained.md)
+Deprecated in prolfqua 1.9.5; use
+`LFQData$get_Stats()$power_fdr_pilot()`. See
+[prolfqua-deprecated](https://fgcz.github.io/prolfqua/reference/prolfqua-deprecated.md).
 
-## Examples
-
-``` r
-x <- data.frame(nrMeasured =c(1,2,2), var = c(3,4,4), meanAbundance = c(3,3,3))
-x <- data.frame(nrMeasured = c(1,2,1,1), var = c(NA, 0.0370, NA, NA),
-  meanAbundance = c(-1.94,-1.46,-1.87,-1.45))
-compute_pooled(x)
-#>   n.groups n df        sd       sdT   var  mean meanAll nrMeasured
-#> 1        1 2  1 0.1923538 0.1923538 0.037 -1.46  -1.636          5
-y <- data.frame(dilution.=c("a","b","c"),
-     nrReplicates = c(4,4,4), nrMeasured = c(0,0,1), sd =c(NA,NA,NA),
-     var = c(NA,NA,NA),meanAbundance = c(NaN,NaN,NaN))
-compute_pooled(y)
-#>   n.groups n df  sd sdT var mean meanAll nrMeasured
-#> 1        0 0  0 NaN NaN NaN  NaN     NaN          1
-yb <- y |> dplyr::filter(nrMeasured > 1)
-
-bb <- prolfqua::sim_lfq_data_peptide_config()
-#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
-#> creating sampleName from file_name column
-#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
-#> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
-lfq <- LFQData$new(bb$data, bb$config)
-res1 <- summarize_stats(lfq)
-pv <- poolvar(res1, bb$config)
-stopifnot(nrow(pv) == nrow(res1) / 3)
-```
+Deprecated in prolfqua 1.9.5; use
+`LFQData$get_Stats()$power_fdr_pilot()`. See
+[prolfqua-deprecated](https://fgcz.github.io/prolfqua/reference/prolfqua-deprecated.md).

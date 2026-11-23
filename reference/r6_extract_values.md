@@ -24,15 +24,8 @@ Other configuration:
 [`AnalysisConfiguration`](https://fgcz.github.io/prolfqua/reference/AnalysisConfiguration.md),
 [`ContrastConfiguration`](https://fgcz.github.io/prolfqua/reference/ContrastConfiguration.md),
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`complete_cases()`](https://fgcz.github.io/prolfqua/reference/complete_cases.md),
 [`list_to_contrast_configuration()`](https://fgcz.github.io/prolfqua/reference/list_to_contrast_configuration.md),
-[`make_interaction_column()`](https://fgcz.github.io/prolfqua/reference/make_interaction_column.md),
-[`make_reduced_hierarchy_config()`](https://fgcz.github.io/prolfqua/reference/make_reduced_hierarchy_config.md),
-[`sample_subset()`](https://fgcz.github.io/prolfqua/reference/sample_subset.md),
-[`separate_hierarchy()`](https://fgcz.github.io/prolfqua/reference/separate_hierarchy.md),
-[`setup_analysis()`](https://fgcz.github.io/prolfqua/reference/setup_analysis.md),
-[`table_factors()`](https://fgcz.github.io/prolfqua/reference/table_factors.md),
-[`table_factors_size()`](https://fgcz.github.io/prolfqua/reference/table_factors_size.md)
+[`setup_analysis()`](https://fgcz.github.io/prolfqua/reference/setup_analysis.md)
 
 ## Examples
 

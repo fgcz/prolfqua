@@ -31,32 +31,8 @@ scale_with_subset(lfqdata, lfqsubset, preserve_mean = FALSE, colname = NULL)
 
 list with data, scales, and colname
 
-## See also
+## Note
 
-Other preprocessing:
-[`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`apply_to_response_matrix()`](https://fgcz.github.io/prolfqua/reference/apply_to_response_matrix.md),
-[`filter_proteins_by_peptide_count()`](https://fgcz.github.io/prolfqua/reference/filter_proteins_by_peptide_count.md),
-[`get_robscales()`](https://fgcz.github.io/prolfqua/reference/get_robscales.md),
-[`nr_B_in_A()`](https://fgcz.github.io/prolfqua/reference/nr_B_in_A.md),
-[`robust_scale()`](https://fgcz.github.io/prolfqua/reference/robust_scale.md)
-
-## Examples
-
-``` r
-bb <- sim_lfq_data_peptide_config(n_proteins = 100)
-#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
-#> creating sampleName from file_name column
-#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
-#> setup_analysis: added 528 rows with NA response for feature and sample combinations absent from the input.
-lfqdata <- LFQData$new(bb$data, bb$config)
-lfqdata <- lfqdata$get_Transformer()$log2()$lfq
-#> Column added : log2_abundance
-s1 <- get_robscales(lfqdata)
-res <- scale_with_subset(lfqdata, lfqdata)
-cfg <- lfqdata$get_config()$clone(deep = TRUE)
-cfg$set_response(res$colname)
-lfqres <- LFQData$new(res$data, cfg)
-s2 <- get_robscales(lfqres)
-stopifnot(abs(mean(s1$mads) - mean(s2$mads)) < 1e-6)
-```
+Deprecated in prolfqua 1.9.5; use
+`LFQData$get_Transformer()$robscale_subset()`. See
+[prolfqua-deprecated](https://fgcz.github.io/prolfqua/reference/prolfqua-deprecated.md).

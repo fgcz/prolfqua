@@ -13,8 +13,6 @@ An R6 class generator.
 
 ## See also
 
-[`moderated_p_deqms_long`](https://fgcz.github.io/prolfqua/reference/moderated_p_deqms_long.md)
-
 Other modelling:
 [`AnovaExtractor`](https://fgcz.github.io/prolfqua/reference/AnovaExtractor.md),
 [`Contrasts`](https://fgcz.github.io/prolfqua/reference/Contrasts.md),
@@ -65,44 +63,25 @@ Other modelling:
 [`build_model_limma_voom()`](https://fgcz.github.io/prolfqua/reference/build_model_limma_voom.md),
 [`build_model_limma_voom_impute()`](https://fgcz.github.io/prolfqua/reference/build_model_limma_voom_impute.md),
 [`build_model_limpa()`](https://fgcz.github.io/prolfqua/reference/build_model_limpa.md),
-[`build_model_logistf()`](https://fgcz.github.io/prolfqua/reference/build_model_logistf.md),
 [`compute_borrowed_variance()`](https://fgcz.github.io/prolfqua/reference/compute_borrowed_variance.md),
 [`compute_borrowed_variance_limma()`](https://fgcz.github.io/prolfqua/reference/compute_borrowed_variance_limma.md),
-[`compute_contrast()`](https://fgcz.github.io/prolfqua/reference/compute_contrast.md),
-[`compute_lmer_contrast()`](https://fgcz.github.io/prolfqua/reference/compute_lmer_contrast.md),
 [`df.residual.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/df.residual.rfit_prolfqua.md),
-[`get_anova_df()`](https://fgcz.github.io/prolfqua/reference/get_anova_df.md),
-[`get_complete_model_fit()`](https://fgcz.github.io/prolfqua/reference/get_complete_model_fit.md),
-[`get_p_values_pbeta()`](https://fgcz.github.io/prolfqua/reference/get_p_values_pbeta.md),
 [`group_label()`](https://fgcz.github.io/prolfqua/reference/group_label.md),
 [`impute_from_model()`](https://fgcz.github.io/prolfqua/reference/impute_from_model.md),
 [`impute_refit_singular()`](https://fgcz.github.io/prolfqua/reference/impute_refit_singular.md),
-[`linfct_from_model()`](https://fgcz.github.io/prolfqua/reference/linfct_from_model.md),
-[`linfct_matrix_contrasts()`](https://fgcz.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
 [`list_facades()`](https://fgcz.github.io/prolfqua/reference/list_facades.md),
 [`lookup_facade()`](https://fgcz.github.io/prolfqua/reference/lookup_facade.md),
 [`lr_test()`](https://fgcz.github.io/prolfqua/reference/lr_test.md),
 [`merge_contrasts_results()`](https://fgcz.github.io/prolfqua/reference/merge_contrasts_results.md),
-[`model_analyse()`](https://fgcz.github.io/prolfqua/reference/model_analyse.md),
-[`model_summary()`](https://fgcz.github.io/prolfqua/reference/model_summary.md),
-[`moderated_p_deqms()`](https://fgcz.github.io/prolfqua/reference/moderated_p_deqms.md),
-[`moderated_p_deqms_long()`](https://fgcz.github.io/prolfqua/reference/moderated_p_deqms_long.md),
-[`moderated_p_limma()`](https://fgcz.github.io/prolfqua/reference/moderated_p_limma.md),
 [`new_imputed_model()`](https://fgcz.github.io/prolfqua/reference/new_imputed_model.md),
 [`nobs.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/nobs.rfit_prolfqua.md),
 [`pivot_model_contrasts_to_wide()`](https://fgcz.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
 [`prolfqua_analysis_methods`](https://fgcz.github.io/prolfqua/reference/prolfqua_analysis_methods.md),
 [`register_facade()`](https://fgcz.github.io/prolfqua/reference/register_facade.md),
 [`sigma.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/sigma.rfit_prolfqua.md),
-[`sim_build_models_lm()`](https://fgcz.github.io/prolfqua/reference/sim_build_models_lm.md),
-[`sim_build_models_lmer()`](https://fgcz.github.io/prolfqua/reference/sim_build_models_lmer.md),
-[`sim_build_models_logistf()`](https://fgcz.github.io/prolfqua/reference/sim_build_models_logistf.md),
-[`sim_make_model_lm()`](https://fgcz.github.io/prolfqua/reference/sim_make_model_lm.md),
-[`sim_make_model_lmer()`](https://fgcz.github.io/prolfqua/reference/sim_make_model_lmer.md),
 [`strategy_limma()`](https://fgcz.github.io/prolfqua/reference/strategy_limma.md),
 [`strategy_limpa()`](https://fgcz.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://fgcz.github.io/prolfqua/reference/strategy.md),
-[`summary_ropeca_median_p_scaled()`](https://fgcz.github.io/prolfqua/reference/summary_ropeca_median_p_scaled.md),
 [`vcov.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
 ## Super class
@@ -304,7 +283,7 @@ deqms <- ContrastsModeratedDEqMS$new(contrast,
   count_column = "nrPeptides")
 
 bb <- deqms$get_contrasts()
-#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  7.3328e-17)
+#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17)
 stopifnot(all(c("diff", "p.value", "FDR", "sigma") %in% colnames(bb)))
 
 # Merge with LOD-imputed refits for proteins the plain lm cannot estimate
@@ -313,14 +292,14 @@ imp <- ContrastsLMImputeFacade$new(lProt, "~ group_", Contr)$contrast
 #> fit (ModelImputed): 73 missing responses dropped (e.g. 0EfVhX~7161, 0m5WN4~3543, 7QuTub~5556, 7cbcrd~0495, 9VUkAq~8655, ...): NA response (missing observation) left out of the fit
 #> See $provenance().
 merged <- merge_contrasts_results(deqms, imp)
-#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  7.3328e-17)
+#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17)
 
 cs <- deqms$get_contrast_sides()
 cslf <- deqms$get_linfct()
 ctrwide <- deqms$to_wide()
-#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  7.3328e-17)
+#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17)
 cp <- deqms$get_Plotter()
-#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  7.3328e-17)
+#> Warning: moderated_p_deqms_long: condition messages in 1/1 groups. contrast=dil.b_vs_a (pseudoinverse used at 1; neighborhood radius 1; reciprocal condition number  2.362e-17)
 cp$volcano()
 #> $FDR
 

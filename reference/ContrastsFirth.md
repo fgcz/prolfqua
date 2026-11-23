@@ -58,44 +58,25 @@ Other modelling:
 [`build_model_limma_voom()`](https://fgcz.github.io/prolfqua/reference/build_model_limma_voom.md),
 [`build_model_limma_voom_impute()`](https://fgcz.github.io/prolfqua/reference/build_model_limma_voom_impute.md),
 [`build_model_limpa()`](https://fgcz.github.io/prolfqua/reference/build_model_limpa.md),
-[`build_model_logistf()`](https://fgcz.github.io/prolfqua/reference/build_model_logistf.md),
 [`compute_borrowed_variance()`](https://fgcz.github.io/prolfqua/reference/compute_borrowed_variance.md),
 [`compute_borrowed_variance_limma()`](https://fgcz.github.io/prolfqua/reference/compute_borrowed_variance_limma.md),
-[`compute_contrast()`](https://fgcz.github.io/prolfqua/reference/compute_contrast.md),
-[`compute_lmer_contrast()`](https://fgcz.github.io/prolfqua/reference/compute_lmer_contrast.md),
 [`df.residual.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/df.residual.rfit_prolfqua.md),
-[`get_anova_df()`](https://fgcz.github.io/prolfqua/reference/get_anova_df.md),
-[`get_complete_model_fit()`](https://fgcz.github.io/prolfqua/reference/get_complete_model_fit.md),
-[`get_p_values_pbeta()`](https://fgcz.github.io/prolfqua/reference/get_p_values_pbeta.md),
 [`group_label()`](https://fgcz.github.io/prolfqua/reference/group_label.md),
 [`impute_from_model()`](https://fgcz.github.io/prolfqua/reference/impute_from_model.md),
 [`impute_refit_singular()`](https://fgcz.github.io/prolfqua/reference/impute_refit_singular.md),
-[`linfct_from_model()`](https://fgcz.github.io/prolfqua/reference/linfct_from_model.md),
-[`linfct_matrix_contrasts()`](https://fgcz.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
 [`list_facades()`](https://fgcz.github.io/prolfqua/reference/list_facades.md),
 [`lookup_facade()`](https://fgcz.github.io/prolfqua/reference/lookup_facade.md),
 [`lr_test()`](https://fgcz.github.io/prolfqua/reference/lr_test.md),
 [`merge_contrasts_results()`](https://fgcz.github.io/prolfqua/reference/merge_contrasts_results.md),
-[`model_analyse()`](https://fgcz.github.io/prolfqua/reference/model_analyse.md),
-[`model_summary()`](https://fgcz.github.io/prolfqua/reference/model_summary.md),
-[`moderated_p_deqms()`](https://fgcz.github.io/prolfqua/reference/moderated_p_deqms.md),
-[`moderated_p_deqms_long()`](https://fgcz.github.io/prolfqua/reference/moderated_p_deqms_long.md),
-[`moderated_p_limma()`](https://fgcz.github.io/prolfqua/reference/moderated_p_limma.md),
 [`new_imputed_model()`](https://fgcz.github.io/prolfqua/reference/new_imputed_model.md),
 [`nobs.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/nobs.rfit_prolfqua.md),
 [`pivot_model_contrasts_to_wide()`](https://fgcz.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
 [`prolfqua_analysis_methods`](https://fgcz.github.io/prolfqua/reference/prolfqua_analysis_methods.md),
 [`register_facade()`](https://fgcz.github.io/prolfqua/reference/register_facade.md),
 [`sigma.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/sigma.rfit_prolfqua.md),
-[`sim_build_models_lm()`](https://fgcz.github.io/prolfqua/reference/sim_build_models_lm.md),
-[`sim_build_models_lmer()`](https://fgcz.github.io/prolfqua/reference/sim_build_models_lmer.md),
-[`sim_build_models_logistf()`](https://fgcz.github.io/prolfqua/reference/sim_build_models_logistf.md),
-[`sim_make_model_lm()`](https://fgcz.github.io/prolfqua/reference/sim_make_model_lm.md),
-[`sim_make_model_lmer()`](https://fgcz.github.io/prolfqua/reference/sim_make_model_lmer.md),
 [`strategy_limma()`](https://fgcz.github.io/prolfqua/reference/strategy_limma.md),
 [`strategy_limpa()`](https://fgcz.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://fgcz.github.io/prolfqua/reference/strategy.md),
-[`summary_ropeca_median_p_scaled()`](https://fgcz.github.io/prolfqua/reference/summary_ropeca_median_p_scaled.md),
 [`vcov.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
 ## Super class
@@ -260,11 +241,12 @@ The objects of this class are cloneable with this method.
 ## Examples
 
 ``` r
-modi <- sim_build_models_logistf(model = "parallel3", weight_missing = 1)
+istar <- sim_lfq_data_protein_config(n_proteins = 10, weight_missing = 1, seed = 3)
 #> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
 #> setup_analysis: dropped 5 unconfigured columns: average_prot_abundance, sd, mean, N, Replicate.
-#> setup_analysis: added 45 rows with NA response for feature and sample combinations absent from the input.
+#> setup_analysis: added 39 rows with NA response for feature and sample combinations absent from the input.
+modi <- build_model_glm_protein(LFQData$new(istar$data, istar$config), "~ group_")
 contrasts <- c(Avs = "group_A - group_B", AvsCtrl = "group_A - group_Ctrl")
 
 ctr <- ContrastsFirth$new(modi,contrasts)
@@ -280,16 +262,16 @@ ctr$get_linfct()
 #> # Groups:   protein_Id [10]
 #>    protein_Id  data     linear_model fit_warnings has_model_fit isSingular
 #>    <chr>       <list>   <list>       <list>       <lgl>         <lgl>     
-#>  1 0EfVhX~0087 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
-#>  2 7cbcrd~5725 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
-#>  3 9VUkAq~4703 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
-#>  4 BEJI92~5282 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
-#>  5 CGzoYe~2147 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
-#>  6 DoWup2~5896 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
-#>  7 Fl4JiV~8625 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
-#>  8 HvIpHG~9079 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
-#>  9 JcKVfU~9653 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
-#> 10 SGIVBl~5782 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
+#>  1 7IZdVV~0841 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
+#>  2 AZPG26~2091 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
+#>  3 AoNKbb~6908 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
+#>  4 EnbuYk~0350 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
+#>  5 JnEDsz~4938 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
+#>  6 NNASGK~1417 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
+#>  7 XYrp6h~5793 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
+#>  8 quTD7H~4566 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
+#>  9 tCZCHm~6695 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
+#> 10 tHE075~8231 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
 #> # ℹ 7 more variables: df.residual <dbl>, sigma <dbl>, nr_coef <int>,
 #> #   nr_coef_not_NA <int>, converged <lgl>, iterations <int>, linfct <list>
 #> 
@@ -322,26 +304,26 @@ ctr$get_contrasts()
 #> # A tibble: 20 × 16
 #>    modelName estimate_type protein_Id  contrast sigma    df      diff   FDR
 #>    <chr>     <chr>         <chr>       <chr>    <dbl> <int>     <dbl> <dbl>
-#>  1 firth     observed      0EfVhX~0087 Avs          1     9 -8.47e- 1 0.769
-#>  2 firth     observed      0EfVhX~0087 AvsCtrl      1     9 -8.47e- 1 0.769
-#>  3 firth     observed      7cbcrd~5725 Avs          1     9 -3.99e-16 1    
-#>  4 firth     observed      7cbcrd~5725 AvsCtrl      1     9  8.47e- 1 0.769
-#>  5 firth     observed      9VUkAq~4703 Avs          1     9 -8.47e- 1 0.769
-#>  6 firth     observed      9VUkAq~4703 AvsCtrl      1     9  8.47e- 1 0.769
-#>  7 firth     observed      BEJI92~5282 Avs          1     9  8.47e- 1 0.769
-#>  8 firth     observed      BEJI92~5282 AvsCtrl      1     9  2.20e+ 0 0.769
-#>  9 firth     observed      CGzoYe~2147 Avs          1     9 -1.26e-15 1    
-#> 10 firth     observed      CGzoYe~2147 AvsCtrl      1     9  4.27e-16 1    
-#> 11 firth     observed      DoWup2~5896 Avs          1     9 -1.35e+ 0 0.769
-#> 12 firth     observed      DoWup2~5896 AvsCtrl      1     9 -3.04e+ 0 0.769
-#> 13 firth     observed      Fl4JiV~8625 Avs          1     9  8.47e- 1 0.769
-#> 14 firth     observed      Fl4JiV~8625 AvsCtrl      1     9  8.47e- 1 0.769
-#> 15 firth     observed      HvIpHG~9079 Avs          1     9 -1.69e+ 0 0.769
-#> 16 firth     observed      HvIpHG~9079 AvsCtrl      1     9 -1.69e+ 0 0.769
-#> 17 firth     observed      JcKVfU~9653 Avs          1     9 -1.26e-15 1    
-#> 18 firth     observed      JcKVfU~9653 AvsCtrl      1     9  4.27e-16 1    
-#> 19 firth     observed      SGIVBl~5782 Avs          1     9  1.35e+ 0 0.769
-#> 20 firth     observed      SGIVBl~5782 AvsCtrl      1     9  2.16e-15 1    
+#>  1 firth     observed      7IZdVV~0841 Avs          1     9 -2.20e+ 0 0.769
+#>  2 firth     observed      7IZdVV~0841 AvsCtrl      1     9 -2.94e-17 1    
+#>  3 firth     observed      AZPG26~2091 Avs          1     9  2.75e-16 1    
+#>  4 firth     observed      AZPG26~2091 AvsCtrl      1     9  5.58e-16 1    
+#>  5 firth     observed      AoNKbb~6908 Avs          1     9  8.47e- 1 0.769
+#>  6 firth     observed      AoNKbb~6908 AvsCtrl      1     9 -1.35e+ 0 1    
+#>  7 firth     observed      EnbuYk~0350 Avs          1     9  1.69e+ 0 0.769
+#>  8 firth     observed      EnbuYk~0350 AvsCtrl      1     9  8.47e- 1 1    
+#>  9 firth     observed      JnEDsz~4938 Avs          1     9  1.35e+ 0 0.769
+#> 10 firth     observed      JnEDsz~4938 AvsCtrl      1     9 -8.47e- 1 1    
+#> 11 firth     observed      NNASGK~1417 Avs          1     9  1.52e-15 1    
+#> 12 firth     observed      NNASGK~1417 AvsCtrl      1     9  1.07e-15 1    
+#> 13 firth     observed      XYrp6h~5793 Avs          1     9  1.52e-15 1    
+#> 14 firth     observed      XYrp6h~5793 AvsCtrl      1     9  1.07e-15 1    
+#> 15 firth     observed      quTD7H~4566 Avs          1     9  3.04e+ 0 0.769
+#> 16 firth     observed      quTD7H~4566 AvsCtrl      1     9  2.20e+ 0 1    
+#> 17 firth     observed      tCZCHm~6695 Avs          1     9  1.35e+ 0 0.769
+#> 18 firth     observed      tCZCHm~6695 AvsCtrl      1     9 -4.13e-16 1    
+#> 19 firth     observed      tHE075~8231 Avs          1     9  8.47e- 1 0.769
+#> 20 firth     observed      tHE075~8231 AvsCtrl      1     9  8.47e- 1 1    
 #> # ℹ 8 more variables: std.error <dbl>, statistic <dbl>, p.value <dbl>,
 #> #   conf.low <dbl>, conf.high <dbl>, avgAbd <dbl>, std.error.unmoderated <dbl>,
 #> #   df.unmoderated <int>

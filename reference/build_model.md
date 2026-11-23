@@ -43,8 +43,7 @@ a object of class
 
 ## See also
 
-[`model_analyse`](https://fgcz.github.io/prolfqua/reference/model_analyse.md),
-[`strategy_lmer`](https://fgcz.github.io/prolfqua/reference/strategy.md)
+[`strategy_lmer`](https://fgcz.github.io/prolfqua/reference/strategy.md),
 [`strategy_lm`](https://fgcz.github.io/prolfqua/reference/strategy.md)
 
 Other modelling:
@@ -97,44 +96,25 @@ Other modelling:
 [`build_model_limma_voom()`](https://fgcz.github.io/prolfqua/reference/build_model_limma_voom.md),
 [`build_model_limma_voom_impute()`](https://fgcz.github.io/prolfqua/reference/build_model_limma_voom_impute.md),
 [`build_model_limpa()`](https://fgcz.github.io/prolfqua/reference/build_model_limpa.md),
-[`build_model_logistf()`](https://fgcz.github.io/prolfqua/reference/build_model_logistf.md),
 [`compute_borrowed_variance()`](https://fgcz.github.io/prolfqua/reference/compute_borrowed_variance.md),
 [`compute_borrowed_variance_limma()`](https://fgcz.github.io/prolfqua/reference/compute_borrowed_variance_limma.md),
-[`compute_contrast()`](https://fgcz.github.io/prolfqua/reference/compute_contrast.md),
-[`compute_lmer_contrast()`](https://fgcz.github.io/prolfqua/reference/compute_lmer_contrast.md),
 [`df.residual.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/df.residual.rfit_prolfqua.md),
-[`get_anova_df()`](https://fgcz.github.io/prolfqua/reference/get_anova_df.md),
-[`get_complete_model_fit()`](https://fgcz.github.io/prolfqua/reference/get_complete_model_fit.md),
-[`get_p_values_pbeta()`](https://fgcz.github.io/prolfqua/reference/get_p_values_pbeta.md),
 [`group_label()`](https://fgcz.github.io/prolfqua/reference/group_label.md),
 [`impute_from_model()`](https://fgcz.github.io/prolfqua/reference/impute_from_model.md),
 [`impute_refit_singular()`](https://fgcz.github.io/prolfqua/reference/impute_refit_singular.md),
-[`linfct_from_model()`](https://fgcz.github.io/prolfqua/reference/linfct_from_model.md),
-[`linfct_matrix_contrasts()`](https://fgcz.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
 [`list_facades()`](https://fgcz.github.io/prolfqua/reference/list_facades.md),
 [`lookup_facade()`](https://fgcz.github.io/prolfqua/reference/lookup_facade.md),
 [`lr_test()`](https://fgcz.github.io/prolfqua/reference/lr_test.md),
 [`merge_contrasts_results()`](https://fgcz.github.io/prolfqua/reference/merge_contrasts_results.md),
-[`model_analyse()`](https://fgcz.github.io/prolfqua/reference/model_analyse.md),
-[`model_summary()`](https://fgcz.github.io/prolfqua/reference/model_summary.md),
-[`moderated_p_deqms()`](https://fgcz.github.io/prolfqua/reference/moderated_p_deqms.md),
-[`moderated_p_deqms_long()`](https://fgcz.github.io/prolfqua/reference/moderated_p_deqms_long.md),
-[`moderated_p_limma()`](https://fgcz.github.io/prolfqua/reference/moderated_p_limma.md),
 [`new_imputed_model()`](https://fgcz.github.io/prolfqua/reference/new_imputed_model.md),
 [`nobs.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/nobs.rfit_prolfqua.md),
 [`pivot_model_contrasts_to_wide()`](https://fgcz.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
 [`prolfqua_analysis_methods`](https://fgcz.github.io/prolfqua/reference/prolfqua_analysis_methods.md),
 [`register_facade()`](https://fgcz.github.io/prolfqua/reference/register_facade.md),
 [`sigma.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/sigma.rfit_prolfqua.md),
-[`sim_build_models_lm()`](https://fgcz.github.io/prolfqua/reference/sim_build_models_lm.md),
-[`sim_build_models_lmer()`](https://fgcz.github.io/prolfqua/reference/sim_build_models_lmer.md),
-[`sim_build_models_logistf()`](https://fgcz.github.io/prolfqua/reference/sim_build_models_logistf.md),
-[`sim_make_model_lm()`](https://fgcz.github.io/prolfqua/reference/sim_make_model_lm.md),
-[`sim_make_model_lmer()`](https://fgcz.github.io/prolfqua/reference/sim_make_model_lmer.md),
 [`strategy_limma()`](https://fgcz.github.io/prolfqua/reference/strategy_limma.md),
 [`strategy_limpa()`](https://fgcz.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://fgcz.github.io/prolfqua/reference/strategy.md),
-[`summary_ropeca_median_p_scaled()`](https://fgcz.github.io/prolfqua/reference/summary_ropeca_median_p_scaled.md),
 [`vcov.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
 ## Examples
@@ -209,15 +189,16 @@ mod <- prolfqua::build_model(
 #> fit (f_condtion_r_peptide): 14 singular fits (e.g. 4JK499~3111, 7IZdVV~6818, AoNKbb~3497, CibL2O~2149, EnbuYk~7811, ...): coefficients not estimable or fewer than 2 residual df
 #> fit (f_condtion_r_peptide): 54 missing responses dropped (e.g. 4JK499~3111, 7IZdVV~6818, CibL2O~2149, EnbuYk~7811, JnEDsz~4232, ...): NA response (missing observation) left out of the fit
 #> See $provenance().
-model_summary(mod)
-#> $exists
-#> 
-#> FALSE  TRUE 
-#>     6    14 
-#> 
-#> $isSingular
-#> 
-#> TRUE 
-#>   14 
-#> 
+head(mod$get_coefficients())
+#> # A tibble: 6 × 9
+#> # Groups:   protein_Id [2]
+#>   protein_Id  factor      Estimate Std..Error    df t.value Pr...t.. isSingular
+#>   <chr>       <chr>          <dbl>      <dbl> <dbl>   <dbl>    <dbl> <lgl>     
+#> 1 4JK499~3111 (Intercept)   16.4        0.577 16.0   28.4   3.97e-15 TRUE      
+#> 2 4JK499~3111 group_B        2.24       0.849 16.0    2.64  1.78e- 2 TRUE      
+#> 3 4JK499~3111 group_Ctrl    -3.90       0.849 16.0   -4.59  3.03e- 4 TRUE      
+#> 4 7IZdVV~6818 (Intercept)   24.0        1.69   7.95  14.2   6.19e- 7 TRUE      
+#> 5 7IZdVV~6818 group_B        0.703      1.60  50.1    0.439 6.63e- 1 TRUE      
+#> 6 7IZdVV~6818 group_Ctrl    -0.758      1.60  50.1   -0.473 6.38e- 1 TRUE      
+#> # ℹ 1 more variable: nr_coef <int>
 ```

@@ -133,43 +133,24 @@ Other modelling:
 [`build_model_limma_voom()`](https://fgcz.github.io/prolfqua/reference/build_model_limma_voom.md),
 [`build_model_limma_voom_impute()`](https://fgcz.github.io/prolfqua/reference/build_model_limma_voom_impute.md),
 [`build_model_limpa()`](https://fgcz.github.io/prolfqua/reference/build_model_limpa.md),
-[`build_model_logistf()`](https://fgcz.github.io/prolfqua/reference/build_model_logistf.md),
 [`compute_borrowed_variance()`](https://fgcz.github.io/prolfqua/reference/compute_borrowed_variance.md),
 [`compute_borrowed_variance_limma()`](https://fgcz.github.io/prolfqua/reference/compute_borrowed_variance_limma.md),
-[`compute_contrast()`](https://fgcz.github.io/prolfqua/reference/compute_contrast.md),
-[`compute_lmer_contrast()`](https://fgcz.github.io/prolfqua/reference/compute_lmer_contrast.md),
 [`df.residual.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/df.residual.rfit_prolfqua.md),
-[`get_anova_df()`](https://fgcz.github.io/prolfqua/reference/get_anova_df.md),
-[`get_complete_model_fit()`](https://fgcz.github.io/prolfqua/reference/get_complete_model_fit.md),
-[`get_p_values_pbeta()`](https://fgcz.github.io/prolfqua/reference/get_p_values_pbeta.md),
 [`group_label()`](https://fgcz.github.io/prolfqua/reference/group_label.md),
 [`impute_from_model()`](https://fgcz.github.io/prolfqua/reference/impute_from_model.md),
 [`impute_refit_singular()`](https://fgcz.github.io/prolfqua/reference/impute_refit_singular.md),
-[`linfct_from_model()`](https://fgcz.github.io/prolfqua/reference/linfct_from_model.md),
-[`linfct_matrix_contrasts()`](https://fgcz.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
 [`list_facades()`](https://fgcz.github.io/prolfqua/reference/list_facades.md),
 [`lookup_facade()`](https://fgcz.github.io/prolfqua/reference/lookup_facade.md),
 [`lr_test()`](https://fgcz.github.io/prolfqua/reference/lr_test.md),
 [`merge_contrasts_results()`](https://fgcz.github.io/prolfqua/reference/merge_contrasts_results.md),
-[`model_analyse()`](https://fgcz.github.io/prolfqua/reference/model_analyse.md),
-[`model_summary()`](https://fgcz.github.io/prolfqua/reference/model_summary.md),
-[`moderated_p_deqms()`](https://fgcz.github.io/prolfqua/reference/moderated_p_deqms.md),
-[`moderated_p_deqms_long()`](https://fgcz.github.io/prolfqua/reference/moderated_p_deqms_long.md),
-[`moderated_p_limma()`](https://fgcz.github.io/prolfqua/reference/moderated_p_limma.md),
 [`new_imputed_model()`](https://fgcz.github.io/prolfqua/reference/new_imputed_model.md),
 [`nobs.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/nobs.rfit_prolfqua.md),
 [`pivot_model_contrasts_to_wide()`](https://fgcz.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
 [`prolfqua_analysis_methods`](https://fgcz.github.io/prolfqua/reference/prolfqua_analysis_methods.md),
 [`register_facade()`](https://fgcz.github.io/prolfqua/reference/register_facade.md),
 [`sigma.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/sigma.rfit_prolfqua.md),
-[`sim_build_models_lm()`](https://fgcz.github.io/prolfqua/reference/sim_build_models_lm.md),
-[`sim_build_models_lmer()`](https://fgcz.github.io/prolfqua/reference/sim_build_models_lmer.md),
-[`sim_build_models_logistf()`](https://fgcz.github.io/prolfqua/reference/sim_build_models_logistf.md),
-[`sim_make_model_lm()`](https://fgcz.github.io/prolfqua/reference/sim_make_model_lm.md),
-[`sim_make_model_lmer()`](https://fgcz.github.io/prolfqua/reference/sim_make_model_lmer.md),
 [`strategy_limma()`](https://fgcz.github.io/prolfqua/reference/strategy_limma.md),
 [`strategy_limpa()`](https://fgcz.github.io/prolfqua/reference/strategy_limpa.md),
-[`summary_ropeca_median_p_scaled()`](https://fgcz.github.io/prolfqua/reference/summary_ropeca_median_p_scaled.md),
 [`vcov.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
 ## Examples
@@ -178,7 +159,7 @@ Other modelling:
 tmp <- strategy_logistf("bin_resp ~ condition", model_name = "parallel design")
 tmp$formula
 #> bin_resp ~ condition
-#> <environment: 0x644bc96b9850>
+#> <environment: 0x63b3258d3fe0>
 
 istar <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
@@ -186,9 +167,12 @@ istar <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 10, with_missing = T
 #> creating sampleName from file_name column
 #> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
 #> setup_analysis: added 60 rows with NA response for feature and sample combinations absent from the input.
-istar$data <- encode_bin_resp(LFQData$new(istar$data, istar$config))
-istar$config$bin_resp <- "bin_resp"
-istar <- LFQData$new(istar$data, istar$config)
+lfq <- LFQData$new(istar$data, istar$config)
+detection <- lfq$data_long()
+detection$bin_resp <- as.integer(!is.na(detection[[lfq$response()]]))
+config <- lfq$get_config()
+config$bin_resp <- "bin_resp"
+istar <- LFQData$new(detection, config)
 df <- istar$summarize_hierarchy()
 df2 <- df[df[[ncol(df)]] > 1, ]
 istar2 <- istar$get_subset(df2)
@@ -206,9 +190,9 @@ modelFunction$model_fun(nestProtein$data[[1]])
 #> 
 #> Coefficients:
 #>        (Intercept)            group_B         group_Ctrl peptide_IdFLq7LKTq 
-#>       2.101899e+00       6.773389e-01      -6.663876e-01       9.509484e-16 
+#>       2.101899e+00       6.773389e-01      -6.663876e-01      -1.226933e-15 
 #> peptide_IdJYhOpuPH peptide_IdLiw5EMKP peptide_IdVcatZJTa peptide_IdjrLUqOjg 
-#>      -1.068335e+00       7.971977e-16      -1.068335e+00       1.197563e+00 
+#>      -1.068335e+00      -7.226922e-16      -1.068335e+00       1.197563e+00 
 #> peptide_Idq2jTaC1y 
 #>      -1.445323e+00 
 #> 
@@ -223,7 +207,7 @@ modelFunction$model_fun(nestProtein$data[[4]])
 #> 
 #> Coefficients:
 #>        (Intercept)            group_B         group_Ctrl peptide_IdWcAw5ozd 
-#>       8.375544e-03       8.360364e-11       9.365126e-01      -3.147690e-01 
+#>       8.375544e-03       8.360389e-11       9.365126e-01      -3.147690e-01 
 #> peptide_IdgdnXrza3 peptide_IdxvlVt88v 
 #>      -2.035803e-09      -6.303721e-01 
 #> 
@@ -232,22 +216,22 @@ modelFunction$model_fun(nestProtein$data[[4]])
 tmp <- strategy_rfit("Intensity ~ condition", model_name = "parallel design")
 tmp$formula
 #> Intensity ~ condition
-#> <environment: 0x644bbc22c6c8>
+#> <environment: 0x63b3124b5bf8>
 modelFunction <- strategy_lmer("abundanceC ~ group_ + (1|peptide_Id)",
   model_name = "random_example")
 modelFunction$formula
 #> abundanceC ~ group_ + (1 | peptide_Id)
-#> <environment: 0x644bc195c7d8>
+#> <environment: 0x63b314468bf8>
 tmp <- strategy_lm("Intensity ~ condition", model_name = "parallel design")
 tmp$formula
 #> Intensity ~ condition
-#> <environment: 0x644bc1d5e0f0>
+#> <environment: 0x63b314236ba8>
 tmp$weights
 #> NULL
 tmp <- strategy_rlm("Intensity ~ condition", model_name = "parallel design")
 tmp$formula
 #> Intensity ~ condition
-#> <environment: 0x644bc0a7c648>
+#> <environment: 0x63b31409ae20>
 strategy_rlm("Intensity ~ condition", control = list(maxit = 50))$control
 #> $maxit
 #> [1] 50

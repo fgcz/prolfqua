@@ -52,42 +52,7 @@ plot_pca(
 a ggplot object of the sample scores on the principal components `PC`,
 coloured by the first and shaped by the second of `factor_keys`
 
-## See also
+## Note
 
-Other plotting:
-[`ContrastsPlotter`](https://fgcz.github.io/prolfqua/reference/ContrastsPlotter.md),
-[`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`missingness_histogram()`](https://fgcz.github.io/prolfqua/reference/missingness_histogram.md),
-[`missingness_per_condition()`](https://fgcz.github.io/prolfqua/reference/missingness_per_condition.md),
-[`missingness_per_condition_cumsum()`](https://fgcz.github.io/prolfqua/reference/missingness_per_condition_cumsum.md),
-[`plot_estimate()`](https://fgcz.github.io/prolfqua/reference/plot_estimate.md),
-[`plot_heatmap()`](https://fgcz.github.io/prolfqua/reference/plot_heatmap.md),
-[`plot_heatmap_cor()`](https://fgcz.github.io/prolfqua/reference/plot_heatmap_cor.md),
-[`plot_hierarchies_boxplot_df()`](https://fgcz.github.io/prolfqua/reference/plot_hierarchies_boxplot_df.md),
-[`plot_hierarchies_line()`](https://fgcz.github.io/prolfqua/reference/plot_hierarchies_line.md),
-[`plot_intensity_distribution_violin()`](https://fgcz.github.io/prolfqua/reference/plot_intensity_distribution_violin.md),
-[`plot_na_heatmap()`](https://fgcz.github.io/prolfqua/reference/plot_na_heatmap.md),
-[`plot_raster()`](https://fgcz.github.io/prolfqua/reference/plot_raster.md),
-[`plot_sample_correlation()`](https://fgcz.github.io/prolfqua/reference/plot_sample_correlation.md),
-[`theme_prolfqua()`](https://fgcz.github.io/prolfqua/reference/theme_prolfqua.md),
-[`upset_interaction_missing_stats()`](https://fgcz.github.io/prolfqua/reference/upset_interaction_missing_stats.md),
-[`upset_missing_stats()`](https://fgcz.github.io/prolfqua/reference/upset_missing_stats.md)
-
-## Examples
-
-``` r
-istar <- sim_lfq_data_protein_config(with_missing = TRUE, weight_missing = .8, n_proteins = 3000)
-#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
-#> creating sampleName from file_name column
-#> setup_analysis: dropped 5 unconfigured columns: average_prot_abundance, sd, mean, N, Replicate.
-#> setup_analysis: added 10432 rows with NA response for feature and sample combinations absent from the input.
-lfq <- LFQData$new(istar$data, istar$config)
-wide <- lfq$data_wide(as.matrix = TRUE)
-tmp <- plot_pca(wide$data, wide$annotation, lfq$sample_name(), lfq$factor_keys(),
-  add_txt = TRUE, nudge = 0.01)
-#> PCA: removed 2459 of 2986 features with missing values. To keep all features, impute missing values first, e.g. AggregateLimpa$new(lfqdata, impute_only = TRUE)$aggregate().
-stopifnot("ggplot" %in% class(tmp))
-tmp <- plot_pca(wide$data, wide$annotation, lfq$sample_name(), lfq$factor_keys())
-#> PCA: removed 2459 of 2986 features with missing values. To keep all features, impute missing values first, e.g. AggregateLimpa$new(lfqdata, impute_only = TRUE)$aggregate().
-stopifnot("ggplot" %in% class(tmp))
-```
+Deprecated in prolfqua 1.9.5; use `LFQData$get_Plotter()$pca()`. See
+[prolfqua-deprecated](https://fgcz.github.io/prolfqua/reference/prolfqua-deprecated.md).

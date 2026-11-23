@@ -47,7 +47,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Aggregates top N intensities</h1>
-      <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/main/R/tidyMS_aggregation.R" class="external-link"><code>R/tidyMS_aggregation.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/main/R/prolfqua-deprecated.R" class="external-link"><code>R/prolfqua-deprecated.R</code></a></small>
       <div class="d-none name"><code>aggregate_intensity_top_n.Rd</code></div>
     </div>
 
@@ -85,39 +85,11 @@
     <p>list with data and new reduced configuration (config)</p>
     </div>
     <div class="section level2">
-    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p>Other aggregation:
-<code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
-<code><a href="estimate_intensity.html">estimate_intensity()</a></code>,
-<code><a href="plot_estimate.html">plot_estimate()</a></code>,
-<code><a href="plot_hierarchies_line.html">plot_hierarchies_line()</a></code></p></div>
+    <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
+    <p>Deprecated in prolfqua 1.9.5; use <code>LFQData$get_Aggregator("topN")$aggregate()</code>. See
+<a href="prolfqua-deprecated.html">prolfqua-deprecated</a>.</p>
     </div>
 
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">dd</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from file_name column</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.</span>
-<span class="r-in"><span><span class="va">lfq</span> <span class="op">&lt;-</span> <span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">dd</span><span class="op">$</span><span class="va">data</span>, <span class="va">dd</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">ranked</span> <span class="op">&lt;-</span> <span class="fu"><a href="rank_peptide_by_intensity.html">rank_peptide_by_intensity</a></span><span class="op">(</span><span class="va">lfq</span><span class="op">$</span><span class="fu">data_long</span><span class="op">(</span><span class="op">)</span>, <span class="va">lfq</span><span class="op">$</span><span class="fu">response</span><span class="op">(</span><span class="op">)</span>, <span class="va">lfq</span><span class="op">$</span><span class="fu">hierarchy_keys</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Columns added : srm_meanInt srm_meanIntRank</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">mean_f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">name</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="kw">if</span> <span class="op">(</span><span class="va">name</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="st">"mean"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">resTOPN</span> <span class="op">&lt;-</span> <span class="fu">aggregate_intensity_top_n</span><span class="op">(</span><span class="va">ranked</span>, <span class="va">lfq</span>, .func <span class="op">=</span> <span class="va">mean_f</span>, N <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">resTOPN</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"config"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">lfq_agg</span> <span class="op">&lt;-</span> <span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">resTOPN</span><span class="op">$</span><span class="va">data</span>, <span class="va">resTOPN</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">tmpRob</span> <span class="op">&lt;-</span> <span class="fu"><a href="plot_estimate.html">plot_estimate</a></span><span class="op">(</span><span class="va">lfq</span>, <span class="va">lfq_agg</span>, show.legend <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="st">"ggplot"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">tmpRob</span><span class="op">$</span><span class="va">plots</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-</code></pre></div>
-    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

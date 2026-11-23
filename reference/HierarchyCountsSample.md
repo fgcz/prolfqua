@@ -11,16 +11,12 @@ An R6 class generator.
 ## See also
 
 Other summary:
-[`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`hierarchy_counts()`](https://fgcz.github.io/prolfqua/reference/hierarchy_counts.md),
-[`summarize_hierarchy()`](https://fgcz.github.io/prolfqua/reference/summarize_hierarchy.md)
+[`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md)
 
 Other hierarchy counting:
-[`hierarchy_counts()`](https://fgcz.github.io/prolfqua/reference/hierarchy_counts.md),
 [`nr_children_experiment()`](https://fgcz.github.io/prolfqua/reference/nr_children_experiment.md),
 [`nr_features_experiment()`](https://fgcz.github.io/prolfqua/reference/nr_features_experiment.md),
-[`nr_obs_sample()`](https://fgcz.github.io/prolfqua/reference/nr_obs_sample.md),
-[`summarize_hierarchy()`](https://fgcz.github.io/prolfqua/reference/summarize_hierarchy.md)
+[`nr_obs_sample()`](https://fgcz.github.io/prolfqua/reference/nr_obs_sample.md)
 
 ## Public fields
 

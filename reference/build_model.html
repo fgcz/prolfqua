@@ -96,7 +96,7 @@
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="model_analyse.html">model_analyse</a></code>, <code><a href="strategy.html">strategy_lmer</a></code> <code><a href="strategy.html">strategy_lm</a></code></p>
+    <div class="dont-index"><p><code><a href="strategy.html">strategy_lmer</a></code>, <code><a href="strategy.html">strategy_lm</a></code></p>
 <p>Other modelling:
 <code><a href="AnovaExtractor.html">AnovaExtractor</a></code>,
 <code><a href="Contrasts.html">Contrasts</a></code>,
@@ -147,44 +147,25 @@
 <code><a href="build_model_limma_voom.html">build_model_limma_voom()</a></code>,
 <code><a href="build_model_limma_voom_impute.html">build_model_limma_voom_impute()</a></code>,
 <code><a href="build_model_limpa.html">build_model_limpa()</a></code>,
-<code><a href="build_model_logistf.html">build_model_logistf()</a></code>,
 <code><a href="compute_borrowed_variance.html">compute_borrowed_variance()</a></code>,
 <code><a href="compute_borrowed_variance_limma.html">compute_borrowed_variance_limma()</a></code>,
-<code><a href="compute_contrast.html">compute_contrast()</a></code>,
-<code><a href="compute_lmer_contrast.html">compute_lmer_contrast()</a></code>,
 <code><a href="df.residual.rfit_prolfqua.html">df.residual.rfit_prolfqua()</a></code>,
-<code><a href="get_anova_df.html">get_anova_df()</a></code>,
-<code><a href="get_complete_model_fit.html">get_complete_model_fit()</a></code>,
-<code><a href="get_p_values_pbeta.html">get_p_values_pbeta()</a></code>,
 <code><a href="group_label.html">group_label()</a></code>,
 <code><a href="impute_from_model.html">impute_from_model()</a></code>,
 <code><a href="impute_refit_singular.html">impute_refit_singular()</a></code>,
-<code><a href="linfct_from_model.html">linfct_from_model()</a></code>,
-<code><a href="linfct_matrix_contrasts.html">linfct_matrix_contrasts()</a></code>,
 <code><a href="list_facades.html">list_facades()</a></code>,
 <code><a href="lookup_facade.html">lookup_facade()</a></code>,
 <code><a href="lr_test.html">lr_test()</a></code>,
 <code><a href="merge_contrasts_results.html">merge_contrasts_results()</a></code>,
-<code><a href="model_analyse.html">model_analyse()</a></code>,
-<code><a href="model_summary.html">model_summary()</a></code>,
-<code><a href="moderated_p_deqms.html">moderated_p_deqms()</a></code>,
-<code><a href="moderated_p_deqms_long.html">moderated_p_deqms_long()</a></code>,
-<code><a href="moderated_p_limma.html">moderated_p_limma()</a></code>,
 <code><a href="new_imputed_model.html">new_imputed_model()</a></code>,
 <code><a href="nobs.rfit_prolfqua.html">nobs.rfit_prolfqua()</a></code>,
 <code><a href="pivot_model_contrasts_to_wide.html">pivot_model_contrasts_to_wide()</a></code>,
 <code><a href="prolfqua_analysis_methods.html">prolfqua_analysis_methods</a></code>,
 <code><a href="register_facade.html">register_facade()</a></code>,
 <code><a href="sigma.rfit_prolfqua.html">sigma.rfit_prolfqua()</a></code>,
-<code><a href="sim_build_models_lm.html">sim_build_models_lm()</a></code>,
-<code><a href="sim_build_models_lmer.html">sim_build_models_lmer()</a></code>,
-<code><a href="sim_build_models_logistf.html">sim_build_models_logistf()</a></code>,
-<code><a href="sim_make_model_lm.html">sim_make_model_lm()</a></code>,
-<code><a href="sim_make_model_lmer.html">sim_make_model_lmer()</a></code>,
 <code><a href="strategy_limma.html">strategy_limma()</a></code>,
 <code><a href="strategy_limpa.html">strategy_limpa()</a></code>,
 <code><a href="strategy.html">strategy_logistf()</a></code>,
-<code><a href="summary_ropeca_median_p_scaled.html">summary_ropeca_median_p_scaled()</a></code>,
 <code><a href="vcov.rfit_prolfqua.html">vcov.rfit_prolfqua()</a></code></p></div>
     </div>
 
@@ -259,17 +240,18 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> fit (f_condtion_r_peptide): 14 singular fits (e.g. 4JK499~3111, 7IZdVV~6818, AoNKbb~3497, CibL2O~2149, EnbuYk~7811, ...): coefficients not estimable or fewer than 2 residual df</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> fit (f_condtion_r_peptide): 54 missing responses dropped (e.g. 4JK499~3111, 7IZdVV~6818, CibL2O~2149, EnbuYk~7811, JnEDsz~4232, ...): NA response (missing observation) left out of the fit</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> See $provenance().</span>
-<span class="r-in"><span><span class="fu"><a href="model_summary.html">model_summary</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $exists</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> FALSE  TRUE </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     6    14 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $isSingular</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TRUE </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   14 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mod</span><span class="op">$</span><span class="fu">get_coefficients</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 9</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   protein_Id [2]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   protein_Id  factor      Estimate Std..Error    df t.value Pr...t.. isSingular</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 4JK499~3111 (Intercept)   16.4        0.577 16.0   28.4   3.97<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span> TRUE      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 4JK499~3111 group_B        2.24       0.849 16.0    2.64  1.78<span style="color: #949494;">e</span><span style="color: #BB0000;">- 2</span> TRUE      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 4JK499~3111 group_Ctrl    -<span style="color: #BB0000;">3.90</span>       0.849 16.0   -<span style="color: #BB0000;">4.59</span>  3.03<span style="color: #949494;">e</span><span style="color: #BB0000;">- 4</span> TRUE      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> 7IZdVV~6818 (Intercept)   24.0        1.69   7.95  14.2   6.19<span style="color: #949494;">e</span><span style="color: #BB0000;">- 7</span> TRUE      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> 7IZdVV~6818 group_B        0.703      1.60  50.1    0.439 6.63<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> TRUE      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> 7IZdVV~6818 group_Ctrl    -<span style="color: #BB0000;">0.758</span>      1.60  50.1   -<span style="color: #BB0000;">0.473</span> 6.38<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> TRUE      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1 more variable: nr_coef &lt;int&gt;</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

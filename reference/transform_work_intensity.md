@@ -38,23 +38,8 @@ become `NA`; LFQData records them in its provenance. Negative
 intensities give `NaN` with a warning, which fitting and aggregation
 then reject.
 
-## Examples
+## Note
 
-``` r
-istar <- sim_lfq_data_peptide_config()
-#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
-#> creating sampleName from file_name column
-#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
-#> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
-config <- istar$config
-res <- transform_work_intensity(
-  istar$data, config$get_response(), .func = log2
-)
-#> Column added : log2_abundance
-stopifnot("log2_abundance" %in% colnames(res$data))
-res <- transform_work_intensity(
-  istar$data, config$get_response(), .func = asinh
-)
-#> Column added : asinh_abundance
-stopifnot("asinh_abundance" %in% colnames(res$data))
-```
+Deprecated in prolfqua 1.9.5; use
+`LFQData$get_Transformer()$intensity_array()`. See
+[prolfqua-deprecated](https://fgcz.github.io/prolfqua/reference/prolfqua-deprecated.md).

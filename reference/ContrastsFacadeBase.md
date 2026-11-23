@@ -1,25 +1,39 @@
 # Base class for contrast analysis facades
 
-Holds the fields and delegating methods shared by every facade in
-`ContrastsFacades.R` and `ContrastsChildToParentFacades.R`. Subclasses
-implement the unique pipeline wiring in `initialize()`: they call the
-private `.setup()` (input-shape check, `self$.lfqdata`,
-`self$.contrast_names`, `self$facade_name`), then build the model and
-the inner contrast object. `get_config()` defaults to the inner contrast
-object's configuration. The limma family additionally sets
-`self$.drop_na_diff <- TRUE` to drop rows whose fold change could not be
-estimated.
+The extension point for new modelling backends. Every method of
+[`build_contrast_analysis`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
+is a facade class that inherits from `ContrastsFacadeBase`; a package
+adds a method by writing such a class and registering it with
+[`register_facade`](https://fgcz.github.io/prolfqua/reference/register_facade.md)
+(usually from its `.onLoad()`). The base class provides the uniform API:
+`get_contrasts()` (stamped with the method name), `get_missing()`,
+`get_Plotter()`, `to_wide()` and `get_config()`.
 
-`get_contrasts()` delegates to the inner contrast object and then stamps
-the facade key into `modelName` via `.stamp_facade_identity()`;
-rescue/imputation state is carried in the `estimate_type` column set by
-the inner contrast classes.
+A subclass implements `initialize(lfqdata, modelstr, contrasts, ...)`:
+
+- call the private `.setup(lfqdata, contrasts, key, modelstr)` first; it
+  checks the input shape, the contrasts and the design, stores a copy of
+  the input, and returns the full model formula string
+
+- set `self$model` to the fitted model and `self$contrast` to the
+  contrast object the facade delegates to (e.g.
+  [`ContrastsModerated`](https://fgcz.github.io/prolfqua/reference/ContrastsModerated.md))
+
+- set the private field `.needs` to `"nested"` if the facade takes
+  child-level input (e.g. peptides) and reports parent-level contrasts;
+  the default is `"aggregated"`
+
+The limma family additionally sets `self$.drop_na_diff <- TRUE` to drop
+rows whose fold change could not be estimated.
 
 ## Value
 
 An R6 class generator.
 
 ## See also
+
+[`register_facade`](https://fgcz.github.io/prolfqua/reference/register_facade.md),
+[`list_facades`](https://fgcz.github.io/prolfqua/reference/list_facades.md)
 
 Other modelling:
 [`AnovaExtractor`](https://fgcz.github.io/prolfqua/reference/AnovaExtractor.md),
@@ -71,44 +85,25 @@ Other modelling:
 [`build_model_limma_voom()`](https://fgcz.github.io/prolfqua/reference/build_model_limma_voom.md),
 [`build_model_limma_voom_impute()`](https://fgcz.github.io/prolfqua/reference/build_model_limma_voom_impute.md),
 [`build_model_limpa()`](https://fgcz.github.io/prolfqua/reference/build_model_limpa.md),
-[`build_model_logistf()`](https://fgcz.github.io/prolfqua/reference/build_model_logistf.md),
 [`compute_borrowed_variance()`](https://fgcz.github.io/prolfqua/reference/compute_borrowed_variance.md),
 [`compute_borrowed_variance_limma()`](https://fgcz.github.io/prolfqua/reference/compute_borrowed_variance_limma.md),
-[`compute_contrast()`](https://fgcz.github.io/prolfqua/reference/compute_contrast.md),
-[`compute_lmer_contrast()`](https://fgcz.github.io/prolfqua/reference/compute_lmer_contrast.md),
 [`df.residual.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/df.residual.rfit_prolfqua.md),
-[`get_anova_df()`](https://fgcz.github.io/prolfqua/reference/get_anova_df.md),
-[`get_complete_model_fit()`](https://fgcz.github.io/prolfqua/reference/get_complete_model_fit.md),
-[`get_p_values_pbeta()`](https://fgcz.github.io/prolfqua/reference/get_p_values_pbeta.md),
 [`group_label()`](https://fgcz.github.io/prolfqua/reference/group_label.md),
 [`impute_from_model()`](https://fgcz.github.io/prolfqua/reference/impute_from_model.md),
 [`impute_refit_singular()`](https://fgcz.github.io/prolfqua/reference/impute_refit_singular.md),
-[`linfct_from_model()`](https://fgcz.github.io/prolfqua/reference/linfct_from_model.md),
-[`linfct_matrix_contrasts()`](https://fgcz.github.io/prolfqua/reference/linfct_matrix_contrasts.md),
 [`list_facades()`](https://fgcz.github.io/prolfqua/reference/list_facades.md),
 [`lookup_facade()`](https://fgcz.github.io/prolfqua/reference/lookup_facade.md),
 [`lr_test()`](https://fgcz.github.io/prolfqua/reference/lr_test.md),
 [`merge_contrasts_results()`](https://fgcz.github.io/prolfqua/reference/merge_contrasts_results.md),
-[`model_analyse()`](https://fgcz.github.io/prolfqua/reference/model_analyse.md),
-[`model_summary()`](https://fgcz.github.io/prolfqua/reference/model_summary.md),
-[`moderated_p_deqms()`](https://fgcz.github.io/prolfqua/reference/moderated_p_deqms.md),
-[`moderated_p_deqms_long()`](https://fgcz.github.io/prolfqua/reference/moderated_p_deqms_long.md),
-[`moderated_p_limma()`](https://fgcz.github.io/prolfqua/reference/moderated_p_limma.md),
 [`new_imputed_model()`](https://fgcz.github.io/prolfqua/reference/new_imputed_model.md),
 [`nobs.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/nobs.rfit_prolfqua.md),
 [`pivot_model_contrasts_to_wide()`](https://fgcz.github.io/prolfqua/reference/pivot_model_contrasts_to_wide.md),
 [`prolfqua_analysis_methods`](https://fgcz.github.io/prolfqua/reference/prolfqua_analysis_methods.md),
 [`register_facade()`](https://fgcz.github.io/prolfqua/reference/register_facade.md),
 [`sigma.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/sigma.rfit_prolfqua.md),
-[`sim_build_models_lm()`](https://fgcz.github.io/prolfqua/reference/sim_build_models_lm.md),
-[`sim_build_models_lmer()`](https://fgcz.github.io/prolfqua/reference/sim_build_models_lmer.md),
-[`sim_build_models_logistf()`](https://fgcz.github.io/prolfqua/reference/sim_build_models_logistf.md),
-[`sim_make_model_lm()`](https://fgcz.github.io/prolfqua/reference/sim_make_model_lm.md),
-[`sim_make_model_lmer()`](https://fgcz.github.io/prolfqua/reference/sim_make_model_lmer.md),
 [`strategy_limma()`](https://fgcz.github.io/prolfqua/reference/strategy_limma.md),
 [`strategy_limpa()`](https://fgcz.github.io/prolfqua/reference/strategy_limpa.md),
 [`strategy_logistf()`](https://fgcz.github.io/prolfqua/reference/strategy.md),
-[`summary_ropeca_median_p_scaled()`](https://fgcz.github.io/prolfqua/reference/summary_ropeca_median_p_scaled.md),
 [`vcov.rfit_prolfqua()`](https://fgcz.github.io/prolfqua/reference/vcov.rfit_prolfqua.md)
 
 ## Super class
@@ -295,7 +290,41 @@ The objects of this class are cloneable with this method.
 ## Examples
 
 ``` r
-facade <- ContrastsFacadeBase$new()
-inherits(facade, "ContrastsFacadeBase")
-#> [1] TRUE
+# a facade: unweighted linear model per protein, moderated contrasts
+ContrastsUnweightedLMFacade <- R6::R6Class(
+  "ContrastsUnweightedLMFacade",
+  inherit = ContrastsFacadeBase,
+  public = list(
+    initialize = function(lfqdata, modelstr, contrasts) {
+      full_formula <- private$.setup(lfqdata, contrasts, "lm_unweighted", modelstr)
+      self$model <- build_model(lfqdata, strategy_lm(full_formula))
+      self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts))
+    }
+  )
+)
+istar <- sim_lfq_data_protein_config(n_proteins = 10)
+#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
+#> creating sampleName from file_name column
+#> setup_analysis: dropped 5 unconfigured columns: average_prot_abundance, sd, mean, N, Replicate.
+#> setup_analysis: added 16 rows with NA response for feature and sample combinations absent from the input.
+lfqdata <- LFQData$new(istar$data, istar$config)
+facade <- ContrastsUnweightedLMFacade$new(lfqdata, "~ group_", c(AvsCtrl = "group_A - group_Ctrl"))
+#> fit (Model): 16 missing responses dropped (e.g. 0EfVhX~0087, 7cbcrd~5725, 9VUkAq~4703, BEJI92~5282, DoWup2~5896, ...): NA response (missing observation) left out of the fit
+#> See $provenance().
+head(facade$get_contrasts())
+#> # A tibble: 6 × 16
+#>   modelName     estimate_type protein_Id  contrast    diff avgAbd
+#>   <chr>         <chr>         <chr>       <chr>      <dbl>  <dbl>
+#> 1 lm_unweighted observed      0EfVhX~0087 AvsCtrl  -2.62     21.1
+#> 2 lm_unweighted observed      7cbcrd~5725 AvsCtrl   2.80     20.7
+#> 3 lm_unweighted observed      9VUkAq~4703 AvsCtrl   1.67     20.3
+#> 4 lm_unweighted observed      BEJI92~5282 AvsCtrl   0.424    21.0
+#> 5 lm_unweighted observed      CGzoYe~2147 AvsCtrl  -0.598    30.8
+#> 6 lm_unweighted observed      Fl4JiV~8625 AvsCtrl  -0.0494   21.3
+#> # ℹ 10 more variables: std.error.unmoderated <dbl>, df.unmoderated <int>,
+#> #   std.error <dbl>, statistic <dbl>, df <dbl>, p.value <dbl>, conf.low <dbl>,
+#> #   conf.high <dbl>, sigma <dbl>, FDR <dbl>
+# registered from a package's .onLoad(), build_contrast_analysis() finds the method by name:
+# register_facade("lm_unweighted", class = "ContrastsUnweightedLMFacade", needs = "aggregated",
+#                 package = "mypackage")
 ```

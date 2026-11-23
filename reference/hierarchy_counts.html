@@ -49,7 +49,7 @@ whole dataset, whether observed or not."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Count distinct elements for each level of hierarchy</h1>
-      <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/main/R/tidyMS_summarize_hierarchy.R" class="external-link"><code>R/tidyMS_summarize_hierarchy.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/main/R/prolfqua-deprecated.R" class="external-link"><code>R/prolfqua-deprecated.R</code></a></small>
       <div class="d-none name"><code>hierarchy_counts.Rd</code></div>
     </div>
 
@@ -80,39 +80,10 @@ whole dataset, whether observed or not.</p>
     <p>a one-row tibble with one column per hierarchy key holding the number of distinct elements</p>
     </div>
     <div class="section level2">
-    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p>Other summary:
-<code><a href="HierarchyCountsSample.html">HierarchyCountsSample</a></code>,
-<code><a href="INTERNAL_FUNCTIONS_BY_FAMILY.html">INTERNAL_FUNCTIONS_BY_FAMILY</a></code>,
-<code><a href="summarize_hierarchy.html">summarize_hierarchy()</a></code></p>
-<p>Other hierarchy counting:
-<code><a href="HierarchyCountsSample.html">HierarchyCountsSample</a></code>,
-<code><a href="nr_children_experiment.html">nr_children_experiment()</a></code>,
-<code><a href="nr_features_experiment.html">nr_features_experiment()</a></code>,
-<code><a href="nr_obs_sample.html">nr_obs_sample()</a></code>,
-<code><a href="summarize_hierarchy.html">summarize_hierarchy()</a></code></p></div>
+    <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
+    <p>Deprecated in prolfqua 1.9.5; use <code>LFQData$hierarchy_counts()</code>. See <a href="prolfqua-deprecated.html">prolfqua-deprecated</a>.</p>
     </div>
 
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">bb</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from file_name column</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.</span>
-<span class="r-in"><span><span class="va">lfq</span> <span class="op">&lt;-</span> <span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">bb</span><span class="op">$</span><span class="va">data</span>, <span class="va">bb</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">hierarchy_counts</span><span class="op">(</span><span class="va">lfq</span><span class="op">$</span><span class="fu">data_long</span><span class="op">(</span><span class="op">)</span>, <span class="va">lfq</span><span class="op">$</span><span class="fu">hierarchy_keys</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">x</span><span class="op">$</span><span class="va">protein_Id</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">lfq</span><span class="op">$</span><span class="fu">hierarchy_keys</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># select non existing protein</span></span></span>
-<span class="r-in"><span><span class="va">data0</span> <span class="op">&lt;-</span> <span class="va">lfq</span><span class="op">$</span><span class="fu">data_long</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">protein_Id</span> <span class="op">==</span> <span class="st">"XYZ"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">hierarchy_counts</span><span class="op">(</span><span class="va">data0</span>, <span class="va">lfq</span><span class="op">$</span><span class="fu">hierarchy_keys</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">$</span><span class="va">protein_Id</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span></span></span>
-</code></pre></div>
-    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

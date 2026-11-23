@@ -32,8 +32,10 @@ Other LFQData:
 
 - `control`:
 
-  convergence controls, see
-  [`estimate_intensity`](https://fgcz.github.io/prolfqua/reference/estimate_intensity.md)
+  convergence controls of
+  [`MASS::rlm`](https://rdrr.io/pkg/MASS/man/rlm.html): `maxit`
+  (default 20) and `acc` (default 1e-4, relative change of the IRLS
+  residuals)
 
 ## Methods
 
@@ -72,8 +74,10 @@ initialize
 
 - `control`:
 
-  named list of convergence controls merged over the defaults, see
-  [`estimate_intensity`](https://fgcz.github.io/prolfqua/reference/estimate_intensity.md)
+  named list merged over the defaults; convergence controls of
+  [`MASS::rlm`](https://rdrr.io/pkg/MASS/man/rlm.html): `maxit`
+  (default 20) and `acc` (default 1e-4, relative change of the IRLS
+  residuals)
 
 ------------------------------------------------------------------------
 

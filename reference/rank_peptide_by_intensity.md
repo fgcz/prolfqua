@@ -26,32 +26,8 @@ rank_peptide_by_intensity(pdata, response, hierarchy_keys)
 
 data.frame
 
-## Examples
+## Note
 
-``` r
-bb <- prolfqua::sim_lfq_data_peptide_config()
-#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
-#> creating sampleName from file_name column
-#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
-#> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
-lfq <- LFQData$new(bb$data, bb$config)
-res <- rank_peptide_by_intensity(lfq$data_long(), lfq$response(), lfq$hierarchy_keys())
-#> Columns added : srm_meanInt srm_meanIntRank
-X <- res |> dplyr::select(c(lfq$hierarchy_keys(),
- srm_meanInt, srm_meanIntRank)) |> dplyr::distinct()
-X |> dplyr::arrange(!!!rlang::syms(c(lfq$hierarchy_keys()[1], "srm_meanIntRank")))
-#> # A tibble: 28 × 4
-#>    protein_Id  peptide_Id srm_meanInt srm_meanIntRank
-#>    <chr>       <chr>            <dbl>           <int>
-#>  1 0EfVhX~0087 ahQLlQY7          24.9               1
-#>  2 0EfVhX~0087 ITLb4x1q          23.2               2
-#>  3 0EfVhX~0087 dJkdz7so          20.7               3
-#>  4 7cbcrd~5725 D5dQ4nKk          23.5               1
-#>  5 9VUkAq~4703 eIC06D7g          21.1               1
-#>  6 BEJI92~5282 qQ1GK8Un          23.2               1
-#>  7 BEJI92~5282 HBkZvdhT          18.0               2
-#>  8 CGzoYe~2147 mjHSHhoe          28.3               1
-#>  9 DoWup2~5896 KVUnZ6oZ          20.5               1
-#> 10 Fl4JiV~8625 wajUl0YS          25.9               1
-#> # ℹ 18 more rows
-```
+Deprecated in prolfqua 1.9.5; use
+`LFQData$get_Aggregator("topN")$aggregate()`. See
+[prolfqua-deprecated](https://fgcz.github.io/prolfqua/reference/prolfqua-deprecated.md).

@@ -47,7 +47,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Compute group averages or contrasts for each model</h1>
-      <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/main/R/tidyMS_contrasts.R" class="external-link"><code>R/tidyMS_contrasts.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/main/R/prolfqua-deprecated.R" class="external-link"><code>R/prolfqua-deprecated.R</code></a></small>
       <div class="d-none name"><code>contrasts_linfct.Rd</code></div>
     </div>
 
@@ -61,7 +61,7 @@
 <span>  <span class="va">models</span>,</span>
 <span>  <span class="va">linfct</span>,</span>
 <span>  subject_id <span class="op">=</span> <span class="st">"protein_Id"</span>,</span>
-<span>  contrastfun <span class="op">=</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="compute_lmer_contrast.html">compute_lmer_contrast</a></span></span>
+<span>  contrastfun <span class="op">=</span> <span class="va">.compute_lmer_contrast</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -93,27 +93,11 @@ a list with one such matrix per model</p></dd>
 returned by <code>contrastfun</code>, and <code>isSingular</code>, <code>sigma.model</code> and <code>df.residual.model</code>; subjects whose contrasts
 failed are dropped with a warning</p>
     </div>
-
     <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">modelSummary_A</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_build_models_lm.html">sim_build_models_lm</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from file_name column</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, group, mean, N, Replicate.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> setup_analysis: added 59 rows with NA response for feature and sample combinations absent from the input.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> fit (Model): 59 missing responses dropped (e.g. 0EfVhX~0087, 7cbcrd~5725, 9VUkAq~4703, BEJI92~5282, CGzoYe~2147, ...): NA response (missing observation) left out of the fit</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> See $provenance().</span>
-<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_complete_model_fit.html">get_complete_model_fit</a></span><span class="op">(</span><span class="va">modelSummary_A</span><span class="op">$</span><span class="va">model_df</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">linfct</span> <span class="op">&lt;-</span> <span class="fu"><a href="linfct_from_model.html">linfct_from_model</a></span><span class="op">(</span><span class="va">m</span><span class="op">$</span><span class="va">linear_model</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, as_list <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">factor_contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="linfct_matrix_contrasts.html">linfct_matrix_contrasts</a></span><span class="op">(</span><span class="va">linfct</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>A_vs_B <span class="op">=</span> <span class="st">"TreatmentA - TreatmentB"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">factor_levelContrasts</span> <span class="op">&lt;-</span> <span class="fu">contrasts_linfct</span><span class="op">(</span> <span class="va">m</span>,</span></span>
-<span class="r-in"><span>        <span class="va">factor_contrasts</span>,</span></span>
-<span class="r-in"><span>        subject_id <span class="op">=</span> <span class="st">"protein_Id"</span>,</span></span>
-<span class="r-in"><span>        contrastfun <span class="op">=</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="compute_contrast.html">compute_contrast</a></span><span class="op">)</span></span></span>
-</code></pre></div>
+    <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
+    <p>Deprecated in prolfqua 1.9.5; use <code><a href="build_contrast_analysis.html">build_contrast_analysis()</a></code>. See <a href="prolfqua-deprecated.html">prolfqua-deprecated</a>.</p>
     </div>
+
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

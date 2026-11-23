@@ -35,23 +35,8 @@ response_matrix_as_tibble(pdata, value, config, data = NULL, sep = "~lfq~")
 a long-format tibble with the hierarchy key, sample name and `value`
 columns; if `data` is given, `data` joined with these values
 
-## Examples
+## Note
 
-``` r
-dd <- prolfqua::sim_lfq_data_peptide_config()
-#> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
-#> creating sampleName from file_name column
-#> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
-#> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
-lfqdata <- prolfqua::LFQData$new(dd$data, dd$config)
-res <- tidy_to_wide_config(lfqdata, as.matrix = TRUE)
-
-res_scaled <- scale(res$data)
-xx <- response_matrix_as_tibble(
-  res_scaled, "srm_intensityScaled", lfqdata$get_config()
-)
-xx <- response_matrix_as_tibble(
-  res_scaled, "srm_intensityScaled",
-  lfqdata$get_config(), lfqdata$data_long()
-)
-```
+Deprecated in prolfqua 1.9.5; use
+`LFQData$get_Transformer()$intensity_matrix()`. See
+[prolfqua-deprecated](https://fgcz.github.io/prolfqua/reference/prolfqua-deprecated.md).

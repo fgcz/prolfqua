@@ -166,43 +166,24 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <code><a href="build_model_limma_voom.html">build_model_limma_voom()</a></code>,
 <code><a href="build_model_limma_voom_impute.html">build_model_limma_voom_impute()</a></code>,
 <code><a href="build_model_limpa.html">build_model_limpa()</a></code>,
-<code><a href="build_model_logistf.html">build_model_logistf()</a></code>,
 <code><a href="compute_borrowed_variance.html">compute_borrowed_variance()</a></code>,
 <code><a href="compute_borrowed_variance_limma.html">compute_borrowed_variance_limma()</a></code>,
-<code><a href="compute_contrast.html">compute_contrast()</a></code>,
-<code><a href="compute_lmer_contrast.html">compute_lmer_contrast()</a></code>,
 <code><a href="df.residual.rfit_prolfqua.html">df.residual.rfit_prolfqua()</a></code>,
-<code><a href="get_anova_df.html">get_anova_df()</a></code>,
-<code><a href="get_complete_model_fit.html">get_complete_model_fit()</a></code>,
-<code><a href="get_p_values_pbeta.html">get_p_values_pbeta()</a></code>,
 <code><a href="group_label.html">group_label()</a></code>,
 <code><a href="impute_from_model.html">impute_from_model()</a></code>,
 <code><a href="impute_refit_singular.html">impute_refit_singular()</a></code>,
-<code><a href="linfct_from_model.html">linfct_from_model()</a></code>,
-<code><a href="linfct_matrix_contrasts.html">linfct_matrix_contrasts()</a></code>,
 <code><a href="list_facades.html">list_facades()</a></code>,
 <code><a href="lookup_facade.html">lookup_facade()</a></code>,
 <code><a href="lr_test.html">lr_test()</a></code>,
 <code><a href="merge_contrasts_results.html">merge_contrasts_results()</a></code>,
-<code><a href="model_analyse.html">model_analyse()</a></code>,
-<code><a href="model_summary.html">model_summary()</a></code>,
-<code><a href="moderated_p_deqms.html">moderated_p_deqms()</a></code>,
-<code><a href="moderated_p_deqms_long.html">moderated_p_deqms_long()</a></code>,
-<code><a href="moderated_p_limma.html">moderated_p_limma()</a></code>,
 <code><a href="new_imputed_model.html">new_imputed_model()</a></code>,
 <code><a href="nobs.rfit_prolfqua.html">nobs.rfit_prolfqua()</a></code>,
 <code><a href="pivot_model_contrasts_to_wide.html">pivot_model_contrasts_to_wide()</a></code>,
 <code><a href="prolfqua_analysis_methods.html">prolfqua_analysis_methods</a></code>,
 <code><a href="register_facade.html">register_facade()</a></code>,
 <code><a href="sigma.rfit_prolfqua.html">sigma.rfit_prolfqua()</a></code>,
-<code><a href="sim_build_models_lm.html">sim_build_models_lm()</a></code>,
-<code><a href="sim_build_models_lmer.html">sim_build_models_lmer()</a></code>,
-<code><a href="sim_build_models_logistf.html">sim_build_models_logistf()</a></code>,
-<code><a href="sim_make_model_lm.html">sim_make_model_lm()</a></code>,
-<code><a href="sim_make_model_lmer.html">sim_make_model_lmer()</a></code>,
 <code><a href="strategy_limma.html">strategy_limma()</a></code>,
 <code><a href="strategy_limpa.html">strategy_limpa()</a></code>,
-<code><a href="summary_ropeca_median_p_scaled.html">summary_ropeca_median_p_scaled()</a></code>,
 <code><a href="vcov.rfit_prolfqua.html">vcov.rfit_prolfqua()</a></code></p></div>
     </div>
 
@@ -211,7 +192,7 @@ Default <code>NULL</code> (unweighted).</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_logistf</span><span class="op">(</span><span class="st">"bin_resp ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">formula</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> bin_resp ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x644bc96b9850&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x63b3258d3fe0&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="sim_lfq_data_peptide_config.html">sim_lfq_data_peptide_config</a></span><span class="op">(</span>n_proteins <span class="op">=</span> <span class="fl">10</span>, with_missing <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  weight_missing <span class="op">=</span> <span class="fl">0.5</span>, seed <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
@@ -219,9 +200,12 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from file_name column</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> setup_analysis: added 60 rows with NA response for feature and sample combinations absent from the input.</span>
-<span class="r-in"><span><span class="va">istar</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="encode_bin_resp.html">encode_bin_resp</a></span><span class="op">(</span><span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">istar</span><span class="op">$</span><span class="va">data</span>, <span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">$</span><span class="va">bin_resp</span> <span class="op">&lt;-</span> <span class="st">"bin_resp"</span></span></span>
-<span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">istar</span><span class="op">$</span><span class="va">data</span>, <span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lfq</span> <span class="op">&lt;-</span> <span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">istar</span><span class="op">$</span><span class="va">data</span>, <span class="va">istar</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">detection</span> <span class="op">&lt;-</span> <span class="va">lfq</span><span class="op">$</span><span class="fu">data_long</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">detection</span><span class="op">$</span><span class="va">bin_resp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">detection</span><span class="op">[[</span><span class="va">lfq</span><span class="op">$</span><span class="fu">response</span><span class="op">(</span><span class="op">)</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="va">lfq</span><span class="op">$</span><span class="fu">get_config</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">config</span><span class="op">$</span><span class="va">bin_resp</span> <span class="op">&lt;-</span> <span class="st">"bin_resp"</span></span></span>
+<span class="r-in"><span><span class="va">istar</span> <span class="op">&lt;-</span> <span class="va"><a href="LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">detection</span>, <span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">istar</span><span class="op">$</span><span class="fu">summarize_hierarchy</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">[</span><span class="va">df</span><span class="op">[[</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">]</span><span class="op">]</span> <span class="op">&gt;</span> <span class="fl">1</span>, <span class="op">]</span></span></span>
 <span class="r-in"><span><span class="va">istar2</span> <span class="op">&lt;-</span> <span class="va">istar</span><span class="op">$</span><span class="fu">get_subset</span><span class="op">(</span><span class="va">df2</span><span class="op">)</span></span></span>
@@ -239,9 +223,9 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        (Intercept)            group_B         group_Ctrl peptide_IdFLq7LKTq </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       2.101899e+00       6.773389e-01      -6.663876e-01       9.509484e-16 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       2.101899e+00       6.773389e-01      -6.663876e-01      -1.226933e-15 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> peptide_IdJYhOpuPH peptide_IdLiw5EMKP peptide_IdVcatZJTa peptide_IdjrLUqOjg </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      -1.068335e+00       7.971977e-16      -1.068335e+00       1.197563e+00 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      -1.068335e+00      -7.226922e-16      -1.068335e+00       1.197563e+00 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> peptide_Idq2jTaC1y </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      -1.445323e+00 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -256,7 +240,7 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        (Intercept)            group_B         group_Ctrl peptide_IdWcAw5ozd </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       8.375544e-03       8.360364e-11       9.365126e-01      -3.147690e-01 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       8.375544e-03       8.360389e-11       9.365126e-01      -3.147690e-01 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> peptide_IdgdnXrza3 peptide_IdxvlVt88v </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      -2.035803e-09      -6.303721e-01 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -265,22 +249,22 @@ Default <code>NULL</code> (unweighted).</p></dd>
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_rfit</span><span class="op">(</span><span class="st">"Intensity ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">formula</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Intensity ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x644bbc22c6c8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x63b3124b5bf8&gt;</span>
 <span class="r-in"><span><span class="va">modelFunction</span> <span class="op">&lt;-</span> <span class="fu">strategy_lmer</span><span class="op">(</span><span class="st">"abundanceC ~ group_ + (1|peptide_Id)"</span>,</span></span>
 <span class="r-in"><span>  model_name <span class="op">=</span> <span class="st">"random_example"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">modelFunction</span><span class="op">$</span><span class="va">formula</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> abundanceC ~ group_ + (1 | peptide_Id)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x644bc195c7d8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x63b314468bf8&gt;</span>
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_lm</span><span class="op">(</span><span class="st">"Intensity ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">formula</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Intensity ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x644bc1d5e0f0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x63b314236ba8&gt;</span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">weights</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu">strategy_rlm</span><span class="op">(</span><span class="st">"Intensity ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tmp</span><span class="op">$</span><span class="va">formula</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Intensity ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x644bc0a7c648&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x63b31409ae20&gt;</span>
 <span class="r-in"><span><span class="fu">strategy_rlm</span><span class="op">(</span><span class="st">"Intensity ~ condition"</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>maxit <span class="op">=</span> <span class="fl">50</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">control</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $maxit</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 50</span>

@@ -249,7 +249,7 @@ pass a function which works with matrices, e.g., vsn::justvsn
 
 #### Usage
 
-    LFQDataTransformer$intensity_matrix(.func = robust_scale, force = FALSE)
+    LFQDataTransformer$intensity_matrix(.func = .robust_scale, force = FALSE)
 
 #### Arguments
 
@@ -257,8 +257,9 @@ pass a function which works with matrices, e.g., vsn::justvsn
 
   any function taking a matrix and returning a matrix (columns sample,
   rows feature, e.g.
-  [`base::scale()`](https://rdrr.io/r/base/scale.html)), default
-  `robust_scale`
+  [`base::scale()`](https://rdrr.io/r/base/scale.html)); default: robust
+  scaling, which centres each sample on its median and scales it by its
+  MAD, as `$robscale()`
 
 - `force`:
 
@@ -302,7 +303,7 @@ x <- lfqTrans$intensity_array(log2)
 
 x$lfq$is_transformed()
 #> [1] TRUE
-x <- x$intensity_matrix(robust_scale)
+x <- x$intensity_matrix()
 #> Warning: The data are already transformed; set `force = TRUE` to log2-transform them again.
 plotter <- x$lfq$get_Plotter()
 plotter$intensity_distribution_density()
@@ -317,7 +318,7 @@ lfqTrans <- lfqcopy$get_Transformer()
 x <- lfqTrans$intensity_array(asinh)
 #> Column added : asinh_abundance
 mads1 <- mean(x$get_scales()$mads)
-x <- lfqTrans$intensity_matrix(robust_scale, force = TRUE)
+x <- lfqTrans$intensity_matrix(force = TRUE)
 mads2 <- mean(x$get_scales()$mads)
 stopifnot(abs(mads1 - mads2) < 1e-8)
 
@@ -365,15 +366,15 @@ if (requireNamespace("vsn", quietly = TRUE)) {
 }
 #> $medians
 #>     A_V1     A_V2     A_V3     A_V4     B_V1     B_V2     B_V3     B_V4 
-#> 5.010572 5.002975 4.994914 5.006013 5.051370 5.074292 5.033370 5.044391 
+#> 5.067592 5.060373 5.052612 5.063121 5.106810 5.128959 5.089511 5.100129 
 #>  Ctrl_V1  Ctrl_V2  Ctrl_V3  Ctrl_V4 
-#> 5.043057 5.010404 5.033362 5.015886 
+#> 5.098851 5.067436 5.089542 5.072697 
 #> 
 #> $mads
 #>      A_V1      A_V2      A_V3      A_V4      B_V1      B_V2      B_V3      B_V4 
-#> 0.2443545 0.2638516 0.2494166 0.2556915 0.2710033 0.2638501 0.2316761 0.2437389 
+#> 0.2356539 0.2539392 0.2391802 0.2462082 0.2603902 0.2549782 0.2228186 0.2342742 
 #>   Ctrl_V1   Ctrl_V2   Ctrl_V3   Ctrl_V4 
-#> 0.2738565 0.2415127 0.2514121 0.2512947 
+#> 0.2618927 0.2316253 0.2412538 0.2422008 
 #> 
 if (requireNamespace("preprocessCore", quietly = TRUE)) {
 quant <- function(y){

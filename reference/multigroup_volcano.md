@@ -86,29 +86,7 @@ multigroup_volcano(
 a ggplot object with one volcano panel per contrast; if `label` is
 given, significant points are labelled
 
-## See also
+## Note
 
-Other utilities:
-[`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`get_uniprot_id_from_fasta_header()`](https://fgcz.github.io/prolfqua/reference/get_uniprot_id_from_fasta_header.md),
-[`is_contaminant()`](https://fgcz.github.io/prolfqua/reference/is_contaminant.md),
-[`is_decoy()`](https://fgcz.github.io/prolfqua/reference/is_decoy.md),
-[`matrix_to_tibble()`](https://fgcz.github.io/prolfqua/reference/matrix_to_tibble.md),
-[`pairs_smooth()`](https://fgcz.github.io/prolfqua/reference/pairs_smooth.md),
-[`panel_cor()`](https://fgcz.github.io/prolfqua/reference/panel_cor.md),
-[`table_facade()`](https://fgcz.github.io/prolfqua/reference/table_facade.md)
-
-## Examples
-
-``` r
-
-show <- data.frame(logFC = rnorm(100, 0, 1), adj.P.Val = runif(100, 0, 1),
-  Condition = sample(c("a","b")), colour = "forward", Name = paste0("n", 1:100))
-prolfqua::multigroup_volcano( show,
-effect="logFC",
-significance = "adj.P.Val",
-contrast="Condition",
-colour=NULL,
-label="Name",
-max_nr_significant_text = 300)
-```
+Deprecated in prolfqua 1.9.5; use `ModelInterface$coef_volcano()`. See
+[prolfqua-deprecated](https://fgcz.github.io/prolfqua/reference/prolfqua-deprecated.md).

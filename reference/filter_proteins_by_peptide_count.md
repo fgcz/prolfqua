@@ -50,11 +50,7 @@ list with the filtered `data` and the `name` of the count column
 
 Other preprocessing:
 [`INTERNAL_FUNCTIONS_BY_FAMILY`](https://fgcz.github.io/prolfqua/reference/INTERNAL_FUNCTIONS_BY_FAMILY.md),
-[`apply_to_response_matrix()`](https://fgcz.github.io/prolfqua/reference/apply_to_response_matrix.md),
-[`get_robscales()`](https://fgcz.github.io/prolfqua/reference/get_robscales.md),
-[`nr_B_in_A()`](https://fgcz.github.io/prolfqua/reference/nr_B_in_A.md),
-[`robust_scale()`](https://fgcz.github.io/prolfqua/reference/robust_scale.md),
-[`scale_with_subset()`](https://fgcz.github.io/prolfqua/reference/scale_with_subset.md)
+[`nr_B_in_A()`](https://fgcz.github.io/prolfqua/reference/nr_B_in_A.md)
 
 ## Examples
 

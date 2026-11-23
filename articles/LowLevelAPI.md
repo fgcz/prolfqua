@@ -141,167 +141,139 @@ predictor names used in the formula. Method keys, predictor names and
 contrast names are case sensitive.
 
 R normally uses treatment coding (`options("contrasts")`): an intercept
-for the reference group and one coefficient per other level. When
-predictors are character labels, the first sorted level is normally the
-reference. In this small example we explicitly set `Ctrl` as the
-reference to make the coefficients easy to read:
+for the reference group and one coefficient per other level. Character
+predictors are sorted, so here `group_A` is the reference. The design
+and the coefficients of the first protein:
 
 ``` r
-one_factor <- data.frame(
-  group_ = factor(rep(c("Ctrl", "A", "B"), each = 3), levels = c("Ctrl", "A", "B")),
-  abundance = c(19.8, 20, 20.2, 21.8, 22, 22.2, 18.8, 19, 19.2)
-)
-one_model <- lm(abundance ~ group_, data = one_factor)
-unique(model.matrix(one_model))
+fit <- mod$model_df$linear_model[[1]]
+unique(model.matrix(fit))
 ```
 
-    ##   (Intercept) group_A group_B
-    ## 1           1       0       0
-    ## 4           1       1       0
-    ## 7           1       0       1
+    ##    (Intercept) group_B group_Ctrl
+    ## 1            1       0          0
+    ## 5            1       1          0
+    ## 10           1       0          1
 
 ``` r
-coef(one_model)
+coef(fit)
 ```
 
-    ## (Intercept)     group_A     group_B 
-    ##          20           2          -1
+    ## (Intercept)     group_B  group_Ctrl 
+    ##   21.994705   -2.390970   -1.372319
 
-The coefficient vector is `(Intercept)`, `group_A`, `group_B`: control
-abundance, A minus control, and B minus control.
-[`linfct_from_model()`](https://fgcz.github.io/prolfqua/reference/linfct_from_model.md)
-represents each group mean as a row of weights on those coefficients.
-Internally `.model_coeff_matrix()` creates the weights for observed
-factor combinations and `.coeff_weights_factor_levels()` averages them
-equally within each factor level.
-[`linfct_matrix_contrasts()`](https://fgcz.github.io/prolfqua/reference/linfct_matrix_contrasts.md)
-then evaluates the named expression using those group rows:
+A contrast string refers to group means, not to coefficients.
+`Contrasts$get_linfct()` shows the weights on the coefficients that each
+contrast becomes; the `avg_` rows are the mean of the two groups
+compared. Because A is the reference, `AvsC` is minus the `group_Ctrl`
+coefficient. The weights times the coefficients give the estimates in
+`get_contrasts()`:
 
 ``` r
-one_means <- linfct_from_model(one_model)$linfct_factors
-one_means
+weights <- contr$get_linfct()
+weights
 ```
 
-    ##            (Intercept) group_A group_B
-    ## group_A              1       1       0
-    ## group_B              1       0       1
-    ## group_Ctrl           1       0       0
+    ##          (Intercept) group_B group_Ctrl
+    ## AvsC               0     0.0       -1.0
+    ## BvsC               0     1.0       -1.0
+    ## avg_AvsC           1     0.0        0.5
+    ## avg_BvsC           1     0.5        0.5
 
 ``` r
-one_contrast <- linfct_matrix_contrasts(one_means, c(A_vs_Ctrl = "group_A - group_Ctrl"))
-one_contrast
+drop(weights %*% coef(fit))
 ```
 
-    ##           (Intercept) group_A group_B
-    ## A_vs_Ctrl           0       1       0
+    ##      AvsC      BvsC  avg_AvsC  avg_BvsC 
+    ##  1.372319 -1.018651 21.308545 20.113060
 
 ``` r
-drop(one_contrast %*% coef(one_model))
+dplyr::filter(contr$get_contrasts(), protein_Id == mod$model_df$protein_Id[1])[, c("contrast", "diff")]
 ```
 
-    ## A_vs_Ctrl 
-    ##         2
+    ## # A tibble: 2 × 2
+    ##   contrast  diff
+    ##   <chr>    <dbl>
+    ## 1 AvsC      1.37
+    ## 2 BvsC     -1.02
 
-Here `A_vs_Ctrl` has weights `(0, 1, 0)` and estimates a difference of
-2. If A were the reference, the individual coefficient names and weights
-would change, but the same contrast of group means would still estimate
-A minus control. The contrast strings refer to group means, which should
-not be confused with individual treatment-coded coefficients.
+If another level were the reference, the coefficients and the weights
+would change, but each contrast of group means would estimate the same
+difference.
 
 ### Two factors and their interaction
 
-`~ A * B` expands to `~ A + B + A:B`. With two levels per factor, its
-four columns are an intercept, the A effect at the B reference level,
-the B effect at the A reference level, and their interaction. The
-interaction is the change in the A effect between the two B levels:
+`~ Treatment * Background` expands to
+`~ Treatment + Background + Treatment:Background`. With two levels per
+factor its four columns are the intercept, the Treatment effect at the
+reference Background, the Background effect at the reference Treatment,
+and their interaction:
 
 ``` r
-two_factor <- expand.grid(A = c("a0", "a1"), B = c("b0", "b1"), replicate = 1:3)
-two_factor$abundance <- 20 + 3 * (two_factor$A == "a1") - 2 * (two_factor$B == "b1") +
-  4 * (two_factor$A == "a1" & two_factor$B == "b1") + rep(c(-0.2, 0, 0.2), each = 4)
-two_model <- lm(abundance ~ A * B, data = two_factor)
-unique(model.matrix(two_model))
+sim2 <- sim_lfq_data_2factor_config(n_proteins = 50, seed = 1234)
+lfq2 <- LFQData$new(sim2$data, sim2$config)
+mod2 <- build_model(lfq2, strategy_lm(paste(lfq2$response(), "~ Treatment * Background")))
+fit2 <- mod2$model_df$linear_model[[1]]
+unique(model.matrix(fit2))
 ```
 
-    ##   (Intercept) Aa1 Bb1 Aa1:Bb1
-    ## 1           1   0   0       0
-    ## 2           1   1   0       0
-    ## 3           1   0   1       0
-    ## 4           1   1   1       1
+    ##    (Intercept) TreatmentB BackgroundZ TreatmentB:BackgroundZ
+    ## 1            1          0           0                      0
+    ## 5            1          1           0                      0
+    ## 9            1          1           1                      1
+    ## 13           1          0           1                      0
+
+A factor level such as `TreatmentB` stands for the mean over the cells
+with that level, each cell weighted equally; a cell such as
+`` `TreatmentB:BackgroundX` `` stands for one cell (quote cell names
+with backticks because they contain a colon). A contrast may refer to
+earlier contrasts by name, here to give the interaction: the change of
+the B-vs-A difference between the two backgrounds.
 
 ``` r
-coef(two_model)
-```
-
-    ## (Intercept)         Aa1         Bb1     Aa1:Bb1 
-    ##          20           3          -2           4
-
-Cell means include the corresponding intercept, main effects and
-interaction. Quote the cell names with backticks because they contain
-colons. A main-effect row in `linfct_factors` averages equally over the
-observed cells containing that factor level; a row in
-`linfct_interactions` describes one cell. In this balanced example, the
-marginal A difference is 5, the A difference at `b0` is 3, and the
-difference at `b1` is 7:
-
-``` r
-two_means <- linfct_from_model(two_model)
-two_means$linfct_factors
-```
-
-    ##     (Intercept) Aa1 Bb1 Aa1:Bb1
-    ## Aa0           1 0.0 0.5     0.0
-    ## Aa1           1 1.0 0.5     0.5
-    ## Bb0           1 0.5 0.0     0.0
-    ## Bb1           1 0.5 1.0     0.5
-
-``` r
-two_means$linfct_interactions
-```
-
-    ##         (Intercept) Aa1 Bb1 Aa1:Bb1
-    ## Aa0:Bb0           1   0   0       0
-    ## Aa0:Bb1           1   0   1       0
-    ## Aa1:Bb0           1   1   0       0
-    ## Aa1:Bb1           1   1   1       1
-
-``` r
-two_weights <- linfct_matrix_contrasts(
-  linfct_from_model(two_model, as_list = FALSE),
-  c(
-    A_marginal = "Aa1 - Aa0",
-    A_at_b0 = "`Aa1:Bb0` - `Aa0:Bb0`",
-    A_at_b1 = "`Aa1:Bb1` - `Aa0:Bb1`",
-    A_by_B = "A_at_b1 - A_at_b0"
-  )
+contrasts2 <- c(
+  B_vs_A = "TreatmentB - TreatmentA",
+  B_vs_A_at_X = "`TreatmentB:BackgroundX` - `TreatmentA:BackgroundX`",
+  B_vs_A_at_Z = "`TreatmentB:BackgroundZ` - `TreatmentA:BackgroundZ`",
+  interaction = "B_vs_A_at_Z - B_vs_A_at_X"
 )
-two_weights
+contr2 <- Contrasts$new(mod2, contrasts2, model_name = "lm")
+weights2 <- contr2$get_linfct()
+weights2[!startsWith(rownames(weights2), "avg_"), ]
 ```
 
-    ##            (Intercept) Aa1 Bb1 Aa1:Bb1
-    ## A_marginal           0   1   0     0.5
-    ## A_at_b0              0   1   0     0.0
-    ## A_at_b1              0   1   0     1.0
-    ## A_by_B               0   0   0     1.0
+    ##             (Intercept) TreatmentB BackgroundZ TreatmentB:BackgroundZ
+    ## B_vs_A                0          1           0                    0.5
+    ## B_vs_A_at_X           0          1           0                    0.0
+    ## B_vs_A_at_Z           0          1           0                    1.0
+    ## interaction           0          0           0                    1.0
 
 ``` r
-drop(two_weights %*% coef(two_model))
+drop(weights2 %*% coef(fit2))[names(contrasts2)]
 ```
 
-    ## A_marginal    A_at_b0    A_at_b1     A_by_B 
-    ##          5          3          7          4
+    ##      B_vs_A B_vs_A_at_X B_vs_A_at_Z interaction 
+    ##  -0.4088817  -2.1299824   1.3122189   3.4422013
 
 ``` r
-stopifnot(all.equal(unname(drop(two_weights %*% coef(two_model))), c(5, 3, 7, 4)))
+dplyr::filter(contr2$get_contrasts(), protein_Id == mod2$model_df$protein_Id[1])[, c("contrast", "diff")]
 ```
 
-These helpers assume categorical predictors and the usual
-intercept-based coding. They do not implement general marginal means for
-continuous covariates or arbitrary contrast coding. Missing factor
-combinations can make some rows unestimable; unavailable groups in the
-contrast expressions are reported by a warning at the low-level
-interface, and the facade rejects a group absent from the entire
-dataset.
+    ## # A tibble: 4 × 2
+    ##   contrast      diff
+    ##   <chr>        <dbl>
+    ## 1 B_vs_A      -0.409
+    ## 2 B_vs_A_at_X -2.13 
+    ## 3 B_vs_A_at_Z  1.31 
+    ## 4 interaction  3.44
+
+The weights assume categorical predictors and the usual intercept-based
+coding; they do not give marginal means for continuous covariates or
+other contrast codings. When a protein lacks a factor combination, a
+contrast that needs a coefficient the protein cannot estimate is `NA`
+for that protein;
+[`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
+rejects a group that is absent from the whole dataset.
 
 ## Without moderation
 

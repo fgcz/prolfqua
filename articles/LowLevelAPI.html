@@ -73,7 +73,7 @@
                         <h4 data-toc-skip class="author">Witold E.
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">2026-11-22</h4>
+            <h4 data-toc-skip class="date">2026-11-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/main/vignettes/articles/LowLevelAPI.Rmd" class="external-link"><code>vignettes/articles/LowLevelAPI.Rmd</code></a></small>
       <div class="d-none name"><code>LowLevelAPI.Rmd</code></div>
@@ -205,130 +205,108 @@ formula. Method keys, predictor names and contrast names are case
 sensitive.</p>
 <p>R normally uses treatment coding (<code>options("contrasts")</code>):
 an intercept for the reference group and one coefficient per other
-level. When predictors are character labels, the first sorted level is
-normally the reference. In this small example we explicitly set
-<code>Ctrl</code> as the reference to make the coefficients easy to
-read:</p>
+level. Character predictors are sorted, so here <code>group_A</code> is
+the reference. The design and the coefficients of the first protein:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">one_factor</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>  group_ <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Ctrl"</span>, <span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Ctrl"</span>, <span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  abundance <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">19.8</span>, <span class="fl">20</span>, <span class="fl">20.2</span>, <span class="fl">21.8</span>, <span class="fl">22</span>, <span class="fl">22.2</span>, <span class="fl">18.8</span>, <span class="fl">19</span>, <span class="fl">19.2</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">one_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">abundance</span> <span class="op">~</span> <span class="va">group_</span>, data <span class="op">=</span> <span class="va">one_factor</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix</a></span><span class="op">(</span><span class="va">one_model</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##   (Intercept) group_A group_B</span></span>
-<span><span class="co">## 1           1       0       0</span></span>
-<span><span class="co">## 4           1       1       0</span></span>
-<span><span class="co">## 7           1       0       1</span></span></code></pre>
+<code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="va">mod</span><span class="op">$</span><span class="va">model_df</span><span class="op">$</span><span class="va">linear_model</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##    (Intercept) group_B group_Ctrl</span></span>
+<span><span class="co">## 1            1       0          0</span></span>
+<span><span class="co">## 5            1       1          0</span></span>
+<span><span class="co">## 10           1       0          1</span></span></code></pre>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">one_model</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## (Intercept)     group_A     group_B </span></span>
-<span><span class="co">##          20           2          -1</span></span></code></pre>
-<p>The coefficient vector is <code>(Intercept)</code>,
-<code>group_A</code>, <code>group_B</code>: control abundance, A minus
-control, and B minus control. <code><a href="../reference/linfct_from_model.html">linfct_from_model()</a></code>
-represents each group mean as a row of weights on those coefficients.
-Internally <code>.model_coeff_matrix()</code> creates the weights for
-observed factor combinations and
-<code>.coeff_weights_factor_levels()</code> averages them equally within
-each factor level. <code><a href="../reference/linfct_matrix_contrasts.html">linfct_matrix_contrasts()</a></code> then evaluates
-the named expression using those group rows:</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## (Intercept)     group_B  group_Ctrl </span></span>
+<span><span class="co">##   21.994705   -2.390970   -1.372319</span></span></code></pre>
+<p>A contrast string refers to group means, not to coefficients.
+<code>Contrasts$get_linfct()</code> shows the weights on the
+coefficients that each contrast becomes; the <code>avg_</code> rows are
+the mean of the two groups compared. Because A is the reference,
+<code>AvsC</code> is minus the <code>group_Ctrl</code> coefficient. The
+weights times the coefficients give the estimates in
+<code>get_contrasts()</code>:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">one_means</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/linfct_from_model.html">linfct_from_model</a></span><span class="op">(</span><span class="va">one_model</span><span class="op">)</span><span class="op">$</span><span class="va">linfct_factors</span></span>
-<span><span class="va">one_means</span></span></code></pre></div>
-<pre><code><span><span class="co">##            (Intercept) group_A group_B</span></span>
-<span><span class="co">## group_A              1       1       0</span></span>
-<span><span class="co">## group_B              1       0       1</span></span>
-<span><span class="co">## group_Ctrl           1       0       0</span></span></code></pre>
+<code class="sourceCode R"><span><span class="va">weights</span> <span class="op">&lt;-</span> <span class="va">contr</span><span class="op">$</span><span class="fu">get_linfct</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">weights</span></span></code></pre></div>
+<pre><code><span><span class="co">##          (Intercept) group_B group_Ctrl</span></span>
+<span><span class="co">## AvsC               0     0.0       -1.0</span></span>
+<span><span class="co">## BvsC               0     1.0       -1.0</span></span>
+<span><span class="co">## avg_AvsC           1     0.0        0.5</span></span>
+<span><span class="co">## avg_BvsC           1     0.5        0.5</span></span></code></pre>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">one_contrast</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/linfct_matrix_contrasts.html">linfct_matrix_contrasts</a></span><span class="op">(</span><span class="va">one_means</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>A_vs_Ctrl <span class="op">=</span> <span class="st">"group_A - group_Ctrl"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">one_contrast</span></span></code></pre></div>
-<pre><code><span><span class="co">##           (Intercept) group_A group_B</span></span>
-<span><span class="co">## A_vs_Ctrl           0       1       0</span></span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/drop.html" class="external-link">drop</a></span><span class="op">(</span><span class="va">weights</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##      AvsC      BvsC  avg_AvsC  avg_BvsC </span></span>
+<span><span class="co">##  1.372319 -1.018651 21.308545 20.113060</span></span></code></pre>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/drop.html" class="external-link">drop</a></span><span class="op">(</span><span class="va">one_contrast</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">one_model</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## A_vs_Ctrl </span></span>
-<span><span class="co">##         2</span></span></code></pre>
-<p>Here <code>A_vs_Ctrl</code> has weights <code>(0, 1, 0)</code> and
-estimates a difference of 2. If A were the reference, the individual
-coefficient names and weights would change, but the same contrast of
-group means would still estimate A minus control. The contrast strings
-refer to group means, which should not be confused with individual
-treatment-coded coefficients.</p>
+<code class="sourceCode R"><span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">contr</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span>, <span class="va">protein_Id</span> <span class="op">==</span> <span class="va">mod</span><span class="op">$</span><span class="va">model_df</span><span class="op">$</span><span class="va">protein_Id</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"contrast"</span>, <span class="st">"diff"</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 2</span></span></span>
+<span><span class="co">##   contrast  diff</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> AvsC      1.37</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> BvsC     -<span style="color: #BB0000;">1.02</span></span></span></code></pre>
+<p>If another level were the reference, the coefficients and the weights
+would change, but each contrast of group means would estimate the same
+difference.</p>
 <div class="section level3">
 <h3 id="two-factors-and-their-interaction">Two factors and their interaction<a class="anchor" aria-label="anchor" href="#two-factors-and-their-interaction"></a>
 </h3>
-<p><code>~ A * B</code> expands to <code>~ A + B + A:B</code>. With two
-levels per factor, its four columns are an intercept, the A effect at
-the B reference level, the B effect at the A reference level, and their
-interaction. The interaction is the change in the A effect between the
-two B levels:</p>
+<p><code>~ Treatment * Background</code> expands to
+<code>~ Treatment + Background + Treatment:Background</code>. With two
+levels per factor its four columns are the intercept, the Treatment
+effect at the reference Background, the Background effect at the
+reference Treatment, and their interaction:</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">two_factor</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span>A <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a0"</span>, <span class="st">"a1"</span><span class="op">)</span>, B <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"b0"</span>, <span class="st">"b1"</span><span class="op">)</span>, replicate <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span>
-<span><span class="va">two_factor</span><span class="op">$</span><span class="va">abundance</span> <span class="op">&lt;-</span> <span class="fl">20</span> <span class="op">+</span> <span class="fl">3</span> <span class="op">*</span> <span class="op">(</span><span class="va">two_factor</span><span class="op">$</span><span class="va">A</span> <span class="op">==</span> <span class="st">"a1"</span><span class="op">)</span> <span class="op">-</span> <span class="fl">2</span> <span class="op">*</span> <span class="op">(</span><span class="va">two_factor</span><span class="op">$</span><span class="va">B</span> <span class="op">==</span> <span class="st">"b1"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fl">4</span> <span class="op">*</span> <span class="op">(</span><span class="va">two_factor</span><span class="op">$</span><span class="va">A</span> <span class="op">==</span> <span class="st">"a1"</span> <span class="op">&amp;</span> <span class="va">two_factor</span><span class="op">$</span><span class="va">B</span> <span class="op">==</span> <span class="st">"b1"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.2</span>, <span class="fl">0</span>, <span class="fl">0.2</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
-<span><span class="va">two_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">abundance</span> <span class="op">~</span> <span class="va">A</span> <span class="op">*</span> <span class="va">B</span>, data <span class="op">=</span> <span class="va">two_factor</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix</a></span><span class="op">(</span><span class="va">two_model</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##   (Intercept) Aa1 Bb1 Aa1:Bb1</span></span>
-<span><span class="co">## 1           1   0   0       0</span></span>
-<span><span class="co">## 2           1   1   0       0</span></span>
-<span><span class="co">## 3           1   0   1       0</span></span>
-<span><span class="co">## 4           1   1   1       1</span></span></code></pre>
+<code class="sourceCode R"><span><span class="va">sim2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_lfq_data_2factor_config.html">sim_lfq_data_2factor_config</a></span><span class="op">(</span>n_proteins <span class="op">=</span> <span class="fl">50</span>, seed <span class="op">=</span> <span class="fl">1234</span><span class="op">)</span></span>
+<span><span class="va">lfq2</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">sim2</span><span class="op">$</span><span class="va">data</span>, <span class="va">sim2</span><span class="op">$</span><span class="va">config</span><span class="op">)</span></span>
+<span><span class="va">mod2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_model.html">build_model</a></span><span class="op">(</span><span class="va">lfq2</span>, <span class="fu"><a href="../reference/strategy.html">strategy_lm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">lfq2</span><span class="op">$</span><span class="fu">response</span><span class="op">(</span><span class="op">)</span>, <span class="st">"~ Treatment * Background"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">fit2</span> <span class="op">&lt;-</span> <span class="va">mod2</span><span class="op">$</span><span class="va">model_df</span><span class="op">$</span><span class="va">linear_model</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix</a></span><span class="op">(</span><span class="va">fit2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##    (Intercept) TreatmentB BackgroundZ TreatmentB:BackgroundZ</span></span>
+<span><span class="co">## 1            1          0           0                      0</span></span>
+<span><span class="co">## 5            1          1           0                      0</span></span>
+<span><span class="co">## 9            1          1           1                      1</span></span>
+<span><span class="co">## 13           1          0           1                      0</span></span></code></pre>
+<p>A factor level such as <code>TreatmentB</code> stands for the mean
+over the cells with that level, each cell weighted equally; a cell such
+as <code>`TreatmentB:BackgroundX`</code> stands for one cell (quote cell
+names with backticks because they contain a colon). A contrast may refer
+to earlier contrasts by name, here to give the interaction: the change
+of the B-vs-A difference between the two backgrounds.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">two_model</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## (Intercept)         Aa1         Bb1     Aa1:Bb1 </span></span>
-<span><span class="co">##          20           3          -2           4</span></span></code></pre>
-<p>Cell means include the corresponding intercept, main effects and
-interaction. Quote the cell names with backticks because they contain
-colons. A main-effect row in <code>linfct_factors</code> averages
-equally over the observed cells containing that factor level; a row in
-<code>linfct_interactions</code> describes one cell. In this balanced
-example, the marginal A difference is 5, the A difference at
-<code>b0</code> is 3, and the difference at <code>b1</code> is 7:</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">two_means</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/linfct_from_model.html">linfct_from_model</a></span><span class="op">(</span><span class="va">two_model</span><span class="op">)</span></span>
-<span><span class="va">two_means</span><span class="op">$</span><span class="va">linfct_factors</span></span></code></pre></div>
-<pre><code><span><span class="co">##     (Intercept) Aa1 Bb1 Aa1:Bb1</span></span>
-<span><span class="co">## Aa0           1 0.0 0.5     0.0</span></span>
-<span><span class="co">## Aa1           1 1.0 0.5     0.5</span></span>
-<span><span class="co">## Bb0           1 0.5 0.0     0.0</span></span>
-<span><span class="co">## Bb1           1 0.5 1.0     0.5</span></span></code></pre>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">two_means</span><span class="op">$</span><span class="va">linfct_interactions</span></span></code></pre></div>
-<pre><code><span><span class="co">##         (Intercept) Aa1 Bb1 Aa1:Bb1</span></span>
-<span><span class="co">## Aa0:Bb0           1   0   0       0</span></span>
-<span><span class="co">## Aa0:Bb1           1   0   1       0</span></span>
-<span><span class="co">## Aa1:Bb0           1   1   0       0</span></span>
-<span><span class="co">## Aa1:Bb1           1   1   1       1</span></span></code></pre>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">two_weights</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/linfct_matrix_contrasts.html">linfct_matrix_contrasts</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="../reference/linfct_from_model.html">linfct_from_model</a></span><span class="op">(</span><span class="va">two_model</span>, as_list <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>    A_marginal <span class="op">=</span> <span class="st">"Aa1 - Aa0"</span>,</span>
-<span>    A_at_b0 <span class="op">=</span> <span class="st">"`Aa1:Bb0` - `Aa0:Bb0`"</span>,</span>
-<span>    A_at_b1 <span class="op">=</span> <span class="st">"`Aa1:Bb1` - `Aa0:Bb1`"</span>,</span>
-<span>    A_by_B <span class="op">=</span> <span class="st">"A_at_b1 - A_at_b0"</span></span>
-<span>  <span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">contrasts2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  B_vs_A <span class="op">=</span> <span class="st">"TreatmentB - TreatmentA"</span>,</span>
+<span>  B_vs_A_at_X <span class="op">=</span> <span class="st">"`TreatmentB:BackgroundX` - `TreatmentA:BackgroundX`"</span>,</span>
+<span>  B_vs_A_at_Z <span class="op">=</span> <span class="st">"`TreatmentB:BackgroundZ` - `TreatmentA:BackgroundZ`"</span>,</span>
+<span>  interaction <span class="op">=</span> <span class="st">"B_vs_A_at_Z - B_vs_A_at_X"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">two_weights</span></span></code></pre></div>
-<pre><code><span><span class="co">##            (Intercept) Aa1 Bb1 Aa1:Bb1</span></span>
-<span><span class="co">## A_marginal           0   1   0     0.5</span></span>
-<span><span class="co">## A_at_b0              0   1   0     0.0</span></span>
-<span><span class="co">## A_at_b1              0   1   0     1.0</span></span>
-<span><span class="co">## A_by_B               0   0   0     1.0</span></span></code></pre>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/drop.html" class="external-link">drop</a></span><span class="op">(</span><span class="va">two_weights</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">two_model</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## A_marginal    A_at_b0    A_at_b1     A_by_B </span></span>
-<span><span class="co">##          5          3          7          4</span></span></code></pre>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/drop.html" class="external-link">drop</a></span><span class="op">(</span><span class="va">two_weights</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">two_model</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">3</span>, <span class="fl">7</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>These helpers assume categorical predictors and the usual
-intercept-based coding. They do not implement general marginal means for
-continuous covariates or arbitrary contrast coding. Missing factor
-combinations can make some rows unestimable; unavailable groups in the
-contrast expressions are reported by a warning at the low-level
-interface, and the facade rejects a group absent from the entire
-dataset.</p>
+<span><span class="va">contr2</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/Contrasts.html">Contrasts</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">mod2</span>, <span class="va">contrasts2</span>, model_name <span class="op">=</span> <span class="st">"lm"</span><span class="op">)</span></span>
+<span><span class="va">weights2</span> <span class="op">&lt;-</span> <span class="va">contr2</span><span class="op">$</span><span class="fu">get_linfct</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">weights2</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/startsWith.html" class="external-link">startsWith</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">weights2</span><span class="op">)</span>, <span class="st">"avg_"</span><span class="op">)</span>, <span class="op">]</span></span></code></pre></div>
+<pre><code><span><span class="co">##             (Intercept) TreatmentB BackgroundZ TreatmentB:BackgroundZ</span></span>
+<span><span class="co">## B_vs_A                0          1           0                    0.5</span></span>
+<span><span class="co">## B_vs_A_at_X           0          1           0                    0.0</span></span>
+<span><span class="co">## B_vs_A_at_Z           0          1           0                    1.0</span></span>
+<span><span class="co">## interaction           0          0           0                    1.0</span></span></code></pre>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/drop.html" class="external-link">drop</a></span><span class="op">(</span><span class="va">weights2</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">fit2</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">contrasts2</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
+<pre><code><span><span class="co">##      B_vs_A B_vs_A_at_X B_vs_A_at_Z interaction </span></span>
+<span><span class="co">##  -0.4088817  -2.1299824   1.3122189   3.4422013</span></span></code></pre>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">contr2</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span>, <span class="va">protein_Id</span> <span class="op">==</span> <span class="va">mod2</span><span class="op">$</span><span class="va">model_df</span><span class="op">$</span><span class="va">protein_Id</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"contrast"</span>, <span class="st">"diff"</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 4 × 2</span></span></span>
+<span><span class="co">##   contrast      diff</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> B_vs_A      -<span style="color: #BB0000;">0.409</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> B_vs_A_at_X -<span style="color: #BB0000;">2.13</span> </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> B_vs_A_at_Z  1.31 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> interaction  3.44</span></span></code></pre>
+<p>The weights assume categorical predictors and the usual
+intercept-based coding; they do not give marginal means for continuous
+covariates or other contrast codings. When a protein lacks a factor
+combination, a contrast that needs a coefficient the protein cannot
+estimate is <code>NA</code> for that protein;
+<code><a href="../reference/build_contrast_analysis.html">build_contrast_analysis()</a></code> rejects a group that is absent
+from the whole dataset.</p>
 </div>
 </div>
 <div class="section level2">
@@ -337,7 +315,7 @@ dataset.</p>
 <p><code>Contrasts</code> alone gives the unmoderated contrasts, which
 the facades do not expose. Moderation stabilises the variances estimated
 from few observations:</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  contrasts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Contrasts"</span>, <span class="st">"ContrastsModerated"</span><span class="op">)</span>,</span>
 <span>  FDR_lt_0.1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
@@ -355,7 +333,7 @@ from few observations:</p>
 <p>Replace the strategy to fit another model per protein, e.g. a robust
 linear model with <code><a href="../reference/strategy.html">strategy_rlm()</a></code>; the other steps stay the
 same.</p>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod_rlm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_model.html">build_model</a></span><span class="op">(</span><span class="va">lfq</span>, <span class="fu"><a href="../reference/strategy.html">strategy_rlm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">lfq</span><span class="op">$</span><span class="fu">response</span><span class="op">(</span><span class="op">)</span>, <span class="st">"~ group_"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">contr_rlm</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/ContrastsModerated.html">ContrastsModerated</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va"><a href="../reference/Contrasts.html">Contrasts</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">mod_rlm</span>, <span class="va">contrasts</span>, model_name <span class="op">=</span> <span class="st">"rlm"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">contr_rlm</span><span class="op">$</span><span class="fu">get_contrasts</span><span class="op">(</span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"protein_Id"</span>, <span class="st">"contrast"</span>, <span class="st">"diff"</span>, <span class="st">"p.value"</span>, <span class="st">"FDR"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
@@ -376,7 +354,7 @@ same.</p>
 <code><a href="../reference/register_facade.html">register_facade()</a></code> adds it to the registry, after which
 <code>build_contrast_analysis(method = ...)</code> finds it.
 <code><a href="../reference/list_facades.html">list_facades()</a></code> shows the registry:</p>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="../reference/list_facades.html">list_facades</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##  [1] "binomial_firth_nested" "binomial_nested"       "deqms"                </span></span>
 <span><span class="co">##  [4] "deqms_voom"            "firth"                 "hurdle_nested"        </span></span>
@@ -389,7 +367,7 @@ same.</p>
 <div class="section level2">
 <h2 id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## R version 4.6.2 (2026-10-29)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu</span></span>

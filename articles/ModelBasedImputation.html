@@ -73,7 +73,7 @@
                         <h4 data-toc-skip class="author">Witold E.
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">2026-11-22</h4>
+            <h4 data-toc-skip class="date">2026-11-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/main/vignettes/ModelBasedImputation.Rmd" class="external-link"><code>vignettes/ModelBasedImputation.Rmd</code></a></small>
       <div class="d-none name"><code>ModelBasedImputation.Rmd</code></div>
@@ -396,14 +396,10 @@ table above:</p>
 heatmaps with that row order, so each row shows the same protein before
 and after.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">before</span> <span class="op">&lt;-</span> <span class="va">lfq</span><span class="op">$</span><span class="fu">data_wide</span><span class="op">(</span>as.matrix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">after</span> <span class="op">&lt;-</span> <span class="va">filled</span><span class="op">$</span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">data_wide</span><span class="op">(</span>as.matrix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">after</span> <span class="op">&lt;-</span> <span class="va">filled</span><span class="op">$</span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">data_wide</span><span class="op">(</span>as.matrix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">row_order</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">after</span><span class="op">$</span><span class="va">data</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">hclust</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">after</span><span class="op">$</span><span class="va">data</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">order</span><span class="op">]</span></span></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ht_before</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_heatmap.html">plot_heatmap</a></span><span class="op">(</span></span>
-<span>  <span class="va">before</span><span class="op">$</span><span class="va">data</span>, <span class="va">before</span><span class="op">$</span><span class="va">annotation</span>, <span class="va">lfq</span><span class="op">$</span><span class="fu">factor_keys</span><span class="op">(</span><span class="op">)</span>, <span class="va">lfq</span><span class="op">$</span><span class="fu">sample_name</span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  na_fraction <span class="op">=</span> <span class="fl">1</span>, row_order <span class="op">=</span> <span class="va">row_order</span></span>
-<span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">ht_before</span> <span class="op">&lt;-</span> <span class="va">lfq</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">heatmap</span><span class="op">(</span>row_order <span class="op">=</span> <span class="va">row_order</span><span class="op">)</span></span>
 <span><span class="va">ht_before</span></span></code></pre></div>
 <div class="figure">
 <img src="ModelBasedImputation_files/figure-html/heatmapBefore-1.png" class="r-plt" alt="Before imputation: missing cells are grey." width="700"><p class="caption">
@@ -411,10 +407,7 @@ Before imputation: missing cells are grey.
 </p>
 </div>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ht_after</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_heatmap.html">plot_heatmap</a></span><span class="op">(</span></span>
-<span>  <span class="va">after</span><span class="op">$</span><span class="va">data</span>, <span class="va">after</span><span class="op">$</span><span class="va">annotation</span>, <span class="va">lfq</span><span class="op">$</span><span class="fu">factor_keys</span><span class="op">(</span><span class="op">)</span>, <span class="va">lfq</span><span class="op">$</span><span class="fu">sample_name</span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  na_fraction <span class="op">=</span> <span class="fl">1</span>, row_order <span class="op">=</span> <span class="va">row_order</span></span>
-<span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">ht_after</span> <span class="op">&lt;-</span> <span class="va">filled</span><span class="op">$</span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">get_Plotter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">heatmap</span><span class="op">(</span>row_order <span class="op">=</span> <span class="va">row_order</span><span class="op">)</span></span>
 <span><span class="va">ht_after</span></span></code></pre></div>
 <div class="figure">
 <img src="ModelBasedImputation_files/figure-html/heatmapAfter-1.png" class="r-plt" alt="After imputation: every cell holds a value." width="700"><p class="caption">

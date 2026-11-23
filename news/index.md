@@ -2,6 +2,16 @@
 
 ## prolfqua 1.9.5
 
+### New features
+
+- `LFQDataPlotter$heatmap(row_order = )` draws exactly the given
+  features, in the given order and without row clustering, so two
+  heatmaps of the same features can be compared row by row, e.g. before
+  and after imputation (imputation changes the per-feature sd, so the
+  most variable features and their clustering would differ). `row_order`
+  cannot be combined with `n_most_variable`; an unknown feature ID is an
+  error that names it.
+
 ### Behaviour changes
 
 - prolfqua is label-free only: the isotope label is gone.
@@ -144,13 +154,13 @@
   and with it `get_Stats()`, the heatmap feature selection and the limit
   of detection of the impute methods, computes all groups in one pass:
   0.2 s instead of 10.5 s for 67,000 peptides in 12 samples.
-- Median-polish aggregation is about 5 times faster (2,000 proteins: 1.4
-  s instead of 7.4 s) and rlm aggregation about a quarter faster.
+- Median-polish aggregation is about 4.5 times faster (2,000 proteins:
+  1.6 s instead of 7.4 s) and rlm aggregation about a fifth faster.
 - Wald contrasts of the methods that fit one model per protein (lm, rlm,
   rfit, lm_impute, rfit_impute, deqms, ropeca) are computed once per
   protein instead of once per contrast row, and contrasts naming a group
   a protein lacks are skipped without raising and catching an error; the
-  lm method on 5,000 proteins takes 3.7 s instead of 9.4 s.
+  lm method on 5,000 proteins takes 4.9 s instead of 9.4 s.
 
 ### Deprecated
 
@@ -193,9 +203,55 @@
 - `merge_contrasts_results(model_name = )` is deprecated: it was never
   used, and the merged model keeps its name `<prefer>_<add>`. Passing it
   warns.
+- The 73 functions that were exported but documented only on internal
+  help pages are deprecated and will be removed from the exports;
+  prolfqua’s interface is
+  [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md),
+  `LFQData` with its `get_*()` objects, and the model and contrast
+  classes. Each still works, warns, and names its public route,
+  e.g. [`summarize_stats()`](https://fgcz.github.io/prolfqua/reference/summarize_stats.md):
+  `LFQData$get_Stats()$stats()`;
+  [`plot_pca()`](https://fgcz.github.io/prolfqua/reference/plot_pca.md):
+  `LFQData$get_Plotter()$pca()`;
+  [`estimate_intensity()`](https://fgcz.github.io/prolfqua/reference/estimate_intensity.md):
+  `LFQData$get_Aggregator("medpolish")$aggregate()`;
+  [`compute_contrast()`](https://fgcz.github.io/prolfqua/reference/compute_contrast.md),
+  [`linfct_from_model()`](https://fgcz.github.io/prolfqua/reference/linfct_from_model.md):
+  [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
+  and `Contrasts$get_linfct()`. The full list, grouped by route, is in
+  [`?"prolfqua-deprecated"`](https://fgcz.github.io/prolfqua/reference/prolfqua-deprecated.md).
+  This includes
+  [`lfq_power_t_test_quantiles()`](https://fgcz.github.io/prolfqua/reference/lfq_power_t_test_quantiles.md),
+  [`summary_ropeca_median_p_scaled()`](https://fgcz.github.io/prolfqua/reference/summary_ropeca_median_p_scaled.md)
+  and
+  [`missingness_histogram()`](https://fgcz.github.io/prolfqua/reference/missingness_histogram.md),
+  the new names of three functions renamed above; their old names now
+  point to the R6 methods as well.
+- [`script_copy_helper_vec()`](https://fgcz.github.io/prolfqua/reference/script_copy_helper_vec.md)
+  and
+  [`separate_hierarchy()`](https://fgcz.github.io/prolfqua/reference/separate_hierarchy.md)
+  moved to prolfquapp;
+  [`get_contrast()`](https://fgcz.github.io/prolfqua/reference/get_contrast.md)
+  is deprecated without replacement (only prolfquatakeoutmissing used
+  it, which has its own copy); for
+  [`matrix_to_tibble()`](https://fgcz.github.io/prolfqua/reference/matrix_to_tibble.md)
+  use `tibble::as_tibble(x, rownames = )`.
+- `LFQDataPlotter$heatmap(top_n = )` is renamed `n_most_variable`, since
+  it keeps the features with the largest sd (or CV); `top_n` still works
+  and warns.
 
 ### Documentation
 
+- [`?ContrastsFacadeBase`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.md)
+  is a public help page: how a facade for a new modelling backend is
+  written and registered with
+  [`register_facade()`](https://fgcz.github.io/prolfqua/reference/register_facade.md),
+  with a working example.
+- The reference index of the pkgdown site groups the help pages by
+  topic. The article “Under the hood” explains how contrast strings
+  become weights on the model coefficients with
+  `Contrasts$get_linfct()`, and the imputation vignette draws its before
+  and after heatmaps with `LFQDataPlotter$heatmap(row_order = )`.
 - Help pages render Markdown, so code and links that showed as literal
   backticks or brackets now format; every exported function documents
   its return value; titles are in sentence case and `lfqdata` arguments
