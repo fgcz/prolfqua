@@ -159,7 +159,7 @@ Other modelling:
 tmp <- strategy_logistf("bin_resp ~ condition", model_name = "parallel design")
 tmp$formula
 #> bin_resp ~ condition
-#> <environment: 0x63baeeafd5a0>
+#> <environment: 0x615a92fc5928>
 
 istar <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
@@ -216,22 +216,22 @@ modelFunction$model_fun(nestProtein$data[[4]])
 tmp <- strategy_rfit("Intensity ~ condition", model_name = "parallel design")
 tmp$formula
 #> Intensity ~ condition
-#> <environment: 0x63baf11bb118>
+#> <environment: 0x615a89949170>
 modelFunction <- strategy_lmer("abundanceC ~ group_ + (1|peptide_Id)",
   model_name = "random_example")
 modelFunction$formula
 #> abundanceC ~ group_ + (1 | peptide_Id)
-#> <environment: 0x63baf123e050>
+#> <environment: 0x615a8c51deb8>
 tmp <- strategy_lm("Intensity ~ condition", model_name = "parallel design")
 tmp$formula
 #> Intensity ~ condition
-#> <environment: 0x63baf12bcc08>
+#> <environment: 0x615a879220e0>
 tmp$weights
 #> NULL
 tmp <- strategy_rlm("Intensity ~ condition", model_name = "parallel design")
 tmp$formula
 #> Intensity ~ condition
-#> <environment: 0x63baf136df08>
+#> <environment: 0x615a8a862348>
 strategy_rlm("Intensity ~ condition", control = list(maxit = 50))$control
 #> $maxit
 #> [1] 50

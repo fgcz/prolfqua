@@ -153,5 +153,5 @@ The objects of this class are cloneable with this method.
 strat <- StrategyRLM$new("Intensity ~ condition", model_name = "parallel design")
 strat$formula
 #> Intensity ~ condition
-#> <environment: 0x63bacdcdef58>
+#> <environment: 0x615a7241cda8>
 ```
