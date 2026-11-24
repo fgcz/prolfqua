@@ -174,8 +174,9 @@ generate_contrasts <- function(primary_levels, secondary_levels, interactions = 
 #' Add the contrasts of a two-factor design to a sample annotation
 #'
 #' Unites the two factor columns into a `Group` column and appends the contrasts of [generate_contrasts()] as the
-#' columns `ContrastName` and `Contrast`, padded with `NA` to the number of samples, in the layout of a prolfquapp
-#' dataset annotation. Nothing is written to disk.
+#' columns `ContrastName` and `Contrast`, in the layout of a prolfquapp dataset annotation. The shorter side is padded
+#' with `NA` rows: with fewer contrasts than samples the contrast columns, with more contrasts than samples the sample
+#' columns, so the extra rows carry only a contrast. Nothing is written to disk.
 #'
 #' @param df data.frame with annotation data
 #' @param primary_col character, name of the primary factor column
@@ -215,20 +216,28 @@ annotation_add_contrasts <- function(
   levels_s <- sort(unique(df[[secondary_col]]), decreasing = decreasing)
 
   df <- df |> tidyr::unite("Group", dplyr::all_of(c(primary_col, secondary_col)), sep = "_", remove = FALSE)
+  cells <- unique(df[c("Group", primary_col, secondary_col)])
+  shared <- cells[cells$Group %in% cells$Group[duplicated(cells$Group)], ]
+  if (nrow(shared) > 0) {
+    abort_bad_argument(
+      "df",
+      paste0("give each combination of `", primary_col, "` and `", secondary_col, "` its own group name"),
+      not = toString(paste0(shared[[primary_col]], " + ", shared[[secondary_col]], " as ", shared$Group))
+    )
+  }
   df_contrast <- generate_contrasts(levels_p, levels_s, interactions = interactions)
 
-  if (nrow(df_contrast) < nrow(df)) {
-    pad <- tibble::tibble(
-      ContrastName = rep(NA_character_, nrow(df) - nrow(df_contrast)),
-      Contrast = rep(NA_character_, nrow(df) - nrow(df_contrast))
-    )
-    df_contrast <- bind_rows(df_contrast, pad)
-  }
-  # Annotate and export
+  n_rows <- max(nrow(df), nrow(df_contrast))
   annot <- dplyr::bind_cols(
-    df |> dplyr::select(-dplyr::all_of(c(primary_col, secondary_col))),
-    df_contrast
+    pad_rows(df |> dplyr::select(-dplyr::all_of(c(primary_col, secondary_col))), n_rows),
+    pad_rows(df_contrast, n_rows)
   )
   name <- paste0("DEA_", prefix, "_", dataset_id, ".csv")
   list(annot = annot, name = name)
+}
+
+pad_rows <- function(x, n) {
+  x <- x[c(seq_len(nrow(x)), rep(NA_integer_, n - nrow(x))), , drop = FALSE]
+  rownames(x) <- NULL
+  x
 }

@@ -58,3 +58,31 @@ test_that("annotation_add_contrasts adds the group column and pads the contrast 
   )
   expect_identical(res$annot$Contrast[2], "G_WT_t1 - G_KO_t1")
 })
+
+test_that("annotation_add_contrasts pads the samples with NA rows when the contrasts outnumber them", {
+  df <- tibble::tibble(
+    Sample = paste0("s", 1:8),
+    genotype = c("a", "b", "c", "a", "b", "c", "a", "b"),
+    bait = rep(c("ctrl", "bait"), each = 4)
+  )
+  # 3 main + 6 level-specific + 3 interaction contrasts for 8 samples
+  annot <- annotation_add_contrasts(df, "genotype", "bait")$annot
+  expect_identical(nrow(annot), 12L)
+  expect_identical(annot$Sample, c(df$Sample, rep(NA, 4)))
+  expect_identical(annot$Group[9:12], rep(NA_character_, 4))
+  expect_false(anyNA(annot$ContrastName))
+})
+
+test_that("annotation_add_contrasts errors when two factor combinations get the same group name", {
+  df <- data.frame(
+    Sample = paste0("s", 1:4),
+    genotype = c("a_b", "a", "a_b", "a"),
+    time = c("c", "b_c", "b_c", "c")
+  )
+  expect_error(
+    annotation_add_contrasts(df, "genotype", "time"),
+    "a_b + c as a_b_c, a + b_c as a_b_c",
+    fixed = TRUE,
+    class = "prolfqua_error_bad_argument"
+  )
+})

@@ -37,6 +37,7 @@
 
 ## Bug fixes
 
+- `annotation_add_contrasts()` handles designs with more contrasts than samples (e.g. 5 x 2 levels with interactions: 40 contrasts for 30 samples) by appending `NA` sample rows that carry only a contrast, as it already padded the contrast columns for designs with fewer contrasts; before, it failed in `bind_cols()` with "Can't recycle". It stops with a `prolfqua_error_bad_argument` error when two combinations of factor levels get the same group name (`a_b` + `c` and `a` + `b_c` are both `a_b_c`); before, their samples were merged into one group.
 - `null_split_check()` no longer adds `pseudo_group_` to the configuration of the `LFQData` passed in; before, later calls on that object such as `data_wide()` and `get_Stats()$stats()` failed.
 - `build_model_impute()` stops with an error for input that is not aggregated (subject equals the hierarchy) and for strategies other than `strategy_lm()` and `strategy_rfit()`. Before, peptide-level input was refitted with one placeholder row per missing sample, and mixed models failed with "$ operator not defined for this S4 class".
 - `missingness_histogram()` facets by the `factors` it is given; before, it summarised by `factors` but faceted by all configured factors, and failed when `factors` was a subset.

@@ -35,8 +35,9 @@ columns are dropped), and \code{name}, a suggested file name \verb{DEA_<prefix>_
 }
 \description{
 Unites the two factor columns into a \code{Group} column and appends the contrasts of \code{\link[=generate_contrasts]{generate_contrasts()}} as the
-columns \code{ContrastName} and \code{Contrast}, padded with \code{NA} to the number of samples, in the layout of a prolfquapp
-dataset annotation. Nothing is written to disk.
+columns \code{ContrastName} and \code{Contrast}, in the layout of a prolfquapp dataset annotation. The shorter side is padded
+with \code{NA} rows: with fewer contrasts than samples the contrast columns, with more contrasts than samples the sample
+columns, so the extra rows carry only a contrast. Nothing is written to disk.
 }
 \examples{
 
