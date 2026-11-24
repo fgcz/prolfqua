@@ -208,11 +208,11 @@ Useful links:
 Authors:
 \itemize{
   \item Witold Wolski \email{witold.wolski@fgcz.uzh.ch} (\href{https://orcid.org/0000-0002-6468-120X}{ORCID})
-  \item Christian Panse \email{cp@fgcz.ethz.ch} (\href{https://orcid.org/0000-0003-1975-3064}{ORCID})
 }
 
 Other contributors:
 \itemize{
+  \item Christian Panse \email{cp@fgcz.ethz.ch} (\href{https://orcid.org/0000-0003-1975-3064}{ORCID}) [contributor]
   \item Jonas Grossmann [contributor]
   \item Functional Genomics Center Zurich (\href{https://ror.org/04tgr1802}{ROR}) [funder]
   \item University of Zurich (\href{https://ror.org/02crff812}{ROR}) [copyright holder]
