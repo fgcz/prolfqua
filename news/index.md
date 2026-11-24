@@ -88,6 +88,13 @@
   as a message instead of limma’s unclassed “Zero sample variances
   detected” warning (a warning of class `prolfqua_fit_failed` when more
   than half are zero); results are unchanged.
+- The `deqms` and `deqms_voom` methods and `ContrastsModeratedDEqMS`
+  stop with a `prolfqua_error_constant_counts` error naming the count
+  column when every protein has the same count, e.g. protein data
+  without peptide counts, where `nr_children` is 1; the
+  variance-by-count trend cannot be fitted then. Before,
+  `get_contrasts()` failed inside `predict.loess()` with “NA/NaN/Inf in
+  foreign function call”, or returned NaN p-values for every protein.
 - Plots: volcano, MA and score plots draw smaller, more transparent
   points, so dense regions stay readable;
   `ContrastsPlotter$barplot_threshold()` fills bars with the

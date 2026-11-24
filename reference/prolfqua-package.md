@@ -57,7 +57,7 @@ one laptop; times scale with the machine.
   10,000 proteins.
 
 - Aggregation of peptides to proteins takes about 1 ms per protein with
-  median polish and 4 ms with `rlm`. The QC writers take about 0.1 s
+  median polish and with `rlm`. The QC writers take about 0.1 s
   (`write_plots()`) and 0.2 s (`write_boxplots()`) per protein, one page
   each; `write_plots(subset = )` limits their cost.
 
@@ -298,6 +298,9 @@ Authors:
 
 - Witold Wolski <witold.wolski@fgcz.uzh.ch>
   ([ORCID](https://orcid.org/0000-0002-6468-120X))
+
+- Christian Panse <cp@fgcz.ethz.ch>
+  ([ORCID](https://orcid.org/0000-0003-1975-3064))
 
 Other contributors:
 
