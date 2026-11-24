@@ -246,6 +246,30 @@ test_that("moderated_p_deqms predicts the prior for proteins left out of the loe
   expect_true(all(is.finite(res$moderated.p.value[1:8])))
 })
 
+test_that("moderated_p_deqms stops with a classed error when all counts are equal", {
+  mm <- data.frame(
+    sigma = c(0.30, 0.42, 0.25, 0.38, 0.22, 0.31),
+    df = 6,
+    statistic = c(2.1, -1.8, 0.5, 3.0, -2.2, 1.1),
+    std.error = 0.3,
+    diff = c(0.6, -0.5, 0.2, 0.9, -0.7, 0.3),
+    count = 1
+  )
+  # all variances finite: before, every moderated p-value was NaN
+  expect_error(.moderated_p_deqms(mm, count_col = "count"), "`count`", class = "prolfqua_error_constant_counts")
+  # a protein without residual variance: before, predict.loess() failed
+  mm$sigma[1] <- NA
+  expect_error(.moderated_p_deqms(mm, count_col = "count"), class = "prolfqua_error_constant_counts")
+})
+
+test_that("the deqms method refuses protein data without peptide counts", {
+  istar <- sim_lfq_data_protein_config(n_proteins = 30)
+  istar$data$nrPeptides <- 1
+  lfqdata <- LFQData$new(istar$data, istar$config)
+  fa <- build_contrast_analysis(lfqdata, "~ group_", c("A_vs_Ctrl" = "group_A - group_Ctrl"), method = "deqms")
+  expect_error(fa$get_contrasts(), "`nrPeptides`", class = "prolfqua_error_constant_counts")
+})
+
 test_that("moderated_p_deqms_long reports warnings of the per-contrast fits as prolfqua_fit_failed", {
   mm <- data.frame(contrast = c("a", "a", "b", "b"), diff = c(1, -1, 2, 0), n = 1)
   local_mocked_bindings(.moderated_p_deqms = function(mm, ...) {

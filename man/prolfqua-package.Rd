@@ -37,7 +37,7 @@ about 1.5 s per 1,000 proteins.
 \item Per-subject backends fit one model per protein or peptide on a single thread, contrasts included: about
 1 ms per protein for \code{lm}, 1 ms per peptide for the ROPECA methods, 5 ms per protein for \code{hurdle_nested} and
 10 to 16 ms for \code{lmer_nested}, which is two to three minutes at 10,000 proteins.
-\item Aggregation of peptides to proteins takes about 1 ms per protein with median polish and 4 ms with \code{rlm}.
+\item Aggregation of peptides to proteins takes about 1 ms per protein with median polish and with \code{rlm}.
 The QC writers take about 0.1 s (\code{write_plots()}) and 0.2 s (\code{write_boxplots()}) per protein, one page each;
 \code{write_plots(subset = )} limits their cost.
 \item Per-subject backends keep every fitted model (about 9 KB per protein for \code{lm}, 40 KB for
@@ -208,6 +208,7 @@ Useful links:
 Authors:
 \itemize{
   \item Witold Wolski \email{witold.wolski@fgcz.uzh.ch} (\href{https://orcid.org/0000-0002-6468-120X}{ORCID})
+  \item Christian Panse \email{cp@fgcz.ethz.ch} (\href{https://orcid.org/0000-0003-1975-3064}{ORCID})
 }
 
 Other contributors:

@@ -43,6 +43,19 @@ find_d0_deqms <- function(mean_myfct) {
     # Too few observations for LOESS - fall back to standard limma moderation
     return(.moderated_p_limma(mm, df = df, estimate = estimate, confint = confint))
   }
+  # The variance ~ count curve needs at least two counts; with one, loess returns NaN or fails in predict()
+  if (length(unique(log2count[ok])) < 2L) {
+    abort_prolfqua(
+      "DEqMS moderation needs different counts in `",
+      count_col,
+      "`: all ",
+      sum(ok),
+      " proteins with a residual variance have count ",
+      mm[[count_col]][ok][1],
+      ". For data without peptide counts use the limma method.",
+      class = "prolfqua_error_constant_counts"
+    )
+  }
 
   # Fit variance ~ count curve using LOESS
   loess_fit <- stats::loess(
