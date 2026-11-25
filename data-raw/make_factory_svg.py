@@ -5,21 +5,23 @@ Usage:
   rsvg-convert -w 2480 /tmp/prolfqua_factory.svg -o man/figures/prolfqua_factory.png
 The README and the vignettes prolfqua and ModellingMethods use the PNG; pkgdown
 copies man/figures to the site, but not SVG figures.
-Update `lanes` when facades are added to the registry.
+The lanes, their models and colours come from inst/extdata/facade_styles.tsv
+(one row per facade, in lane order); add a row there when a facade is added to
+the registry.
 """
+import csv
+import os
 import sys
 
 out = sys.argv[1]
 
-lanes = [
-    ("linear models", ["lm", "rlm", "rfit"], "#dbe8f6", "#4a78b0"),
-    ("limma", ["limma", "limma_voom", "deqms", "deqms_voom"], "#e2f0d9", "#4f8a3a"),
-    ("limpa", ["limpa", "limpa_nested"], "#e9e0f3", "#7b5aa6"),
-    ("LOD imputation", ["lm_impute", "limma_impute", "limma_voom_impute", "rfit_impute"], "#fdebd3", "#c07a1e"),
-    ("peptide level", ["lmer_nested", "ropeca_nested", "ropecaV2_nested"], "#d8f0ef", "#2f8c86"),
-    ("detection", ["firth", "binomial_nested", "binomial_firth_nested"], "#f6dbe0", "#b04a5f"),
-    ("hurdle", ["hurdle_nested"], "#f3eecf", "#8a7a1c"),
-]
+styles = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "inst", "extdata", "facade_styles.tsv")
+lanes = []
+with open(styles, newline="", encoding="utf-8") as f:
+    for row in csv.DictReader(f, delimiter="\t"):
+        if not lanes or lanes[-1][0] != row["family"]:
+            lanes.append((row["family"], [], row["fill"], row["colour"]))
+        lanes[-1][1].append(row["method"])
 
 W, H = 1240, 720
 MONO = "Menlo, Consolas, 'DejaVu Sans Mono', monospace"

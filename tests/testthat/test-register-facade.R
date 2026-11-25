@@ -109,3 +109,13 @@ test_that("the registry's needs equals the .needs field of each built-in facade 
     expect_equal(class_needs(generator), builtin[[name]]$needs, label = name)
   }
 })
+
+test_that("facade_styles.tsv gives every built-in method one distinct style", {
+  styles <- utils::read.delim(
+    system.file("extdata", "facade_styles.tsv", package = "prolfqua", mustWork = TRUE),
+    stringsAsFactors = FALSE
+  )
+  expect_setequal(styles$method, names(.builtin_facade_entries()))
+  expect_false(anyDuplicated(styles$method) > 0)
+  expect_false(anyDuplicated(styles[c("colour", "shape")]) > 0)
+})

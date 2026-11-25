@@ -2,6 +2,7 @@
 
 ## New features
 
+- `inst/extdata/facade_styles.tsv` lists every method of `build_contrast_analysis()` with its family in the factory figure of the README (linear models, limma, limpa, LOD imputation, peptide level, detection, hurdle), the family's colour, and a point shape and line type per method within the family, so plots comparing methods (as in prolfquabenchmark) style each method the same way. The factory figure is drawn from it.
 - `LFQDataPlotter$heatmap(row_order = )` draws exactly the given features, in the given order and without row clustering, so two heatmaps of the same features can be compared row by row, e.g. before and after imputation (imputation changes the per-feature sd, so the most variable features and their clustering would differ). `row_order` cannot be combined with `n_most_variable`; an unknown feature ID is an error that names it.
 
 ## Behaviour changes
