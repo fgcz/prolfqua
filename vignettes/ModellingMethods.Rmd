@@ -91,7 +91,9 @@ about <- c(
   hurdle_nested = "lm_impute intensity + binomial_firth_nested detection",
   lmer_nested = "mixed model, peptide and sample random effects",
   ropeca_nested = "peptide fold changes summarised per protein (ROPECA)",
-  ropecaV2_nested = "ROPECA with an exact, correlation-aware null for the median peptide z-score"
+  ropecaV2_nested = "ROPECA with an exact, correlation-aware null for the median peptide z-score",
+  ropeca_impute_nested = "ropeca_nested on peptide models refit at the LOD, as lm_impute",
+  ropecaV2_impute_nested = "ropecaV2_nested on peptide models refit at the LOD, as lm_impute"
 )
 overview <- data.frame(
   method = names(results),
@@ -110,7 +112,7 @@ The detection models (`firth`, `binomial_nested`, `binomial_firth_nested`) test 
 An `NA` intensity is a missing observation, and the method decides what happens to it:
 
 - dropped in each per-protein fit: `lm`, `rlm`, `rfit`, `limma`, `limma_voom`, `deqms`, `lmer_nested`, `ropeca_nested`
-- imputed at the limit of detection where a whole group is missing: the `_impute` methods
+- imputed at the limit of detection where a whole group is missing: the `_impute` methods, for `ropeca_impute_nested` and `ropecaV2_impute_nested` per peptide
 - modelled as detection: `firth`, `binomial_nested`, `binomial_firth_nested`, and `hurdle_nested` together with the intensities
 - filled from the fitted models after the analysis: `impute_from_model()`
 

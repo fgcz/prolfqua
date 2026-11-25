@@ -842,7 +842,9 @@ ContrastsDEqMSVoomFacade <- R6::R6Class(
     firth = list(class = "ContrastsFirthFacade", needs = "aggregated"),
     lmer_nested = list(class = "ContrastsLmerNestedFacade", needs = "nested"),
     ropeca_nested = list(class = "ContrastsROPECANestedFacade", needs = "nested"),
-    ropecaV2_nested = list(class = "ContrastsROPECAV2NestedFacade", needs = "nested")
+    ropecaV2_nested = list(class = "ContrastsROPECAV2NestedFacade", needs = "nested"),
+    ropeca_impute_nested = list(class = "ContrastsROPECAImputeNestedFacade", needs = "nested"),
+    ropecaV2_impute_nested = list(class = "ContrastsROPECAV2ImputeNestedFacade", needs = "nested")
   )
 }
 

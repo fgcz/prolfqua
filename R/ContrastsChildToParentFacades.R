@@ -166,7 +166,7 @@ ContrastsROPECANestedFacade <- R6::R6Class(
         self$contrast$subject_id[1],
         all = all
       )
-      .stamp_facade_identity(res, "ropeca_nested")
+      .stamp_facade_identity(res, self$facade_name)
     },
     #' @description get ContrastsPlotter (uses standardized column names)
     #' @param fc_threshold fold change threshold
@@ -196,6 +196,76 @@ ContrastsROPECANestedFacade <- R6::R6Class(
   ),
   private = list(
     .needs = "nested"
+  )
+)
+
+
+#' Peptide-level view of nested input: the same data with every hierarchy level in the subject
+#'
+#' Per-subject builders such as [build_model_impute()] then fit one model per peptide.
+#' @param lfqdata nested [LFQData] (peptide level)
+#' @noRd
+.peptide_level_view <- function(lfqdata) {
+  config <- lfqdata$get_config()$clone(deep = TRUE)
+  config$hierarchy_depth <- length(lfqdata$hierarchy_keys())
+  LFQData$new(lfqdata$data_long(), config)
+}
+
+
+#' ROPECA on LOD-imputed peptide models, for nested input
+#'
+#' Encapsulates the pipeline: \code{\link{strategy_lm}} ->
+#' \code{\link{build_model_impute}} (per peptide) -> \code{\link{Contrasts}} ->
+#' \code{\link{ContrastsROPECA}}.
+#'
+#' Like \code{\link{ContrastsROPECANestedFacade}} (`ropeca_nested`), but the peptide models come from
+#' \code{\link{build_model_impute}}, as in `lm_impute`: a peptide with a group without observations is refit at the
+#' limit of detection with a borrowed variance instead of being left out. More peptides contribute, and proteins
+#' whose peptides all miss a group get a result. Results that use such a peptide have
+#' `estimate_type = "lod_imputed"`. Input must be nested LFQData.
+#'
+#' @export
+#' @family modelling
+#' @examples
+#' istar <- sim_lfq_data_peptide_config(weight_missing = 0.3)
+#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' lfqdata <- lfqdata$get_Transformer()$log2()$lfq
+#' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+#' fa <- ContrastsROPECAImputeNestedFacade$new(lfqdata, "~ group_", contrasts)
+#' head(fa$get_contrasts())
+#' table(fa$get_contrasts()$estimate_type)
+#' @return An R6 class generator.
+ContrastsROPECAImputeNestedFacade <- R6::R6Class(
+  "ContrastsROPECAImputeNestedFacade",
+  inherit = ContrastsROPECANestedFacade,
+  public = list(
+    #' @description
+    #' initialize
+    #' @param lfqdata nested LFQData (peptide-level)
+    #' @param modelstr model formula string (e.g. "~ group_")
+    #' @param contrasts named character vector of contrasts
+    #' @param lod limit of detection; NULL estimates it from the data (see \code{\link{build_model_impute}})
+    #' @param borrow_method,df_method passed to \code{\link{build_model_impute}}
+    initialize = function(
+      lfqdata,
+      modelstr,
+      contrasts,
+      lod = NULL,
+      borrow_method = c("sigma", "vcov"),
+      df_method = c("observed", "borrowed")
+    ) {
+      full_formula <- private$.setup(lfqdata, contrasts, "ropeca_impute_nested", modelstr)
+      self$model <- build_model_impute(
+        .peptide_level_view(lfqdata),
+        strategy_lm(full_formula),
+        lod = lod,
+        borrow_method = borrow_method,
+        df_method = df_method
+      )
+      self$contrast <- ContrastsROPECA$new(Contrasts$new(self$model, contrasts))
+      self$config <- self$contrast$get_config()
+      self$config$subject_id <- self$contrast$subject_id[1]
+    }
   )
 )
 
@@ -250,7 +320,7 @@ ContrastsROPECAV2NestedFacade <- R6::R6Class(
     #' @param all \code{FALSE} (default) returns the standard columns;
     #'   \code{TRUE} appends \code{n_peptides}, \code{median_z} and \code{rho}
     get_contrasts = function(all = FALSE) {
-      .stamp_facade_identity(self$contrast$get_contrasts(all = all), "ropecaV2_nested")
+      .stamp_facade_identity(self$contrast$get_contrasts(all = all), self$facade_name)
     },
     #' @description get ContrastsPlotter (uses standardized column names)
     #' @param fc_threshold fold change threshold
@@ -276,6 +346,67 @@ ContrastsROPECAV2NestedFacade <- R6::R6Class(
   ),
   private = list(
     .needs = "nested"
+  )
+)
+
+
+#' ROPECA V2 on LOD-imputed peptide models, for nested input
+#'
+#' Encapsulates the pipeline: \code{\link{strategy_lm}} ->
+#' \code{\link{build_model_impute}} (per peptide) -> \code{\link{Contrasts}} ->
+#' \code{\link{ContrastsModerated}} -> \code{\link{ContrastsROPECAV2}}.
+#'
+#' Like \code{\link{ContrastsROPECAV2NestedFacade}} (`ropecaV2_nested`), but the peptide models come from
+#' \code{\link{build_model_impute}}, as in `lm_impute`: a peptide with a group without observations is refit at the
+#' limit of detection with a borrowed variance instead of being left out. The correlation of the peptides of a
+#' protein is estimated from the observed peptide models only, because refit peptides have near-constant responses.
+#' Results that use a refit peptide have `estimate_type = "lod_imputed"`. Input must be nested LFQData.
+#'
+#' @export
+#' @family modelling
+#' @examples
+#' istar <- sim_lfq_data_peptide_config(weight_missing = 0.3)
+#' lfqdata <- LFQData$new(istar$data, istar$config)
+#' lfqdata <- lfqdata$get_Transformer()$log2()$lfq
+#' contrasts <- c("A_vs_Ctrl" = "group_A - group_Ctrl")
+#' fa <- ContrastsROPECAV2ImputeNestedFacade$new(lfqdata, "~ group_", contrasts)
+#' head(fa$get_contrasts())
+#' fa$contrast$rho
+#' @return An R6 class generator.
+ContrastsROPECAV2ImputeNestedFacade <- R6::R6Class(
+  "ContrastsROPECAV2ImputeNestedFacade",
+  inherit = ContrastsROPECAV2NestedFacade,
+  public = list(
+    #' @description
+    #' initialize
+    #' @param lfqdata nested LFQData (peptide-level)
+    #' @param modelstr model formula string (e.g. "~ group_")
+    #' @param contrasts named character vector of contrasts
+    #' @param lod limit of detection; NULL estimates it from the data (see \code{\link{build_model_impute}})
+    #' @param borrow_method,df_method passed to \code{\link{build_model_impute}}
+    initialize = function(
+      lfqdata,
+      modelstr,
+      contrasts,
+      lod = NULL,
+      borrow_method = c("sigma", "vcov"),
+      df_method = c("observed", "borrowed")
+    ) {
+      full_formula <- private$.setup(lfqdata, contrasts, "ropecaV2_impute_nested", modelstr)
+      self$model <- build_model_impute(
+        .peptide_level_view(lfqdata),
+        strategy_lm(full_formula),
+        lod = lod,
+        borrow_method = borrow_method,
+        df_method = df_method
+      )
+      model_df <- self$model$model_df
+      rho <- .ropeca_v2_rho(model_df[!model_df$imputed, ], self$model$subject_id, lfqdata$sample_name())
+      peptide_contrasts <- ContrastsModerated$new(Contrasts$new(self$model, contrasts))
+      self$contrast <- ContrastsROPECAV2$new(peptide_contrasts, rho = rho)
+      self$config <- self$contrast$get_config()
+      self$config$subject_id <- self$contrast$subject_id[1]
+    }
   )
 )
 

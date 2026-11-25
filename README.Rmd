@@ -31,7 +31,7 @@ The package documentation including vignettes can be accessed at https://fgcz.gi
 
 `prolfqua` makes easy things easy while remaining fully hackable.
 
-At its centre is a factory, `build_contrast_analysis()`: one call fits a model per protein and computes the requested contrasts. The `method` argument selects one of 20 models, and every model returns its results through the same interface. Start with the [Introduction to prolfqua](https://fgcz.github.io/prolfqua/articles/prolfqua.html).
+At its centre is a factory, `build_contrast_analysis()`: one call fits a model per protein and computes the requested contrasts. The `method` argument selects one of 22 models, and every model returns its results through the same interface. Start with the [Introduction to prolfqua](https://fgcz.github.io/prolfqua/articles/prolfqua.html).
 
 <img src="man/figures/prolfqua_factory.png" alt="build_contrast_analysis() as a factory rolling out all modelling methods" width="100%">
 
@@ -39,7 +39,7 @@ At its centre is a factory, `build_contrast_analysis()`: one call fits a model p
 
 Label-free quantification (LFQ) experiments measure thousands of proteins or peptides in few samples, and values go missing more often at low intensity. Methods for their differential expression analysis are spread over packages with different input formats, model specifications and outputs (limma, DEqMS, MSstats, msqrob2, proDA, limpa), which makes it hard to choose a method for a dataset or to compare methods on it.
 
-prolfqua gives these methods one data model, a long table with an `AnalysisConfiguration` naming the column roles; one model specification, R's formula interface including mixed models; and one output format. `build_contrast_analysis()` fits any of its 20 methods and returns contrasts with the same columns, so a core facility can run, compare and report them in one workflow, and a researcher can check how much a result depends on the method. prolfqua also covers the steps around the test: quality control, normalisation, aggregation of peptides to proteins and sample-size estimation.
+prolfqua gives these methods one data model, a long table with an `AnalysisConfiguration` naming the column roles; one model specification, R's formula interface including mixed models; and one output format. `build_contrast_analysis()` fits any of its 22 methods and returns contrasts with the same columns, so a core facility can run, compare and report them in one workflow, and a researcher can check how much a result depends on the method. prolfqua also covers the steps around the test: quality control, normalisation, aggregation of peptides to proteins and sample-size estimation.
 
 # How to install prolfqua?
 

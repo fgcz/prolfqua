@@ -527,3 +527,64 @@ test_that("limma trend and robust and the rlm controls reach the fit", {
     class = "prolfqua_error_bad_argument"
   )
 })
+
+# ---- ROPECA on lm_impute peptide models ----
+
+# Peptide data without group A for one peptide of the first protein and for every peptide of the second
+make_peptide_lfqdata_empty_group <- function() {
+  lfqdata <- make_peptide_lfqdata()
+  data <- lfqdata$data_long()
+  proteins <- sort(unique(data$protein_Id))
+  first_peptide <- sort(unique(data$peptide_Id[data$protein_Id == proteins[1]]))[1]
+  drop <- data$group_ == "A" & (data$peptide_Id == first_peptide | data$protein_Id == proteins[2])
+  lfqdata$set_data(data[!drop, ])
+  list(lfqdata = lfqdata, partial = proteins[1], empty = proteins[2])
+}
+
+fit_empty_group <- function(lfqdata, method) {
+  contrasts <- c(CONTRASTS, "B_vs_Ctrl" = "group_B - group_Ctrl")
+  suppressWarnings(suppressMessages(prolfqua::build_contrast_analysis(lfqdata, MODELSTR, contrasts, method = method)))
+}
+
+test_that("ropeca_impute_nested and ropecaV2_impute_nested are registered nested methods", {
+  expect_equal(prolfqua::lookup_facade("ropeca_impute_nested")$class, "ContrastsROPECAImputeNestedFacade")
+  expect_equal(prolfqua::lookup_facade("ropecaV2_impute_nested")$class, "ContrastsROPECAV2ImputeNestedFacade")
+  expect_equal(prolfqua::lookup_facade("ropeca_impute_nested")$needs, "nested")
+  expect_equal(prolfqua::lookup_facade("ropecaV2_impute_nested")$needs, "nested")
+})
+
+test_that("ropeca_impute_nested keeps the peptides and proteins without a group", {
+  sim <- make_peptide_lfqdata_empty_group()
+  plain <- fit_empty_group(sim$lfqdata, "ropeca_nested")$get_contrasts()
+  imputed <- fit_empty_group(sim$lfqdata, "ropeca_impute_nested")$get_contrasts()
+  a_vs_ctrl <- function(res, protein) res[res$protein_Id == protein & res$contrast == "A_vs_Ctrl", ]
+
+  expect_true(all(imputed$modelName == "ropeca_impute_nested"))
+  # the peptide without group A is dropped by the plain peptide fit and refit at the LOD here
+  expect_equal(a_vs_ctrl(imputed, sim$partial)$df, a_vs_ctrl(plain, sim$partial)$df + 1)
+  expect_equal(a_vs_ctrl(imputed, sim$partial)$estimate_type, "lod_imputed")
+  # no peptide of the second protein has group A: a result only with imputation
+  expect_false(any(!is.na(a_vs_ctrl(plain, sim$empty)$diff)))
+  expect_equal(a_vs_ctrl(imputed, sim$empty)$estimate_type, "lod_imputed")
+  # proteins without imputed peptides stay observed; the plain method is observed throughout
+  others <- imputed[!imputed$protein_Id %in% c(sim$partial, sim$empty), ]
+  expect_true(all(others$estimate_type == "observed"))
+  expect_true(all(plain$estimate_type == "observed"))
+})
+
+test_that("ropecaV2_impute_nested estimates the peptide correlation from the observed peptides only", {
+  sim <- make_peptide_lfqdata_empty_group()
+  fa <- fit_empty_group(sim$lfqdata, "ropecaV2_impute_nested")
+  model_df <- fa$model$model_df
+  expect_true(any(model_df$imputed))
+  observed_rho <- .ropeca_v2_rho(model_df[!model_df$imputed, ], fa$model$subject_id, sim$lfqdata$sample_name())
+  expect_equal(fa$contrast$rho, observed_rho)
+
+  res <- fa$get_contrasts()
+  expect_true(all(res$modelName == "ropecaV2_impute_nested"))
+  partial <- res[res$protein_Id == sim$partial & res$contrast == "A_vs_Ctrl", ]
+  expect_equal(partial$estimate_type, "lod_imputed")
+  empty <- res[res$protein_Id == sim$empty & res$contrast == "A_vs_Ctrl", ]
+  expect_equal(nrow(empty), 1)
+  expect_false(is.na(empty$diff))
+})
