@@ -454,6 +454,7 @@ ContrastsLMFacade <- R6::R6Class(
       strat <- strategy_lm(full_formula, weights = weights)
       self$model <- build_model(lfqdata, strat)
       self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts, model_name = "lm"))
+      self$.drop_na_diff <- TRUE
     }
   )
 )
@@ -761,6 +762,7 @@ ContrastsDEqMSFacade <- R6::R6Class(
       count_df <- lfqdata$data_long() |>
         dplyr::select(dplyr::all_of(c(base_contrast$subject_id, count_column)))
       self$contrast <- ContrastsModeratedDEqMS$new(base_contrast, count_df = count_df, count_column = count_column)
+      self$.drop_na_diff <- TRUE
     }
   )
 )
@@ -809,6 +811,7 @@ ContrastsDEqMSVoomFacade <- R6::R6Class(
       count_df <- lfqdata$data_long() |>
         dplyr::select(dplyr::all_of(c(base_contrast$subject_id, count_column)))
       self$contrast <- ContrastsModeratedDEqMS$new(base_contrast, count_df = count_df, count_column = count_column)
+      self$.drop_na_diff <- TRUE
     }
   )
 )

@@ -22,8 +22,8 @@ delegates to (e.g. \code{\link{ContrastsModerated}})
 \item set the private field \code{.needs} to \code{"nested"} if the facade takes child-level input
 (e.g. peptides) and reports parent-level contrasts; the default is \code{"aggregated"}
 }
-The limma family additionally sets \code{self$.drop_na_diff <- TRUE} to drop rows whose fold change could not
-be estimated.
+The limma family, \code{lm}, \code{deqms} and \code{deqms_voom} additionally set \code{self$.drop_na_diff <- TRUE}
+to drop rows whose fold change could not be estimated; \code{get_missing()} lists them.
 }
 \examples{
 # a facade: unweighted linear model per protein, moderated contrasts

@@ -26,18 +26,20 @@ parse_contrast_sides <- function(contrasts) {
     )
 }
 
+#' Fixed-effect coefficients of a fitted model: lm-like fits keep aliased coefficients as NA, lmer fits drop them
+#' @param m fitted regression model
+#' @noRd
+.model_coefficients <- function(m) {
+  if (inherits(m, "lmerModLmerTest")) lme4::fixef(m) else stats::coef(m)
+}
+
 #' Represent observed factor-level combinations as coefficient weights
 #' @param m fitted regression model
 #' @noRd
 .model_coeff_matrix <- function(m) {
-  if (inherits(m, "lmerModLmerTest")) {
-    data <- m@frame
-    coeffs <- coefficients(summary(m))[, "Estimate"]
-  } else {
-    # lm-like fits (lm, rlm, rfit, logistf, ...)
-    data <- m$model
-    coeffs <- coef(m)
-  }
+  # lm-like fits (lm, rlm, rfit, logistf, ...) keep their data in `model`
+  data <- if (inherits(m, "lmerModLmerTest")) m@frame else m$model
+  coeffs <- .model_coefficients(m)
   interaction_columns <- intersect(attributes(terms(m))$term.labels, colnames(data))
   data <- .make_interaction_column(data, interaction_columns, sep = ":")
 
@@ -281,16 +283,54 @@ parse_contrast_sides <- function(contrasts) {
   res
 }
 
+#' Linear functions estimable from a design: the rows of `linfct` in the row space of the decomposed design
+#'
+#' An estimable function has the same value for every solution of the normal equations. It is orthogonal to the null
+#' space of the design, here from its pivoted QR decomposition: `-R11^-1 R12` over the identity.
+#' @param linfct matrix with one row per linear function and one column per design column, in design order
+#' @param qr QR decomposition of the (weighted) design, from [qr()]
+#' @param tol relative tolerance of the orthogonality, the rank tolerance of [lm()]
+#' @return logical, one per row of `linfct`
+#' @noRd
+.estimable_linfct <- function(linfct, qr, tol = 1e-7) {
+  p <- ncol(qr$qr)
+  rank <- qr$rank
+  if (rank == p) {
+    return(rep(TRUE, nrow(linfct)))
+  }
+  basis <- seq_len(rank)
+  null_space <- matrix(0, p, p - rank)
+  null_space[qr$pivot, ] <- rbind(
+    if (rank == 0L) NULL else -backsolve(qr$qr[basis, basis, drop = FALSE], qr$qr[basis, -basis, drop = FALSE]),
+    diag(p - rank)
+  )
+  rowSums(abs(linfct %*% null_space)) <= tol * pmax(1, rowSums(abs(linfct)))
+}
+
+#' Unscaled standard deviations of estimable linear functions: `sqrt(diag(L G L'))`, with `G` the inverse of the
+#'
+#' cross-product of the pivoted basis columns, padded with zeros (a generalized inverse of `X'WX`)
+#' @param linfct estimable linear functions, columns in design order
+#' @param qr QR decomposition of the (weighted) design, from [qr()]
+#' @noRd
+.linfct_unscaled_sd <- function(linfct, qr) {
+  basis <- seq_len(qr$rank)
+  r_inverse <- backsolve(qr$qr[basis, basis, drop = FALSE], diag(qr$rank))
+  sqrt(rowSums((linfct[, qr$pivot[basis], drop = FALSE] %*% r_inverse)^2))
+}
+
 #' Compute contrasts for possibly incomplete models
 #'
-#' only keeps non NA coefficients.
+#' A row is estimated when it is estimable: it puts no weight on a coefficient the model lacks and lies in the row
+#' space of the model's design. With aliased (NA) coefficients, their value 0 gives a solution of the normal equations
+#' and the covariance padded with 0 a generalized inverse, so estimable rows get their unique values.
 #'
 #' @param m linear model generated using lm
 #' @param linfct linear function
 #' @param confint confidence interval default 0.95
 #' @return a data.frame with one row per row of `linfct` and columns `lhs`, `sigma`, `df`, `estimate`,
-#'   `std.error`, `statistic`, `p.value`, `conf.low` and `conf.high`; the estimates are `NA` for rows that use a
-#'   coefficient the model could not estimate
+#'   `std.error`, `statistic`, `p.value`, `conf.low` and `conf.high`; the estimates are `NA` for rows that are not
+#'   estimable from the model's design
 #'
 #' @srrstats {RE7.1} Tests recover exact group differences and exact paired-design means.
 #' @noRd
@@ -306,16 +346,23 @@ parse_contrast_sides <- function(contrasts) {
       not = paste0("all-zero rows ", toString(rownames(linfct)[zero_rows]))
     )
   }
-  coef <- stats::na.omit(stats::coefficients(m))
-  estimable_coef <- intersect(colnames(linfct), names(coef))
-  # a row is estimable when it puts no weight on a coefficient the model could not estimate
-  other <- linfct[, setdiff(colnames(linfct), estimable_coef), drop = FALSE]
+  coef <- stats::coefficients(m)
+  in_model <- intersect(colnames(linfct), names(coef))
+  other <- linfct[, setdiff(colnames(linfct), in_model), drop = FALSE]
   estimable <- rowSums(!.is_zero(other)) == 0
+  Sigma.hat <- stats::vcov(m)[in_model, in_model, drop = FALSE]
+  if (anyNA(coef)) {
+    weights <- matrix(0, nrow(linfct), length(coef), dimnames = list(rownames(linfct), names(coef)))
+    weights[, in_model] <- linfct[, in_model]
+    estimable <- estimable & .estimable_linfct(weights, qr(stats::model.matrix(m)))
+    coef[is.na(coef)] <- 0
+    Sigma.hat[is.na(Sigma.hat)] <- 0
+  }
   res <- .compute_contrast(
     m,
-    linfct[, estimable_coef, drop = FALSE],
-    coef = coef[estimable_coef],
-    Sigma.hat = stats::vcov(m)[estimable_coef, estimable_coef, drop = FALSE],
+    linfct[, in_model, drop = FALSE],
+    coef = coef[in_model],
+    Sigma.hat = Sigma.hat,
     confint = confint
   )
   if (!all(estimable)) {

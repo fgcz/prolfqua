@@ -11,6 +11,11 @@ Uses limma's \code{contrasts.fit} + \code{eBayes} pipeline directly,
 rather than fitting per-protein lm models and then moderating.
 Inherits from \code{\link{ContrastsInterface}} with the same API as
 \code{\link{Contrasts}}.
+
+Each protein's contrasts and their unscaled standard errors are computed from the design rows of its own fit
+(observed samples, with their weights), where \code{contrasts.fit} uses one approximation for all proteins.
+Contrasts a protein cannot estimate, e.g. with an empty group, are \code{NA}; the others equal the differences of
+its fitted group means.
 }
 \examples{
 

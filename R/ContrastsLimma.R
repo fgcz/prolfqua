@@ -458,8 +458,11 @@ compute_borrowed_variance_limma <- function(fit) {
     rule = 2,
     ties = list("ordered", mean)
   )
-  fitted_values <- preliminary_fit$coefficients %*%
-    t(preliminary_fit$design)
+  # an empty group leaves aliased (NA) coefficients; with them as 0 the fitted values of the observed samples are
+  # those of every solution, and the other samples carry no observation
+  coefficients <- preliminary_fit$coefficients
+  coefficients[is.na(coefficients)] <- 0
+  fitted_values <- coefficients %*% t(preliminary_fit$design)
   vooma_weights <- 1 / trend_function(fitted_values)^4
   dim(vooma_weights) <- dim(fitted_values)
 
@@ -834,12 +837,48 @@ ModelLimma <- R6::R6Class(
 
 # ContrastsLimma -----
 
+#' Linear functions of each protein's coefficients, from the design rows of its own fit
+#'
+#' `limma::contrasts.fit()` uses one coefficient correlation for all proteins, exact only for complete and equally
+#' weighted rows, and does not check estimability: with an empty reference group the remaining coefficients change
+#' meaning. Here each protein's estimable linear functions are evaluated on its coefficients (aliased ones as 0, a
+#' solution of the normal equations), with unscaled standard deviations from its observed, weighted design rows.
+#' @param model ModelLimma
+#' @param linfct linear functions, one row each, columns in design order
+#' @return list of matrices `estimate` and `stdev_unscaled`, one row per protein and one column per row of `linfct`,
+#'   NA where the function is not estimable
+#' @noRd
+.limma_protein_contrasts <- function(model, linfct) {
+  design <- model$fit$design
+  coefficients <- model$fit$coefficients
+  coefficients[is.na(coefficients)] <- 0
+  weights <- if (is.null(model$weights)) array(1, dim(model$E)) else model$weights
+  used <- is.finite(model$E) & is.finite(weights) & weights > 0
+  estimate <- coefficients %*% t(linfct)
+  stdev_unscaled <- array(NA_real_, dim(estimate), dimnames(estimate))
+  for (i in seq_len(nrow(estimate))) {
+    rows <- used[i, ]
+    decomposition <- qr(design[rows, , drop = FALSE] * sqrt(weights[i, rows]))
+    estimable <- .estimable_linfct(linfct, decomposition)
+    estimate[i, !estimable] <- NA
+    if (any(estimable)) {
+      stdev_unscaled[i, estimable] <- .linfct_unscaled_sd(linfct[estimable, , drop = FALSE], decomposition)
+    }
+  }
+  list(estimate = estimate, stdev_unscaled = stdev_unscaled)
+}
+
 #' Limma-based contrasts (direct limma pipeline)
 #'
 #' Uses limma's \code{contrasts.fit} + \code{eBayes} pipeline directly,
 #' rather than fitting per-protein lm models and then moderating.
 #' Inherits from \code{\link{ContrastsInterface}} with the same API as
 #' \code{\link{Contrasts}}.
+#'
+#' Each protein's contrasts and their unscaled standard errors are computed from the design rows of its own fit
+#' (observed samples, with their weights), where \code{contrasts.fit} uses one approximation for all proteins.
+#' Contrasts a protein cannot estimate, e.g. with an empty group, are \code{NA}; the others equal the differences of
+#' its fitted group means.
 #'
 #' @return An R6 class generator.
 #' @export
@@ -951,8 +990,12 @@ ContrastsLimma <- R6::R6Class(
       # Transpose for limma: rows = coefficients, cols = contrasts
       contrast_matrix <- t(linfct_a[diff_names, , drop = FALSE])
 
-      # limma pipeline: contrasts.fit, optionally + eBayes
+      # limma pipeline: contrasts.fit, optionally + eBayes; estimates and unscaled standard errors from each protein's
+      # own design rows
+      exact <- .limma_protein_contrasts(self$model, linfct_a)
       fit2 <- limma::contrasts.fit(self$model$fit, contrast_matrix)
+      fit2$coefficients <- exact$estimate[, diff_names, drop = FALSE]
+      fit2$stdev.unscaled <- exact$stdev_unscaled[, diff_names, drop = FALSE]
       # proteins without residual variance stay out of the eBayes prior; their tests are set to NA below
       zero <- .zero_residual_variance(fit2$sigma, self$model$fit$Amean)
       # without any variance there is no eBayes prior; the raw branch runs and the tests are set to NA below
@@ -963,8 +1006,8 @@ ContrastsLimma <- R6::R6Class(
         fit2 <- limma::eBayes(fit2, trend = self$model$trend, robust = self$model$robust)
       }
 
-      # avgAbd: the avg_ linear functions applied to the fit coefficients (rows = proteins)
-      avg_vals <- self$model$fit$coefficients %*% t(linfct_a[avg_names, , drop = FALSE])
+      # avgAbd: the avg_ linear functions of each protein (rows = proteins)
+      avg_vals <- exact$estimate[, avg_names, drop = FALSE]
 
       # Extract results per contrast
       res_list <- vector("list", length(diff_names))

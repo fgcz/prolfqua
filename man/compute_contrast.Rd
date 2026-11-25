@@ -15,11 +15,11 @@ compute_contrast(m, linfct, confint = 0.95)
 }
 \value{
 a data.frame with one row per row of \code{linfct} and columns \code{lhs}, \code{sigma}, \code{df}, \code{estimate},
-\code{std.error}, \code{statistic}, \code{p.value}, \code{conf.low} and \code{conf.high}; the estimates are \code{NA} for rows that use a
-coefficient the model could not estimate
+\code{std.error}, \code{statistic}, \code{p.value}, \code{conf.low} and \code{conf.high}; the estimates are \code{NA} for rows that are not
+estimable from the model's design
 }
 \description{
-only keeps non NA coefficients.
+Estimates the rows of \code{linfct} that are estimable from the model's design, also with aliased (NA) coefficients.
 }
 \note{
 Deprecated in prolfqua 1.9.5; use \code{build_contrast_analysis()}. See \link{prolfqua-deprecated}.

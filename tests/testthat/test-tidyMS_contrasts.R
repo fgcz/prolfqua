@@ -116,6 +116,26 @@ test_that("compute_contrast matches summary.lm and the hand-computed Wald test n
   expect_equal(res$sigma, rep(sigma(m), 3))
 })
 
+test_that("compute_contrast estimates every row in the row space of a rank-deficient design", {
+  withr::local_seed(7)
+  d <- expand.grid(rep = 1:3, Treatment = c("A", "B"), Background = c("X", "Z"))
+  d <- d[!(d$Treatment == "A" & d$Background == "X"), ]
+  cell <- paste0(d$Treatment, d$Background)
+  d$y <- stats::rnorm(nrow(d), mean = c(AZ = 10, BX = 12, BZ = 15)[cell])
+  m <- lm(y ~ Treatment * Background, data = d)
+  expect_true(is.na(coefficients(m)[["TreatmentB:BackgroundZ"]]))
+  # coefficient weights of cell differences in the complete design: BZ - BX, BZ - AZ and AZ - AX (AX empty)
+  linfct <- rbind(background_in_B = c(0, 0, 1, 1), treatment_in_Z = c(0, 1, 0, 1), background_in_A = c(0, 0, 1, 0))
+  colnames(linfct) <- names(coefficients(m))
+  res <- .compute_estimable_contrast(m, linfct)
+
+  means <- tapply(d$y, cell, mean)
+  expect_equal(res$estimate[1:2], unname(c(means["BZ"] - means["BX"], means["BZ"] - means["AZ"])))
+  # the model is saturated on the observed cells: a difference of two cell means of 3 has SE sigma * sqrt(2 / 3)
+  expect_equal(res$std.error[1:2], rep(sigma(m) * sqrt(2 / 3), 2))
+  expect_true(all(is.na(res[3, c("estimate", "std.error", "statistic", "p.value", "conf.low", "conf.high")])))
+})
+
 test_that("linfct_matrix_contrasts names an unnamed contrast contrast_<i>", {
   linfct <- .linfct_from_model(.sim_make_model_lm("parallel3"), as_list = FALSE)
   res <- expect_no_warning(.linfct_matrix_contrasts(linfct, c("group_A - group_Ctrl", AB = "group_A - group_B")))

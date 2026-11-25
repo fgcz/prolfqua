@@ -591,7 +591,9 @@ test_that("build_contrast_analysis dispatches deqms_voom", {
   fa <- prolfqua::build_contrast_analysis(lfqdata, "~ group_", contrasts, method = "deqms_voom")
   expect_true(inherits(fa, "ContrastsDEqMSVoomFacade"))
   expect_no_warning(res <- fa$get_contrasts())
-  expect_equal(nrow(res), 30)
+  # one row per protein that can estimate the contrast; get_missing() lists the others (an empty group)
+  expect_equal(nrow(res) + nrow(fa$get_missing()), 30)
+  expect_false(anyNA(res$diff))
   expect_equal(unique(res$modelName), "deqms_voom")
   # proteins without residual degrees of freedom get NA p-values, all others finite ones
   no_df <- res$df.unmoderated == 0
@@ -799,4 +801,104 @@ test_that("build_model_limma weights from a matrix or an annotation column equal
   )
   expect_equal(unname(mod_w$fit$coefficients), unname(ref_w$coefficients))
   expect_equal(unname(mod_w$fit$stdev.unscaled), unname(ref_w$stdev.unscaled))
+})
+
+# --- proteins with an empty group or cell: only the estimable contrasts, equal to the observed means ---
+
+# Differences and get_missing() contrasts of one protein, for one method
+protein_contrasts <- function(lfq, modelstr, contrasts, method, protein) {
+  fa <- suppressMessages(prolfqua::build_contrast_analysis(lfq, modelstr, contrasts, method = method))
+  # deqms_voom's variance-by-count loess warns on these small simulations
+  res <- suppressWarnings(suppressMessages(fa$get_contrasts()))
+  res <- res[res$protein_Id == protein, ]
+  missing <- suppressWarnings(suppressMessages(fa$get_missing()))
+  list(
+    diff = stats::setNames(res$diff, res$contrast),
+    missing = sort(missing$contrast[missing$protein_Id == protein])
+  )
+}
+
+one_factor_contrasts <- c(
+  A_vs_Ctrl = "group_A - group_Ctrl",
+  B_vs_Ctrl = "group_B - group_Ctrl",
+  B_vs_A = "group_B - group_A"
+)
+
+test_that("a protein without its reference group gets only its estimable contrasts in every method", {
+  sim <- prolfqua::sim_lfq_data_protein_config(n_proteins = 40, weight_missing = 0, seed = 1)
+  protein <- sort(unique(sim$data$protein_Id))[1]
+  data <- sim$data[!(sim$data$protein_Id == protein & sim$data$group_ == "A"), ]
+  lfq <- prolfqua::LFQData$new(data, sim$config)
+  observed <- data[data$protein_Id == protein, ]
+  means <- tapply(observed$abundance, observed$group_, mean)
+
+  for (method in c("lm", "limma", "limma_voom", "deqms_voom")) {
+    res <- protein_contrasts(lfq, "~ group_", one_factor_contrasts, method, protein)
+    expect_equal(res$diff, c(B_vs_Ctrl = unname(means["B"] - means["Ctrl"])), info = method)
+    expect_equal(res$missing, c("A_vs_Ctrl", "B_vs_A"), info = method)
+  }
+})
+
+test_that("a protein without a non-reference group gets only its estimable contrasts in every method", {
+  sim <- prolfqua::sim_lfq_data_protein_config(n_proteins = 40, weight_missing = 0, seed = 1)
+  protein <- sort(unique(sim$data$protein_Id))[1]
+  data <- sim$data[!(sim$data$protein_Id == protein & sim$data$group_ == "Ctrl"), ]
+  lfq <- prolfqua::LFQData$new(data, sim$config)
+  observed <- data[data$protein_Id == protein, ]
+  means <- tapply(observed$abundance, observed$group_, mean)
+
+  for (method in c("lm", "limma", "limma_voom", "deqms_voom")) {
+    res <- protein_contrasts(lfq, "~ group_", one_factor_contrasts, method, protein)
+    expect_equal(res$diff, c(B_vs_A = unname(means["B"] - means["A"])), info = method)
+    expect_equal(res$missing, c("A_vs_Ctrl", "B_vs_Ctrl"), info = method)
+  }
+})
+
+test_that("a 2x2 protein without its reference cell gets the estimable cell contrasts in every method", {
+  sim <- prolfqua::sim_lfq_data_2factor_config(n_proteins = 30, with_missing = FALSE)
+  protein <- sort(unique(sim$data$protein_Id))[1]
+  data <- sim$data[!(sim$data$protein_Id == protein & sim$data$Treatment == "A" & sim$data$Background == "X"), ]
+  lfq <- prolfqua::LFQData$new(data, sim$config)
+  observed <- data[data$protein_Id == protein, ]
+  cells <- tapply(observed$abundance, paste0(observed$Treatment, observed$Background), mean)
+  contrasts <- c(
+    background_in_A = "`TreatmentA:BackgroundZ` - `TreatmentA:BackgroundX`",
+    background_in_B = "`TreatmentB:BackgroundZ` - `TreatmentB:BackgroundX`",
+    treatment_in_Z = "`TreatmentB:BackgroundZ` - `TreatmentA:BackgroundZ`",
+    treatment = "TreatmentB - TreatmentA"
+  )
+  expected <- c(
+    background_in_B = unname(cells["BZ"] - cells["BX"]),
+    treatment_in_Z = unname(cells["BZ"] - cells["AZ"])
+  )
+
+  for (method in c("lm", "limma", "limma_voom", "deqms_voom")) {
+    res <- protein_contrasts(lfq, "~ Treatment * Background", contrasts, method, protein)
+    expect_setequal(names(res$diff), names(expected))
+    expect_equal(res$diff[names(expected)], expected, info = method)
+    # AX is empty, and the main effect averages over it
+    expect_equal(res$missing, c("background_in_A", "treatment"), info = method)
+  }
+})
+
+test_that("limma contrasts and their unmoderated standard errors equal lm's for proteins with missing values", {
+  sim <- prolfqua::sim_lfq_data_protein_config(n_proteins = 100, weight_missing = 0.3, seed = 2)
+  lfq <- prolfqua::LFQData$new(sim$data, sim$config)
+  fit <- function(method) {
+    fa <- suppressMessages(prolfqua::build_contrast_analysis(lfq, "~ group_", one_factor_contrasts, method = method))
+    suppressMessages(suppressWarnings(fa$get_contrasts()))
+  }
+  res_limma <- fit("limma")
+  res_lm <- fit("lm")
+  joined <- dplyr::inner_join(res_limma, res_lm, by = c("protein_Id", "contrast"), suffix = c(".limma", ".lm"))
+  # both report the same protein and contrast pairs
+  expect_equal(nrow(joined), nrow(res_limma))
+  expect_equal(nrow(joined), nrow(res_lm))
+  # the comparison covers proteins with missing values, where contrasts.fit() standard errors are approximate
+  long <- lfq$data_long()
+  with_missing <- unique(long$protein_Id[is.na(long[[lfq$response()]])])
+  expect_gt(sum(joined$protein_Id %in% with_missing), 20)
+  expect_equal(joined$diff.limma, joined$diff.lm)
+  expect_equal(unname(joined$std.error.unmoderated.limma), joined$std.error.unmoderated.lm)
+  expect_equal(joined$df.unmoderated.limma, joined$df.unmoderated.lm)
 })

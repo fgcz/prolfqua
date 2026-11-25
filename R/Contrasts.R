@@ -28,29 +28,33 @@
   )
 }
 
-#' One linfct per model. With `reuse_complete`, models with the maximal number of estimated coefficients share the
+#' One linfct per model. With `reuse_complete`, models with the coefficients of the complete model fit share its
 #'
-#' linfct of the complete model fit; all other models get their own from `linfct_fun`.
+#' linfct, also when some of them are aliased (an empty cell): contrasts keep their complete-design meaning and their
+#' estimability is checked per model. Models with other coefficients (dropped factor levels) get their own linfct from
+#' `linfct_fun`.
 #' @param model_df table with one fitted model and diagnostics per subject
 #' @param contrasts named character vector of contrast expressions
 #' @param avg include average-abundance linear functions
 #' @param label progress label
 #' @param linfct_fun function constructing linear functions for one fit
-#' @param reuse_complete reuse a complete-model linear function for other complete fits
+#' @param reuse_complete reuse the complete model's linear function for fits with its coefficients
 #' @noRd
 .linfct_per_model <- function(model_df, contrasts, avg, label, linfct_fun = .linfct, reuse_complete = TRUE) {
   res <- vector(mode = "list", nrow(model_df))
   pb <- .make_progress(nrow(model_df), label = label)
   if (reuse_complete && nrow(model_df) > 0) {
-    compmodel <- .linfct(.get_complete_model_fit(model_df)$linear_model[[1]], contrasts, avg = avg)
-    max_coef <- max(model_df$nr_coef_not_NA)
+    complete_model <- .get_complete_model_fit(model_df)$linear_model[[1]]
+    compmodel <- .linfct(complete_model, contrasts, avg = avg)
+    complete_coefficients <- names(.model_coefficients(complete_model))
   }
   for (i in seq_along(model_df$linear_model)) {
     pb$tick()
-    res[[i]] <- if (reuse_complete && model_df$nr_coef_not_NA[[i]] == max_coef) {
+    model <- model_df$linear_model[[i]]
+    res[[i]] <- if (reuse_complete && identical(names(.model_coefficients(model)), complete_coefficients)) {
       compmodel
     } else {
-      linfct_fun(model_df$linear_model[[i]], contrast = contrasts, avg = avg)
+      linfct_fun(model, contrast = contrasts, avg = avg)
     }
   }
   res
