@@ -28,8 +28,7 @@
 #'   limit-of-detection imputation \code{"lm_impute"}, \code{"limma_impute"},
 #'   \code{"limma_voom_impute"}, \code{"rfit_impute"};
 #'   peptide-level models \code{"lmer_nested"}, \code{"ropeca_nested"},
-#'   \code{"ropecaV2_nested"}, \code{"ropeca_impute_nested"}, \code{"ropecaV2_impute_nested"} (ROPECA on
-#'   peptide models refit at the limit of detection, as \code{"lm_impute"});
+#'   \code{"ropecaV2_nested"};
 #'   detection models \code{"firth"}, \code{"binomial_nested"},
 #'   \code{"binomial_firth_nested"};
 #'   the hurdle model \code{"hurdle_nested"}, combining intensity and detection.
@@ -92,8 +91,7 @@
 #'     ROPECA (Suomi and Elo 2017, Bioconductor package PECA) without its ROTS step, on per-peptide linear models
 #'     of any design; \code{\link{ContrastsROPECANestedFacade}} lists what differs and compares it with PECA.
 #'   \item First implementations of new methods: the \code{_impute} methods (\code{lm_impute},
-#'     \code{rfit_impute}, \code{limma_impute}, \code{limma_voom_impute}, \code{ropeca_impute_nested},
-#'     \code{ropecaV2_impute_nested}), which refit groups without
+#'     \code{rfit_impute}, \code{limma_impute}, \code{limma_voom_impute}), which refit groups without
 #'     observations at the limit of detection with a borrowed variance (Wolski et al. 2023);
 #'     \code{ropecaV2_nested}, a median peptide z-score with a correlation-aware null; \code{binomial_nested} and
 #'     \code{binomial_firth_nested}, per-protein models of peptide detection.

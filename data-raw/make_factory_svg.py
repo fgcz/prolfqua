@@ -2,7 +2,7 @@
 
 Usage:
   python3 data-raw/make_factory_svg.py /tmp/prolfqua_factory.svg
-  rsvg-convert -w 2920 /tmp/prolfqua_factory.svg -o man/figures/prolfqua_factory.png
+  rsvg-convert -w 2480 /tmp/prolfqua_factory.svg -o man/figures/prolfqua_factory.png
 The README and the vignettes prolfqua and ModellingMethods use the PNG; pkgdown
 copies man/figures to the site, but not SVG figures.
 The lanes, their models and colours come from inst/extdata/facade_styles.tsv
@@ -23,7 +23,7 @@ with open(styles, newline="", encoding="utf-8") as f:
             lanes.append((row["family"], [], row["fill"], row["colour"]))
         lanes[-1][1].append(row["method"])
 
-W, H = 1460, 720
+W, H = 1240, 720
 MONO = "Menlo, Consolas, 'DejaVu Sans Mono', monospace"
 SANS = "Helvetica, Arial, sans-serif"
 CHAR = 7.4  # approx. width of a 12px monospace glyph

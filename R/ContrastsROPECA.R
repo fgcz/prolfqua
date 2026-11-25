@@ -132,13 +132,11 @@ ContrastsROPECA <- R6::R6Class(
     get_contrasts = function(all = FALSE) {
       if (is.null(self$contrast_result)) {
         contrast_result <- self$Contrast$get_contrasts(all = FALSE)
-        protein_col <- self$subject_id[length(self$subject_id) - 1]
-        estimate_type <- .protein_estimate_type(contrast_result, protein_col)
 
         contrast_result <- .summary_ropeca_median_p_scaled(
           contrast_result,
           contrast = "contrast",
-          subject_id = protein_col,
+          subject_id = self$subject_id[length(self$subject_id) - 1],
           estimate = "diff",
           statistic = "statistic",
           p.value = "p.value",
@@ -157,13 +155,7 @@ ContrastsROPECA <- R6::R6Class(
           group_by_col = "contrast",
           newname = "FDR.median.p.value"
         )
-        contrast_result <- dplyr::left_join(
-          contrast_result,
-          estimate_type,
-          by = c(protein_col, "contrast"),
-          relationship = "one-to-one"
-        )
-        self$contrast_result <- .stamp_model_identity(contrast_result, self$model_name, contrast_result$estimate_type)
+        self$contrast_result <- .stamp_model_identity(contrast_result, self$model_name, "observed")
       }
 
       if (all) {
@@ -389,24 +381,6 @@ ContrastsROPECA <- R6::R6Class(
   min(0.95, max(0, rho))
 }
 
-#' Estimate type of each protein and contrast from its peptide contrasts: `lod_imputed` when a peptide with a test
-#'
-#' (a p-value) was refit at the limit of detection, as in the `_impute` methods, else `observed`
-#' @param peptide_contrasts peptide-level contrast table with `estimate_type`, `contrast` and `p.value`
-#' @param protein_cols protein columns
-#' @noRd
-.protein_estimate_type <- function(peptide_contrasts, protein_cols) {
-  peptide_contrasts |>
-    dplyr::summarize(
-      estimate_type = dplyr::if_else(
-        any(.data$estimate_type == "lod_imputed" & !is.na(.data$p.value)),
-        "lod_imputed",
-        "observed"
-      ),
-      .by = dplyr::all_of(c(protein_cols, "contrast"))
-    )
-}
-
 #' Require one peptide correlation in the interval [0, 1)
 #' @param rho within-protein peptide correlation
 #' @noRd
@@ -539,16 +513,9 @@ ContrastsROPECAV2 <- R6::R6Class(
     get_contrasts = function(all = FALSE) {
       protein_cols <- private$protein_cols()
       if (is.null(self$contrast_result)) {
-        peptide_contrasts <- self$Contrast$get_contrasts()
-        res <- .ropeca_v2_protein_contrasts(peptide_contrasts, protein_cols, self$rho)
+        res <- .ropeca_v2_protein_contrasts(self$Contrast$get_contrasts(), protein_cols, self$rho)
         res <- self$p.adjust(res, column = "p.value", group_by_col = "contrast", newname = "FDR")
-        res <- dplyr::left_join(
-          dplyr::ungroup(res),
-          .protein_estimate_type(peptide_contrasts, protein_cols),
-          by = c(protein_cols, "contrast"),
-          relationship = "one-to-one"
-        )
-        self$contrast_result <- .stamp_model_identity(res, self$model_name, res$estimate_type)
+        self$contrast_result <- .stamp_model_identity(dplyr::ungroup(res), self$model_name, "observed")
       }
       standard <- c(
         protein_cols,

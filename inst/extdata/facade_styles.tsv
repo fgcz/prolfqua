@@ -15,8 +15,6 @@ rfit_impute	LOD imputation	#fdebd3	#c07a1e	18	dotdash
 lmer_nested	peptide level	#d8f0ef	#2f8c86	16	solid
 ropeca_nested	peptide level	#d8f0ef	#2f8c86	17	longdash
 ropecaV2_nested	peptide level	#d8f0ef	#2f8c86	15	dashed
-ropeca_impute_nested	peptide level	#d8f0ef	#2f8c86	18	dotdash
-ropecaV2_impute_nested	peptide level	#d8f0ef	#2f8c86	8	twodash
 firth	detection	#f6dbe0	#b04a5f	16	solid
 binomial_nested	detection	#f6dbe0	#b04a5f	17	longdash
 binomial_firth_nested	detection	#f6dbe0	#b04a5f	15	dashed

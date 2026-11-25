@@ -266,3 +266,12 @@ test_that("build_model_impute rejects input and strategies outside its contract"
     class = "prolfqua_error_bad_argument"
   )
 })
+
+test_that("build_model_impute returns the imputed column also when no fit needs a refit", {
+  istar <- sim_lfq_data_protein_config(n_proteins = 10, weight_missing = 0, seed = 1)
+  lfqdata <- LFQData$new(istar$data, istar$config)
+  strategy <- strategy_lm(paste(lfqdata$response(), "~ group_"))
+  model <- suppressMessages(build_model_impute(lfqdata, strategy))
+  expect_true("imputed" %in% colnames(model$model_df))
+  expect_false(any(model$model_df$imputed))
+})
