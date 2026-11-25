@@ -43,9 +43,14 @@ character or unordered factor columns;
 names of \code{configuration$factors} become the predictor column names;
 \item a missing sample name is derived from the file name; avoid by
 supplying the sample name column;
-\item missing identification q-values and child counts
-receive default values (child counts of one with a warning); avoid by
-supplying these columns;
+\item missing identification confidences and child counts
+receive default values of one (child counts with a warning); avoid by
+supplying these columns; identification confidences must lie in [0, 1]
+and child counts must be non-negative;
+\item missing feature-level columns (one identification confidence and one
+child count per feature) are derived as the maximum over samples; supplied
+ones must hold one value per feature; how many features have per-sample
+values that vary across samples is reported;
 \item unconfigured columns and their attributes are dropped; the returned
 table keeps only configured analysis columns;
 \item feature and sample combinations absent from the input are added as
@@ -58,7 +63,7 @@ rows with NA response, so every feature has a row in every sample.
 set.seed(1234)
 data <- sim_lfq_data(n_proteins = 10, peptide = TRUE, n_per_group = 4)
 data$nr_children <- 1
-data$qValue <- 0
+data$identification_confidence <- 1
 
 # Add creatinine values per sample (not per protein/peptide)
 sample_creatinine <- data |> dplyr::select(sample) |> dplyr::distinct() |>

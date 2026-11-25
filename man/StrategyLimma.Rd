@@ -100,7 +100,7 @@ Other modelling:
 
     \item{\code{robust}}{logical, passed to \code{\link[limma]{eBayes}}}
 
-    \item{\code{weights}}{either a character string (column name) or a numeric matrix}
+    \item{\code{weights}}{column names (several are multiplied) or a numeric matrix}
   }
   \if{html}{\out{</div>}}
 }

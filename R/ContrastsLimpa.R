@@ -29,15 +29,26 @@ StrategyLimpa <- R6::R6Class(
     plot = FALSE,
     #' @field span lowess smoother span for vooma trend (NULL = auto)
     span = NULL,
+    #' @field weights value column names whose product gives the prior weights, or NULL
+    weights = NULL,
     #' @description Create a new StrategyLimpa
-    #' @param modelstr,model_name,trend,robust,plot,span see \code{\link{strategy_limpa}}
-    initialize = function(modelstr, model_name = "limpa", trend = FALSE, robust = FALSE, plot = FALSE, span = NULL) {
+    #' @param modelstr,model_name,trend,robust,plot,span,weights see \code{\link{strategy_limpa}}
+    initialize = function(
+      modelstr,
+      model_name = "limpa",
+      trend = FALSE,
+      robust = FALSE,
+      plot = FALSE,
+      span = NULL,
+      weights = NULL
+    ) {
       self$formula <- .as_model_formula(modelstr)
       self$model_name <- .assert_string(model_name)
       self$trend <- .assert_flag(trend)
       self$robust <- .assert_flag(robust)
       self$plot <- .assert_flag(plot)
       self$span <- span
+      self$weights <- weights
     }
   )
 )
@@ -52,15 +63,33 @@ StrategyLimpa <- R6::R6Class(
 #' @param robust logical, passed to \code{\link[limma]{eBayes}}
 #' @param plot logical, plot the vooma mean-variance trend
 #' @param span lowess smoother span (NULL = auto)
-#' @return a [StrategyLimpa] object holding the formula, model name, `eBayes()` options, plot flag and span.
+#' @param weights value column names (e.g. the identification confidence) whose product is passed as
+#'   \code{prior.weights}; cells without a value (imputed) get weight 1. Default \code{NULL} (no prior weights).
+#' @return a [StrategyLimpa] object holding the formula, model name, `eBayes()` options, plot flag, span and weights.
 #' @export
 #' @family modelling
 #' @examples
 #' strat <- strategy_limpa("abundance ~ group_")
 #' strat$formula
 #' strat$model_name
-strategy_limpa <- function(modelstr, model_name = "limpa", trend = FALSE, robust = FALSE, plot = FALSE, span = NULL) {
-  StrategyLimpa$new(modelstr, model_name = model_name, trend = trend, robust = robust, plot = plot, span = span)
+strategy_limpa <- function(
+  modelstr,
+  model_name = "limpa",
+  trend = FALSE,
+  robust = FALSE,
+  plot = FALSE,
+  span = NULL,
+  weights = NULL
+) {
+  StrategyLimpa$new(
+    modelstr,
+    model_name = model_name,
+    trend = trend,
+    robust = robust,
+    plot = plot,
+    span = span,
+    weights = weights
+  )
 }
 
 
@@ -139,6 +168,12 @@ build_model_limpa <- function(lfqdata, strategy, model_name = strategy$model_nam
   )
   if (!is.null(strategy$span)) {
     fit_args$span <- strategy$span
+  }
+  if (!is.null(strategy$weights)) {
+    # imputed cells have no identification of their own and get weight 1
+    prior_weights <- .resolve_weights(lfqdata, strategy, setup$annotation)
+    prior_weights[is.na(prior_weights)] <- 1
+    fit_args$prior.weights <- prior_weights
   }
   fit <- do.call(limpa::voomaLmFitWithImputation, fit_args)
   .new_model_limma(fit, setup, strategy, model_name, fit$EList$E, fit$EList$weights, !imputed)

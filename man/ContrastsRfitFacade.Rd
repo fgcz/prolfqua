@@ -14,8 +14,9 @@ linear regression. Output is the standard Wald contrast schema; the
 empirical-Bayes moderation shrinks the rank-based scale across proteins.
 
 Unlike \code{\link{ContrastsLMFacade}} this backend takes no observation
-weights (\code{rfit} has no \code{weights} argument), so \code{nr_children}
-weighting is not applied.
+weights (\code{rfit} has no \code{weights} argument), so neither
+\code{nr_children} nor identification confidence weighting is applied; a
+message says so when the identification confidence is not 1 everywhere.
 }
 \examples{
 \dontshow{if (requireNamespace("Rfit", quietly = TRUE)) withAutoprint(\{ # examplesIf}

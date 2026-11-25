@@ -99,12 +99,19 @@ ContrastsROPECA <- R6::R6Class(
     subject_id = character(),
     #' @field p.adjust method to use for p.value adjustment
     p.adjust = NULL,
+    #' @field child_weights data frame with the peptide-level \code{subject_id} columns and a column \code{weight},
+    #'   one weight per peptide, or NULL for equal weights
+    child_weights = NULL,
     #' @description
     #' initialize
     #' @param Contrast e.g. instance of Contrasts class, or ContrastsModerated
     #' @param model_name default ROPECA
     #' @param p.adjust function to use for p.value adjustment
-    initialize = function(Contrast, model_name = "ROPECA", p.adjust = prolfqua::adjust_p_values) {
+    #' @param child_weights data frame with the peptide-level \code{subject_id} columns and a column
+    #'   \code{weight}, one weight per peptide (e.g. its identification confidence). The protein fold change,
+    #'   statistic and signed p-value are then weighted medians, and the beta distribution uses the effective number
+    #'   of peptides, (sum w)^2 / sum w^2, rounded down. NULL (default) weights all peptides equally.
+    initialize = function(Contrast, model_name = "ROPECA", p.adjust = prolfqua::adjust_p_values, child_weights = NULL) {
       self$Contrast <- Contrast
       if (length(Contrast$subject_id) <= 1) {
         abort_bad_argument("Contrast", "hold peptide-level contrasts, with more than one `subject_id` column")
@@ -112,6 +119,7 @@ ContrastsROPECA <- R6::R6Class(
       self$model_name <- model_name
       self$subject_id <- Contrast$subject_id
       self$p.adjust <- p.adjust
+      self$child_weights <- child_weights
     },
     #' @description
     #' show names of contrasts
@@ -131,7 +139,7 @@ ContrastsROPECA <- R6::R6Class(
     #' @return data.frame
     get_contrasts = function(all = FALSE) {
       if (is.null(self$contrast_result)) {
-        contrast_result <- self$Contrast$get_contrasts(all = FALSE)
+        contrast_result <- .join_child_weights(self$Contrast$get_contrasts(all = FALSE), self$child_weights)
 
         contrast_result <- .summary_ropeca_median_p_scaled(
           contrast_result,
@@ -140,7 +148,8 @@ ContrastsROPECA <- R6::R6Class(
           estimate = "diff",
           statistic = "statistic",
           p.value = "p.value",
-          max.n = 10
+          max.n = 10,
+          weight = if (is.null(self$child_weights)) NULL else "weight"
         )
         contrast_result <- dplyr::rename(contrast_result, diff = "estimate")
         contrast_result <- self$p.adjust(
@@ -301,15 +310,75 @@ ContrastsROPECA <- R6::R6Class(
   p
 }
 
-#' Residuals of a fitted peptide model, the samples they belong to, and the
+#' Add the per-peptide weights to peptide-level contrasts
+#' @param peptide_contrasts peptide-level contrast table
+#' @param child_weights data frame with the peptide key columns and `weight`, or NULL
+#' @return `peptide_contrasts`, with the column `weight` unless `child_weights` is NULL
+#' @noRd
+.join_child_weights <- function(peptide_contrasts, child_weights) {
+  if (is.null(child_weights)) {
+    return(peptide_contrasts)
+  }
+  keys <- setdiff(names(child_weights), "weight")
+  dplyr::left_join(peptide_contrasts, child_weights, by = keys, relationship = "many-to-one")
+}
+
+#' P(WM > u) for the weighted median WM of independent N(0, 1) values with unequal weights w
 #'
-#' residual projection I - Q Q' of the peptide's design over its observed samples.
+#' WM > u exactly when the values above u carry more than half the total weight. Each value exceeds u with
+#' probability p = Phi(-u), independently, so P(WM > u) = sum_k N_k p^k (1 - p)^(n - k), where N_k counts the subsets
+#' of k values whose weight exceeds half the total; a subset with exactly half counts one half (`.weighted_median()`
+#' then averages two values). The counts are enumerated for up to `max_exact` values; beyond, WM is normal with
+#' variance (pi / 2) sum w^2 / (sum w)^2.
+#' @param u normal-score thresholds
+#' @param w positive weights of one protein's peptides
+#' @param max_exact largest number of values for the exact enumeration
+#' @noRd
+.weighted_median_normal_sf <- function(u, w, max_exact = 16) {
+  n <- length(w)
+  if (n > max_exact) {
+    return(stats::pnorm(-u * sqrt(2 * .effective_n(w) / pi)))
+  }
+  subsets <- as.matrix(expand.grid(rep(list(0:1), n)))
+  above <- as.vector(subsets %*% w) - sum(w) / 2
+  tolerance <- 1e-9 * sum(w)
+  share <- ifelse(above > tolerance, 1, ifelse(abs(above) <= tolerance, 0.5, 0))
+  counts <- as.vector(tapply(share, factor(rowSums(subsets), levels = 0:n), sum))
+  p <- stats::pnorm(-u)
+  k <- 0:n
+  as.vector((outer(p, k, `^`) * outer(1 - p, n - k, `^`)) %*% counts)
+}
+
+#' Two-sided p-values of weighted median peptide z-scores whose pairwise correlation is rho
+#'
+#' Proteins whose peptides have equal weights use the exact null of the median, `.ropeca_v2_pvalue()`; the others
+#' integrate `.weighted_median_normal_sf()` over the shared effect W ~ N(0, 1) in the same way.
+#' @param median_z weighted median peptide normal score per protein
+#' @param weights list with the positive peptide weights of each protein
+#' @param rho within-protein peptide correlation
+#' @noRd
+.ropeca_v2_weighted_pvalue <- function(median_z, weights, rho) {
+  equal <- vapply(weights, function(w) max(w) - min(w) <= 1e-12 * max(w), logical(1))
+  p <- rep(NA_real_, length(median_z))
+  p[equal] <- .ropeca_v2_pvalue(median_z[equal], lengths(weights[equal]), rho)
+  rule <- .gauss_hermite_normal()
+  for (i in which(!equal & !is.na(median_z))) {
+    u <- (abs(median_z[i]) - sqrt(rho) * rule$nodes) / sqrt(1 - rho)
+    p[i] <- min(1, 2 * sum(.weighted_median_normal_sf(u, weights[[i]]) * rule$weights))
+  }
+  p
+}
+
+#' Weighted residuals of a fitted peptide model, the samples they belong to, and the
+#'
+#' residual projection I - Q Q' of the peptide's (weighted) design over its observed samples. For an unweighted
+#' model the weighted residuals are the residuals.
 #' @param model fitted peptide regression model
 #' @param data long-format measurement data frame
 #' @param sample_col sample identifier column
 #' @noRd
 .peptide_residual_projection <- function(model, data, sample_col) {
-  residual <- stats::residuals(model)
+  residual <- stats::weighted.residuals(model)
   q <- qr.Q(model$qr)[, seq_len(model$rank), drop = FALSE]
   list(
     sample = as.character(data[[sample_col]][as.integer(names(residual))]),
@@ -397,11 +466,15 @@ ContrastsROPECA <- R6::R6Class(
 #' @param peptide_contrasts peptide-level contrast table
 #' @param protein_cols column names identifying parent proteins
 #' @param rho within-protein peptide correlation
+#' @param weight name of a column with one weight per peptide, or NULL for equal weights. The fold change and
+#'   z-score are then weighted medians, tested against the null of the weighted median for these weights.
 #' @noRd
-.ropeca_v2_protein_contrasts <- function(peptide_contrasts, protein_cols, rho) {
-  # rows with NA (or NaN) diff, statistic or df are dropped here, so mad() and median() below see no NA
+.ropeca_v2_protein_contrasts <- function(peptide_contrasts, protein_cols, rho, weight = NULL) {
+  peptide_contrasts$.weight <- if (is.null(weight)) 1 else peptide_contrasts[[weight]]
+  # rows with NA (or NaN) diff, statistic, df or weight, or a zero weight, are dropped here, so mad() and median()
+  # below see no NA
   peptides <- peptide_contrasts |>
-    dplyr::filter(!is.na(.data$diff), !is.na(.data$statistic), !is.na(.data$df)) |>
+    dplyr::filter(!is.na(.data$diff), !is.na(.data$statistic), !is.na(.data$df), .data$.weight > 0) |>
     dplyr::mutate(z = .peptide_z(.data$statistic, .data$df))
   # sigma is computed before diff is replaced by its median
   res <- peptides |>
@@ -409,12 +482,14 @@ ContrastsROPECA <- R6::R6Class(
     dplyr::summarise(
       avgAbd = stats::median(.data$avgAbd, na.rm = TRUE),
       sigma = stats::mad(.data$diff),
-      diff = stats::median(.data$diff),
-      median_z = stats::median(.data$z),
+      diff = .weighted_median(.data$diff, .data$.weight),
+      median_z = .weighted_median(.data$z, .data$.weight),
       n_peptides = dplyr::n(),
+      weights = list(.data$.weight),
       .groups = "drop"
     )
-  res$p.value <- .ropeca_v2_pvalue(res$median_z, res$n_peptides, rho)
+  res$p.value <- .ropeca_v2_weighted_pvalue(res$median_z, res$weights, rho)
+  res$weights <- NULL
   res$statistic <- sign(res$median_z) * stats::qnorm(res$p.value / 2, lower.tail = FALSE)
   res$std.error <- ifelse(.is_zero(res$statistic), NA_real_, abs(res$diff / res$statistic))
   res$df <- Inf
@@ -476,13 +551,26 @@ ContrastsROPECAV2 <- R6::R6Class(
     subject_id = character(),
     #' @field p.adjust method to use for p.value adjustment
     p.adjust = NULL,
+    #' @field child_weights data frame with the peptide-level \code{subject_id} columns and a column \code{weight},
+    #'   one weight per peptide, or NULL for equal weights
+    child_weights = NULL,
     #' @description
     #' initialize
     #' @param Contrast peptide-level contrasts with columns \code{diff}, \code{statistic} and \code{df}
     #' @param rho correlation of the peptides of a protein, in [0, 1)
     #' @param model_name default ROPECAV2
     #' @param p.adjust function to use for p.value adjustment
-    initialize = function(Contrast, rho, model_name = "ROPECAV2", p.adjust = prolfqua::adjust_p_values) {
+    #' @param child_weights data frame with the peptide-level \code{subject_id} columns and a column
+    #'   \code{weight}, one weight per peptide (e.g. its identification confidence). The protein fold change and
+    #'   z-score are then weighted medians, tested against the null distribution of the weighted median of
+    #'   correlated normal scores with these weights. NULL (default) weights all peptides equally.
+    initialize = function(
+      Contrast,
+      rho,
+      model_name = "ROPECAV2",
+      p.adjust = prolfqua::adjust_p_values,
+      child_weights = NULL
+    ) {
       if (length(Contrast$subject_id) < 2) {
         abort_bad_argument("Contrast", "have peptide-level subject_id (parent and child keys)")
       }
@@ -492,6 +580,7 @@ ContrastsROPECAV2 <- R6::R6Class(
       self$model_name <- model_name
       self$subject_id <- Contrast$subject_id
       self$p.adjust <- p.adjust
+      self$child_weights <- child_weights
     },
     #' @description
     #' show names of contrasts
@@ -513,7 +602,12 @@ ContrastsROPECAV2 <- R6::R6Class(
     get_contrasts = function(all = FALSE) {
       protein_cols <- private$protein_cols()
       if (is.null(self$contrast_result)) {
-        res <- .ropeca_v2_protein_contrasts(self$Contrast$get_contrasts(), protein_cols, self$rho)
+        res <- .ropeca_v2_protein_contrasts(
+          .join_child_weights(self$Contrast$get_contrasts(), self$child_weights),
+          protein_cols,
+          self$rho,
+          weight = if (is.null(self$child_weights)) NULL else "weight"
+        )
         res <- self$p.adjust(res, column = "p.value", group_by_col = "contrast", newname = "FDR")
         self$contrast_result <- .stamp_model_identity(dplyr::ungroup(res), self$model_name, "observed")
       }

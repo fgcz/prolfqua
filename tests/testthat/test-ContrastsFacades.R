@@ -155,7 +155,7 @@ test_that("ContrastsDEqMSFacade initialises and returns correct structure", {
   expect_true(inherits(fa, "ContrastsDEqMSFacade"))
   expect_r6_class(fa$model, "Model")
   expect_r6_class(fa$contrast, "ContrastsModeratedDEqMS")
-  expect_equal(fa$contrast$count_column, "nrPeptides")
+  expect_equal(fa$contrast$count_column, "nr_children_feature")
   check_facade_interface(fa)
   expect_true(all(fa$get_contrasts()$modelName == "deqms"))
 })
@@ -281,7 +281,7 @@ test_that("build_contrast_analysis dispatches to ContrastsDEqMSFacade for method
   lfqdata <- make_protein_lfqdata()$lfqdata
   fa <- prolfqua::build_contrast_analysis(lfqdata, MODELSTR, CONTRASTS, method = "deqms")
   expect_true(inherits(fa, "ContrastsDEqMSFacade"))
-  expect_equal(fa$contrast$count_column, "nrPeptides")
+  expect_equal(fa$contrast$count_column, "nr_children_feature")
   check_facade_interface(fa)
 })
 

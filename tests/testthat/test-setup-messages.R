@@ -73,8 +73,10 @@ test_that("input already in the configured form gets no transformation messages"
   data$source <- NULL
   data <- rbind(data, data.frame(run = "s2", protein = "P2", peptide = "c", group = "A", intensity = 9))
   data$sampleName <- data$run
-  data$qValue <- 0
+  data$identification_confidence <- 1
+  data$identification_confidence_feature <- 1
   data$nr_children <- 1
+  data$nr_children_feature <- 1
   config <- input$config
   config$hierarchy[["protein_Id"]] <- "protein"
   expect_length(setup_messages(data, config), 0L)

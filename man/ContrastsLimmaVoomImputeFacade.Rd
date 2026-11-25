@@ -137,7 +137,7 @@ Other modelling:
   contrasts,
   lod = NULL,
   df_method = c("observed", "borrowed"),
-  weights = lfqdata$nr_children_col(),
+  weights = .default_weights(lfqdata),
   span = 0.5,
   plot = FALSE,
   trend = FALSE,
@@ -154,8 +154,8 @@ Other modelling:
       \item{\code{lod}}{numeric limit of detection; if NULL, auto-computed from data}
       \item{\code{df_method}}{"observed" uses max(n_observed - p, 1);
 "borrowed" uses median df from successful fits}
-      \item{\code{weights}}{column name for per-observation weights (default:
-\code{lfqdata$nr_children_col()}). Pass \code{NULL} for unweighted.}
+      \item{\code{weights}}{column names whose product gives the per-observation weights (default: the child count
+times the identification confidence). Pass \code{NULL} for unweighted.}
       \item{\code{span}}{lowess smoother span for vooma trend (default 0.5)}
       \item{\code{plot}}{logical; if TRUE, plot the mean-variance trend}
       \item{\code{trend, robust}}{passed to \code{\link[limma]{eBayes}}, see \code{\link{strategy_limma}}}

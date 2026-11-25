@@ -91,23 +91,58 @@ Other modelling:
 \section{Super class}{
 \code{\link[prolfqua:StrategyBase]{StrategyBase}} -> \code{StrategyRLM}
 }
+\section{Public fields}{
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{weights}}{optional character vector naming columns in the data; their product is passed as
+per-observation prior weights to \code{\link[MASS]{rlm}} (inverse variances).}
+  }
+  \if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
   \itemize{
+    \item \href{#method-StrategyRLM-initialize}{\code{StrategyRLM$new()}}
     \item \href{#method-StrategyRLM-sigma}{\code{StrategyRLM$sigma()}}
     \item \href{#method-StrategyRLM-clone}{\code{StrategyRLM$clone()}}
   }
 }
-\if{html}{\out{<details><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="contrast_fun"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-contrast_fun'><code>StrategyBase$contrast_fun()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="df_residual"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual'><code>StrategyBase$df_residual()</code></a></span></li>
-  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="initialize"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-initialize'><code>StrategyBase$initialize()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="isSingular"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-isSingular'><code>StrategyBase$isSingular()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="model_fun"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun'><code>StrategyBase$model_fun()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="zero_residual_variance"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-zero_residual_variance'><code>StrategyBase$zero_residual_variance()</code></a></span></li>
 </ul>
 </details>}}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-StrategyRLM-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-StrategyRLM-initialize}{}}}
+\subsection{\code{StrategyRLM$new()}}{
+  Create a new StrategyRLM
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{StrategyRLM$new(
+  modelstr,
+  model_name = "Model",
+  control = list(),
+  weights = NULL
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{modelstr}}{model formula string}
+      \item{\code{model_name}}{name of model}
+      \item{\code{control}}{named list with \code{maxit} and \code{acc} of \code{\link[MASS]{rlm}}}
+      \item{\code{weights}}{optional character vector naming weight columns in the data}
+    }
+    \if{html}{\out{</div>}}
+  }
+}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-StrategyRLM-sigma"></a>}}
 \if{latex}{\out{\hypertarget{method-StrategyRLM-sigma}{}}}

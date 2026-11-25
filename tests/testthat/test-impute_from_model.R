@@ -121,7 +121,7 @@ test_that("the weighted lm_impute facade model fills rows absent from the long t
   data <- istar$data[!is.na(istar$data$abundance), ]
   lfq <- LFQData$new(data, istar$config)
   facade <- ContrastsLMImputeFacade$new(lfq, "~ group_", c(AvsCtrl = "group_A - group_Ctrl"))
-  expect_equal(facade$model$model_strategy$weights, "nrPeptides")
+  expect_equal(facade$model$model_strategy$weights, c("nrPeptides", "identification_confidence"))
 
   res <- impute_from_model(facade$model, lfq)
 

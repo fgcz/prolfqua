@@ -1,13 +1,20 @@
 # Binomial detection model ----
 
 #' Count detected and undetected child features per parent and sample
+#'
+#' Counts expected true detections: a detected child counts with its identification confidence in the sample, and
+#' every child counts towards the available children with its feature-level identification confidence. With
+#' confidence 1 everywhere these are the numbers of detected and available children.
 #' @param lfqdata [LFQData] object with the data and its configuration
 #' @noRd
 .summarize_detection_counts <- function(lfqdata) {
   if (!inherits(lfqdata, "LFQData")) {
     abort_bad_argument("lfqdata", "be an LFQData object")
   }
-  bin_resp <- lfqdata$get_config()$bin_resp
+  config <- lfqdata$get_config()
+  bin_resp <- config$bin_resp
+  confidence <- config$identification_confidence
+  confidence_feature <- config$identification_confidence_feature
   grouping <- unique(c(
     lfqdata$subject_id(),
     lfqdata$sample_name(),
@@ -17,8 +24,8 @@
   counts <- lfqdata$data_long() |>
     dplyr::group_by(dplyr::across(dplyr::all_of(grouping))) |>
     dplyr::summarise(
-      detected = sum(.data[[bin_resp]]),
-      available = dplyr::n(),
+      detected = sum(.data[[confidence]][.data[[bin_resp]] == 1]),
+      available = sum(.data[[confidence_feature]]),
       .groups = "drop"
     ) |>
     dplyr::mutate(undetected = .data$available - .data$detected)

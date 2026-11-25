@@ -304,10 +304,12 @@ AggregateTopN <- R6::R6Class(
 #' @param elist limpa EList with expression and uncertainty
 #' @param wide wide-format data, row identifiers and sample annotations
 #' @param config AnalysisConfiguration defining the column roles
+#' @param data long-format input data; the identification confidence of an output feature in a sample is the
+#'   maximum over its observed input features
 #' @param prefix prefix identifying the output level
 #' @param impute_only return imputed input without protein rollup
 #' @noRd
-.elist_to_lfqdata <- function(elist, wide, config, prefix, impute_only) {
+.elist_to_lfqdata <- function(elist, wide, config, data, prefix, impute_only) {
   if (impute_only) {
     newconfig <- config$clone(deep = TRUE)
     newconfig$work_intensity <- "limpa"
@@ -327,6 +329,16 @@ AggregateTopN <- R6::R6Class(
   newconfig$nr_children <- paste0("nr_children_", paste(newconfig$hierarchy_keys(), collapse = "_"))
   long_data[[newconfig$nr_children]] <- as.vector(t(elist$other$n.observations))
   newconfig$opt_se <- "limpa_se"
+  keys <- newconfig$hierarchy_keys()
+  confidence <- .aggregate_confidence(
+    data,
+    config$get_response(),
+    c(keys, config$sample_name),
+    config$identification_confidence,
+    newconfig$identification_confidence
+  )
+  long_data <- dplyr::left_join(long_data, confidence, by = c(keys, config$sample_name), relationship = "one-to-one")
+  long_data <- .add_feature_columns(long_data, keys, newconfig)
   LFQData$new(long_data, newconfig, prefix = prefix)
 }
 
@@ -436,7 +448,14 @@ AggregateLimpa <- R6::R6Class(
         )
       }
 
-      private$.set_result(.elist_to_lfqdata(elist, wide, self$lfq$get_config(), self$prefix, self$impute_only))
+      private$.set_result(.elist_to_lfqdata(
+        elist,
+        wide,
+        self$lfq$get_config(),
+        self$lfq$data_long(),
+        self$prefix,
+        self$impute_only
+      ))
     },
 
     #' @description

@@ -40,7 +40,11 @@ Other configuration:
 
     \item{\code{norm_value}}{optional column with normalization values (e.g., Creatinine)}
 
-    \item{\code{ident_q_value}}{column name with identification QValues (smaller better)}
+    \item{\code{identification_confidence}}{column with the identification confidence of each feature in each sample,
+in [0, 1], larger is better (e.g. 1 - PEP); used as model weight}
+
+    \item{\code{identification_confidence_feature}}{column with one identification confidence per feature, the maximum
+of \code{identification_confidence} over samples}
 
     \item{\code{ident_score}}{column with identification score (larger better)}
 
@@ -51,6 +55,9 @@ Other configuration:
     \item{\code{opt_se}}{optional column with standard errors (e.g. from limpa aggregation)}
 
     \item{\code{nr_children}}{optional column containing for instance the number of peptides}
+
+    \item{\code{nr_children_feature}}{column with one child count per feature, the maximum of \code{nr_children} over
+samples}
 
     \item{\code{work_intensity}}{column which contains the intensities}
 
@@ -225,7 +232,7 @@ not flagged; set it to enable contaminant flagging / removal.}
 \if{html}{\out{<a id="method-AnalysisConfiguration-value_vars"></a>}}
 \if{latex}{\out{\hypertarget{method-AnalysisConfiguration-value_vars}{}}}
 \subsection{\code{AnalysisConfiguration$value_vars()}}{
-  get names of columns containing observations e.g. (intensity, qValue, mz or rt)
+  get names of columns containing observations e.g. (intensity, identification confidence, mz or rt)
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{AnalysisConfiguration$value_vars()}

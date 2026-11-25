@@ -265,9 +265,10 @@ test_that("moderated_p_deqms stops with a classed error when all counts are equa
 test_that("the deqms method refuses protein data without peptide counts", {
   istar <- sim_lfq_data_protein_config(n_proteins = 30)
   istar$data$nrPeptides <- 1
+  istar$data$nr_children_feature <- 1
   lfqdata <- LFQData$new(istar$data, istar$config)
   fa <- build_contrast_analysis(lfqdata, "~ group_", c("A_vs_Ctrl" = "group_A - group_Ctrl"), method = "deqms")
-  expect_error(fa$get_contrasts(), "`nrPeptides`", class = "prolfqua_error_constant_counts")
+  expect_error(fa$get_contrasts(), "`nr_children_feature`", class = "prolfqua_error_constant_counts")
 })
 
 test_that("moderated_p_deqms_long reports warnings of the per-contrast fits as prolfqua_fit_failed", {

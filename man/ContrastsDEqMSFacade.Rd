@@ -133,7 +133,7 @@ Other modelling:
   lfqdata,
   modelstr,
   contrasts,
-  weights = lfqdata$nr_children_col()
+  weights = .default_weights(lfqdata)
 )}
     \if{html}{\out{</div>}}
   }
@@ -143,8 +143,8 @@ Other modelling:
       \item{\code{lfqdata}}{\link{LFQData} object with the data and its configuration}
       \item{\code{modelstr}}{model formula string (e.g. "~ group_")}
       \item{\code{contrasts}}{named character vector of contrasts}
-      \item{\code{weights}}{column name for per-observation weights (default:
-\code{lfqdata$nr_children_col()}). Pass \code{NULL} for unweighted.}
+      \item{\code{weights}}{column names whose product gives the per-observation weights (default: the child count
+times the identification confidence). Pass \code{NULL} for unweighted.}
     }
     \if{html}{\out{</div>}}
   }

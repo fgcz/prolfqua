@@ -137,7 +137,12 @@ Other modelling:
   initialize
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{ContrastsROPECAV2NestedFacade$new(lfqdata, modelstr, contrasts)}
+    \preformatted{ContrastsROPECAV2NestedFacade$new(
+  lfqdata,
+  modelstr,
+  contrasts,
+  weights = .confidence_weights(lfqdata)
+)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
@@ -146,6 +151,9 @@ Other modelling:
       \item{\code{lfqdata}}{nested LFQData (peptide-level)}
       \item{\code{modelstr}}{model formula string (e.g. "~ group_")}
       \item{\code{contrasts}}{named character vector of contrasts}
+      \item{\code{weights}}{column names whose product weights the per-peptide fits (default: the identification
+confidence). Unless \code{NULL}, the peptides are also combined with weights
+\code{identification_confidence_feature}. Pass \code{NULL} for unweighted.}
     }
     \if{html}{\out{</div>}}
   }

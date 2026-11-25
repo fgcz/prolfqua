@@ -7,7 +7,7 @@ test_that("check config", {
   config$hierarchy[["peptide_Id"]] <- "Peptide.Sequence"
   config$hierarchy[["precursor_Id"]] <- c("Peptide.Sequence", "Precursor.Charge")
   config$hierarchy[["fragment_Id"]] <- c("Peptide.Sequence", "Precursor.Charge", "Fragment.Ion", "Product.Charge")
-  config$ident_q_value <- "annotation_QValue"
+  config$identification_confidence <- "annotation_confidence"
   config$set_response("Area")
   config$factors[["Time"]] <- "Sampling.Time.Point"
   expect_equal(config$factor_keys(), "Time")

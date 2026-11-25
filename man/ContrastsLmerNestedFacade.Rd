@@ -142,7 +142,13 @@ Other modelling:
   initialize
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{ContrastsLmerNestedFacade$new(lfqdata, modelstr, contrasts, control = list())}
+    \preformatted{ContrastsLmerNestedFacade$new(
+  lfqdata,
+  modelstr,
+  contrasts,
+  control = list(),
+  weights = .confidence_weights(lfqdata)
+)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
@@ -156,6 +162,8 @@ formula already containing random-effect bars is passed through
 unchanged.}
       \item{\code{contrasts}}{named character vector of contrasts}
       \item{\code{control}}{named list of convergence controls, see \code{\link{strategy_lmer}}}
+      \item{\code{weights}}{column names whose product gives the per-observation weights (default: the identification
+confidence). Pass \code{NULL} for unweighted.}
     }
     \if{html}{\out{</div>}}
   }

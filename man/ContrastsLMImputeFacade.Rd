@@ -141,7 +141,7 @@ Other modelling:
   lod = NULL,
   borrow_method = c("sigma", "vcov"),
   df_method = c("observed", "borrowed"),
-  weights = lfqdata$nr_children_col()
+  weights = .default_weights(lfqdata)
 )}
     \if{html}{\out{</div>}}
   }
@@ -156,8 +156,8 @@ Other modelling:
 (X'X)^-1; "vcov" borrows element-wise median of full vcov matrices}
       \item{\code{df_method}}{"observed" uses max(n_observed - p, 1);
 "borrowed" uses median df from successful fits}
-      \item{\code{weights}}{column name for per-observation weights (default:
-\code{lfqdata$nr_children_col()}). Pass \code{NULL} for unweighted.}
+      \item{\code{weights}}{column names whose product gives the per-observation weights (default: the child count
+times the identification confidence). Pass \code{NULL} for unweighted.}
     }
     \if{html}{\out{</div>}}
   }

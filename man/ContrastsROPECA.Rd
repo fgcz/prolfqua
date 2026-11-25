@@ -139,6 +139,9 @@ Other modelling:
     \item{\code{subject_id}}{columns with protein ID's}
 
     \item{\code{p.adjust}}{method to use for p.value adjustment}
+
+    \item{\code{child_weights}}{data frame with the peptide-level \code{subject_id} columns and a column \code{weight},
+one weight per peptide, or NULL for equal weights}
   }
   \if{html}{\out{</div>}}
 }
@@ -176,7 +179,8 @@ Other modelling:
     \preformatted{ContrastsROPECA$new(
   Contrast,
   model_name = "ROPECA",
-  p.adjust = prolfqua::adjust_p_values
+  p.adjust = prolfqua::adjust_p_values,
+  child_weights = NULL
 )}
     \if{html}{\out{</div>}}
   }
@@ -186,6 +190,10 @@ Other modelling:
       \item{\code{Contrast}}{e.g. instance of Contrasts class, or ContrastsModerated}
       \item{\code{model_name}}{default ROPECA}
       \item{\code{p.adjust}}{function to use for p.value adjustment}
+      \item{\code{child_weights}}{data frame with the peptide-level \code{subject_id} columns and a column
+\code{weight}, one weight per peptide (e.g. its identification confidence). The protein fold change,
+statistic and signed p-value are then weighted medians, and the beta distribution uses the effective number
+of peptides, (sum w)^2 / sum w^2, rounded down. NULL (default) weights all peptides equally.}
     }
     \if{html}{\out{</div>}}
   }

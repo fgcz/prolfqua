@@ -382,10 +382,12 @@ test_that("detection count summaries reject non-LFQData input", {
   expect_error(.summarize_detection_counts(list()), class = "prolfqua_error_bad_argument")
 })
 
-test_that("detection count summaries reject negative detection counts", {
+test_that("detection count summaries reject negative undetected counts", {
   x <- sim_lfq_data_protein_config(n_proteins = 5, seed = 42)
-  x$data$bin_resp <- -1
+  x$data$bin_resp <- 1L
   x$config$bin_resp <- "bin_resp"
+  # a feature-level confidence below the per-sample confidence makes the undetected count negative
+  x$data$identification_confidence_feature <- 0
   expect_error(.summarize_detection_counts(LFQData$new(x$data, x$config)), class = "prolfqua_error")
 })
 

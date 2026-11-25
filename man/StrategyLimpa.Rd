@@ -105,6 +105,8 @@ Other modelling:
     \item{\code{plot}}{logical, plot the vooma mean-variance trend}
 
     \item{\code{span}}{lowess smoother span for vooma trend (NULL = auto)}
+
+    \item{\code{weights}}{value column names whose product gives the prior weights, or NULL}
   }
   \if{html}{\out{</div>}}
 }
@@ -128,14 +130,15 @@ Other modelling:
   trend = FALSE,
   robust = FALSE,
   plot = FALSE,
-  span = NULL
+  span = NULL,
+  weights = NULL
 )}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{modelstr, model_name, trend, robust, plot, span}}{see \code{\link{strategy_limpa}}}
+      \item{\code{modelstr, model_name, trend, robust, plot, span, weights}}{see \code{\link{strategy_limpa}}}
     }
     \if{html}{\out{</div>}}
   }

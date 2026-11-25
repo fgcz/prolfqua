@@ -72,10 +72,12 @@ ContrastsLmerNestedFacade <- R6::R6Class(
     #'   unchanged.
     #' @param contrasts named character vector of contrasts
     #' @param control named list of convergence controls, see \code{\link{strategy_lmer}}
-    initialize = function(lfqdata, modelstr, contrasts, control = list()) {
+    #' @param weights column names whose product gives the per-observation weights (default: the identification
+    #'   confidence). Pass \code{NULL} for unweighted.
+    initialize = function(lfqdata, modelstr, contrasts, control = list(), weights = .confidence_weights(lfqdata)) {
       private$.setup(lfqdata, contrasts, "lmer_nested", modelstr)
       full_formula <- paste(lfqdata$response(), .augment_lmer_nested_modelstr(modelstr, lfqdata))
-      strat <- strategy_lmer(full_formula, control = control)
+      strat <- strategy_lmer(full_formula, control = control, weights = weights)
       self$model <- build_model(lfqdata, strat)
       self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts, model_name = "lmer_nested"))
     }
@@ -136,12 +138,18 @@ ContrastsROPECANestedFacade <- R6::R6Class(
     #' @param lfqdata nested LFQData (peptide-level)
     #' @param modelstr model formula string (e.g. "~ group_")
     #' @param contrasts named character vector of contrasts
-    initialize = function(lfqdata, modelstr, contrasts) {
+    #' @param weights column names whose product weights the per-peptide fits (default: the identification
+    #'   confidence). Unless \code{NULL}, the peptides are also combined with weights
+    #'   \code{identification_confidence_feature}. Pass \code{NULL} for unweighted.
+    initialize = function(lfqdata, modelstr, contrasts, weights = .confidence_weights(lfqdata)) {
       full_formula <- private$.setup(lfqdata, contrasts, "ropeca_nested", modelstr)
-      strat <- strategy_lm(full_formula)
+      strat <- strategy_lm(full_formula, weights = weights)
       subject_id <- lfqdata$hierarchy_keys()
       self$model <- build_model(lfqdata, strat, subject_id = subject_id)
-      self$contrast <- ContrastsROPECA$new(Contrasts$new(self$model, contrasts))
+      self$contrast <- ContrastsROPECA$new(
+        Contrasts$new(self$model, contrasts),
+        child_weights = if (is.null(weights)) NULL else .child_weights(lfqdata)
+      )
       self$config <- self$contrast$get_config()
       self$config$subject_id <- self$contrast$subject_id[1]
     },
@@ -234,14 +242,21 @@ ContrastsROPECAV2NestedFacade <- R6::R6Class(
     #' @param lfqdata nested LFQData (peptide-level)
     #' @param modelstr model formula string (e.g. "~ group_")
     #' @param contrasts named character vector of contrasts
-    initialize = function(lfqdata, modelstr, contrasts) {
+    #' @param weights column names whose product weights the per-peptide fits (default: the identification
+    #'   confidence). Unless \code{NULL}, the peptides are also combined with weights
+    #'   \code{identification_confidence_feature}. Pass \code{NULL} for unweighted.
+    initialize = function(lfqdata, modelstr, contrasts, weights = .confidence_weights(lfqdata)) {
       full_formula <- private$.setup(lfqdata, contrasts, "ropecaV2_nested", modelstr)
-      strat <- strategy_lm(full_formula)
+      strat <- strategy_lm(full_formula, weights = weights)
       subject_id <- lfqdata$hierarchy_keys()
       self$model <- build_model(lfqdata, strat, subject_id = subject_id)
       rho <- .ropeca_v2_rho(self$model$model_df, subject_id, lfqdata$sample_name())
       peptide_contrasts <- ContrastsModerated$new(Contrasts$new(self$model, contrasts))
-      self$contrast <- ContrastsROPECAV2$new(peptide_contrasts, rho = rho)
+      self$contrast <- ContrastsROPECAV2$new(
+        peptide_contrasts,
+        rho = rho,
+        child_weights = if (is.null(weights)) NULL else .child_weights(lfqdata)
+      )
       self$config <- self$contrast$get_config()
       self$config$subject_id <- self$contrast$subject_id[1]
     },
@@ -407,6 +422,16 @@ ContrastsBinomialFirthNestedFacade <- R6::R6Class(
 }
 
 
+#' One weight per child feature: its feature-level identification confidence
+#' @param lfqdata nested LFQData
+#' @return data frame with the hierarchy key columns and `weight`
+#' @noRd
+.child_weights <- function(lfqdata) {
+  feature_col <- lfqdata$get_config()$identification_confidence_feature
+  weights <- dplyr::distinct(lfqdata$data_long()[, c(lfqdata$hierarchy_keys(), feature_col)])
+  dplyr::rename(weights, weight = dplyr::all_of(feature_col))
+}
+
 #' Limpa contrast analysis facade for nested input
 #'
 #' Encapsulates the full precursor -> protein pipeline:
@@ -449,6 +474,8 @@ ContrastsLimpaNestedFacade <- R6::R6Class(
     #' @param plot logical; if TRUE, plot the vooma mean-variance trend
     #' @param span lowess smoother span (NULL = auto)
     #' @param trend,robust passed to \code{\link[limma]{eBayes}}, see \code{\link{strategy_limpa}}
+    #' @param weights column names whose product gives the prior weights of the protein-level fit (default: the
+    #'   identification confidence, the maximum over the observed children). Pass \code{NULL} for unweighted.
     initialize = function(
       lfqdata,
       modelstr,
@@ -458,7 +485,8 @@ ContrastsLimpaNestedFacade <- R6::R6Class(
       plot = FALSE,
       span = NULL,
       trend = FALSE,
-      robust = FALSE
+      robust = FALSE,
+      weights = .confidence_weights(lfqdata)
     ) {
       private$.setup(lfqdata, contrasts, "limpa_nested", modelstr)
       lfq_agg <- AggregateLimpa$new(lfqdata, prefix = prefix, dpc_slope = dpc_slope)$aggregate()
@@ -469,7 +497,8 @@ ContrastsLimpaNestedFacade <- R6::R6Class(
         plot = plot,
         span = span,
         trend = trend,
-        robust = robust
+        robust = robust,
+        weights = weights
       )
       self$model <- build_model_limpa(lfq_agg, strat)
       self$contrast <- ContrastsLimma$new(self$model, contrasts, model_name = "limpa_nested")

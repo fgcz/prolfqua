@@ -93,6 +93,14 @@ Other modelling:
 \section{Super class}{
 \code{\link[prolfqua:StrategyBase]{StrategyBase}} -> \code{StrategyLogistf}
 }
+\section{Public fields}{
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{weights}}{optional column name with per-row weights; rows with identical predictors and response are
+collapsed into one row whose frequency weight is the sum of their weights}
+  }
+  \if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
   \itemize{
@@ -117,7 +125,12 @@ Other modelling:
   Create a new StrategyLogistf
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{StrategyLogistf$new(modelstr, model_name = "logistf", control = list())}
+    \preformatted{StrategyLogistf$new(
+  modelstr,
+  model_name = "logistf",
+  control = list(),
+  weights = NULL
+)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
@@ -126,6 +139,7 @@ Other modelling:
       \item{\code{modelstr}}{model formula string}
       \item{\code{model_name}}{name of model}
       \item{\code{control}}{named list of convergence controls, see \code{\link{strategy_logistf}}}
+      \item{\code{weights}}{optional column name with per-row weights; NULL counts every row once}
     }
     \if{html}{\out{</div>}}
   }

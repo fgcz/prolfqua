@@ -28,7 +28,8 @@ donor covariance matrices cannot be aligned by coefficient name, the
 rescue is skipped and those proteins remain in \code{get_missing()}
 rather than carrying an \code{lm}-specific approximation.
 \item No observation weights (\code{rfit} has no \code{weights} argument),
-matching plain \code{rfit}.
+matching plain \code{rfit}; a message says so when the identification
+confidence is not 1 everywhere.
 }
 
 \code{modelName} is the facade key \code{"rfit_impute"}; rescued rows are

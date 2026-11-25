@@ -99,9 +99,18 @@ Other modelling:
 \section{Super class}{
 \code{\link[prolfqua:StrategyBase]{StrategyBase}} -> \code{StrategyLmer}
 }
+\section{Public fields}{
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{weights}}{optional character vector naming columns in the data; their product is passed as
+per-observation weights to \code{\link[lme4]{lmer}}.}
+  }
+  \if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
   \itemize{
+    \item \href{#method-StrategyLmer-initialize}{\code{StrategyLmer$new()}}
     \item \href{#method-StrategyLmer-isSingular}{\code{StrategyLmer$isSingular()}}
     \item \href{#method-StrategyLmer-contrast_fun}{\code{StrategyLmer$contrast_fun()}}
     \item \href{#method-StrategyLmer-clone}{\code{StrategyLmer$clone()}}
@@ -110,12 +119,38 @@ Other modelling:
 \if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="df_residual"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-df_residual'><code>StrategyBase$df_residual()</code></a></span></li>
-  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="initialize"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-initialize'><code>StrategyBase$initialize()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="model_fun"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-model_fun'><code>StrategyBase$model_fun()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="sigma"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-sigma'><code>StrategyBase$sigma()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="zero_residual_variance"><a href='../../prolfqua/html/StrategyBase.html#method-StrategyBase-zero_residual_variance'><code>StrategyBase$zero_residual_variance()</code></a></span></li>
 </ul>
 </details>}}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-StrategyLmer-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-StrategyLmer-initialize}{}}}
+\subsection{\code{StrategyLmer$new()}}{
+  Create a new StrategyLmer
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{StrategyLmer$new(
+  modelstr,
+  model_name = "Model",
+  control = list(),
+  weights = NULL
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{modelstr}}{model formula string}
+      \item{\code{model_name}}{name of model}
+      \item{\code{control}}{named list of \code{\link[lme4]{lmerControl}} arguments}
+      \item{\code{weights}}{optional character vector naming weight columns in the data}
+    }
+    \if{html}{\out{</div>}}
+  }
+}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-StrategyLmer-isSingular"></a>}}
 \if{latex}{\out{\hypertarget{method-StrategyLmer-isSingular}{}}}

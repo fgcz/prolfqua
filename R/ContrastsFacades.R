@@ -144,6 +144,33 @@
   dplyr::relocate(res, dplyr::any_of(c("modelName", "estimate_type")))
 }
 
+#' Default weights of facades that weight by child counts: child count times identification confidence
+#' @param lfqdata [LFQData] object with the data and its configuration
+#' @return character vector of weight column names
+#' @noRd
+.default_weights <- function(lfqdata) {
+  c(lfqdata$nr_children_col(), lfqdata$get_config()$identification_confidence)
+}
+
+#' Default weights of facades that do not weight by child counts: the identification confidence
+#' @param lfqdata [LFQData] object with the data and its configuration
+#' @return the identification confidence column name
+#' @noRd
+.confidence_weights <- function(lfqdata) {
+  lfqdata$get_config()$identification_confidence
+}
+
+#' Tell that a backend without observation weights ignores the identification confidence
+#' @param lfqdata [LFQData] object with the data and its configuration
+#' @param facade_name facade identity for the message
+#' @noRd
+.inform_unweighted <- function(lfqdata, facade_name) {
+  confidence <- lfqdata$data_long()[[lfqdata$get_config()$identification_confidence]]
+  if (!is.null(confidence) && any(confidence < 1, na.rm = TRUE)) {
+    inform_prolfqua(facade_name, ": Rfit takes no observation weights; the identification confidence is not used.")
+  }
+}
+
 #' Limma contrast analysis facade
 #'
 #' Encapsulates the pipeline: \code{\link{strategy_limma}} ->
@@ -169,14 +196,14 @@ ContrastsLimmaFacade <- R6::R6Class(
     #' @param lfqdata [LFQData] object with the data and its configuration
     #' @param modelstr model formula string (e.g. "~ group_")
     #' @param contrasts named character vector of contrasts
-    #' @param weights column name for per-observation weights (default:
-    #'   \code{lfqdata$nr_children_col()}). Pass \code{NULL} for unweighted.
+    #' @param weights column names whose product gives the per-observation weights (default: the child count
+    #'   times the identification confidence). Pass \code{NULL} for unweighted.
     #' @param trend,robust passed to \code{\link[limma]{eBayes}}, see \code{\link{strategy_limma}}
     initialize = function(
       lfqdata,
       modelstr,
       contrasts,
-      weights = lfqdata$nr_children_col(),
+      weights = .default_weights(lfqdata),
       trend = FALSE,
       robust = FALSE
     ) {
@@ -224,8 +251,8 @@ ContrastsLimmaImputeFacade <- R6::R6Class(
     #' @param lod numeric limit of detection; if NULL, auto-computed from data
     #' @param df_method "observed" uses max(n_observed - p, 1);
     #'   "borrowed" uses median df from successful fits
-    #' @param weights column name for per-observation weights (default:
-    #'   \code{lfqdata$nr_children_col()}). Pass \code{NULL} for unweighted.
+    #' @param weights column names whose product gives the per-observation weights (default: the child count
+    #'   times the identification confidence). Pass \code{NULL} for unweighted.
     #' @param trend,robust passed to \code{\link[limma]{eBayes}}, see \code{\link{strategy_limma}}
     initialize = function(
       lfqdata,
@@ -233,7 +260,7 @@ ContrastsLimmaImputeFacade <- R6::R6Class(
       contrasts,
       lod = NULL,
       df_method = c("observed", "borrowed"),
-      weights = lfqdata$nr_children_col(),
+      weights = .default_weights(lfqdata),
       trend = FALSE,
       robust = FALSE
     ) {
@@ -275,8 +302,8 @@ ContrastsLimmaVoomFacade <- R6::R6Class(
     #' @param lfqdata [LFQData] object with the data and its configuration
     #' @param modelstr model formula string (e.g. "~ group_")
     #' @param contrasts named character vector of contrasts
-    #' @param weights column name for per-observation weights (default:
-    #'   \code{lfqdata$nr_children_col()}). Pass \code{NULL} for unweighted.
+    #' @param weights column names whose product gives the per-observation weights (default: the child count
+    #'   times the identification confidence). Pass \code{NULL} for unweighted.
     #' @param span lowess smoother span for vooma trend (default 0.5)
     #' @param plot logical; if TRUE, plot the mean-variance trend
     #' @param trend,robust passed to \code{\link[limma]{eBayes}}, see \code{\link{strategy_limma}}
@@ -284,7 +311,7 @@ ContrastsLimmaVoomFacade <- R6::R6Class(
       lfqdata,
       modelstr,
       contrasts,
-      weights = lfqdata$nr_children_col(),
+      weights = .default_weights(lfqdata),
       span = 0.5,
       plot = FALSE,
       trend = FALSE,
@@ -331,8 +358,8 @@ ContrastsLimmaVoomImputeFacade <- R6::R6Class(
     #' @param lod numeric limit of detection; if NULL, auto-computed from data
     #' @param df_method "observed" uses max(n_observed - p, 1);
     #'   "borrowed" uses median df from successful fits
-    #' @param weights column name for per-observation weights (default:
-    #'   \code{lfqdata$nr_children_col()}). Pass \code{NULL} for unweighted.
+    #' @param weights column names whose product gives the per-observation weights (default: the child count
+    #'   times the identification confidence). Pass \code{NULL} for unweighted.
     #' @param span lowess smoother span for vooma trend (default 0.5)
     #' @param plot logical; if TRUE, plot the mean-variance trend
     #' @param trend,robust passed to \code{\link[limma]{eBayes}}, see \code{\link{strategy_limma}}
@@ -342,7 +369,7 @@ ContrastsLimmaVoomImputeFacade <- R6::R6Class(
       contrasts,
       lod = NULL,
       df_method = c("observed", "borrowed"),
-      weights = lfqdata$nr_children_col(),
+      weights = .default_weights(lfqdata),
       span = 0.5,
       plot = FALSE,
       trend = FALSE,
@@ -410,9 +437,20 @@ ContrastsLimpaFacade <- R6::R6Class(
     #' @param plot logical; if TRUE, plot the vooma mean-variance trend
     #' @param span lowess smoother span (NULL = auto)
     #' @param trend,robust passed to \code{\link[limma]{eBayes}}, see \code{\link{strategy_limpa}}
-    initialize = function(lfqdata, modelstr, contrasts, plot = FALSE, span = NULL, trend = FALSE, robust = FALSE) {
+    #' @param weights column names whose product gives the per-observation weights (default: the identification
+    #'   confidence). Pass \code{NULL} for unweighted.
+    initialize = function(
+      lfqdata,
+      modelstr,
+      contrasts,
+      plot = FALSE,
+      span = NULL,
+      trend = FALSE,
+      robust = FALSE,
+      weights = .confidence_weights(lfqdata)
+    ) {
       full_formula <- private$.setup(lfqdata, contrasts, "limpa", modelstr)
-      strat <- strategy_limpa(full_formula, plot = plot, span = span, trend = trend, robust = robust)
+      strat <- strategy_limpa(full_formula, plot = plot, span = span, trend = trend, robust = robust, weights = weights)
       self$model <- build_model_limpa(lfqdata, strat)
       self$contrast <- ContrastsLimma$new(self$model, contrasts, model_name = "limpa")
       self$.drop_na_diff <- TRUE
@@ -447,9 +485,9 @@ ContrastsLMFacade <- R6::R6Class(
     #' @param lfqdata [LFQData] object with the data and its configuration
     #' @param modelstr model formula string (e.g. "~ group_")
     #' @param contrasts named character vector of contrasts
-    #' @param weights column name for per-observation weights (default:
-    #'   \code{lfqdata$nr_children_col()}). Pass \code{NULL} for unweighted.
-    initialize = function(lfqdata, modelstr, contrasts, weights = lfqdata$nr_children_col()) {
+    #' @param weights column names whose product gives the per-observation weights (default: the child count
+    #'   times the identification confidence). Pass \code{NULL} for unweighted.
+    initialize = function(lfqdata, modelstr, contrasts, weights = .default_weights(lfqdata)) {
       full_formula <- private$.setup(lfqdata, contrasts, "lm", modelstr)
       strat <- strategy_lm(full_formula, weights = weights)
       self$model <- build_model(lfqdata, strat)
@@ -487,9 +525,11 @@ ContrastsRLMFacade <- R6::R6Class(
     #' @param modelstr model formula string (e.g. "~ group_")
     #' @param contrasts named character vector of contrasts
     #' @param control named list of convergence controls, see \code{\link{strategy_rlm}}
-    initialize = function(lfqdata, modelstr, contrasts, control = list()) {
+    #' @param weights column names whose product gives the per-observation weights (default: the identification
+    #'   confidence). Pass \code{NULL} for unweighted.
+    initialize = function(lfqdata, modelstr, contrasts, control = list(), weights = .confidence_weights(lfqdata)) {
       full_formula <- private$.setup(lfqdata, contrasts, "rlm", modelstr)
-      strat <- strategy_rlm(full_formula, control = control)
+      strat <- strategy_rlm(full_formula, control = control, weights = weights)
       self$model <- build_model(lfqdata, strat)
       self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts, model_name = "rlm"))
     }
@@ -506,8 +546,9 @@ ContrastsRLMFacade <- R6::R6Class(
 #' empirical-Bayes moderation shrinks the rank-based scale across proteins.
 #'
 #' Unlike \code{\link{ContrastsLMFacade}} this backend takes no observation
-#' weights (\code{rfit} has no \code{weights} argument), so \code{nr_children}
-#' weighting is not applied.
+#' weights (\code{rfit} has no \code{weights} argument), so neither
+#' \code{nr_children} nor identification confidence weighting is applied; a
+#' message says so when the identification confidence is not 1 everywhere.
 #'
 #' @return An R6 class generator.
 #' @export
@@ -532,6 +573,7 @@ ContrastsRfitFacade <- R6::R6Class(
     #' @param control named list of convergence controls, see \code{\link{strategy_rfit}}
     initialize = function(lfqdata, modelstr, contrasts, control = list()) {
       full_formula <- private$.setup(lfqdata, contrasts, "rfit", modelstr)
+      .inform_unweighted(lfqdata, "rfit")
       strat <- strategy_rfit(full_formula, control = control)
       self$model <- build_model(lfqdata, strat)
       self$contrast <- ContrastsModerated$new(Contrasts$new(self$model, contrasts, model_name = "rfit"))
@@ -576,8 +618,8 @@ ContrastsLMImputeFacade <- R6::R6Class(
     #'   (X'X)^-1; "vcov" borrows element-wise median of full vcov matrices
     #' @param df_method "observed" uses max(n_observed - p, 1);
     #'   "borrowed" uses median df from successful fits
-    #' @param weights column name for per-observation weights (default:
-    #'   \code{lfqdata$nr_children_col()}). Pass \code{NULL} for unweighted.
+    #' @param weights column names whose product gives the per-observation weights (default: the child count
+    #'   times the identification confidence). Pass \code{NULL} for unweighted.
     initialize = function(
       lfqdata,
       modelstr,
@@ -585,7 +627,7 @@ ContrastsLMImputeFacade <- R6::R6Class(
       lod = NULL,
       borrow_method = c("sigma", "vcov"),
       df_method = c("observed", "borrowed"),
-      weights = lfqdata$nr_children_col()
+      weights = .default_weights(lfqdata)
     ) {
       full_formula <- private$.setup(lfqdata, contrasts, "lm_impute", modelstr)
       strat <- strategy_lm(full_formula, weights = weights)
@@ -625,7 +667,8 @@ ContrastsLMImputeFacade <- R6::R6Class(
 #'     rescue is skipped and those proteins remain in \code{get_missing()}
 #'     rather than carrying an \code{lm}-specific approximation.
 #'   \item No observation weights (\code{rfit} has no \code{weights} argument),
-#'     matching plain \code{rfit}.
+#'     matching plain \code{rfit}; a message says so when the identification
+#'     confidence is not 1 everywhere.
 #' }
 #'
 #' \code{modelName} is the facade key \code{"rfit_impute"}; rescued rows are
@@ -667,6 +710,7 @@ ContrastsRfitImputeFacade <- R6::R6Class(
       control = list()
     ) {
       full_formula <- private$.setup(lfqdata, contrasts, "rfit_impute", modelstr)
+      .inform_unweighted(lfqdata, "rfit_impute")
       df_method <- match.arg(df_method)
       strat <- strategy_rfit(full_formula, control = control)
       self$model <- build_model_impute(
@@ -751,14 +795,14 @@ ContrastsDEqMSFacade <- R6::R6Class(
     #' @param lfqdata [LFQData] object with the data and its configuration
     #' @param modelstr model formula string (e.g. "~ group_")
     #' @param contrasts named character vector of contrasts
-    #' @param weights column name for per-observation weights (default:
-    #'   \code{lfqdata$nr_children_col()}). Pass \code{NULL} for unweighted.
-    initialize = function(lfqdata, modelstr, contrasts, weights = lfqdata$nr_children_col()) {
+    #' @param weights column names whose product gives the per-observation weights (default: the child count
+    #'   times the identification confidence). Pass \code{NULL} for unweighted.
+    initialize = function(lfqdata, modelstr, contrasts, weights = .default_weights(lfqdata)) {
       full_formula <- private$.setup(lfqdata, contrasts, "deqms", modelstr)
       strat <- strategy_lm(full_formula, weights = weights)
       self$model <- build_model(lfqdata, strat)
       base_contrast <- Contrasts$new(self$model, contrasts, model_name = "deqms")
-      count_column <- lfqdata$nr_children_col()
+      count_column <- lfqdata$get_config()$nr_children_feature
       count_df <- lfqdata$data_long() |>
         dplyr::select(dplyr::all_of(c(base_contrast$subject_id, count_column)))
       self$contrast <- ContrastsModeratedDEqMS$new(base_contrast, count_df = count_df, count_column = count_column)
@@ -771,11 +815,12 @@ ContrastsDEqMSFacade <- R6::R6Class(
 #' DEqMS contrast analysis with vooma weights facade
 #'
 #' Combines vooma precision weights (mean-variance trend) with DEqMS
-#' count-dependent variance moderation. Vooma runs \strong{without} external
-#' weights so it captures only the mean-variance relationship; the peptide
-#' count enters solely through DEqMS moderation, avoiding double-counting.
+#' count-dependent variance moderation. Vooma runs without child-count
+#' weights so it captures only the mean-variance relationship and the
+#' identification confidence; the peptide count enters solely through DEqMS
+#' moderation, avoiding double-counting.
 #'
-#' Pipeline: \code{\link{strategy_limma}} (weights = NULL) ->
+#' Pipeline: \code{\link{strategy_limma}} (weights = identification confidence) ->
 #' \code{\link{build_model_limma_voom}} -> \code{\link{ContrastsLimma}}
 #' (eBayes = FALSE) -> \code{\link{ContrastsModeratedDEqMS}}.
 #'
@@ -800,14 +845,23 @@ ContrastsDEqMSVoomFacade <- R6::R6Class(
     #' @param contrasts named character vector of contrasts
     #' @param span lowess smoother span for vooma trend (default 0.5)
     #' @param plot logical; if TRUE, plot the mean-variance trend
-    initialize = function(lfqdata, modelstr, contrasts, span = 0.5, plot = FALSE) {
+    #' @param weights column names whose product gives the per-observation weights (default: the identification
+    #'   confidence). Pass \code{NULL} for unweighted.
+    initialize = function(
+      lfqdata,
+      modelstr,
+      contrasts,
+      span = 0.5,
+      plot = FALSE,
+      weights = .confidence_weights(lfqdata)
+    ) {
       full_formula <- private$.setup(lfqdata, contrasts, "deqms_voom", modelstr)
-      # No external weights - vooma handles mean-variance only
-      strat <- strategy_limma(full_formula, weights = NULL)
+      # no child-count weights: the peptide count enters through DEqMS moderation only
+      strat <- strategy_limma(full_formula, weights = weights)
       self$model <- build_model_limma_voom(lfqdata, strat, span = span, plot = plot)
       # eBayes = FALSE: DEqMS replaces eBayes moderation
       base_contrast <- ContrastsLimma$new(self$model, contrasts, eBayes = FALSE, model_name = "deqms_voom")
-      count_column <- lfqdata$nr_children_col()
+      count_column <- lfqdata$get_config()$nr_children_feature
       count_df <- lfqdata$data_long() |>
         dplyr::select(dplyr::all_of(c(base_contrast$subject_id, count_column)))
       self$contrast <- ContrastsModeratedDEqMS$new(base_contrast, count_df = count_df, count_column = count_column)

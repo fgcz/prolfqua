@@ -223,9 +223,47 @@ adjust_p_values <- function(
 }
 
 
+#' Weighted median
+#'
+#' The smallest value whose cumulative weight reaches half the total weight; when the cumulative weight equals half
+#' exactly, the mean of that value and the next one. Equals \code{stats::median()} for equal weights. Values with a
+#' missing or non-positive weight and missing values are dropped.
+#' @param x numeric vector
+#' @param w non-negative weights, same length as `x`
+#' @return one number, NA when no value has a positive weight
+#' @noRd
+.weighted_median <- function(x, w) {
+  keep <- !is.na(x) & !is.na(w) & w > 0
+  x <- x[keep]
+  w <- w[keep]
+  if (length(x) == 0) {
+    return(NA_real_)
+  }
+  o <- order(x)
+  x <- x[o]
+  cw <- cumsum(w[o]) / sum(w)
+  k <- which(cw >= 0.5 - 1e-12)[1]
+  if (abs(cw[k] - 0.5) <= 1e-12 && k < length(x)) mean(x[c(k, k + 1)]) else x[k]
+}
+
+#' Effective number of observations of weights, (sum w)^2 / sum w^2; the count for equal weights
+#' @param w positive weights
+#' @noRd
+.effective_n <- function(w) {
+  if (length(w) == 0) 0 else sum(w)^2 / sum(w^2)
+}
+
+#' Effective number of observations rounded down; equal weights give their count despite floating-point error
+#' @param w positive weights
+#' @noRd
+.effective_n_floor <- function(w) {
+  floor(.effective_n(w) + 1e-8)
+}
+
 #' Compute protein-level fold changes and p-values using the beta distribution
 #'
-#' takes p-value of the scaled p-value
+#' takes p-value of the scaled p-value. With peptide weights, the fold change, statistic and signed p-value are
+#' weighted medians and the beta distribution uses the effective number of peptides, rounded down.
 #'
 #' @param contrasts_data data frame
 #' @param contrast name of column with contrast identifier
@@ -234,6 +272,7 @@ adjust_p_values <- function(
 #' @param statistic statistic name of column with statistic (typically t-statistics)
 #' @param p.value name of column with moderated.p.value
 #' @param max.n used to limit the number of peptides in probability computation.
+#' @param weight name of a column with one weight per peptide, or NULL for equal weights
 #' @return data.frame with columns
 #'
 #' @srrstats {G5.4a} ROPECA (ropeca_nested) is a derivation of PECA/ROPECA: per-peptide linear models, the median
@@ -247,31 +286,36 @@ adjust_p_values <- function(
   estimate = "diff",
   statistic = "statistic",
   p.value = "moderated.p.value",
-  max.n = 10
+  max.n = 10,
+  weight = NULL
 ) {
   contrasts_data <- contrasts_data |>
     dplyr::mutate(
       scaled.p = ifelse(.data[[estimate]] > 0, 1 - .data[[p.value]], .data[[p.value]] - 1)
     )
+  contrasts_data$.weight <- if (is.null(weight)) 1 else contrasts_data[[weight]]
 
   summarized.protein <- contrasts_data |>
     group_by(across(all_of(c(subject_id, contrast)))) |>
     dplyr::summarize(
       n = dplyr::n(),
       n_not_na = sum(!is.na(.data$scaled.p)),
+      # rounded down: a weighted median is closer to its heaviest values than the median of n_eff values
+      n_eff = .effective_n_floor(.data$.weight[!is.na(.data$scaled.p) & .data$.weight > 0]),
       mad.estimate = mad(.data[[estimate]], na.rm = TRUE),
-      estimate = median(.data[[estimate]], na.rm = TRUE),
-      statistic = median(.data[[statistic]], na.rm = TRUE),
-      median.p.scaled = median(.data$scaled.p, na.rm = TRUE),
+      estimate = .weighted_median(.data[[estimate]], .data$.weight),
+      statistic = .weighted_median(.data[[statistic]], .data$.weight),
+      median.p.scaled = .weighted_median(.data$scaled.p, .data$.weight),
       avgAbd = median(.data$avgAbd, na.rm = TRUE)
     )
 
   summarized.protein <- summarized.protein |>
     dplyr::mutate(
       median.p.value = 1 - abs(.data$median.p.scaled),
-      beta.based.significance = .get_p_values_pbeta(.data$median.p.value, .data$n_not_na, max.n = max.n),
-      n.beta = pmin(.data$n_not_na, max.n),
+      beta.based.significance = .get_p_values_pbeta(.data$median.p.value, .data$n_eff, max.n = max.n),
+      n.beta = pmin(.data$n_eff, max.n),
       isSingular = FALSE
-    )
+    ) |>
+    dplyr::select(-"n_eff")
   ungroup(summarized.protein)
 }

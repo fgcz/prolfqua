@@ -3,7 +3,7 @@
   withr::local_seed(1234)
   data <- prolfqua::sim_lfq_data(n_proteins = 5, n_per_group = 3, peptide = TRUE)
   data$nr_children <- 1
-  data$qValue <- 0
+  data$identification_confidence <- 1
 
   config <- prolfqua::AnalysisConfiguration$new()
   config$file_name <- "sample"
@@ -48,23 +48,26 @@ test_that("setup_analysis(debug = TRUE) returns the count table for inspection",
 
 test_that("setup_analysis derives sample names and default metadata", {
   fx <- .dup_setup_fixture()
-  fx$data$qValue <- NULL
+  fx$data$identification_confidence <- NULL
   fx$data$nr_children <- NULL
 
-  # qValue is optional and only reported; missing peptide
+  # a missing identification confidence defaults to 1 with a message; missing peptide
   # counts change model weights, so nr_children still warns
   expect_warning(
     messages <- capture_messages(result <- prolfqua::setup_analysis(fx$data, fx$config)),
     "no nr_children"
   )
-  expect_true(any(grepl("no qValue", messages)))
+  expect_true(any(grepl("no identification_confidence", messages)))
+  expect_true(any(grepl("derived identification_confidence_feature, nr_children_feature", messages)))
 
   expect_equal(
     dplyr::n_distinct(result[[fx$config$sample_name]]),
     dplyr::n_distinct(result[[fx$config$file_name]])
   )
-  expect_setequal(result[[fx$config$ident_q_value]], 0)
+  expect_setequal(result[[fx$config$identification_confidence]], 1)
+  expect_setequal(result[[fx$config$identification_confidence_feature]], 1)
   expect_setequal(result[[fx$config$nr_children]], 1)
+  expect_setequal(result[[fx$config$nr_children_feature]], 1)
 })
 
 test_that("setup_analysis works when sample_name and file_name are the same column", {

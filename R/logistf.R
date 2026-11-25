@@ -39,10 +39,36 @@ build_model_glm_protein <- function(lfqdata, modelstr, control = list()) {
 }
 
 
+#' Weight binary detection rows by identification confidence
+#'
+#' An observed row (detection 1) with identification confidence c and feature-level confidence c_f becomes a
+#' detection with weight c and a non-detection with weight c_f - c: a doubtful detection counts only partly. A
+#' missing row becomes a non-detection with weight c_f, so a feature that is probably a false identification counts
+#' little either way. Rows with weight 0 are dropped; with confidence 1 everywhere the rows are unchanged, with
+#' weight 1.
+#' @param data long-format data with one binary detection row per subject and sample
+#' @param bin_resp binary detection column
+#' @param confidence identification confidence column
+#' @param confidence_feature feature-level identification confidence column
+#' @return `data` with the column `.detection_weight`, observed rows split in two
+#' @noRd
+.detection_weight_rows <- function(data, bin_resp, confidence, confidence_feature) {
+  observed <- data[data[[bin_resp]] == 1, , drop = FALSE]
+  absent <- data[data[[bin_resp]] == 0, , drop = FALSE]
+  detected <- observed
+  detected$.detection_weight <- observed[[confidence]]
+  missed <- observed
+  missed[[bin_resp]] <- 0L
+  missed$.detection_weight <- observed[[confidence_feature]] - observed[[confidence]]
+  absent$.detection_weight <- absent[[confidence_feature]]
+  dplyr::filter(dplyr::bind_rows(detected, missed, absent), .data$.detection_weight > 0)
+}
+
 #' Fit Firth logistic regression to binary detection data
 #'
 #' Fits Firth's logistic regression per subject to the binary detection
-#' response of aggregated data, one row per subject and sample.
+#' response of aggregated data, one row per subject and sample, weighted by identification confidence (see
+#' `.detection_weight_rows()`).
 #' @param data aggregated LFQData with a binary detection response
 #' @param formula model formula with the binary response
 #' @param control convergence controls, see \code{\link{strategy_logistf}}
@@ -53,9 +79,16 @@ build_model_glm_protein <- function(lfqdata, modelstr, control = list()) {
     abort_bad_argument("data", "be an LFQData object")
   }
   .assert_aggregated_facade_input(data, "build_model_logistf")
-  strategy <- strategy_logistf(formula, control = control)
-  models <- .model_analyse(
+  config <- data$get_config()
+  rows <- .detection_weight_rows(
     data$data_long(),
+    config$bin_resp,
+    config$identification_confidence,
+    config$identification_confidence_feature
+  )
+  strategy <- strategy_logistf(formula, control = control, weights = ".detection_weight")
+  models <- .model_analyse(
+    rows,
     strategy,
     model_name = "logistf",
     label = "firth",
@@ -84,12 +117,18 @@ StrategyLogistf <- R6::R6Class(
   "StrategyLogistf",
   inherit = StrategyBase,
   public = list(
+    #' @field weights optional column name with per-row weights; rows with identical predictors and response are
+    #'   collapsed into one row whose frequency weight is the sum of their weights
+    weights = NULL,
+
     #' @description Create a new StrategyLogistf
     #' @param modelstr model formula string
     #' @param model_name name of model
     #' @param control named list of convergence controls, see \code{\link{strategy_logistf}}
-    initialize = function(modelstr, model_name = "logistf", control = list()) {
+    #' @param weights optional column name with per-row weights; NULL counts every row once
+    initialize = function(modelstr, model_name = "logistf", control = list(), weights = NULL) {
       super$initialize(modelstr, model_name, control = control)
+      self$weights <- weights
     },
 
     #' @description Degrees of freedom of the Wald tests: `Inf`, so contrasts use the normal distribution (z), as
@@ -107,12 +146,13 @@ StrategyLogistf <- R6::R6Class(
     sigma = function(model) 1
   ),
   private = list(
-    # Collapse identical predictor rows into frequency weights.
+    # Collapse identical predictor rows into frequency weights: the number of rows, or the sum of their weights.
     prepare = function(x) {
       predictor_vars <- all.vars(update(self$formula, . ~ .))
+      x$.row_weight <- if (is.null(self$weights)) 1L else x[[self$weights]]
       x |>
         dplyr::group_by(dplyr::across(dplyr::all_of(predictor_vars))) |>
-        dplyr::summarize(Freq = dplyr::n(), .groups = "drop")
+        dplyr::summarize(Freq = sum(.data$.row_weight), .groups = "drop")
     },
     check_packages = function() rlang::check_installed("logistf", reason = "for Firth logistic regression."),
     control_names = function() names(formals(logistf::logistf.control)),
@@ -161,6 +201,6 @@ StrategyLogistf <- R6::R6Class(
 #' @param control for \code{strategy_logistf()}: arguments of \code{\link[logistf]{logistf.control}}, e.g.
 #'   \code{list(maxit = 50)}; default: logistf's defaults (25 iterations, convergence criteria 1e-5 on the
 #'   log likelihood, the score and the coefficients), suited to log odds of detection.
-strategy_logistf <- function(modelstr, model_name = "logistf", control = list()) {
-  StrategyLogistf$new(modelstr, model_name, control = control)
+strategy_logistf <- function(modelstr, model_name = "logistf", control = list(), weights = NULL) {
+  StrategyLogistf$new(modelstr, model_name, control = control, weights = weights)
 }

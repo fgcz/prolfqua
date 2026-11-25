@@ -148,7 +148,8 @@ Other modelling:
   plot = FALSE,
   span = NULL,
   trend = FALSE,
-  robust = FALSE
+  robust = FALSE,
+  weights = .confidence_weights(lfqdata)
 )}
     \if{html}{\out{</div>}}
   }
@@ -164,6 +165,8 @@ Other modelling:
       \item{\code{plot}}{logical; if TRUE, plot the vooma mean-variance trend}
       \item{\code{span}}{lowess smoother span (NULL = auto)}
       \item{\code{trend, robust}}{passed to \code{\link[limma]{eBayes}}, see \code{\link{strategy_limpa}}}
+      \item{\code{weights}}{column names whose product gives the prior weights of the protein-level fit (default: the
+identification confidence, the maximum over the observed children). Pass \code{NULL} for unweighted.}
     }
     \if{html}{\out{</div>}}
   }

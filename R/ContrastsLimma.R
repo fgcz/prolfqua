@@ -23,7 +23,7 @@ StrategyLimma <- R6::R6Class(
     trend = FALSE,
     #' @field robust logical, passed to \code{\link[limma]{eBayes}}
     robust = FALSE,
-    #' @field weights either a character string (column name) or a numeric matrix
+    #' @field weights column names (several are multiplied) or a numeric matrix
     weights = NULL,
     #' @description Create a new StrategyLimma
     #' @param modelstr,model_name,trend,robust,weights see \code{\link{strategy_limma}}
@@ -45,9 +45,11 @@ StrategyLimma <- R6::R6Class(
 #' @param model_name name of model
 #' @param trend logical, passed to \code{\link[limma]{eBayes}}
 #' @param robust logical, passed to \code{\link[limma]{eBayes}}
-#' @param weights either a character string (column name in annotation for
-#'   per-sample weights) or a numeric matrix (proteins x samples) passed to
-#'   \code{\link[limma]{lmFit}}. Default \code{NULL} (no weights).
+#' @param weights a column name (a sample annotation column gives per-sample
+#'   weights, a value column such as \code{nr_children} gives a proteins x samples
+#'   matrix), several value column names (their product), or a numeric matrix
+#'   (proteins x samples) passed to \code{\link[limma]{lmFit}}. Default
+#'   \code{NULL} (no weights).
 #' @return a [StrategyLimma] object holding the formula, model name, `eBayes()` options and weights.
 #' @export
 #' @family modelling
@@ -171,25 +173,57 @@ compute_borrowed_variance_limma <- function(fit) {
     return(strategy$weights)
   }
 
-  if (is.character(strategy$weights) && length(strategy$weights) == 1) {
-    wcol <- strategy$weights
-    data <- lfqdata$data_long()
-    if (!wcol %in% names(data)) {
-      abort_missing_columns(wcol, data_nm = "lfqdata")
-    }
-    if (wcol %in% colnames(annotation)) {
-      return(annotation[[wcol]])
-    }
-    if (wcol %in% lfqdata$get_config()$value_vars()) {
-      return(lfqdata$data_wide(as.matrix = TRUE, value = wcol)$data)
-    }
-    fname_col <- lfqdata$file_name()
-    wt_df <- unique(data[, c(fname_col, wcol)])
-    wt_df <- wt_df[match(annotation[[fname_col]], wt_df[[fname_col]]), ]
-    return(wt_df[[wcol]])
+  if (!is.character(strategy$weights)) {
+    abort_bad_argument("weights", "be NULL, column names, or a numeric matrix")
   }
+  if (length(strategy$weights) == 1) {
+    return(.resolve_weight_column(lfqdata, strategy$weights, annotation))
+  }
+  .weight_columns_product(lfqdata, strategy$weights)
+}
 
-  abort_bad_argument("weights", "be NULL, one column name, or a numeric matrix")
+#' Weights from one column: per-sample weights of an annotation column, a feature x sample matrix of a value column,
+#' else one weight per file
+#' @param lfqdata [LFQData] object with the data and its configuration
+#' @param wcol weight column name
+#' @param annotation the sample-level annotation data.frame
+#' @noRd
+.resolve_weight_column <- function(lfqdata, wcol, annotation) {
+  data <- lfqdata$data_long()
+  if (!wcol %in% names(data)) {
+    abort_missing_columns(wcol, data_nm = "lfqdata")
+  }
+  if (wcol %in% colnames(annotation)) {
+    return(annotation[[wcol]])
+  }
+  if (wcol %in% lfqdata$get_config()$value_vars()) {
+    return(lfqdata$data_wide(as.matrix = TRUE, value = wcol)$data)
+  }
+  fname_col <- lfqdata$file_name()
+  wt_df <- unique(data[, c(fname_col, wcol)])
+  wt_df <- wt_df[match(annotation[[fname_col]], wt_df[[fname_col]]), ]
+  wt_df[[wcol]]
+}
+
+#' Element-wise product of the feature x sample matrices of several weight columns
+#' @param lfqdata [LFQData] object with the data and its configuration
+#' @param wcols weight column names; each must be a value column (see `AnalysisConfiguration$value_vars()`)
+#' @noRd
+.weight_columns_product <- function(lfqdata, wcols) {
+  missing <- setdiff(wcols, names(lfqdata$data_long()))
+  if (length(missing) > 0) {
+    abort_missing_columns(missing, data_nm = "lfqdata")
+  }
+  not_value <- setdiff(wcols, lfqdata$get_config()$value_vars())
+  if (length(not_value) > 0) {
+    abort_bad_argument(
+      "weights",
+      "name feature x sample value columns when it names several columns",
+      not = toString(not_value)
+    )
+  }
+  matrices <- lapply(wcols, function(wcol) lfqdata$data_wide(as.matrix = TRUE, value = wcol)$data)
+  Reduce(`*`, matrices)
 }
 
 #' Wrap a matrix fit and its metadata in ModelLimma

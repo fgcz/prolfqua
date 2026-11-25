@@ -31,8 +31,12 @@ AnalysisConfiguration <- R6::R6Class(
     #' @field norm_value optional column with normalization values (e.g., Creatinine)
     norm_value = NULL,
 
-    #' @field ident_q_value column name with identification QValues (smaller better)
-    ident_q_value = "qValue",
+    #' @field identification_confidence column with the identification confidence of each feature in each sample,
+    #'   in \[0, 1\], larger is better (e.g. 1 - PEP); used as model weight
+    identification_confidence = "identification_confidence",
+    #' @field identification_confidence_feature column with one identification confidence per feature, the maximum
+    #'   of \code{identification_confidence} over samples
+    identification_confidence_feature = "identification_confidence_feature",
     #' @field ident_score column with identification score (larger better)
     ident_score = character(),
 
@@ -44,6 +48,9 @@ AnalysisConfiguration <- R6::R6Class(
     opt_se = character(),
     #' @field nr_children optional column containing for instance the number of peptides
     nr_children = "nr_children",
+    #' @field nr_children_feature column with one child count per feature, the maximum of \code{nr_children} over
+    #'   samples
+    nr_children_feature = "nr_children_feature",
 
     #' @field work_intensity column which contains the intensities
     work_intensity = NULL,
@@ -141,16 +148,18 @@ AnalysisConfiguration <- R6::R6Class(
       id_vars
     },
     #' @description
-    #' get names of columns containing observations e.g. (intensity, qValue, mz or rt)
+    #' get names of columns containing observations e.g. (intensity, identification confidence, mz or rt)
     value_vars = function() {
       value_vars <- c(
         self$get_response(),
-        self$ident_q_value,
+        self$identification_confidence,
+        self$identification_confidence_feature,
         self$ident_score,
         self$opt_mz,
         self$opt_rt,
         self$opt_se,
-        self$nr_children
+        self$nr_children,
+        self$nr_children_feature
       )
       value_vars
     },
@@ -183,7 +192,7 @@ AnalysisConfiguration <- R6::R6Class(
 #'   "Peptide.Sequence", "Precursor.Charge",
 #'   "Fragment.Ion", "Product.Charge"
 #' )
-#' DEAconfig$ident_q_value <- "annotation_QValue"
+#' DEAconfig$identification_confidence <- "annotation_confidence"
 #' DEAconfig$set_response("Area")
 #' configList <- prolfqua::r6_extract_values(DEAconfig)
 #' stopifnot(class(configList) == "list")

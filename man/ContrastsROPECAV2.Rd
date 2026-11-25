@@ -130,6 +130,9 @@ Other modelling:
     \item{\code{subject_id}}{peptide-level subject columns; the protein columns are all but the last}
 
     \item{\code{p.adjust}}{method to use for p.value adjustment}
+
+    \item{\code{child_weights}}{data frame with the peptide-level \code{subject_id} columns and a column \code{weight},
+one weight per peptide, or NULL for equal weights}
   }
   \if{html}{\out{</div>}}
 }
@@ -168,7 +171,8 @@ Other modelling:
   Contrast,
   rho,
   model_name = "ROPECAV2",
-  p.adjust = prolfqua::adjust_p_values
+  p.adjust = prolfqua::adjust_p_values,
+  child_weights = NULL
 )}
     \if{html}{\out{</div>}}
   }
@@ -179,6 +183,10 @@ Other modelling:
       \item{\code{rho}}{correlation of the peptides of a protein, in [0, 1)}
       \item{\code{model_name}}{default ROPECAV2}
       \item{\code{p.adjust}}{function to use for p.value adjustment}
+      \item{\code{child_weights}}{data frame with the peptide-level \code{subject_id} columns and a column
+\code{weight}, one weight per peptide (e.g. its identification confidence). The protein fold change and
+z-score are then weighted medians, tested against the null distribution of the weighted median of
+correlated normal scores with these weights. NULL (default) weights all peptides equally.}
     }
     \if{html}{\out{</div>}}
   }

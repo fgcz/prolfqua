@@ -149,7 +149,7 @@
   data
 }
 
-#' qValue is optional and only reported. A missing nr_children
+#' A missing identification confidence defaults to 1 (no down-weighting). A missing nr_children
 #'
 #' warns: the default of 1 changes the fitting weights of aggregated data.
 #' @param data long-format measurement data frame
@@ -158,9 +158,13 @@
 .add_setup_default_columns <- function(data, configuration) {
   data <- .add_setup_default_column(
     data,
-    configuration$ident_q_value,
-    0,
-    "no qValue column specified in the data. Creating column qValue and setting qValues to 0.",
+    configuration$identification_confidence,
+    1,
+    paste0(
+      "no ",
+      configuration$identification_confidence,
+      " column specified in the data, adding it and setting the identification confidence to 1."
+    ),
     inform_prolfqua
   )
   .add_setup_default_column(
@@ -170,6 +174,96 @@
     "no nr_children column specified in the data, adding column nr_children and setting to 1.",
     warning
   )
+}
+
+#' Maximum of the non-missing values, NA when all are missing
+#' @param x numeric vector
+#' @noRd
+.max_or_na <- function(x) {
+  if (all(is.na(x))) NA_real_ else max(x, na.rm = TRUE)
+}
+
+#' Check the per-sample weight columns: identification confidence in \[0, 1\], child counts non-negative
+#' @param data long-format measurement data frame
+#' @param configuration AnalysisConfiguration defining the column roles
+#' @noRd
+.assert_weight_columns <- function(data, configuration) {
+  confidence <- intersect(
+    c(configuration$identification_confidence, configuration$identification_confidence_feature),
+    names(data)
+  )
+  for (column in confidence) {
+    x <- data[[column]]
+    if (!is.numeric(x) || any(x < 0 | x > 1, na.rm = TRUE)) {
+      abort_bad_argument(column, "hold identification confidences in [0, 1]")
+    }
+  }
+  counts <- intersect(c(configuration$nr_children, configuration$nr_children_feature), names(data))
+  for (column in counts) {
+    x <- data[[column]]
+    if (!is.numeric(x) || any(x < 0, na.rm = TRUE)) {
+      abort_bad_argument(column, "hold non-negative child counts")
+    }
+  }
+}
+
+#' Derive or check the feature-level columns and report per-sample variation
+#'
+#' For each per-sample column (identification confidence, child count) the feature-level column holds one value per
+#' feature. A missing feature-level column is derived as the maximum over samples; a supplied one must hold one value
+#' per feature. Reports how many features have per-sample values that vary across samples.
+#' @param data long-format measurement data frame
+#' @param configuration AnalysisConfiguration defining the column roles
+#' @noRd
+.setup_feature_columns <- function(data, configuration) {
+  .assert_weight_columns(data, configuration)
+  keys <- configuration$hierarchy_keys()
+  pairs <- list(
+    c(configuration$identification_confidence, configuration$identification_confidence_feature),
+    c(configuration$nr_children, configuration$nr_children_feature)
+  )
+  derived <- character()
+  for (pair in pairs) {
+    column <- pair[[1]]
+    feature_column <- pair[[2]]
+    n_values <- dplyr::summarise(
+      data,
+      n = dplyr::n_distinct(.data[[column]], na.rm = TRUE),
+      .by = dplyr::all_of(keys)
+    )$n
+    if (any(n_values > 1)) {
+      inform_prolfqua(
+        "setup_analysis: ",
+        column,
+        " varies across samples within ",
+        sum(n_values > 1),
+        " of ",
+        length(n_values),
+        " features."
+      )
+    }
+    if (feature_column %in% names(data)) {
+      n_feature <- dplyr::summarise(
+        data,
+        n = dplyr::n_distinct(.data[[feature_column]], na.rm = TRUE),
+        .by = dplyr::all_of(keys)
+      )$n
+      if (any(n_feature > 1)) {
+        abort_bad_argument(
+          feature_column,
+          "hold one value per feature",
+          not = paste(sum(n_feature > 1), "features with several values")
+        )
+      }
+    } else {
+      data <- dplyr::mutate(data, !!feature_column := .max_or_na(.data[[column]]), .by = dplyr::all_of(keys))
+      derived <- c(derived, feature_column)
+    }
+  }
+  if (length(derived) > 0) {
+    inform_prolfqua("setup_analysis: derived ", toString(derived), " as the maximum over samples.")
+  }
+  data
 }
 
 #' Count rows per hierarchy identifier and sample
@@ -252,9 +346,14 @@
 #'     names of \code{configuration$factors} become the predictor column names;
 #'   \item a missing sample name is derived from the file name; avoid by
 #'     supplying the sample name column;
-#'   \item missing identification q-values and child counts
-#'     receive default values (child counts of one with a warning); avoid by
-#'     supplying these columns;
+#'   \item missing identification confidences and child counts
+#'     receive default values of one (child counts with a warning); avoid by
+#'     supplying these columns; identification confidences must lie in \[0, 1\]
+#'     and child counts must be non-negative;
+#'   \item missing feature-level columns (one identification confidence and one
+#'     child count per feature) are derived as the maximum over samples; supplied
+#'     ones must hold one value per feature; how many features have per-sample
+#'     values that vary across samples is reported;
 #'   \item unconfigured columns and their attributes are dropped; the returned
 #'     table keeps only configured analysis columns;
 #'   \item feature and sample combinations absent from the input are added as
@@ -278,7 +377,7 @@
 #' set.seed(1234)
 #' data <- sim_lfq_data(n_proteins = 10, peptide = TRUE, n_per_group = 4)
 #' data$nr_children <- 1
-#' data$qValue <- 0
+#' data$identification_confidence <- 1
 #'
 #' # Add creatinine values per sample (not per protein/peptide)
 #' sample_creatinine <- data |> dplyr::select(sample) |> dplyr::distinct() |>
@@ -321,6 +420,7 @@ setup_analysis <- function(data, configuration, debug = FALSE) {
   data <- data |>
     dplyr::select(-dplyr::all_of(dplyr::setdiff(unlist(configuration$factors), configuration$factor_keys())))
   data <- .add_setup_default_columns(data, configuration)
+  data <- .setup_feature_columns(data, configuration)
   dropped <- setdiff(names(data), c(configuration$id_vars(), configuration$value_vars()))
   if (length(dropped) > 0L) {
     inform_prolfqua("setup_analysis: dropped ", length(dropped), " unconfigured columns: ", toString(dropped), ".")
@@ -342,7 +442,8 @@ setup_analysis <- function(data, configuration, debug = FALSE) {
     configuration$file_name,
     configuration$sample_name,
     configuration$factor_keys(),
-    configuration$hierarchy_keys()
+    configuration$hierarchy_keys(),
+    .feature_columns(configuration)
   )
   if (nrow(data) > n_input) {
     inform_prolfqua(
@@ -361,15 +462,30 @@ setup_analysis <- function(data, configuration, debug = FALSE) {
 #' @param sample_name column identifying samples
 #' @param factor_keys configured explanatory-variable columns
 #' @param hierarchy_keys hierarchy identifier columns
+#' @param feature_columns feature-level columns (one value per feature); the added rows get their feature's value
 #' @noRd
-.complete_cases_impl <- function(pdata, file_name, sample_name, factor_keys, hierarchy_keys) {
+.complete_cases_impl <- function(pdata, file_name, sample_name, factor_keys, hierarchy_keys, feature_columns) {
   fkeys <- unique(c(file_name, sample_name, factor_keys))
   res <- tidyr::complete(
     pdata,
     tidyr::nesting(!!!syms(fkeys)),
     tidyr::nesting(!!!syms(hierarchy_keys))
   )
+  feature_columns <- intersect(feature_columns, names(res))
+  if (length(feature_columns) > 0 && nrow(res) > nrow(pdata)) {
+    res <- res |>
+      dplyr::group_by(dplyr::across(dplyr::all_of(hierarchy_keys))) |>
+      tidyr::fill(dplyr::all_of(feature_columns), .direction = "downup") |>
+      dplyr::ungroup()
+  }
   res
+}
+
+#' Names of the feature-level columns of a configuration
+#' @param configuration AnalysisConfiguration defining the column roles
+#' @noRd
+.feature_columns <- function(configuration) {
+  c(configuration$identification_confidence_feature, configuration$nr_children_feature)
 }
 
 #' Complete cases
@@ -387,7 +503,8 @@ setup_analysis <- function(data, configuration, debug = FALSE) {
     lfqdata$file_name(),
     lfqdata$sample_name(),
     lfqdata$factor_keys(),
-    lfqdata$hierarchy_keys()
+    lfqdata$hierarchy_keys(),
+    .feature_columns(lfqdata$get_config())
   )
 }
 

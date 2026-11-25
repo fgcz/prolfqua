@@ -8,15 +8,20 @@
 \alias{strategy_rlm}
 \title{Create Firth's logistic regression strategy}
 \usage{
-strategy_logistf(modelstr, model_name = "logistf", control = list())
+strategy_logistf(
+  modelstr,
+  model_name = "logistf",
+  control = list(),
+  weights = NULL
+)
 
 strategy_rfit(modelstr, model_name = "rfit", control = list())
 
-strategy_lmer(modelstr, model_name = "Model", control = list())
+strategy_lmer(modelstr, model_name = "Model", control = list(), weights = NULL)
 
 strategy_lm(modelstr, model_name = "Model", weights = NULL)
 
-strategy_rlm(modelstr, model_name = "Model", control = list())
+strategy_rlm(modelstr, model_name = "Model", control = list(), weights = NULL)
 }
 \arguments{
 \item{modelstr}{model formula}
@@ -28,9 +33,8 @@ iteration limit and the relative change of the IRLS residuals that stops \code{\
 criterion is relative, so it does not depend on the intensity scale, and 1e-4 is far below the precision of
 log2 intensities.}
 
-\item{weights}{optional character string naming a column in the data
-containing per-observation weights, passed to \code{\link[stats]{lm}}.
-Default \code{NULL} (unweighted).}
+\item{weights}{optional character vector naming columns in the data; their product is passed as
+per-observation weights to the fitting function. Default \code{NULL} (unweighted).}
 }
 \value{
 a \code{\link{StrategyLogistf}} object

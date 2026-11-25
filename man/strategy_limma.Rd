@@ -21,9 +21,11 @@ strategy_limma(
 
 \item{robust}{logical, passed to \code{\link[limma]{eBayes}}}
 
-\item{weights}{either a character string (column name in annotation for
-per-sample weights) or a numeric matrix (proteins x samples) passed to
-\code{\link[limma]{lmFit}}. Default \code{NULL} (no weights).}
+\item{weights}{a column name (a sample annotation column gives per-sample
+weights, a value column such as \code{nr_children} gives a proteins x samples
+matrix), several value column names (their product), or a numeric matrix
+(proteins x samples) passed to \code{\link[limma]{lmFit}}. Default
+\code{NULL} (no weights).}
 }
 \value{
 a \link{StrategyLimma} object holding the formula, model name, \code{eBayes()} options and weights.

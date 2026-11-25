@@ -8,11 +8,12 @@ An R6 class generator.
 }
 \description{
 Combines vooma precision weights (mean-variance trend) with DEqMS
-count-dependent variance moderation. Vooma runs \strong{without} external
-weights so it captures only the mean-variance relationship; the peptide
-count enters solely through DEqMS moderation, avoiding double-counting.
+count-dependent variance moderation. Vooma runs without child-count
+weights so it captures only the mean-variance relationship and the
+identification confidence; the peptide count enters solely through DEqMS
+moderation, avoiding double-counting.
 
-Pipeline: \code{\link{strategy_limma}} (weights = NULL) ->
+Pipeline: \code{\link{strategy_limma}} (weights = identification confidence) ->
 \code{\link{build_model_limma_voom}} -> \code{\link{ContrastsLimma}}
 (eBayes = FALSE) -> \code{\link{ContrastsModeratedDEqMS}}.
 }
@@ -138,7 +139,8 @@ Other modelling:
   modelstr,
   contrasts,
   span = 0.5,
-  plot = FALSE
+  plot = FALSE,
+  weights = .confidence_weights(lfqdata)
 )}
     \if{html}{\out{</div>}}
   }
@@ -150,6 +152,8 @@ Other modelling:
       \item{\code{contrasts}}{named character vector of contrasts}
       \item{\code{span}}{lowess smoother span for vooma trend (default 0.5)}
       \item{\code{plot}}{logical; if TRUE, plot the mean-variance trend}
+      \item{\code{weights}}{column names whose product gives the per-observation weights (default: the identification
+confidence). Pass \code{NULL} for unweighted.}
     }
     \if{html}{\out{</div>}}
   }

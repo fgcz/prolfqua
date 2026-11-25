@@ -1,5 +1,21 @@
 # prolfqua 1.9.11
 
+## Breaking changes
+
+- `AnalysisConfiguration$ident_q_value` (default column `qValue`, smaller is better) is replaced by `identification_confidence` (default column `identification_confidence`, in [0, 1], larger is better, e.g. 1 - PEP), without backward compatibility: code setting `ident_q_value` must set `identification_confidence` and supply a confidence. `setup_analysis()` sets a missing confidence to 1 instead of a q-value of 0. `data_ionstar` carries `identification_confidence = 1 - pep`.
+- Top-N aggregation no longer writes an `ident_qValue` column; every aggregator carries `identification_confidence` instead.
+
+## New features
+
+- New configuration fields `identification_confidence_feature` and `nr_children_feature`: one value per feature, the maximum over samples. `setup_analysis()` derives them when missing, rejects supplied ones with several values per feature, checks that confidences lie in [0, 1] and child counts are non-negative, and reports how many features have a confidence or child count that varies across samples. `complete_cases()` gives added rows their feature's values.
+- Aggregation (medpolish, rlm, topN, limpa) gives each protein in each sample the largest identification confidence of its observed peptides, and computes both feature-level columns.
+- Models are weighted by identification confidence. Facades that weighted by `nr_children` (`lm`, `lm_impute`, `limma`, `limma_impute`, `limma_voom`, `limma_voom_impute`, `deqms`) weight by `nr_children` times `identification_confidence`; `rlm`, `lmer_nested`, `ropeca_nested`, `ropecaV2_nested`, `deqms_voom`, `limpa` and `limpa_nested` weight by `identification_confidence` and gain a `weights` argument (`NULL` fits unweighted). With confidence 1 everywhere the results are unchanged.
+- `weights` of `strategy_lm()`, `strategy_limma()` and the facades accepts several column names, which are multiplied; `strategy_rlm()`, `strategy_lmer()`, `strategy_limpa()` (as `prior.weights`) and `strategy_logistf()` gain a `weights` argument. `sigma()` of an `rlm` fit treats prior weights as inverse variances.
+- ROPECA and ROPECA V2 combine the peptides of a protein with their feature-level confidence: weighted medians of fold change, statistic and signed p-value or z-score. ROPECA's beta distribution uses the effective number of peptides (sum w)^2 / sum w^2, rounded down; ROPECA V2 tests the weighted median against its exact null distribution for the given weights (enumerated up to 16 peptides, its normal limit beyond; conservative when a subset of peptides holds exactly half the weight). Under a simulated null with random peptide confidences the weighted methods put 3.8% (ROPECA) and 7.3% (V2) of p-values below 0.05 and 0.8% and 1.8% below 0.01 (unweighted: 2.5% and 6.3%, 0.6% and 1.6%). `ContrastsROPECA` and `ContrastsROPECAV2` take `child_weights`.
+- Detection models (`binomial_nested`, `binomial_firth_nested`, and so `hurdle_nested`) count expected true detections: a detected peptide counts with its confidence in the sample, and every peptide counts towards the available ones with its feature-level confidence. `firth` turns each observed protein into a detection with weight c and a non-detection with weight c_feature - c.
+- DEqMS moderation takes the peptide count from `nr_children_feature`.
+- `rfit` and `rfit_impute` say in a message that they ignore the identification confidence when it is not 1 everywhere; Rfit takes no observation weights.
+
 ## Documentation
 
 - The article "Comparing modelling methods on one dataset" fits every method of `build_contrast_analysis()` (all 20, taken from `list_facades()`) and compares them with `ContrastsComparison`: the status of each protein and contrast pair per method, the pairs each method estimates (`$coverage()`, `$upset()`), the pairs of one method (`$pairs()`), the log2 fold changes and statistics on the pairs all intensity methods share, the significant calls, and the sign, significance and coverage conflicts (`$conflicts()`). A last section compares plain limma, run as its User's Guide recommends, as a `ContrastsTable` with its own column names: prolfqua's `limma` without weights reproduces it.

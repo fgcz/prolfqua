@@ -96,8 +96,8 @@ Other modelling:
 \section{Public fields}{
   \if{html}{\out{<div class="r6-fields">}}
   \describe{
-    \item{\code{weights}}{optional character string naming a column in the data
-containing per-observation weights, passed to \code{\link[stats]{lm}}.}
+    \item{\code{weights}}{optional character vector naming columns in the data; their product is passed as
+per-observation weights to \code{\link[stats]{lm}}.}
   }
   \if{html}{\out{</div>}}
 }
@@ -133,8 +133,7 @@ containing per-observation weights, passed to \code{\link[stats]{lm}}.}
     \describe{
       \item{\code{modelstr}}{model formula string}
       \item{\code{model_name}}{name of model}
-      \item{\code{weights}}{optional character string naming a column in the data
-containing per-observation weights}
+      \item{\code{weights}}{optional character vector naming weight columns in the data}
     }
     \if{html}{\out{</div>}}
   }

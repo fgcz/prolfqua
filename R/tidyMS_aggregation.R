@@ -188,7 +188,10 @@ plot_hierarchies_line_default <- function(
 #' @param file_name column identifying the input measurement files
 #' @param response name of the numeric response column
 #' @param nr_children_col column tracking measured child-feature counts
+#' @param confidence_col column with the identification confidence of the children
 #' @param newconfig configuration of the aggregated output
+#' @return list with `data`, the aggregated data with the per-sample child count, the identification confidence
+#'   (maximum over the observed children) and both feature-level columns, and `config`
 #' @noRd
 .add_nr_children <- function(
   data,
@@ -197,6 +200,7 @@ plot_hierarchies_line_default <- function(
   file_name,
   response,
   nr_children_col,
+  confidence_col,
   newconfig
 ) {
   new_child <- paste(c("nr_children", hierarchy_keys_depth), collapse = "_")
@@ -208,6 +212,19 @@ plot_hierarchies_line_default <- function(
     nr_children_col,
     new_child = new_child
   )
+  confidence <- .aggregate_confidence(
+    data,
+    response,
+    c(hierarchy_keys_depth, file_name),
+    confidence_col,
+    newconfig$identification_confidence
+  )
+  res_nr_children <- dplyr::inner_join(
+    res_nr_children,
+    confidence,
+    by = c(hierarchy_keys_depth, file_name),
+    relationship = "one-to-one"
+  )
   result <- inner_join(
     aggregated_data,
     res_nr_children,
@@ -215,7 +232,39 @@ plot_hierarchies_line_default <- function(
     relationship = "many-to-one"
   )
   newconfig$nr_children <- new_child
-  list(data = result, config = newconfig)
+  list(data = .add_feature_columns(result, hierarchy_keys_depth, newconfig), config = newconfig)
+}
+
+#' Identification confidence of aggregated features: the maximum over the observed children
+#' @param data long-format child-level data
+#' @param response name of the numeric response column
+#' @param by columns identifying one aggregated feature in one sample
+#' @param confidence_col identification confidence column of the children
+#' @param new_col name of the output column
+#' @return a tibble with the `by` columns and `new_col`, one row per aggregated feature and sample with an observed
+#'   child
+#' @noRd
+.aggregate_confidence <- function(data, response, by, confidence_col, new_col) {
+  observed <- data[!is.na(data[[response]]), , drop = FALSE]
+  dplyr::summarise(
+    observed,
+    !!new_col := .max_or_na(.data[[confidence_col]]),
+    .by = dplyr::all_of(by)
+  )
+}
+
+#' Add the feature-level identification confidence and child count: the maximum over samples
+#' @param data long-format data with the per-sample columns named in `config`
+#' @param keys columns identifying one feature
+#' @param config configuration naming the per-sample and feature-level columns
+#' @noRd
+.add_feature_columns <- function(data, keys, config) {
+  dplyr::mutate(
+    data,
+    !!config$identification_confidence_feature := .max_or_na(.data[[config$identification_confidence]]),
+    !!config$nr_children_feature := .max_or_na(.data[[config$nr_children]]),
+    .by = dplyr::all_of(keys)
+  )
 }
 
 #' Aggregates e.g. protein abundances from peptide abundances
@@ -284,7 +333,7 @@ plot_hierarchies_line_default <- function(
     dplyr::ungroup()
   unnested <- .reestablish_condition(data, unnested, hkeysd, sname, fkeys, fname)
 
-  result <- .add_nr_children(data, unnested, hkeysd, fname, response, nrc, newconfig)
+  result <- .add_nr_children(data, unnested, hkeysd, fname, response, nrc, config$identification_confidence, newconfig)
   result$failures <- failures
   result
 }
@@ -384,8 +433,6 @@ plot_hierarchies_line_default <- function(
   sum_top_intensities <- top_intensities |>
     dplyr::summarize(
       !!newcol := .func(.data[[lfqdata$response()]]),
-      # an unknown q-value of a top feature leaves the aggregate's q-value unknown
-      ident_qValue = min(.data[[config$ident_q_value]], na.rm = FALSE),
       .groups = "drop"
     )
 
@@ -402,6 +449,7 @@ plot_hierarchies_line_default <- function(
     lfqdata$file_name(),
     lfqdata$response(),
     lfqdata$nr_children_col(),
+    config$identification_confidence,
     newconfig
   )
 }

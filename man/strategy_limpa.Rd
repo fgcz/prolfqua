@@ -10,7 +10,8 @@ strategy_limpa(
   trend = FALSE,
   robust = FALSE,
   plot = FALSE,
-  span = NULL
+  span = NULL,
+  weights = NULL
 )
 }
 \arguments{
@@ -25,9 +26,12 @@ strategy_limpa(
 \item{plot}{logical, plot the vooma mean-variance trend}
 
 \item{span}{lowess smoother span (NULL = auto)}
+
+\item{weights}{value column names (e.g. the identification confidence) whose product is passed as
+\code{prior.weights}; cells without a value (imputed) get weight 1. Default \code{NULL} (no prior weights).}
 }
 \value{
-a \link{StrategyLimpa} object holding the formula, model name, \code{eBayes()} options, plot flag and span.
+a \link{StrategyLimpa} object holding the formula, model name, \code{eBayes()} options, plot flag, span and weights.
 }
 \description{
 Wrapper that returns a \code{\link{StrategyLimpa}} R6 object.

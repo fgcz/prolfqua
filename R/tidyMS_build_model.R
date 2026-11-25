@@ -246,12 +246,6 @@ build_model_impute <- function(
   model <- .build_model_core(lfqdata, model_strategy, lfqdata$subject_id(), model_name)
   lod <- .resolve_lod(lod, lfqdata)
 
-  # Resolve nr_children column name (used as lm weights; must be filled for imputed rows)
-  nr_children_col <- lfqdata$nr_children_col()
-  if (!is.null(nr_children_col) && !nr_children_col %in% colnames(lfqdata$data_long())) {
-    nr_children_col <- NULL
-  }
-
   model$model_df <- impute_refit_singular(
     model$model_df,
     model_strategy,
@@ -260,7 +254,7 @@ build_model_impute <- function(
     sample_template = .sample_template(lfqdata),
     borrow_method = borrow_method,
     df_method = df_method,
-    nr_children_col = nr_children_col,
+    weight_cols = model_strategy$weights,
     on_misalign = on_misalign
   )
   .record_model_fits(model$get_provenance_log(), model$model_df, model$subject_id, model_strategy, model$model_name)
@@ -664,9 +658,9 @@ compute_borrowed_variance <- function(
 #' @param borrow_method "sigma" or "vcov"
 #' @param df_method "observed" uses max(n_observed - p, 1),
 #'   "borrowed" uses median df from successful fits
-#' @param nr_children_col optional column name for nr_children (peptide counts);
-#'   NA values in this column are filled with 1 for imputed rows so that
-#'   weighted lm fits do not fail
+#' @param weight_cols optional weight column names of the strategy (e.g. nr_children and the
+#'   identification confidence); NA values are filled with 1 for imputed rows so that
+#'   weighted fits keep them
 #' @param on_misalign passed to \code{\link{compute_borrowed_variance}}. With
 #'   "fail", full covariance is borrowed from donors sharing the maximal
 #'   coefficient set, without falling back to sigma borrowing.
@@ -681,7 +675,7 @@ impute_refit_singular <- function(
   sample_template,
   borrow_method = c("sigma", "vcov"),
   df_method = c("observed", "borrowed"),
-  nr_children_col = NULL,
+  weight_cols = NULL,
   on_misalign = c("fallback", "fail")
 ) {
   borrow_method <- match.arg(borrow_method)
@@ -716,7 +710,7 @@ impute_refit_singular <- function(
       sample_template,
       borrowed,
       df_method,
-      nr_children_col
+      weight_cols
     )
   }
 
@@ -758,7 +752,7 @@ impute_refit_singular <- function(
 #' @param df_method "observed" or "borrowed"
 #' @return named list of updated fields, or NULL if refit fails
 #' @keywords internal
-#' @param nr_children_col column tracking measured child-feature counts
+#' @param weight_cols weight columns of the strategy, filled with 1 on imputed rows
 #' @noRd
 .impute_one_protein <- function(
   dat,
@@ -768,16 +762,16 @@ impute_refit_singular <- function(
   sample_template,
   borrowed,
   df_method,
-  nr_children_col = NULL
+  weight_cols = NULL
 ) {
   n_observed <- sum(!is.na(dat[[response]]))
 
   # Complete data with all samples so missing groups get rows
   dat <- dplyr::left_join(sample_template, dat, by = colnames(sample_template), relationship = "one-to-many")
 
-  # Fill nr_children with 1 for imputed rows (no observed peptides in missing group)
-  if (!is.null(nr_children_col) && nr_children_col %in% colnames(dat)) {
-    dat[[nr_children_col]] <- ifelse(is.na(dat[[nr_children_col]]), 1, dat[[nr_children_col]])
+  # Fill the weight columns with 1 for imputed rows (no observed children in the missing group)
+  for (wcol in weight_cols) {
+    dat[[wcol]] <- ifelse(is.na(dat[[wcol]]), 1, dat[[wcol]])
   }
 
   imputed_rows <- is.na(dat[[response]])

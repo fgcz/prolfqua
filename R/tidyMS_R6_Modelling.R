@@ -25,7 +25,20 @@ df.residual.rlm <- function(object, ...) {
 #' @keywords internal
 #' @exportS3Method
 sigma.rlm <- function(object, ...) {
-  sqrt(sum(object$w * object$resid^2) / (sum(object$w) - object$rank))
+  # prior weights (all 1 when the fit is unweighted) scale the squared residuals like inverse variances
+  prior <- if (is.null(object$weights)) 1 else object$weights
+  sqrt(sum(object$w * prior * object$resid^2) / (sum(object$w) - object$rank))
+}
+
+#' Product of weight columns as an expression, e.g. `nr_children * identification_confidence`
+#' @param weights character vector of column names, or NULL
+#' @return a symbol or call, or NULL for NULL `weights`
+#' @noRd
+.weights_expr <- function(weights) {
+  if (is.null(weights)) {
+    return(NULL)
+  }
+  Reduce(function(a, b) call("*", a, b), lapply(weights, as.name))
 }
 
 #' Base class for per-subject model strategies
@@ -136,6 +149,20 @@ StrategyLmer <- R6::R6Class(
   "StrategyLmer",
   inherit = StrategyBase,
   public = list(
+    #' @field weights optional character vector naming columns in the data; their product is passed as
+    #'   per-observation weights to \code{\link[lme4]{lmer}}.
+    weights = NULL,
+
+    #' @description Create a new StrategyLmer
+    #' @param modelstr model formula string
+    #' @param model_name name of model
+    #' @param control named list of \code{\link[lme4]{lmerControl}} arguments
+    #' @param weights optional character vector naming weight columns in the data
+    initialize = function(modelstr, model_name = "Model", control = list(), weights = NULL) {
+      super$initialize(modelstr, model_name, control = control)
+      self$weights <- weights
+    },
+
     #' @description Check if model is singular
     #' @param model fitted model
     isSingular = function(model) lme4::isSingular(model),
@@ -148,7 +175,14 @@ StrategyLmer <- R6::R6Class(
   private = list(
     check_packages = function() rlang::check_installed(c("lme4", "lmerTest"), reason = "for mixed models."),
     control_names = function() names(formals(lme4::lmerControl)),
-    fit = function(x) lmerTest::lmer(self$formula, data = x, control = do.call(lme4::lmerControl, self$control))
+    fit = function(x) {
+      control <- do.call(lme4::lmerControl, self$control)
+      if (is.null(self$weights)) {
+        return(lmerTest::lmer(self$formula, data = x, control = control))
+      }
+      w <- .weights_expr(self$weights)
+      eval(bquote(lmerTest::lmer(.(self$formula), data = x, weights = .(w), control = control)))
+    }
   )
 )
 
@@ -167,8 +201,8 @@ StrategyLmer <- R6::R6Class(
 #' @param control for \code{strategy_lmer()}: arguments of \code{\link[lme4]{lmerControl}}, e.g.
 #'   \code{list(optimizer = "bobyqa", optCtrl = list(maxfun = 1e5))}; default: lme4's defaults (nloptwrap,
 #'   gradient tolerance 0.002), which suit per-protein models of a few dozen observations.
-strategy_lmer <- function(modelstr, model_name = "Model", control = list()) {
-  StrategyLmer$new(modelstr, model_name, control = control)
+strategy_lmer <- function(modelstr, model_name = "Model", control = list(), weights = NULL) {
+  StrategyLmer$new(modelstr, model_name, control = control, weights = weights)
 }
 
 #' Linear model strategy (R6 class)
@@ -188,15 +222,14 @@ StrategyLM <- R6::R6Class(
   "StrategyLM",
   inherit = StrategyBase,
   public = list(
-    #' @field weights optional character string naming a column in the data
-    #'   containing per-observation weights, passed to \code{\link[stats]{lm}}.
+    #' @field weights optional character vector naming columns in the data; their product is passed as
+    #'   per-observation weights to \code{\link[stats]{lm}}.
     weights = NULL,
 
     #' @description Create a new StrategyLM
     #' @param modelstr model formula string
     #' @param model_name name of model
-    #' @param weights optional character string naming a column in the data
-    #'   containing per-observation weights
+    #' @param weights optional character vector naming weight columns in the data
     initialize = function(modelstr, model_name = "Model", weights = NULL) {
       super$initialize(modelstr, model_name)
       self$weights <- weights
@@ -207,7 +240,7 @@ StrategyLM <- R6::R6Class(
       if (is.null(self$weights)) {
         return(lm(self$formula, data = x))
       }
-      eval(bquote(lm(.(self$formula), data = x, weights = .(as.name(self$weights)))))
+      eval(bquote(lm(.(self$formula), data = x, weights = .(.weights_expr(self$weights)))))
     }
   )
 )
@@ -220,9 +253,8 @@ StrategyLM <- R6::R6Class(
 #' @export
 #' @param modelstr model formula
 #' @param model_name name of model
-#' @param weights optional character string naming a column in the data
-#'   containing per-observation weights, passed to \code{\link[stats]{lm}}.
-#'   Default \code{NULL} (unweighted).
+#' @param weights optional character vector naming columns in the data; their product is passed as
+#'   per-observation weights to the fitting function. Default \code{NULL} (unweighted).
 #' @family modelling
 #' @return a \code{\link{StrategyLM}} object
 #' @examples
@@ -249,6 +281,20 @@ StrategyRLM <- R6::R6Class(
   "StrategyRLM",
   inherit = StrategyBase,
   public = list(
+    #' @field weights optional character vector naming columns in the data; their product is passed as
+    #'   per-observation prior weights to \code{\link[MASS]{rlm}} (inverse variances).
+    weights = NULL,
+
+    #' @description Create a new StrategyRLM
+    #' @param modelstr model formula string
+    #' @param model_name name of model
+    #' @param control named list with \code{maxit} and \code{acc} of \code{\link[MASS]{rlm}}
+    #' @param weights optional character vector naming weight columns in the data
+    initialize = function(modelstr, model_name = "Model", control = list(), weights = NULL) {
+      super$initialize(modelstr, model_name, control = control)
+      self$weights <- weights
+    },
+
     #' @description Get the robust scale estimate used by \code{vcov()}
     #'
     #' Returns \code{model$s}, the robust scale \code{MASS::rlm} builds its
@@ -263,17 +309,33 @@ StrategyRLM <- R6::R6Class(
   private = list(
     control_defaults = function() list(maxit = 20, acc = 1e-4),
     fit = function(x) {
-      ls <- stats::lm(self$formula, data = x)
+      # weights = NULL in the calls fits unweighted
+      w <- .weights_expr(self$weights)
+      ls <- eval(bquote(stats::lm(.(self$formula), data = x, weights = .(w))))
       response <- stats::model.response(stats::model.frame(ls))
       if (!.zero_residual_variance(stats::sigma(ls), mean(response))) {
-        return(MASS::rlm(self$formula, data = x, method = "M", maxit = self$control$maxit, acc = self$control$acc))
+        return(eval(bquote(MASS::rlm(
+          .(self$formula),
+          data = x,
+          weights = .(w),
+          method = "M",
+          maxit = .(self$control$maxit),
+          acc = .(self$control$acc)
+        ))))
       }
       # A constant or noiseless response has no robust scale: rlm's IRLS divides residuals of floating-point
       # noise by a scale that can underflow to zero, and on some platforms all weights and coefficients turn
       # NA. Fit rlm to an all-zero response (exact zero scale) and carry over the least-squares estimates.
       zero <- x
       zero[[deparse(self$formula[[2]])]] <- 0
-      fit <- MASS::rlm(self$formula, data = zero, method = "M", maxit = self$control$maxit, acc = self$control$acc)
+      fit <- eval(bquote(MASS::rlm(
+        .(self$formula),
+        data = zero,
+        weights = .(w),
+        method = "M",
+        maxit = .(self$control$maxit),
+        acc = .(self$control$acc)
+      )))
       fit$coefficients <- stats::coef(ls)
       fit$fitted.values <- stats::fitted(ls)
       fit$residuals <- stats::residuals(ls)
@@ -299,8 +361,8 @@ StrategyRLM <- R6::R6Class(
 #'   iteration limit and the relative change of the IRLS residuals that stops \code{\link[MASS]{rlm}}; the
 #'   criterion is relative, so it does not depend on the intensity scale, and 1e-4 is far below the precision of
 #'   log2 intensities.
-strategy_rlm <- function(modelstr, model_name = "Model", control = list()) {
-  StrategyRLM$new(modelstr, model_name, control = control)
+strategy_rlm <- function(modelstr, model_name = "Model", control = list(), weights = NULL) {
+  StrategyRLM$new(modelstr, model_name, control = control, weights = weights)
 }
 
 

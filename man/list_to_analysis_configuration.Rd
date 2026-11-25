@@ -27,7 +27,7 @@ DEAconfig$hierarchy[["fragment_Id"]] <- c(
   "Peptide.Sequence", "Precursor.Charge",
   "Fragment.Ion", "Product.Charge"
 )
-DEAconfig$ident_q_value <- "annotation_QValue"
+DEAconfig$identification_confidence <- "annotation_confidence"
 DEAconfig$set_response("Area")
 configList <- prolfqua::r6_extract_values(DEAconfig)
 stopifnot(class(configList) == "list")

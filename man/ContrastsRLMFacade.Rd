@@ -129,7 +129,13 @@ Other modelling:
   initialize
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{ContrastsRLMFacade$new(lfqdata, modelstr, contrasts, control = list())}
+    \preformatted{ContrastsRLMFacade$new(
+  lfqdata,
+  modelstr,
+  contrasts,
+  control = list(),
+  weights = .confidence_weights(lfqdata)
+)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
@@ -139,6 +145,8 @@ Other modelling:
       \item{\code{modelstr}}{model formula string (e.g. "~ group_")}
       \item{\code{contrasts}}{named character vector of contrasts}
       \item{\code{control}}{named list of convergence controls, see \code{\link{strategy_rlm}}}
+      \item{\code{weights}}{column names whose product gives the per-observation weights (default: the identification
+confidence). Pass \code{NULL} for unweighted.}
     }
     \if{html}{\out{</div>}}
   }
