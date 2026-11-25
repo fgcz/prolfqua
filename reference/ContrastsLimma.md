@@ -6,6 +6,12 @@ fitting per-protein lm models and then moderating. Inherits from
 with the same API as
 [`Contrasts`](https://fgcz.github.io/prolfqua/reference/Contrasts.md).
 
+Each protein's contrasts and their unscaled standard errors are computed
+from the design rows of its own fit (observed samples, with their
+weights), where `contrasts.fit` uses one approximation for all proteins.
+Contrasts a protein cannot estimate, e.g. with an empty group, are `NA`;
+the others equal the differences of its fitted group means.
+
 ## Value
 
 An R6 class generator.

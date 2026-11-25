@@ -175,17 +175,17 @@ mod <- build_model_limma_voom(lProt, strat)
 #> See $provenance().
 mod$get_coefficients()
 #> # A tibble: 150 × 6
-#>    protein_Id  factor      Estimate Std..Error t.value   Pr...t..
-#>    <chr>       <chr>          <dbl>      <dbl>   <dbl>      <dbl>
-#>  1 0EfVhX~7161 (Intercept)     20.3      0.465    43.6 2.54 e-147
-#>  2 0m5WN4~3543 (Intercept)     20.5      0.451    45.5 3.83 e-153
-#>  3 76k03k~9735 (Intercept)     20.2      0.472    42.7 9.11 e-145
-#>  4 7QuTub~5556 (Intercept)     22.8      0.516    44.2 2.60 e-149
-#>  5 7cbcrd~0495 (Intercept)     17.2      0.670    25.6 8.66 e- 84
-#>  6 7soopj~3451 (Intercept)     26.3      0.490    53.8 1.70 e-176
-#>  7 9VUkAq~8655 (Intercept)     22.2      0.499    44.6 2.48 e-150
-#>  8 At886V~0359 (Intercept)     17.1      0.666    25.7 3.34 e- 84
-#>  9 BEJI92~5483 (Intercept)     15.8      0.370    42.7 1.000e-144
-#> 10 CGzoYe~1248 (Intercept)     18.2      0.537    34.0 1.84 e-115
+#>    protein_Id  factor      Estimate Std..Error t.value  Pr...t..
+#>    <chr>       <chr>          <dbl>      <dbl>   <dbl>     <dbl>
+#>  1 0EfVhX~7161 (Intercept)     20.3      0.467    43.5 3.22e-147
+#>  2 0m5WN4~3543 (Intercept)     20.5      0.453    45.4 4.75e-153
+#>  3 76k03k~9735 (Intercept)     20.2      0.473    42.6 1.16e-144
+#>  4 7QuTub~5556 (Intercept)     22.8      0.517    44.1 3.26e-149
+#>  5 7cbcrd~0495 (Intercept)     17.2      0.671    25.6 1.25e- 83
+#>  6 7soopj~3451 (Intercept)     26.3      0.491    53.7 1.92e-176
+#>  7 9VUkAq~8655 (Intercept)     22.2      0.500    44.4 3.10e-150
+#>  8 At886V~0359 (Intercept)     17.1      0.667    25.7 4.81e- 84
+#>  9 BEJI92~5483 (Intercept)     15.8      0.371    42.6 1.28e-144
+#> 10 CGzoYe~1248 (Intercept)     18.2      0.539    33.9 2.55e-115
 #> # ℹ 140 more rows
 ```

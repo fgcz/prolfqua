@@ -1,6 +1,7 @@
 # Compute contrasts for possibly incomplete models
 
-only keeps non NA coefficients.
+Estimates the rows of `linfct` that are estimable from the model's
+design, also with aliased (NA) coefficients.
 
 ## Usage
 
@@ -26,8 +27,8 @@ compute_contrast(m, linfct, confint = 0.95)
 
 a data.frame with one row per row of `linfct` and columns `lhs`,
 `sigma`, `df`, `estimate`, `std.error`, `statistic`, `p.value`,
-`conf.low` and `conf.high`; the estimates are `NA` for rows that use a
-coefficient the model could not estimate
+`conf.low` and `conf.high`; the estimates are `NA` for rows that are not
+estimable from the model's design
 
 ## Note
 

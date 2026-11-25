@@ -206,5 +206,5 @@ The objects of this class are cloneable with this method.
 strat <- StrategyLogistf$new("bin_resp ~ condition")
 strat$formula
 #> bin_resp ~ condition
-#> <environment: 0x622ece2bc0a8>
+#> <environment: 0x63ca26eedc98>
 ```

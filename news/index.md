@@ -21,6 +21,26 @@
 
 ### Behaviour changes
 
+- Proteins with an empty group get exactly the contrasts they can
+  estimate, equal to the differences of their observed group means, in
+  every method. Before, `limma` reported a wrong contrast when the empty
+  group was the reference level (or cell) of the design, e.g. B − Ctrl
+  under the name B − A, with its p-value, and lost the estimable one;
+  `limma_voom` and `deqms_voom` lost every contrast of a protein with
+  any empty group. Subgroup models (`~ subgroup`) were affected for
+  proteins absent from the alphabetically first subgroup. Contrasts a
+  protein cannot estimate have no row in `limma`, `limma_voom`,
+  `deqms_voom`, `lm` and `deqms` (`deqms_voom` and, in `a * b` models,
+  `lm` and `deqms` reported NA rows) and are listed by `get_missing()`.
+  The limma methods (`limma`, `limma_voom`, `deqms_voom`, `limpa` and
+  the impute variants) now compute each protein’s contrast standard
+  errors from its own observed, weighted samples;
+  [`limma::contrasts.fit()`](https://rdrr.io/pkg/limma/man/contrasts.fit.html)
+  approximated them for proteins with missing values or sample-varying
+  weights (on simulated data 0.8 to 1.4 times the exact value), so their
+  p-values change. `lm` and `deqms` in `a * b` models with an empty cell
+  now report the cell contrasts that do not need the empty cell (e.g. BZ
+  − BX without AX), which they dropped before.
 - prolfqua is label-free only: the isotope label is gone.
   [`setup_analysis()`](https://fgcz.github.io/prolfqua/reference/setup_analysis.md)
   no longer adds an `isotopeLabel` column, so `data_long()`, the wide

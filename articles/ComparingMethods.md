@@ -221,7 +221,7 @@ results_protein |>
     ##   <chr>            <int>
     ## 1 deqms              157
     ## 2 firth              160
-    ## 3 limma              155
+    ## 3 limma              157
     ## 4 limma_impute       160
     ## 5 limpa              160
     ## 6 lm                 157
@@ -246,7 +246,7 @@ results_protein |>
     ##  3 firth        A_vs_Ctrl observed             80
     ##  4 firth        B_vs_Ctrl observed             80
     ##  5 limma        A_vs_Ctrl observed             78
-    ##  6 limma        B_vs_Ctrl observed             77
+    ##  6 limma        B_vs_Ctrl observed             79
     ##  7 limma_impute A_vs_Ctrl lod_imputed           3
     ##  8 limma_impute A_vs_Ctrl observed             77
     ##  9 limma_impute B_vs_Ctrl lod_imputed           3
@@ -379,7 +379,7 @@ missing_all |>
 | deqms  | A_vs_Ctrl |         2 |
 | deqms  | B_vs_Ctrl |         1 |
 | limma  | A_vs_Ctrl |         2 |
-| limma  | B_vs_Ctrl |         3 |
+| limma  | B_vs_Ctrl |         1 |
 | lm     | A_vs_Ctrl |         2 |
 | lm     | B_vs_Ctrl |         1 |
 
@@ -448,19 +448,19 @@ if (length(lm_missing_proteins) > 0) {
 | limpa | observed | 8mS8sK~0150 | A_vs_Ctrl | 3.146 | -0.298 | 0.415 | -1.048 | 0.284 | 21.096 | 0.306 | -0.888 | 0.293 | 0.895 | TRUE | FALSE |
 | lm_impute | lod_imputed | 8mS8sK~0150 | A_vs_Ctrl | 3.776 | 0.000 | 1.000 | 0.000 | 0.063 | 4.468 | 1.000 | -0.167 | 0.167 | 0.089 | TRUE | FALSE |
 | limma_impute | lod_imputed | 8mS8sK~0150 | B_vs_Ctrl | 3.784 | 0.018 | 0.803 | 0.279 | 0.063 | 4.468 | 0.792 | -0.150 | 0.185 | 0.089 | FALSE | FALSE |
-| limpa | observed | 8mS8sK~0150 | B_vs_Ctrl | 3.420 | 0.251 | 0.434 | 0.897 | 0.280 | 21.096 | 0.380 | -0.330 | 0.832 | 0.895 | FALSE | FALSE |
+| limpa | observed | 8mS8sK~0150 | B_vs_Ctrl | 3.420 | 0.251 | 0.375 | 1.012 | 0.248 | 21.096 | 0.323 | -0.264 | 0.766 | 0.895 | FALSE | FALSE |
 | lm_impute | lod_imputed | 8mS8sK~0150 | B_vs_Ctrl | 3.784 | 0.018 | 0.803 | 0.279 | 0.063 | 4.468 | 0.792 | -0.150 | 0.185 | 0.089 | FALSE | FALSE |
 | limma_impute | lod_imputed | DTCi0N~0734 | A_vs_Ctrl | 3.902 | -0.253 | 0.017 | -3.996 | 0.063 | 6.468 | 0.006 | -0.405 | -0.101 | 0.090 | TRUE | FALSE |
 | limpa | observed | DTCi0N~0734 | A_vs_Ctrl | 3.622 | -0.826 | 0.016 | -2.932 | 0.282 | 21.096 | 0.008 | -1.411 | -0.240 | 1.042 | TRUE | TRUE |
 | lm_impute | lod_imputed | DTCi0N~0734 | A_vs_Ctrl | 3.902 | -0.253 | 0.017 | -3.997 | 0.063 | 6.468 | 0.006 | -0.405 | -0.101 | 0.090 | TRUE | FALSE |
 | limma_impute | lod_imputed | DTCi0N~0734 | B_vs_Ctrl | 4.112 | 0.166 | 0.051 | 2.626 | 0.063 | 6.468 | 0.037 | 0.014 | 0.319 | 0.090 | FALSE | FALSE |
-| limpa | observed | DTCi0N~0734 | B_vs_Ctrl | 4.136 | 0.201 | 0.539 | 0.722 | 0.279 | 21.096 | 0.478 | -0.378 | 0.780 | 1.042 | FALSE | FALSE |
+| limpa | observed | DTCi0N~0734 | B_vs_Ctrl | 4.136 | 0.201 | 0.275 | 1.226 | 0.164 | 21.096 | 0.234 | -0.140 | 0.542 | 1.042 | FALSE | FALSE |
 | lm_impute | lod_imputed | DTCi0N~0734 | B_vs_Ctrl | 4.112 | 0.166 | 0.051 | 2.626 | 0.063 | 6.468 | 0.037 | 0.014 | 0.319 | 0.090 | FALSE | FALSE |
 | limma_impute | lod_imputed | OrL0ux~1369 | A_vs_Ctrl | 3.879 | -0.207 | 0.050 | -3.293 | 0.063 | 4.468 | 0.026 | -0.374 | -0.039 | 0.089 | FALSE | FALSE |
 | limpa | observed | OrL0ux~1369 | A_vs_Ctrl | 3.649 | -0.618 | 0.028 | -2.629 | 0.235 | 21.096 | 0.016 | -1.107 | -0.129 | 0.925 | FALSE | TRUE |
 | lm_impute | lod_imputed | OrL0ux~1369 | A_vs_Ctrl | 3.879 | -0.207 | 0.050 | -3.293 | 0.063 | 4.468 | 0.026 | -0.374 | -0.039 | 0.089 | FALSE | FALSE |
 | limma_impute | lod_imputed | OrL0ux~1369 | B_vs_Ctrl | 3.879 | -0.207 | 0.038 | -3.293 | 0.063 | 4.468 | 0.026 | -0.374 | -0.039 | 0.089 | TRUE | FALSE |
-| limpa | observed | OrL0ux~1369 | B_vs_Ctrl | 3.515 | -0.885 | 0.008 | -3.214 | 0.275 | 21.096 | 0.004 | -1.458 | -0.313 | 0.925 | TRUE | TRUE |
+| limpa | observed | OrL0ux~1369 | B_vs_Ctrl | 3.515 | -0.885 | 0.004 | -3.483 | 0.254 | 21.096 | 0.002 | -1.414 | -0.357 | 0.925 | TRUE | TRUE |
 | lm_impute | lod_imputed | OrL0ux~1369 | B_vs_Ctrl | 3.879 | -0.207 | 0.038 | -3.293 | 0.063 | 4.468 | 0.026 | -0.374 | -0.039 | 0.089 | TRUE | FALSE |
 
 Contrast estimates from lm_impute and limma_impute for proteins that

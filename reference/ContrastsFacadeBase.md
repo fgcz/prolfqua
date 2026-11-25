@@ -23,8 +23,9 @@ A subclass implements `initialize(lfqdata, modelstr, contrasts, ...)`:
   child-level input (e.g. peptides) and reports parent-level contrasts;
   the default is `"aggregated"`
 
-The limma family additionally sets `self$.drop_na_diff <- TRUE` to drop
-rows whose fold change could not be estimated.
+The limma family, `lm`, `deqms` and `deqms_voom` additionally set
+`self$.drop_na_diff <- TRUE` to drop rows whose fold change could not be
+estimated; `get_missing()` lists them.
 
 ## Value
 

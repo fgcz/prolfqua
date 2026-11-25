@@ -11,8 +11,8 @@ set self$model to the fitted model and self$contrast to the contrast object the 
 delegates to (e.g. ContrastsModerated)
 set the private field .needs to &quot;nested&quot; if the facade takes child-level input
 (e.g. peptides) and reports parent-level contrasts; the default is &quot;aggregated&quot;
-The limma family additionally sets self$.drop_na_diff &amp;lt;- TRUE to drop rows whose fold change could not
-be estimated."><meta property="og:description" content="The extension point for new modelling backends. Every method of build_contrast_analysis is a
+The limma family, lm, deqms and deqms_voom additionally set self$.drop_na_diff &amp;lt;- TRUE
+to drop rows whose fold change could not be estimated; get_missing() lists them."><meta property="og:description" content="The extension point for new modelling backends. Every method of build_contrast_analysis is a
 facade class that inherits from ContrastsFacadeBase; a package adds a method by writing such a class and
 registering it with register_facade (usually from its .onLoad()). The base class provides
 the uniform API: get_contrasts() (stamped with the method name), get_missing(),
@@ -24,8 +24,8 @@ set self$model to the fitted model and self$contrast to the contrast object the 
 delegates to (e.g. ContrastsModerated)
 set the private field .needs to &quot;nested&quot; if the facade takes child-level input
 (e.g. peptides) and reports parent-level contrasts; the default is &quot;aggregated&quot;
-The limma family additionally sets self$.drop_na_diff &amp;lt;- TRUE to drop rows whose fold change could not
-be estimated."></head><body>
+The limma family, lm, deqms and deqms_voom additionally set self$.drop_na_diff &amp;lt;- TRUE
+to drop rows whose fold change could not be estimated; get_missing() lists them."></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -89,8 +89,8 @@ the contrasts and the design, stores a copy of the input, and returns the full m
 delegates to (e.g. <code><a href="ContrastsModerated.html">ContrastsModerated</a></code>)</p></li>
 <li><p>set the private field <code>.needs</code> to <code>"nested"</code> if the facade takes child-level input
 (e.g. peptides) and reports parent-level contrasts; the default is <code>"aggregated"</code></p></li>
-</ul><p>The limma family additionally sets <code>self$.drop_na_diff &lt;- TRUE</code> to drop rows whose fold change could not
-be estimated.</p>
+</ul><p>The limma family, <code>lm</code>, <code>deqms</code> and <code>deqms_voom</code> additionally set <code>self$.drop_na_diff &lt;- TRUE</code>
+to drop rows whose fold change could not be estimated; <code>get_missing()</code> lists them.</p>
     </div>
 
 
