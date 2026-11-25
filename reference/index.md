@@ -65,8 +65,12 @@ is a facade class.
   : Lmer (mixed-model) contrast analysis facade for nested input
 - [`ContrastsRLMFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsRLMFacade.md)
   : RLM contrast analysis facade
+- [`ContrastsROPECAImputeNestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECAImputeNestedFacade.md)
+  : ROPECA on LOD-imputed peptide models, for nested input
 - [`ContrastsROPECANestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECANestedFacade.md)
   : ROPECA contrast analysis facade for nested input
+- [`ContrastsROPECAV2ImputeNestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECAV2ImputeNestedFacade.md)
+  : ROPECA V2 on LOD-imputed peptide models, for nested input
 - [`ContrastsROPECAV2NestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECAV2NestedFacade.md)
   : ROPECA V2 contrast analysis facade for nested input
 - [`ContrastsRfitFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsRfitFacade.md)
@@ -209,10 +213,14 @@ The steps behind the facades, for inspecting or changing one of them.
 - [`ContrastsROPECA`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECA.md)
   : Protein contrasts from the median peptide p-value (PECA/ROPECA
   derivation)
+- [`ContrastsROPECAImputeNestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECAImputeNestedFacade.md)
+  : ROPECA on LOD-imputed peptide models, for nested input
 - [`ContrastsROPECANestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECANestedFacade.md)
   : ROPECA contrast analysis facade for nested input
 - [`ContrastsROPECAV2`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECAV2.md)
   : ROPECA V2: median peptide z-score with a correlation-aware null
+- [`ContrastsROPECAV2ImputeNestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECAV2ImputeNestedFacade.md)
+  : ROPECA V2 on LOD-imputed peptide models, for nested input
 - [`ContrastsROPECAV2NestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECAV2NestedFacade.md)
   : ROPECA V2 contrast analysis facade for nested input
 - [`ContrastsRfitFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsRfitFacade.md)

@@ -11,7 +11,7 @@ and confint(). Used by the firth method of build_contrast_analysis()."></head><b
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.8</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.9</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -93,8 +93,10 @@ and <code><a href="https://rdrr.io/r/stats/confint.html" class="external-link">c
 <code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code>,
 <code><a href="ContrastsRLMFacade.html">ContrastsRLMFacade</a></code>,
 <code><a href="ContrastsROPECA.html">ContrastsROPECA</a></code>,
+<code><a href="ContrastsROPECAImputeNestedFacade.html">ContrastsROPECAImputeNestedFacade</a></code>,
 <code><a href="ContrastsROPECANestedFacade.html">ContrastsROPECANestedFacade</a></code>,
 <code><a href="ContrastsROPECAV2.html">ContrastsROPECAV2</a></code>,
+<code><a href="ContrastsROPECAV2ImputeNestedFacade.html">ContrastsROPECAV2ImputeNestedFacade</a></code>,
 <code><a href="ContrastsROPECAV2NestedFacade.html">ContrastsROPECAV2NestedFacade</a></code>,
 <code><a href="ContrastsRfitFacade.html">ContrastsRfitFacade</a></code>,
 <code><a href="ContrastsRfitImputeFacade.html">ContrastsRfitImputeFacade</a></code>,
@@ -359,7 +361,7 @@ untouched.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    modelName estimate_type protein_Id  contrast sigma    df      diff   FDR</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> firth     observed      7IZdVV~0841 Avs          1   <span style="color: #BB0000;">Inf</span> -<span style="color: #BB0000;">2.20</span><span style="color: #949494;">e</span>+ 0 0.732</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> firth     observed      7IZdVV~0841 AvsCtrl      1   <span style="color: #BB0000;">Inf</span>  3.22<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span> 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> firth     observed      7IZdVV~0841 AvsCtrl      1   <span style="color: #BB0000;">Inf</span> -<span style="color: #BB0000;">2.94</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-17</span> 1    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> firth     observed      AZPG26~2091 Avs          1   <span style="color: #BB0000;">Inf</span>  2.75<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span> 1    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> firth     observed      AZPG26~2091 AvsCtrl      1   <span style="color: #BB0000;">Inf</span>  5.58<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span> 1    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> firth     observed      AoNKbb~6908 Avs          1   <span style="color: #BB0000;">Inf</span>  8.47<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.746</span>
@@ -368,14 +370,14 @@ untouched.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> firth     observed      EnbuYk~0350 AvsCtrl      1   <span style="color: #BB0000;">Inf</span>  8.47<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 1    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> firth     observed      JnEDsz~4938 Avs          1   <span style="color: #BB0000;">Inf</span>  1.35<span style="color: #949494;">e</span>+ 0 0.746</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> firth     observed      JnEDsz~4938 AvsCtrl      1   <span style="color: #BB0000;">Inf</span> -<span style="color: #BB0000;">8.47</span><span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 1    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> firth     observed      NNASGK~1417 Avs          1   <span style="color: #BB0000;">Inf</span> -<span style="color: #BB0000;">1.26</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span> 1    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> firth     observed      NNASGK~1417 AvsCtrl      1   <span style="color: #BB0000;">Inf</span>  4.27<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span> 1    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> firth     observed      XYrp6h~5793 Avs          1   <span style="color: #BB0000;">Inf</span> -<span style="color: #BB0000;">1.26</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span> 1    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> firth     observed      XYrp6h~5793 AvsCtrl      1   <span style="color: #BB0000;">Inf</span>  4.27<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span> 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> firth     observed      NNASGK~1417 Avs          1   <span style="color: #BB0000;">Inf</span>  1.52<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span> 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> firth     observed      NNASGK~1417 AvsCtrl      1   <span style="color: #BB0000;">Inf</span>  1.07<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span> 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> firth     observed      XYrp6h~5793 Avs          1   <span style="color: #BB0000;">Inf</span>  1.52<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span> 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> firth     observed      XYrp6h~5793 AvsCtrl      1   <span style="color: #BB0000;">Inf</span>  1.07<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span> 1    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> firth     observed      quTD7H~4566 Avs          1   <span style="color: #BB0000;">Inf</span>  3.04<span style="color: #949494;">e</span>+ 0 0.732</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> firth     observed      quTD7H~4566 AvsCtrl      1   <span style="color: #BB0000;">Inf</span>  2.20<span style="color: #949494;">e</span>+ 0 1    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> firth     observed      tCZCHm~6695 Avs          1   <span style="color: #BB0000;">Inf</span>  1.35<span style="color: #949494;">e</span>+ 0 0.746</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> firth     observed      tCZCHm~6695 AvsCtrl      1   <span style="color: #BB0000;">Inf</span>  2.16<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span> 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> firth     observed      tCZCHm~6695 AvsCtrl      1   <span style="color: #BB0000;">Inf</span> -<span style="color: #BB0000;">4.13</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span> 1    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> firth     observed      tHE075~8231 Avs          1   <span style="color: #BB0000;">Inf</span>  8.47<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 0.746</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span> firth     observed      tHE075~8231 AvsCtrl      1   <span style="color: #BB0000;">Inf</span>  8.47<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> 1    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 8 more variables: std.error &lt;dbl&gt;, statistic &lt;dbl&gt;, p.value &lt;dbl&gt;,</span></span>

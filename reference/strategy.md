@@ -108,8 +108,10 @@ Other modelling:
 [`ContrastsPlotter`](https://fgcz.github.io/prolfqua/reference/ContrastsPlotter.md),
 [`ContrastsRLMFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsRLMFacade.md),
 [`ContrastsROPECA`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECA.md),
+[`ContrastsROPECAImputeNestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECAImputeNestedFacade.md),
 [`ContrastsROPECANestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECANestedFacade.md),
 [`ContrastsROPECAV2`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECAV2.md),
+[`ContrastsROPECAV2ImputeNestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECAV2ImputeNestedFacade.md),
 [`ContrastsROPECAV2NestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECAV2NestedFacade.md),
 [`ContrastsRfitFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsRfitFacade.md),
 [`ContrastsRfitImputeFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsRfitImputeFacade.md),
@@ -160,7 +162,7 @@ Other modelling:
 tmp <- strategy_logistf("bin_resp ~ condition", model_name = "parallel design")
 tmp$formula
 #> bin_resp ~ condition
-#> <environment: 0x5aef21820568>
+#> <environment: 0x63486a5f1a68>
 
 istar <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
@@ -191,9 +193,9 @@ modelFunction$model_fun(nestProtein$data[[1]])
 #> 
 #> Coefficients:
 #>        (Intercept)            group_B         group_Ctrl peptide_IdFLq7LKTq 
-#>       2.101899e+00       6.773389e-01      -6.663876e-01       9.509484e-16 
+#>       2.101899e+00       6.773389e-01      -6.663876e-01      -1.226933e-15 
 #> peptide_IdJYhOpuPH peptide_IdLiw5EMKP peptide_IdVcatZJTa peptide_IdjrLUqOjg 
-#>      -1.068335e+00       7.971977e-16      -1.068335e+00       1.197563e+00 
+#>      -1.068335e+00      -7.226922e-16      -1.068335e+00       1.197563e+00 
 #> peptide_Idq2jTaC1y 
 #>      -1.445323e+00 
 #> 
@@ -208,7 +210,7 @@ modelFunction$model_fun(nestProtein$data[[4]])
 #> 
 #> Coefficients:
 #>        (Intercept)            group_B         group_Ctrl peptide_IdWcAw5ozd 
-#>       8.375544e-03       8.360364e-11       9.365126e-01      -3.147690e-01 
+#>       8.375544e-03       8.360389e-11       9.365126e-01      -3.147690e-01 
 #> peptide_IdgdnXrza3 peptide_IdxvlVt88v 
 #>      -2.035803e-09      -6.303721e-01 
 #> 
@@ -217,22 +219,22 @@ modelFunction$model_fun(nestProtein$data[[4]])
 tmp <- strategy_rfit("Intensity ~ condition", model_name = "parallel design")
 tmp$formula
 #> Intensity ~ condition
-#> <environment: 0x5aef26106fb8>
+#> <environment: 0x63486ce1a8d0>
 modelFunction <- strategy_lmer("abundanceC ~ group_ + (1|peptide_Id)",
   model_name = "random_example")
 modelFunction$formula
 #> abundanceC ~ group_ + (1 | peptide_Id)
-#> <environment: 0x5aef2619aef8>
+#> <environment: 0x63486cea64f0>
 tmp <- strategy_lm("Intensity ~ condition", model_name = "parallel design")
 tmp$formula
 #> Intensity ~ condition
-#> <environment: 0x5aef2622b1b8>
+#> <environment: 0x63486cf39948>
 tmp$weights
 #> NULL
 tmp <- strategy_rlm("Intensity ~ condition", model_name = "parallel design")
 tmp$formula
 #> Intensity ~ condition
-#> <environment: 0x5aef262f3130>
+#> <environment: 0x63486cff7038>
 strategy_rlm("Intensity ~ condition", control = list(maxit = 50))$control
 #> $maxit
 #> [1] 50

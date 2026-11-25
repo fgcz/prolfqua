@@ -19,7 +19,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.8</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.9</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -227,7 +227,7 @@ protein-level contrasts, their outputs can be combined directly.</p>
 <span><span class="co">## condition number 4.7214e-17); contrast=T_C_gv_KO (pseudoinverse used at 1;</span></span>
 <span><span class="co">## neighborhood radius 1; reciprocal condition number 2.9356e-17);</span></span>
 <span><span class="co">## contrast=WT_KO_comp (pseudoinverse used at 1; neighborhood radius 1; reciprocal</span></span>
-<span><span class="co">## condition number 6.0112e-17)</span></span></code></pre>
+<span><span class="co">## condition number 4.5868e-17)</span></span></code></pre>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results_protein_2f</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">modelName</span>, name <span class="op">=</span> <span class="st">"n_results"</span><span class="op">)</span></span></code></pre></div>
@@ -365,7 +365,7 @@ each method fails on and to compare coverage.</p>
 <span><span class="co">## condition number 4.7214e-17); contrast=T_C_gv_KO (pseudoinverse used at 1;</span></span>
 <span><span class="co">## neighborhood radius 1; reciprocal condition number 2.9356e-17);</span></span>
 <span><span class="co">## contrast=WT_KO_comp (pseudoinverse used at 1; neighborhood radius 1; reciprocal</span></span>
-<span><span class="co">## condition number 6.0112e-17)</span></span></code></pre>
+<span><span class="co">## condition number 4.5868e-17)</span></span></code></pre>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">missing_all_2f</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">facade</span>, <span class="va">contrast</span>, name <span class="op">=</span> <span class="st">"n_missing"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -1208,7 +1208,7 @@ together.</p>
 <span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] ggplot2_4.0.4    dplyr_1.2.1      prolfqua_1.9.8   BiocStyle_2.40.0</span></span>
+<span><span class="co">## [1] ggplot2_4.0.4    dplyr_1.2.1      prolfqua_1.9.9   BiocStyle_2.40.0</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##  [1] tidyselect_1.2.1       farver_2.1.2           S7_1.0.0              </span></span>

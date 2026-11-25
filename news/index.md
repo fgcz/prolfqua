@@ -1,5 +1,27 @@
 # Changelog
 
+## prolfqua 1.9.9
+
+### New features
+
+- New methods `ropeca_impute_nested` and `ropecaV2_impute_nested`:
+  ROPECA and ROPECA V2 on peptide models fitted as in `lm_impute`. A
+  peptide with a group without observations is refit at the limit of
+  detection with a borrowed variance instead of being left out, so more
+  peptides contribute and proteins whose peptides all miss a group get a
+  result; such results have `estimate_type = "lod_imputed"`. V2
+  estimates the peptide correlation from the observed peptide models
+  only. `ropeca_nested` and `ropecaV2_nested` are unchanged. The factory
+  figure and `facade_styles.tsv` list the 22 methods.
+
+### Bug fixes
+
+- [`impute_refit_singular()`](https://fgcz.github.io/prolfqua/reference/impute_refit_singular.md),
+  and so
+  [`build_model_impute()`](https://fgcz.github.io/prolfqua/reference/build_model_impute.md),
+  always returns the `imputed` column in the model table; before, it was
+  missing when no fit needed a refit at the limit of detection.
+
 ## prolfqua 1.9.8
 
 ### New features

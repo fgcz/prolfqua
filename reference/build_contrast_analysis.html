@@ -19,7 +19,7 @@ columns and can be compared or combined."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.8</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.9</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -105,7 +105,8 @@ limma <code>"limma"</code>, <code>"limma_voom"</code>, <code>"deqms"</code>,
 limit-of-detection imputation <code>"lm_impute"</code>, <code>"limma_impute"</code>,
 <code>"limma_voom_impute"</code>, <code>"rfit_impute"</code>;
 peptide-level models <code>"lmer_nested"</code>, <code>"ropeca_nested"</code>,
-<code>"ropecaV2_nested"</code>;
+<code>"ropecaV2_nested"</code>, <code>"ropeca_impute_nested"</code>, <code>"ropecaV2_impute_nested"</code> (ROPECA on
+peptide models refit at the limit of detection, as <code>"lm_impute"</code>);
 detection models <code>"firth"</code>, <code>"binomial_nested"</code>,
 <code>"binomial_firth_nested"</code>;
 the hurdle model <code>"hurdle_nested"</code>, combining intensity and detection.
@@ -185,7 +186,8 @@ details are in <code>srr/benchmark-runtime.R</code> in the source repository.</p
 ROPECA (Suomi and Elo 2017, Bioconductor package PECA) without its ROTS step, on per-peptide linear models
 of any design; <code><a href="ContrastsROPECANestedFacade.html">ContrastsROPECANestedFacade</a></code> lists what differs and compares it with PECA.</p></li>
 <li><p>First implementations of new methods: the <code>_impute</code> methods (<code>lm_impute</code>,
-<code>rfit_impute</code>, <code>limma_impute</code>, <code>limma_voom_impute</code>), which refit groups without
+<code>rfit_impute</code>, <code>limma_impute</code>, <code>limma_voom_impute</code>, <code>ropeca_impute_nested</code>,
+<code>ropecaV2_impute_nested</code>), which refit groups without
 observations at the limit of detection with a borrowed variance (Wolski et al. 2023);
 <code>ropecaV2_nested</code>, a median peptide z-score with a correlation-aware null; <code>binomial_nested</code> and
 <code>binomial_firth_nested</code>, per-protein models of peptide detection.</p></li>
@@ -223,8 +225,10 @@ prolfquabenchmark.</p>
 <code><a href="ContrastsPlotter.html">ContrastsPlotter</a></code>,
 <code><a href="ContrastsRLMFacade.html">ContrastsRLMFacade</a></code>,
 <code><a href="ContrastsROPECA.html">ContrastsROPECA</a></code>,
+<code><a href="ContrastsROPECAImputeNestedFacade.html">ContrastsROPECAImputeNestedFacade</a></code>,
 <code><a href="ContrastsROPECANestedFacade.html">ContrastsROPECANestedFacade</a></code>,
 <code><a href="ContrastsROPECAV2.html">ContrastsROPECAV2</a></code>,
+<code><a href="ContrastsROPECAV2ImputeNestedFacade.html">ContrastsROPECAV2ImputeNestedFacade</a></code>,
 <code><a href="ContrastsROPECAV2NestedFacade.html">ContrastsROPECAV2NestedFacade</a></code>,
 <code><a href="ContrastsRfitFacade.html">ContrastsRfitFacade</a></code>,
 <code><a href="ContrastsRfitImputeFacade.html">ContrastsRfitImputeFacade</a></code>,
@@ -392,9 +396,9 @@ prolfquabenchmark.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 16</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   modelName estimate_type protein_Id  contrast  sigma    df      diff   FDR</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> firth     observed      0EfVhX~5954 A_vs_Ctrl     1   <span style="color: #BB0000;">Inf</span>  4.27<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span> 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> firth     observed      0EfVhX~5954 A_vs_Ctrl     1   <span style="color: #BB0000;">Inf</span>  1.07<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span> 1    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> firth     observed      0m5WN4~1448 A_vs_Ctrl     1   <span style="color: #BB0000;">Inf</span> -<span style="color: #BB0000;">2.20</span><span style="color: #949494;">e</span>+ 0 0.878</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> firth     observed      7cbcrd~8305 A_vs_Ctrl     1   <span style="color: #BB0000;">Inf</span>  4.27<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span> 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> firth     observed      7cbcrd~8305 A_vs_Ctrl     1   <span style="color: #BB0000;">Inf</span>  1.07<span style="color: #949494;">e</span><span style="color: #BB0000;">-15</span> 1    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> firth     observed      9VUkAq~4562 A_vs_Ctrl     1   <span style="color: #BB0000;">Inf</span> -<span style="color: #BB0000;">1.35</span><span style="color: #949494;">e</span>+ 0 1    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> firth     observed      At886V~3296 A_vs_Ctrl     1   <span style="color: #BB0000;">Inf</span>  5.58<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span> 1    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> firth     observed      BEJI92~9143 A_vs_Ctrl     1   <span style="color: #BB0000;">Inf</span> -<span style="color: #BB0000;">1.35</span><span style="color: #949494;">e</span>+ 0 1    </span>

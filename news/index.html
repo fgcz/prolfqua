@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.8</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.9</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,6 +50,18 @@
       <small>Source: <a href="https://github.com/fgcz/prolfqua/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.9.9" id="prolfqua-199">prolfqua 1.9.9<a class="anchor" aria-label="anchor" href="#prolfqua-199"></a></h2>
+<div class="section level3">
+<h3 id="new-features-1-9-9">New features<a class="anchor" aria-label="anchor" href="#new-features-1-9-9"></a></h3>
+<ul><li>New methods <code>ropeca_impute_nested</code> and <code>ropecaV2_impute_nested</code>: ROPECA and ROPECA V2 on peptide models fitted as in <code>lm_impute</code>. A peptide with a group without observations is refit at the limit of detection with a borrowed variance instead of being left out, so more peptides contribute and proteins whose peptides all miss a group get a result; such results have <code>estimate_type = "lod_imputed"</code>. V2 estimates the peptide correlation from the observed peptide models only. <code>ropeca_nested</code> and <code>ropecaV2_nested</code> are unchanged. The factory figure and <code>facade_styles.tsv</code> list the 22 methods.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-1-9-9">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-9-9"></a></h3>
+<ul><li>
+<code><a href="../reference/impute_refit_singular.html">impute_refit_singular()</a></code>, and so <code><a href="../reference/build_model_impute.html">build_model_impute()</a></code>, always returns the <code>imputed</code> column in the model table; before, it was missing when no fit needed a refit at the limit of detection.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.9.8" id="prolfqua-198">prolfqua 1.9.8<a class="anchor" aria-label="anchor" href="#prolfqua-198"></a></h2>
 <div class="section level3">

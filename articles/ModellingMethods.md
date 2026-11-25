@@ -117,7 +117,9 @@ about <- c(
   hurdle_nested = "lm_impute intensity + binomial_firth_nested detection",
   lmer_nested = "mixed model, peptide and sample random effects",
   ropeca_nested = "peptide fold changes summarised per protein (ROPECA)",
-  ropecaV2_nested = "ROPECA with an exact, correlation-aware null for the median peptide z-score"
+  ropecaV2_nested = "ROPECA with an exact, correlation-aware null for the median peptide z-score",
+  ropeca_impute_nested = "ropeca_nested on peptide models refit at the LOD, as lm_impute",
+  ropecaV2_impute_nested = "ropecaV2_nested on peptide models refit at the LOD, as lm_impute"
 )
 overview <- data.frame(
   method = names(results),
@@ -149,7 +151,9 @@ knitr::kable(overview, row.names = FALSE)
 | rfit | aggregated | 20 | 14 | rank-based regression (Rfit) |
 | rfit_impute | aggregated | 20 | 14 | rfit with LOD imputation |
 | rlm | aggregated | 20 | 14 | robust linear model (MASS::rlm) |
+| ropeca_impute_nested | nested | 20 | 13 | ropeca_nested on peptide models refit at the LOD, as lm_impute |
 | ropeca_nested | nested | 20 | 14 | peptide fold changes summarised per protein (ROPECA) |
+| ropecaV2_impute_nested | nested | 20 | 15 | ropecaV2_nested on peptide models refit at the LOD, as lm_impute |
 | ropecaV2_nested | nested | 20 | 16 | ROPECA with an exact, correlation-aware null for the median peptide z-score |
 
 The detection models (`firth`, `binomial_nested`,
@@ -165,7 +169,8 @@ happens to it:
 - dropped in each per-protein fit: `lm`, `rlm`, `rfit`, `limma`,
   `limma_voom`, `deqms`, `lmer_nested`, `ropeca_nested`
 - imputed at the limit of detection where a whole group is missing: the
-  `_impute` methods
+  `_impute` methods, for `ropeca_impute_nested` and
+  `ropecaV2_impute_nested` per peptide
 - modelled as detection: `firth`, `binomial_nested`,
   `binomial_firth_nested`, and `hurdle_nested` together with the
   intensities
@@ -196,28 +201,30 @@ one <- dplyr::bind_rows(one, .id = "method")
 knitr::kable(one, digits = 3)
 ```
 
-| method                |   diff | p.value |   FDR |
-|:----------------------|-------:|--------:|------:|
-| binomial_firth_nested |  0.000 |   1.000 | 1.000 |
-| binomial_nested       |  0.000 |   1.000 | 1.000 |
-| deqms                 | -0.469 |   0.000 | 0.000 |
-| deqms_voom            | -0.469 |   0.000 | 0.000 |
-| firth                 |  0.000 |   1.000 | 1.000 |
-| hurdle_nested         | -0.469 |   0.000 | 0.000 |
-| limma                 | -0.469 |   0.000 | 0.000 |
-| limma_impute          | -0.469 |   0.000 | 0.000 |
-| limma_voom            | -0.469 |   0.000 | 0.000 |
-| limma_voom_impute     | -0.469 |   0.000 | 0.000 |
-| limpa                 | -0.272 |   0.000 | 0.000 |
-| limpa_nested          | -0.272 |   0.000 | 0.000 |
-| lm                    | -0.469 |   0.000 | 0.000 |
-| lm_impute             | -0.469 |   0.000 | 0.000 |
-| lmer_nested           | -0.276 |   0.001 | 0.003 |
-| rfit                  | -0.463 |   0.000 | 0.000 |
-| rfit_impute           | -0.463 |   0.000 | 0.000 |
-| rlm                   | -0.469 |   0.000 | 0.000 |
-| ropeca_nested         | -0.495 |   0.000 | 0.000 |
-| ropecaV2_nested       | -0.495 |   0.000 | 0.000 |
+| method                 |   diff | p.value |   FDR |
+|:-----------------------|-------:|--------:|------:|
+| binomial_firth_nested  |  0.000 |   1.000 | 1.000 |
+| binomial_nested        |  0.000 |   1.000 | 1.000 |
+| deqms                  | -0.469 |   0.000 | 0.000 |
+| deqms_voom             | -0.469 |   0.000 | 0.000 |
+| firth                  |  0.000 |   1.000 | 1.000 |
+| hurdle_nested          | -0.469 |   0.000 | 0.000 |
+| limma                  | -0.469 |   0.000 | 0.000 |
+| limma_impute           | -0.469 |   0.000 | 0.000 |
+| limma_voom             | -0.469 |   0.000 | 0.000 |
+| limma_voom_impute      | -0.469 |   0.000 | 0.000 |
+| limpa                  | -0.272 |   0.000 | 0.000 |
+| limpa_nested           | -0.272 |   0.000 | 0.000 |
+| lm                     | -0.469 |   0.000 | 0.000 |
+| lm_impute              | -0.469 |   0.000 | 0.000 |
+| lmer_nested            | -0.276 |   0.001 | 0.003 |
+| rfit                   | -0.463 |   0.000 | 0.000 |
+| rfit_impute            | -0.463 |   0.000 | 0.000 |
+| rlm                    | -0.469 |   0.000 | 0.000 |
+| ropeca_impute_nested   | -0.495 |   0.000 | 0.000 |
+| ropeca_nested          | -0.495 |   0.000 | 0.000 |
+| ropecaV2_impute_nested | -0.495 |   0.000 | 0.000 |
+| ropecaV2_nested        | -0.495 |   0.000 | 0.000 |
 
 ## Comparing methods
 
@@ -343,7 +350,7 @@ head(confint(analysis))
 #> 6 2kfAGV~3196 group_Ctrl   -0.215     0.0453     8  -0.320   -0.111
 formula(analysis)
 #> medpolish ~ group_
-#> <environment: 0x59f11ef154a0>
+#> <environment: 0x55e1e221ec20>
 head(nobs(analysis))
 #> # A tibble: 6 × 2
 #>   protein_Id   nobs
@@ -456,7 +463,7 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] prolfqua_1.9.8   BiocStyle_2.40.0
+#> [1] prolfqua_1.9.9   BiocStyle_2.40.0
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] tidyselect_1.2.1       dplyr_1.2.1            farver_2.1.2          

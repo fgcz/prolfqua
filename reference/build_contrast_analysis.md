@@ -39,7 +39,9 @@ build_contrast_analysis(lfqdata, modelstr, contrasts, method = "lm", ...)
   `"deqms_voom"`, `"limpa"`, `"limpa_nested"`; limit-of-detection
   imputation `"lm_impute"`, `"limma_impute"`, `"limma_voom_impute"`,
   `"rfit_impute"`; peptide-level models `"lmer_nested"`,
-  `"ropeca_nested"`, `"ropecaV2_nested"`; detection models `"firth"`,
+  `"ropeca_nested"`, `"ropecaV2_nested"`, `"ropeca_impute_nested"`,
+  `"ropecaV2_impute_nested"` (ROPECA on peptide models refit at the
+  limit of detection, as `"lm_impute"`); detection models `"firth"`,
   `"binomial_nested"`, `"binomial_firth_nested"`; the hurdle model
   `"hurdle_nested"`, combining intensity and detection. Downstream
   packages may add more via
@@ -130,10 +132,11 @@ Reproduction code and environment details are in
   lists what differs and compares it with PECA.
 
 - First implementations of new methods: the `_impute` methods
-  (`lm_impute`, `rfit_impute`, `limma_impute`, `limma_voom_impute`),
-  which refit groups without observations at the limit of detection with
-  a borrowed variance (Wolski et al. 2023); `ropecaV2_nested`, a median
-  peptide z-score with a correlation-aware null; `binomial_nested` and
+  (`lm_impute`, `rfit_impute`, `limma_impute`, `limma_voom_impute`,
+  `ropeca_impute_nested`, `ropecaV2_impute_nested`), which refit groups
+  without observations at the limit of detection with a borrowed
+  variance (Wolski et al. 2023); `ropecaV2_nested`, a median peptide
+  z-score with a correlation-aware null; `binomial_nested` and
   `binomial_firth_nested`, per-protein models of peptide detection.
 
 - `hurdle_nested` combines the intensity and detection tests as
@@ -171,8 +174,10 @@ Other modelling:
 [`ContrastsPlotter`](https://fgcz.github.io/prolfqua/reference/ContrastsPlotter.md),
 [`ContrastsRLMFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsRLMFacade.md),
 [`ContrastsROPECA`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECA.md),
+[`ContrastsROPECAImputeNestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECAImputeNestedFacade.md),
 [`ContrastsROPECANestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECANestedFacade.md),
 [`ContrastsROPECAV2`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECAV2.md),
+[`ContrastsROPECAV2ImputeNestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECAV2ImputeNestedFacade.md),
 [`ContrastsROPECAV2NestedFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsROPECAV2NestedFacade.md),
 [`ContrastsRfitFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsRfitFacade.md),
 [`ContrastsRfitImputeFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsRfitImputeFacade.md),
@@ -340,9 +345,9 @@ head(fa_firth$get_contrasts())
 #> # A tibble: 6 × 16
 #>   modelName estimate_type protein_Id  contrast  sigma    df      diff   FDR
 #>   <chr>     <chr>         <chr>       <chr>     <dbl> <dbl>     <dbl> <dbl>
-#> 1 firth     observed      0EfVhX~5954 A_vs_Ctrl     1   Inf  4.27e-16 1    
+#> 1 firth     observed      0EfVhX~5954 A_vs_Ctrl     1   Inf  1.07e-15 1    
 #> 2 firth     observed      0m5WN4~1448 A_vs_Ctrl     1   Inf -2.20e+ 0 0.878
-#> 3 firth     observed      7cbcrd~8305 A_vs_Ctrl     1   Inf  4.27e-16 1    
+#> 3 firth     observed      7cbcrd~8305 A_vs_Ctrl     1   Inf  1.07e-15 1    
 #> 4 firth     observed      9VUkAq~4562 A_vs_Ctrl     1   Inf -1.35e+ 0 1    
 #> 5 firth     observed      At886V~3296 A_vs_Ctrl     1   Inf  5.58e-16 1    
 #> 6 firth     observed      BEJI92~9143 A_vs_Ctrl     1   Inf -1.35e+ 0 1    
