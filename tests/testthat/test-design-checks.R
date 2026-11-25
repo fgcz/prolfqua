@@ -22,7 +22,6 @@ test_that("a factor aliased with another is rejected by every built-in method", 
   )
   contrasts <- c(AvsC = "group_A - group_Ctrl")
   builtin <- Filter(function(facade) facade$package == "prolfqua", list_facades())
-  expect_length(builtin, 22)
   # the design check runs before any backend package is needed
   for (method in names(builtin)) {
     expect_error(

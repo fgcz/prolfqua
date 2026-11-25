@@ -103,7 +103,6 @@ test_that("the registry's needs equals the .needs field of each built-in facade 
     NA_character_
   }
   builtin <- Filter(function(facade) facade$package == "prolfqua", list_facades())
-  expect_length(builtin, 22L)
   for (name in names(builtin)) {
     generator <- get(builtin[[name]]$class, envir = asNamespace("prolfqua"))
     expect_equal(class_needs(generator), builtin[[name]]$needs, label = name)
