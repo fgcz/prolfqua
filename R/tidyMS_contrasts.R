@@ -322,8 +322,9 @@ parse_contrast_sides <- function(contrasts) {
 #' Compute contrasts for possibly incomplete models
 #'
 #' A row is estimated when it is estimable: it puts no weight on a coefficient the model lacks and lies in the row
-#' space of the model's design. With aliased (NA) coefficients, their value 0 gives a solution of the normal equations
-#' and the covariance padded with 0 a generalized inverse, so estimable rows get their unique values.
+#' space of the weighted design the fit used (its `qr`; for rlm with the final IRLS weights). With aliased (NA)
+#' coefficients, their value 0 gives a solution of the normal equations and the covariance padded with 0 a generalized
+#' inverse, so estimable rows get their unique values.
 #'
 #' @param m linear model generated using lm
 #' @param linfct linear function
@@ -350,14 +351,19 @@ parse_contrast_sides <- function(contrasts) {
   in_model <- intersect(colnames(linfct), names(coef))
   other <- linfct[, setdiff(colnames(linfct), in_model), drop = FALSE]
   estimable <- rowSums(!.is_zero(other)) == 0
-  Sigma.hat <- stats::vcov(m)[in_model, in_model, drop = FALSE]
   if (anyNA(coef)) {
+    # the QR of the fit is that of its weighted design (rlm: the final IRLS weights), which aliased the coefficients
     weights <- matrix(0, nrow(linfct), length(coef), dimnames = list(rownames(linfct), names(coef)))
     weights[, in_model] <- linfct[, in_model]
-    estimable <- estimable & .estimable_linfct(weights, qr(stats::model.matrix(m)))
+    estimable <- estimable & .estimable_linfct(weights, m$qr)
     coef[is.na(coef)] <- 0
-    Sigma.hat[is.na(Sigma.hat)] <- 0
   }
+  # vcov() of lm and glm fits has NA rows for aliased coefficients, that of rlm fits leaves them out
+  vcov_fit <- stats::vcov(m)
+  in_vcov <- intersect(in_model, colnames(vcov_fit))
+  Sigma.hat <- matrix(0, length(in_model), length(in_model), dimnames = list(in_model, in_model))
+  Sigma.hat[in_vcov, in_vcov] <- vcov_fit[in_vcov, in_vcov]
+  Sigma.hat[is.na(Sigma.hat)] <- 0
   res <- .compute_contrast(
     m,
     linfct[, in_model, drop = FALSE],

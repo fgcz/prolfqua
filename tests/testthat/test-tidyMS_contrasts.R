@@ -136,6 +136,25 @@ test_that("compute_contrast estimates every row in the row space of a rank-defic
   expect_true(all(is.na(res[3, c("estimate", "std.error", "statistic", "p.value", "conf.low", "conf.high")])))
 })
 
+test_that("compute_contrast follows the weighted design of an rlm fit whose IRLS weights alias a coefficient", {
+  # one protein of the IonStar benchmark: the robust fit weights the two `a` observations near 0
+  d <- data.frame(
+    y = c(22.41270, 22.36527, 21.48429, 22.19423, 22.64496),
+    dilution = c("b", "c", "d", "a", "a")
+  )
+  m <- MASS::rlm(y ~ dilution, data = d, method = "M")
+  expect_true(is.na(stats::coef(m)[["dilutiond"]]))
+  expect_false("dilutiond" %in% colnames(stats::vcov(m)))
+  linfct <- rbind(c_vs_b = c(0, -1, 1, 0), d_vs_c = c(0, 0, -1, 1), b_vs_a = c(0, 1, 0, 0))
+  colnames(linfct) <- names(stats::coef(m))
+  res <- .compute_estimable_contrast(m, linfct)
+
+  # b, c and d keep their full weight: their differences are those of the single observations
+  expect_equal(res$estimate[1:2], c(22.36527 - 22.41270, 21.48429 - 22.36527), tolerance = 1e-6)
+  # the `a` observations carry no weight, so contrasts with `a` are not estimable
+  expect_true(is.na(res$estimate[3]))
+})
+
 test_that("linfct_matrix_contrasts names an unnamed contrast contrast_<i>", {
   linfct <- .linfct_from_model(.sim_make_model_lm("parallel3"), as_list = FALSE)
   res <- expect_no_warning(.linfct_matrix_contrasts(linfct, c("group_A - group_Ctrl", AB = "group_A - group_B")))

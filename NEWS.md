@@ -1,3 +1,9 @@
+# prolfqua 1.9.7
+
+## Bug fixes
+
+- `rlm` no longer fails with "subscript out of bounds" when its robust weights leave a coefficient of a protein aliased (a regression in 1.9.6, found with the IonStar data of prolfquabenchmark). Contrasts of `lm`, `rlm` and the binomial methods are estimable when they lie in the row space of the weighted design the fit used; contrasts against observations the robust fit weights near zero are not estimable.
+
 # prolfqua 1.9.6
 
 ## Behaviour changes
