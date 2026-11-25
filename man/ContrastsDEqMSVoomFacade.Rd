@@ -28,6 +28,7 @@ head(fa$get_contrasts())
 Other modelling:
 \code{\link{AnovaExtractor}},
 \code{\link{Contrasts}},
+\code{\link{ContrastsComparison}},
 \code{\link{ContrastsDEqMSFacade}},
 \code{\link{ContrastsFacadeBase}},
 \code{\link{ContrastsFirth}},

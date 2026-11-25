@@ -18,6 +18,7 @@ stopifnot("factor" \%in\% colnames(res))
 \seealso{
 Other modelling:
 \code{\link{Contrasts}},
+\code{\link{ContrastsComparison}},
 \code{\link{ContrastsDEqMSFacade}},
 \code{\link{ContrastsDEqMSVoomFacade}},
 \code{\link{ContrastsFacadeBase}},

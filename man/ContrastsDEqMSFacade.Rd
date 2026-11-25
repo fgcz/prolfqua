@@ -24,6 +24,7 @@ fa$to_wide()
 Other modelling:
 \code{\link{AnovaExtractor}},
 \code{\link{Contrasts}},
+\code{\link{ContrastsComparison}},
 \code{\link{ContrastsDEqMSVoomFacade}},
 \code{\link{ContrastsFacadeBase}},
 \code{\link{ContrastsFirth}},

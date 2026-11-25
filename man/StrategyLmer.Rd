@@ -26,6 +26,7 @@ sum(mod$model_df$has_model_fit)
 Other modelling:
 \code{\link{AnovaExtractor}},
 \code{\link{Contrasts}},
+\code{\link{ContrastsComparison}},
 \code{\link{ContrastsDEqMSFacade}},
 \code{\link{ContrastsDEqMSVoomFacade}},
 \code{\link{ContrastsFacadeBase}},

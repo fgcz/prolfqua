@@ -1,3 +1,9 @@
+# prolfqua 1.9.8
+
+## New features
+
+- New `ContrastsComparison`: aligns the contrasts of several methods on protein and contrast, from facades or from `ContrastsTable`s holding other tools' results (their `ContrastConfiguration` names the columns). `$coverage()` and `$upset()` show which pairs each method estimates; `$conflicts()` flags pairs where the methods contradict each other at an FDR threshold: significant in opposite directions, significant in one method but not in another that tested the pair, or significant in one and not estimated by another; `$pairs()` returns the pairs of one method with given columns defined. See the section "Comparing methods" of the vignette `ModellingMethods`.
+
 # prolfqua 1.9.7
 
 ## Bug fixes

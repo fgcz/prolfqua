@@ -66,6 +66,7 @@ stopifnot(all(ref_lfc == y))
 \seealso{
 Other modelling:
 \code{\link{AnovaExtractor}},
+\code{\link{ContrastsComparison}},
 \code{\link{ContrastsDEqMSFacade}},
 \code{\link{ContrastsDEqMSVoomFacade}},
 \code{\link{ContrastsFacadeBase}},

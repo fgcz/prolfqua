@@ -129,6 +129,28 @@ one <- dplyr::bind_rows(one, .id = "method")
 knitr::kable(one, digits = 3)
 ```
 
+# Comparing methods
+
+`ContrastsComparison` aligns the results of several methods on protein and contrast. It shows which protein and contrast pairs each method estimates (`$coverage()`, `$upset()`) and where the methods contradict each other at an FDR threshold (`$conflicts()`): significant in opposite directions, significant in one method but not in another that tested the pair, or significant in one method and not estimated by another. Results of other tools can be compared too, as a `ContrastsTable` with a `ContrastConfiguration` that names their columns.
+
+Here one protein has no observations in group `A`: `lm` and `limma` cannot estimate its contrast, the `_impute` methods estimate it at the limit of detection.
+
+```{r compare-methods}
+protein_data <- lfq_protein$data_long()
+gap <- sort(unique(protein_data$protein_Id))[1]
+lfq_gap <- lfq_protein$get_copy()
+lfq_gap$set_data(protein_data[!(protein_data$protein_Id == gap & protein_data$group_ == "A"), ])
+methods <- c("lm", "limma", "lm_impute", "limma_impute")
+gap_analyses <- lapply(stats::setNames(methods, methods), function(method) {
+  build_contrast_analysis(lfq_gap, "~ group_", contrasts, method = method)
+})
+comparison <- ContrastsComparison$new(gap_analyses, fdr_threshold = 0.1)
+knitr::kable(comparison$coverage())
+conflicts <- comparison$conflicts()
+flagged <- conflicts$sign_conflict | conflicts$significance_conflict | conflicts$coverage_conflict
+knitr::kable(conflicts[flagged, ])
+```
+
 # Inspecting a fitted analysis
 
 The fitted analysis supports standard R methods. `print()` gives the model specification, fit counts, a one-line provenance summary and a coefficient preview without calculating contrasts. `summary()` evaluates the contrasts and counts estimated, missing and significant results; the significance defaults are FDR < 0.05 and absolute effect > 1.

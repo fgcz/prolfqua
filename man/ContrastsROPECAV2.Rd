@@ -43,6 +43,7 @@ pl$volcano()
 Other modelling:
 \code{\link{AnovaExtractor}},
 \code{\link{Contrasts}},
+\code{\link{ContrastsComparison}},
 \code{\link{ContrastsDEqMSFacade}},
 \code{\link{ContrastsDEqMSVoomFacade}},
 \code{\link{ContrastsFacadeBase}},

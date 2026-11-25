@@ -62,6 +62,7 @@ merged_res <- merge_contrasts_results(contr_limma, imp)
 Other modelling:
 \code{\link{AnovaExtractor}},
 \code{\link{Contrasts}},
+\code{\link{ContrastsComparison}},
 \code{\link{ContrastsDEqMSFacade}},
 \code{\link{ContrastsDEqMSVoomFacade}},
 \code{\link{ContrastsFacadeBase}},
