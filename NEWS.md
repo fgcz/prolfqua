@@ -94,6 +94,7 @@
 - Vignettes no longer hide warnings. The remaining ones are fits that fail for single proteins (for example `lmer_nested` on proteins with one peptide); the vignettes explain them and show the record in `$provenance()`.
 - Corrected help texts: the medpolish `eps` is a relative change of the sum of absolute residuals; `?prolfqua_analysis_methods` says where each backend keeps `converged` and `iterations`.
 - The run times in `?prolfqua` (Resources) and `?build_contrast_analysis` are measured again on this version, and the Resources section adds aggregation and the QC writers.
+- The GitHub install instructions in the README and the introduction vignette install the remotes package, which `BiocManager::install("fgcz/prolfqua")` needs; before, they failed on an R installation without remotes. The README also says how to check the R version, what to do when prolfqua is not available for the installed Bioconductor version, and that the GitHub version is ahead of the Bioconductor release.
 
 # prolfqua 1.9.4
 
