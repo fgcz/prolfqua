@@ -299,10 +299,10 @@ Authors:
 - Witold Wolski <witold.wolski@fgcz.uzh.ch>
   ([ORCID](https://orcid.org/0000-0002-6468-120X))
 
-- Christian Panse <cp@fgcz.ethz.ch>
-  ([ORCID](https://orcid.org/0000-0003-1975-3064))
-
 Other contributors:
+
+- Christian Panse <cp@fgcz.ethz.ch>
+  ([ORCID](https://orcid.org/0000-0003-1975-3064)) \[contributor\]
 
 - Jonas Grossmann \[contributor\]
 

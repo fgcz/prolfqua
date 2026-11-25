@@ -55,6 +55,8 @@
 <div class="section level3">
 <h3 id="new-features-1-9-5">New features<a class="anchor" aria-label="anchor" href="#new-features-1-9-5"></a></h3>
 <ul><li>
+<code>inst/extdata/facade_styles.tsv</code> lists every method of <code><a href="../reference/build_contrast_analysis.html">build_contrast_analysis()</a></code> with its family in the factory figure of the README (linear models, limma, limpa, LOD imputation, peptide level, detection, hurdle), the family’s colour, and a point shape and line type per method within the family, so plots comparing methods (as in prolfquabenchmark) style each method the same way. The factory figure is drawn from it.</li>
+<li>
 <code>LFQDataPlotter$heatmap(row_order = )</code> draws exactly the given features, in the given order and without row clustering, so two heatmaps of the same features can be compared row by row, e.g. before and after imputation (imputation changes the per-feature sd, so the most variable features and their clustering would differ). <code>row_order</code> cannot be combined with <code>n_most_variable</code>; an unknown feature ID is an error that names it.</li>
 </ul></div>
 <div class="section level3">
@@ -103,6 +105,8 @@
 <div class="section level3">
 <h3 id="bug-fixes-1-9-5">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-9-5"></a></h3>
 <ul><li>
+<code><a href="../reference/annotation_add_contrasts.html">annotation_add_contrasts()</a></code> handles designs with more contrasts than samples (e.g. 5 x 2 levels with interactions: 40 contrasts for 30 samples) by appending <code>NA</code> sample rows that carry only a contrast, as it already padded the contrast columns for designs with fewer contrasts; before, it failed in <code>bind_cols()</code> with “Can’t recycle”. It stops with a <code>prolfqua_error_bad_argument</code> error when two combinations of factor levels get the same group name (<code>a_b</code> + <code>c</code> and <code>a</code> + <code>b_c</code> are both <code>a_b_c</code>); before, their samples were merged into one group.</li>
+<li>
 <code><a href="../reference/null_split_check.html">null_split_check()</a></code> no longer adds <code>pseudo_group_</code> to the configuration of the <code>LFQData</code> passed in; before, later calls on that object such as <code>data_wide()</code> and <code>get_Stats()$stats()</code> failed.</li>
 <li>
 <code><a href="../reference/build_model_impute.html">build_model_impute()</a></code> stops with an error for input that is not aggregated (subject equals the hierarchy) and for strategies other than <code><a href="../reference/strategy.html">strategy_lm()</a></code> and <code><a href="../reference/strategy.html">strategy_rfit()</a></code>. Before, peptide-level input was refitted with one placeholder row per missing sample, and mixed models failed with “$ operator not defined for this S4 class”.</li>
@@ -169,7 +173,7 @@
 <li>Every argument of the exported functions is documented, and the <code><a href="../reference/sim_build_models_logistf.html">sim_build_models_logistf()</a></code> example checks the fitted models instead of a field that does not exist.</li>
 <li>
 <code><a href="../reference/prolfqua-package.html">?prolfqua</a></code> has a section “Input types and conversion”: which table classes are accepted, and how the response, factor and hierarchy columns are converted. <code><a href="../reference/AggregateLimpa.html">?AggregateLimpa</a></code> documents the defaults of limpa’s iterative steps and why they are not exposed; <code><a href="../reference/ContrastsFirthFacade.html">?ContrastsFirthFacade</a></code> documents its Wald z test. The help pages of the simulators, <code>LFQData$new()</code>, <code><a href="../reference/null_split_check.html">null_split_check()</a></code> and the sample-size methods state the type and length of each argument.</li>
-<li>The maintainer is Witold Wolski, the copyright holder the University of Zurich; Jonas Grossmann is listed as contributor. prolfqua follows the rOpenSci Code of Conduct.</li>
+<li>The maintainer is Witold Wolski, the copyright holder the University of Zurich; Christian Panse and Jonas Grossmann are listed as contributors. prolfqua follows the rOpenSci Code of Conduct.</li>
 <li>
 <code><a href="../reference/prolfqua-package.html">?prolfqua</a></code> has a Resources section: memory per row, run time per protein for the matrix and per-subject backends, retained fitted models, and the cost of <code><a href="../reference/null_split_check.html">null_split_check()</a></code>. <code>LFQData$get_config()</code> says it returns the configuration of the object itself, not a copy, and the ignored <code>all</code> argument (kept for the <code>ContrastsInterface</code> signature) and <code>global</code> argument (kept for compatibility with <code>Contrasts$get_linfct()</code>) say so.</li>
 <li>
@@ -181,6 +185,7 @@
 <li>Vignettes no longer hide warnings. The remaining ones are fits that fail for single proteins (for example <code>lmer_nested</code> on proteins with one peptide); the vignettes explain them and show the record in <code>$provenance()</code>.</li>
 <li>Corrected help texts: the medpolish <code>eps</code> is a relative change of the sum of absolute residuals; <code><a href="../reference/prolfqua_analysis_methods.html">?prolfqua_analysis_methods</a></code> says where each backend keeps <code>converged</code> and <code>iterations</code>.</li>
 <li>The run times in <code><a href="../reference/prolfqua-package.html">?prolfqua</a></code> (Resources) and <code><a href="../reference/build_contrast_analysis.html">?build_contrast_analysis</a></code> are measured again on this version, and the Resources section adds aggregation and the QC writers.</li>
+<li>The GitHub install instructions in the README and the introduction vignette install the remotes package, which <code>BiocManager::install("fgcz/prolfqua")</code> needs; before, they failed on an R installation without remotes. The README also says how to check the R version, what to do when prolfqua is not available for the installed Bioconductor version, and that the GitHub version is ahead of the Bioconductor release.</li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -485,7 +490,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Witold Wolski, Christian Panse, Functional Genomics Center Zurich.</p>
+  <p>Developed by Witold Wolski, Functional Genomics Center Zurich.</p>
 </div>
 
 <div class="pkgdown-footer-right">

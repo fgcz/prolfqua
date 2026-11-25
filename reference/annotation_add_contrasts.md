@@ -3,9 +3,11 @@
 Unites the two factor columns into a `Group` column and appends the
 contrasts of
 [`generate_contrasts()`](https://fgcz.github.io/prolfqua/reference/generate_contrasts.md)
-as the columns `ContrastName` and `Contrast`, padded with `NA` to the
-number of samples, in the layout of a prolfquapp dataset annotation.
-Nothing is written to disk.
+as the columns `ContrastName` and `Contrast`, in the layout of a
+prolfquapp dataset annotation. The shorter side is padded with `NA`
+rows: with fewer contrasts than samples the contrast columns, with more
+contrasts than samples the sample columns, so the extra rows carry only
+a contrast. Nothing is written to disk.
 
 ## Usage
 
@@ -81,234 +83,160 @@ annotation <- data.frame(
 )
 annotation_add_contrasts(annotation, "factor_A", "factor_B", "primary")
 #> $annot
-#>                                           Name   Group
-#> WT_vs_KO                               WT_T0_1   WT_T0
-#> WT_vs_KO_at_T0                         WT_T0_2   WT_T0
-#> WT_vs_KO_at_T150                       WT_T0_3   WT_T0
-#> WT_vs_KO_at_T300                       WT_T0_4   WT_T0
-#> interaction_WT_vs_KO_at_T150_vs_T0     WT_T0_5   WT_T0
-#> interaction_WT_vs_KO_at_T300_vs_T0     WT_T0_6   WT_T0
-#> interaction_WT_vs_KO_at_T300_vs_T150 WT_T150_1 WT_T150
-#> ...8                                 WT_T150_2 WT_T150
-#> ...9                                 WT_T150_3 WT_T150
-#> ...10                                WT_T150_4 WT_T150
-#> ...11                                WT_T150_5 WT_T150
-#> ...12                                WT_T150_6 WT_T150
-#> ...13                                WT_T300_1 WT_T300
-#> ...14                                WT_T300_2 WT_T300
-#> ...15                                WT_T300_3 WT_T300
-#> ...16                                WT_T300_4 WT_T300
-#> ...17                                WT_T300_5 WT_T300
-#> ...18                                WT_T300_6 WT_T300
-#> ...19                                  KO_T0_1   KO_T0
-#> ...20                                  KO_T0_2   KO_T0
-#> ...21                                  KO_T0_3   KO_T0
-#> ...22                                  KO_T0_4   KO_T0
-#> ...23                                  KO_T0_5   KO_T0
-#> ...24                                  KO_T0_6   KO_T0
-#> ...25                                KO_T150_1 KO_T150
-#> ...26                                KO_T150_2 KO_T150
-#> ...27                                KO_T150_3 KO_T150
-#> ...28                                KO_T150_4 KO_T150
-#> ...29                                KO_T150_5 KO_T150
-#> ...30                                KO_T150_6 KO_T150
-#> ...31                                KO_T300_1 KO_T300
-#> ...32                                KO_T300_2 KO_T300
-#> ...33                                KO_T300_3 KO_T300
-#> ...34                                KO_T300_4 KO_T300
-#> ...35                                KO_T300_5 KO_T300
-#> ...36                                KO_T300_6 KO_T300
-#>                                                              ContrastName
-#> WT_vs_KO                                                         WT_vs_KO
-#> WT_vs_KO_at_T0                                             WT_vs_KO_at_T0
-#> WT_vs_KO_at_T150                                         WT_vs_KO_at_T150
-#> WT_vs_KO_at_T300                                         WT_vs_KO_at_T300
-#> interaction_WT_vs_KO_at_T150_vs_T0     interaction_WT_vs_KO_at_T150_vs_T0
-#> interaction_WT_vs_KO_at_T300_vs_T0     interaction_WT_vs_KO_at_T300_vs_T0
-#> interaction_WT_vs_KO_at_T300_vs_T150 interaction_WT_vs_KO_at_T300_vs_T150
-#> ...8                                                                 <NA>
-#> ...9                                                                 <NA>
-#> ...10                                                                <NA>
-#> ...11                                                                <NA>
-#> ...12                                                                <NA>
-#> ...13                                                                <NA>
-#> ...14                                                                <NA>
-#> ...15                                                                <NA>
-#> ...16                                                                <NA>
-#> ...17                                                                <NA>
-#> ...18                                                                <NA>
-#> ...19                                                                <NA>
-#> ...20                                                                <NA>
-#> ...21                                                                <NA>
-#> ...22                                                                <NA>
-#> ...23                                                                <NA>
-#> ...24                                                                <NA>
-#> ...25                                                                <NA>
-#> ...26                                                                <NA>
-#> ...27                                                                <NA>
-#> ...28                                                                <NA>
-#> ...29                                                                <NA>
-#> ...30                                                                <NA>
-#> ...31                                                                <NA>
-#> ...32                                                                <NA>
-#> ...33                                                                <NA>
-#> ...34                                                                <NA>
-#> ...35                                                                <NA>
-#> ...36                                                                <NA>
-#>                                                                                                       Contrast
-#> WT_vs_KO                             (G_WT_T0 + G_WT_T150 + G_WT_T300)/3 - (G_KO_T0 + G_KO_T150 + G_KO_T300)/3
-#> WT_vs_KO_at_T0                                                                               G_WT_T0 - G_KO_T0
-#> WT_vs_KO_at_T150                                                                         G_WT_T150 - G_KO_T150
-#> WT_vs_KO_at_T300                                                                         G_WT_T300 - G_KO_T300
-#> interaction_WT_vs_KO_at_T150_vs_T0                               (G_WT_T150 - G_KO_T150) - (G_WT_T0 - G_KO_T0)
-#> interaction_WT_vs_KO_at_T300_vs_T0                               (G_WT_T300 - G_KO_T300) - (G_WT_T0 - G_KO_T0)
-#> interaction_WT_vs_KO_at_T300_vs_T150                         (G_WT_T300 - G_KO_T300) - (G_WT_T150 - G_KO_T150)
-#> ...8                                                                                                      <NA>
-#> ...9                                                                                                      <NA>
-#> ...10                                                                                                     <NA>
-#> ...11                                                                                                     <NA>
-#> ...12                                                                                                     <NA>
-#> ...13                                                                                                     <NA>
-#> ...14                                                                                                     <NA>
-#> ...15                                                                                                     <NA>
-#> ...16                                                                                                     <NA>
-#> ...17                                                                                                     <NA>
-#> ...18                                                                                                     <NA>
-#> ...19                                                                                                     <NA>
-#> ...20                                                                                                     <NA>
-#> ...21                                                                                                     <NA>
-#> ...22                                                                                                     <NA>
-#> ...23                                                                                                     <NA>
-#> ...24                                                                                                     <NA>
-#> ...25                                                                                                     <NA>
-#> ...26                                                                                                     <NA>
-#> ...27                                                                                                     <NA>
-#> ...28                                                                                                     <NA>
-#> ...29                                                                                                     <NA>
-#> ...30                                                                                                     <NA>
-#> ...31                                                                                                     <NA>
-#> ...32                                                                                                     <NA>
-#> ...33                                                                                                     <NA>
-#> ...34                                                                                                     <NA>
-#> ...35                                                                                                     <NA>
-#> ...36                                                                                                     <NA>
+#>         Name   Group                         ContrastName
+#> 1    WT_T0_1   WT_T0                             WT_vs_KO
+#> 2    WT_T0_2   WT_T0                       WT_vs_KO_at_T0
+#> 3    WT_T0_3   WT_T0                     WT_vs_KO_at_T150
+#> 4    WT_T0_4   WT_T0                     WT_vs_KO_at_T300
+#> 5    WT_T0_5   WT_T0   interaction_WT_vs_KO_at_T150_vs_T0
+#> 6    WT_T0_6   WT_T0   interaction_WT_vs_KO_at_T300_vs_T0
+#> 7  WT_T150_1 WT_T150 interaction_WT_vs_KO_at_T300_vs_T150
+#> 8  WT_T150_2 WT_T150                                 <NA>
+#> 9  WT_T150_3 WT_T150                                 <NA>
+#> 10 WT_T150_4 WT_T150                                 <NA>
+#> 11 WT_T150_5 WT_T150                                 <NA>
+#> 12 WT_T150_6 WT_T150                                 <NA>
+#> 13 WT_T300_1 WT_T300                                 <NA>
+#> 14 WT_T300_2 WT_T300                                 <NA>
+#> 15 WT_T300_3 WT_T300                                 <NA>
+#> 16 WT_T300_4 WT_T300                                 <NA>
+#> 17 WT_T300_5 WT_T300                                 <NA>
+#> 18 WT_T300_6 WT_T300                                 <NA>
+#> 19   KO_T0_1   KO_T0                                 <NA>
+#> 20   KO_T0_2   KO_T0                                 <NA>
+#> 21   KO_T0_3   KO_T0                                 <NA>
+#> 22   KO_T0_4   KO_T0                                 <NA>
+#> 23   KO_T0_5   KO_T0                                 <NA>
+#> 24   KO_T0_6   KO_T0                                 <NA>
+#> 25 KO_T150_1 KO_T150                                 <NA>
+#> 26 KO_T150_2 KO_T150                                 <NA>
+#> 27 KO_T150_3 KO_T150                                 <NA>
+#> 28 KO_T150_4 KO_T150                                 <NA>
+#> 29 KO_T150_5 KO_T150                                 <NA>
+#> 30 KO_T150_6 KO_T150                                 <NA>
+#> 31 KO_T300_1 KO_T300                                 <NA>
+#> 32 KO_T300_2 KO_T300                                 <NA>
+#> 33 KO_T300_3 KO_T300                                 <NA>
+#> 34 KO_T300_4 KO_T300                                 <NA>
+#> 35 KO_T300_5 KO_T300                                 <NA>
+#> 36 KO_T300_6 KO_T300                                 <NA>
+#>                                                                     Contrast
+#> 1  (G_WT_T0 + G_WT_T150 + G_WT_T300)/3 - (G_KO_T0 + G_KO_T150 + G_KO_T300)/3
+#> 2                                                          G_WT_T0 - G_KO_T0
+#> 3                                                      G_WT_T150 - G_KO_T150
+#> 4                                                      G_WT_T300 - G_KO_T300
+#> 5                              (G_WT_T150 - G_KO_T150) - (G_WT_T0 - G_KO_T0)
+#> 6                              (G_WT_T300 - G_KO_T300) - (G_WT_T0 - G_KO_T0)
+#> 7                          (G_WT_T300 - G_KO_T300) - (G_WT_T150 - G_KO_T150)
+#> 8                                                                       <NA>
+#> 9                                                                       <NA>
+#> 10                                                                      <NA>
+#> 11                                                                      <NA>
+#> 12                                                                      <NA>
+#> 13                                                                      <NA>
+#> 14                                                                      <NA>
+#> 15                                                                      <NA>
+#> 16                                                                      <NA>
+#> 17                                                                      <NA>
+#> 18                                                                      <NA>
+#> 19                                                                      <NA>
+#> 20                                                                      <NA>
+#> 21                                                                      <NA>
+#> 22                                                                      <NA>
+#> 23                                                                      <NA>
+#> 24                                                                      <NA>
+#> 25                                                                      <NA>
+#> 26                                                                      <NA>
+#> 27                                                                      <NA>
+#> 28                                                                      <NA>
+#> 29                                                                      <NA>
+#> 30                                                                      <NA>
+#> 31                                                                      <NA>
+#> 32                                                                      <NA>
+#> 33                                                                      <NA>
+#> 34                                                                      <NA>
+#> 35                                                                      <NA>
+#> 36                                                                      <NA>
 #> 
 #> $name
 #> [1] "DEA_primary_dataset.csv"
 #> 
 annotation_add_contrasts(annotation, "factor_B", "factor_A", "secondary")
 #> $annot
-#>                                           Name   Group
-#> T150_vs_T0                             WT_T0_1   T0_WT
-#> T300_vs_T0                             WT_T0_2   T0_WT
-#> T300_vs_T150                           WT_T0_3   T0_WT
-#> T150_vs_T0_at_KO                       WT_T0_4   T0_WT
-#> T150_vs_T0_at_WT                       WT_T0_5   T0_WT
-#> T300_vs_T0_at_KO                       WT_T0_6   T0_WT
-#> T300_vs_T0_at_WT                     WT_T150_1 T150_WT
-#> T300_vs_T150_at_KO                   WT_T150_2 T150_WT
-#> T300_vs_T150_at_WT                   WT_T150_3 T150_WT
-#> interaction_T150_vs_T0_at_WT_vs_KO   WT_T150_4 T150_WT
-#> interaction_T300_vs_T0_at_WT_vs_KO   WT_T150_5 T150_WT
-#> interaction_T300_vs_T150_at_WT_vs_KO WT_T150_6 T150_WT
-#> ...13                                WT_T300_1 T300_WT
-#> ...14                                WT_T300_2 T300_WT
-#> ...15                                WT_T300_3 T300_WT
-#> ...16                                WT_T300_4 T300_WT
-#> ...17                                WT_T300_5 T300_WT
-#> ...18                                WT_T300_6 T300_WT
-#> ...19                                  KO_T0_1   T0_KO
-#> ...20                                  KO_T0_2   T0_KO
-#> ...21                                  KO_T0_3   T0_KO
-#> ...22                                  KO_T0_4   T0_KO
-#> ...23                                  KO_T0_5   T0_KO
-#> ...24                                  KO_T0_6   T0_KO
-#> ...25                                KO_T150_1 T150_KO
-#> ...26                                KO_T150_2 T150_KO
-#> ...27                                KO_T150_3 T150_KO
-#> ...28                                KO_T150_4 T150_KO
-#> ...29                                KO_T150_5 T150_KO
-#> ...30                                KO_T150_6 T150_KO
-#> ...31                                KO_T300_1 T300_KO
-#> ...32                                KO_T300_2 T300_KO
-#> ...33                                KO_T300_3 T300_KO
-#> ...34                                KO_T300_4 T300_KO
-#> ...35                                KO_T300_5 T300_KO
-#> ...36                                KO_T300_6 T300_KO
-#>                                                              ContrastName
-#> T150_vs_T0                                                     T150_vs_T0
-#> T300_vs_T0                                                     T300_vs_T0
-#> T300_vs_T150                                                 T300_vs_T150
-#> T150_vs_T0_at_KO                                         T150_vs_T0_at_KO
-#> T150_vs_T0_at_WT                                         T150_vs_T0_at_WT
-#> T300_vs_T0_at_KO                                         T300_vs_T0_at_KO
-#> T300_vs_T0_at_WT                                         T300_vs_T0_at_WT
-#> T300_vs_T150_at_KO                                     T300_vs_T150_at_KO
-#> T300_vs_T150_at_WT                                     T300_vs_T150_at_WT
-#> interaction_T150_vs_T0_at_WT_vs_KO     interaction_T150_vs_T0_at_WT_vs_KO
-#> interaction_T300_vs_T0_at_WT_vs_KO     interaction_T300_vs_T0_at_WT_vs_KO
-#> interaction_T300_vs_T150_at_WT_vs_KO interaction_T300_vs_T150_at_WT_vs_KO
-#> ...13                                                                <NA>
-#> ...14                                                                <NA>
-#> ...15                                                                <NA>
-#> ...16                                                                <NA>
-#> ...17                                                                <NA>
-#> ...18                                                                <NA>
-#> ...19                                                                <NA>
-#> ...20                                                                <NA>
-#> ...21                                                                <NA>
-#> ...22                                                                <NA>
-#> ...23                                                                <NA>
-#> ...24                                                                <NA>
-#> ...25                                                                <NA>
-#> ...26                                                                <NA>
-#> ...27                                                                <NA>
-#> ...28                                                                <NA>
-#> ...29                                                                <NA>
-#> ...30                                                                <NA>
-#> ...31                                                                <NA>
-#> ...32                                                                <NA>
-#> ...33                                                                <NA>
-#> ...34                                                                <NA>
-#> ...35                                                                <NA>
-#> ...36                                                                <NA>
-#>                                                                                   Contrast
-#> T150_vs_T0                               (G_T150_KO + G_T150_WT)/2 - (G_T0_KO + G_T0_WT)/2
-#> T300_vs_T0                               (G_T300_KO + G_T300_WT)/2 - (G_T0_KO + G_T0_WT)/2
-#> T300_vs_T150                         (G_T300_KO + G_T300_WT)/2 - (G_T150_KO + G_T150_WT)/2
-#> T150_vs_T0_at_KO                                                       G_T150_KO - G_T0_KO
-#> T150_vs_T0_at_WT                                                       G_T150_WT - G_T0_WT
-#> T300_vs_T0_at_KO                                                       G_T300_KO - G_T0_KO
-#> T300_vs_T0_at_WT                                                       G_T300_WT - G_T0_WT
-#> T300_vs_T150_at_KO                                                   G_T300_KO - G_T150_KO
-#> T300_vs_T150_at_WT                                                   G_T300_WT - G_T150_WT
-#> interaction_T150_vs_T0_at_WT_vs_KO           (G_T150_WT - G_T0_WT) - (G_T150_KO - G_T0_KO)
-#> interaction_T300_vs_T0_at_WT_vs_KO           (G_T300_WT - G_T0_WT) - (G_T300_KO - G_T0_KO)
-#> interaction_T300_vs_T150_at_WT_vs_KO     (G_T300_WT - G_T150_WT) - (G_T300_KO - G_T150_KO)
-#> ...13                                                                                 <NA>
-#> ...14                                                                                 <NA>
-#> ...15                                                                                 <NA>
-#> ...16                                                                                 <NA>
-#> ...17                                                                                 <NA>
-#> ...18                                                                                 <NA>
-#> ...19                                                                                 <NA>
-#> ...20                                                                                 <NA>
-#> ...21                                                                                 <NA>
-#> ...22                                                                                 <NA>
-#> ...23                                                                                 <NA>
-#> ...24                                                                                 <NA>
-#> ...25                                                                                 <NA>
-#> ...26                                                                                 <NA>
-#> ...27                                                                                 <NA>
-#> ...28                                                                                 <NA>
-#> ...29                                                                                 <NA>
-#> ...30                                                                                 <NA>
-#> ...31                                                                                 <NA>
-#> ...32                                                                                 <NA>
-#> ...33                                                                                 <NA>
-#> ...34                                                                                 <NA>
-#> ...35                                                                                 <NA>
-#> ...36                                                                                 <NA>
+#>         Name   Group                         ContrastName
+#> 1    WT_T0_1   T0_WT                           T150_vs_T0
+#> 2    WT_T0_2   T0_WT                           T300_vs_T0
+#> 3    WT_T0_3   T0_WT                         T300_vs_T150
+#> 4    WT_T0_4   T0_WT                     T150_vs_T0_at_KO
+#> 5    WT_T0_5   T0_WT                     T150_vs_T0_at_WT
+#> 6    WT_T0_6   T0_WT                     T300_vs_T0_at_KO
+#> 7  WT_T150_1 T150_WT                     T300_vs_T0_at_WT
+#> 8  WT_T150_2 T150_WT                   T300_vs_T150_at_KO
+#> 9  WT_T150_3 T150_WT                   T300_vs_T150_at_WT
+#> 10 WT_T150_4 T150_WT   interaction_T150_vs_T0_at_WT_vs_KO
+#> 11 WT_T150_5 T150_WT   interaction_T300_vs_T0_at_WT_vs_KO
+#> 12 WT_T150_6 T150_WT interaction_T300_vs_T150_at_WT_vs_KO
+#> 13 WT_T300_1 T300_WT                                 <NA>
+#> 14 WT_T300_2 T300_WT                                 <NA>
+#> 15 WT_T300_3 T300_WT                                 <NA>
+#> 16 WT_T300_4 T300_WT                                 <NA>
+#> 17 WT_T300_5 T300_WT                                 <NA>
+#> 18 WT_T300_6 T300_WT                                 <NA>
+#> 19   KO_T0_1   T0_KO                                 <NA>
+#> 20   KO_T0_2   T0_KO                                 <NA>
+#> 21   KO_T0_3   T0_KO                                 <NA>
+#> 22   KO_T0_4   T0_KO                                 <NA>
+#> 23   KO_T0_5   T0_KO                                 <NA>
+#> 24   KO_T0_6   T0_KO                                 <NA>
+#> 25 KO_T150_1 T150_KO                                 <NA>
+#> 26 KO_T150_2 T150_KO                                 <NA>
+#> 27 KO_T150_3 T150_KO                                 <NA>
+#> 28 KO_T150_4 T150_KO                                 <NA>
+#> 29 KO_T150_5 T150_KO                                 <NA>
+#> 30 KO_T150_6 T150_KO                                 <NA>
+#> 31 KO_T300_1 T300_KO                                 <NA>
+#> 32 KO_T300_2 T300_KO                                 <NA>
+#> 33 KO_T300_3 T300_KO                                 <NA>
+#> 34 KO_T300_4 T300_KO                                 <NA>
+#> 35 KO_T300_5 T300_KO                                 <NA>
+#> 36 KO_T300_6 T300_KO                                 <NA>
+#>                                                 Contrast
+#> 1      (G_T150_KO + G_T150_WT)/2 - (G_T0_KO + G_T0_WT)/2
+#> 2      (G_T300_KO + G_T300_WT)/2 - (G_T0_KO + G_T0_WT)/2
+#> 3  (G_T300_KO + G_T300_WT)/2 - (G_T150_KO + G_T150_WT)/2
+#> 4                                    G_T150_KO - G_T0_KO
+#> 5                                    G_T150_WT - G_T0_WT
+#> 6                                    G_T300_KO - G_T0_KO
+#> 7                                    G_T300_WT - G_T0_WT
+#> 8                                  G_T300_KO - G_T150_KO
+#> 9                                  G_T300_WT - G_T150_WT
+#> 10         (G_T150_WT - G_T0_WT) - (G_T150_KO - G_T0_KO)
+#> 11         (G_T300_WT - G_T0_WT) - (G_T300_KO - G_T0_KO)
+#> 12     (G_T300_WT - G_T150_WT) - (G_T300_KO - G_T150_KO)
+#> 13                                                  <NA>
+#> 14                                                  <NA>
+#> 15                                                  <NA>
+#> 16                                                  <NA>
+#> 17                                                  <NA>
+#> 18                                                  <NA>
+#> 19                                                  <NA>
+#> 20                                                  <NA>
+#> 21                                                  <NA>
+#> 22                                                  <NA>
+#> 23                                                  <NA>
+#> 24                                                  <NA>
+#> 25                                                  <NA>
+#> 26                                                  <NA>
+#> 27                                                  <NA>
+#> 28                                                  <NA>
+#> 29                                                  <NA>
+#> 30                                                  <NA>
+#> 31                                                  <NA>
+#> 32                                                  <NA>
+#> 33                                                  <NA>
+#> 34                                                  <NA>
+#> 35                                                  <NA>
+#> 36                                                  <NA>
 #> 
 #> $name
 #> [1] "DEA_secondary_dataset.csv"

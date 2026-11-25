@@ -106,9 +106,11 @@ if (!requireNamespace("BiocManager", quietly = TRUE)) {
 BiocManager::install("prolfqua")
 ```
 
-The development version is available on GitHub:
+The development version is available on GitHub; installing it needs the
+remotes package:
 
 ``` r
+install.packages(c("BiocManager", "remotes"))
 BiocManager::install("fgcz/prolfqua")
 ```
 

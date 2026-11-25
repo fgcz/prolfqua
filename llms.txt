@@ -44,8 +44,12 @@ aggregation of peptides to proteins and sample-size estimation.
 
 # How to install prolfqua?
 
-prolfqua requires R (\>= 4.6). It is part of
-[Bioconductor](https://bioconductor.org/) from release 3.24:
+prolfqua requires R (\>= 4.6); check your version with
+`R.version.string` and update R first if needed.
+
+prolfqua is part of
+[Bioconductor](https://bioconductor.org/packages/prolfqua/) from release
+3.24. To install the Bioconductor release:
 
 ``` r
 if (!requireNamespace("BiocManager", quietly = TRUE)) {
@@ -54,12 +58,22 @@ if (!requireNamespace("BiocManager", quietly = TRUE)) {
 BiocManager::install("prolfqua")
 ```
 
-To install the development version from GitHub:
+If BiocManager reports that prolfqua is not available for your
+Bioconductor version, update Bioconductor with
+`BiocManager::install(version = "3.24")` and run
+`BiocManager::install("prolfqua")` again.
+
+Bioconductor publishes a release every six months. The development
+version on GitHub has the changes made since then, listed in the
+[changelog](https://fgcz.github.io/prolfqua/news/index.html). Installing
+it from GitHub needs the remotes package:
 
 ``` r
-install.packages("BiocManager")
+install.packages(c("BiocManager", "remotes"))
 BiocManager::install("fgcz/prolfqua")
 ```
+
+`packageVersion("prolfqua")` shows which version you have installed.
 
 Some methods and plots use packages listed under `Suggests`; prolfqua
 asks to install them when they are needed.

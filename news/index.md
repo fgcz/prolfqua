@@ -4,6 +4,13 @@
 
 ### New features
 
+- `inst/extdata/facade_styles.tsv` lists every method of
+  [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
+  with its family in the factory figure of the README (linear models,
+  limma, limpa, LOD imputation, peptide level, detection, hurdle), the
+  family’s colour, and a point shape and line type per method within the
+  family, so plots comparing methods (as in prolfquabenchmark) style
+  each method the same way. The factory figure is drawn from it.
 - `LFQDataPlotter$heatmap(row_order = )` draws exactly the given
   features, in the given order and without row clustering, so two
   heatmaps of the same features can be compared row by row, e.g. before
@@ -194,6 +201,15 @@
 
 ### Bug fixes
 
+- [`annotation_add_contrasts()`](https://fgcz.github.io/prolfqua/reference/annotation_add_contrasts.md)
+  handles designs with more contrasts than samples (e.g. 5 x 2 levels
+  with interactions: 40 contrasts for 30 samples) by appending `NA`
+  sample rows that carry only a contrast, as it already padded the
+  contrast columns for designs with fewer contrasts; before, it failed
+  in `bind_cols()` with “Can’t recycle”. It stops with a
+  `prolfqua_error_bad_argument` error when two combinations of factor
+  levels get the same group name (`a_b` + `c` and `a` + `b_c` are both
+  `a_b_c`); before, their samples were merged into one group.
 - [`null_split_check()`](https://fgcz.github.io/prolfqua/reference/null_split_check.md)
   no longer adds `pseudo_group_` to the configuration of the `LFQData`
   passed in; before, later calls on that object such as `data_wide()`
@@ -410,8 +426,8 @@
   and the sample-size methods state the type and length of each
   argument.
 - The maintainer is Witold Wolski, the copyright holder the University
-  of Zurich; Jonas Grossmann is listed as contributor. prolfqua follows
-  the rOpenSci Code of Conduct.
+  of Zurich; Christian Panse and Jonas Grossmann are listed as
+  contributors. prolfqua follows the rOpenSci Code of Conduct.
 - [`?prolfqua`](https://fgcz.github.io/prolfqua/reference/prolfqua-package.md)
   has a Resources section: memory per row, run time per protein for the
   matrix and per-subject backends, retained fitted models, and the cost
@@ -462,6 +478,13 @@
   [`?build_contrast_analysis`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
   are measured again on this version, and the Resources section adds
   aggregation and the QC writers.
+- The GitHub install instructions in the README and the introduction
+  vignette install the remotes package, which
+  `BiocManager::install("fgcz/prolfqua")` needs; before, they failed on
+  an R installation without remotes. The README also says how to check
+  the R version, what to do when prolfqua is not available for the
+  installed Bioconductor version, and that the GitHub version is ahead
+  of the Bioconductor release.
 
 ## prolfqua 1.9.4
 

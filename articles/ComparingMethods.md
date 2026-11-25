@@ -530,7 +530,7 @@ fa_lmer$provenance()
 
 `ropeca_nested` and `ropecaV2_nested` aggregate peptide evidence back to
 proteins; `ropecaV2_nested` estimates the correlation of the peptides of
-a protein from the residuals, here 0.03, so that proteins with many
+a protein from the residuals, here 0.06, so that proteins with many
 peptides are not reported as more significant. In contrast,
 `lmer_nested` models the nested peptide structure directly before
 reporting protein-level contrasts. `binomial_firth_nested` also reports
@@ -634,12 +634,12 @@ results_hurdle |>
     ##  2 A_vs_Ct… KVkccD~18… -0.524          1.99e- 9      -1.88e+ 0             0.251
     ##  3 A_vs_Ct… 4Y4DYT~09…  0.583          1.99e- 8       8.51e-16             1    
     ##  4 A_vs_Ct… 0CubNR~08…  0.674          4.07e- 8       1.35e+ 0             0.449
-    ##  5 A_vs_Ct… 6TevMr~75…  0.765          4.26e- 8      -2.15e-15             1.000
-    ##  6 B_vs_Ct… fylZqB~38…  0.717          1.66e-10       0                    1    
-    ##  7 B_vs_Ct… f0Cvvj~66…  0.345          3.71e-10       1.97e-31           NaN    
-    ##  8 B_vs_Ct… XxJoJB~72…  0.587          2.82e- 9       0                    1    
-    ##  9 B_vs_Ct… DOwxjj~62…  0.294          1.44e- 7      -3.94e-31             1    
-    ## 10 B_vs_Ct… TR3Ksv~14… -0.413          4.18e- 7       0                    1    
+    ##  5 A_vs_Ct… 6TevMr~75…  0.765          4.26e- 8      -2.11e-15             1.000
+    ##  6 B_vs_Ct… fylZqB~38…  0.717          1.66e-10      -9.86e-32             1    
+    ##  7 B_vs_Ct… f0Cvvj~66…  0.345          3.71e-10       0                  NaN    
+    ##  8 B_vs_Ct… XxJoJB~72…  0.587          2.82e- 9      -9.86e-32             1    
+    ##  9 B_vs_Ct… DOwxjj~62…  0.294          1.44e- 7       1.97e-31             1    
+    ## 10 B_vs_Ct… TR3Ksv~14… -0.413          4.18e- 7      -9.86e-32             1    
     ## # ℹ 2 more variables: p.value <dbl>, FDR <dbl>
 
 The `hurdle_nested` method does all of this from the peptide data in one
