@@ -40,7 +40,8 @@ articles:
   dataset](https://fgcz.github.io/prolfqua/articles/ComparingMethods.html):
   all
   [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
-  methods side by side, with plots
+  methods compared with `ContrastsComparison`: the pairs each estimates,
+  their estimates, significant calls and conflicts
 - [Simulating peptide-level
   data](https://fgcz.github.io/prolfqua/articles/SimulateData.html)
 - [Under the hood: strategy, model and

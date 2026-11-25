@@ -314,7 +314,7 @@ ctr$get_contrasts()
 #>    modelName estimate_type protein_Id  contrast sigma    df      diff   FDR
 #>    <chr>     <chr>         <chr>       <chr>    <dbl> <dbl>     <dbl> <dbl>
 #>  1 firth     observed      7IZdVV~0841 Avs          1   Inf -2.20e+ 0 0.732
-#>  2 firth     observed      7IZdVV~0841 AvsCtrl      1   Inf -2.94e-17 1    
+#>  2 firth     observed      7IZdVV~0841 AvsCtrl      1   Inf  3.22e-16 1    
 #>  3 firth     observed      AZPG26~2091 Avs          1   Inf  2.75e-16 1    
 #>  4 firth     observed      AZPG26~2091 AvsCtrl      1   Inf  5.58e-16 1    
 #>  5 firth     observed      AoNKbb~6908 Avs          1   Inf  8.47e- 1 0.746
@@ -323,14 +323,14 @@ ctr$get_contrasts()
 #>  8 firth     observed      EnbuYk~0350 AvsCtrl      1   Inf  8.47e- 1 1    
 #>  9 firth     observed      JnEDsz~4938 Avs          1   Inf  1.35e+ 0 0.746
 #> 10 firth     observed      JnEDsz~4938 AvsCtrl      1   Inf -8.47e- 1 1    
-#> 11 firth     observed      NNASGK~1417 Avs          1   Inf  1.52e-15 1    
-#> 12 firth     observed      NNASGK~1417 AvsCtrl      1   Inf  1.07e-15 1    
-#> 13 firth     observed      XYrp6h~5793 Avs          1   Inf  1.52e-15 1    
-#> 14 firth     observed      XYrp6h~5793 AvsCtrl      1   Inf  1.07e-15 1    
+#> 11 firth     observed      NNASGK~1417 Avs          1   Inf -1.26e-15 1    
+#> 12 firth     observed      NNASGK~1417 AvsCtrl      1   Inf  4.27e-16 1    
+#> 13 firth     observed      XYrp6h~5793 Avs          1   Inf -1.26e-15 1    
+#> 14 firth     observed      XYrp6h~5793 AvsCtrl      1   Inf  4.27e-16 1    
 #> 15 firth     observed      quTD7H~4566 Avs          1   Inf  3.04e+ 0 0.732
 #> 16 firth     observed      quTD7H~4566 AvsCtrl      1   Inf  2.20e+ 0 1    
 #> 17 firth     observed      tCZCHm~6695 Avs          1   Inf  1.35e+ 0 0.746
-#> 18 firth     observed      tCZCHm~6695 AvsCtrl      1   Inf -4.13e-16 1    
+#> 18 firth     observed      tCZCHm~6695 AvsCtrl      1   Inf  2.16e-15 1    
 #> 19 firth     observed      tHE075~8231 Avs          1   Inf  8.47e- 1 0.746
 #> 20 firth     observed      tHE075~8231 AvsCtrl      1   Inf  8.47e- 1 1    
 #> # ℹ 8 more variables: std.error <dbl>, statistic <dbl>, p.value <dbl>,
