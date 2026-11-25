@@ -20,475 +20,359 @@ library(ggplot2)
 
 # Purpose
 
-`build_contrast_analysis()` provides a common front-end for several contrast
-backends:
+This article fits every modelling method of `build_contrast_analysis()` to one simulated experiment and compares their results with `ContrastsComparison`:
 
-- `lm` — ordinary least-squares linear model fitted per protein, Wald contrasts.
-- `rfit` — rank-based robust regression (`Rfit::rfit`); like `lm` but resistant to outliers in the response.
-- `limma` — linear model with empirical-Bayes moderated variance shrinkage across proteins.
-- `limma_impute` — `limma` with LOD imputation and borrowed per-protein variance for groups with no observations.
-- `limpa` — vooma precision-weighted model on DPC-aggregated proteins (requires `AggregateLimpa` for DPC-based aggregation with standard errors).
-- `lmer` — linear mixed-effects model on nested peptide/precursor data, reporting protein-level contrasts.
-- `ropeca` — peptide-level fold changes aggregated to protein via ROPECA median + beta-distribution p-values.
-- `ropecaV2` — ROPECA's median peptide fold change, with a p-value from the exact null distribution of the median peptide z-score that allows for the correlation of the peptides of a protein.
-- `lm_impute` — `lm` that refits failed/singular proteins with LOD imputation and borrowed variance.
-- `deqms` — `limma` plus DEqMS count-dependent variance moderation using peptide counts per protein.
-- `firth` — Firth bias-reduced logistic regression on presence/absence (missingness) of aggregated proteins.
-- `binomial_firth_nested` — Firth bias-reduced binomial model of the detected peptides per protein and sample, reporting protein-level contrasts.
+- which protein and contrast pairs each method estimates
+- how closely the methods' estimates agree on the pairs they share
+- which pairs each method calls significant, and where the methods contradict each other
+- how the results of another tool are compared, here plain limma
 
-All of them expose the same basic interface: `get_contrasts()`,
-`get_Plotter()`, and `to_wide()`. All examples below return protein-level
-contrasts. The important difference is the required input level:
-
-- `lm`, `rfit`, `limma`, `limma_impute`, `lm_impute`, and `deqms` require aggregated protein-level data
-- `limpa` requires protein-level data from `AggregateLimpa` (which provides standard errors and observation counts for vooma precision weighting)
-- `lmer`, `ropeca` and `ropecaV2` require lower-level measurements such as peptides nested
-  within proteins, but still report protein-level contrasts
-- `firth` can be used with either aggregated protein-level data or nested
-  peptide-level data and still reports protein-level contrasts
-
-This vignette starts from one simulated peptide-level experiment, aggregates it
-to protein level, and then demonstrates both families of facades separately.
+What each method models is described in the vignette [All modelling methods at a glance](https://fgcz.github.io/prolfqua/articles/ModellingMethods.html). How the methods perform on data with known changes is measured in [prolfquabenchmark](https://prolfqua.github.io/prolfquabenchmark/vignettes/Benchmark_results.html).
 
 # Simulate one experiment
 
 ```{r simulate}
-istar <- sim_lfq_data_peptide_config(n_proteins = 80, seed = 42)
-
-
-lfq_peptide <- LFQData$new(istar$data, istar$config)
+sim <- sim_lfq_data_peptide_config(n_proteins = 80, seed = 42)
+lfq_peptide <- LFQData$new(sim$data, sim$config)
 lfq_peptide <- lfq_peptide$get_Transformer()$log2()$lfq
-
 lfq_protein <- lfq_peptide$get_Aggregator()$aggregate()
-
-lfq_peptide$hierarchy_keys()
-lfq_protein$hierarchy_keys()
-lfq_protein$nr_children_col()
-```
-
-The aggregation step produces protein-level intensities while keeping count
-metadata in the `LFQData` object. The DEqMS facade uses
-`lfq_protein$nr_children_col()` directly, so no extra count table has to be
-passed around.
-
-# Define contrasts
-
-```{r contrasts}
-contrasts <- c(
-  "A_vs_Ctrl" = "group_A - group_Ctrl",
-  "B_vs_Ctrl" = "group_B - group_Ctrl"
-)
-```
-
-Two contrasts let us see how each backend handles multiple comparisons and
-how FDR correction propagates across contrasts.
-
-# Protein-input facades
-
-The following facades require aggregated input, which in practice means
-`lfqdata$subject_id()` must match `lfqdata$hierarchy_keys()`. `firth`
-is included here on purpose because it can be fitted directly on aggregated
-protein input.
-
-```{r facades_protein}
-fa_lm <- build_contrast_analysis(
-  lfq_protein,
-  "~ group_",
-  contrasts,
-  method = "lm"
-)
-
-fa_rfit <- build_contrast_analysis(
-  lfq_protein,
-  "~ group_",
-  contrasts,
-  method = "rfit"
-)
-
-fa_limma <- build_contrast_analysis(
-  lfq_protein,
-  "~ group_",
-  contrasts,
-  method = "limma"
-)
-
-fa_limma_impute <- build_contrast_analysis(
-  lfq_protein,
-  "~ group_",
-  contrasts,
-  method = "limma_impute"
-)
-
-fa_deqms <- build_contrast_analysis(
-  lfq_protein,
-  "~ group_",
-  contrasts,
-  method = "deqms"
-)
-
-fa_lm_impute <- build_contrast_analysis(
-  lfq_protein,
-  "~ group_",
-  contrasts,
-  method = "lm_impute"
-)
-
-fa_firth_protein <- build_contrast_analysis(
-  lfq_protein,
-  "~ group_",
-  contrasts,
-  method = "firth"
-)
-```
-
-### limpa facade (DPC-based aggregation)
-
-The `limpa` facade is different from the other protein-level facades: it requires
-its own aggregation step via `AggregateLimpa`, which uses limpa's Detection
-Probability Curve (DPC) to aggregate peptides to proteins while producing
-per-protein, per-sample standard errors. These SEs feed into a bivariate vooma
-variance model for precision weighting.
-
-```{r facade_limpa, eval=requireNamespace("limpa", quietly = TRUE)}
 lfq_limpa <- AggregateLimpa$new(lfq_peptide, "protein")$aggregate()
+contrasts <- c(A_vs_Ctrl = "group_A - group_Ctrl", B_vs_Ctrl = "group_B - group_Ctrl")
 
-fa_limpa <- build_contrast_analysis(
-  lfq_limpa,
-  "~ group_",
-  contrasts,
-  method = "limpa"
-)
+peptides <- lfq_peptide$data_long()
+peptides_per_protein <- dplyr::count(dplyr::distinct(peptides, protein_Id, peptide_Id), protein_Id)
 ```
 
-Because all protein-input facades share the same interface and report
-protein-level contrasts, their outputs can be combined directly.
+The experiment has `r nrow(peptides_per_protein)` proteins with `r sum(peptides_per_protein$n)` peptides in `r length(unique(peptides$sampleName))` samples of three groups. `r round(100 * mean(is.na(peptides[[lfq_peptide$response()]])))` % of the peptide intensities are missing, and `r sum(peptides_per_protein$n == 1)` proteins have a single peptide. The peptides are aggregated to proteins by median polish (`lfq_protein`), and for `limpa` by limpa's detection probability model (`lfq_limpa`), which also gives each protein intensity a standard error.
 
-```{r collect_protein}
-# Proteins missing in the baseline lm facade (used to flag rescued proteins)
-lm_missing_ids <- fa_lm$get_missing() |>
-  dplyr::select(protein_Id, contrast) |>
-  dplyr::mutate(rescued = TRUE)
+# Fit every method
 
-results_limpa <- if (requireNamespace("limpa", quietly = TRUE)) {
-  fa_limpa$get_contrasts()
-} else {
-  data.frame()
+`list_facades()` lists the methods. Each declares the input it needs: `aggregated` methods take the proteins, `nested` methods take the peptides and report protein contrasts. Every method models the group; `lmer_nested` adds random effects for peptide and sample. The families group the methods as in the factory figure of the README.
+
+```{r fit, warning = FALSE}
+facades <- Filter(function(facade) facade$package == "prolfqua", list_facades())
+styles <- utils::read.delim(system.file("extdata", "facade_styles.tsv", package = "prolfqua"))
+methods <- intersect(styles$method, names(facades))
+family <- stats::setNames(styles$family, styles$method)[methods]
+
+input_for <- function(method) {
+  if (method == "limpa") {
+    return(lfq_limpa)
+  }
+  if (facades[[method]]$needs == "nested") lfq_peptide else lfq_protein
 }
+model_for <- function(method) {
+  if (method == "lmer_nested") "~ group_ + (1 | peptide_Id) + (1 | sampleName)" else "~ group_"
+}
+analyses <- lapply(stats::setNames(methods, methods), function(method) {
+  build_contrast_analysis(input_for(method), model_for(method), contrasts, method = method)
+})
+```
 
-results_protein <- bind_rows(
-  fa_lm$get_contrasts(),
-  fa_rfit$get_contrasts(),
-  fa_limma$get_contrasts(),
-  fa_limma_impute$get_contrasts(),
-  fa_lm_impute$get_contrasts(),
-  fa_deqms$get_contrasts(),
-  fa_firth_protein$get_contrasts(),
-  results_limpa
+```{r methods_table}
+data.frame(
+  method = methods,
+  family = family,
+  input = vapply(facades[methods], function(facade) facade$needs, character(1))
 ) |>
-  dplyr::select(dplyr::any_of(c(
-    "modelName", "estimate_type", "protein_Id", "contrast", "avgAbd", "diff", "FDR",
-    "statistic", "std.error", "df", "p.value", "conf.low", "conf.high",
-    "sigma"
-  ))) |>
-  dplyr::left_join(lm_missing_ids, by = c("protein_Id", "contrast")) |>
+  knitr::kable(row.names = FALSE, caption = "The methods, their family and the input they take.")
+```
+
+# Align the results
+
+`ContrastsComparison` reads the effect, statistic, p-value and FDR of every method through its `ContrastConfiguration` and aligns the methods on protein and contrast. `$aligned()` has one row per pair and method, over all pairs that any method reports. The `status` of a pair in a method is `not estimated` (no row, or no effect), `not tested` (an effect without an FDR), `not significant`, or `up` and `down` (FDR below the threshold, here 0.1).
+
+```{r align}
+comparison <- ContrastsComparison$new(analyses, fdr_threshold = 0.1)
+aligned <- comparison$aligned()
+aligned$family <- family[aligned$method]
+n_pairs <- nrow(dplyr::distinct(aligned, protein_Id, contrast))
+head(aligned, 3)
+```
+
+```{r status, fig.height = 6, fig.width = 9, fig.cap = paste0("Status of the ", n_pairs, " protein and contrast pairs in each method, both contrasts, FDR threshold 0.1. Methods grouped by family. not estimated: the method reports no effect for the pair; not tested: an effect without a p-value.")}
+status_colours <- c(
+  up = "#b2182b",
+  down = "#2166ac",
+  `not significant` = "grey75",
+  `not tested` = "grey90",
+  `not estimated` = "#e6ab02"
+)
+aligned |>
   dplyr::mutate(
-    rescued = dplyr::coalesce(rescued, FALSE),
-    significant = FDR < 0.1 & abs(diff) > 0.5
-  )
-
-results_protein |>
-  dplyr::count(modelName, name = "n_results")
+    method = factor(method, levels = rev(methods)),
+    family = factor(family, levels = unique(styles$family)),
+    status = factor(status, levels = names(status_colours))
+  ) |>
+  ggplot(aes(y = method, fill = status)) +
+  geom_bar() +
+  facet_grid(family ~ ., scales = "free_y", space = "free_y") +
+  scale_fill_manual(values = status_colours) +
+  labs(x = "protein and contrast pairs", y = NULL, fill = NULL) +
+  theme_bw() +
+  theme(strip.text.y = element_text(angle = 0))
 ```
 
-The `modelName` column is the facade key. For facades that combine several
-underlying result types, such as `lm_impute`, the `estimate_type` column tells
-you how each row was produced (`observed` or `lod_imputed`).
+# Which pairs each method estimates
 
-```{r collect_protein_model_names}
-results_protein |>
-  dplyr::count(modelName, contrast, estimate_type, name = "n_results")
+`$coverage()` counts the pairs per set of methods that estimate them. The table names the methods missing from each set.
+
+```{r coverage}
+comparison$coverage() |>
+  dplyr::mutate(not_estimated_by = vapply(
+    strsplit(estimated_by, " & ", fixed = TRUE),
+    function(by) toString(setdiff(methods, by)),
+    character(1)
+  )) |>
+  dplyr::mutate(not_estimated_by = dplyr::if_else(not_estimated_by == "", "(none)", not_estimated_by)) |>
+  dplyr::select(not_estimated_by, pairs) |>
+  knitr::kable(caption = "Protein and contrast pairs, by the methods that do not estimate them.")
 ```
 
-# Protein-level volcano comparison
-
-## Standard facades
-
-```{r volcano_standard, fig.height=8, fig.width=12, fig.cap="Volcano plots for the standard protein-level facades (lm, rfit, limma, deqms)."}
-standard_facades <- c("lm", "rfit", "limma", "deqms")
-results_standard <- results_protein |>
-  dplyr::filter(modelName %in% standard_facades)
-
-ggplot(results_standard, aes(x = diff, y = -log10(p.value), color = significant)) +
-  geom_point(alpha = 0.6, size = 1.5) +
-  facet_grid(contrast ~ modelName, scales = "free_y") +
-  geom_vline(xintercept = c(-0.5, 0.5), linetype = "dashed", color = "grey60") +
-  geom_hline(yintercept = -log10(0.1), linetype = "dashed", color = "grey60") +
-  scale_color_manual(values = c(`TRUE` = "firebrick", `FALSE` = "grey70")) +
-  labs(x = "log2 fold change", y = "-log10(p.value)", color = "FDR < 0.1\nand |diff| > 0.5") +
-  theme_minimal(base_size = 12)
+```{r upset, fig.height = 10, fig.width = 10, warning = FALSE, fig.cap = "UpSet plot of the protein and contrast pairs each method estimates. Bars on top: pairs estimated by exactly the methods marked below them."}
+comparison$upset()
 ```
 
-## Imputation and missingness facades
-
-Rescued proteins (missing in plain `lm`) are shown as large red diamonds
-so they stand out clearly. This group includes the LOD imputation facades
-(`lm_impute`, `limma_impute`) and the firth logistic
-regression facade which models missingness directly.
-
-```{r volcano_impute, fig.height=8, fig.width=14, fig.cap="Volcano plots for the imputation and missingness facades. Large red diamonds mark proteins rescued (missing in plain lm)."}
-impute_facades <- c("lm_impute", "limma_impute", "firth")
-results_impute <- results_protein |>
-  dplyr::filter(modelName %in% impute_facades) |>
-  dplyr::mutate(modelName = factor(modelName, levels = impute_facades))
-
-ggplot(results_impute, aes(x = diff, y = -log10(p.value))) +
-  geom_point(data = dplyr::filter(results_impute, !rescued),
-             aes(color = significant), alpha = 0.5, size = 1.2) +
-  geom_point(data = dplyr::filter(results_impute, rescued),
-             color = "red", shape = 18, size = 5, alpha = 1) +
-  facet_grid(contrast ~ modelName, scales = "free_y") +
-  geom_vline(xintercept = c(-0.5, 0.5), linetype = "dashed", color = "grey60") +
-  geom_hline(yintercept = -log10(0.1), linetype = "dashed", color = "grey60") +
-  scale_color_manual(values = c(`TRUE` = "firebrick", `FALSE` = "grey70")) +
-  labs(x = "log2 fold change", y = "-log10(p.value)", color = "FDR < 0.1\nand |diff| > 0.5") +
-  theme_minimal(base_size = 12)
-```
-
-# Looking at the strongest protein-level hits
-
-```{r top_hits_protein}
-results_protein |>
-  dplyr::group_by(modelName, contrast) |>
-  dplyr::slice_min(order_by = p.value, n = 5, with_ties = FALSE) |>
-  dplyr::ungroup() |>
-  dplyr::select(modelName, estimate_type, contrast, protein_Id, diff, p.value, FDR)
-```
-
-# Proteins that could not be estimated
-
-Every facade has a `get_missing()` method that returns the protein × contrast
-pairs present in the input data but absent from `get_contrasts()`. This makes
-it easy to see which proteins each method fails on and to compare coverage.
-
-```{r missing_protein_facades}
-missing_limpa <- if (requireNamespace("limpa", quietly = TRUE)) {
-  fa_limpa$get_missing() |> dplyr::mutate(facade = "limpa")
-} else {
-  data.frame()
-}
-
-missing_all <- dplyr::bind_rows(
-  fa_lm$get_missing() |> dplyr::mutate(facade = "lm"),
-  fa_limma$get_missing() |> dplyr::mutate(facade = "limma"),
-  fa_limma_impute$get_missing() |> dplyr::mutate(facade = "limma_impute"),
-  fa_lm_impute$get_missing() |> dplyr::mutate(facade = "lm_impute"),
-  fa_deqms$get_missing() |> dplyr::mutate(facade = "deqms"),
-  fa_firth_protein$get_missing() |> dplyr::mutate(facade = "firth"),
-  missing_limpa
-)
-
-missing_all |>
-  dplyr::count(facade, contrast, name = "n_missing") |>
-  knitr::kable(caption = "Number of missing protein × contrast pairs per facade")
-```
-
-## Per-sample intensities of the missing proteins
-
-```{r missing_intensities}
-missing_proteins <- unique(missing_all$protein_Id)
-
-if (length(missing_proteins) > 0) {
-  lfq_protein$data_long() |>
-    dplyr::filter(protein_Id %in% missing_proteins) |>
-    dplyr::select(protein_Id, sampleName,
-                  !!rlang::sym(lfq_protein$response())) |>
-    tidyr::pivot_wider(names_from = sampleName,
-                       values_from = !!rlang::sym(lfq_protein$response())) |>
-    knitr::kable(digits = 2, caption = "Per-sample intensities of proteins that could not be estimated")
-}
-```
-
-The missing cells (NA) explain why these proteins cannot be estimated — they
-lack observations in one or more groups. The `lm_impute` and `limma_impute` facades
-re-fit after imputing individual values with the LOD and borrowing covariance
-from successful fits. These should have fewer missing proteins than plain
-`lm` or `limma`.
-
-## Estimates for the missing proteins from `lm_impute` and `limma_impute`
-
-For proteins that plain `lm` could not estimate, the imputation-based facades
-can still produce contrast results. The table below shows these rescued
-estimates side by side.
-
-```{r rescued_estimates}
-lm_missing_proteins <- fa_lm$get_missing()$protein_Id |> unique()
-
-if (length(lm_missing_proteins) > 0) {
-  rescued <- results_protein |>
-    dplyr::filter(
-      protein_Id %in% lm_missing_proteins,
-      modelName %in% c("lm_impute", "limma_impute", "limpa")
-    ) |>
-    dplyr::arrange(protein_Id, contrast, modelName)
-
-  rescued |>
-    knitr::kable(
-      digits = 3,
-      caption = "Contrast estimates from lm_impute and limma_impute for proteins that plain lm could not estimate"
-    )
-} else {
-  cat("All proteins were estimable by plain lm — no rescued estimates to show.")
-}
-```
-
-# Peptide-input facades
-
-The peptide-input facades take peptide/precursor-level `LFQData` and return
-protein-level contrasts. They are defined in `R/ContrastsChildToParentFacades.R`
-and use the `*_nested` method keys: `lmer_nested`, `ropeca_nested`,
-`ropecaV2_nested`, `binomial_firth_nested`, and `limpa_nested`. `binomial_firth_nested` models
-peptide detection, like the protein-input `firth` shown above, from the number
-of detected peptides per protein and sample.
-
-```{r facades_peptide}
-fa_lmer <- build_contrast_analysis(
-  lfq_peptide,
-  "~ group_ + (1 | peptide_Id) + (1 | sampleName)",
-  contrasts,
-  method = "lmer_nested"
-)
-
-fa_ropeca <- build_contrast_analysis(
-  lfq_peptide,
-  "~ group_",
-  contrasts,
-  method = "ropeca_nested"
-)
-
-fa_ropecaV2 <- build_contrast_analysis(
-  lfq_peptide,
-  "~ group_",
-  contrasts,
-  method = "ropecaV2_nested"
-)
-
-fa_binomial_firth <- build_contrast_analysis(
-  lfq_peptide,
-  "~ group_",
-  contrasts,
-  method = "binomial_firth_nested"
-)
-```
-
-`lmer_nested` cannot fit proteins with a single peptide, because its random peptide effect needs at least two; the warning lists them, and `$provenance()` records them:
+`lmer_nested` does not estimate the `r sum(peptides_per_protein$n == 1)` proteins with a single peptide: its random peptide effect needs at least two peptides. `$provenance()` records them:
 
 ```{r provenance_lmer}
-fa_lmer$provenance()
+analyses$lmer_nested$provenance()
 ```
 
-`ropeca_nested` and `ropecaV2_nested` aggregate peptide evidence back to
-proteins; `ropecaV2_nested` estimates the correlation of the peptides of a
-protein from the residuals, here `r round(fa_ropecaV2$contrast$rho, 2)`, so
-that proteins with many peptides are not reported as more significant. In
-contrast, `lmer_nested` models the nested peptide structure directly before reporting
-protein-level contrasts. `binomial_firth_nested` also reports protein-level
-contrasts; its degrees of freedom come from the samples, not from the number of
-peptides.
+```{r gap}
+gap <- aligned |>
+  dplyr::filter(method == "lm", status == "not estimated") |>
+  dplyr::select(protein_Id, contrast)
+```
 
-```{r collect_peptide}
-results_peptide <- bind_rows(
-  fa_lmer$get_contrasts(),
-  fa_ropeca$get_contrasts(),
-  fa_ropecaV2$get_contrasts(),
-  fa_binomial_firth$get_contrasts()
-) |>
-  dplyr::select(dplyr::any_of(c(
-    "modelName", "estimate_type", "protein_Id", "contrast", "avgAbd", "diff", "FDR",
-    "statistic", "std.error", "df", "p.value", "conf.low", "conf.high",
-    "sigma"
-  ))) |>
-  dplyr::mutate(
-    significant = FDR < 0.1 & abs(diff) > 0.5
+`lm` and the other methods that model only the observed intensities do not estimate `r nrow(gap)` pairs, because their proteins have no observation in a group:
+
+```{r gap_intensities}
+lfq_protein$data_long() |>
+  dplyr::filter(protein_Id %in% gap$protein_Id) |>
+  dplyr::select(protein_Id, sampleName, intensity = dplyr::all_of(lfq_protein$response())) |>
+  tidyr::pivot_wider(names_from = sampleName, values_from = intensity) |>
+  knitr::kable(digits = 2, caption = "Per-sample protein intensities (log2, median polish) of the proteins that lm cannot estimate.")
+```
+
+The `_impute` methods estimate these pairs with the missing group at the limit of detection, `limpa` and `limpa_nested` with their detection probability model, and the detection models from the detection pattern; their estimates are listed with the conflicts below.
+
+# The pairs of one method
+
+`$pairs()` returns the pairs of one method that have all the given columns. The detection model `binomial_firth_nested` estimates an effect for every pair but a p-value only for some: a protein whose peptides are detected in every sample has no difference in detection to test.
+
+```{r pairs}
+c(
+  effect = nrow(comparison$pairs("binomial_firth_nested", columns = "effect")),
+  effect_and_p_value = nrow(comparison$pairs("binomial_firth_nested", columns = c("effect", "p.value")))
+)
+```
+
+The pairs that several methods share are the intersection of their `$pairs()`. The detection models estimate log odds of detection; the other methods estimate log2 fold changes of intensity. Their estimates are compared on the pairs that all intensity methods estimate:
+
+```{r shared}
+intensity <- methods[family != "detection"]
+shared <- Reduce(dplyr::intersect, lapply(intensity, function(method) comparison$pairs(method)))
+estimates <- aligned |>
+  dplyr::filter(method %in% intensity) |>
+  dplyr::semi_join(shared, by = c("protein_Id", "contrast"))
+nrow(shared)
+```
+
+# Estimates on the same pairs
+
+```{r effect_vs_lm, fig.height = 9, fig.width = 9, fig.cap = paste0("Log2 fold change of each intensity method against lm, on the ", nrow(shared), " protein and contrast pairs that all intensity methods estimate. Grey line: equal estimates.")}
+reference <- estimates |>
+  dplyr::filter(method == "lm") |>
+  dplyr::select(protein_Id, contrast, effect_lm = effect)
+estimates |>
+  dplyr::filter(method != "lm") |>
+  dplyr::inner_join(reference, by = c("protein_Id", "contrast")) |>
+  dplyr::mutate(method = factor(method, levels = intensity)) |>
+  ggplot(aes(x = effect_lm, y = effect)) +
+  geom_abline(colour = "grey60") +
+  geom_point(size = 1, alpha = 0.6) +
+  facet_wrap(~method, ncol = 4) +
+  labs(x = "log2 fold change, lm", y = "log2 fold change") +
+  theme_bw()
+```
+
+```{r correlation}
+correlation <- function(column) {
+  wide <- estimates |>
+    dplyr::select(protein_Id, contrast, method, value = dplyr::all_of(column)) |>
+    tidyr::pivot_wider(names_from = method, values_from = value)
+  r <- stats::cor(wide[intensity])
+  data.frame(
+    measure = column,
+    method_1 = factor(rownames(r)[row(r)], levels = intensity),
+    method_2 = factor(colnames(r)[col(r)], levels = intensity),
+    r = as.vector(r)
   )
-
-results_peptide |>
-  dplyr::count(modelName, name = "n_results")
+}
+correlations <- dplyr::bind_rows(correlation("effect"), correlation("statistic"))
+lowest <- correlations |>
+  dplyr::filter(as.integer(method_1) < as.integer(method_2)) |>
+  dplyr::slice_min(r, n = 1, by = measure, with_ties = FALSE)
 ```
 
-```{r volcano_peptide, fig.height=8, fig.width=10, fig.cap="Volcano plots for the peptide-level facades. Rows are contrasts, columns are backends."}
-# the detection model gives no p-value for proteins detected in every sample
-results_peptide |>
-  dplyr::filter(!is.na(p.value)) |>
-  ggplot(aes(x = diff, y = -log10(p.value), color = significant)) +
-  geom_point(alpha = 0.6, size = 1.2) +
-  facet_grid(contrast ~ modelName, scales = "free_y") +
-  geom_vline(xintercept = c(-0.5, 0.5), linetype = "dashed", color = "grey60") +
-  geom_hline(yintercept = -log10(0.1), linetype = "dashed", color = "grey60") +
-  scale_color_manual(values = c(`TRUE` = "firebrick", `FALSE` = "grey70")) +
-  labs(
-    x = "log2 fold change",
-    y = "-log10(p.value)",
-    color = "FDR < 0.1\nand |diff| > 0.5"
-  ) +
-  theme_minimal(base_size = 12)
+The effects agree more closely than the statistics, which also depend on each method's standard error and degrees of freedom. The lowest correlation of the effects is `r sprintf("%.2f", lowest$r[lowest$measure == "effect"])` (`r lowest$method_1[lowest$measure == "effect"]` and `r lowest$method_2[lowest$measure == "effect"]`), that of the statistics `r sprintf("%.2f", lowest$r[lowest$measure == "statistic"])` (`r lowest$method_1[lowest$measure == "statistic"]` and `r lowest$method_2[lowest$measure == "statistic"]`).
+
+```{r correlation_plot, fig.height = 6, fig.width = 12, fig.cap = paste0("Pearson correlation between the intensity methods of the log2 fold changes (effect) and of the statistics, on the ", nrow(shared), " protein and contrast pairs that all of them estimate.")}
+ggplot(correlations, aes(x = method_1, y = method_2, fill = r)) +
+  geom_tile() +
+  facet_wrap(~measure) +
+  scale_fill_gradient(low = "white", high = "#2166ac") +
+  labs(x = NULL, y = NULL) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
 ```
 
-# Hurdle: intensity and detection combined
+# Significant calls
 
-`ContrastsHurdleFacade` fits no model of its own. It joins a fitted intensity
-facade and a fitted detection facade (`binomial_nested` or `binomial_firth_nested`) by
-protein and contrast, and combines their p-values with Fisher's method, as
-msqrob2's hurdle model does. A protein estimated by one component only keeps
-that component's p-value; a protein detected in every sample keeps its
-intensity p-value. `diff` comes from the intensity component, so `lm_impute`
-is the better partner: it also estimates `diff` for proteins detected in one
-group only.
+```{r calls}
+calls <- aligned |>
+  dplyr::filter(method %in% intensity) |>
+  dplyr::summarise(significant = sum(status %in% c("up", "down")), .by = method)
+fewest <- dplyr::slice_min(calls, significant, n = 1, with_ties = FALSE)
+most <- dplyr::slice_max(calls, significant, n = 1, with_ties = FALSE)
+```
+
+At FDR 0.1 the intensity methods call between `r fewest$significant` (`r fewest$method`) and `r most$significant` (`r most$method`) of the `r n_pairs` pairs significant; the detection models call `r sum(aligned$status[!aligned$method %in% intensity] %in% c("up", "down"))`.
+
+```{r volcano, fig.height = 10, fig.width = 9, fig.cap = "Volcano plots of the intensity methods, both contrasts, coloured by the status at FDR 0.1. Pairs without a p-value are not shown."}
+aligned |>
+  dplyr::filter(method %in% intensity, !is.na(p.value)) |>
+  dplyr::mutate(
+    method = factor(method, levels = intensity),
+    status = factor(status, levels = names(status_colours))
+  ) |>
+  ggplot(aes(x = effect, y = -log10(p.value), colour = status)) +
+  geom_point(size = 1, alpha = 0.7) +
+  facet_wrap(~method, ncol = 4) +
+  scale_colour_manual(values = status_colours) +
+  labs(x = "log2 fold change", y = "-log10(p-value)", colour = NULL) +
+  theme_bw()
+```
+
+# Where the methods contradict each other
+
+`$conflicts()` counts, per pair, the methods in each status and flags three contradictions: `sign_conflict` (up in one method, down in another), `significance_conflict` (significant in one, tested but not significant in another) and `coverage_conflict` (significant in one, not estimated by another). The detection models call no pair significant here, so with them nearly every pair significant in an intensity method would be a significance conflict (`r sum(comparison$conflicts()$significance_conflict)` of `r n_pairs` pairs). The conflicts are therefore counted among the intensity methods only.
+
+```{r conflicts}
+intensity_comparison <- ContrastsComparison$new(analyses[intensity], fdr_threshold = 0.1)
+conflicts <- intensity_comparison$conflicts()
+intensity_aligned <- intensity_comparison$aligned()
+conflicts |>
+  dplyr::summarise(dplyr::across(dplyr::ends_with("_conflict"), sum), pairs = dplyr::n()) |>
+  knitr::kable(caption = "Protein and contrast pairs with each kind of conflict among the intensity methods.")
+```
+
+## Opposite signs
+
+```{r sign_conflicts}
+sign_rows <- intensity_aligned |>
+  dplyr::semi_join(dplyr::filter(conflicts, sign_conflict), by = c("protein_Id", "contrast")) |>
+  dplyr::filter(status %in% c("up", "down")) |>
+  dplyr::select(protein_Id, contrast, method, effect, FDR, status)
+knitr::kable(sign_rows, digits = 3, caption = "Significant calls of the pairs that are up in one method and down in another.")
+```
+
+All of these calls have an absolute log2 fold change of at most `r round(max(abs(sign_rows$effect)), 2)`.
+
+## Significant in one method, not in another
+
+```{r significance_conflicts}
+intensity_aligned |>
+  dplyr::semi_join(dplyr::filter(conflicts, significance_conflict), by = c("protein_Id", "contrast")) |>
+  dplyr::count(method, status) |>
+  tidyr::pivot_wider(names_from = status, values_from = n, values_fill = 0) |>
+  dplyr::arrange(match(method, intensity)) |>
+  knitr::kable(caption = paste0(
+    "Status in each method of the ", sum(conflicts$significance_conflict),
+    " pairs that are significant in some intensity methods and tested but not significant in others."
+  ))
+```
+
+## Significant in one method, not estimated by another
+
+```{r coverage_conflicts}
+intensity_aligned |>
+  dplyr::semi_join(dplyr::filter(conflicts, coverage_conflict), by = c("protein_Id", "contrast")) |>
+  dplyr::filter(status == "not estimated") |>
+  dplyr::count(method, name = "pairs") |>
+  knitr::kable(caption = "Pairs significant in some intensity method that a method does not estimate.")
+```
+
+Most of them are the single-peptide proteins `lmer_nested` cannot fit; the others are the proteins without observations in a group. The methods that estimate those report:
+
+```{r gap_estimates}
+intensity_aligned |>
+  dplyr::semi_join(gap, by = c("protein_Id", "contrast")) |>
+  dplyr::filter(status != "not estimated") |>
+  dplyr::select(protein_Id, contrast, method, estimate_type, effect, p.value, FDR, status) |>
+  knitr::kable(digits = 3, caption = "Estimates of the pairs lm cannot estimate. estimate_type lod_imputed: the missing group set to the limit of detection.")
+```
+
+# Results of another tool
+
+`ContrastsComparison` also takes a `ContrastsTable` holding another tool's results. Its `ContrastConfiguration` names the result columns, so they need not be renamed; only the protein column must match. Here plain limma, as its User's Guide recommends for group comparisons (`~ 0 + group`, `makeContrasts()`, `contrasts.fit()`, `eBayes()`), on the protein intensities:
+
+```{r plain_limma}
+wide <- lfq_protein$data_wide(as.matrix = TRUE)
+design <- stats::model.matrix(~ 0 + group_, wide$annotation)
+contrast_matrix <- limma::makeContrasts(
+  A_vs_Ctrl = group_A - group_Ctrl,
+  B_vs_Ctrl = group_B - group_Ctrl,
+  levels = design
+)
+fit <- limma::eBayes(limma::contrasts.fit(limma::lmFit(wide$data, design), contrast_matrix))
+plain_limma <- dplyr::bind_rows(lapply(colnames(contrast_matrix), function(name) {
+  top <- limma::topTable(fit, coef = name, number = Inf, sort.by = "none")
+  data.frame(protein_Id = rownames(top), comparison = name, top, row.names = NULL)
+}))
+head(plain_limma, 3)
+
+limma_columns <- ContrastConfiguration$new(
+  subject_id = "protein_Id",
+  contrast_col = "comparison",
+  effect_col = "logFC",
+  score_col = "t",
+  pvalue_col = "P.Value",
+  fdr_col = "adj.P.Val",
+  avg_abundance_col = "AveExpr"
+)
+limma_comparison <- ContrastsComparison$new(
+  list(
+    plain_limma = ContrastsTable$new(plain_limma, model_name = "plain limma", config = limma_columns),
+    limma_unweighted = build_contrast_analysis(lfq_protein, "~ group_", contrasts, method = "limma", weights = NULL),
+    limma = analyses$limma
+  ),
+  fdr_threshold = 0.1
+)
+knitr::kable(limma_comparison$coverage())
+```
+
+```{r limma_differences}
+limma_wide <- limma_comparison$aligned() |>
+  dplyr::select(protein_Id, contrast, method, effect, p.value) |>
+  tidyr::pivot_wider(names_from = method, values_from = c(effect, p.value))
+limma_conflicts <- limma_comparison$conflicts()
+```
+
+Without weights, prolfqua's `limma` reproduces plain limma: the largest difference is `r format(max(abs(limma_wide$effect_limma_unweighted - limma_wide$effect_plain_limma), na.rm = TRUE), digits = 1)` in the effect and `r format(max(abs(limma_wide$p.value_limma_unweighted - limma_wide$p.value_plain_limma), na.rm = TRUE), digits = 1)` in the p-value, and neither estimates the `r nrow(gap)` pairs of proteins without observations in a group (plain limma warns about them and returns NA). By default prolfqua weights each protein intensity by the number of peptides behind it (`nr_children`); this shifts the estimates by up to `r round(max(abs(limma_wide$effect_limma - limma_wide$effect_plain_limma), na.rm = TRUE), 2)`, and `r sum(limma_conflicts$significance_conflict)` pairs are significant with one of the two and not with the other.
+
+# Notes on single methods
+
+`ropecaV2_nested` estimates the correlation of the peptides of a protein from the residuals, here `r round(analyses$ropecaV2_nested$contrast$rho, 2)`, so that proteins with many peptides are not reported as more significant.
+
+`hurdle_nested` joins an intensity model (`lm_impute`) and a detection model (`binomial_firth_nested`) by protein and contrast and combines their p-values with Fisher's method, as msqrob2's hurdle model does. `diff` comes from the intensity model; a protein estimated by one component only keeps that component's p-value. `ContrastsHurdleFacade` builds the same from two fitted analyses:
 
 ```{r hurdle}
-fa_hurdle <- ContrastsHurdleFacade$new(fa_lm_impute, fa_binomial_firth)
-results_hurdle <- fa_hurdle$get_contrasts()
-
-results_hurdle |>
-  dplyr::count(contrast, hurdle_components, name = "n_results")
-
-results_hurdle |>
-  dplyr::slice_min(order_by = p.value, n = 5, by = contrast) |>
-  dplyr::select(
-    contrast, protein_Id, diff, p.value.intensity, diff.detection,
-    p.value.detection, p.value, FDR
-  )
+hurdle <- ContrastsHurdleFacade$new(analyses$lm_impute, analyses$binomial_firth_nested)
+hurdle$get_contrasts() |>
+  dplyr::count(contrast, hurdle_components, name = "pairs")
 ```
-
-The `hurdle_nested` method does all of this from the peptide data in one call:
-median polish, `lm_impute`, `binomial_firth_nested` for detection, and the
-Fisher combination.
-
-```{r hurdle_nested}
-fa_hurdle_nested <- build_contrast_analysis(
-  lfq_peptide,
-  "~ group_",
-  contrasts,
-  method = "hurdle_nested"
-)
-fa_hurdle_nested$get_contrasts() |>
-  dplyr::count(contrast, hurdle_components, name = "n_results")
-```
-
-# Remarks
-
-The facades make it easy to benchmark alternative contrast backends without
-rewriting the analysis pipeline:
-
-- the protein-level facades now enforce aggregation before modelling
-- the `limpa` facade uses its own DPC-based aggregation (`AggregateLimpa`)
-  which produces standard errors propagated into vooma precision weights
-- the peptide-level facades now explicitly require lower-level hierarchy below
-  the analysis subject
-- the shared facade API still makes it straightforward to compare methods once
-  the data level is chosen consistently
-
-The results are comparable at the API level, but the comparison is only
-meaningful when methods using the same biological unit are plotted together.
 
 # Session Info
 

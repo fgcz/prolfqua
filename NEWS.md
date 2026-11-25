@@ -1,3 +1,9 @@
+# prolfqua 1.9.11
+
+## Documentation
+
+- The article "Comparing modelling methods on one dataset" fits every method of `build_contrast_analysis()` (all 20, taken from `list_facades()`) and compares them with `ContrastsComparison`: the status of each protein and contrast pair per method, the pairs each method estimates (`$coverage()`, `$upset()`), the pairs of one method (`$pairs()`), the log2 fold changes and statistics on the pairs all intensity methods share, the significant calls, and the sign, significance and coverage conflicts (`$conflicts()`). A last section compares plain limma, run as its User's Guide recommends, as a `ContrastsTable` with its own column names: prolfqua's `limma` without weights reproduces it.
+
 # prolfqua 1.9.10
 
 ## Removed
