@@ -57,6 +57,7 @@ and span.
 Other modelling:
 [`AnovaExtractor`](https://fgcz.github.io/prolfqua/reference/AnovaExtractor.md),
 [`Contrasts`](https://fgcz.github.io/prolfqua/reference/Contrasts.md),
+[`ContrastsComparison`](https://fgcz.github.io/prolfqua/reference/ContrastsComparison.md),
 [`ContrastsDEqMSFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsDEqMSVoomFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsDEqMSVoomFacade.md),
 [`ContrastsFacadeBase`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.md),
@@ -131,7 +132,7 @@ Other modelling:
 strat <- strategy_limpa("abundance ~ group_")
 strat$formula
 #> abundance ~ group_
-#> <environment: 0x5d06a5ba9ce0>
+#> <environment: 0x5aef35671dd8>
 strat$model_name
 #> [1] "limpa"
 ```

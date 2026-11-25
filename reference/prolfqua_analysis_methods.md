@@ -159,6 +159,7 @@ limpa) keep no per-subject status.
 Other modelling:
 [`AnovaExtractor`](https://fgcz.github.io/prolfqua/reference/AnovaExtractor.md),
 [`Contrasts`](https://fgcz.github.io/prolfqua/reference/Contrasts.md),
+[`ContrastsComparison`](https://fgcz.github.io/prolfqua/reference/ContrastsComparison.md),
 [`ContrastsDEqMSFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsDEqMSVoomFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsDEqMSVoomFacade.md),
 [`ContrastsFacadeBase`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.md),
@@ -300,7 +301,7 @@ head(stats::confint(analysis))
 #> 6 2kfAGV~7674 group_Ctrl     0.123     0.863     9    -1.83      2.07
 stats::formula(analysis)
 #> abundance ~ group_
-#> <environment: 0x5d0692c44380>
+#> <environment: 0x5aef270c30f8>
 head(stats::nobs(analysis))
 #> # A tibble: 6 × 2
 #>   protein_Id   nobs

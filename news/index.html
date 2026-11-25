@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.8</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,6 +50,21 @@
       <small>Source: <a href="https://github.com/fgcz/prolfqua/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.9.8" id="prolfqua-198">prolfqua 1.9.8<a class="anchor" aria-label="anchor" href="#prolfqua-198"></a></h2>
+<div class="section level3">
+<h3 id="new-features-1-9-8">New features<a class="anchor" aria-label="anchor" href="#new-features-1-9-8"></a></h3>
+<ul><li>New <code>ContrastsComparison</code>: aligns the contrasts of several methods on protein and contrast, from facades or from <code>ContrastsTable</code>s holding other tools’ results (their <code>ContrastConfiguration</code> names the columns). <code>$coverage()</code> and <code>$upset()</code> show which pairs each method estimates; <code>$conflicts()</code> flags pairs where the methods contradict each other at an FDR threshold: significant in opposite directions, significant in one method but not in another that tested the pair, or significant in one and not estimated by another; <code>$pairs()</code> returns the pairs of one method with given columns defined. See the section “Comparing methods” of the vignette <code>ModellingMethods</code>.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.9.7" id="prolfqua-197">prolfqua 1.9.7<a class="anchor" aria-label="anchor" href="#prolfqua-197"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-1-9-7">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-9-7"></a></h3>
+<ul><li>
+<code>rlm</code> no longer fails with “subscript out of bounds” when its robust weights leave a coefficient of a protein aliased (a regression in 1.9.6, found with the IonStar data of prolfquabenchmark). Contrasts of <code>lm</code>, <code>rlm</code> and the binomial methods are estimable when they lie in the row space of the weighted design the fit used; contrasts against observations the robust fit weights near zero are not estimable.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.9.6" id="prolfqua-196">prolfqua 1.9.6<a class="anchor" aria-label="anchor" href="#prolfqua-196"></a></h2>
 <div class="section level3">

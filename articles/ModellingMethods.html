@@ -19,7 +19,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.8</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -549,6 +549,91 @@ protein is detected in every sample, so the detection models report
 </table>
 </div>
 <div class="section level2">
+<h2 id="comparing-methods">Comparing methods<a class="anchor" aria-label="anchor" href="#comparing-methods"></a>
+</h2>
+<p><code>ContrastsComparison</code> aligns the results of several
+methods on protein and contrast. It shows which protein and contrast
+pairs each method estimates (<code>$coverage()</code>,
+<code>$upset()</code>) and where the methods contradict each other at an
+FDR threshold (<code>$conflicts()</code>): significant in opposite
+directions, significant in one method but not in another that tested the
+pair, or significant in one method and not estimated by another. Results
+of other tools can be compared too, as a <code>ContrastsTable</code>
+with a <code>ContrastConfiguration</code> that names their columns.</p>
+<p>Here one protein has no observations in group <code>A</code>:
+<code>lm</code> and <code>limma</code> cannot estimate its contrast, the
+<code>_impute</code> methods estimate it at the limit of detection.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">protein_data</span> <span class="op">&lt;-</span> <span class="va">lfq_protein</span><span class="op">$</span><span class="fu">data_long</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">gap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">protein_data</span><span class="op">$</span><span class="va">protein_Id</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">lfq_gap</span> <span class="op">&lt;-</span> <span class="va">lfq_protein</span><span class="op">$</span><span class="fu">get_copy</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">lfq_gap</span><span class="op">$</span><span class="fu">set_data</span><span class="op">(</span><span class="va">protein_data</span><span class="op">[</span><span class="op">!</span><span class="op">(</span><span class="va">protein_data</span><span class="op">$</span><span class="va">protein_Id</span> <span class="op">==</span> <span class="va">gap</span> <span class="op">&amp;</span> <span class="va">protein_data</span><span class="op">$</span><span class="va">group_</span> <span class="op">==</span> <span class="st">"A"</span><span class="op">)</span>, <span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">methods</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lm"</span>, <span class="st">"limma"</span>, <span class="st">"lm_impute"</span>, <span class="st">"limma_impute"</span><span class="op">)</span></span>
+<span><span class="va">gap_analyses</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/setNames.html" class="external-link">setNames</a></span><span class="op">(</span><span class="va">methods</span>, <span class="va">methods</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">method</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="../reference/build_contrast_analysis.html">build_contrast_analysis</a></span><span class="op">(</span><span class="va">lfq_gap</span>, <span class="st">"~ group_"</span>, <span class="va">contrasts</span>, method <span class="op">=</span> <span class="va">method</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="va">comparison</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/ContrastsComparison.html">ContrastsComparison</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">gap_analyses</span>, fdr_threshold <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">comparison</span><span class="op">$</span><span class="fu">coverage</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="left">estimated_by</th>
+<th align="right">pairs</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">lm &amp; limma &amp; lm_impute &amp; limma_impute</td>
+<td align="right">19</td>
+</tr>
+<tr class="even">
+<td align="left">lm_impute &amp; limma_impute</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">conflicts</span> <span class="op">&lt;-</span> <span class="va">comparison</span><span class="op">$</span><span class="fu">conflicts</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">flagged</span> <span class="op">&lt;-</span> <span class="va">conflicts</span><span class="op">$</span><span class="va">sign_conflict</span> <span class="op">|</span> <span class="va">conflicts</span><span class="op">$</span><span class="va">significance_conflict</span> <span class="op">|</span> <span class="va">conflicts</span><span class="op">$</span><span class="va">coverage_conflict</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">conflicts</span><span class="op">[</span><span class="va">flagged</span>, <span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<table style="width:100%;" class="table">
+<colgroup>
+<col width="9%">
+<col width="8%">
+<col width="2%">
+<col width="4%">
+<col width="12%">
+<col width="8%">
+<col width="11%">
+<col width="11%">
+<col width="17%">
+<col width="14%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">protein_Id</th>
+<th align="left">contrast</th>
+<th align="right">up</th>
+<th align="right">down</th>
+<th align="right">not_significant</th>
+<th align="right">not_tested</th>
+<th align="right">not_estimated</th>
+<th align="left">sign_conflict</th>
+<th align="left">significance_conflict</th>
+<th align="left">coverage_conflict</th>
+</tr></thead>
+<tbody><tr class="odd">
+<td align="left">0CubNR~5740</td>
+<td align="left">A_vs_Ctrl</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+</tr></tbody>
+</table>
+</div>
+<div class="section level2">
 <h2 id="inspecting-a-fitted-analysis">Inspecting a fitted analysis<a class="anchor" aria-label="anchor" href="#inspecting-a-fitted-analysis"></a>
 </h2>
 <p>The fitted analysis supports standard R methods. <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code>
@@ -557,7 +642,7 @@ and a coefficient preview without calculating contrasts.
 <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> evaluates the contrasts and counts estimated,
 missing and significant results; the significance defaults are FDR &lt;
 0.05 and absolute effect &gt; 1.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">analysis</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_contrast_analysis.html">build_contrast_analysis</a></span><span class="op">(</span><span class="va">lfq_protein</span>, <span class="st">"~ group_"</span>, <span class="va">contrasts</span>, method <span class="op">=</span> <span class="st">"lm"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">analysis</span><span class="op">)</span></span>
 <span><span class="co">#&gt; prolfqua analysis: lm ( ContrastsLMFacade )</span></span>
@@ -628,7 +713,7 @@ missing and significant results; the significance defaults are FDR &lt;
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 2kfAGV~3196 group_Ctrl   -<span style="color: #BB0000;">0.215</span>     0.045<span style="text-decoration: underline;">3</span>     8  -<span style="color: #BB0000;">0.320</span>   -<span style="color: #BB0000;">0.111</span></span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">formula</a></span><span class="op">(</span><span class="va">analysis</span><span class="op">)</span></span>
 <span><span class="co">#&gt; medpolish ~ group_</span></span>
-<span><span class="co">#&gt; &lt;environment: 0x5805270333f8&gt;</span></span>
+<span><span class="co">#&gt; &lt;environment: 0x59f11ef154a0&gt;</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/nobs.html" class="external-link">nobs</a></span><span class="op">(</span><span class="va">analysis</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 2</span></span></span>
 <span><span class="co">#&gt;   protein_Id   nobs</span></span>
@@ -661,7 +746,7 @@ missing and significant results; the significance defaults are FDR &lt;
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 0CubNR~5740 B_V2       B          4.60   0.091<span style="text-decoration: underline;">5</span> FALSE</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">analysis</span><span class="op">)</span></span></code></pre></div>
 <p><img src="ModellingMethods_files/figure-html/inspect-analysis-1.png" class="r-plt" alt="" width="700"></p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">analysis</span>, type <span class="op">=</span> <span class="st">"volcano"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="ModellingMethods_files/figure-html/inspect-analysis-2.png" class="r-plt" alt="" width="700"></p>
 <p>Coefficient tables describe the fitted model; requested comparisons
@@ -710,7 +795,7 @@ observation counts, fitted values and residuals.</p>
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; R version 4.6.2 (2026-10-29)</span></span>
 <span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu</span></span>
@@ -733,7 +818,7 @@ observation counts, fitted values and residuals.</p>
 <span><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt; [1] prolfqua_1.9.6   BiocStyle_2.40.0</span></span>
+<span><span class="co">#&gt; [1] prolfqua_1.9.8   BiocStyle_2.40.0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
 <span><span class="co">#&gt;  [1] tidyselect_1.2.1       dplyr_1.2.1            farver_2.1.2          </span></span>

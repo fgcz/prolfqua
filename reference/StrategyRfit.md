@@ -22,6 +22,7 @@ An R6 class generator.
 Other modelling:
 [`AnovaExtractor`](https://fgcz.github.io/prolfqua/reference/AnovaExtractor.md),
 [`Contrasts`](https://fgcz.github.io/prolfqua/reference/Contrasts.md),
+[`ContrastsComparison`](https://fgcz.github.io/prolfqua/reference/ContrastsComparison.md),
 [`ContrastsDEqMSFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsDEqMSVoomFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsDEqMSVoomFacade.md),
 [`ContrastsFacadeBase`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.md),
@@ -161,5 +162,5 @@ The objects of this class are cloneable with this method.
 strat <- StrategyRfit$new("Intensity ~ condition", model_name = "parallel design")
 strat$formula
 #> Intensity ~ condition
-#> <environment: 0x5d0668a97c28>
+#> <environment: 0x5aef0d431050>
 ```

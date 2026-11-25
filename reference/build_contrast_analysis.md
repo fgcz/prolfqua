@@ -148,6 +148,7 @@ proDA are in the companion package prolfquabenchmark.
 Other modelling:
 [`AnovaExtractor`](https://fgcz.github.io/prolfqua/reference/AnovaExtractor.md),
 [`Contrasts`](https://fgcz.github.io/prolfqua/reference/Contrasts.md),
+[`ContrastsComparison`](https://fgcz.github.io/prolfqua/reference/ContrastsComparison.md),
 [`ContrastsDEqMSFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsDEqMSFacade.md),
 [`ContrastsDEqMSVoomFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsDEqMSVoomFacade.md),
 [`ContrastsFacadeBase`](https://fgcz.github.io/prolfqua/reference/ContrastsFacadeBase.md),
@@ -339,9 +340,9 @@ head(fa_firth$get_contrasts())
 #> # A tibble: 6 × 16
 #>   modelName estimate_type protein_Id  contrast  sigma    df      diff   FDR
 #>   <chr>     <chr>         <chr>       <chr>     <dbl> <dbl>     <dbl> <dbl>
-#> 1 firth     observed      0EfVhX~5954 A_vs_Ctrl     1   Inf  1.07e-15 1    
+#> 1 firth     observed      0EfVhX~5954 A_vs_Ctrl     1   Inf  4.27e-16 1    
 #> 2 firth     observed      0m5WN4~1448 A_vs_Ctrl     1   Inf -2.20e+ 0 0.878
-#> 3 firth     observed      7cbcrd~8305 A_vs_Ctrl     1   Inf  1.07e-15 1    
+#> 3 firth     observed      7cbcrd~8305 A_vs_Ctrl     1   Inf  4.27e-16 1    
 #> 4 firth     observed      9VUkAq~4562 A_vs_Ctrl     1   Inf -1.35e+ 0 1    
 #> 5 firth     observed      At886V~3296 A_vs_Ctrl     1   Inf  5.58e-16 1    
 #> 6 firth     observed      BEJI92~9143 A_vs_Ctrl     1   Inf -1.35e+ 0 1    

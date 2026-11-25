@@ -219,6 +219,49 @@ knitr::kable(one, digits = 3)
 | ropeca_nested         | -0.495 |   0.000 | 0.000 |
 | ropecaV2_nested       | -0.495 |   0.000 | 0.000 |
 
+## Comparing methods
+
+`ContrastsComparison` aligns the results of several methods on protein
+and contrast. It shows which protein and contrast pairs each method
+estimates (`$coverage()`, `$upset()`) and where the methods contradict
+each other at an FDR threshold (`$conflicts()`): significant in opposite
+directions, significant in one method but not in another that tested the
+pair, or significant in one method and not estimated by another. Results
+of other tools can be compared too, as a `ContrastsTable` with a
+`ContrastConfiguration` that names their columns.
+
+Here one protein has no observations in group `A`: `lm` and `limma`
+cannot estimate its contrast, the `_impute` methods estimate it at the
+limit of detection.
+
+``` r
+protein_data <- lfq_protein$data_long()
+gap <- sort(unique(protein_data$protein_Id))[1]
+lfq_gap <- lfq_protein$get_copy()
+lfq_gap$set_data(protein_data[!(protein_data$protein_Id == gap & protein_data$group_ == "A"), ])
+methods <- c("lm", "limma", "lm_impute", "limma_impute")
+gap_analyses <- lapply(stats::setNames(methods, methods), function(method) {
+  build_contrast_analysis(lfq_gap, "~ group_", contrasts, method = method)
+})
+comparison <- ContrastsComparison$new(gap_analyses, fdr_threshold = 0.1)
+knitr::kable(comparison$coverage())
+```
+
+| estimated_by                          | pairs |
+|:--------------------------------------|------:|
+| lm & limma & lm_impute & limma_impute |    19 |
+| lm_impute & limma_impute              |     1 |
+
+``` r
+conflicts <- comparison$conflicts()
+flagged <- conflicts$sign_conflict | conflicts$significance_conflict | conflicts$coverage_conflict
+knitr::kable(conflicts[flagged, ])
+```
+
+| protein_Id | contrast | up | down | not_significant | not_tested | not_estimated | sign_conflict | significance_conflict | coverage_conflict |
+|:---|:---|---:|---:|---:|---:|---:|:---|:---|:---|
+| 0CubNR~5740 | A_vs_Ctrl | 0 | 2 | 0 | 0 | 2 | FALSE | FALSE | TRUE |
+
 ## Inspecting a fitted analysis
 
 The fitted analysis supports standard R methods.
@@ -300,7 +343,7 @@ head(confint(analysis))
 #> 6 2kfAGV~3196 group_Ctrl   -0.215     0.0453     8  -0.320   -0.111
 formula(analysis)
 #> medpolish ~ group_
-#> <environment: 0x5805270333f8>
+#> <environment: 0x59f11ef154a0>
 head(nobs(analysis))
 #> # A tibble: 6 × 2
 #>   protein_Id   nobs
@@ -413,7 +456,7 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] prolfqua_1.9.6   BiocStyle_2.40.0
+#> [1] prolfqua_1.9.8   BiocStyle_2.40.0
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] tidyselect_1.2.1       dplyr_1.2.1            farver_2.1.2          

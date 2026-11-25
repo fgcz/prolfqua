@@ -1,5 +1,31 @@
 # Changelog
 
+## prolfqua 1.9.8
+
+### New features
+
+- New `ContrastsComparison`: aligns the contrasts of several methods on
+  protein and contrast, from facades or from `ContrastsTable`s holding
+  other tools’ results (their `ContrastConfiguration` names the
+  columns). `$coverage()` and `$upset()` show which pairs each method
+  estimates; `$conflicts()` flags pairs where the methods contradict
+  each other at an FDR threshold: significant in opposite directions,
+  significant in one method but not in another that tested the pair, or
+  significant in one and not estimated by another; `$pairs()` returns
+  the pairs of one method with given columns defined. See the section
+  “Comparing methods” of the vignette `ModellingMethods`.
+
+## prolfqua 1.9.7
+
+### Bug fixes
+
+- `rlm` no longer fails with “subscript out of bounds” when its robust
+  weights leave a coefficient of a protein aliased (a regression in
+  1.9.6, found with the IonStar data of prolfquabenchmark). Contrasts of
+  `lm`, `rlm` and the binomial methods are estimable when they lie in
+  the row space of the weighted design the fit used; contrasts against
+  observations the robust fit weights near zero are not estimable.
+
 ## prolfqua 1.9.6
 
 ### Behaviour changes

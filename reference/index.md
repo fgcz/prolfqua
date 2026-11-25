@@ -160,6 +160,9 @@ The steps behind the facades, for inspecting or changing one of them.
   : R6 class for extracting ANOVA results as a data frame
 - [`Contrasts`](https://fgcz.github.io/prolfqua/reference/Contrasts.md)
   : Estimate contrasts using Wald Test
+- [`ContrastsComparison`](https://fgcz.github.io/prolfqua/reference/ContrastsComparison.md)
+  : Compare the contrasts of several methods on their subject and
+  contrast pairs
 - [`ContrastsDEqMSFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsDEqMSFacade.md)
   : DEqMS contrast analysis facade
 - [`ContrastsDEqMSVoomFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsDEqMSVoomFacade.md)

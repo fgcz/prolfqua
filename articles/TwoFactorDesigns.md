@@ -157,7 +157,7 @@ results_protein_2f <- bind_rows(
     ## condition number 4.7214e-17); contrast=T_C_gv_KO (pseudoinverse used at 1;
     ## neighborhood radius 1; reciprocal condition number 2.9356e-17);
     ## contrast=WT_KO_comp (pseudoinverse used at 1; neighborhood radius 1; reciprocal
-    ## condition number 4.5868e-17)
+    ## condition number 6.0112e-17)
 
 ``` r
 results_protein_2f |>
@@ -304,7 +304,7 @@ missing_all_2f <- dplyr::bind_rows(
     ## condition number 4.7214e-17); contrast=T_C_gv_KO (pseudoinverse used at 1;
     ## neighborhood radius 1; reciprocal condition number 2.9356e-17);
     ## contrast=WT_KO_comp (pseudoinverse used at 1; neighborhood radius 1; reciprocal
-    ## condition number 4.5868e-17)
+    ## condition number 6.0112e-17)
 
 ``` r
 missing_all_2f |>
@@ -567,7 +567,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] ggplot2_4.0.4    dplyr_1.2.1      prolfqua_1.9.6   BiocStyle_2.40.0
+    ## [1] ggplot2_4.0.4    dplyr_1.2.1      prolfqua_1.9.8   BiocStyle_2.40.0
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] tidyselect_1.2.1       farver_2.1.2           S7_1.0.0              
