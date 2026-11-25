@@ -1,5 +1,20 @@
 # Changelog
 
+## prolfqua 1.9.10
+
+### Removed
+
+- `ropeca_impute_nested` and `ropecaV2_impute_nested`, added in 1.9.9,
+  are removed without deprecation, because no package used them. In
+  prolfquabenchmark they ranked last or next to last on all three
+  peptide datasets (pAUC_5 by scaled p-value, CPTAC: 25.7 and 37.5,
+  median of all methods 73.7): the peptides refit at the limit of
+  detection weaken the median peptide statistic of truly changed
+  proteins. Use `ropeca_nested` or `ropecaV2_nested`; for proteins
+  without observations in a group, `lm_impute`. The fix of
+  [`impute_refit_singular()`](https://fgcz.github.io/prolfqua/reference/impute_refit_singular.md)
+  from 1.9.9 stays.
+
 ## prolfqua 1.9.9
 
 ### New features

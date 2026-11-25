@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.10</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,6 +50,14 @@
       <small>Source: <a href="https://github.com/fgcz/prolfqua/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.9.10" id="prolfqua-1910">prolfqua 1.9.10<a class="anchor" aria-label="anchor" href="#prolfqua-1910"></a></h2>
+<div class="section level3">
+<h3 id="removed-1-9-10">Removed<a class="anchor" aria-label="anchor" href="#removed-1-9-10"></a></h3>
+<ul><li>
+<code>ropeca_impute_nested</code> and <code>ropecaV2_impute_nested</code>, added in 1.9.9, are removed without deprecation, because no package used them. In prolfquabenchmark they ranked last or next to last on all three peptide datasets (pAUC_5 by scaled p-value, CPTAC: 25.7 and 37.5, median of all methods 73.7): the peptides refit at the limit of detection weaken the median peptide statistic of truly changed proteins. Use <code>ropeca_nested</code> or <code>ropecaV2_nested</code>; for proteins without observations in a group, <code>lm_impute</code>. The fix of <code><a href="../reference/impute_refit_singular.html">impute_refit_singular()</a></code> from 1.9.9 stays.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.9.9" id="prolfqua-199">prolfqua 1.9.9<a class="anchor" aria-label="anchor" href="#prolfqua-199"></a></h2>
 <div class="section level3">

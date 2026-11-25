@@ -196,14 +196,13 @@ runs each of them on one small dataset.
 
 ``` r
 names(list_facades())
-#>  [1] "binomial_firth_nested"  "binomial_nested"        "deqms"                 
-#>  [4] "deqms_voom"             "firth"                  "hurdle_nested"         
-#>  [7] "limma"                  "limma_impute"           "limma_voom"            
-#> [10] "limma_voom_impute"      "limpa"                  "limpa_nested"          
-#> [13] "lm"                     "lm_impute"              "lmer_nested"           
-#> [16] "rfit"                   "rfit_impute"            "rlm"                   
-#> [19] "ropeca_impute_nested"   "ropeca_nested"          "ropecaV2_impute_nested"
-#> [22] "ropecaV2_nested"
+#>  [1] "binomial_firth_nested" "binomial_nested"       "deqms"                
+#>  [4] "deqms_voom"            "firth"                 "hurdle_nested"        
+#>  [7] "limma"                 "limma_impute"          "limma_voom"           
+#> [10] "limma_voom_impute"     "limpa"                 "limpa_nested"         
+#> [13] "lm"                    "lm_impute"             "lmer_nested"          
+#> [16] "rfit"                  "rfit_impute"           "rlm"                  
+#> [19] "ropeca_nested"         "ropecaV2_nested"
 ```
 
 ## Session info
@@ -231,7 +230,7 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] prolfqua_1.9.9   BiocStyle_2.40.0
+#> [1] prolfqua_1.9.10  BiocStyle_2.40.0
 #> 
 #> loaded via a namespace (and not attached):
 #>  [1] gtable_0.3.6        xfun_0.62           bslib_0.12.0       

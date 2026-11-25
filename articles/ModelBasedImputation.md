@@ -206,7 +206,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] ggplot2_4.0.4    prolfqua_1.9.9   BiocStyle_2.40.0
+    ## [1] ggplot2_4.0.4    prolfqua_1.9.10  BiocStyle_2.40.0
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] shape_1.4.6.1         circlize_0.4.18       gtable_0.3.6         

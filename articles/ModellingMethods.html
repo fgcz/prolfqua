@@ -19,7 +19,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.10</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -197,9 +197,7 @@ failures, which <code>$provenance()</code> lists:</p>
 <span>  hurdle_nested <span class="op">=</span> <span class="st">"lm_impute intensity + binomial_firth_nested detection"</span>,</span>
 <span>  lmer_nested <span class="op">=</span> <span class="st">"mixed model, peptide and sample random effects"</span>,</span>
 <span>  ropeca_nested <span class="op">=</span> <span class="st">"peptide fold changes summarised per protein (ROPECA)"</span>,</span>
-<span>  ropecaV2_nested <span class="op">=</span> <span class="st">"ROPECA with an exact, correlation-aware null for the median peptide z-score"</span>,</span>
-<span>  ropeca_impute_nested <span class="op">=</span> <span class="st">"ropeca_nested on peptide models refit at the LOD, as lm_impute"</span>,</span>
-<span>  ropecaV2_impute_nested <span class="op">=</span> <span class="st">"ropecaV2_nested on peptide models refit at the LOD, as lm_impute"</span></span>
+<span>  ropecaV2_nested <span class="op">=</span> <span class="st">"ROPECA with an exact, correlation-aware null for the median peptide z-score"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">overview</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span>,</span>
@@ -354,28 +352,12 @@ detection (LOD)</td>
 <td align="left">robust linear model (MASS::rlm)</td>
 </tr>
 <tr class="odd">
-<td align="left">ropeca_impute_nested</td>
-<td align="left">nested</td>
-<td align="right">20</td>
-<td align="right">13</td>
-<td align="left">ropeca_nested on peptide models refit at the LOD, as
-lm_impute</td>
-</tr>
-<tr class="even">
 <td align="left">ropeca_nested</td>
 <td align="left">nested</td>
 <td align="right">20</td>
 <td align="right">14</td>
 <td align="left">peptide fold changes summarised per protein
 (ROPECA)</td>
-</tr>
-<tr class="odd">
-<td align="left">ropecaV2_impute_nested</td>
-<td align="left">nested</td>
-<td align="right">20</td>
-<td align="right">15</td>
-<td align="left">ropecaV2_nested on peptide models refit at the LOD, as
-lm_impute</td>
 </tr>
 <tr class="even">
 <td align="left">ropecaV2_nested</td>
@@ -404,8 +386,7 @@ decides what happens to it:</p>
 <code>ropeca_nested</code>
 </li>
 <li>imputed at the limit of detection where a whole group is missing:
-the <code>_impute</code> methods, for <code>ropeca_impute_nested</code>
-and <code>ropecaV2_impute_nested</code> per peptide</li>
+the <code>_impute</code> methods</li>
 <li>modelled as detection: <code>firth</code>,
 <code>binomial_nested</code>, <code>binomial_firth_nested</code>, and
 <code>hurdle_nested</code> together with the intensities</li>
@@ -553,19 +534,7 @@ protein is detected in every sample, so the detection models report
 <td align="right">0.000</td>
 </tr>
 <tr class="odd">
-<td align="left">ropeca_impute_nested</td>
-<td align="right">-0.495</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-</tr>
-<tr class="even">
 <td align="left">ropeca_nested</td>
-<td align="right">-0.495</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
-</tr>
-<tr class="odd">
-<td align="left">ropecaV2_impute_nested</td>
 <td align="right">-0.495</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
@@ -744,7 +713,7 @@ missing and significant results; the significance defaults are FDR &lt;
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 2kfAGV~3196 group_Ctrl   -<span style="color: #BB0000;">0.215</span>     0.045<span style="text-decoration: underline;">3</span>     8  -<span style="color: #BB0000;">0.320</span>   -<span style="color: #BB0000;">0.111</span></span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">formula</a></span><span class="op">(</span><span class="va">analysis</span><span class="op">)</span></span>
 <span><span class="co">#&gt; medpolish ~ group_</span></span>
-<span><span class="co">#&gt; &lt;environment: 0x56e76872b860&gt;</span></span>
+<span><span class="co">#&gt; &lt;environment: 0x5f28302b0b18&gt;</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/nobs.html" class="external-link">nobs</a></span><span class="op">(</span><span class="va">analysis</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 2</span></span></span>
 <span><span class="co">#&gt;   protein_Id   nobs</span></span>
@@ -849,7 +818,7 @@ observation counts, fitted values and residuals.</p>
 <span><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt; [1] prolfqua_1.9.9   BiocStyle_2.40.0</span></span>
+<span><span class="co">#&gt; [1] prolfqua_1.9.10  BiocStyle_2.40.0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
 <span><span class="co">#&gt;  [1] tidyselect_1.2.1       dplyr_1.2.1            farver_2.1.2          </span></span>

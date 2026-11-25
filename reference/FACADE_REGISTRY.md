@@ -30,14 +30,13 @@ Each entry has fields `class`, `needs`, `package`, and
 
 ``` r
 names(FACADE_REGISTRY)
-#>  [1] "binomial_firth_nested"  "binomial_nested"        "deqms"                 
-#>  [4] "deqms_voom"             "firth"                  "hurdle_nested"         
-#>  [7] "limma"                  "limma_impute"           "limma_voom"            
-#> [10] "limma_voom_impute"      "limpa"                  "limpa_nested"          
-#> [13] "lm"                     "lm_impute"              "lmer_nested"           
-#> [16] "rfit"                   "rfit_impute"            "rlm"                   
-#> [19] "ropecaV2_impute_nested" "ropecaV2_nested"        "ropeca_impute_nested"  
-#> [22] "ropeca_nested"         
+#>  [1] "binomial_firth_nested" "binomial_nested"       "deqms"                
+#>  [4] "deqms_voom"            "firth"                 "hurdle_nested"        
+#>  [7] "limma"                 "limma_impute"          "limma_voom"           
+#> [10] "limma_voom_impute"     "limpa"                 "limpa_nested"         
+#> [13] "lm"                    "lm_impute"             "lmer_nested"          
+#> [16] "rfit"                  "rfit_impute"           "rlm"                  
+#> [19] "ropecaV2_nested"       "ropeca_nested"        
 FACADE_REGISTRY$limma$class
 #> [1] "ContrastsLimmaFacade"
 ```

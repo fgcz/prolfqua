@@ -21,7 +21,7 @@
 
     <a class="navbar-brand me-2" href="index.html">prolfqua</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.9.10</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,14 +72,14 @@
 </h1></div>
 <p>The R package contains functions for analysing mass spectrometry based experiments. It is intended for proteomics core facilities and researchers who analyse label-free protein or peptide intensities quantified with MaxQuant, DIA-NN, Spectronaut, FragPipe or similar software. This package is developed at the <a href="https://fgcz.ch/" class="external-link">FGCZ</a>. The package documentation including vignettes can be accessed at <a href="https://fgcz.github.io/prolfqua/index.html" class="uri">https://fgcz.github.io/prolfqua/index.html</a></p>
 <p><code>prolfqua</code> makes easy things easy while remaining fully hackable.</p>
-<p>At its centre is a factory, <code><a href="reference/build_contrast_analysis.html">build_contrast_analysis()</a></code>: one call fits a model per protein and computes the requested contrasts. The <code>method</code> argument selects one of 22 models, and every model returns its results through the same interface. Start with the <a href="https://fgcz.github.io/prolfqua/articles/prolfqua.html">Introduction to prolfqua</a>.</p>
+<p>At its centre is a factory, <code><a href="reference/build_contrast_analysis.html">build_contrast_analysis()</a></code>: one call fits a model per protein and computes the requested contrasts. The <code>method</code> argument selects one of 20 models, and every model returns its results through the same interface. Start with the <a href="https://fgcz.github.io/prolfqua/articles/prolfqua.html">Introduction to prolfqua</a>.</p>
 <p><img src="reference/figures/prolfqua_factory.png" alt="build_contrast_analysis() as a factory rolling out all modelling methods" width="100%"></p>
 </div>
 <div class="section level1">
 <h1 id="statement-of-need">Statement of need<a class="anchor" aria-label="anchor" href="#statement-of-need"></a>
 </h1>
 <p>Label-free quantification (LFQ) experiments measure thousands of proteins or peptides in few samples, and values go missing more often at low intensity. Methods for their differential expression analysis are spread over packages with different input formats, model specifications and outputs (limma, DEqMS, MSstats, msqrob2, proDA, limpa), which makes it hard to choose a method for a dataset or to compare methods on it.</p>
-<p>prolfqua gives these methods one data model, a long table with an <code>AnalysisConfiguration</code> naming the column roles; one model specification, R’s formula interface including mixed models; and one output format. <code><a href="reference/build_contrast_analysis.html">build_contrast_analysis()</a></code> fits any of its 22 methods and returns contrasts with the same columns, so a core facility can run, compare and report them in one workflow, and a researcher can check how much a result depends on the method. prolfqua also covers the steps around the test: quality control, normalisation, aggregation of peptides to proteins and sample-size estimation.</p>
+<p>prolfqua gives these methods one data model, a long table with an <code>AnalysisConfiguration</code> naming the column roles; one model specification, R’s formula interface including mixed models; and one output format. <code><a href="reference/build_contrast_analysis.html">build_contrast_analysis()</a></code> fits any of its 20 methods and returns contrasts with the same columns, so a core facility can run, compare and report them in one workflow, and a researcher can check how much a result depends on the method. prolfqua also covers the steps around the test: quality control, normalisation, aggregation of peptides to proteins and sample-size estimation.</p>
 </div>
 <div class="section level1">
 <h1 id="how-to-install-prolfqua">How to install prolfqua?<a class="anchor" aria-label="anchor" href="#how-to-install-prolfqua"></a>

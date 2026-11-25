@@ -15,7 +15,7 @@ package documentation including vignettes can be accessed at
 At its centre is a factory,
 [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md):
 one call fits a model per protein and computes the requested contrasts.
-The `method` argument selects one of 22 models, and every model returns
+The `method` argument selects one of 20 models, and every model returns
 its results through the same interface. Start with the [Introduction to
 prolfqua](https://fgcz.github.io/prolfqua/articles/prolfqua.html).
 
@@ -36,7 +36,7 @@ prolfqua gives these methods one data model, a long table with an
 specification, R’s formula interface including mixed models; and one
 output format.
 [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
-fits any of its 22 methods and returns contrasts with the same columns,
+fits any of its 20 methods and returns contrasts with the same columns,
 so a core facility can run, compare and report them in one workflow, and
 a researcher can check how much a result depends on the method. prolfqua
 also covers the steps around the test: quality control, normalisation,
