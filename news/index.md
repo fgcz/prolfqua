@@ -1,23 +1,6 @@
 # Changelog
 
-## prolfqua 1.9.5
-
-### New features
-
-- `inst/extdata/facade_styles.tsv` lists every method of
-  [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
-  with its family in the factory figure of the README (linear models,
-  limma, limpa, LOD imputation, peptide level, detection, hurdle), the
-  family’s colour, and a point shape and line type per method within the
-  family, so plots comparing methods (as in prolfquabenchmark) style
-  each method the same way. The factory figure is drawn from it.
-- `LFQDataPlotter$heatmap(row_order = )` draws exactly the given
-  features, in the given order and without row clustering, so two
-  heatmaps of the same features can be compared row by row, e.g. before
-  and after imputation (imputation changes the per-feature sd, so the
-  most variable features and their clustering would differ). `row_order`
-  cannot be combined with `n_most_variable`; an unknown feature ID is an
-  error that names it.
+## prolfqua 1.9.6
 
 ### Behaviour changes
 
@@ -41,6 +24,28 @@
   p-values change. `lm` and `deqms` in `a * b` models with an empty cell
   now report the cell contrasts that do not need the empty cell (e.g. BZ
   − BX without AX), which they dropped before.
+
+## prolfqua 1.9.5
+
+### New features
+
+- `inst/extdata/facade_styles.tsv` lists every method of
+  [`build_contrast_analysis()`](https://fgcz.github.io/prolfqua/reference/build_contrast_analysis.md)
+  with its family in the factory figure of the README (linear models,
+  limma, limpa, LOD imputation, peptide level, detection, hurdle), the
+  family’s colour, and a point shape and line type per method within the
+  family, so plots comparing methods (as in prolfquabenchmark) style
+  each method the same way. The factory figure is drawn from it.
+- `LFQDataPlotter$heatmap(row_order = )` draws exactly the given
+  features, in the given order and without row clustering, so two
+  heatmaps of the same features can be compared row by row, e.g. before
+  and after imputation (imputation changes the per-feature sd, so the
+  most variable features and their clustering would differ). `row_order`
+  cannot be combined with `n_most_variable`; an unknown feature ID is an
+  error that names it.
+
+### Behaviour changes
+
 - prolfqua is label-free only: the isotope label is gone.
   [`setup_analysis()`](https://fgcz.github.io/prolfqua/reference/setup_analysis.md)
   no longer adds an `isotopeLabel` column, so `data_long()`, the wide
