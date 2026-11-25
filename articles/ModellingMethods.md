@@ -350,7 +350,7 @@ head(confint(analysis))
 #> 6 2kfAGV~3196 group_Ctrl   -0.215     0.0453     8  -0.320   -0.111
 formula(analysis)
 #> medpolish ~ group_
-#> <environment: 0x55e1e221ec20>
+#> <environment: 0x56e76872b860>
 head(nobs(analysis))
 #> # A tibble: 6 × 2
 #>   protein_Id   nobs
