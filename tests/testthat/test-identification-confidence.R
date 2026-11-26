@@ -248,7 +248,7 @@ test_that("ROPECA V2 p-values of equally weighted proteins equal the unweighted 
   )
 })
 
-test_that("ROPECA combines peptides with their feature-level confidence", {
+test_that("ROPECA facades weight the peptide fits and combine the peptides unweighted", {
   istar <- sim_lfq_data_peptide_config(n_proteins = 15, seed = 10)
   data <- with_random_confidence(istar$data, c("protein_Id", "peptide_Id"))
   lfq <- LFQData$new(data, istar$config)
@@ -262,10 +262,45 @@ test_that("ROPECA combines peptides with their feature-level confidence", {
       method = method,
       weights = NULL
     ))
+    expect_null(weighted$contrast$child_weights, info = method)
     res <- weighted$get_contrasts()
     expect_true(all(res$p.value >= 0 & res$p.value <= 1, na.rm = TRUE), info = method)
     expect_false(isTRUE(all.equal(res$diff, unweighted$get_contrasts()$diff)), info = method)
   }
+  fa <- suppressWarnings(build_contrast_analysis(lfq, "~ group_", contrast_a, method = "ropeca_nested"))
+  peptide_median <- dplyr::summarise(
+    fa$contrast$Contrast$get_contrasts(),
+    median_diff = stats::median(.data$diff, na.rm = TRUE),
+    .by = c("protein_Id", "contrast")
+  )
+  res <- dplyr::inner_join(fa$get_contrasts(), peptide_median, by = c("protein_Id", "contrast"))
+  expect_equal(res$diff, res$median_diff)
+})
+
+test_that("ContrastsROPECA and ContrastsROPECAV2 combine peptides with child_weights", {
+  istar <- sim_lfq_data_peptide_config(n_proteins = 15, seed = 10)
+  data <- with_random_confidence(istar$data, c("protein_Id", "peptide_Id"))
+  lfq <- LFQData$new(data, istar$config)
+  lfq <- lfq$get_Transformer()$log2()$lfq
+  child_weights <- dplyr::distinct(lfq$data_long()[, c(
+    "protein_Id",
+    "peptide_Id",
+    "identification_confidence_feature"
+  )])
+  child_weights <- dplyr::rename(child_weights, weight = "identification_confidence_feature")
+  model <- build_model(
+    lfq,
+    strategy_lm(paste(lfq$response(), "~ group_"), weights = "identification_confidence"),
+    subject_id = lfq$hierarchy_keys()
+  )
+  plain <- ContrastsROPECA$new(Contrasts$new(model, contrast_a))$get_contrasts()
+  weighted <- ContrastsROPECA$new(Contrasts$new(model, contrast_a), child_weights = child_weights)$get_contrasts()
+  expect_false(isTRUE(all.equal(weighted$diff, plain$diff)))
+  peptide_contrasts <- ContrastsModerated$new(Contrasts$new(model, contrast_a))
+  plain_v2 <- ContrastsROPECAV2$new(peptide_contrasts, rho = 0.1)$get_contrasts()
+  weighted_v2 <- ContrastsROPECAV2$new(peptide_contrasts, rho = 0.1, child_weights = child_weights)$get_contrasts()
+  expect_false(isTRUE(all.equal(weighted_v2$p.value, plain_v2$p.value)))
+  expect_true(all(weighted_v2$p.value >= 0 & weighted_v2$p.value <= 1, na.rm = TRUE))
 })
 
 test_that("limpa_nested passes the protein confidence as prior weights", {
