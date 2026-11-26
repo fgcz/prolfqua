@@ -51,17 +51,22 @@
   gain a `weights` argument.
   [`sigma()`](https://rdrr.io/r/stats/sigma.html) of an `rlm` fit treats
   prior weights as inverse variances.
-- ROPECA and ROPECA V2 combine the peptides of a protein with their
-  feature-level confidence: weighted medians of fold change, statistic
-  and signed p-value or z-score. ROPECA’s beta distribution uses the
-  effective number of peptides (sum w)^2 / sum w^2, rounded down; ROPECA
-  V2 tests the weighted median against its exact null distribution for
-  the given weights (enumerated up to 16 peptides, its normal limit
-  beyond; conservative when a subset of peptides holds exactly half the
-  weight). Under a simulated null with random peptide confidences the
-  weighted methods put 3.8% (ROPECA) and 7.3% (V2) of p-values below
-  0.05 and 0.8% and 1.8% below 0.01 (unweighted: 2.5% and 6.3%, 0.6% and
-  1.6%). `ContrastsROPECA` and `ContrastsROPECAV2` take `child_weights`.
+- `ropeca_nested` and `ropecaV2_nested` weight the peptide fits but
+  combine the peptides of a protein without weights. `ContrastsROPECA`
+  and `ContrastsROPECAV2` take `child_weights` to combine them with
+  weights: weighted medians of fold change, statistic and signed p-value
+  or z-score. ROPECA’s beta distribution then uses the effective number
+  of peptides (sum w)^2 / sum w^2, rounded down; ROPECA V2 tests the
+  weighted median against its exact null distribution for the given
+  weights (enumerated up to 16 peptides, its normal limit beyond;
+  conservative when a subset of peptides holds exactly half the weight).
+  Under a simulated null with random peptide confidences the weighted
+  combination puts 3.8% (ROPECA) and 7.3% (V2) of p-values below 0.05
+  and 0.8% and 1.8% below 0.01 (unweighted: 2.5% and 6.3%, 0.6% and
+  1.6%). In prolfquabenchmark, combining the IonStar MaxQuant peptides
+  weighted by 1 - PEP (0.88 to 1) lowered pAUC_10 by 5.5 (ROPECA) and
+  4.4 (V2) points; nearly equal weights drop a peptide from ROPECA’s
+  effective count and stop V2 averaging the two middle peptides.
 - Detection models (`binomial_nested`, `binomial_firth_nested`, and so
   `hurdle_nested`) count expected true detections: a detected peptide
   counts with its confidence in the sample, and every peptide counts

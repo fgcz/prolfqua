@@ -194,9 +194,8 @@ initialize
 - `weights`:
 
   column names whose product weights the per-peptide fits (default: the
-  identification confidence). Unless `NULL`, the peptides are also
-  combined with weights `identification_confidence_feature`. Pass `NULL`
-  for unweighted.
+  identification confidence). Pass `NULL` for unweighted fits. The
+  peptides are combined without weights.
 
 ------------------------------------------------------------------------
 
