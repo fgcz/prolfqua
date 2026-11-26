@@ -170,7 +170,7 @@ build_model_limma -&amp;gt; ContrastsLimma."></head><body>
 <span>  <span class="va">lfqdata</span>,</span>
 <span>  <span class="va">modelstr</span>,</span>
 <span>  <span class="va">contrasts</span>,</span>
-<span>  weights <span class="op">=</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">nr_children_col</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  weights <span class="op">=</span> <span class="fu">.default_weights</span><span class="op">(</span><span class="va">lfqdata</span><span class="op">)</span>,</span>
 <span>  trend <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  robust <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
@@ -186,8 +186,8 @@ build_model_limma -&amp;gt; ContrastsLimma."></head><body>
 <dd><p>named character vector of contrasts</p></dd>
 
       <dt><code>weights</code></dt>
-<dd><p>column name for per-observation weights (default:
-<code>lfqdata$nr_children_col()</code>). Pass <code>NULL</code> for unweighted.</p></dd>
+<dd><p>column names whose product gives the per-observation weights (default: the child count
+times the identification confidence). Pass <code>NULL</code> for unweighted.</p></dd>
 
       <dt><code>trend, robust</code></dt>
 <dd><p>passed to <code><a href="https://rdrr.io/pkg/limma/man/ebayes.html" class="external-link">eBayes</a></code>, see <code><a href="strategy_limma.html">strategy_limma</a></code></p></dd>

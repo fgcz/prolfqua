@@ -187,7 +187,12 @@ LFQData (peptide subject_id strictly below the protein hierarchy).</p>
 <h3 id="contrastsropecav-nestedfacade-new-"><code>ContrastsROPECAV2NestedFacade$new()</code><a class="anchor" aria-label="anchor" href="#contrastsropecav-nestedfacade-new-"></a></h3>
 <p>initialize</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/ContrastsROPECAV2NestedFacade.html">ContrastsROPECAV2NestedFacade</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lfqdata</span>, <span class="va">modelstr</span>, <span class="va">contrasts</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/ContrastsROPECAV2NestedFacade.html">ContrastsROPECAV2NestedFacade</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span>  <span class="va">lfqdata</span>,</span>
+<span>  <span class="va">modelstr</span>,</span>
+<span>  <span class="va">contrasts</span>,</span>
+<span>  weights <span class="op">=</span> <span class="fu">.confidence_weights</span><span class="op">(</span><span class="va">lfqdata</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>lfqdata</code></dt>
@@ -198,6 +203,11 @@ LFQData (peptide subject_id strictly below the protein hierarchy).</p>
 
       <dt><code>contrasts</code></dt>
 <dd><p>named character vector of contrasts</p></dd>
+
+      <dt><code>weights</code></dt>
+<dd><p>column names whose product weights the per-peptide fits (default: the identification
+confidence). Unless <code>NULL</code>, the peptides are also combined with weights
+<code>identification_confidence_feature</code>. Pass <code>NULL</code> for unweighted.</p></dd>
 
 
 </dl><p></p></div>

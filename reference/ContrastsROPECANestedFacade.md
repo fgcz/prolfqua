@@ -170,7 +170,12 @@ initialize
 
 #### Usage
 
-    ContrastsROPECANestedFacade$new(lfqdata, modelstr, contrasts)
+    ContrastsROPECANestedFacade$new(
+      lfqdata,
+      modelstr,
+      contrasts,
+      weights = .confidence_weights(lfqdata)
+    )
 
 #### Arguments
 
@@ -185,6 +190,13 @@ initialize
 - `contrasts`:
 
   named character vector of contrasts
+
+- `weights`:
+
+  column names whose product weights the per-peptide fits (default: the
+  identification confidence). Unless `NULL`, the peptides are also
+  combined with weights `identification_confidence_feature`. Pass `NULL`
+  for unweighted.
 
 ------------------------------------------------------------------------
 

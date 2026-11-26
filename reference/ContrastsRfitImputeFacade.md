@@ -31,7 +31,8 @@ Differences from
   carrying an `lm`-specific approximation.
 
 - No observation weights (`rfit` has no `weights` argument), matching
-  plain `rfit`.
+  plain `rfit`; a message says so when the identification confidence is
+  not 1 everywhere.
 
 `modelName` is the facade key `"rfit_impute"`; rescued rows are flagged
 in the `estimate_type` column as `"lod_imputed"`, the same convention

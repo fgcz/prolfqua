@@ -114,6 +114,10 @@ Other modelling:
 
   lowess smoother span for vooma trend (NULL = auto)
 
+- `weights`:
+
+  value column names whose product gives the prior weights, or NULL
+
 ## Methods
 
 ### Public methods
@@ -136,12 +140,13 @@ Create a new StrategyLimpa
       trend = FALSE,
       robust = FALSE,
       plot = FALSE,
-      span = NULL
+      span = NULL,
+      weights = NULL
     )
 
 #### Arguments
 
-- `modelstr, model_name, trend, robust, plot, span`:
+- `modelstr, model_name, trend, robust, plot, span, weights`:
 
   see
   [`strategy_limpa`](https://fgcz.github.io/prolfqua/reference/strategy_limpa.md)
@@ -168,7 +173,7 @@ The objects of this class are cloneable with this method.
 strat <- StrategyLimpa$new("abundance ~ group_")
 strat$formula
 #> abundance ~ group_
-#> <environment: 0x5ed3fdf814d0>
+#> <environment: 0x5b15f8178340>
 strat$model_name
 #> [1] "limpa"
 ```

@@ -178,7 +178,7 @@ fit produces NA coefficients (typically from entire missing groups).</p>
 <span>  <span class="va">contrasts</span>,</span>
 <span>  lod <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  df_method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"observed"</span>, <span class="st">"borrowed"</span><span class="op">)</span>,</span>
-<span>  weights <span class="op">=</span> <span class="va">lfqdata</span><span class="op">$</span><span class="fu">nr_children_col</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  weights <span class="op">=</span> <span class="fu">.default_weights</span><span class="op">(</span><span class="va">lfqdata</span><span class="op">)</span>,</span>
 <span>  span <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>  plot <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  trend <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -203,8 +203,8 @@ fit produces NA coefficients (typically from entire missing groups).</p>
 "borrowed" uses median df from successful fits</p></dd>
 
       <dt><code>weights</code></dt>
-<dd><p>column name for per-observation weights (default:
-<code>lfqdata$nr_children_col()</code>). Pass <code>NULL</code> for unweighted.</p></dd>
+<dd><p>column names whose product gives the per-observation weights (default: the child count
+times the identification confidence). Pass <code>NULL</code> for unweighted.</p></dd>
 
       <dt><code>span</code></dt>
 <dd><p>lowess smoother span for vooma trend (default 0.5)</p></dd>

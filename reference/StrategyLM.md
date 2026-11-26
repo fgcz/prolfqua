@@ -91,8 +91,8 @@ Other modelling:
 
 - `weights`:
 
-  optional character string naming a column in the data containing
-  per-observation weights, passed to
+  optional character vector naming columns in the data; their product is
+  passed as per-observation weights to
   [`lm`](https://rdrr.io/r/stats/lm.html).
 
 ## Methods
@@ -134,8 +134,7 @@ Create a new StrategyLM
 
 - `weights`:
 
-  optional character string naming a column in the data containing
-  per-observation weights
+  optional character vector naming weight columns in the data
 
 ------------------------------------------------------------------------
 
@@ -159,7 +158,7 @@ The objects of this class are cloneable with this method.
 strat <- StrategyLM$new("Intensity ~ condition", model_name = "parallel design")
 strat$formula
 #> Intensity ~ condition
-#> <environment: 0x5ed3e89e60d0>
+#> <environment: 0x5b15f72789e0>
 strat$weights
 #> NULL
 ```

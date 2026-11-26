@@ -147,7 +147,8 @@ initialize
       plot = FALSE,
       span = NULL,
       trend = FALSE,
-      robust = FALSE
+      robust = FALSE,
+      weights = .confidence_weights(lfqdata)
     )
 
 #### Arguments
@@ -186,6 +187,12 @@ initialize
 
   passed to [`eBayes`](https://rdrr.io/pkg/limma/man/ebayes.html), see
   [`strategy_limpa`](https://fgcz.github.io/prolfqua/reference/strategy_limpa.md)
+
+- `weights`:
+
+  column names whose product gives the prior weights of the
+  protein-level fit (default: the identification confidence, the maximum
+  over the observed children). Pass `NULL` for unweighted.
 
 ------------------------------------------------------------------------
 

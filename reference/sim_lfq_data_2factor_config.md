@@ -67,7 +67,7 @@ x <- sim_lfq_data_2factor_config(peptide = FALSE)
 #> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, group, mean, N, Replicate.
 #> setup_analysis: added 22 rows with NA response for feature and sample combinations absent from the input.
 dim(x$data)
-#> [1] 160   8
+#> [1] 160  10
 stopifnot("data.frame" %in% class(x$data))
 stopifnot("AnalysisConfiguration" %in% class(x$config))
 x <- sim_lfq_data_2factor_config(peptide = TRUE)
@@ -77,16 +77,18 @@ x <- sim_lfq_data_2factor_config(peptide = TRUE)
 #> setup_analysis: added 40 rows with NA response for feature and sample combinations absent from the input.
 
 head(x$data)
-#> # A tibble: 6 × 9
-#>   sample sampleName Treatment Background protein_Id  peptide_Id abundance qValue
-#>   <chr>  <chr>      <chr>     <chr>      <chr>       <chr>          <dbl>  <dbl>
-#> 1 A_V1   A_V1       A         X          0EfVhX~0087 ITLb4x1q        15.8      0
-#> 2 A_V1   A_V1       A         X          0EfVhX~0087 ahQLlQY7        20.0      0
-#> 3 A_V1   A_V1       A         X          0EfVhX~0087 dJkdz7so        15.8      0
-#> 4 A_V1   A_V1       A         X          7cbcrd~5725 D5dQ4nKk        29.3      0
-#> 5 A_V1   A_V1       A         X          9VUkAq~4703 eIC06D7g        20.0      0
-#> 6 A_V1   A_V1       A         X          BEJI92~5282 HBkZvdhT        26.5      0
-#> # ℹ 1 more variable: nrPeptides <dbl>
+#> # A tibble: 6 × 11
+#>   sample sampleName Treatment Background protein_Id  peptide_Id abundance
+#>   <chr>  <chr>      <chr>     <chr>      <chr>       <chr>          <dbl>
+#> 1 A_V1   A_V1       A         X          0EfVhX~0087 ITLb4x1q        15.8
+#> 2 A_V1   A_V1       A         X          0EfVhX~0087 ahQLlQY7        20.0
+#> 3 A_V1   A_V1       A         X          0EfVhX~0087 dJkdz7so        15.8
+#> 4 A_V1   A_V1       A         X          7cbcrd~5725 D5dQ4nKk        29.3
+#> 5 A_V1   A_V1       A         X          9VUkAq~4703 eIC06D7g        20.0
+#> 6 A_V1   A_V1       A         X          BEJI92~5282 HBkZvdhT        26.5
+#> # ℹ 4 more variables: identification_confidence <dbl>,
+#> #   identification_confidence_feature <dbl>, nrPeptides <dbl>,
+#> #   nr_children_feature <dbl>
 x <- sim_lfq_data_2factor_config(peptide = TRUE, two_factor = TRUE)
 #> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column

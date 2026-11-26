@@ -142,19 +142,58 @@ via <code><a href="https://rdrr.io/pkg/MASS/man/rlm.html" class="external-link">
     <p><code><a href="StrategyBase.html">StrategyBase</a></code> -&gt; <code>StrategyRLM</code></p>
     </div>
     <div class="section level2">
+    <h2 id="public-fields">Public fields<a class="anchor" aria-label="anchor" href="#public-fields"></a></h2>
+    <p></p><div class="r6-fields"><dl><dt><code>weights</code></dt>
+<dd><p>optional character vector naming columns in the data; their product is passed as
+per-observation prior weights to <code><a href="https://rdrr.io/pkg/MASS/man/rlm.html" class="external-link">rlm</a></code> (inverse variances).</p></dd>
+
+
+</dl><p></p></div>
+    </div>
+    <div class="section level2">
     <h2 id="methods">Methods<a class="anchor" aria-label="anchor" href="#methods"></a></h2>
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
-<p></p><ul><li><p><a href="#method-StrategyRLM-sigma"><code>StrategyRLM$sigma()</code></a></p></li>
+<p></p><ul><li><p><a href="#method-StrategyRLM-initialize"><code>StrategyRLM$new()</code></a></p></li>
+<li><p><a href="#method-StrategyRLM-sigma"><code>StrategyRLM$sigma()</code></a></p></li>
 <li><p><a href="#method-StrategyRLM-clone"><code>StrategyRLM$clone()</code></a></p></li>
-</ul></div><p><details><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="contrast_fun"><a href="StrategyBase.html#method-contrast_fun"><code>StrategyBase$contrast_fun()</code></a></span></li>
+</ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="contrast_fun"><a href="StrategyBase.html#method-contrast_fun"><code>StrategyBase$contrast_fun()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="df_residual"><a href="StrategyBase.html#method-df_residual"><code>StrategyBase$df_residual()</code></a></span></li>
-  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="initialize"><a href="StrategyBase.html#method-initialize"><code>StrategyBase$initialize()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="isSingular"><a href="StrategyBase.html#method-isSingular"><code>StrategyBase$isSingular()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="model_fun"><a href="StrategyBase.html#method-model_fun"><code>StrategyBase$model_fun()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="zero_residual_variance"><a href="StrategyBase.html#method-zero_residual_variance"><code>StrategyBase$zero_residual_variance()</code></a></span></li>
-</ul></details></p><hr><a id="method-StrategyRLM-sigma"></a><div class="section">
+</ul></details></p><hr><a id="method-StrategyRLM-initialize"></a><div class="section">
+<h3 id="strategyrlm-new-"><code>StrategyRLM$new()</code><a class="anchor" aria-label="anchor" href="#strategyrlm-new-"></a></h3>
+<p>Create a new StrategyRLM</p><div class="section">
+<h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/StrategyRLM.html">StrategyRLM</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span>  <span class="va">modelstr</span>,</span>
+<span>  model_name <span class="op">=</span> <span class="st">"Model"</span>,</span>
+<span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  weights <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>modelstr</code></dt>
+<dd><p>model formula string</p></dd>
+
+      <dt><code>model_name</code></dt>
+<dd><p>name of model</p></dd>
+
+      <dt><code>control</code></dt>
+<dd><p>named list with <code>maxit</code> and <code>acc</code> of <code><a href="https://rdrr.io/pkg/MASS/man/rlm.html" class="external-link">rlm</a></code></p></dd>
+
+      <dt><code>weights</code></dt>
+<dd><p>optional character vector naming weight columns in the data</p></dd>
+
+
+</dl><p></p></div>
+</div>
+
+</div>
+
+<p></p><hr><a id="method-StrategyRLM-sigma"></a><div class="section">
 <h3 id="strategyrlm-sigma-"><code>StrategyRLM$sigma()</code><a class="anchor" aria-label="anchor" href="#strategyrlm-sigma-"></a></h3>
 <p>Get the robust scale estimate used by <code><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov()</a></code></p>
 <p>Returns <code>model$s</code>, the robust scale <code><a href="https://rdrr.io/pkg/MASS/man/rlm.html" class="external-link">MASS::rlm</a></code> builds its
@@ -163,10 +202,10 @@ scale embedded in <code><a href="https://rdrr.io/r/stats/vcov.html" class="exter
 <code>sigma / sqrt(var.post)</code> rescaling stays coherent; <code><a href="https://rdrr.io/r/stats/sigma.html" class="external-link">stats::sigma()</a></code>
 returns the ordinary-residual scale instead and would distort moderated
 <code>rlm</code> statistics.</p><div class="section">
-<h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
+<h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">StrategyRLM</span><span class="op">$</span><span class="fu">sigma</span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
+<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>model</code></dt>
 <dd><p>fitted model</p></dd>
 
@@ -179,10 +218,10 @@ returns the ordinary-residual scale instead and would distort moderated
 <p></p><hr><a id="method-StrategyRLM-clone"></a><div class="section">
 <h3 id="strategyrlm-clone-"><code>StrategyRLM$clone()</code><a class="anchor" aria-label="anchor" href="#strategyrlm-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
+<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">StrategyRLM</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
+<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 
@@ -200,7 +239,7 @@ returns the ordinary-residual scale instead and would distort moderated
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">strat</span> <span class="op">&lt;-</span> <span class="va">StrategyRLM</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"Intensity ~ condition"</span>, model_name <span class="op">=</span> <span class="st">"parallel design"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">strat</span><span class="op">$</span><span class="va">formula</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Intensity ~ condition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5ed3f4333ce8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5b15e6da8aa8&gt;</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -15,7 +15,9 @@ empirical-Bayes moderation shrinks the rank-based scale across proteins.
 Unlike
 [`ContrastsLMFacade`](https://fgcz.github.io/prolfqua/reference/ContrastsLMFacade.md)
 this backend takes no observation weights (`rfit` has no `weights`
-argument), so `nr_children` weighting is not applied.
+argument), so neither `nr_children` nor identification confidence
+weighting is applied; a message says so when the identification
+confidence is not 1 everywhere.
 
 ## Value
 

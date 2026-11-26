@@ -15,7 +15,7 @@ impute_refit_singular(
   sample_template,
   borrow_method = c("sigma", "vcov"),
   df_method = c("observed", "borrowed"),
-  nr_children_col = NULL,
+  weight_cols = NULL,
   on_misalign = c("fallback", "fail")
 )
 ```
@@ -53,11 +53,11 @@ impute_refit_singular(
   "observed" uses max(n_observed - p, 1), "borrowed" uses median df from
   successful fits
 
-- nr_children_col:
+- weight_cols:
 
-  optional column name for nr_children (peptide counts); NA values in
-  this column are filled with 1 for imputed rows so that weighted lm
-  fits do not fail
+  optional weight column names of the strategy (e.g. nr_children and the
+  identification confidence); NA values are filled with 1 for imputed
+  rows so that weighted fits keep them
 
 - on_misalign:
 

@@ -121,7 +121,8 @@ config$factors[["Group"]] <- "Group"
 # Build LFQData object
 analysis_data <- prolfqua::setup_analysis(table_long, config)
 #> creating sampleName from file_name column
-#> no qValue column specified in the data. Creating column qValue and setting qValues to 0.
+#> no identification_confidence column specified in the data, adding it and setting the identification confidence to 1.
+#> setup_analysis: derived identification_confidence_feature, nr_children_feature as the maximum over samples.
 lfqdata <- prolfqua::LFQData$new(analysis_data, config)
 lfqdata$hierarchy_counts()
 #> # A tibble: 1 × 1

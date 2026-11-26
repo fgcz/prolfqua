@@ -169,6 +169,10 @@ plotting parameters.</p>
 <dd><p>lowess smoother span for vooma trend (NULL = auto)</p></dd>
 
 
+    <dt><code>weights</code></dt>
+<dd><p>value column names whose product gives the prior weights, or NULL</p></dd>
+
+
 </dl><p></p></div>
     </div>
     <div class="section level2">
@@ -188,11 +192,12 @@ plotting parameters.</p>
 <span>  trend <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  robust <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  plot <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  span <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  span <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  weights <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>modelstr, model_name, trend, robust, plot, span</code></dt>
+<p></p><div class="arguments"><dl><dt><code>modelstr, model_name, trend, robust, plot, span, weights</code></dt>
 <dd><p>see <code><a href="strategy_limpa.html">strategy_limpa</a></code></p></dd>
 
 
@@ -225,7 +230,7 @@ plotting parameters.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">strat</span> <span class="op">&lt;-</span> <span class="va">StrategyLimpa</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"abundance ~ group_"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">strat</span><span class="op">$</span><span class="va">formula</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> abundance ~ group_</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5ed3fdf814d0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5b15f8178340&gt;</span>
 <span class="r-in"><span><span class="va">strat</span><span class="op">$</span><span class="va">model_name</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "limpa"</span>
 </code></pre></div>

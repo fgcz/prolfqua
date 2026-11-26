@@ -200,6 +200,11 @@ same tail probability. <code>diff</code> is the median peptide fold change,
 <dd><p>method to use for p.value adjustment</p></dd>
 
 
+    <dt><code>child_weights</code></dt>
+<dd><p>data frame with the peptide-level <code>subject_id</code> columns and a column <code>weight</code>,
+one weight per peptide, or NULL for equal weights</p></dd>
+
+
 </dl><p></p></div>
     </div>
     <div class="section level2">
@@ -230,7 +235,8 @@ same tail probability. <code>diff</code> is the median peptide fold change,
 <span>  <span class="va">Contrast</span>,</span>
 <span>  <span class="va">rho</span>,</span>
 <span>  model_name <span class="op">=</span> <span class="st">"ROPECAV2"</span>,</span>
-<span>  p.adjust <span class="op">=</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/adjust_p_values.html">adjust_p_values</a></span></span>
+<span>  p.adjust <span class="op">=</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/adjust_p_values.html">adjust_p_values</a></span>,</span>
+<span>  child_weights <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
@@ -245,6 +251,12 @@ same tail probability. <code>diff</code> is the median peptide fold change,
 
       <dt><code>p.adjust</code></dt>
 <dd><p>function to use for p.value adjustment</p></dd>
+
+      <dt><code>child_weights</code></dt>
+<dd><p>data frame with the peptide-level <code>subject_id</code> columns and a column
+<code>weight</code>, one weight per peptide (e.g. its identification confidence). The protein fold change and
+z-score are then weighted medians, tested against the null distribution of the weighted median of
+correlated normal scores with these weights. NULL (default) weights all peptides equally.</p></dd>
 
 
 </dl><p></p></div>

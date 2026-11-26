@@ -169,7 +169,13 @@ ContrastsModerated."></head><body>
 <h3 id="contrastsrlmfacade-new-"><code>ContrastsRLMFacade$new()</code><a class="anchor" aria-label="anchor" href="#contrastsrlmfacade-new-"></a></h3>
 <p>initialize</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/ContrastsRLMFacade.html">ContrastsRLMFacade</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">lfqdata</span>, <span class="va">modelstr</span>, <span class="va">contrasts</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/ContrastsRLMFacade.html">ContrastsRLMFacade</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span>  <span class="va">lfqdata</span>,</span>
+<span>  <span class="va">modelstr</span>,</span>
+<span>  <span class="va">contrasts</span>,</span>
+<span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  weights <span class="op">=</span> <span class="fu">.confidence_weights</span><span class="op">(</span><span class="va">lfqdata</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>lfqdata</code></dt>
@@ -183,6 +189,10 @@ ContrastsModerated."></head><body>
 
       <dt><code>control</code></dt>
 <dd><p>named list of convergence controls, see <code><a href="strategy.html">strategy_rlm</a></code></p></dd>
+
+      <dt><code>weights</code></dt>
+<dd><p>column names whose product gives the per-observation weights (default: the identification
+confidence). Pass <code>NULL</code> for unweighted.</p></dd>
 
 
 </dl><p></p></div>

@@ -142,25 +142,64 @@ via <code><a href="https://rdrr.io/pkg/lmerTest/man/lmer.html" class="external-l
     <p><code><a href="StrategyBase.html">StrategyBase</a></code> -&gt; <code>StrategyLmer</code></p>
     </div>
     <div class="section level2">
+    <h2 id="public-fields">Public fields<a class="anchor" aria-label="anchor" href="#public-fields"></a></h2>
+    <p></p><div class="r6-fields"><dl><dt><code>weights</code></dt>
+<dd><p>optional character vector naming columns in the data; their product is passed as
+per-observation weights to <code><a href="https://rdrr.io/pkg/lme4/man/lmer.html" class="external-link">lmer</a></code>.</p></dd>
+
+
+</dl><p></p></div>
+    </div>
+    <div class="section level2">
     <h2 id="methods">Methods<a class="anchor" aria-label="anchor" href="#methods"></a></h2>
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
-<p></p><ul><li><p><a href="#method-StrategyLmer-isSingular"><code>StrategyLmer$isSingular()</code></a></p></li>
+<p></p><ul><li><p><a href="#method-StrategyLmer-initialize"><code>StrategyLmer$new()</code></a></p></li>
+<li><p><a href="#method-StrategyLmer-isSingular"><code>StrategyLmer$isSingular()</code></a></p></li>
 <li><p><a href="#method-StrategyLmer-contrast_fun"><code>StrategyLmer$contrast_fun()</code></a></p></li>
 <li><p><a href="#method-StrategyLmer-clone"><code>StrategyLmer$clone()</code></a></p></li>
 </ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="df_residual"><a href="StrategyBase.html#method-df_residual"><code>StrategyBase$df_residual()</code></a></span></li>
-  <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="initialize"><a href="StrategyBase.html#method-initialize"><code>StrategyBase$initialize()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="model_fun"><a href="StrategyBase.html#method-model_fun"><code>StrategyBase$model_fun()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="sigma"><a href="StrategyBase.html#method-sigma"><code>StrategyBase$sigma()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="prolfqua" data-topic="StrategyBase" data-id="zero_residual_variance"><a href="StrategyBase.html#method-zero_residual_variance"><code>StrategyBase$zero_residual_variance()</code></a></span></li>
-</ul></details></p><hr><a id="method-StrategyLmer-isSingular"></a><div class="section">
-<h3 id="strategylmer-issingular-"><code>StrategyLmer$isSingular()</code><a class="anchor" aria-label="anchor" href="#strategylmer-issingular-"></a></h3>
-<p>Check if model is singular</p><div class="section">
+</ul></details></p><hr><a id="method-StrategyLmer-initialize"></a><div class="section">
+<h3 id="strategylmer-new-"><code>StrategyLmer$new()</code><a class="anchor" aria-label="anchor" href="#strategylmer-new-"></a></h3>
+<p>Create a new StrategyLmer</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">StrategyLmer</span><span class="op">$</span><span class="fu">isSingular</span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/StrategyLmer.html">StrategyLmer</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span>  <span class="va">modelstr</span>,</span>
+<span>  model_name <span class="op">=</span> <span class="st">"Model"</span>,</span>
+<span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  weights <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>modelstr</code></dt>
+<dd><p>model formula string</p></dd>
+
+      <dt><code>model_name</code></dt>
+<dd><p>name of model</p></dd>
+
+      <dt><code>control</code></dt>
+<dd><p>named list of <code><a href="https://rdrr.io/pkg/lme4/man/lmerControl.html" class="external-link">lmerControl</a></code> arguments</p></dd>
+
+      <dt><code>weights</code></dt>
+<dd><p>optional character vector naming weight columns in the data</p></dd>
+
+
+</dl><p></p></div>
+</div>
+
+</div>
+
+<p></p><hr><a id="method-StrategyLmer-isSingular"></a><div class="section">
+<h3 id="strategylmer-issingular-"><code>StrategyLmer$isSingular()</code><a class="anchor" aria-label="anchor" href="#strategylmer-issingular-"></a></h3>
+<p>Check if model is singular</p><div class="section">
+<h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">StrategyLmer</span><span class="op">$</span><span class="fu">isSingular</span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>model</code></dt>
 <dd><p>fitted model</p></dd>
 
@@ -173,10 +212,10 @@ via <code><a href="https://rdrr.io/pkg/lmerTest/man/lmer.html" class="external-l
 <p></p><hr><a id="method-StrategyLmer-contrast_fun"></a><div class="section">
 <h3 id="strategylmer-contrast-fun-"><code>StrategyLmer$contrast_fun()</code><a class="anchor" aria-label="anchor" href="#strategylmer-contrast-fun-"></a></h3>
 <p>Compute contrasts from fitted model</p><div class="section">
-<h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
+<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">StrategyLmer</span><span class="op">$</span><span class="fu">contrast_fun</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
+<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>...</code></dt>
 <dd><p><code>model</code> (fitted model), <code>linfct</code> (contrast weights on its coefficients) and
 <code>ddf</code>, the denominator degrees of freedom: <code>"Satterthwaite"</code> (default) or <code>"Kenward-Roger"</code></p></dd>
@@ -190,10 +229,10 @@ via <code><a href="https://rdrr.io/pkg/lmerTest/man/lmer.html" class="external-l
 <p></p><hr><a id="method-StrategyLmer-clone"></a><div class="section">
 <h3 id="strategylmer-clone-"><code>StrategyLmer$clone()</code><a class="anchor" aria-label="anchor" href="#strategylmer-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
+<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">StrategyLmer</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 

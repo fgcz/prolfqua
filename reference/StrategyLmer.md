@@ -87,9 +87,19 @@ Other modelling:
 [`StrategyBase`](https://fgcz.github.io/prolfqua/reference/StrategyBase.md)
 -\> `StrategyLmer`
 
+## Public fields
+
+- `weights`:
+
+  optional character vector naming columns in the data; their product is
+  passed as per-observation weights to
+  [`lmer`](https://rdrr.io/pkg/lme4/man/lmer.html).
+
 ## Methods
 
 ### Public methods
+
+- [`StrategyLmer$new()`](#method-StrategyLmer-initialize)
 
 - [`StrategyLmer$isSingular()`](#method-StrategyLmer-isSingular)
 
@@ -100,10 +110,44 @@ Other modelling:
 Inherited methods
 
 - [`StrategyBase$df_residual()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-df_residual)
-- [`StrategyBase$initialize()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-initialize)
 - [`StrategyBase$model_fun()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-model_fun)
 - [`StrategyBase$sigma()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-sigma)
 - [`StrategyBase$zero_residual_variance()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-zero_residual_variance)
+
+------------------------------------------------------------------------
+
+### `StrategyLmer$new()`
+
+Create a new StrategyLmer
+
+#### Usage
+
+    StrategyLmer$new(
+      modelstr,
+      model_name = "Model",
+      control = list(),
+      weights = NULL
+    )
+
+#### Arguments
+
+- `modelstr`:
+
+  model formula string
+
+- `model_name`:
+
+  name of model
+
+- `control`:
+
+  named list of
+  [`lmerControl`](https://rdrr.io/pkg/lme4/man/lmerControl.html)
+  arguments
+
+- `weights`:
+
+  optional character vector naming weight columns in the data
 
 ------------------------------------------------------------------------
 

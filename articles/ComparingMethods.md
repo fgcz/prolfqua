@@ -426,10 +426,10 @@ knitr::kable(sign_rows, digits = 3, caption = "Significant calls of the pairs th
 | protein_Id  | contrast  | method          | effect |   FDR | status |
 |:------------|:----------|:----------------|-------:|------:|:-------|
 | 2yQxtd~5083 | A_vs_Ctrl | rlm             |  0.098 | 0.075 | up     |
-| 2yQxtd~5083 | A_vs_Ctrl | ropecaV2_nested | -0.059 | 0.054 | down   |
+| 2yQxtd~5083 | A_vs_Ctrl | ropecaV2_nested | -0.059 | 0.040 | down   |
 | l6ixC6~8472 | A_vs_Ctrl | limpa           |  0.081 | 0.000 | up     |
 | l6ixC6~8472 | A_vs_Ctrl | limpa_nested    |  0.081 | 0.000 | up     |
-| l6ixC6~8472 | A_vs_Ctrl | ropecaV2_nested | -0.039 | 0.097 | down   |
+| l6ixC6~8472 | A_vs_Ctrl | ropecaV2_nested | -0.039 | 0.082 | down   |
 
 Significant calls of the pairs that are up in one method and down in
 another.
@@ -621,7 +621,7 @@ with one of the two and not with the other.
 ## Notes on single methods
 
 `ropecaV2_nested` estimates the correlation of the peptides of a protein
-from the residuals, here 0.06, so that proteins with many peptides are
+from the residuals, here 0.03, so that proteins with many peptides are
 not reported as more significant.
 
 `hurdle_nested` joins an intensity model (`lm_impute`) and a detection

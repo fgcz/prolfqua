@@ -55,9 +55,15 @@ data says so with a message (class `prolfqua_message`) or warning:
 - a missing sample name is derived from the file name; avoid by
   supplying the sample name column;
 
-- missing identification q-values and child counts receive default
-  values (child counts of one with a warning); avoid by supplying these
-  columns;
+- missing identification confidences and child counts receive default
+  values of one (child counts with a warning); avoid by supplying these
+  columns; identification confidences must lie in \[0, 1\] and child
+  counts must be non-negative;
+
+- missing feature-level columns (one identification confidence and one
+  child count per feature) are derived as the maximum over samples;
+  supplied ones must hold one value per feature; how many features have
+  per-sample values that vary across samples is reported;
 
 - unconfigured columns and their attributes are dropped; the returned
   table keeps only configured analysis columns;
@@ -81,7 +87,7 @@ Other configuration:
 set.seed(1234)
 data <- sim_lfq_data(n_proteins = 10, peptide = TRUE, n_per_group = 4)
 data$nr_children <- 1
-data$qValue <- 0
+data$identification_confidence <- 1
 
 # Add creatinine values per sample (not per protein/peptide)
 sample_creatinine <- data |> dplyr::select(sample) |> dplyr::distinct() |>
@@ -99,5 +105,6 @@ config$norm_value = "creatinine"
 adata <- setup_analysis(data, config)
 #> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.
 #> creating sampleName from file_name column
+#> setup_analysis: derived identification_confidence_feature, nr_children_feature as the maximum over samples.
 #> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.
 ```

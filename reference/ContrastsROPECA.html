@@ -175,6 +175,11 @@ result with PECA.</p>
 <dd><p>method to use for p.value adjustment</p></dd>
 
 
+    <dt><code>child_weights</code></dt>
+<dd><p>data frame with the peptide-level <code>subject_id</code> columns and a column <code>weight</code>,
+one weight per peptide, or NULL for equal weights</p></dd>
+
+
 </dl><p></p></div>
     </div>
     <div class="section level2">
@@ -204,7 +209,8 @@ result with PECA.</p>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/ContrastsROPECA.html">ContrastsROPECA</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
 <span>  <span class="va">Contrast</span>,</span>
 <span>  model_name <span class="op">=</span> <span class="st">"ROPECA"</span>,</span>
-<span>  p.adjust <span class="op">=</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/adjust_p_values.html">adjust_p_values</a></span></span>
+<span>  p.adjust <span class="op">=</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="../reference/adjust_p_values.html">adjust_p_values</a></span>,</span>
+<span>  child_weights <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
@@ -216,6 +222,12 @@ result with PECA.</p>
 
       <dt><code>p.adjust</code></dt>
 <dd><p>function to use for p.value adjustment</p></dd>
+
+      <dt><code>child_weights</code></dt>
+<dd><p>data frame with the peptide-level <code>subject_id</code> columns and a column
+<code>weight</code>, one weight per peptide (e.g. its identification confidence). The protein fold change,
+statistic and signed p-value are then weighted medians, and the beta distribution uses the effective number
+of peptides, (sum w)^2 / sum w^2, rounded down. NULL (default) weights all peptides equally.</p></dd>
 
 
 </dl><p></p></div>

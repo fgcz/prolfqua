@@ -105,9 +105,14 @@ character or unordered factor columns;
 names of <code>configuration$factors</code> become the predictor column names;</p></li>
 <li><p>a missing sample name is derived from the file name; avoid by
 supplying the sample name column;</p></li>
-<li><p>missing identification q-values and child counts
-receive default values (child counts of one with a warning); avoid by
-supplying these columns;</p></li>
+<li><p>missing identification confidences and child counts
+receive default values of one (child counts with a warning); avoid by
+supplying these columns; identification confidences must lie in [0, 1]
+and child counts must be non-negative;</p></li>
+<li><p>missing feature-level columns (one identification confidence and one
+child count per feature) are derived as the maximum over samples; supplied
+ones must hold one value per feature; how many features have per-sample
+values that vary across samples is reported;</p></li>
 <li><p>unconfigured columns and their attributes are dropped; the returned
 table keeps only configured analysis columns;</p></li>
 <li><p>feature and sample combinations absent from the input are added as
@@ -130,7 +135,7 @@ rows with NA response, so every feature has a row in every sample.</p></li>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim_lfq_data.html">sim_lfq_data</a></span><span class="op">(</span>n_proteins <span class="op">=</span> <span class="fl">10</span>, peptide <span class="op">=</span> <span class="cn">TRUE</span>, n_per_group <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">data</span><span class="op">$</span><span class="va">nr_children</span> <span class="op">&lt;-</span> <span class="fl">1</span></span></span>
-<span class="r-in"><span><span class="va">data</span><span class="op">$</span><span class="va">qValue</span> <span class="op">&lt;-</span> <span class="fl">0</span></span></span>
+<span class="r-in"><span><span class="va">data</span><span class="op">$</span><span class="va">identification_confidence</span> <span class="op">&lt;-</span> <span class="fl">1</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Add creatinine values per sample (not per protein/peptide)</span></span></span>
 <span class="r-in"><span><span class="va">sample_creatinine</span> <span class="op">&lt;-</span> <span class="va">data</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">sample</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
@@ -148,6 +153,7 @@ rows with NA response, so every feature has a row in every sample.</p></li>
 <span class="r-in"><span><span class="va">adata</span> <span class="op">&lt;-</span> <span class="fu">setup_analysis</span><span class="op">(</span><span class="va">data</span>, <span class="va">config</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `protein_Id`: columns `proteinID`, `idtype2` united with separator '~'.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> creating sampleName from file_name column</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> setup_analysis: derived identification_confidence_feature, nr_children_feature as the maximum over samples.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> setup_analysis: dropped 6 unconfigured columns: average_prot_abundance, sd, mean, N, avg_peptide_abd, Replicate.</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

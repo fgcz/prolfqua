@@ -35,9 +35,16 @@ Other configuration:
 
   optional column with normalization values (e.g., Creatinine)
 
-- `ident_q_value`:
+- `identification_confidence`:
 
-  column name with identification QValues (smaller better)
+  column with the identification confidence of each feature in each
+  sample, in \[0, 1\], larger is better (e.g. 1 - PEP); used as model
+  weight
+
+- `identification_confidence_feature`:
+
+  column with one identification confidence per feature, the maximum of
+  `identification_confidence` over samples
 
 - `ident_score`:
 
@@ -58,6 +65,11 @@ Other configuration:
 - `nr_children`:
 
   optional column containing for instance the number of peptides
+
+- `nr_children_feature`:
+
+  column with one child count per feature, the maximum of `nr_children`
+  over samples
 
 - `work_intensity`:
 
@@ -248,8 +260,8 @@ character array
 
 ### `AnalysisConfiguration$value_vars()`
 
-get names of columns containing observations e.g. (intensity, qValue, mz
-or rt)
+get names of columns containing observations e.g. (intensity,
+identification confidence, mz or rt)
 
 #### Usage
 

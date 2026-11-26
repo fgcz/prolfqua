@@ -105,7 +105,7 @@ Other modelling:
 
 - `weights`:
 
-  either a character string (column name) or a numeric matrix
+  column names (several are multiplied) or a numeric matrix
 
 ## Methods
 
@@ -160,7 +160,7 @@ The objects of this class are cloneable with this method.
 strat <- StrategyLimma$new("abundance ~ group_")
 strat$formula
 #> abundance ~ group_
-#> <environment: 0x5ed3f7951e88>
+#> <environment: 0x5b15e3949bf8>
 strat$model_name
 #> [1] "limma"
 ```

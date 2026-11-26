@@ -23,15 +23,20 @@ object.
 ## Usage
 
 ``` r
-strategy_logistf(modelstr, model_name = "logistf", control = list())
+strategy_logistf(
+  modelstr,
+  model_name = "logistf",
+  control = list(),
+  weights = NULL
+)
 
 strategy_rfit(modelstr, model_name = "rfit", control = list())
 
-strategy_lmer(modelstr, model_name = "Model", control = list())
+strategy_lmer(modelstr, model_name = "Model", control = list(), weights = NULL)
 
 strategy_lm(modelstr, model_name = "Model", weights = NULL)
 
-strategy_rlm(modelstr, model_name = "Model", control = list())
+strategy_rlm(modelstr, model_name = "Model", control = list(), weights = NULL)
 ```
 
 ## Arguments
@@ -54,9 +59,9 @@ strategy_rlm(modelstr, model_name = "Model", control = list())
 
 - weights:
 
-  optional character string naming a column in the data containing
-  per-observation weights, passed to
-  [`lm`](https://rdrr.io/r/stats/lm.html). Default `NULL` (unweighted).
+  optional character vector naming columns in the data; their product is
+  passed as per-observation weights to the fitting function. Default
+  `NULL` (unweighted).
 
 ## Value
 
@@ -160,7 +165,7 @@ Other modelling:
 tmp <- strategy_logistf("bin_resp ~ condition", model_name = "parallel design")
 tmp$formula
 #> bin_resp ~ condition
-#> <environment: 0x5ed40cc6f470>
+#> <environment: 0x5b160d0adb80>
 
 istar <- prolfqua::sim_lfq_data_peptide_config(n_proteins = 10, with_missing = TRUE,
   weight_missing = 0.5, seed = 3)
@@ -191,9 +196,9 @@ modelFunction$model_fun(nestProtein$data[[1]])
 #> 
 #> Coefficients:
 #>        (Intercept)            group_B         group_Ctrl peptide_IdFLq7LKTq 
-#>       2.101899e+00       6.773389e-01      -6.663876e-01       9.509484e-16 
+#>       2.101899e+00       6.773389e-01      -6.663876e-01      -1.226933e-15 
 #> peptide_IdJYhOpuPH peptide_IdLiw5EMKP peptide_IdVcatZJTa peptide_IdjrLUqOjg 
-#>      -1.068335e+00       7.971977e-16      -1.068335e+00       1.197563e+00 
+#>      -1.068335e+00      -7.226922e-16      -1.068335e+00       1.197563e+00 
 #> peptide_Idq2jTaC1y 
 #>      -1.445323e+00 
 #> 
@@ -208,7 +213,7 @@ modelFunction$model_fun(nestProtein$data[[4]])
 #> 
 #> Coefficients:
 #>        (Intercept)            group_B         group_Ctrl peptide_IdWcAw5ozd 
-#>       8.375544e-03       8.360364e-11       9.365126e-01      -3.147690e-01 
+#>       8.375544e-03       8.360389e-11       9.365126e-01      -3.147690e-01 
 #> peptide_IdgdnXrza3 peptide_IdxvlVt88v 
 #>      -2.035803e-09      -6.303721e-01 
 #> 
@@ -217,22 +222,22 @@ modelFunction$model_fun(nestProtein$data[[4]])
 tmp <- strategy_rfit("Intensity ~ condition", model_name = "parallel design")
 tmp$formula
 #> Intensity ~ condition
-#> <environment: 0x5ed40f2f9948>
+#> <environment: 0x5b160fe254c8>
 modelFunction <- strategy_lmer("abundanceC ~ group_ + (1|peptide_Id)",
   model_name = "random_example")
 modelFunction$formula
 #> abundanceC ~ group_ + (1 | peptide_Id)
-#> <environment: 0x5ed40f388cf0>
+#> <environment: 0x5b160feaec40>
 tmp <- strategy_lm("Intensity ~ condition", model_name = "parallel design")
 tmp$formula
 #> Intensity ~ condition
-#> <environment: 0x5ed40f415720>
+#> <environment: 0x5b160ff415a8>
 tmp$weights
 #> NULL
 tmp <- strategy_rlm("Intensity ~ condition", model_name = "parallel design")
 tmp$formula
 #> Intensity ~ condition
-#> <environment: 0x5ed40f4cdb08>
+#> <environment: 0x5b160fff45b0>
 strategy_rlm("Intensity ~ condition", control = list(maxit = 50))$control
 #> $maxit
 #> [1] 50

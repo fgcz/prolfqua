@@ -127,6 +127,11 @@ Other modelling:
 
   method to use for p.value adjustment
 
+- `child_weights`:
+
+  data frame with the peptide-level `subject_id` columns and a column
+  `weight`, one weight per peptide, or NULL for equal weights
+
 ## Methods
 
 ### Public methods
@@ -168,7 +173,8 @@ initialize
       Contrast,
       rho,
       model_name = "ROPECAV2",
-      p.adjust = prolfqua::adjust_p_values
+      p.adjust = prolfqua::adjust_p_values,
+      child_weights = NULL
     )
 
 #### Arguments
@@ -188,6 +194,15 @@ initialize
 - `p.adjust`:
 
   function to use for p.value adjustment
+
+- `child_weights`:
+
+  data frame with the peptide-level `subject_id` columns and a column
+  `weight`, one weight per peptide (e.g. its identification confidence).
+  The protein fold change and z-score are then weighted medians, tested
+  against the null distribution of the weighted median of correlated
+  normal scores with these weights. NULL (default) weights all peptides
+  equally.
 
 ------------------------------------------------------------------------
 

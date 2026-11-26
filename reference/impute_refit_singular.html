@@ -68,7 +68,7 @@ impute missing values with LOD, clamp, refit, and attach borrowed covariance.</p
 <span>  <span class="va">sample_template</span>,</span>
 <span>  borrow_method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sigma"</span>, <span class="st">"vcov"</span><span class="op">)</span>,</span>
 <span>  df_method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"observed"</span>, <span class="st">"borrowed"</span><span class="op">)</span>,</span>
-<span>  nr_children_col <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  weight_cols <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  on_misalign <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fallback"</span>, <span class="st">"fail"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -108,10 +108,10 @@ proteins that are entirely missing in one or more groups.</p></dd>
 "borrowed" uses median df from successful fits</p></dd>
 
 
-<dt id="arg-nr-children-col">nr_children_col<a class="anchor" aria-label="anchor" href="#arg-nr-children-col"></a></dt>
-<dd><p>optional column name for nr_children (peptide counts);
-NA values in this column are filled with 1 for imputed rows so that
-weighted lm fits do not fail</p></dd>
+<dt id="arg-weight-cols">weight_cols<a class="anchor" aria-label="anchor" href="#arg-weight-cols"></a></dt>
+<dd><p>optional weight column names of the strategy (e.g. nr_children and the
+identification confidence); NA values are filled with 1 for imputed rows so that
+weighted fits keep them</p></dd>
 
 
 <dt id="arg-on-misalign">on_misalign<a class="anchor" aria-label="anchor" href="#arg-on-misalign"></a></dt>

@@ -93,8 +93,14 @@ flat object.</p>
 <dd><p>optional column with normalization values (e.g., Creatinine)</p></dd>
 
 
-    <dt><code>ident_q_value</code></dt>
-<dd><p>column name with identification QValues (smaller better)</p></dd>
+    <dt><code>identification_confidence</code></dt>
+<dd><p>column with the identification confidence of each feature in each sample,
+in [0, 1], larger is better (e.g. 1 - PEP); used as model weight</p></dd>
+
+
+    <dt><code>identification_confidence_feature</code></dt>
+<dd><p>column with one identification confidence per feature, the maximum
+of <code>identification_confidence</code> over samples</p></dd>
 
 
     <dt><code>ident_score</code></dt>
@@ -115,6 +121,11 @@ flat object.</p>
 
     <dt><code>nr_children</code></dt>
 <dd><p>optional column containing for instance the number of peptides</p></dd>
+
+
+    <dt><code>nr_children_feature</code></dt>
+<dd><p>column with one child count per feature, the maximum of <code>nr_children</code> over
+samples</p></dd>
 
 
     <dt><code>work_intensity</code></dt>
@@ -284,7 +295,7 @@ not flagged; set it to enable contaminant flagging / removal.</p></dd>
 
 <p></p><hr><a id="method-AnalysisConfiguration-value_vars"></a><div class="section">
 <h3 id="analysisconfiguration-value-vars-"><code>AnalysisConfiguration$value_vars()</code><a class="anchor" aria-label="anchor" href="#analysisconfiguration-value-vars-"></a></h3>
-<p>get names of columns containing observations e.g. (intensity, qValue, mz or rt)</p><div class="section">
+<p>get names of columns containing observations e.g. (intensity, identification confidence, mz or rt)</p><div class="section">
 <h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AnalysisConfiguration</span><span class="op">$</span><span class="fu">value_vars</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>

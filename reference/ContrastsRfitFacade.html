@@ -5,15 +5,17 @@ ContrastsModerated, using rfit rank-based
 linear regression. Output is the standard Wald contrast schema; the
 empirical-Bayes moderation shrinks the rank-based scale across proteins.
 Unlike ContrastsLMFacade this backend takes no observation
-weights (rfit has no weights argument), so nr_children
-weighting is not applied."><meta property="og:description" content="Encapsulates the pipeline: strategy_rfit -&amp;gt;
+weights (rfit has no weights argument), so neither
+nr_children nor identification confidence weighting is applied; a
+message says so when the identification confidence is not 1 everywhere."><meta property="og:description" content="Encapsulates the pipeline: strategy_rfit -&amp;gt;
 build_model -&amp;gt; Contrasts -&amp;gt;
 ContrastsModerated, using rfit rank-based
 linear regression. Output is the standard Wald contrast schema; the
 empirical-Bayes moderation shrinks the rank-based scale across proteins.
 Unlike ContrastsLMFacade this backend takes no observation
-weights (rfit has no weights argument), so nr_children
-weighting is not applied."></head><body>
+weights (rfit has no weights argument), so neither
+nr_children nor identification confidence weighting is applied; a
+message says so when the identification confidence is not 1 everywhere."></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -72,8 +74,9 @@ weighting is not applied."></head><body>
 linear regression. Output is the standard Wald contrast schema; the
 empirical-Bayes moderation shrinks the rank-based scale across proteins.</p>
 <p>Unlike <code><a href="ContrastsLMFacade.html">ContrastsLMFacade</a></code> this backend takes no observation
-weights (<code>rfit</code> has no <code>weights</code> argument), so <code>nr_children</code>
-weighting is not applied.</p>
+weights (<code>rfit</code> has no <code>weights</code> argument), so neither
+<code>nr_children</code> nor identification confidence weighting is applied; a
+message says so when the identification confidence is not 1 everywhere.</p>
     </div>
 
 

@@ -199,7 +199,8 @@ instead.</p>
 <span>  plot <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  span <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  trend <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  robust <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  robust <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  weights <span class="op">=</span> <span class="fu">.confidence_weights</span><span class="op">(</span><span class="va">lfqdata</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
@@ -227,6 +228,10 @@ instead.</p>
 
       <dt><code>trend, robust</code></dt>
 <dd><p>passed to <code><a href="https://rdrr.io/pkg/limma/man/ebayes.html" class="external-link">eBayes</a></code>, see <code><a href="strategy_limpa.html">strategy_limpa</a></code></p></dd>
+
+      <dt><code>weights</code></dt>
+<dd><p>column names whose product gives the prior weights of the protein-level fit (default: the
+identification confidence, the maximum over the observed children). Pass <code>NULL</code> for unweighted.</p></dd>
 
 
 </dl><p></p></div>

@@ -1,13 +1,14 @@
 # DEqMS contrast analysis with vooma weights facade
 
 Combines vooma precision weights (mean-variance trend) with DEqMS
-count-dependent variance moderation. Vooma runs **without** external
-weights so it captures only the mean-variance relationship; the peptide
-count enters solely through DEqMS moderation, avoiding double-counting.
+count-dependent variance moderation. Vooma runs without child-count
+weights so it captures only the mean-variance relationship and the
+identification confidence; the peptide count enters solely through DEqMS
+moderation, avoiding double-counting.
 
 Pipeline:
 [`strategy_limma`](https://fgcz.github.io/prolfqua/reference/strategy_limma.md)
-(weights = NULL) -\>
+(weights = identification confidence) -\>
 [`build_model_limma_voom`](https://fgcz.github.io/prolfqua/reference/build_model_limma_voom.md)
 -\>
 [`ContrastsLimma`](https://fgcz.github.io/prolfqua/reference/ContrastsLimma.md)
@@ -137,7 +138,8 @@ initialize
       modelstr,
       contrasts,
       span = 0.5,
-      plot = FALSE
+      plot = FALSE,
+      weights = .confidence_weights(lfqdata)
     )
 
 #### Arguments
@@ -162,6 +164,11 @@ initialize
 - `plot`:
 
   logical; if TRUE, plot the mean-variance trend
+
+- `weights`:
+
+  column names whose product gives the per-observation weights (default:
+  the identification confidence). Pass `NULL` for unweighted.
 
 ------------------------------------------------------------------------
 

@@ -42,13 +42,14 @@ bb <- sim_lfq_data_peptide_config()
 #> setup_analysis: added 36 rows with NA response for feature and sample combinations absent from the input.
 values <- r6_extract_values(bb$config)
 names(values)
-#>  [1] "min_peptides_protein"    "hierarchy_depth"        
-#>  [3] "hierarchy"               "factor_depth"           
-#>  [5] "factors"                 "bin_resp"               
-#>  [7] "is_response_transformed" "work_intensity"         
-#>  [9] "nr_children"             "opt_se"                 
-#> [11] "opt_mz"                  "opt_rt"                 
-#> [13] "ident_score"             "ident_q_value"          
-#> [15] "sample_name"             "file_name"              
-#> [17] "sep"                    
+#>  [1] "min_peptides_protein"              "hierarchy_depth"                  
+#>  [3] "hierarchy"                         "factor_depth"                     
+#>  [5] "factors"                           "bin_resp"                         
+#>  [7] "is_response_transformed"           "work_intensity"                   
+#>  [9] "nr_children_feature"               "nr_children"                      
+#> [11] "opt_se"                            "opt_mz"                           
+#> [13] "opt_rt"                            "ident_score"                      
+#> [15] "identification_confidence_feature" "identification_confidence"        
+#> [17] "sample_name"                       "file_name"                        
+#> [19] "sep"                              
 ```

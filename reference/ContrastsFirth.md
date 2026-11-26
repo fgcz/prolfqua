@@ -270,16 +270,16 @@ ctr$get_linfct()
 #> # Groups:   protein_Id [10]
 #>    protein_Id  data     linear_model fit_warnings has_model_fit isSingular
 #>    <chr>       <list>   <list>       <list>       <lgl>         <lgl>     
-#>  1 7IZdVV~0841 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
-#>  2 AZPG26~2091 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
-#>  3 AoNKbb~6908 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
-#>  4 EnbuYk~0350 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
-#>  5 JnEDsz~4938 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
-#>  6 NNASGK~1417 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
-#>  7 XYrp6h~5793 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
-#>  8 quTD7H~4566 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
-#>  9 tCZCHm~6695 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
-#> 10 tHE075~8231 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
+#>  1 EnbuYk~0350 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
+#>  2 NNASGK~1417 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
+#>  3 XYrp6h~5793 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
+#>  4 quTD7H~4566 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
+#>  5 tCZCHm~6695 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
+#>  6 tHE075~8231 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
+#>  7 7IZdVV~0841 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
+#>  8 AZPG26~2091 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
+#>  9 AoNKbb~6908 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
+#> 10 JnEDsz~4938 <tibble> <logistf>    <chr [0]>    TRUE          FALSE     
 #> # ℹ 7 more variables: df.residual <dbl>, sigma <dbl>, nr_coef <int>,
 #> #   nr_coef_not_NA <int>, converged <lgl>, iterations <int>, linfct <list>
 #> 
@@ -296,11 +296,12 @@ ctr$get_linfct()
 #>     control: list
 #>     df_residual: function (model) 
 #>     formula: formula
-#>     initialize: function (modelstr, model_name = "logistf", control = list()) 
+#>     initialize: function (modelstr, model_name = "logistf", control = list(), 
 #>     isSingular: function (model) 
 #>     model_fun: function (x, pb) 
 #>     model_name: logistf
 #>     sigma: function (model) 
+#>     weights: .detection_weight
 #>     zero_residual_variance: function (sigma, scale) 
 #>   Private:
 #>     check_packages: function () 
@@ -313,26 +314,26 @@ ctr$get_contrasts()
 #> # A tibble: 20 × 16
 #>    modelName estimate_type protein_Id  contrast sigma    df      diff   FDR
 #>    <chr>     <chr>         <chr>       <chr>    <dbl> <dbl>     <dbl> <dbl>
-#>  1 firth     observed      7IZdVV~0841 Avs          1   Inf -2.20e+ 0 0.732
-#>  2 firth     observed      7IZdVV~0841 AvsCtrl      1   Inf  3.22e-16 1    
-#>  3 firth     observed      AZPG26~2091 Avs          1   Inf  2.75e-16 1    
-#>  4 firth     observed      AZPG26~2091 AvsCtrl      1   Inf  5.58e-16 1    
-#>  5 firth     observed      AoNKbb~6908 Avs          1   Inf  8.47e- 1 0.746
-#>  6 firth     observed      AoNKbb~6908 AvsCtrl      1   Inf -1.35e+ 0 1    
-#>  7 firth     observed      EnbuYk~0350 Avs          1   Inf  1.69e+ 0 0.732
-#>  8 firth     observed      EnbuYk~0350 AvsCtrl      1   Inf  8.47e- 1 1    
-#>  9 firth     observed      JnEDsz~4938 Avs          1   Inf  1.35e+ 0 0.746
-#> 10 firth     observed      JnEDsz~4938 AvsCtrl      1   Inf -8.47e- 1 1    
-#> 11 firth     observed      NNASGK~1417 Avs          1   Inf -1.26e-15 1    
-#> 12 firth     observed      NNASGK~1417 AvsCtrl      1   Inf  4.27e-16 1    
-#> 13 firth     observed      XYrp6h~5793 Avs          1   Inf -1.26e-15 1    
-#> 14 firth     observed      XYrp6h~5793 AvsCtrl      1   Inf  4.27e-16 1    
-#> 15 firth     observed      quTD7H~4566 Avs          1   Inf  3.04e+ 0 0.732
-#> 16 firth     observed      quTD7H~4566 AvsCtrl      1   Inf  2.20e+ 0 1    
-#> 17 firth     observed      tCZCHm~6695 Avs          1   Inf  1.35e+ 0 0.746
-#> 18 firth     observed      tCZCHm~6695 AvsCtrl      1   Inf  2.16e-15 1    
-#> 19 firth     observed      tHE075~8231 Avs          1   Inf  8.47e- 1 0.746
-#> 20 firth     observed      tHE075~8231 AvsCtrl      1   Inf  8.47e- 1 1    
+#>  1 firth     observed      EnbuYk~0350 Avs          1   Inf  1.69e+ 0 0.732
+#>  2 firth     observed      EnbuYk~0350 AvsCtrl      1   Inf  8.47e- 1 1    
+#>  3 firth     observed      NNASGK~1417 Avs          1   Inf  1.52e-15 1    
+#>  4 firth     observed      NNASGK~1417 AvsCtrl      1   Inf  1.07e-15 1    
+#>  5 firth     observed      XYrp6h~5793 Avs          1   Inf  1.52e-15 1    
+#>  6 firth     observed      XYrp6h~5793 AvsCtrl      1   Inf  1.07e-15 1    
+#>  7 firth     observed      quTD7H~4566 Avs          1   Inf  3.04e+ 0 0.732
+#>  8 firth     observed      quTD7H~4566 AvsCtrl      1   Inf  2.20e+ 0 1    
+#>  9 firth     observed      tCZCHm~6695 Avs          1   Inf  1.35e+ 0 0.746
+#> 10 firth     observed      tCZCHm~6695 AvsCtrl      1   Inf -4.13e-16 1    
+#> 11 firth     observed      tHE075~8231 Avs          1   Inf  8.47e- 1 0.746
+#> 12 firth     observed      tHE075~8231 AvsCtrl      1   Inf  8.47e- 1 1    
+#> 13 firth     observed      7IZdVV~0841 Avs          1   Inf -2.20e+ 0 0.732
+#> 14 firth     observed      7IZdVV~0841 AvsCtrl      1   Inf -2.94e-17 1    
+#> 15 firth     observed      AZPG26~2091 Avs          1   Inf  2.75e-16 1    
+#> 16 firth     observed      AZPG26~2091 AvsCtrl      1   Inf  5.58e-16 1    
+#> 17 firth     observed      AoNKbb~6908 Avs          1   Inf  8.47e- 1 0.746
+#> 18 firth     observed      AoNKbb~6908 AvsCtrl      1   Inf -1.35e+ 0 1    
+#> 19 firth     observed      JnEDsz~4938 Avs          1   Inf  1.35e+ 0 0.746
+#> 20 firth     observed      JnEDsz~4938 AvsCtrl      1   Inf -8.47e- 1 1    
 #> # ℹ 8 more variables: std.error <dbl>, statistic <dbl>, p.value <dbl>,
 #> #   conf.low <dbl>, conf.high <dbl>, avgAbd <dbl>, std.error.unmoderated <dbl>,
 #> #   df.unmoderated <dbl>

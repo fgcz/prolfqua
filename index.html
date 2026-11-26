@@ -136,7 +136,8 @@
 <span><span class="co"># Build LFQData object</span></span>
 <span><span class="va">analysis_data</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="fu"><a href="reference/setup_analysis.html">setup_analysis</a></span><span class="op">(</span><span class="va">table_long</span>, <span class="va">config</span><span class="op">)</span></span>
 <span><span class="co">#&gt; creating sampleName from file_name column</span></span>
-<span><span class="co">#&gt; no qValue column specified in the data. Creating column qValue and setting qValues to 0.</span></span>
+<span><span class="co">#&gt; no identification_confidence column specified in the data, adding it and setting the identification confidence to 1.</span></span>
+<span><span class="co">#&gt; setup_analysis: derived identification_confidence_feature, nr_children_feature as the maximum over samples.</span></span>
 <span><span class="va">lfqdata</span> <span class="op">&lt;-</span> <span class="fu">prolfqua</span><span class="fu">::</span><span class="va"><a href="reference/LFQData.html">LFQData</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">analysis_data</span>, <span class="va">config</span><span class="op">)</span></span>
 <span><span class="va">lfqdata</span><span class="op">$</span><span class="fu">hierarchy_counts</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 1 × 1</span></span>

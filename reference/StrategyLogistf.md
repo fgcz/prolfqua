@@ -88,6 +88,14 @@ Other modelling:
 [`StrategyBase`](https://fgcz.github.io/prolfqua/reference/StrategyBase.md)
 -\> `StrategyLogistf`
 
+## Public fields
+
+- `weights`:
+
+  optional column name with per-row weights; rows with identical
+  predictors and response are collapsed into one row whose frequency
+  weight is the sum of their weights
+
 ## Methods
 
 ### Public methods
@@ -116,7 +124,12 @@ Create a new StrategyLogistf
 
 #### Usage
 
-    StrategyLogistf$new(modelstr, model_name = "logistf", control = list())
+    StrategyLogistf$new(
+      modelstr,
+      model_name = "logistf",
+      control = list(),
+      weights = NULL
+    )
 
 #### Arguments
 
@@ -132,6 +145,10 @@ Create a new StrategyLogistf
 
   named list of convergence controls, see
   [`strategy_logistf`](https://fgcz.github.io/prolfqua/reference/strategy.md)
+
+- `weights`:
+
+  optional column name with per-row weights; NULL counts every row once
 
 ------------------------------------------------------------------------
 
@@ -207,5 +224,5 @@ The objects of this class are cloneable with this method.
 strat <- StrategyLogistf$new("bin_resp ~ condition")
 strat$formula
 #> bin_resp ~ condition
-#> <environment: 0x5ed3f1b27048>
+#> <environment: 0x5b15f98d91c0>
 ```

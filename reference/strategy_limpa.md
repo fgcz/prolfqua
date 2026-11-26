@@ -13,7 +13,8 @@ strategy_limpa(
   trend = FALSE,
   robust = FALSE,
   plot = FALSE,
-  span = NULL
+  span = NULL,
+  weights = NULL
 )
 ```
 
@@ -45,12 +46,18 @@ strategy_limpa(
 
   lowess smoother span (NULL = auto)
 
+- weights:
+
+  value column names (e.g. the identification confidence) whose product
+  is passed as `prior.weights`; cells without a value (imputed) get
+  weight 1. Default `NULL` (no prior weights).
+
 ## Value
 
 a
 [StrategyLimpa](https://fgcz.github.io/prolfqua/reference/StrategyLimpa.md)
-object holding the formula, model name, `eBayes()` options, plot flag
-and span.
+object holding the formula, model name, `eBayes()` options, plot flag,
+span and weights.
 
 ## See also
 
@@ -132,7 +139,7 @@ Other modelling:
 strat <- strategy_limpa("abundance ~ group_")
 strat$formula
 #> abundance ~ group_
-#> <environment: 0x5ed41e84f1f8>
+#> <environment: 0x5b1608793178>
 strat$model_name
 #> [1] "limpa"
 ```

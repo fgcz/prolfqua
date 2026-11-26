@@ -38,8 +38,10 @@ strategy_limma(
 
 - weights:
 
-  either a character string (column name in annotation for per-sample
-  weights) or a numeric matrix (proteins x samples) passed to
+  a column name (a sample annotation column gives per-sample weights, a
+  value column such as `nr_children` gives a proteins x samples matrix),
+  several value column names (their product), or a numeric matrix
+  (proteins x samples) passed to
   [`lmFit`](https://rdrr.io/pkg/limma/man/lmFit.html). Default `NULL`
   (no weights).
 
@@ -129,7 +131,7 @@ Other modelling:
 strat <- strategy_limma("abundance ~ group_")
 strat$formula
 #> abundance ~ group_
-#> <environment: 0x5ed41aa8b388>
+#> <environment: 0x5b15e96ea860>
 strat$model_name
 #> [1] "limma"
 ```

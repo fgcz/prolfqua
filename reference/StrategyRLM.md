@@ -87,9 +87,19 @@ Other modelling:
 [`StrategyBase`](https://fgcz.github.io/prolfqua/reference/StrategyBase.md)
 -\> `StrategyRLM`
 
+## Public fields
+
+- `weights`:
+
+  optional character vector naming columns in the data; their product is
+  passed as per-observation prior weights to
+  [`rlm`](https://rdrr.io/pkg/MASS/man/rlm.html) (inverse variances).
+
 ## Methods
 
 ### Public methods
+
+- [`StrategyRLM$new()`](#method-StrategyRLM-initialize)
 
 - [`StrategyRLM$sigma()`](#method-StrategyRLM-sigma)
 
@@ -99,10 +109,43 @@ Inherited methods
 
 - [`StrategyBase$contrast_fun()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-contrast_fun)
 - [`StrategyBase$df_residual()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-df_residual)
-- [`StrategyBase$initialize()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-initialize)
 - [`StrategyBase$isSingular()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-isSingular)
 - [`StrategyBase$model_fun()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-model_fun)
 - [`StrategyBase$zero_residual_variance()`](https://fgcz.github.io/prolfqua/reference/StrategyBase.html#method-zero_residual_variance)
+
+------------------------------------------------------------------------
+
+### `StrategyRLM$new()`
+
+Create a new StrategyRLM
+
+#### Usage
+
+    StrategyRLM$new(
+      modelstr,
+      model_name = "Model",
+      control = list(),
+      weights = NULL
+    )
+
+#### Arguments
+
+- `modelstr`:
+
+  model formula string
+
+- `model_name`:
+
+  name of model
+
+- `control`:
+
+  named list with `maxit` and `acc` of
+  [`rlm`](https://rdrr.io/pkg/MASS/man/rlm.html)
+
+- `weights`:
+
+  optional character vector naming weight columns in the data
 
 ------------------------------------------------------------------------
 
@@ -154,5 +197,5 @@ The objects of this class are cloneable with this method.
 strat <- StrategyRLM$new("Intensity ~ condition", model_name = "parallel design")
 strat$formula
 #> Intensity ~ condition
-#> <environment: 0x5ed3f4333ce8>
+#> <environment: 0x5b15e6da8aa8>
 ```

@@ -115,6 +115,11 @@ Other modelling:
 
   method to use for p.value adjustment
 
+- `child_weights`:
+
+  data frame with the peptide-level `subject_id` columns and a column
+  `weight`, one weight per peptide, or NULL for equal weights
+
 ## Methods
 
 ### Public methods
@@ -155,7 +160,8 @@ initialize
     ContrastsROPECA$new(
       Contrast,
       model_name = "ROPECA",
-      p.adjust = prolfqua::adjust_p_values
+      p.adjust = prolfqua::adjust_p_values,
+      child_weights = NULL
     )
 
 #### Arguments
@@ -171,6 +177,15 @@ initialize
 - `p.adjust`:
 
   function to use for p.value adjustment
+
+- `child_weights`:
+
+  data frame with the peptide-level `subject_id` columns and a column
+  `weight`, one weight per peptide (e.g. its identification confidence).
+  The protein fold change, statistic and signed p-value are then
+  weighted medians, and the beta distribution uses the effective number
+  of peptides, (sum w)^2 / sum w^2, rounded down. NULL (default) weights
+  all peptides equally.
 
 ------------------------------------------------------------------------
 

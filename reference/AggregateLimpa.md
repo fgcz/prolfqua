@@ -288,12 +288,14 @@ agg$lfq_agg$data_wide()
 #>     hierarchy_keys: function () 
 #>     hierarchy_keys_depth: function (names = TRUE) 
 #>     id_vars: function () 
-#>     ident_q_value: qValue
 #>     ident_score: 
+#>     identification_confidence: identification_confidence
+#>     identification_confidence_feature: identification_confidence_feature
 #>     is_response_transformed: TRUE
 #>     min_peptides_protein: 2
 #>     norm_value: NULL
 #>     nr_children: nr_children_protein_Id
+#>     nr_children_feature: nr_children_feature
 #>     opt_mz: 
 #>     opt_rt: 
 #>     opt_se: limpa_se

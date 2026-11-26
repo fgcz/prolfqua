@@ -136,7 +136,13 @@ initialize
 
 #### Usage
 
-    ContrastsLmerNestedFacade$new(lfqdata, modelstr, contrasts, control = list())
+    ContrastsLmerNestedFacade$new(
+      lfqdata,
+      modelstr,
+      contrasts,
+      control = list(),
+      weights = .confidence_weights(lfqdata)
+    )
 
 #### Arguments
 
@@ -159,6 +165,11 @@ initialize
 
   named list of convergence controls, see
   [`strategy_lmer`](https://fgcz.github.io/prolfqua/reference/strategy.md)
+
+- `weights`:
+
+  column names whose product gives the per-observation weights (default:
+  the identification confidence). Pass `NULL` for unweighted.
 
 ------------------------------------------------------------------------
 

@@ -157,7 +157,7 @@ results_protein_2f <- bind_rows(
     ## condition number 4.7214e-17); contrast=T_C_gv_KO (pseudoinverse used at 1;
     ## neighborhood radius 1; reciprocal condition number 2.9356e-17);
     ## contrast=WT_KO_comp (pseudoinverse used at 1; neighborhood radius 1; reciprocal
-    ## condition number 6.0112e-17)
+    ## condition number 4.5868e-17)
 
 ``` r
 results_protein_2f |>
@@ -304,7 +304,7 @@ missing_all_2f <- dplyr::bind_rows(
     ## condition number 4.7214e-17); contrast=T_C_gv_KO (pseudoinverse used at 1;
     ## neighborhood radius 1; reciprocal condition number 2.9356e-17);
     ## contrast=WT_KO_comp (pseudoinverse used at 1; neighborhood radius 1; reciprocal
-    ## condition number 6.0112e-17)
+    ## condition number 4.5868e-17)
 
 ``` r
 missing_all_2f |>

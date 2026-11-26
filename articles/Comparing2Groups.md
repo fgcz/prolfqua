@@ -32,20 +32,22 @@ xx
 ```
 
     ## $data
-    ## # A tibble: 1,200 × 7
-    ##    sample sampleName group_ protein_Id  abundance qValue nrPeptides
-    ##    <chr>  <chr>      <chr>  <chr>           <dbl>  <dbl>      <dbl>
-    ##  1 A_V1   A_V1       A      0EfVhX~3967      20.4      0          2
-    ##  2 A_V1   A_V1       A      0m5WN4~6025      16.4      0          7
-    ##  3 A_V1   A_V1       A      0YSKpy~2865      NA       NA         NA
-    ##  4 A_V1   A_V1       A      3QLHfm~8938      23.0      0          1
-    ##  5 A_V1   A_V1       A      3QYop0~7543      23.1      0          7
-    ##  6 A_V1   A_V1       A      76k03k~7094      25.5      0          4
-    ##  7 A_V1   A_V1       A      7cbcrd~7351      27.1      0          2
-    ##  8 A_V1   A_V1       A      7QuTub~1867      18.4      0          4
-    ##  9 A_V1   A_V1       A      7soopj~5352      19.5      0          2
-    ## 10 A_V1   A_V1       A      7zeekV~7127      20.6      0          8
+    ## # A tibble: 1,200 × 9
+    ##    sample sampleName group_ protein_Id  abundance identification_confidence
+    ##    <chr>  <chr>      <chr>  <chr>           <dbl>                     <dbl>
+    ##  1 A_V1   A_V1       A      0EfVhX~3967      20.4                         1
+    ##  2 A_V1   A_V1       A      0m5WN4~6025      16.4                         1
+    ##  3 A_V1   A_V1       A      0YSKpy~2865      NA                          NA
+    ##  4 A_V1   A_V1       A      3QLHfm~8938      23.0                         1
+    ##  5 A_V1   A_V1       A      3QYop0~7543      23.1                         1
+    ##  6 A_V1   A_V1       A      76k03k~7094      25.5                         1
+    ##  7 A_V1   A_V1       A      7cbcrd~7351      27.1                         1
+    ##  8 A_V1   A_V1       A      7QuTub~1867      18.4                         1
+    ##  9 A_V1   A_V1       A      7soopj~5352      19.5                         1
+    ## 10 A_V1   A_V1       A      7zeekV~7127      20.6                         1
     ## # ℹ 1,190 more rows
+    ## # ℹ 3 more variables: identification_confidence_feature <dbl>,
+    ## #   nrPeptides <dbl>, nr_children_feature <dbl>
     ## 
     ## $config
     ## <AnalysisConfiguration>
@@ -64,12 +66,14 @@ xx
     ##     hierarchy_keys: function () 
     ##     hierarchy_keys_depth: function (names = TRUE) 
     ##     id_vars: function () 
-    ##     ident_q_value: qValue
     ##     ident_score: 
+    ##     identification_confidence: identification_confidence
+    ##     identification_confidence_feature: identification_confidence_feature
     ##     is_response_transformed: FALSE
     ##     min_peptides_protein: 2
     ##     norm_value: NULL
     ##     nr_children: nrPeptides
+    ##     nr_children_feature: nr_children_feature
     ##     opt_mz: 
     ##     opt_rt: 
     ##     opt_se: 

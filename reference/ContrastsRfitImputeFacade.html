@@ -17,7 +17,8 @@ donor covariance matrices cannot be aligned by coefficient name, the
 rescue is skipped and those proteins remain in get_missing()
 rather than carrying an lm-specific approximation.
 No observation weights (rfit has no weights argument),
-matching plain rfit.
+matching plain rfit; a message says so when the identification
+confidence is not 1 everywhere.
 
 
 modelName is the facade key &quot;rfit_impute&quot;; rescued rows are
@@ -40,7 +41,8 @@ donor covariance matrices cannot be aligned by coefficient name, the
 rescue is skipped and those proteins remain in get_missing()
 rather than carrying an lm-specific approximation.
 No observation weights (rfit has no weights argument),
-matching plain rfit.
+matching plain rfit; a message says so when the identification
+confidence is not 1 everywhere.
 
 
 modelName is the facade key &quot;rfit_impute&quot;; rescued rows are
@@ -115,7 +117,8 @@ donor covariance matrices cannot be aligned by coefficient name, the
 rescue is skipped and those proteins remain in <code>get_missing()</code>
 rather than carrying an <code>lm</code>-specific approximation.</p></li>
 <li><p>No observation weights (<code>rfit</code> has no <code>weights</code> argument),
-matching plain <code>rfit</code>.</p></li>
+matching plain <code>rfit</code>; a message says so when the identification
+confidence is not 1 everywhere.</p></li>
 </ul><p><code>modelName</code> is the facade key <code>"rfit_impute"</code>; rescued rows are
 flagged in the <code>estimate_type</code> column as <code>"lod_imputed"</code>, the same
 convention used by <code><a href="ContrastsLMImputeFacade.html">ContrastsLMImputeFacade</a></code>.</p>

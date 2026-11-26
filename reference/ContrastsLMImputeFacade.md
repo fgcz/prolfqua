@@ -139,7 +139,7 @@ initialize
       lod = NULL,
       borrow_method = c("sigma", "vcov"),
       df_method = c("observed", "borrowed"),
-      weights = lfqdata$nr_children_col()
+      weights = .default_weights(lfqdata)
     )
 
 #### Arguments
@@ -172,8 +172,9 @@ initialize
 
 - `weights`:
 
-  column name for per-observation weights (default:
-  `lfqdata$nr_children_col()`). Pass `NULL` for unweighted.
+  column names whose product gives the per-observation weights (default:
+  the child count times the identification confidence). Pass `NULL` for
+  unweighted.
 
 ------------------------------------------------------------------------
 
