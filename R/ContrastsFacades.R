@@ -161,10 +161,13 @@
 }
 
 #' The identification confidence column the models use: NULL when \code{use_identification_confidence} is FALSE
+#'
+#' Only an explicit FALSE turns it off: a configuration without the field (e.g. one saved before it existed) uses the
+#' confidence, as the default does.
 #' @param config AnalysisConfiguration
 #' @noRd
 .used_confidence <- function(config) {
-  if (isTRUE(config$use_identification_confidence)) config$identification_confidence else NULL
+  if (isFALSE(config$use_identification_confidence)) NULL else config$identification_confidence
 }
 
 #' Tell that a backend without observation weights ignores the identification confidence

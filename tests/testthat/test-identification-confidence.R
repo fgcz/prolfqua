@@ -475,3 +475,12 @@ test_that("use_identification_confidence = FALSE fits firth as with confidence 1
   expect_equal(off$diff, one$diff)
   expect_equal(off$p.value, one$p.value)
 })
+
+test_that("only an explicit use_identification_confidence = FALSE turns the confidence off", {
+  config <- AnalysisConfiguration$new()
+  expect_equal(.used_confidence(config), "identification_confidence")
+  config$use_identification_confidence <- NULL
+  expect_equal(.used_confidence(config), "identification_confidence")
+  config$use_identification_confidence <- FALSE
+  expect_null(.used_confidence(config))
+})
