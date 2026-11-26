@@ -189,12 +189,12 @@ head(fa$get_contrasts())
 #> # A tibble: 6 × 16
 #>   modelName estimate_type protein_Id  contrast  sigma    df      diff   FDR
 #>   <chr>     <chr>         <chr>       <chr>     <dbl> <dbl>     <dbl> <dbl>
-#> 1 firth     observed      0EfVhX~5954 A_vs_Ctrl     1   Inf  4.27e-16 1    
-#> 2 firth     observed      7cbcrd~8305 A_vs_Ctrl     1   Inf  4.27e-16 1    
+#> 1 firth     observed      0EfVhX~5954 A_vs_Ctrl     1   Inf  1.07e-15 1    
+#> 2 firth     observed      7cbcrd~8305 A_vs_Ctrl     1   Inf  1.07e-15 1    
 #> 3 firth     observed      9VUkAq~4562 A_vs_Ctrl     1   Inf -1.35e+ 0 0.949
 #> 4 firth     observed      At886V~3296 A_vs_Ctrl     1   Inf -8.47e- 1 0.949
 #> 5 firth     observed      BEJI92~9143 A_vs_Ctrl     1   Inf -1.35e+ 0 0.949
-#> 6 firth     observed      CGzoYe~2857 A_vs_Ctrl     1   Inf  2.16e-15 1    
+#> 6 firth     observed      CGzoYe~2857 A_vs_Ctrl     1   Inf -4.13e-16 1    
 #> # ℹ 8 more variables: std.error <dbl>, statistic <dbl>, p.value <dbl>,
 #> #   conf.low <dbl>, conf.high <dbl>, avgAbd <dbl>, std.error.unmoderated <dbl>,
 #> #   df.unmoderated <dbl>
@@ -202,24 +202,24 @@ fa$to_wide()
 #> # A tibble: 20 × 5
 #>    protein_Id diff.A_vs_Ctrl p.value.A_vs_Ctrl FDR.A_vs_Ctrl statistic.A_vs_Ctrl
 #>    <chr>               <dbl>             <dbl>         <dbl>               <dbl>
-#>  1 0EfVhX~59…       4.27e-16             1             1                2.03e-16
-#>  2 7cbcrd~83…       4.27e-16             1             1                2.03e-16
+#>  1 0EfVhX~59…       1.07e-15             1             1                5.08e-16
+#>  2 7cbcrd~83…       1.07e-15             1             1                5.08e-16
 #>  3 9VUkAq~45…      -1.35e+ 0             0.449         0.949           -7.58e- 1
 #>  4 At886V~32…      -8.47e- 1             0.522         0.949           -6.40e- 1
 #>  5 BEJI92~91…      -1.35e+ 0             0.449         0.949           -7.58e- 1
-#>  6 CGzoYe~28…       2.16e-15             1.000         1                1.02e-15
+#>  6 CGzoYe~28…      -4.13e-16             1             1               -1.96e-16
 #>  7 CtOJ9t~28…       1.35e+ 0             0.449         0.949            7.58e- 1
 #>  8 DoWup2~29…       2.20e+ 0             0.206         0.949            1.26e+ 0
 #>  9 HC8K98~49…       8.47e- 1             0.522         0.949            6.40e- 1
-#> 10 HvIpHG~40…       4.27e-16             1             1                2.03e-16
+#> 10 HvIpHG~40…       1.07e-15             1             1                5.08e-16
 #> 11 I1Jk2Z~08…      -8.47e- 1             0.522         0.949           -6.40e- 1
-#> 12 JV3Z7t~29…       4.27e-16             1             1                2.03e-16
-#> 13 SGIVBl~95…       4.27e-16             1             1                2.03e-16
-#> 14 r2J0Eh~26…       2.16e-15             1.000         1                1.02e-15
+#> 12 JV3Z7t~29…       1.07e-15             1             1                5.08e-16
+#> 13 SGIVBl~95…       1.07e-15             1             1                5.08e-16
+#> 14 r2J0Eh~26…      -4.13e-16             1             1               -1.96e-16
 #> 15 DuwH7n~34…       8.47e- 1             0.522         0.949            6.40e- 1
-#> 16 Fl4JiV~75…       3.22e-16             1             1                2.54e-16
+#> 16 Fl4JiV~75…      -2.94e-17             1             1               -2.32e-17
 #> 17 JcKVfU~08…      -1.35e+ 0             0.449         0.949           -7.58e- 1
 #> 18 0m5WN4~14…       8.47e- 1             0.522         0.949            6.40e- 1
 #> 19 JfvT8X~27…      -2.20e+ 0             0.206         0.949           -1.26e+ 0
-#> 20 R2i6w7~02…      -1.11e-17             1             1               -8.81e-18
+#> 20 R2i6w7~02…       4.22e-16             1             1                3.33e-16
 ```
