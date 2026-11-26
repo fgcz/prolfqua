@@ -37,6 +37,11 @@ AnalysisConfiguration <- R6::R6Class(
     #' @field identification_confidence_feature column with one identification confidence per feature, the maximum
     #'   of \code{identification_confidence} over samples
     identification_confidence_feature = "identification_confidence_feature",
+    #' @field use_identification_confidence do the models use the identification confidence (default \code{TRUE})?
+    #'   \code{FALSE} leaves it out of the facades' default weights and lets the detection models count every
+    #'   observation once, as in prolfqua 1.9.10; the confidence columns stay in the data. An explicit
+    #'   \code{weights} argument is still used.
+    use_identification_confidence = TRUE,
     #' @field ident_score column with identification score (larger better)
     ident_score = character(),
 

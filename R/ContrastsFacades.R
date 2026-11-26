@@ -149,15 +149,22 @@
 #' @return character vector of weight column names
 #' @noRd
 .default_weights <- function(lfqdata) {
-  c(lfqdata$nr_children_col(), lfqdata$get_config()$identification_confidence)
+  c(lfqdata$nr_children_col(), .used_confidence(lfqdata$get_config()))
 }
 
 #' Default weights of facades that do not weight by child counts: the identification confidence
 #' @param lfqdata [LFQData] object with the data and its configuration
-#' @return the identification confidence column name
+#' @return the identification confidence column name, or NULL
 #' @noRd
 .confidence_weights <- function(lfqdata) {
-  lfqdata$get_config()$identification_confidence
+  .used_confidence(lfqdata$get_config())
+}
+
+#' The identification confidence column the models use: NULL when \code{use_identification_confidence} is FALSE
+#' @param config AnalysisConfiguration
+#' @noRd
+.used_confidence <- function(config) {
+  if (isTRUE(config$use_identification_confidence)) config$identification_confidence else NULL
 }
 
 #' Tell that a backend without observation weights ignores the identification confidence
@@ -165,7 +172,8 @@
 #' @param facade_name facade identity for the message
 #' @noRd
 .inform_unweighted <- function(lfqdata, facade_name) {
-  confidence <- lfqdata$data_long()[[lfqdata$get_config()$identification_confidence]]
+  column <- .used_confidence(lfqdata$get_config())
+  confidence <- if (is.null(column)) NULL else lfqdata$data_long()[[column]]
   if (!is.null(confidence) && any(confidence < 1, na.rm = TRUE)) {
     inform_prolfqua(facade_name, ": Rfit takes no observation weights; the identification confidence is not used.")
   }

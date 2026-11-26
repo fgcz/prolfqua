@@ -44,15 +44,19 @@ build_model_glm_protein <- function(lfqdata, modelstr, control = list()) {
 #' An observed row (detection 1) with identification confidence c and feature-level confidence c_f becomes a
 #' detection with weight c and a non-detection with weight c_f - c: a doubtful detection counts only partly. A
 #' missing row becomes a non-detection with weight c_f, so a feature that is probably a false identification counts
-#' little either way. Rows with weight 0 are dropped; with confidence 1 everywhere the rows are unchanged, with
-#' weight 1.
+#' little either way. Rows with weight 0 are dropped; with confidence 1 everywhere, or `confidence` NULL, the rows
+#' are unchanged, with weight 1.
 #' @param data long-format data with one binary detection row per subject and sample
 #' @param bin_resp binary detection column
-#' @param confidence identification confidence column
+#' @param confidence identification confidence column, or NULL to count every row once
 #' @param confidence_feature feature-level identification confidence column
 #' @return `data` with the column `.detection_weight`, observed rows split in two
 #' @noRd
 .detection_weight_rows <- function(data, bin_resp, confidence, confidence_feature) {
+  if (is.null(confidence)) {
+    data$.detection_weight <- 1
+    return(data)
+  }
   observed <- data[data[[bin_resp]] == 1, , drop = FALSE]
   absent <- data[data[[bin_resp]] == 0, , drop = FALSE]
   detected <- observed
@@ -83,7 +87,7 @@ build_model_glm_protein <- function(lfqdata, modelstr, control = list()) {
   rows <- .detection_weight_rows(
     data$data_long(),
     config$bin_resp,
-    config$identification_confidence,
+    .used_confidence(config),
     config$identification_confidence_feature
   )
   strategy <- strategy_logistf(formula, control = control, weights = ".detection_weight")

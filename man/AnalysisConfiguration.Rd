@@ -46,6 +46,11 @@ in [0, 1], larger is better (e.g. 1 - PEP); used as model weight}
     \item{\code{identification_confidence_feature}}{column with one identification confidence per feature, the maximum
 of \code{identification_confidence} over samples}
 
+    \item{\code{use_identification_confidence}}{do the models use the identification confidence (default \code{TRUE})?
+\code{FALSE} leaves it out of the facades' default weights and lets the detection models count every
+observation once, as in prolfqua 1.9.10; the confidence columns stay in the data. An explicit
+\code{weights} argument is still used.}
+
     \item{\code{ident_score}}{column with identification score (larger better)}
 
     \item{\code{opt_rt}}{optional column with rt information}

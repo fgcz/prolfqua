@@ -361,3 +361,117 @@ test_that("rfit says that it ignores the identification confidence", {
     "Rfit takes no observation weights"
   )
 })
+
+test_that("use_identification_confidence = FALSE drops the confidence from the default weights", {
+  istar <- sim_lfq_data_protein_config(n_proteins = 20, seed = 6)
+  data <- with_random_confidence(istar$data, "protein_Id")
+  istar$config$use_identification_confidence <- FALSE
+  lfq <- LFQData$new(data, istar$config)
+  lfq$rename_response("transformedIntensity")
+  for (method in c("lm", "limma", "deqms")) {
+    off <- build_contrast_analysis(lfq, "~ group_", contrast_a, method = method)$get_contrasts()
+    counts <- build_contrast_analysis(lfq, "~ group_", contrast_a, method = method, weights = "nrPeptides")
+    expect_equal(off$diff, counts$get_contrasts()$diff, info = method)
+    expect_equal(off$p.value, counts$get_contrasts()$p.value, info = method)
+  }
+  methods <- c("rlm", "deqms_voom", if (requireNamespace("limpa", quietly = TRUE)) "limpa")
+  for (method in methods) {
+    off <- suppressWarnings(build_contrast_analysis(lfq, "~ group_", contrast_a, method = method))$get_contrasts()
+    unweighted <- suppressWarnings(build_contrast_analysis(
+      lfq,
+      "~ group_",
+      contrast_a,
+      method = method,
+      weights = NULL
+    ))
+    expect_equal(off$diff, unweighted$get_contrasts()$diff, info = method)
+    expect_equal(off$p.value, unweighted$get_contrasts()$p.value, info = method)
+  }
+})
+
+test_that("use_identification_confidence = FALSE fits the nested facades unweighted", {
+  istar <- sim_lfq_data_peptide_config(n_proteins = 15, seed = 10)
+  data <- with_random_confidence(istar$data, c("protein_Id", "peptide_Id"))
+  istar$config$use_identification_confidence <- FALSE
+  lfq <- LFQData$new(data, istar$config)
+  lfq <- lfq$get_Transformer()$log2()$lfq
+  methods <- c("ropeca_nested", "ropecaV2_nested")
+  if (requireNamespace("lme4", quietly = TRUE) && requireNamespace("lmerTest", quietly = TRUE)) {
+    methods <- c(methods, "lmer_nested")
+  }
+  for (method in methods) {
+    off <- suppressWarnings(build_contrast_analysis(lfq, "~ group_", contrast_a, method = method))
+    unweighted <- suppressWarnings(build_contrast_analysis(
+      lfq,
+      "~ group_",
+      contrast_a,
+      method = method,
+      weights = NULL
+    ))
+    expect_equal(off$get_contrasts()$diff, unweighted$get_contrasts()$diff, info = method)
+    expect_equal(off$get_contrasts()$p.value, unweighted$get_contrasts()$p.value, info = method)
+  }
+})
+
+test_that("use_identification_confidence = FALSE lets the detection models count every observation once", {
+  istar <- sim_lfq_data_peptide_config(n_proteins = 6, seed = 11, weight_missing = 0.5)
+  data <- with_random_confidence(istar$data, c("protein_Id", "peptide_Id"))
+  ones <- data
+  ones$identification_confidence <- ifelse(is.na(ones$abundance), NA, 1)
+  ones$identification_confidence_feature <- 1
+  config_off <- istar$config$clone(deep = TRUE)
+  config_off$use_identification_confidence <- FALSE
+  off <- LFQData$new(data, config_off)
+  counts_off <- .summarize_detection_counts(.prepare_detection_lfqdata(off))
+  counts_one <- .summarize_detection_counts(.prepare_detection_lfqdata(LFQData$new(ones, istar$config)))
+  expect_equal(counts_off, counts_one)
+  expect_true(all(counts_off$detected == round(counts_off$detected)))
+
+  rows <- .detection_weight_rows(data.frame(id = c("a", "b"), bin_resp = c(1L, 0L)), "bin_resp", NULL, NULL)
+  expect_equal(rows$.detection_weight, c(1, 1))
+  expect_equal(rows$bin_resp, c(1L, 0L))
+
+  off_fit <- suppressWarnings(build_contrast_analysis(off, "~ group_", contrast_a, method = "binomial_nested"))
+  one_fit <- suppressWarnings(build_contrast_analysis(
+    LFQData$new(ones, istar$config),
+    "~ group_",
+    contrast_a,
+    method = "binomial_nested"
+  ))
+  expect_equal(off_fit$get_contrasts()$diff, one_fit$get_contrasts()$diff)
+  expect_equal(off_fit$get_contrasts()$p.value, one_fit$get_contrasts()$p.value)
+})
+
+test_that("use_identification_confidence = FALSE silences the rfit message", {
+  skip_if_not_installed("Rfit")
+  istar <- sim_lfq_data_protein_config(n_proteins = 10, seed = 12)
+  data <- with_random_confidence(istar$data, "protein_Id")
+  istar$config$use_identification_confidence <- FALSE
+  lfq <- LFQData$new(data, istar$config)
+  lfq$rename_response("transformedIntensity")
+  withr::local_options(prolfqua.verbose = TRUE)
+  expect_no_message(
+    build_contrast_analysis(lfq, "~ group_", contrast_a, method = "rfit"),
+    message = "Rfit takes no observation weights"
+  )
+})
+
+test_that("use_identification_confidence = FALSE fits firth as with confidence 1", {
+  skip_if_not_installed("logistf")
+  istar <- sim_lfq_data_protein_config(n_proteins = 10, seed = 13, weight_missing = 0.5)
+  data <- with_random_confidence(istar$data, "protein_Id")
+  ones <- data
+  ones$identification_confidence <- ifelse(is.na(ones$abundance), NA, 1)
+  ones$identification_confidence_feature <- 1
+  config_off <- istar$config$clone(deep = TRUE)
+  config_off$use_identification_confidence <- FALSE
+  fit <- function(data, config) {
+    analysis <- suppressWarnings(build_contrast_analysis(LFQData$new(data, config), "~ group_", contrast_a, "firth"))
+    dplyr::arrange(analysis$get_contrasts(), .data$protein_Id)
+  }
+  off <- fit(data, config_off)
+  one <- fit(ones, istar$config)
+  expect_equal(off$protein_Id, one$protein_Id)
+  expect_equal(off$diff, one$diff)
+  expect_equal(off$p.value, one$p.value)
+})

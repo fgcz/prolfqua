@@ -4,7 +4,8 @@
 #'
 #' Counts expected true detections: a detected child counts with its identification confidence in the sample, and
 #' every child counts towards the available children with its feature-level identification confidence. With
-#' confidence 1 everywhere these are the numbers of detected and available children.
+#' confidence 1 everywhere, or \code{use_identification_confidence} FALSE, these are the numbers of detected and
+#' available children.
 #' @param lfqdata [LFQData] object with the data and its configuration
 #' @noRd
 .summarize_detection_counts <- function(lfqdata) {
@@ -13,19 +14,21 @@
   }
   config <- lfqdata$get_config()
   bin_resp <- config$bin_resp
-  confidence <- config$identification_confidence
-  confidence_feature <- config$identification_confidence_feature
+  confidence <- .used_confidence(config)
+  data <- lfqdata$data_long()
+  data$.confidence <- if (is.null(confidence)) 1 else data[[confidence]]
+  data$.confidence_feature <- if (is.null(confidence)) 1 else data[[config$identification_confidence_feature]]
   grouping <- unique(c(
     lfqdata$subject_id(),
     lfqdata$sample_name(),
     lfqdata$factor_keys()
   ))
 
-  counts <- lfqdata$data_long() |>
+  counts <- data |>
     dplyr::group_by(dplyr::across(dplyr::all_of(grouping))) |>
     dplyr::summarise(
-      detected = sum(.data[[confidence]][.data[[bin_resp]] == 1]),
-      available = sum(.data[[confidence_feature]]),
+      detected = sum(.data$.confidence[.data[[bin_resp]] == 1]),
+      available = sum(.data$.confidence_feature),
       .groups = "drop"
     ) |>
     dplyr::mutate(undetected = .data$available - .data$detected)
