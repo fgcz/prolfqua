@@ -49,7 +49,7 @@ names(values)
 #>  [9] "nr_children_feature"               "nr_children"                      
 #> [11] "opt_se"                            "opt_mz"                           
 #> [13] "opt_rt"                            "ident_score"                      
-#> [15] "identification_confidence_feature" "identification_confidence"        
-#> [17] "sample_name"                       "file_name"                        
-#> [19] "sep"                              
+#> [15] "use_identification_confidence"     "identification_confidence_feature"
+#> [17] "identification_confidence"         "sample_name"                      
+#> [19] "file_name"                         "sep"                              
 ```

@@ -2,10 +2,11 @@
 
 Transformations of the response of an
 [LFQData](https://fgcz.github.io/prolfqua/reference/LFQData.md) object:
-log2, robust scaling (`robscale()`), centring to a reference subset,
-subtraction of sample offsets and any function applied to the intensity
-array or matrix. Obtained with `LFQData$get_Transformer()`; methods
-return the transformer, the result is in `$lfq`.
+log2, robust scaling (`robscale()`), centring to a reference subset or
+to the features with the lowest CV (`robscale_lowcv()`), subtraction of
+sample offsets and any function applied to the intensity array or
+matrix. Obtained with `LFQData$get_Transformer()`; methods return the
+transformer, the result is in `$lfq`.
 
 ## Value
 
@@ -17,18 +18,24 @@ Centring is an explicit transformation step, never applied by a model.
 `robscale()` and `robscale_subset()` centre each sample at its median
 (and scale by its MAD); `preserve_mean = TRUE` adds the overall mean
 back, so abundances stay on the original level, `FALSE` centres them at
-zero. `center_to_reference()` and `subtract_sample_offsets()` shift each
-sample by one offset. A per-sample shift moves every feature of that
-sample by the same amount: a contrast between groups changes by the
-difference of the mean offsets of the groups, and a shift common to all
-samples (such as `preserve_mean`) changes the average abundance
-(`avgAbd`) but not the contrast estimates, standard errors or p-values.
+zero. `center_to_reference()`, `robscale_lowcv()` and
+`subtract_sample_offsets()` shift each sample by one offset. A
+per-sample shift moves every feature of that sample by the same amount:
+a contrast between groups changes by the difference of the mean offsets
+of the groups, and a shift common to all samples (such as
+`preserve_mean`) changes the average abundance (`avgAbd`) but not the
+contrast estimates, standard errors or p-values.
 
 ## Public fields
 
 - `lfq`:
 
   LFQData object
+
+- `lowcv_features`:
+
+  hierarchy keys of the low-CV features of the last `robscale_lowcv()`
+  call; `NULL` until it is called
 
 ## Methods
 
@@ -47,6 +54,8 @@ samples (such as `preserve_mean`) changes the average abundance
 - [`LFQDataTransformer$center_to_reference()`](#method-LFQDataTransformer-center_to_reference)
 
 - [`LFQDataTransformer$subtract_sample_offsets()`](#method-LFQDataTransformer-subtract_sample_offsets)
+
+- [`LFQDataTransformer$robscale_lowcv()`](#method-LFQDataTransformer-robscale_lowcv)
 
 - [`LFQDataTransformer$intensity_array()`](#method-LFQDataTransformer-intensity_array)
 
@@ -214,6 +223,57 @@ LFQDataTransformer (self, invisibly)
 
 ------------------------------------------------------------------------
 
+### `LFQDataTransformer$robscale_lowcv()`
+
+Centre each sample on the features with the lowest CV across all
+samples, as DIA-NN's global cross-run normalization does. It follows the
+LFQ assumption that most features are unchanged, so the most stable ones
+carry only the sample offset, and uses no group labels. Works on the
+log-transformed response at the hierarchy level of the data (precursor,
+peptide or protein).
+
+Each sample is first centred on its median over all observed features.
+The candidates are the features observed in every sample; the CV of a
+candidate is the standard deviation of its centred log2 values, and the
+`fraction` of candidates with the lowest CV are the low-CV features.
+Each sample is then shifted, with `subtract_sample_offsets()`, by the
+median log2 intensity of its low-CV features minus the mean of these
+medians, so the overall level stays that of the input. Centring only:
+unlike `robscale()`, no scaling by the MAD.
+
+DIA-NN equalizes the sums of the raw intensities of these features,
+which the most abundant ones dominate; the median of the log2
+intensities used here is robust to them. The selected features have a
+low CV by construction, so a low-CV diagnostic after normalization
+cannot assess the method.
+
+References: Demichev et al. (2020), DIA-NN: neural networks and
+interference correction enable deep proteome coverage in high
+throughput, Nat Methods 17:41–44,
+[doi:10.1038/s41592-019-0638-x](https://doi.org/10.1038/s41592-019-0638-x)
+, Methods of the preprint
+[doi:10.1101/282699](https://doi.org/10.1101/282699) ; the default
+fraction of 0.4 is DIA-NN's `--norm-fraction`
+(<https://github.com/vdemichev/DiaNN/discussions/142>).
+
+#### Usage
+
+    LFQDataTransformer$robscale_lowcv(fraction = 0.4)
+
+#### Arguments
+
+- `fraction`:
+
+  share of the candidate features used as low-CV features, a number in
+  (0, 1\]
+
+#### Returns
+
+LFQDataTransformer (self, invisibly); the field `lowcv_features` holds
+their hierarchy keys
+
+------------------------------------------------------------------------
+
 ### `LFQDataTransformer$intensity_array()`
 
 Transforms intensities
@@ -367,15 +427,15 @@ if (requireNamespace("vsn", quietly = TRUE)) {
 }
 #> $medians
 #>     A_V1     A_V2     A_V3     A_V4     B_V1     B_V2     B_V3     B_V4 
-#> 5.067592 5.060373 5.052612 5.063121 5.106810 5.128959 5.089511 5.100129 
+#> 5.010572 5.002975 4.994914 5.006013 5.051370 5.074292 5.033370 5.044391 
 #>  Ctrl_V1  Ctrl_V2  Ctrl_V3  Ctrl_V4 
-#> 5.098851 5.067436 5.089542 5.072697 
+#> 5.043057 5.010404 5.033362 5.015886 
 #> 
 #> $mads
 #>      A_V1      A_V2      A_V3      A_V4      B_V1      B_V2      B_V3      B_V4 
-#> 0.2356539 0.2539392 0.2391802 0.2462082 0.2603902 0.2549782 0.2228186 0.2342742 
+#> 0.2443545 0.2638516 0.2494166 0.2556915 0.2710033 0.2638501 0.2316761 0.2437389 
 #>   Ctrl_V1   Ctrl_V2   Ctrl_V3   Ctrl_V4 
-#> 0.2618927 0.2316253 0.2412538 0.2422008 
+#> 0.2738565 0.2415127 0.2514121 0.2512947 
 #> 
 if (requireNamespace("preprocessCore", quietly = TRUE)) {
 quant <- function(y){
@@ -440,4 +500,21 @@ samples <- unique(tr$lfq$data_long()[[tr$lfq$sample_name()]])
 offsets <- setNames(numeric(length(samples)), samples)
 offsets[1] <- 1
 tr$subtract_sample_offsets(offsets)
+
+# Centre each sample on the 40% of complete features with the lowest CV
+tr <- lfqdata$get_Transformer()$log2()$robscale_lowcv(fraction = 0.4)
+#> Transformed response column added: log2_abundance
+#> robscale_lowcv: 21 low-CV features of 53 features observed in all samples.
+head(tr$lowcv_features)
+#> # A tibble: 6 × 2
+#>   protein_Id  peptide_Id
+#>   <chr>       <chr>     
+#> 1 7QuTub~5556 3J034g5S  
+#> 2 I1Jk2Z~7286 cWfUjtqc  
+#> 3 JV3Z7t~7426 9MNYJmuf  
+#> 4 7soopj~3451 IhYJDAeS  
+#> 5 7QuTub~5556 3RXjqOh9  
+#> 6 7QuTub~5556 reWVMXDs  
+tr$lfq$response()
+#> [1] "log2_abundance_offset_adjusted"
 ```

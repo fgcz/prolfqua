@@ -46,6 +46,14 @@ Other configuration:
   column with one identification confidence per feature, the maximum of
   `identification_confidence` over samples
 
+- `use_identification_confidence`:
+
+  do the models use the identification confidence (default `TRUE`)?
+  `FALSE` leaves it out of the facades' default weights and lets the
+  detection models count every observation once, as in prolfqua 1.9.10;
+  the confidence columns stay in the data. An explicit `weights`
+  argument is still used.
+
 - `ident_score`:
 
   column with identification score (larger better)

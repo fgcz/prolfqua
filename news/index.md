@@ -77,6 +77,24 @@
 - `rfit` and `rfit_impute` say in a message that they ignore the
   identification confidence when it is not 1 everywhere; Rfit takes no
   observation weights.
+- `AnalysisConfiguration$use_identification_confidence` (default `TRUE`)
+  switches the identification confidence off in one place: with `FALSE`
+  the facades’ default weights leave it out (`nr_children` alone, or
+  unweighted) and the detection models count every observation once,
+  which gives the models of prolfqua 1.9.10; the confidence stays in the
+  data, and an explicit `weights` argument is still used. In
+  prolfquabenchmark the confidence weights lowered pAUC_10 on IonStar
+  reanalysed with MetaMorpheus/FlashLFQ by 2 to 12 points, where most
+  match-between-runs peaks have a PIP PEP near 1.
+- `LFQDataTransformer$robscale_lowcv(fraction = 0.4)` normalizes without
+  group labels, as DIA-NN’s global normalization does: it centres each
+  sample on the share `fraction` of the features observed in every
+  sample with the lowest CV, keeps the overall level, and stores these
+  features in `$lowcv_features`. On the IonStar peptides
+  (`data_ionstar`) 91% of the low-CV features are human; the median
+  human protein log2 fold change is 0.005 (`robscale()`: 0.031,
+  `robscale_subset()` on the human proteins: 0.038), and null splits
+  give 4.6% of p-values below 0.05, as with the human subset.
 
 ### Documentation
 

@@ -71,6 +71,10 @@
 <li>DEqMS moderation takes the peptide count from <code>nr_children_feature</code>.</li>
 <li>
 <code>rfit</code> and <code>rfit_impute</code> say in a message that they ignore the identification confidence when it is not 1 everywhere; Rfit takes no observation weights.</li>
+<li>
+<code>AnalysisConfiguration$use_identification_confidence</code> (default <code>TRUE</code>) switches the identification confidence off in one place: with <code>FALSE</code> the facades’ default weights leave it out (<code>nr_children</code> alone, or unweighted) and the detection models count every observation once, which gives the models of prolfqua 1.9.10; the confidence stays in the data, and an explicit <code>weights</code> argument is still used. In prolfquabenchmark the confidence weights lowered pAUC_10 on IonStar reanalysed with MetaMorpheus/FlashLFQ by 2 to 12 points, where most match-between-runs peaks have a PIP PEP near 1.</li>
+<li>
+<code>LFQDataTransformer$robscale_lowcv(fraction = 0.4)</code> normalizes without group labels, as DIA-NN’s global normalization does: it centres each sample on the share <code>fraction</code> of the features observed in every sample with the lowest CV, keeps the overall level, and stores these features in <code>$lowcv_features</code>. On the IonStar peptides (<code>data_ionstar</code>) 91% of the low-CV features are human; the median human protein log2 fold change is 0.005 (<code>robscale()</code>: 0.031, <code>robscale_subset()</code> on the human proteins: 0.038), and null splits give 4.6% of p-values below 0.05, as with the human subset.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="documentation-1-9-11">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-9-11"></a></h3>

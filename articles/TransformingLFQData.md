@@ -61,6 +61,7 @@ separately when using an operation that requires a particular scale.
 | `intensity_matrix(.func)` | Apply a matrix function to features in rows and samples in columns. For example, `intensity_matrix(vsn::justvsn)` fits a variance-stabilizing transformation to raw intensities. |
 | `robscale()` | Centre each sample by its median and scale by its relative median absolute deviation. The default restores a common level based on the original medians. |
 | `robscale_subset(lfqsubset)` | Estimate the medians and median absolute deviations from a subset of features and apply them to the full data. |
+| `robscale_lowcv(fraction)` | Centre each sample on the share `fraction` of the features observed in every sample with the lowest CV, as DIA-NN’s global normalization does. Uses no group labels and keeps the overall level. |
 
 ## Calibrate against internal standards
 

@@ -305,6 +305,7 @@ agg$lfq_agg$data_wide()
 #>     sample_name: sampleName
 #>     sep: ~
 #>     set_response: function (col_name) 
+#>     use_identification_confidence: TRUE
 #>     value_vars: function () 
 #>     work_intensity: limpa
 #> 

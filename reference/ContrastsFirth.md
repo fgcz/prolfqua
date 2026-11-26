@@ -316,18 +316,18 @@ ctr$get_contrasts()
 #>    <chr>     <chr>         <chr>       <chr>    <dbl> <dbl>     <dbl> <dbl>
 #>  1 firth     observed      EnbuYk~0350 Avs          1   Inf  1.69e+ 0 0.732
 #>  2 firth     observed      EnbuYk~0350 AvsCtrl      1   Inf  8.47e- 1 1    
-#>  3 firth     observed      NNASGK~1417 Avs          1   Inf  1.52e-15 1    
-#>  4 firth     observed      NNASGK~1417 AvsCtrl      1   Inf  1.07e-15 1    
-#>  5 firth     observed      XYrp6h~5793 Avs          1   Inf  1.52e-15 1    
-#>  6 firth     observed      XYrp6h~5793 AvsCtrl      1   Inf  1.07e-15 1    
+#>  3 firth     observed      NNASGK~1417 Avs          1   Inf -1.26e-15 1    
+#>  4 firth     observed      NNASGK~1417 AvsCtrl      1   Inf  4.27e-16 1    
+#>  5 firth     observed      XYrp6h~5793 Avs          1   Inf -1.26e-15 1    
+#>  6 firth     observed      XYrp6h~5793 AvsCtrl      1   Inf  4.27e-16 1    
 #>  7 firth     observed      quTD7H~4566 Avs          1   Inf  3.04e+ 0 0.732
 #>  8 firth     observed      quTD7H~4566 AvsCtrl      1   Inf  2.20e+ 0 1    
 #>  9 firth     observed      tCZCHm~6695 Avs          1   Inf  1.35e+ 0 0.746
-#> 10 firth     observed      tCZCHm~6695 AvsCtrl      1   Inf -4.13e-16 1    
+#> 10 firth     observed      tCZCHm~6695 AvsCtrl      1   Inf  2.16e-15 1    
 #> 11 firth     observed      tHE075~8231 Avs          1   Inf  8.47e- 1 0.746
 #> 12 firth     observed      tHE075~8231 AvsCtrl      1   Inf  8.47e- 1 1    
 #> 13 firth     observed      7IZdVV~0841 Avs          1   Inf -2.20e+ 0 0.732
-#> 14 firth     observed      7IZdVV~0841 AvsCtrl      1   Inf -2.94e-17 1    
+#> 14 firth     observed      7IZdVV~0841 AvsCtrl      1   Inf  3.22e-16 1    
 #> 15 firth     observed      AZPG26~2091 Avs          1   Inf  2.75e-16 1    
 #> 16 firth     observed      AZPG26~2091 AvsCtrl      1   Inf  5.58e-16 1    
 #> 17 firth     observed      AoNKbb~6908 Avs          1   Inf  8.47e- 1 0.746

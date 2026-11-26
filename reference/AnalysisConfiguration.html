@@ -103,6 +103,13 @@ in [0, 1], larger is better (e.g. 1 - PEP); used as model weight</p></dd>
 of <code>identification_confidence</code> over samples</p></dd>
 
 
+    <dt><code>use_identification_confidence</code></dt>
+<dd><p>do the models use the identification confidence (default <code>TRUE</code>)?
+<code>FALSE</code> leaves it out of the facades' default weights and lets the detection models count every
+observation once, as in prolfqua 1.9.10; the confidence columns stay in the data. An explicit
+<code>weights</code> argument is still used.</p></dd>
+
+
     <dt><code>ident_score</code></dt>
 <dd><p>column with identification score (larger better)</p></dd>
 
