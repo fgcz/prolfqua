@@ -37,3 +37,85 @@ test_that("a shift common to all samples leaves contrasts unchanged; a per-group
   expect_equal(moved$diff[is_avsc], base$diff[is_avsc] - 0.5, tolerance = 1e-10)
   expect_equal(moved$diff[!is_avsc], base$diff[!is_avsc], tolerance = 1e-10)
 })
+
+# robscale_lowcv ----
+
+lowcv_fixture <- function(with_missing = FALSE) {
+  sim <- sim_lfq_data_protein_config(n_proteins = 100, with_missing = with_missing, seed = 42)
+  suppressMessages(LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq)
+}
+
+response_table <- function(lfq) {
+  data <- lfq$data_long()
+  keys <- c(lfq$hierarchy_keys(), lfq$sample_name())
+  out <- data[keys]
+  out$response <- data[[lfq$response()]]
+  dplyr::arrange(out, dplyr::across(dplyr::all_of(keys)))
+}
+
+test_that("robscale_lowcv removes per-sample shifts and keeps the overall level", {
+  withr::local_options(prolfqua.verbose = FALSE)
+  lfq <- lowcv_fixture()
+  samples <- lfq$factors()$sampleName
+  shift <- stats::setNames(seq(0, 2, length.out = length(samples)), samples)
+  shifted <- lfq$get_Transformer()$subtract_sample_offsets(-shift)$lfq
+  base <- lfq$get_Transformer()$robscale_lowcv()
+  moved <- shifted$get_Transformer()$robscale_lowcv()
+  expect_identical(moved$lowcv_features, base$lowcv_features)
+  difference <- response_table(moved$lfq)$response - response_table(base$lfq)$response
+  expect_equal(difference, rep(mean(shift), length(difference)), tolerance = 1e-10)
+})
+
+test_that("low-CV features are the requested share of the features observed in every sample", {
+  withr::local_options(prolfqua.verbose = FALSE)
+  lfq <- lowcv_fixture(with_missing = TRUE)
+  data <- lfq$data_long()
+  n_samples <- dplyr::n_distinct(data$sampleName)
+  observed <- tapply(!is.na(data[[lfq$response()]]), data$protein_Id, sum)
+  complete <- names(observed)[observed == n_samples]
+  expect_gt(length(complete), 0)
+  expect_lt(length(complete), length(observed))
+  tr <- lfq$get_Transformer()$robscale_lowcv(fraction = 0.25)
+  expect_equal(nrow(tr$lowcv_features), round(0.25 * length(complete)))
+  expect_true(all(tr$lowcv_features$protein_Id %in% complete))
+  expect_equal(nrow(lfq$get_Transformer()$robscale_lowcv(fraction = 1)$lowcv_features), length(complete))
+})
+
+test_that("features that differ between groups are not low-CV features", {
+  withr::local_options(prolfqua.verbose = FALSE)
+  lfq <- lowcv_fixture()
+  data <- lfq$data_long()
+  proteins <- unique(data$protein_Id)
+  differential <- proteins[seq(1, length(proteins), by = 3)]
+  in_a <- data$protein_Id %in% differential & data$group_ == "A"
+  data[[lfq$response()]][in_a] <- data[[lfq$response()]][in_a] + 3
+  perturbed <- lfq$get_copy()
+  perturbed$set_data(data)
+  tr <- perturbed$get_Transformer()$robscale_lowcv(fraction = 0.4)
+  expect_equal(nrow(tr$lowcv_features), 40)
+  expect_false(any(tr$lowcv_features$protein_Id %in% differential))
+})
+
+test_that("robscale_lowcv rejects untransformed data, incomplete features and a bad fraction", {
+  withr::local_options(prolfqua.verbose = FALSE)
+  sim <- sim_lfq_data_protein_config(n_proteins = 20, with_missing = FALSE, seed = 42)
+  raw <- suppressMessages(LFQData$new(sim$data, sim$config))
+  expect_error(raw$get_Transformer()$robscale_lowcv(), "log-transformed", class = "prolfqua_error_bad_argument")
+
+  lfq <- lowcv_fixture()
+  expect_error(lfq$get_Transformer()$robscale_lowcv(fraction = 0), class = "prolfqua_error_bad_argument")
+  expect_error(lfq$get_Transformer()$robscale_lowcv(fraction = 1.5), class = "prolfqua_error_bad_argument")
+
+  data <- lfq$data_long()
+  samples <- unique(data$sampleName)
+  protein_index <- match(data$protein_Id, unique(data$protein_Id))
+  missing_sample <- samples[protein_index %% length(samples) + 1]
+  data[[lfq$response()]][data$sampleName == missing_sample] <- NA
+  incomplete <- lfq$get_copy()
+  incomplete$set_data(data)
+  expect_error(
+    incomplete$get_Transformer()$robscale_lowcv(),
+    "observed in every sample",
+    class = "prolfqua_error_bad_argument"
+  )
+})

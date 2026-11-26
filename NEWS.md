@@ -15,6 +15,7 @@
 - Detection models (`binomial_nested`, `binomial_firth_nested`, and so `hurdle_nested`) count expected true detections: a detected peptide counts with its confidence in the sample, and every peptide counts towards the available ones with its feature-level confidence. `firth` turns each observed protein into a detection with weight c and a non-detection with weight c_feature - c.
 - DEqMS moderation takes the peptide count from `nr_children_feature`.
 - `rfit` and `rfit_impute` say in a message that they ignore the identification confidence when it is not 1 everywhere; Rfit takes no observation weights.
+- `LFQDataTransformer$robscale_lowcv(fraction = 0.4)` normalizes without group labels, as DIA-NN's global normalization does: it centres each sample on the share `fraction` of the features observed in every sample with the lowest CV, keeps the overall level, and stores these features in `$lowcv_features`. On the IonStar peptides (`data_ionstar`) 91% of the low-CV features are human; the median human protein log2 fold change is 0.005 (`robscale()`: 0.031, `robscale_subset()` on the human proteins: 0.038), and null splits give 4.6% of p-values below 0.05, as with the human subset.
 
 ## Documentation
 

@@ -3,7 +3,8 @@
 #' Decorate LFQData with Methods for transforming Intensities
 #'
 #' Transformations of the response of an [LFQData] object: log2, robust scaling (`robscale()`), centring to a
-#' reference subset, subtraction of sample offsets and any function applied to the intensity array or matrix.
+#' reference subset or to the features with the lowest CV (`robscale_lowcv()`), subtraction of sample offsets
+#' and any function applied to the intensity array or matrix.
 #' Obtained with `LFQData$get_Transformer()`; methods return the transformer, the result is in `$lfq`.
 #'
 #' @return An R6 class generator.
@@ -94,14 +95,20 @@
 #' offsets[1] <- 1
 #' tr$subtract_sample_offsets(offsets)
 #'
+#' # Centre each sample on the 40% of complete features with the lowest CV
+#' tr <- lfqdata$get_Transformer()$log2()$robscale_lowcv(fraction = 0.4)
+#' head(tr$lowcv_features)
+#' tr$lfq$response()
+#'
 #' @srrstats {G2.16} Log transforms turn zeros into NA and warn on negatives; Inf, -Inf and NaN responses raise a
 #'   classed error before every fit and aggregation. Limit: no option to ignore or remove non-finite values, by design.
 #' @section Centring and contrasts:
 #' Centring is an explicit transformation step, never applied by a model. `robscale()` and `robscale_subset()`
 #' centre each sample at its median (and scale by its MAD); `preserve_mean = TRUE` adds the overall mean back, so
-#' abundances stay on the original level, `FALSE` centres them at zero. `center_to_reference()` and
-#' `subtract_sample_offsets()` shift each sample by one offset. A per-sample shift moves every feature of that
-#' sample by the same amount: a contrast between groups changes by the difference of the mean offsets of the groups,
+#' abundances stay on the original level, `FALSE` centres them at zero. `center_to_reference()`,
+#' `robscale_lowcv()` and `subtract_sample_offsets()` shift each sample by one offset. A per-sample shift
+#' moves every feature of that sample by the same amount: a contrast between groups changes by the difference of the
+#' mean offsets of the groups,
 #' and a shift common to all samples (such as `preserve_mean`) changes the average abundance (`avgAbd`) but not the
 #' contrast estimates, standard errors or p-values.
 #' @srrstats {RE2.3} Centring is available through explicit transformer parameters (`preserve_mean`, reference
@@ -112,6 +119,9 @@ LFQDataTransformer <- R6::R6Class(
   public = list(
     #' @field lfq LFQData object
     lfq = NULL,
+    #' @field lowcv_features hierarchy keys of the low-CV features of the last `robscale_lowcv()` call; `NULL`
+    #'   until it is called
+    lowcv_features = NULL,
     #' @description
     #' initialize
     #' @param lfqdata
@@ -194,6 +204,43 @@ LFQDataTransformer <- R6::R6Class(
       cfg <- self$lfq$get_config()$clone(deep = TRUE)
       cfg$set_response(colname)
       self$lfq <- LFQData$new(data, cfg, prefix = self$lfq$prefix, provenance = self$lfq$get_provenance_log())
+      invisible(self)
+    },
+
+    #' @description
+    #' Centre each sample on the features with the lowest CV across all samples, as DIA-NN's global cross-run
+    #' normalization does. It follows the LFQ assumption that most features are unchanged, so the most stable ones
+    #' carry only the sample offset, and uses no group labels. Works on the log-transformed response at the hierarchy
+    #' level of the data (precursor, peptide or protein).
+    #'
+    #' Each sample is first centred on its median over all observed features. The candidates are the features observed
+    #' in every sample; the CV of a candidate is the standard deviation of its centred log2 values, and the `fraction`
+    #' of candidates with the lowest CV are the low-CV features. Each sample is then shifted, with
+    #' `subtract_sample_offsets()`, by the median log2 intensity of its low-CV features minus the mean of these
+    #' medians, so the overall level stays that of the input. Centring only: unlike `robscale()`, no scaling by the
+    #' MAD.
+    #'
+    #' DIA-NN equalizes the sums of the raw intensities of these features, which the most abundant ones dominate; the
+    #' median of the log2 intensities used here is robust to them. The selected features have a low CV by
+    #' construction, so a low-CV diagnostic after normalization cannot assess the method.
+    #'
+    #' References: Demichev et al. (2020), DIA-NN: neural networks and interference correction enable deep proteome
+    #' coverage in high throughput, Nat Methods 17:41--44, \doi{10.1038/s41592-019-0638-x}, Methods of the preprint
+    #' \doi{10.1101/282699}; the default fraction of 0.4 is DIA-NN's `--norm-fraction`
+    #' (<https://github.com/vdemichev/DiaNN/discussions/142>).
+    #' @param fraction share of the candidate features used as low-CV features, a number in (0, 1]
+    #' @return LFQDataTransformer (self, invisibly); the field `lowcv_features` holds their hierarchy keys
+    robscale_lowcv = function(fraction = 0.4) {
+      res <- .lowcv_offsets(self$lfq, fraction)
+      self$subtract_sample_offsets(res$offsets)
+      self$lowcv_features <- res$lowcv_features
+      inform_prolfqua(
+        "robscale_lowcv: ",
+        nrow(res$lowcv_features),
+        " low-CV features of ",
+        res$n_candidates,
+        " features observed in all samples."
+      )
       invisible(self)
     },
 
@@ -281,6 +328,57 @@ LFQDataTransformer <- R6::R6Class(
     abort_bad_argument("offsets", "name exactly the samples in the data")
   }
   unname(offsets[sample_ids])
+}
+
+#' Select the low-CV features and compute the sample offsets for `robscale_lowcv()`
+#'
+#' @param lfqdata [LFQData] object with a log-transformed response
+#' @param fraction share of the features observed in every sample used as low-CV features, in (0, 1]
+#' @param call the call shown in the error header
+#' @return list with `offsets` (named numeric vector, one log2 offset per sample, mean zero), `lowcv_features`
+#'   (tibble of hierarchy keys) and `n_candidates` (number of features observed in every sample)
+#' @noRd
+.lowcv_offsets <- function(lfqdata, fraction, call = rlang::caller_env()) {
+  if (!lfqdata$is_transformed()) {
+    abort_prolfqua(
+      "`robscale_lowcv()` needs log-transformed data; call `log2()` first.",
+      class = "prolfqua_error_bad_argument",
+      call = call
+    )
+  }
+  .assert_number(fraction, "be a number in (0, 1]", valid = function(v) v > 0 && v <= 1, call = call)
+  data <- lfqdata$data_long()
+  keys <- lfqdata$hierarchy_keys()
+  sample <- as.character(data[[lfqdata$sample_name()]])
+  medians <- .lfqdata_robscales(lfqdata)$medians
+  features <- data[keys]
+  features$centred <- data[[lfqdata$response()]] - unname(medians[sample])
+  candidates <- features |>
+    dplyr::summarise(
+      n_observed = sum(!is.na(.data$centred)),
+      sd = stats::sd(.data$centred, na.rm = TRUE),
+      .by = dplyr::all_of(keys)
+    ) |>
+    dplyr::filter(.data$n_observed == length(medians))
+  if (nrow(candidates) == 0L) {
+    abort_prolfqua(
+      "`robscale_lowcv()` needs features observed in every sample; there are none.",
+      class = "prolfqua_error_bad_argument",
+      call = call
+    )
+  }
+  n_keep <- max(1L, round(fraction * nrow(candidates)))
+  lowcv_features <- candidates |>
+    dplyr::arrange(.data$sd, dplyr::across(dplyr::all_of(keys))) |>
+    dplyr::slice_head(n = n_keep) |>
+    dplyr::select(dplyr::all_of(keys))
+  reference <- dplyr::semi_join(data, lowcv_features, by = keys)
+  offsets <- vapply(
+    split(reference[[lfqdata$response()]], as.character(reference[[lfqdata$sample_name()]])),
+    stats::median,
+    numeric(1)
+  )
+  list(offsets = offsets - mean(offsets), lowcv_features = lowcv_features, n_candidates = nrow(candidates))
 }
 
 #' Transform intensity column by applying a function

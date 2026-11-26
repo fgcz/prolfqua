@@ -8,16 +8,18 @@ An R6 class generator.
 }
 \description{
 Transformations of the response of an \link{LFQData} object: log2, robust scaling (\code{robscale()}), centring to a
-reference subset, subtraction of sample offsets and any function applied to the intensity array or matrix.
+reference subset or to the features with the lowest CV (\code{robscale_lowcv()}), subtraction of sample offsets
+and any function applied to the intensity array or matrix.
 Obtained with \code{LFQData$get_Transformer()}; methods return the transformer, the result is in \verb{$lfq}.
 }
 \section{Centring and contrasts}{
 
 Centring is an explicit transformation step, never applied by a model. \code{robscale()} and \code{robscale_subset()}
 centre each sample at its median (and scale by its MAD); \code{preserve_mean = TRUE} adds the overall mean back, so
-abundances stay on the original level, \code{FALSE} centres them at zero. \code{center_to_reference()} and
-\code{subtract_sample_offsets()} shift each sample by one offset. A per-sample shift moves every feature of that
-sample by the same amount: a contrast between groups changes by the difference of the mean offsets of the groups,
+abundances stay on the original level, \code{FALSE} centres them at zero. \code{center_to_reference()},
+\code{robscale_lowcv()} and \code{subtract_sample_offsets()} shift each sample by one offset. A per-sample shift
+moves every feature of that sample by the same amount: a contrast between groups changes by the difference of the
+mean offsets of the groups,
 and a shift common to all samples (such as \code{preserve_mean}) changes the average abundance (\code{avgAbd}) but not the
 contrast estimates, standard errors or p-values.
 }
@@ -107,11 +109,19 @@ offsets <- setNames(numeric(length(samples)), samples)
 offsets[1] <- 1
 tr$subtract_sample_offsets(offsets)
 
+# Centre each sample on the 40\% of complete features with the lowest CV
+tr <- lfqdata$get_Transformer()$log2()$robscale_lowcv(fraction = 0.4)
+head(tr$lowcv_features)
+tr$lfq$response()
+
 }
 \section{Public fields}{
   \if{html}{\out{<div class="r6-fields">}}
   \describe{
     \item{\code{lfq}}{LFQData object}
+
+    \item{\code{lowcv_features}}{hierarchy keys of the low-CV features of the last \code{robscale_lowcv()} call; \code{NULL}
+until it is called}
   }
   \if{html}{\out{</div>}}
 }
@@ -125,6 +135,7 @@ tr$subtract_sample_offsets(offsets)
     \item \href{#method-LFQDataTransformer-robscale_subset}{\code{LFQDataTransformer$robscale_subset()}}
     \item \href{#method-LFQDataTransformer-center_to_reference}{\code{LFQDataTransformer$center_to_reference()}}
     \item \href{#method-LFQDataTransformer-subtract_sample_offsets}{\code{LFQDataTransformer$subtract_sample_offsets()}}
+    \item \href{#method-LFQDataTransformer-robscale_lowcv}{\code{LFQDataTransformer$robscale_lowcv()}}
     \item \href{#method-LFQDataTransformer-intensity_array}{\code{LFQDataTransformer$intensity_array()}}
     \item \href{#method-LFQDataTransformer-intensity_matrix}{\code{LFQDataTransformer$intensity_matrix()}}
     \item \href{#method-LFQDataTransformer-clone}{\code{LFQDataTransformer$clone()}}
@@ -287,6 +298,47 @@ Names must match the configured sample IDs exactly and may be in any order.}
   }
   \subsection{Returns}{
     LFQDataTransformer (self, invisibly)
+  }
+}
+
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-LFQDataTransformer-robscale_lowcv"></a>}}
+\if{latex}{\out{\hypertarget{method-LFQDataTransformer-robscale_lowcv}{}}}
+\subsection{\code{LFQDataTransformer$robscale_lowcv()}}{
+  Centre each sample on the features with the lowest CV across all samples, as DIA-NN's global cross-run
+normalization does. It follows the LFQ assumption that most features are unchanged, so the most stable ones
+carry only the sample offset, and uses no group labels. Works on the log-transformed response at the hierarchy
+level of the data (precursor, peptide or protein).
+
+Each sample is first centred on its median over all observed features. The candidates are the features observed
+in every sample; the CV of a candidate is the standard deviation of its centred log2 values, and the \code{fraction}
+of candidates with the lowest CV are the low-CV features. Each sample is then shifted, with
+\code{subtract_sample_offsets()}, by the median log2 intensity of its low-CV features minus the mean of these
+medians, so the overall level stays that of the input. Centring only: unlike \code{robscale()}, no scaling by the
+MAD.
+
+DIA-NN equalizes the sums of the raw intensities of these features, which the most abundant ones dominate; the
+median of the log2 intensities used here is robust to them. The selected features have a low CV by
+construction, so a low-CV diagnostic after normalization cannot assess the method.
+
+References: Demichev et al. (2020), DIA-NN: neural networks and interference correction enable deep proteome
+coverage in high throughput, Nat Methods 17:41--44, \doi{10.1038/s41592-019-0638-x}, Methods of the preprint
+\doi{10.1101/282699}; the default fraction of 0.4 is DIA-NN's \code{--norm-fraction}
+(\url{https://github.com/vdemichev/DiaNN/discussions/142}).
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{LFQDataTransformer$robscale_lowcv(fraction = 0.4)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{fraction}}{share of the candidate features used as low-CV features, a number in (0, 1]}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    LFQDataTransformer (self, invisibly); the field \code{lowcv_features} holds their hierarchy keys
   }
 }
 
