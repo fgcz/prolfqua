@@ -22,6 +22,10 @@
 
 - The article "Comparing modelling methods on one dataset" fits every method of `build_contrast_analysis()` (all 20, taken from `list_facades()`) and compares them with `ContrastsComparison`: the status of each protein and contrast pair per method, the pairs each method estimates (`$coverage()`, `$upset()`), the pairs of one method (`$pairs()`), the log2 fold changes and statistics on the pairs all intensity methods share, the significant calls, and the sign, significance and coverage conflicts (`$conflicts()`). A last section compares plain limma, run as its User's Guide recommends, as a `ContrastsTable` with its own column names: prolfqua's `limma` without weights reproduces it.
 
+## Bug fixes
+
+- `.model_coeff_matrix()` matches coefficient names to factor-level combinations by exact `:`-separated tokens instead of regex word boundaries, fixing contrasts when factor levels contain non-word characters (such as `A` alongside `A.1` or `A+B`) and non-adjacent interaction terms in three-factor models (`~ A * B * C`).
+
 # prolfqua 1.9.10
 
 ## Removed

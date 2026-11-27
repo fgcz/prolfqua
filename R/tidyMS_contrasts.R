@@ -44,15 +44,16 @@ parse_contrast_sides <- function(contrasts) {
   data <- .make_interaction_column(data, interaction_columns, sep = ":")
 
   inter <- unique(data$interaction)
+  inter_parts <- stringi::stri_split_fixed(inter, ":")
   coeff_matrix <- matrix(0, nrow = length(inter), ncol = length(coeffs))
   rownames(coeff_matrix) <- inter
   colnames(coeff_matrix) <- names(coeffs)
   coeff_matrix[, 1] <- 1
   non_intercept_coeffs <- coeffs[-1]
+  coef_parts_list <- stringi::stri_split_fixed(names(non_intercept_coeffs), ":")
   for (i in seq_along(non_intercept_coeffs)) {
-    # the grep is needed to extract coefficients of interaction terms belonging to a factor
-    # I am using wor boundaries "\\b" to allow for factor levels that are substrings.
-    position_index <- grep(paste0("\\b", names(non_intercept_coeffs)[i], "\\b"), inter)
+    coef_parts <- coef_parts_list[[i]]
+    position_index <- which(vapply(inter_parts, function(parts) all(coef_parts %in% parts), logical(1)))
     coeff_matrix[position_index, i + 1] <- 1
   }
   list(coeff_matrix = coeff_matrix, coeffs = coeffs)
