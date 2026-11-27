@@ -167,3 +167,47 @@ test_that("an infinite variance of an unused coefficient does not reach the cont
   V <- matrix(c(Inf, 0, 0, 2), 2)
   expect_equal(prolfqua:::.contrast_variance(linfct, V), c(2, Inf))
 })
+
+test_that("model_coeff_matrix matches factor levels with non-word characters and 3-factor interactions exactly", {
+  # Level "A" must not match "A.1" or "A-1" via regex word boundaries, and "+" must be matched literally
+  df <- data.frame(
+    protein_Id = rep("P1", 12),
+    sample = paste0("S", 1:12),
+    group_ = factor(rep(c("Ctrl", "A", "A.1", "A+B"), each = 3), levels = c("Ctrl", "A", "A.1", "A+B")),
+    intensity = c(10, 10.1, 9.9, 15, 15.1, 14.9, 12, 12.1, 11.9, 18, 18.1, 17.9),
+    nr_children = 3,
+    identification_confidence = 1
+  )
+  cfg <- AnalysisConfiguration$new()
+  cfg$file_name <- "sample"
+  cfg$hierarchy <- list(protein_Id = "protein_Id")
+  cfg$factors <- list(group_ = "group_")
+  cfg$work_intensity <- "intensity"
+  cfg$nr_children <- "nr_children"
+  cfg$identification_confidence <- "identification_confidence"
+  cfg$is_response_transformed <- TRUE
+  lfq <- LFQData$new(setup_analysis(df, cfg), cfg)
+
+  contrasts <- c(
+    A_vs_Ctrl = "group_A - group_Ctrl",
+    A1_vs_Ctrl = "group_A.1 - group_Ctrl",
+    AB_vs_Ctrl = "`group_A+B` - group_Ctrl"
+  )
+  res_lm <- build_contrast_analysis(lfq, "~ group_", contrasts, method = "lm")$get_contrasts()
+  expect_equal(res_lm$diff[match(names(contrasts), res_lm$contrast)], c(5, 2, 8), tolerance = 1e-6)
+
+  res_limma <- build_contrast_analysis(lfq, "~ group_", contrasts, method = "limma")$get_contrasts()
+  expect_equal(res_limma$diff[match(names(contrasts), res_limma$contrast)], c(5, 2, 8), tolerance = 1e-6)
+
+  # 3-factor model: non-adjacent interaction term Aa1:Cc1 must apply to Aa1:Bb0:Cc1 and Aa1:Bb1:Cc1
+  withr::local_seed(1)
+  d3 <- expand.grid(rep = 1:3, A = c("a0", "a1"), B = c("b0", "b1"), C = c("c0", "c1"))
+  d3$y <- with(
+    d3,
+    10 + 2 * (A == "a1") + 3 * (B == "b1") + 4 * (C == "c1") + 5 * (A == "a1" & C == "c1") + rnorm(nrow(d3), 0, 0.01)
+  )
+  m3 <- lm(y ~ A * B * C, data = d3)
+  cm <- .model_coeff_matrix(m3)$coeff_matrix
+  expected_ac <- as.numeric(rownames(cm) %in% c("Aa1:Bb0:Cc1", "Aa1:Bb1:Cc1"))
+  expect_equal(unname(cm[, "Aa1:Cc1"]), expected_ac)
+})
