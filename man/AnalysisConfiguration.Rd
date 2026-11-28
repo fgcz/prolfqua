@@ -64,6 +64,19 @@ observation once, as in prolfqua 1.9.10; the confidence columns stay in the data
     \item{\code{nr_children_feature}}{column with one child count per feature, the maximum of \code{nr_children} over
 samples}
 
+    \item{\code{weight_columns}}{further protein x sample value columns usable as weights, included in
+\code{value_vars()}. The medpolish and rlm aggregations set them to their peptide consistency columns
+(\code{consistency_sigma2}, \code{consistency_factor}, \code{consistency_factor_rel}) and weight variants
+(\code{weight_count}, \code{weight_count_conf}, \code{weight_protein_ivw}, \code{weight_sample_ivw},
+\code{weight_sample_ivw_conf}, \code{weight_sample_rel}, \code{weight_sample_rel_conf}).}
+
+    \item{\code{consistency_factor}}{column with the peptide consistency factor that the facades' default weights
+multiply in: \code{"consistency_factor_rel"} after medpolish or rlm aggregation, \code{NULL} otherwise}
+
+    \item{\code{use_peptide_consistency}}{do the facades' default weights use the peptide consistency factor (default
+\code{TRUE})? \code{FALSE} leaves it out; the consistency columns stay in the data, and an explicit
+\code{weights} argument is still used.}
+
     \item{\code{work_intensity}}{column which contains the intensities}
 
     \item{\code{is_response_transformed}}{are the intensities transformed for constant variance}

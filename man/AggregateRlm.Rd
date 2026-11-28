@@ -9,6 +9,9 @@ An R6 class generator.
 \description{
 Aggregates peptide intensities to protein level using robust regression (rlm).
 Works best with variance-stabilized (log-transformed) intensities.
+
+The aggregated data carry the peptide consistency columns and weight variants of
+\code{\link{AggregateMedpolish}}, computed from the rlm residuals.
 }
 \examples{
 istar <- prolfqua::sim_lfq_data_peptide_config()
@@ -45,6 +48,9 @@ Other LFQData:
   \describe{
     \item{\code{control}}{convergence controls of \code{MASS::rlm}: \code{maxit} (default 20) and \code{acc}
 (default 1e-4, relative change of the IRLS residuals)}
+
+    \item{\code{consistency_priors}}{prior df and variance of the peptide consistency, set by \code{aggregate()}; see
+\code{\link{AggregateMedpolish}}}
   }
   \if{html}{\out{</div>}}
 }

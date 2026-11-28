@@ -56,6 +56,19 @@ AnalysisConfiguration <- R6::R6Class(
     #' @field nr_children_feature column with one child count per feature, the maximum of \code{nr_children} over
     #'   samples
     nr_children_feature = "nr_children_feature",
+    #' @field weight_columns further protein x sample value columns usable as weights, included in
+    #'   \code{value_vars()}. The medpolish and rlm aggregations set them to their peptide consistency columns
+    #'   (\code{consistency_sigma2}, \code{consistency_factor}, \code{consistency_factor_rel}) and weight variants
+    #'   (\code{weight_count}, \code{weight_count_conf}, \code{weight_protein_ivw}, \code{weight_sample_ivw},
+    #'   \code{weight_sample_ivw_conf}, \code{weight_sample_rel}, \code{weight_sample_rel_conf}).
+    weight_columns = character(),
+    #' @field consistency_factor column with the peptide consistency factor that the facades' default weights
+    #'   multiply in: \code{"consistency_factor_rel"} after medpolish or rlm aggregation, \code{NULL} otherwise
+    consistency_factor = NULL,
+    #' @field use_peptide_consistency do the facades' default weights use the peptide consistency factor (default
+    #'   \code{TRUE})? \code{FALSE} leaves it out; the consistency columns stay in the data, and an explicit
+    #'   \code{weights} argument is still used.
+    use_peptide_consistency = TRUE,
 
     #' @field work_intensity column which contains the intensities
     work_intensity = NULL,
@@ -164,7 +177,8 @@ AnalysisConfiguration <- R6::R6Class(
         self$opt_rt,
         self$opt_se,
         self$nr_children,
-        self$nr_children_feature
+        self$nr_children_feature,
+        self$weight_columns
       )
       value_vars
     },
@@ -269,12 +283,14 @@ list_to_analysis_configuration <- function(dd) {
 #' @param config AnalysisConfiguration
 #' @param work_intensity work intensity column
 #' @param hierarchy new reduced hierarchy
-#' @return AnalysisConfiguration with reduced hierarchy
+#' @return AnalysisConfiguration with reduced hierarchy, without the weight columns of the input level
 #' @noRd
 .make_reduced_hierarchy_config <- function(config, work_intensity, hierarchy) {
   new_config <- config$clone(deep = TRUE)
   new_config$hierarchy <- hierarchy
   new_config$work_intensity <- work_intensity
+  new_config$weight_columns <- character()
+  new_config$consistency_factor <- NULL
   new_config
 }
 

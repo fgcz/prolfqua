@@ -97,6 +97,9 @@ plot_hierarchies_line_default <- function(
 #' @param feature child-feature identifier column
 #' @param sample_name column identifying samples
 #' @param control `maxiter` and `eps` of \code{stats::medpolish}
+#' @return one row per sample: `sample_name`, `medpolish`, and the residual summaries of
+#'   \code{.peptide_consistency()}: `n_observed` (observed features in the sample), `rss` (their sum of squared
+#'   residuals) and `n_features` (features observed in any sample)
 #' @noRd
 .medpolish_estimate <- function(pdata, response, feature, sample_name, control = .aggregation_control("medpolish")) {
   # feature x sample matrix filled by index; the polish does not depend on row or column order
@@ -110,7 +113,14 @@ plot_hierarchies_line_default <- function(
   mat <- matrix(NA_real_, length(features), length(samples), dimnames = list(NULL, as.character(samples)))
   mat[cbind(match(feature_id, features), match(pdata[[sample_name]], samples))] <- pdata[[response]]
   X <- medpolish(mat, na.rm = TRUE, trace.iter = FALSE, maxiter = control$maxiter, eps = control$eps)
-  tibble(!!sample_name := names(X$col), medpolish = unname(X$col + X$overall))
+  observed <- !is.na(mat)
+  tibble(
+    !!sample_name := names(X$col),
+    medpolish = unname(X$col + X$overall),
+    n_observed = unname(colSums(observed)),
+    rss = unname(colSums(X$residuals^2, na.rm = TRUE)),
+    n_features = sum(rowSums(observed) > 0)
+  )
 }
 
 #' Estimate protein intensities by robust peptide regression
@@ -122,8 +132,10 @@ plot_hierarchies_line_default <- function(
 #' @param feature child-feature identifier column(s); several columns are joined with `"_"`, as `tidyr::unite()`
 #' @param samples name of the sample identifier column
 #' @param control `maxit` and `acc` of \code{MASS::rlm}
-#' @return one row per sample of `pdata`, in order of appearance: `samples`, `mean.<response>`, `lmrob` and
-#'   `weights`; `NA` for samples without an observed response
+#' @return one row per sample of `pdata`, in order of appearance: `samples`, `mean.<response>`, `lmrob`, and the
+#'   residual summaries of \code{.peptide_consistency()}: `n_observed` (observed features in the sample), `rss`
+#'   (their sum of squared residuals) and `n_features` (features observed in any sample); `NA` estimates and
+#'   `n_observed` 0 for samples without an observed response
 #' @noRd
 .rlm_estimate <- function(pdata, response, feature, samples = "samples", control = .aggregation_control("rlm")) {
   sample_id <- pdata[[samples]]
@@ -140,25 +152,31 @@ plot_hierarchies_line_default <- function(
   sid <- match(data[[samples]], usamples)
   per_sample_mean <- function(x) vapply(split(x, sid), mean, numeric(1), USE.NAMES = FALSE)
   mean_y <- per_sample_mean(y)
+  n_features <- length(unique(data$feature))
 
   ## All branches hand off here so the output schema is identical: a single, fixed column order
-  ## (samples, mean.<response>, lmrob, weights) with one row per sample present in the input, also for samples
-  ## without an observed response, so downstream unnest()/.reestablish_condition() always bind the same columns.
+  ## (samples, mean.<response>, lmrob, n_observed, rss, n_features) with one row per sample present in the input,
+  ## also for samples without an observed response, so downstream unnest()/.reestablish_condition() always bind the
+  ## same columns.
   all_samples <- unique(sample_id)
-  finalize <- function(lmrob, weights) {
+  finalize <- function(lmrob, residuals) {
     idx <- match(all_samples, usamples)
+    n_observed <- tabulate(sid, nbins = length(usamples))[idx]
+    rss <- vapply(split(residuals^2, sid), sum, numeric(1), USE.NAMES = FALSE)[idx]
     tibble(
       !!samples := all_samples,
       !!paste0("mean.", response) := mean_y[idx],
       lmrob = lmrob[idx],
-      weights = weights[idx]
+      n_observed = ifelse(is.na(idx), 0L, n_observed),
+      rss = ifelse(is.na(idx), 0, rss),
+      n_features = n_features
     )
   }
 
   ## If there is only 1 peptide for all samples, or only one sample, use the mean response per sample directly
   ## (model.matrix breaks on factors with 1 level)
-  if (length(unique(data$feature)) == 1L || length(usamples) == 1L) {
-    return(finalize(mean_y, rep(1, length(usamples))))
+  if (n_features == 1L || length(usamples) == 1L) {
+    return(finalize(mean_y, y - mean_y[sid]))
   }
 
   ## sum contrast on peptide level so sample effect will be mean over all peptides instead of reference level
@@ -171,14 +189,10 @@ plot_hierarchies_line_default <- function(
   X <- X[, sort(fit$pivot[seq_len(fit$rank)]), drop = FALSE]
   fit <- MASS::rlm(X, y, maxit = control$maxit, acc = control$acc)
   lmrob <- unname(fit$coefficients[paste0(samples, usamples)])
-  weights <- 1 / per_sample_mean(fit$residuals^2)
-  if (any(is.infinite(weights) | is.na(weights) | weights > 10e6)) {
-    weights <- rep(1, length(usamples))
-  }
   if (sum(is.na(mean_y)) < sum(is.na(lmrob))) {
     lmrob <- mean_y
   }
-  finalize(lmrob, weights)
+  finalize(lmrob, unname(fit$residuals))
 }
 
 #' Count measured children per parent and sample after aggregation
@@ -333,9 +347,140 @@ plot_hierarchies_line_default <- function(
     dplyr::ungroup()
   unnested <- .reestablish_condition(data, unnested, hkeysd, sname, fkeys, fname)
 
+  residual_columns <- c("n_observed", "rss", "n_features")
+  consistency <- .peptide_consistency(
+    unnested[unnested$n_observed > 0, c(hkeysd, sname, residual_columns)],
+    hkeysd
+  )
+  unnested <- unnested[, setdiff(names(unnested), residual_columns)]
+
   result <- .add_nr_children(data, unnested, hkeysd, fname, response, nrc, config$identification_confidence, newconfig)
+  result$data <- dplyr::left_join(
+    result$data,
+    consistency$cells[, c(hkeysd, sname, .consistency_columns)],
+    by = c(hkeysd, sname),
+    relationship = "one-to-one"
+  )
+  result$data <- .add_weight_columns(result$data, result$config)
+  result$config$weight_columns <- c(.consistency_columns, .weight_columns)
+  result$config$consistency_factor <- "consistency_factor_rel"
+  result$priors <- consistency$priors
   result$failures <- failures
   result
+}
+
+# Peptide consistency columns of the medpolish and rlm aggregations: the protein residual variance and the
+# per-sample consistency factor, absolute and relative to the protein's other samples
+.consistency_columns <- c("consistency_sigma2", "consistency_factor", "consistency_factor_rel")
+
+# Weight variants of the medpolish and rlm aggregations, one protein x sample column each
+.weight_columns <- c(
+  "weight_count",
+  "weight_count_conf",
+  "weight_protein_ivw",
+  "weight_sample_ivw",
+  "weight_sample_ivw_conf",
+  "weight_sample_rel",
+  "weight_sample_rel_conf"
+)
+
+#' Peptide consistency of each aggregated protein in each sample, from the residuals of its peptides
+#'
+#' Low residual variance means the peptides of a protein move in parallel. With N observations of a protein on
+#' n_features peptides in n_samples samples, the additive fit (overall + peptide + sample) leaves d = N - n_features -
+#' n_samples + 1 residual degrees of freedom. The protein variance s2_P = RSS / d is shrunk over proteins to
+#' sigma2_P (`limma::squeezeVar()`, Smyth 2004). Each sample s gets the share (n_s - 1) / (N - n_samples) of d; its
+#' variance relative to the protein, RSS_s / d_s / sigma2_P, is shrunk over all protein and sample cells, and the
+#' factor f_Ps is its inverse. Cells with one peptide, without residual df, get the prior. `factor_rel` divides f_Ps
+#' by its mean over the protein's samples, so it averages 1 per protein and leaves the protein-wide level out: the
+#' models moderate the variance across proteins, and rescaling all weights of a protein rescales its variance there.
+#' When fewer than three proteins (or cells) have residual df, the prior cannot be estimated: sigma2 is NA and the
+#' factors are 1.
+#' @param cells one row per protein and sample with an observed peptide: the `keys` columns, `n_observed`, `rss` and
+#'   `n_features`
+#' @param keys columns identifying one protein
+#' @return list with `cells` (the input with `consistency_sigma2`, `consistency_factor` and
+#'   `consistency_factor_rel`) and `priors` (one row: prior df and variance of the protein and of the cell level)
+#' @noRd
+.peptide_consistency <- function(cells, keys) {
+  protein <- dplyr::summarise(
+    cells,
+    N = sum(.data$n_observed),
+    rss = sum(.data$rss),
+    n_samples = dplyr::n(),
+    n_features = .data$n_features[1],
+    .by = dplyr::all_of(keys)
+  )
+  protein$d <- pmax(protein$N - protein$n_features - protein$n_samples + 1, 0)
+  squeezed_protein <- .squeeze_variances(protein$rss / protein$d, protein$d)
+  protein$consistency_sigma2 <- squeezed_protein$var.post
+  cells <- dplyr::left_join(
+    cells,
+    protein[, c(keys, "N", "d", "n_samples", "consistency_sigma2")],
+    by = keys,
+    relationship = "many-to-one"
+  )
+  # the protein's df split over its samples in proportion to n - 1; none without a protein-level prior
+  d_cell <- ifelse(
+    cells$N > cells$n_samples & !is.na(cells$consistency_sigma2),
+    (cells$n_observed - 1) * cells$d / (cells$N - cells$n_samples),
+    0
+  )
+  squeezed_ratio <- .squeeze_variances(cells$rss / d_cell / cells$consistency_sigma2, d_cell)
+  inverse_ratio <- 1 / squeezed_ratio$var.post
+  cells$consistency_factor <- ifelse(is.na(inverse_ratio), 1, inverse_ratio)
+  cells <- dplyr::mutate(
+    cells,
+    consistency_factor_rel = .data$consistency_factor / mean(.data$consistency_factor),
+    .by = dplyr::all_of(keys)
+  )
+  list(
+    cells = cells,
+    priors = tibble::tibble(
+      protein_df_prior = squeezed_protein$df.prior,
+      protein_var_prior = squeezed_protein$var.prior,
+      cell_df_prior = squeezed_ratio$df.prior,
+      cell_var_prior = squeezed_ratio$var.prior
+    )
+  )
+}
+
+#' Empirical Bayes posterior variances, `limma::squeezeVar()` of the variances with residual df
+#'
+#' Entries without residual df get the prior. squeezeVar cannot estimate the prior from fewer than three entries with
+#' residual df (it fails or returns NaN), so then every posterior variance and the prior are NA.
+#' @param var variances, ignored where `df` is 0
+#' @param df residual degrees of freedom
+#' @return list with `var.post`, `df.prior` and `var.prior`
+#' @noRd
+.squeeze_variances <- function(var, df) {
+  if (sum(df > 0) < 3) {
+    return(list(var.post = rep(NA_real_, length(var)), df.prior = NA_real_, var.prior = NA_real_))
+  }
+  squeezed <- limma::squeezeVar(ifelse(df > 0, var, 0), df)
+  list(var.post = squeezed$var.post, df.prior = squeezed$df.prior, var.prior = squeezed$var.prior)
+}
+
+#' Weight variants as protein x sample columns: child count n, identification confidence c, consistency factor f
+#'
+#' `weight_count` n; `weight_count_conf` n c; `weight_protein_ivw` n / sigma2; `weight_sample_ivw` n f / sigma2;
+#' `weight_sample_ivw_conf` n f c / sigma2; `weight_sample_rel` n f_rel; `weight_sample_rel_conf` n f_rel c.
+#' @param data aggregated data with the child count, confidence and consistency columns
+#' @param config configuration naming the child count and confidence columns
+#' @noRd
+.add_weight_columns <- function(data, config) {
+  n <- data[[config$nr_children]]
+  confidence <- data[[config$identification_confidence]]
+  sample_ivw <- n * data$consistency_factor / data$consistency_sigma2
+  sample_rel <- n * data$consistency_factor_rel
+  data$weight_count <- n
+  data$weight_count_conf <- n * confidence
+  data$weight_protein_ivw <- n / data$consistency_sigma2
+  data$weight_sample_ivw <- sample_ivw
+  data$weight_sample_ivw_conf <- sample_ivw * confidence
+  data$weight_sample_rel <- sample_rel
+  data$weight_sample_rel_conf <- sample_rel * confidence
+  data
 }
 
 

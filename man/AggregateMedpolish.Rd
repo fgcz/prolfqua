@@ -9,6 +9,14 @@ An R6 class generator.
 \description{
 Aggregates peptide intensities to protein level using median polish.
 Works best with variance-stabilized (log-transformed) intensities.
+
+The aggregated data carry the peptide consistency of each protein in each sample, from the median polish
+residuals of its peptides: \code{consistency_sigma2} (the protein's residual variance, shrunk over proteins with
+\code{limma::squeezeVar()}), \code{consistency_factor} (the inverse of the sample's residual variance relative to
+the protein's, shrunk over all protein and sample cells; cells with one peptide get the prior) and
+\code{consistency_factor_rel} (the factor divided by its mean over the protein's samples). They also carry weight
+variants built from them (see \code{AnalysisConfiguration$weight_columns}). The facades' default weights multiply
+in \code{consistency_factor_rel} (see \code{AnalysisConfiguration$use_peptide_consistency}).
 }
 \examples{
 istar <- prolfqua::sim_lfq_data_peptide_config()
@@ -46,6 +54,11 @@ Other LFQData:
     \item{\code{control}}{convergence controls of \code{stats::medpolish}: \code{maxiter} (default 10) and
 \code{eps} (default 0.01; the polish stops when the sum of absolute residuals changes by less than
 \code{eps} times that sum)}
+
+    \item{\code{consistency_priors}}{prior df and variance of the peptide consistency, set by \code{aggregate()}: one
+row with \code{protein_df_prior}, \code{protein_var_prior} (protein level) and \code{cell_df_prior},
+\code{cell_var_prior} (protein and sample level); NA when fewer than three proteins or cells have residual
+df}
   }
   \if{html}{\out{</div>}}
 }

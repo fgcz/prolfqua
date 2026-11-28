@@ -134,7 +134,7 @@ Other modelling:
   modelstr,
   contrasts,
   control = list(),
-  weights = .confidence_weights(lfqdata)
+  weights = .default_weights(lfqdata)
 )}
     \if{html}{\out{</div>}}
   }
@@ -145,8 +145,9 @@ Other modelling:
       \item{\code{modelstr}}{model formula string (e.g. "~ group_")}
       \item{\code{contrasts}}{named character vector of contrasts}
       \item{\code{control}}{named list of convergence controls, see \code{\link{strategy_rlm}}}
-      \item{\code{weights}}{column names whose product gives the per-observation weights (default: the identification
-confidence). Pass \code{NULL} for unweighted.}
+      \item{\code{weights}}{column names whose product gives the per-observation weights (default: the child count
+times the identification confidence times the peptide consistency factor, see
+\code{AnalysisConfiguration$use_peptide_consistency}). Pass \code{NULL} for unweighted.}
     }
     \if{html}{\out{</div>}}
   }

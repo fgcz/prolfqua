@@ -229,7 +229,14 @@ test_that("rlm non-convergence and lmer failures each give one warning for the f
   sim <- sim_lfq_data_peptide_config(n_proteins = 20, seed = 42)
   peptide <- LFQData$new(sim$data, sim$config)$get_Transformer()$log2()$lfq
   protein <- suppressWarnings(peptide$get_Aggregator()$aggregate())
-  rlm <- prov_fit_warnings(build_contrast_analysis(protein, "~ group_", c(AvsC = "group_A - group_Ctrl"), "rlm"))
+  # weighted by the identification confidence alone (all 1), where one simulated protein does not converge
+  rlm <- prov_fit_warnings(build_contrast_analysis(
+    protein,
+    "~ group_",
+    c(AvsC = "group_A - group_Ctrl"),
+    "rlm",
+    weights = protein$get_config()$identification_confidence
+  ))
   expect_length(rlm$messages, 1L)
   expect_match(rlm$messages, "fits with a warning.*'rlm' failed to converge")
   skip_if_not_installed("lme4")

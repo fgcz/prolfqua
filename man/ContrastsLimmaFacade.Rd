@@ -145,7 +145,8 @@ Other modelling:
       \item{\code{modelstr}}{model formula string (e.g. "~ group_")}
       \item{\code{contrasts}}{named character vector of contrasts}
       \item{\code{weights}}{column names whose product gives the per-observation weights (default: the child count
-times the identification confidence). Pass \code{NULL} for unweighted.}
+times the identification confidence times the peptide consistency factor, see
+\code{AnalysisConfiguration$use_peptide_consistency}). Pass \code{NULL} for unweighted.}
       \item{\code{trend, robust}}{passed to \code{\link[limma]{eBayes}}, see \code{\link{strategy_limma}}}
     }
     \if{html}{\out{</div>}}

@@ -92,7 +92,7 @@ test_that("the two experiment-level counters write distinct columns by default",
 # These pin one consistent schema + full sample coverage across every branch.
 
 test_that(".rlm_estimate returns one consistent column schema across all three branches", {
-  expected <- c("samples", "mean.response", "lmrob", "weights")
+  expected <- c("samples", "mean.response", "lmrob", "n_observed", "rss", "n_features")
 
   # branch 1: single feature, multiple samples
   df_feat1 <- data.frame(samples = letters[1:4], feature = "F1", response = c(10, 11, 12, 13))
@@ -162,8 +162,9 @@ test_that("rlm and medpolish aggregation produce the same (protein, sample) rows
     expect_equal(nrow(dplyr::anti_join(keyM, keyR, by = keycols)), 0L)
     expect_equal(nrow(dplyr::anti_join(keyR, keyM, by = keycols)), 0L)
 
-    # rlm carries its estimate, fitting weights, and the nr_children count
-    expect_true(all(c("lmrob", "weights") %in% colnames(bbRob$data)))
+    # rlm carries its estimate, the peptide consistency, and the nr_children count
+    expect_true(all(c("lmrob", "consistency_factor_rel") %in% colnames(bbRob$data)))
+    expect_false("weights" %in% colnames(bbRob$data))
     expect_true(bbRob$config$nr_children %in% colnames(bbRob$data))
   })
 })

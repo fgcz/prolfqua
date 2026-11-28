@@ -144,12 +144,14 @@
   dplyr::relocate(res, dplyr::any_of(c("modelName", "estimate_type")))
 }
 
-#' Default weights of facades that weight by child counts: child count times identification confidence
+#' Default weights of facades that weight by child counts: child count times identification confidence times peptide
+#' consistency factor
 #' @param lfqdata [LFQData] object with the data and its configuration
 #' @return character vector of weight column names
 #' @noRd
 .default_weights <- function(lfqdata) {
-  c(lfqdata$nr_children_col(), .used_confidence(lfqdata$get_config()))
+  config <- lfqdata$get_config()
+  c(lfqdata$nr_children_col(), .used_confidence(config), .used_consistency(config))
 }
 
 #' Default weights of facades that do not weight by child counts: the identification confidence
@@ -168,6 +170,16 @@
 #' @noRd
 .used_confidence <- function(config) {
   if (isFALSE(config$use_identification_confidence)) NULL else config$identification_confidence
+}
+
+#' The peptide consistency factor column the models use: NULL when \code{use_peptide_consistency} is FALSE or the
+#' data have no consistency factor (\code{consistency_factor} NULL)
+#'
+#' Only an explicit FALSE turns it off: a configuration without the field uses the factor, as the default does.
+#' @param config AnalysisConfiguration
+#' @noRd
+.used_consistency <- function(config) {
+  if (isFALSE(config$use_peptide_consistency)) NULL else config$consistency_factor
 }
 
 #' Tell that a backend without observation weights ignores the identification confidence
@@ -208,7 +220,8 @@ ContrastsLimmaFacade <- R6::R6Class(
     #' @param modelstr model formula string (e.g. "~ group_")
     #' @param contrasts named character vector of contrasts
     #' @param weights column names whose product gives the per-observation weights (default: the child count
-    #'   times the identification confidence). Pass \code{NULL} for unweighted.
+    #'   times the identification confidence times the peptide consistency factor, see
+    #'   \code{AnalysisConfiguration$use_peptide_consistency}). Pass \code{NULL} for unweighted.
     #' @param trend,robust passed to \code{\link[limma]{eBayes}}, see \code{\link{strategy_limma}}
     initialize = function(
       lfqdata,
@@ -263,7 +276,8 @@ ContrastsLimmaImputeFacade <- R6::R6Class(
     #' @param df_method "observed" uses max(n_observed - p, 1);
     #'   "borrowed" uses median df from successful fits
     #' @param weights column names whose product gives the per-observation weights (default: the child count
-    #'   times the identification confidence). Pass \code{NULL} for unweighted.
+    #'   times the identification confidence times the peptide consistency factor, see
+    #'   \code{AnalysisConfiguration$use_peptide_consistency}). Pass \code{NULL} for unweighted.
     #' @param trend,robust passed to \code{\link[limma]{eBayes}}, see \code{\link{strategy_limma}}
     initialize = function(
       lfqdata,
@@ -314,7 +328,8 @@ ContrastsLimmaVoomFacade <- R6::R6Class(
     #' @param modelstr model formula string (e.g. "~ group_")
     #' @param contrasts named character vector of contrasts
     #' @param weights column names whose product gives the per-observation weights (default: the child count
-    #'   times the identification confidence). Pass \code{NULL} for unweighted.
+    #'   times the identification confidence times the peptide consistency factor, see
+    #'   \code{AnalysisConfiguration$use_peptide_consistency}). Pass \code{NULL} for unweighted.
     #' @param span lowess smoother span for vooma trend (default 0.5)
     #' @param plot logical; if TRUE, plot the mean-variance trend
     #' @param trend,robust passed to \code{\link[limma]{eBayes}}, see \code{\link{strategy_limma}}
@@ -370,7 +385,8 @@ ContrastsLimmaVoomImputeFacade <- R6::R6Class(
     #' @param df_method "observed" uses max(n_observed - p, 1);
     #'   "borrowed" uses median df from successful fits
     #' @param weights column names whose product gives the per-observation weights (default: the child count
-    #'   times the identification confidence). Pass \code{NULL} for unweighted.
+    #'   times the identification confidence times the peptide consistency factor, see
+    #'   \code{AnalysisConfiguration$use_peptide_consistency}). Pass \code{NULL} for unweighted.
     #' @param span lowess smoother span for vooma trend (default 0.5)
     #' @param plot logical; if TRUE, plot the mean-variance trend
     #' @param trend,robust passed to \code{\link[limma]{eBayes}}, see \code{\link{strategy_limma}}
@@ -497,7 +513,8 @@ ContrastsLMFacade <- R6::R6Class(
     #' @param modelstr model formula string (e.g. "~ group_")
     #' @param contrasts named character vector of contrasts
     #' @param weights column names whose product gives the per-observation weights (default: the child count
-    #'   times the identification confidence). Pass \code{NULL} for unweighted.
+    #'   times the identification confidence times the peptide consistency factor, see
+    #'   \code{AnalysisConfiguration$use_peptide_consistency}). Pass \code{NULL} for unweighted.
     initialize = function(lfqdata, modelstr, contrasts, weights = .default_weights(lfqdata)) {
       full_formula <- private$.setup(lfqdata, contrasts, "lm", modelstr)
       strat <- strategy_lm(full_formula, weights = weights)
@@ -536,9 +553,10 @@ ContrastsRLMFacade <- R6::R6Class(
     #' @param modelstr model formula string (e.g. "~ group_")
     #' @param contrasts named character vector of contrasts
     #' @param control named list of convergence controls, see \code{\link{strategy_rlm}}
-    #' @param weights column names whose product gives the per-observation weights (default: the identification
-    #'   confidence). Pass \code{NULL} for unweighted.
-    initialize = function(lfqdata, modelstr, contrasts, control = list(), weights = .confidence_weights(lfqdata)) {
+    #' @param weights column names whose product gives the per-observation weights (default: the child count
+    #'   times the identification confidence times the peptide consistency factor, see
+    #'   \code{AnalysisConfiguration$use_peptide_consistency}). Pass \code{NULL} for unweighted.
+    initialize = function(lfqdata, modelstr, contrasts, control = list(), weights = .default_weights(lfqdata)) {
       full_formula <- private$.setup(lfqdata, contrasts, "rlm", modelstr)
       strat <- strategy_rlm(full_formula, control = control, weights = weights)
       self$model <- build_model(lfqdata, strat)
@@ -630,7 +648,8 @@ ContrastsLMImputeFacade <- R6::R6Class(
     #' @param df_method "observed" uses max(n_observed - p, 1);
     #'   "borrowed" uses median df from successful fits
     #' @param weights column names whose product gives the per-observation weights (default: the child count
-    #'   times the identification confidence). Pass \code{NULL} for unweighted.
+    #'   times the identification confidence times the peptide consistency factor, see
+    #'   \code{AnalysisConfiguration$use_peptide_consistency}). Pass \code{NULL} for unweighted.
     initialize = function(
       lfqdata,
       modelstr,
@@ -807,7 +826,8 @@ ContrastsDEqMSFacade <- R6::R6Class(
     #' @param modelstr model formula string (e.g. "~ group_")
     #' @param contrasts named character vector of contrasts
     #' @param weights column names whose product gives the per-observation weights (default: the child count
-    #'   times the identification confidence). Pass \code{NULL} for unweighted.
+    #'   times the identification confidence times the peptide consistency factor, see
+    #'   \code{AnalysisConfiguration$use_peptide_consistency}). Pass \code{NULL} for unweighted.
     initialize = function(lfqdata, modelstr, contrasts, weights = .default_weights(lfqdata)) {
       full_formula <- private$.setup(lfqdata, contrasts, "deqms", modelstr)
       strat <- strategy_lm(full_formula, weights = weights)

@@ -106,14 +106,20 @@ test_that("with confidence 1 the default weights reproduce the previous weightin
   istar <- sim_lfq_data_protein_config(n_proteins = 30, seed = 4)
   lfq <- LFQData$new(istar$data, istar$config)
   lfq$rename_response("transformedIntensity")
-  for (method in c("lm", "limma", "lm_impute")) {
-    default <- build_contrast_analysis(lfq, "~ group_", contrast_a, method = method)$get_contrasts()
-    counts <- build_contrast_analysis(lfq, "~ group_", contrast_a, method = method, weights = "nrPeptides")
+  for (method in c("lm", "limma", "lm_impute", "rlm")) {
+    # rlm may not converge for one simulated protein; that warning is not under test
+    default <- suppressWarnings(build_contrast_analysis(lfq, "~ group_", contrast_a, method = method))$get_contrasts()
+    counts <- suppressWarnings(build_contrast_analysis(
+      lfq,
+      "~ group_",
+      contrast_a,
+      method = method,
+      weights = "nrPeptides"
+    ))
     expect_equal(default$diff, counts$get_contrasts()$diff, info = method)
     expect_equal(default$p.value, counts$get_contrasts()$p.value, info = method)
   }
-  for (method in c("rlm", "deqms_voom")) {
-    # rlm may not converge for one simulated protein; that warning is not under test
+  for (method in "deqms_voom") {
     default <- suppressWarnings(build_contrast_analysis(lfq, "~ group_", contrast_a, method = method))$get_contrasts()
     unweighted <- suppressWarnings(build_contrast_analysis(
       lfq,
@@ -368,13 +374,19 @@ test_that("use_identification_confidence = FALSE drops the confidence from the d
   istar$config$use_identification_confidence <- FALSE
   lfq <- LFQData$new(data, istar$config)
   lfq$rename_response("transformedIntensity")
-  for (method in c("lm", "limma", "deqms")) {
-    off <- build_contrast_analysis(lfq, "~ group_", contrast_a, method = method)$get_contrasts()
-    counts <- build_contrast_analysis(lfq, "~ group_", contrast_a, method = method, weights = "nrPeptides")
+  for (method in c("lm", "limma", "deqms", "rlm")) {
+    off <- suppressWarnings(build_contrast_analysis(lfq, "~ group_", contrast_a, method = method))$get_contrasts()
+    counts <- suppressWarnings(build_contrast_analysis(
+      lfq,
+      "~ group_",
+      contrast_a,
+      method = method,
+      weights = "nrPeptides"
+    ))
     expect_equal(off$diff, counts$get_contrasts()$diff, info = method)
     expect_equal(off$p.value, counts$get_contrasts()$p.value, info = method)
   }
-  methods <- c("rlm", "deqms_voom", if (requireNamespace("limpa", quietly = TRUE)) "limpa")
+  methods <- c("deqms_voom", if (requireNamespace("limpa", quietly = TRUE)) "limpa")
   for (method in methods) {
     off <- suppressWarnings(build_contrast_analysis(lfq, "~ group_", contrast_a, method = method))$get_contrasts()
     unweighted <- suppressWarnings(build_contrast_analysis(
