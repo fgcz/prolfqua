@@ -4,6 +4,11 @@ Aggregates peptide intensities to protein level using robust regression
 (rlm). Works best with variance-stabilized (log-transformed)
 intensities.
 
+The aggregated data carry the peptide consistency columns and weight
+variants of
+[`AggregateMedpolish`](https://fgcz.github.io/prolfqua/reference/AggregateMedpolish.md),
+computed from the rlm residuals.
+
 ## Value
 
 An R6 class generator.
@@ -36,6 +41,12 @@ Other LFQData:
   [`MASS::rlm`](https://rdrr.io/pkg/MASS/man/rlm.html): `maxit`
   (default 20) and `acc` (default 1e-4, relative change of the IRLS
   residuals)
+
+- `consistency_priors`:
+
+  prior df and variance of the peptide consistency, set by
+  [`aggregate()`](https://rdrr.io/r/stats/aggregate.html); see
+  [`AggregateMedpolish`](https://fgcz.github.io/prolfqua/reference/AggregateMedpolish.md)
 
 ## Methods
 

@@ -195,7 +195,8 @@ optionally combined with external weights (e.g. peptide/precursor counts).</p>
 
       <dt><code>weights</code></dt>
 <dd><p>column names whose product gives the per-observation weights (default: the child count
-times the identification confidence). Pass <code>NULL</code> for unweighted.</p></dd>
+times the identification confidence times the peptide consistency factor, see
+<code>AnalysisConfiguration$use_peptide_consistency</code>). Pass <code>NULL</code> for unweighted.</p></dd>
 
       <dt><code>span</code></dt>
 <dd><p>lowess smoother span for vooma trend (default 0.5)</p></dd>

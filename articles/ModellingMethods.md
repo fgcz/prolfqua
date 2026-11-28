@@ -59,8 +59,6 @@ analyses <- lapply(names(facades), function(method) {
 })
 #> Warning: fit (Model): 8 fits failed (e.g. 2kfAGV~3196, f0Cvvj~0425, fylZqB~9801, GpgE28~7718, KVkccD~9390, ...): Error: grouping factors must have > 1 sampled level
 #> See $provenance().
-#> Warning: fit (Model): 1 fits with a warning (e.g. joOg0p~8820): 'rlm' failed to converge in 20 steps
-#> See $provenance().
 #> Warning: fit (Model): 1 fits failed (e.g. joOg0p~8820~zzRiJpQz): Error in `contrasts<-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]): contrasts can be applied only to factors with 2 or more levels
 #> See $provenance().
 #> fit (Model): 1 fits failed (e.g. joOg0p~8820~zzRiJpQz): Error in `contrasts<-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]): contrasts can be applied only to factors with 2 or more levels
@@ -288,9 +286,9 @@ print(analysis)
 #> # A tibble: 6 × 5
 #>   protein_Id  term        estimate std.error    df
 #>   <chr>       <chr>          <dbl>     <dbl> <dbl>
-#> 1 0CubNR~5740 (Intercept)   4.67      0.0547     9
-#> 2 0CubNR~5740 group_B      -0.162     0.0756     9
-#> 3 0CubNR~5740 group_Ctrl    0.0872    0.0741     9
+#> 1 0CubNR~5740 (Intercept)   4.67      0.0532     9
+#> 2 0CubNR~5740 group_B      -0.159     0.078      9
+#> 3 0CubNR~5740 group_Ctrl    0.0845    0.0713     9
 #> 4 2kfAGV~3196 (Intercept)   4.65      0.0296     8
 #> 5 2kfAGV~3196 group_B      -0.21      0.0419     8
 #> 6 2kfAGV~3196 group_Ctrl   -0.215     0.0453     8
@@ -304,7 +302,7 @@ summary(analysis)
 #> # A tibble: 1 × 8
 #>   contrast  estimated missing significant    up  down median_sigma median_df
 #>   <chr>         <int>   <int>       <int> <int> <int>        <dbl>     <dbl>
-#> 1 A_vs_Ctrl        20       0           0     0     0       0.0701      12.2
+#> 1 A_vs_Ctrl        20       0           0     0     0       0.0699      12.2
 #> Provenance: 0 failure and 1 other entries; see $provenance()
 analysis$provenance()
 #> # A tibble: 1 × 8
@@ -315,9 +313,9 @@ head(coef(analysis))
 #> # A tibble: 6 × 5
 #>   protein_Id  term        estimate std.error    df
 #>   <chr>       <chr>          <dbl>     <dbl> <dbl>
-#> 1 0CubNR~5740 (Intercept)   4.67      0.0547     9
-#> 2 0CubNR~5740 group_B      -0.162     0.0756     9
-#> 3 0CubNR~5740 group_Ctrl    0.0872    0.0741     9
+#> 1 0CubNR~5740 (Intercept)   4.67      0.0532     9
+#> 2 0CubNR~5740 group_B      -0.159     0.0780     9
+#> 3 0CubNR~5740 group_Ctrl    0.0845    0.0713     9
 #> 4 2kfAGV~3196 (Intercept)   4.65      0.0296     8
 #> 5 2kfAGV~3196 group_B      -0.210     0.0419     8
 #> 6 2kfAGV~3196 group_Ctrl   -0.215     0.0453     8
@@ -325,25 +323,25 @@ head(vcov(analysis))
 #> # A tibble: 6 × 4
 #>   protein_Id  term        term2       covariance
 #>   <chr>       <chr>       <chr>            <dbl>
-#> 1 0CubNR~5740 (Intercept) (Intercept)    0.00299
-#> 2 0CubNR~5740 group_B     (Intercept)   -0.00299
-#> 3 0CubNR~5740 group_Ctrl  (Intercept)   -0.00299
-#> 4 0CubNR~5740 (Intercept) group_B       -0.00299
-#> 5 0CubNR~5740 group_B     group_B        0.00572
-#> 6 0CubNR~5740 group_Ctrl  group_B        0.00299
+#> 1 0CubNR~5740 (Intercept) (Intercept)    0.00283
+#> 2 0CubNR~5740 group_B     (Intercept)   -0.00283
+#> 3 0CubNR~5740 group_Ctrl  (Intercept)   -0.00283
+#> 4 0CubNR~5740 (Intercept) group_B       -0.00283
+#> 5 0CubNR~5740 group_B     group_B        0.00609
+#> 6 0CubNR~5740 group_Ctrl  group_B        0.00283
 head(confint(analysis))
 #> # A tibble: 6 × 7
 #>   protein_Id  term        estimate std.error    df conf.low conf.high
 #>   <chr>       <chr>          <dbl>     <dbl> <dbl>    <dbl>     <dbl>
-#> 1 0CubNR~5740 (Intercept)   4.67      0.0547     9   4.55     4.80   
-#> 2 0CubNR~5740 group_B      -0.162     0.0756     9  -0.333    0.00895
-#> 3 0CubNR~5740 group_Ctrl    0.0872    0.0741     9  -0.0804   0.255  
-#> 4 2kfAGV~3196 (Intercept)   4.65      0.0296     8   4.59     4.72   
-#> 5 2kfAGV~3196 group_B      -0.210     0.0419     8  -0.307   -0.113  
-#> 6 2kfAGV~3196 group_Ctrl   -0.215     0.0453     8  -0.320   -0.111
+#> 1 0CubNR~5740 (Intercept)   4.67      0.0532     9   4.55      4.80  
+#> 2 0CubNR~5740 group_B      -0.159     0.0780     9  -0.336     0.0175
+#> 3 0CubNR~5740 group_Ctrl    0.0845    0.0713     9  -0.0769    0.246 
+#> 4 2kfAGV~3196 (Intercept)   4.65      0.0296     8   4.59      4.72  
+#> 5 2kfAGV~3196 group_B      -0.210     0.0419     8  -0.307    -0.113 
+#> 6 2kfAGV~3196 group_Ctrl   -0.215     0.0453     8  -0.320    -0.111
 formula(analysis)
 #> medpolish ~ group_
-#> <environment: 0x64b22b8485e0>
+#> <environment: 0x556ec3f54ac8>
 head(nobs(analysis))
 #> # A tibble: 6 × 2
 #>   protein_Id   nobs
@@ -362,18 +360,18 @@ head(fitted(analysis))
 #> 2 0CubNR~5740 A_V2       A          4.65   4.67 FALSE  
 #> 3 0CubNR~5740 A_V3       A          4.49   4.67 FALSE  
 #> 4 0CubNR~5740 A_V4       A          4.81   4.67 FALSE  
-#> 5 0CubNR~5740 B_V1       B          4.58   4.51 FALSE  
-#> 6 0CubNR~5740 B_V2       B          4.60   4.51 FALSE
+#> 5 0CubNR~5740 B_V1       B          4.58   4.52 FALSE  
+#> 6 0CubNR~5740 B_V2       B          4.60   4.52 FALSE
 head(residuals(analysis))
 #> # A tibble: 6 × 6
 #>   protein_Id  sampleName group_ response residual imputed
 #>   <chr>       <chr>      <chr>     <dbl>    <dbl> <lgl>  
-#> 1 0CubNR~5740 A_V1       A          4.84   0.166  FALSE  
-#> 2 0CubNR~5740 A_V2       A          4.65  -0.0194 FALSE  
-#> 3 0CubNR~5740 A_V3       A          4.49  -0.182  FALSE  
-#> 4 0CubNR~5740 A_V4       A          4.81   0.136  FALSE  
-#> 5 0CubNR~5740 B_V1       B          4.58   0.0730 FALSE  
-#> 6 0CubNR~5740 B_V2       B          4.60   0.0915 FALSE
+#> 1 0CubNR~5740 A_V1       A          4.84   0.164  FALSE  
+#> 2 0CubNR~5740 A_V2       A          4.65  -0.0218 FALSE  
+#> 3 0CubNR~5740 A_V3       A          4.49  -0.184  FALSE  
+#> 4 0CubNR~5740 A_V4       A          4.81   0.133  FALSE  
+#> 5 0CubNR~5740 B_V1       B          4.58   0.0676 FALSE  
+#> 6 0CubNR~5740 B_V2       B          4.60   0.0861 FALSE
 plot(analysis)
 ```
 

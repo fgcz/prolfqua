@@ -152,7 +152,9 @@ initialize
 - `weights`:
 
   column names whose product gives the per-observation weights (default:
-  the child count times the identification confidence). Pass `NULL` for
+  the child count times the identification confidence times the peptide
+  consistency factor, see
+  `AnalysisConfiguration$use_peptide_consistency`). Pass `NULL` for
   unweighted.
 
 - `trend, robust`:

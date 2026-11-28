@@ -124,8 +124,8 @@ head(aligned, 3)
     ## # A tibble: 3 × 10
     ##   protein_Id  contrast  method effect statistic    p.value     FDR estimate_type
     ##   <chr>       <chr>     <chr>   <dbl>     <dbl>      <dbl>   <dbl> <chr>        
-    ## 1 0CubNR~0890 A_vs_Ctrl lm      0.674      12.8    4.14e-8 6.87e-7 observed     
-    ## 2 0CubNR~0890 A_vs_Ctrl rlm     0.666      14.6    4.08e-9 7.96e-8 observed     
+    ## 1 0CubNR~0890 A_vs_Ctrl lm      0.674      12.7    3.53e-8 5.54e-7 observed     
+    ## 2 0CubNR~0890 A_vs_Ctrl rlm     0.666      12.4    5.85e-8 9.12e-7 observed     
     ## 3 0CubNR~0890 A_vs_Ctrl rfit    0.661      10.7    2.40e-7 2.84e-6 observed     
     ## # ℹ 2 more variables: status <chr>, family <chr>
 
@@ -329,7 +329,7 @@ lowest <- correlations |>
 The effects agree more closely than the statistics, which also depend on
 each method’s standard error and degrees of freedom. The lowest
 correlation of the effects is 0.90 (deqms_voom and ropeca_nested), that
-of the statistics 0.80 (rlm and limpa).
+of the statistics 0.81 (rfit and limpa).
 
 ``` r
 ggplot(correlations, aes(x = method_1, y = method_2, fill = r)) +
@@ -394,7 +394,7 @@ another), `significance_conflict` (significant in one, tested but not
 significant in another) and `coverage_conflict` (significant in one, not
 estimated by another). The detection models call no pair significant
 here, so with them nearly every pair significant in an intensity method
-would be a significance conflict (138 of 160 pairs). The conflicts are
+would be a significance conflict (137 of 160 pairs). The conflicts are
 therefore counted among the intensity methods only.
 
 ``` r
@@ -408,7 +408,7 @@ conflicts |>
 
 | sign_conflict | significance_conflict | coverage_conflict | pairs |
 |--------------:|----------------------:|------------------:|------:|
-|             2 |                    75 |                47 |   160 |
+|             3 |                    72 |                47 |   160 |
 
 Protein and contrast pairs with each kind of conflict among the
 intensity methods.
@@ -425,16 +425,19 @@ knitr::kable(sign_rows, digits = 3, caption = "Significant calls of the pairs th
 
 | protein_Id  | contrast  | method          | effect |   FDR | status |
 |:------------|:----------|:----------------|-------:|------:|:-------|
-| 2yQxtd~5083 | A_vs_Ctrl | rlm             |  0.098 | 0.075 | up     |
+| 2yQxtd~5083 | A_vs_Ctrl | rlm             |  0.095 | 0.089 | up     |
 | 2yQxtd~5083 | A_vs_Ctrl | ropecaV2_nested | -0.059 | 0.040 | down   |
 | l6ixC6~8472 | A_vs_Ctrl | limpa           |  0.081 | 0.000 | up     |
 | l6ixC6~8472 | A_vs_Ctrl | limpa_nested    |  0.081 | 0.000 | up     |
 | l6ixC6~8472 | A_vs_Ctrl | ropecaV2_nested | -0.039 | 0.082 | down   |
+| R5v1PE~0538 | A_vs_Ctrl | ropeca_nested   | -0.210 | 0.000 | down   |
+| R5v1PE~0538 | A_vs_Ctrl | ropecaV2_nested | -0.210 | 0.000 | down   |
+| R5v1PE~0538 | A_vs_Ctrl | hurdle_nested   |  0.086 | 0.096 | up     |
 
 Significant calls of the pairs that are up in one method and down in
 another.
 
-All of these calls have an absolute log2 fold change of at most 0.1.
+All of these calls have an absolute log2 fold change of at most 0.21.
 
 ### Significant in one method, not in another
 
@@ -452,25 +455,25 @@ intensity_aligned |>
 
 | method            | down | not significant |  up | not estimated |
 |:------------------|-----:|----------------:|----:|--------------:|
-| lm                |   25 |              27 |  23 |             0 |
-| rlm               |   25 |              30 |  20 |             0 |
-| rfit              |   20 |              40 |  15 |             0 |
-| limma             |   25 |              27 |  23 |             0 |
-| limma_voom        |   25 |              26 |  24 |             0 |
-| deqms             |   27 |              28 |  20 |             0 |
-| deqms_voom        |   26 |              28 |  21 |             0 |
-| limpa             |   28 |              27 |  20 |             0 |
-| limpa_nested      |   28 |              27 |  20 |             0 |
-| lm_impute         |   25 |              28 |  22 |             0 |
-| limma_impute      |   25 |              28 |  22 |             0 |
-| limma_voom_impute |   24 |              30 |  21 |             0 |
-| rfit_impute       |   21 |              40 |  14 |             0 |
-| lmer_nested       |    9 |              44 |   8 |            14 |
-| ropeca_nested     |   21 |              38 |  16 |             0 |
-| ropecaV2_nested   |   40 |               7 |  28 |             0 |
-| hurdle_nested     |   19 |              42 |  14 |             0 |
+| lm                |   24 |              22 |  26 |             0 |
+| rlm               |   23 |              26 |  23 |             0 |
+| rfit              |   18 |              39 |  15 |             0 |
+| limma             |   24 |              22 |  26 |             0 |
+| limma_voom        |   23 |              26 |  23 |             0 |
+| deqms             |   25 |              27 |  20 |             0 |
+| deqms_voom        |   24 |              27 |  21 |             0 |
+| limpa             |   26 |              26 |  20 |             0 |
+| limpa_nested      |   26 |              26 |  20 |             0 |
+| lm_impute         |   24 |              23 |  25 |             0 |
+| limma_impute      |   24 |              23 |  25 |             0 |
+| limma_voom_impute |   23 |              28 |  21 |             0 |
+| rfit_impute       |   19 |              39 |  14 |             0 |
+| lmer_nested       |    7 |              43 |   8 |            14 |
+| ropeca_nested     |   19 |              37 |  16 |             0 |
+| ropecaV2_nested   |   38 |               6 |  28 |             0 |
+| hurdle_nested     |   21 |              36 |  15 |             0 |
 
-Status in each method of the 75 pairs that are significant in some
+Status in each method of the 72 pairs that are significant in some
 intensity methods and tested but not significant in others.
 
 ### Significant in one method, not estimated by another
@@ -519,21 +522,21 @@ intensity_aligned |>
 | 8mS8sK~0150 | A_vs_Ctrl | limma_impute | lod_imputed | 0.000 | 1.000 | 1.000 | not significant |
 | 8mS8sK~0150 | A_vs_Ctrl | limma_voom_impute | lod_imputed | 0.000 | 1.000 | 1.000 | not significant |
 | 8mS8sK~0150 | A_vs_Ctrl | rfit_impute | lod_imputed | 0.000 | 1.000 | 1.000 | not significant |
-| 8mS8sK~0150 | A_vs_Ctrl | hurdle_nested | lod_imputed | 0.000 | 0.532 | 0.645 | not significant |
+| 8mS8sK~0150 | A_vs_Ctrl | hurdle_nested | lod_imputed | 0.000 | 0.532 | 0.648 | not significant |
 | DTCi0N~0734 | A_vs_Ctrl | limpa | observed | -0.826 | 0.008 | 0.016 | down |
 | DTCi0N~0734 | A_vs_Ctrl | limpa_nested | observed | -0.826 | 0.008 | 0.016 | down |
-| DTCi0N~0734 | A_vs_Ctrl | lm_impute | lod_imputed | -0.253 | 0.006 | 0.017 | down |
-| DTCi0N~0734 | A_vs_Ctrl | limma_impute | lod_imputed | -0.253 | 0.006 | 0.017 | down |
-| DTCi0N~0734 | A_vs_Ctrl | limma_voom_impute | lod_imputed | -0.253 | 0.006 | 0.016 | down |
+| DTCi0N~0734 | A_vs_Ctrl | lm_impute | lod_imputed | -0.253 | 0.006 | 0.015 | down |
+| DTCi0N~0734 | A_vs_Ctrl | limma_impute | lod_imputed | -0.253 | 0.006 | 0.016 | down |
+| DTCi0N~0734 | A_vs_Ctrl | limma_voom_impute | lod_imputed | -0.253 | 0.005 | 0.014 | down |
 | DTCi0N~0734 | A_vs_Ctrl | rfit_impute | lod_imputed | -0.287 | 0.001 | 0.002 | down |
-| DTCi0N~0734 | A_vs_Ctrl | hurdle_nested | lod_imputed | -0.253 | 0.005 | 0.014 | down |
+| DTCi0N~0734 | A_vs_Ctrl | hurdle_nested | lod_imputed | -0.253 | 0.004 | 0.013 | down |
 | OrL0ux~1369 | B_vs_Ctrl | limpa | observed | -0.885 | 0.002 | 0.004 | down |
 | OrL0ux~1369 | B_vs_Ctrl | limpa_nested | observed | -0.885 | 0.002 | 0.004 | down |
-| OrL0ux~1369 | B_vs_Ctrl | lm_impute | lod_imputed | -0.207 | 0.026 | 0.038 | down |
-| OrL0ux~1369 | B_vs_Ctrl | limma_impute | lod_imputed | -0.207 | 0.026 | 0.038 | down |
-| OrL0ux~1369 | B_vs_Ctrl | limma_voom_impute | lod_imputed | -0.207 | 0.013 | 0.022 | down |
+| OrL0ux~1369 | B_vs_Ctrl | lm_impute | lod_imputed | -0.207 | 0.023 | 0.035 | down |
+| OrL0ux~1369 | B_vs_Ctrl | limma_impute | lod_imputed | -0.207 | 0.024 | 0.035 | down |
+| OrL0ux~1369 | B_vs_Ctrl | limma_voom_impute | lod_imputed | -0.207 | 0.012 | 0.020 | down |
 | OrL0ux~1369 | B_vs_Ctrl | rfit_impute | lod_imputed | -0.207 | 0.008 | 0.014 | down |
-| OrL0ux~1369 | B_vs_Ctrl | hurdle_nested | lod_imputed | -0.207 | 0.016 | 0.029 | down |
+| OrL0ux~1369 | B_vs_Ctrl | hurdle_nested | lod_imputed | -0.207 | 0.015 | 0.027 | down |
 
 Estimates of the pairs lm cannot estimate. estimate_type lod_imputed:
 the missing group set to the limit of detection.
@@ -615,7 +618,7 @@ difference is 4e-15 in the effect and 5e-14 in the p-value, and neither
 estimates the 3 pairs of proteins without observations in a group (plain
 limma warns about them and returns NA). By default prolfqua weights each
 protein intensity by the number of peptides behind it (`nr_children`);
-this shifts the estimates by up to 0.13, and 11 pairs are significant
+this shifts the estimates by up to 0.1, and 13 pairs are significant
 with one of the two and not with the other.
 
 ## Notes on single methods

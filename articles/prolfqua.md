@@ -172,12 +172,12 @@ head(res[, c("protein_Id", "contrast", "diff", "p.value", "FDR")])
 #> # A tibble: 6 × 5
 #>   protein_Id  contrast     diff    p.value       FDR
 #>   <chr>       <chr>       <dbl>      <dbl>     <dbl>
-#> 1 0EfVhX~3967 A_vs_Ctrl  0.199  0.000123   0.000397 
-#> 2 0m5WN4~6025 A_vs_Ctrl  0.178  0.0000160  0.0000726
-#> 3 0YSKpy~2865 A_vs_Ctrl -0.175  0.00277    0.00554  
-#> 4 3QLHfm~8938 A_vs_Ctrl  0.214  0.00456    0.00807  
-#> 5 3QYop0~7543 A_vs_Ctrl -0.221  0.00000298 0.0000179
-#> 6 76k03k~7094 A_vs_Ctrl -0.0822 0.00980    0.0156
+#> 1 0EfVhX~3967 A_vs_Ctrl  0.200  0.000115   0.000371 
+#> 2 0m5WN4~6025 A_vs_Ctrl  0.177  0.0000183  0.0000786
+#> 3 0YSKpy~2865 A_vs_Ctrl -0.174  0.00279    0.00557  
+#> 4 3QLHfm~8938 A_vs_Ctrl  0.214  0.00454    0.00815  
+#> 5 3QYop0~7543 A_vs_Ctrl -0.220  0.00000280 0.0000175
+#> 6 76k03k~7094 A_vs_Ctrl -0.0822 0.00995    0.0158
 ```
 
 ``` r

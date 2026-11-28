@@ -73,7 +73,7 @@
                         <h4 data-toc-skip class="author">Witold E.
 Wolski</h4>
             
-            <h4 data-toc-skip class="date">2026-11-26</h4>
+            <h4 data-toc-skip class="date">2026-11-28</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/fgcz/prolfqua/blob/main/vignettes/articles/ComparingMethods.Rmd" class="external-link"><code>vignettes/articles/ComparingMethods.Rmd</code></a></small>
       <div class="d-none name"><code>ComparingMethods.Rmd</code></div>
@@ -285,8 +285,8 @@ The <code>status</code> of a pair in a method is
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 10</span></span></span>
 <span><span class="co">##   protein_Id  contrast  method effect statistic    p.value     FDR estimate_type</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> 0CubNR~0890 A_vs_Ctrl lm      0.674      12.8    4.14<span style="color: #949494;">e</span><span style="color: #BB0000;">-8</span> 6.87<span style="color: #949494;">e</span><span style="color: #BB0000;">-7</span> observed     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> 0CubNR~0890 A_vs_Ctrl rlm     0.666      14.6    4.08<span style="color: #949494;">e</span><span style="color: #BB0000;">-9</span> 7.96<span style="color: #949494;">e</span><span style="color: #BB0000;">-8</span> observed     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> 0CubNR~0890 A_vs_Ctrl lm      0.674      12.7    3.53<span style="color: #949494;">e</span><span style="color: #BB0000;">-8</span> 5.54<span style="color: #949494;">e</span><span style="color: #BB0000;">-7</span> observed     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> 0CubNR~0890 A_vs_Ctrl rlm     0.666      12.4    5.85<span style="color: #949494;">e</span><span style="color: #BB0000;">-8</span> 9.12<span style="color: #949494;">e</span><span style="color: #BB0000;">-7</span> observed     </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">3</span> 0CubNR~0890 A_vs_Ctrl rfit    0.661      10.7    2.40<span style="color: #949494;">e</span><span style="color: #BB0000;">-7</span> 2.84<span style="color: #949494;">e</span><span style="color: #BB0000;">-6</span> observed     </span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 2 more variables: status &lt;chr&gt;, family &lt;chr&gt;</span></span></span></code></pre>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -555,7 +555,7 @@ estimates.
 <p>The effects agree more closely than the statistics, which also depend
 on each method’s standard error and degrees of freedom. The lowest
 correlation of the effects is 0.90 (deqms_voom and ropeca_nested), that
-of the statistics 0.80 (rlm and limpa).</p>
+of the statistics 0.81 (rfit and limpa).</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span><span class="va">correlations</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">method_1</span>, y <span class="op">=</span> <span class="va">method_2</span>, fill <span class="op">=</span> <span class="va">r</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_tile</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -614,7 +614,7 @@ one method, down in another), <code>significance_conflict</code>
 <code>coverage_conflict</code> (significant in one, not estimated by
 another). The detection models call no pair significant here, so with
 them nearly every pair significant in an intensity method would be a
-significance conflict (138 of 160 pairs). The conflicts are therefore
+significance conflict (137 of 160 pairs). The conflicts are therefore
 counted among the intensity methods only.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">intensity_comparison</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/ContrastsComparison.html">ContrastsComparison</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">analyses</span><span class="op">[</span><span class="va">intensity</span><span class="op">]</span>, fdr_threshold <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
@@ -633,8 +633,8 @@ intensity methods.</caption>
 <th align="right">pairs</th>
 </tr></thead>
 <tbody><tr class="odd">
-<td align="right">2</td>
-<td align="right">75</td>
+<td align="right">3</td>
+<td align="right">72</td>
 <td align="right">47</td>
 <td align="right">160</td>
 </tr></tbody>
@@ -664,8 +664,8 @@ down in another.</caption>
 <td align="left">2yQxtd~5083</td>
 <td align="left">A_vs_Ctrl</td>
 <td align="left">rlm</td>
-<td align="right">0.098</td>
-<td align="right">0.075</td>
+<td align="right">0.095</td>
+<td align="right">0.089</td>
 <td align="left">up</td>
 </tr>
 <tr class="even">
@@ -700,10 +700,34 @@ down in another.</caption>
 <td align="right">0.082</td>
 <td align="left">down</td>
 </tr>
+<tr class="even">
+<td align="left">R5v1PE~0538</td>
+<td align="left">A_vs_Ctrl</td>
+<td align="left">ropeca_nested</td>
+<td align="right">-0.210</td>
+<td align="right">0.000</td>
+<td align="left">down</td>
+</tr>
+<tr class="odd">
+<td align="left">R5v1PE~0538</td>
+<td align="left">A_vs_Ctrl</td>
+<td align="left">ropecaV2_nested</td>
+<td align="right">-0.210</td>
+<td align="right">0.000</td>
+<td align="left">down</td>
+</tr>
+<tr class="even">
+<td align="left">R5v1PE~0538</td>
+<td align="left">A_vs_Ctrl</td>
+<td align="left">hurdle_nested</td>
+<td align="right">0.086</td>
+<td align="right">0.096</td>
+<td align="left">up</td>
+</tr>
 </tbody>
 </table>
 <p>All of these calls have an absolute log2 fold change of at most
-0.1.</p>
+0.21.</p>
 </div>
 <div class="section level3">
 <h3 id="significant-in-one-method-not-in-another">Significant in one method, not in another<a class="anchor" aria-label="anchor" href="#significant-in-one-method-not-in-another"></a>
@@ -719,7 +743,7 @@ down in another.</caption>
 <span>    <span class="st">" pairs that are significant in some intensity methods and tested but not significant in others."</span></span>
 <span>  <span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
-<caption>Status in each method of the 75 pairs that are significant in
+<caption>Status in each method of the 72 pairs that are significant in
 some intensity methods and tested but not significant in
 others.</caption>
 <thead><tr class="header">
@@ -732,121 +756,121 @@ others.</caption>
 <tbody>
 <tr class="odd">
 <td align="left">lm</td>
-<td align="right">25</td>
-<td align="right">27</td>
-<td align="right">23</td>
+<td align="right">24</td>
+<td align="right">22</td>
+<td align="right">26</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="left">rlm</td>
-<td align="right">25</td>
-<td align="right">30</td>
-<td align="right">20</td>
+<td align="right">23</td>
+<td align="right">26</td>
+<td align="right">23</td>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
 <td align="left">rfit</td>
-<td align="right">20</td>
-<td align="right">40</td>
+<td align="right">18</td>
+<td align="right">39</td>
 <td align="right">15</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="left">limma</td>
-<td align="right">25</td>
-<td align="right">27</td>
-<td align="right">23</td>
+<td align="right">24</td>
+<td align="right">22</td>
+<td align="right">26</td>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
 <td align="left">limma_voom</td>
-<td align="right">25</td>
+<td align="right">23</td>
 <td align="right">26</td>
-<td align="right">24</td>
+<td align="right">23</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="left">deqms</td>
+<td align="right">25</td>
 <td align="right">27</td>
-<td align="right">28</td>
 <td align="right">20</td>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
 <td align="left">deqms_voom</td>
-<td align="right">26</td>
-<td align="right">28</td>
+<td align="right">24</td>
+<td align="right">27</td>
 <td align="right">21</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="left">limpa</td>
-<td align="right">28</td>
-<td align="right">27</td>
+<td align="right">26</td>
+<td align="right">26</td>
 <td align="right">20</td>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
 <td align="left">limpa_nested</td>
-<td align="right">28</td>
-<td align="right">27</td>
+<td align="right">26</td>
+<td align="right">26</td>
 <td align="right">20</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="left">lm_impute</td>
+<td align="right">24</td>
+<td align="right">23</td>
 <td align="right">25</td>
-<td align="right">28</td>
-<td align="right">22</td>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
 <td align="left">limma_impute</td>
+<td align="right">24</td>
+<td align="right">23</td>
 <td align="right">25</td>
-<td align="right">28</td>
-<td align="right">22</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="left">limma_voom_impute</td>
-<td align="right">24</td>
-<td align="right">30</td>
+<td align="right">23</td>
+<td align="right">28</td>
 <td align="right">21</td>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
 <td align="left">rfit_impute</td>
-<td align="right">21</td>
-<td align="right">40</td>
+<td align="right">19</td>
+<td align="right">39</td>
 <td align="right">14</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="left">lmer_nested</td>
-<td align="right">9</td>
-<td align="right">44</td>
+<td align="right">7</td>
+<td align="right">43</td>
 <td align="right">8</td>
 <td align="right">14</td>
 </tr>
 <tr class="odd">
 <td align="left">ropeca_nested</td>
-<td align="right">21</td>
-<td align="right">38</td>
+<td align="right">19</td>
+<td align="right">37</td>
 <td align="right">16</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="left">ropecaV2_nested</td>
-<td align="right">40</td>
-<td align="right">7</td>
+<td align="right">38</td>
+<td align="right">6</td>
 <td align="right">28</td>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
 <td align="left">hurdle_nested</td>
-<td align="right">19</td>
-<td align="right">42</td>
-<td align="right">14</td>
+<td align="right">21</td>
+<td align="right">36</td>
+<td align="right">15</td>
 <td align="right">0</td>
 </tr>
 </tbody>
@@ -1011,7 +1035,7 @@ lod_imputed: the missing group set to the limit of detection.</caption>
 <td align="left">lod_imputed</td>
 <td align="right">0.000</td>
 <td align="right">0.532</td>
-<td align="right">0.645</td>
+<td align="right">0.648</td>
 <td align="left">not significant</td>
 </tr>
 <tr class="even">
@@ -1041,7 +1065,7 @@ lod_imputed: the missing group set to the limit of detection.</caption>
 <td align="left">lod_imputed</td>
 <td align="right">-0.253</td>
 <td align="right">0.006</td>
-<td align="right">0.017</td>
+<td align="right">0.015</td>
 <td align="left">down</td>
 </tr>
 <tr class="odd">
@@ -1051,7 +1075,7 @@ lod_imputed: the missing group set to the limit of detection.</caption>
 <td align="left">lod_imputed</td>
 <td align="right">-0.253</td>
 <td align="right">0.006</td>
-<td align="right">0.017</td>
+<td align="right">0.016</td>
 <td align="left">down</td>
 </tr>
 <tr class="even">
@@ -1060,8 +1084,8 @@ lod_imputed: the missing group set to the limit of detection.</caption>
 <td align="left">limma_voom_impute</td>
 <td align="left">lod_imputed</td>
 <td align="right">-0.253</td>
-<td align="right">0.006</td>
-<td align="right">0.016</td>
+<td align="right">0.005</td>
+<td align="right">0.014</td>
 <td align="left">down</td>
 </tr>
 <tr class="odd">
@@ -1080,8 +1104,8 @@ lod_imputed: the missing group set to the limit of detection.</caption>
 <td align="left">hurdle_nested</td>
 <td align="left">lod_imputed</td>
 <td align="right">-0.253</td>
-<td align="right">0.005</td>
-<td align="right">0.014</td>
+<td align="right">0.004</td>
+<td align="right">0.013</td>
 <td align="left">down</td>
 </tr>
 <tr class="odd">
@@ -1110,8 +1134,8 @@ lod_imputed: the missing group set to the limit of detection.</caption>
 <td align="left">lm_impute</td>
 <td align="left">lod_imputed</td>
 <td align="right">-0.207</td>
-<td align="right">0.026</td>
-<td align="right">0.038</td>
+<td align="right">0.023</td>
+<td align="right">0.035</td>
 <td align="left">down</td>
 </tr>
 <tr class="even">
@@ -1120,8 +1144,8 @@ lod_imputed: the missing group set to the limit of detection.</caption>
 <td align="left">limma_impute</td>
 <td align="left">lod_imputed</td>
 <td align="right">-0.207</td>
-<td align="right">0.026</td>
-<td align="right">0.038</td>
+<td align="right">0.024</td>
+<td align="right">0.035</td>
 <td align="left">down</td>
 </tr>
 <tr class="odd">
@@ -1130,8 +1154,8 @@ lod_imputed: the missing group set to the limit of detection.</caption>
 <td align="left">limma_voom_impute</td>
 <td align="left">lod_imputed</td>
 <td align="right">-0.207</td>
-<td align="right">0.013</td>
-<td align="right">0.022</td>
+<td align="right">0.012</td>
+<td align="right">0.020</td>
 <td align="left">down</td>
 </tr>
 <tr class="even">
@@ -1150,8 +1174,8 @@ lod_imputed: the missing group set to the limit of detection.</caption>
 <td align="left">hurdle_nested</td>
 <td align="left">lod_imputed</td>
 <td align="right">-0.207</td>
-<td align="right">0.016</td>
-<td align="right">0.029</td>
+<td align="right">0.015</td>
+<td align="right">0.027</td>
 <td align="left">down</td>
 </tr>
 </tbody>
@@ -1239,7 +1263,7 @@ p-value, and neither estimates the 3 pairs of proteins without
 observations in a group (plain limma warns about them and returns NA).
 By default prolfqua weights each protein intensity by the number of
 peptides behind it (<code>nr_children</code>); this shifts the estimates
-by up to 0.13, and 11 pairs are significant with one of the two and not
+by up to 0.1, and 13 pairs are significant with one of the two and not
 with the other.</p>
 </div>
 <div class="section level2">

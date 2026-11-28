@@ -55,6 +55,7 @@ xx
     ##     annotation_vars: function () 
     ##     bin_resp: 
     ##     clone: function (deep = FALSE) 
+    ##     consistency_factor: NULL
     ##     factor_depth: 1
     ##     factor_keys: function () 
     ##     factor_keys_depth: function () 
@@ -84,7 +85,9 @@ xx
     ##     sep: ~
     ##     set_response: function (col_name) 
     ##     use_identification_confidence: TRUE
+    ##     use_peptide_consistency: TRUE
     ##     value_vars: function () 
+    ##     weight_columns: 
     ##     work_intensity: abundance
 
 Create the `LFQData` class instance and remove zero or very small

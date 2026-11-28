@@ -15,6 +15,17 @@
   `data_ionstar` carries `identification_confidence = 1 - pep`.
 - Top-N aggregation no longer writes an `ident_qValue` column; every
   aggregator carries `identification_confidence` instead.
+- rlm aggregation (`AggregateRlm`) no longer writes its per-sample
+  `weights` column (the inverse mean squared residual), which no model
+  used; the consistency columns below replace it.
+- The facades `lm`, `lm_impute`, `limma`, `limma_impute`, `limma_voom`,
+  `limma_voom_impute`, `deqms` and `rlm` multiply their default weights
+  by the peptide consistency factor of medpolish and rlm aggregates, so
+  their results on such data change; `rlm` now weights by `nr_children`
+  times identification confidence times this factor instead of the
+  confidence alone.
+  `AnalysisConfiguration$use_peptide_consistency <- FALSE` restores the
+  previous default weights (for `rlm`: `nr_children` times confidence).
 
 ### New features
 
@@ -28,9 +39,11 @@
   child count that varies across samples.
   [`complete_cases()`](https://fgcz.github.io/prolfqua/reference/complete_cases.md)
   gives added rows their feature’s values.
+
 - Aggregation (medpolish, rlm, topN, limpa) gives each protein in each
   sample the largest identification confidence of its observed peptides,
   and computes both feature-level columns.
+
 - Models are weighted by identification confidence. Facades that
   weighted by `nr_children` (`lm`, `lm_impute`, `limma`, `limma_impute`,
   `limma_voom`, `limma_voom_impute`, `deqms`) weight by `nr_children`
@@ -39,6 +52,7 @@
   `limpa_nested` weight by `identification_confidence` and gain a
   `weights` argument (`NULL` fits unweighted). With confidence 1
   everywhere the results are unchanged.
+
 - `weights` of
   [`strategy_lm()`](https://fgcz.github.io/prolfqua/reference/strategy.md),
   [`strategy_limma()`](https://fgcz.github.io/prolfqua/reference/strategy_limma.md)
@@ -51,6 +65,7 @@
   gain a `weights` argument.
   [`sigma()`](https://rdrr.io/r/stats/sigma.html) of an `rlm` fit treats
   prior weights as inverse variances.
+
 - `ropeca_nested` and `ropecaV2_nested` weight the peptide fits but
   combine the peptides of a protein without weights. `ContrastsROPECA`
   and `ContrastsROPECAV2` take `child_weights` to combine them with
@@ -67,16 +82,20 @@
   weighted by 1 - PEP (0.88 to 1) lowered pAUC_10 by 5.5 (ROPECA) and
   4.4 (V2) points; nearly equal weights drop a peptide from ROPECA’s
   effective count and stop V2 averaging the two middle peptides.
+
 - Detection models (`binomial_nested`, `binomial_firth_nested`, and so
   `hurdle_nested`) count expected true detections: a detected peptide
   counts with its confidence in the sample, and every peptide counts
   towards the available ones with its feature-level confidence. `firth`
   turns each observed protein into a detection with weight c and a
   non-detection with weight c_feature - c.
+
 - DEqMS moderation takes the peptide count from `nr_children_feature`.
+
 - `rfit` and `rfit_impute` say in a message that they ignore the
   identification confidence when it is not 1 everywhere; Rfit takes no
   observation weights.
+
 - `AnalysisConfiguration$use_identification_confidence` (default `TRUE`)
   switches the identification confidence off in one place: with `FALSE`
   the facades’ default weights leave it out (`nr_children` alone, or
@@ -88,6 +107,7 @@
   weights lowered pAUC_10 on IonStar reanalysed with
   MetaMorpheus/FlashLFQ by 2 to 12 points, where most match-between-runs
   peaks have a PIP PEP near 1.
+
 - `LFQDataTransformer$robscale_lowcv(fraction = 0.4)` normalizes without
   group labels, as DIA-NN’s global normalization does: it centres each
   sample on the share `fraction` of the features observed in every
@@ -97,6 +117,39 @@
   human protein log2 fold change is 0.005 (`robscale()`: 0.031,
   `robscale_subset()` on the human proteins: 0.038), and null splits
   give 4.6% of p-values below 0.05, as with the human subset.
+
+- Medpolish and rlm aggregation weigh each protein in each sample by how
+  well its peptides agree there. From the residuals of the peptides, the
+  protein’s residual variance is shrunk over proteins
+  ([`limma::squeezeVar()`](https://rdrr.io/pkg/limma/man/squeezeVar.html))
+  to `consistency_sigma2`; the residual variance of each sample relative
+  to it is shrunk over all protein and sample cells, and its inverse is
+  `consistency_factor` (cells with one peptide get the prior);
+  `consistency_factor_rel` divides it by its mean over the protein’s
+  samples, so it averages 1 per protein and leaves the protein-wide
+  level to the models’ variance moderation. The aggregates also carry
+  the weight variants `weight_count`, `weight_count_conf`,
+  `weight_protein_ivw`, `weight_sample_ivw`, `weight_sample_ivw_conf`,
+  `weight_sample_rel` and `weight_sample_rel_conf`, usable as
+  `weights =`. The priors are in the aggregator’s `$consistency_priors`.
+  When fewer than three proteins have peptides with residual degrees of
+  freedom, the prior cannot be estimated and the factors are 1. In
+  prolfquabenchmark, `weight_sample_rel_conf`, the new default, raised
+  the median pAUC_5 over the eight peptide datasets from 78.8 to 79.4
+  (lm), 78.5 to 79.1 (limma), 78.1 to 78.6 (deqms) and 75.8 to 76.2
+  (rlm), and the false discovery proportion at a nominal FDR of 5% by
+  0.015 (median, lm): the weights come from the same data and the fit
+  treats them as known.
+
+- New configuration fields `weight_columns` (further protein × sample
+  value columns, part of `value_vars()`, so limma and `weights =` take
+  them as feature × sample matrices), `consistency_factor` (the column
+  the default weights use: `consistency_factor_rel` after medpolish or
+  rlm aggregation, `NULL` otherwise) and `use_peptide_consistency`
+  (default `TRUE`; only an explicit `FALSE` turns the factor off, so a
+  configuration saved before the field existed uses it). Top-N and limpa
+  aggregation write no consistency columns. `data_ionstar` carries
+  configurations with these fields.
 
 ### Documentation
 

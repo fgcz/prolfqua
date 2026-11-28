@@ -185,10 +185,10 @@ head(facade$get_contrasts())
 #>   <chr>         <chr>         <chr>       <chr>       <dbl>  <dbl>
 #> 1 hurdle_nested observed      0GRprF~7339 A_vs_Ctrl -0.231    4.03
 #> 2 hurdle_nested observed      4JK499~3111 A_vs_Ctrl  0.466    3.90
-#> 3 hurdle_nested observed      7IZdVV~6818 A_vs_Ctrl  0.122    4.62
+#> 3 hurdle_nested observed      7IZdVV~6818 A_vs_Ctrl  0.120    4.63
 #> 4 hurdle_nested observed      AZPG26~9461 A_vs_Ctrl -0.0544   4.67
-#> 5 hurdle_nested observed      AoNKbb~3497 A_vs_Ctrl  0.0672   4.52
-#> 6 hurdle_nested observed      CibL2O~2149 A_vs_Ctrl -0.328    4.04
+#> 5 hurdle_nested observed      AoNKbb~3497 A_vs_Ctrl  0.0676   4.52
+#> 6 hurdle_nested observed      CibL2O~2149 A_vs_Ctrl -0.327    4.04
 #> # ℹ 18 more variables: std.error.unmoderated <dbl>, df.unmoderated <int>,
 #> #   std.error <dbl>, statistic <dbl>, df <dbl>, conf.low <dbl>,
 #> #   conf.high <dbl>, sigma <dbl>, p.value <dbl>, FDR <dbl>,

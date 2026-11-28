@@ -142,8 +142,6 @@ The method models the peptides and reports protein-level contrasts.</li>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: fit (Model): 8 fits failed (e.g. 2kfAGV~3196, f0Cvvj~0425, fylZqB~9801, GpgE28~7718, KVkccD~9390, ...): Error: grouping factors must have &gt; 1 sampled level</span></span>
 <span><span class="co">#&gt; See $provenance().</span></span>
-<span><span class="co">#&gt; Warning: fit (Model): 1 fits with a warning (e.g. joOg0p~8820): 'rlm' failed to converge in 20 steps</span></span>
-<span><span class="co">#&gt; See $provenance().</span></span>
 <span><span class="co">#&gt; Warning: fit (Model): 1 fits failed (e.g. joOg0p~8820~zzRiJpQz): Error in `contrasts&lt;-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]): contrasts can be applied only to factors with 2 or more levels</span></span>
 <span><span class="co">#&gt; See $provenance().</span></span>
 <span><span class="co">#&gt; fit (Model): 1 fits failed (e.g. joOg0p~8820~zzRiJpQz): Error in `contrasts&lt;-`(`*tmp*`, value = contr.funs[1 + isOF[nn]]): contrasts can be applied only to factors with 2 or more levels</span></span>
@@ -658,9 +656,9 @@ missing and significant results; the significance defaults are FDR &lt;
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 5</span></span></span>
 <span><span class="co">#&gt;   protein_Id  term        estimate std.error    df</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0CubNR~5740 (Intercept)   4.67      0.054<span style="text-decoration: underline;">7</span>     9</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 0CubNR~5740 group_B      -<span style="color: #BB0000;">0.162</span>     0.075<span style="text-decoration: underline;">6</span>     9</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 0CubNR~5740 group_Ctrl    0.087<span style="text-decoration: underline;">2</span>    0.074<span style="text-decoration: underline;">1</span>     9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0CubNR~5740 (Intercept)   4.67      0.053<span style="text-decoration: underline;">2</span>     9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 0CubNR~5740 group_B      -<span style="color: #BB0000;">0.159</span>     0.078      9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 0CubNR~5740 group_Ctrl    0.084<span style="text-decoration: underline;">5</span>    0.071<span style="text-decoration: underline;">3</span>     9</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 2kfAGV~3196 (Intercept)   4.65      0.029<span style="text-decoration: underline;">6</span>     8</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 2kfAGV~3196 group_B      -<span style="color: #BB0000;">0.21</span>      0.041<span style="text-decoration: underline;">9</span>     8</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 2kfAGV~3196 group_Ctrl   -<span style="color: #BB0000;">0.215</span>     0.045<span style="text-decoration: underline;">3</span>     8</span></span>
@@ -674,7 +672,7 @@ missing and significant results; the significance defaults are FDR &lt;
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 8</span></span></span>
 <span><span class="co">#&gt;   contrast  estimated missing significant    up  down median_sigma median_df</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> A_vs_Ctrl        20       0           0     0     0       0.070<span style="text-decoration: underline;">1</span>      12.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> A_vs_Ctrl        20       0           0     0     0       0.069<span style="text-decoration: underline;">9</span>      12.2</span></span>
 <span><span class="co">#&gt; Provenance: 0 failure and 1 other entries; see $provenance()</span></span>
 <span><span class="va">analysis</span><span class="op">$</span><span class="fu">provenance</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 8</span></span></span>
@@ -685,9 +683,9 @@ missing and significant results; the significance defaults are FDR &lt;
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 5</span></span></span>
 <span><span class="co">#&gt;   protein_Id  term        estimate std.error    df</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0CubNR~5740 (Intercept)   4.67      0.054<span style="text-decoration: underline;">7</span>     9</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 0CubNR~5740 group_B      -<span style="color: #BB0000;">0.162</span>     0.075<span style="text-decoration: underline;">6</span>     9</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 0CubNR~5740 group_Ctrl    0.087<span style="text-decoration: underline;">2</span>    0.074<span style="text-decoration: underline;">1</span>     9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0CubNR~5740 (Intercept)   4.67      0.053<span style="text-decoration: underline;">2</span>     9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 0CubNR~5740 group_B      -<span style="color: #BB0000;">0.159</span>     0.078<span style="text-decoration: underline;">0</span>     9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 0CubNR~5740 group_Ctrl    0.084<span style="text-decoration: underline;">5</span>    0.071<span style="text-decoration: underline;">3</span>     9</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 2kfAGV~3196 (Intercept)   4.65      0.029<span style="text-decoration: underline;">6</span>     8</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 2kfAGV~3196 group_B      -<span style="color: #BB0000;">0.210</span>     0.041<span style="text-decoration: underline;">9</span>     8</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 2kfAGV~3196 group_Ctrl   -<span style="color: #BB0000;">0.215</span>     0.045<span style="text-decoration: underline;">3</span>     8</span></span>
@@ -695,25 +693,25 @@ missing and significant results; the significance defaults are FDR &lt;
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 4</span></span></span>
 <span><span class="co">#&gt;   protein_Id  term        term2       covariance</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0CubNR~5740 (Intercept) (Intercept)    0.002<span style="text-decoration: underline;">99</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 0CubNR~5740 group_B     (Intercept)   -<span style="color: #BB0000;">0.002</span><span style="color: #BB0000; text-decoration: underline;">99</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 0CubNR~5740 group_Ctrl  (Intercept)   -<span style="color: #BB0000;">0.002</span><span style="color: #BB0000; text-decoration: underline;">99</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 0CubNR~5740 (Intercept) group_B       -<span style="color: #BB0000;">0.002</span><span style="color: #BB0000; text-decoration: underline;">99</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 0CubNR~5740 group_B     group_B        0.005<span style="text-decoration: underline;">72</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 0CubNR~5740 group_Ctrl  group_B        0.002<span style="text-decoration: underline;">99</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0CubNR~5740 (Intercept) (Intercept)    0.002<span style="text-decoration: underline;">83</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 0CubNR~5740 group_B     (Intercept)   -<span style="color: #BB0000;">0.002</span><span style="color: #BB0000; text-decoration: underline;">83</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 0CubNR~5740 group_Ctrl  (Intercept)   -<span style="color: #BB0000;">0.002</span><span style="color: #BB0000; text-decoration: underline;">83</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 0CubNR~5740 (Intercept) group_B       -<span style="color: #BB0000;">0.002</span><span style="color: #BB0000; text-decoration: underline;">83</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 0CubNR~5740 group_B     group_B        0.006<span style="text-decoration: underline;">09</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 0CubNR~5740 group_Ctrl  group_B        0.002<span style="text-decoration: underline;">83</span></span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">analysis</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 7</span></span></span>
 <span><span class="co">#&gt;   protein_Id  term        estimate std.error    df conf.low conf.high</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0CubNR~5740 (Intercept)   4.67      0.054<span style="text-decoration: underline;">7</span>     9   4.55     4.80   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 0CubNR~5740 group_B      -<span style="color: #BB0000;">0.162</span>     0.075<span style="text-decoration: underline;">6</span>     9  -<span style="color: #BB0000;">0.333</span>    0.008<span style="text-decoration: underline;">95</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 0CubNR~5740 group_Ctrl    0.087<span style="text-decoration: underline;">2</span>    0.074<span style="text-decoration: underline;">1</span>     9  -<span style="color: #BB0000;">0.080</span><span style="color: #BB0000; text-decoration: underline;">4</span>   0.255  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 2kfAGV~3196 (Intercept)   4.65      0.029<span style="text-decoration: underline;">6</span>     8   4.59     4.72   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 2kfAGV~3196 group_B      -<span style="color: #BB0000;">0.210</span>     0.041<span style="text-decoration: underline;">9</span>     8  -<span style="color: #BB0000;">0.307</span>   -<span style="color: #BB0000;">0.113</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 2kfAGV~3196 group_Ctrl   -<span style="color: #BB0000;">0.215</span>     0.045<span style="text-decoration: underline;">3</span>     8  -<span style="color: #BB0000;">0.320</span>   -<span style="color: #BB0000;">0.111</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0CubNR~5740 (Intercept)   4.67      0.053<span style="text-decoration: underline;">2</span>     9   4.55      4.80  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 0CubNR~5740 group_B      -<span style="color: #BB0000;">0.159</span>     0.078<span style="text-decoration: underline;">0</span>     9  -<span style="color: #BB0000;">0.336</span>     0.017<span style="text-decoration: underline;">5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 0CubNR~5740 group_Ctrl    0.084<span style="text-decoration: underline;">5</span>    0.071<span style="text-decoration: underline;">3</span>     9  -<span style="color: #BB0000;">0.076</span><span style="color: #BB0000; text-decoration: underline;">9</span>    0.246 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 2kfAGV~3196 (Intercept)   4.65      0.029<span style="text-decoration: underline;">6</span>     8   4.59      4.72  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 2kfAGV~3196 group_B      -<span style="color: #BB0000;">0.210</span>     0.041<span style="text-decoration: underline;">9</span>     8  -<span style="color: #BB0000;">0.307</span>    -<span style="color: #BB0000;">0.113</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 2kfAGV~3196 group_Ctrl   -<span style="color: #BB0000;">0.215</span>     0.045<span style="text-decoration: underline;">3</span>     8  -<span style="color: #BB0000;">0.320</span>    -<span style="color: #BB0000;">0.111</span></span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">formula</a></span><span class="op">(</span><span class="va">analysis</span><span class="op">)</span></span>
 <span><span class="co">#&gt; medpolish ~ group_</span></span>
-<span><span class="co">#&gt; &lt;environment: 0x64b22b8485e0&gt;</span></span>
+<span><span class="co">#&gt; &lt;environment: 0x556ec3f54ac8&gt;</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/nobs.html" class="external-link">nobs</a></span><span class="op">(</span><span class="va">analysis</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 2</span></span></span>
 <span><span class="co">#&gt;   protein_Id   nobs</span></span>
@@ -732,18 +730,18 @@ missing and significant results; the significance defaults are FDR &lt;
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 0CubNR~5740 A_V2       A          4.65   4.67 FALSE  </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 0CubNR~5740 A_V3       A          4.49   4.67 FALSE  </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 0CubNR~5740 A_V4       A          4.81   4.67 FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 0CubNR~5740 B_V1       B          4.58   4.51 FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 0CubNR~5740 B_V2       B          4.60   4.51 FALSE</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 0CubNR~5740 B_V1       B          4.58   4.52 FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 0CubNR~5740 B_V2       B          4.60   4.52 FALSE</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/residuals.html" class="external-link">residuals</a></span><span class="op">(</span><span class="va">analysis</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 6</span></span></span>
 <span><span class="co">#&gt;   protein_Id  sampleName group_ response residual imputed</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0CubNR~5740 A_V1       A          4.84   0.166  FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 0CubNR~5740 A_V2       A          4.65  -<span style="color: #BB0000;">0.019</span><span style="color: #BB0000; text-decoration: underline;">4</span> FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 0CubNR~5740 A_V3       A          4.49  -<span style="color: #BB0000;">0.182</span>  FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 0CubNR~5740 A_V4       A          4.81   0.136  FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 0CubNR~5740 B_V1       B          4.58   0.073<span style="text-decoration: underline;">0</span> FALSE  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 0CubNR~5740 B_V2       B          4.60   0.091<span style="text-decoration: underline;">5</span> FALSE</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0CubNR~5740 A_V1       A          4.84   0.164  FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 0CubNR~5740 A_V2       A          4.65  -<span style="color: #BB0000;">0.021</span><span style="color: #BB0000; text-decoration: underline;">8</span> FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 0CubNR~5740 A_V3       A          4.49  -<span style="color: #BB0000;">0.184</span>  FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 0CubNR~5740 A_V4       A          4.81   0.133  FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 0CubNR~5740 B_V1       B          4.58   0.067<span style="text-decoration: underline;">6</span> FALSE  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 0CubNR~5740 B_V2       B          4.60   0.086<span style="text-decoration: underline;">1</span> FALSE</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">analysis</span><span class="op">)</span></span></code></pre></div>
 <p><img src="ModellingMethods_files/figure-html/inspect-analysis-1.png" class="r-plt" alt="" width="700"></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">

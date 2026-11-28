@@ -79,6 +79,28 @@ Other configuration:
   column with one child count per feature, the maximum of `nr_children`
   over samples
 
+- `weight_columns`:
+
+  further protein x sample value columns usable as weights, included in
+  `value_vars()`. The medpolish and rlm aggregations set them to their
+  peptide consistency columns (`consistency_sigma2`,
+  `consistency_factor`, `consistency_factor_rel`) and weight variants
+  (`weight_count`, `weight_count_conf`, `weight_protein_ivw`,
+  `weight_sample_ivw`, `weight_sample_ivw_conf`, `weight_sample_rel`,
+  `weight_sample_rel_conf`).
+
+- `consistency_factor`:
+
+  column with the peptide consistency factor that the facades' default
+  weights multiply in: `"consistency_factor_rel"` after medpolish or rlm
+  aggregation, `NULL` otherwise
+
+- `use_peptide_consistency`:
+
+  do the facades' default weights use the peptide consistency factor
+  (default `TRUE`)? `FALSE` leaves it out; the consistency columns stay
+  in the data, and an explicit `weights` argument is still used.
+
 - `work_intensity`:
 
   column which contains the intensities

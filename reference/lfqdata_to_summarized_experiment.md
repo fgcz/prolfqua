@@ -108,6 +108,7 @@ lfqdata$data_wide()
 #>     annotation_vars: function () 
 #>     bin_resp: 
 #>     clone: function (deep = FALSE) 
+#>     consistency_factor: NULL
 #>     factor_depth: 1
 #>     factor_keys: function () 
 #>     factor_keys_depth: function () 
@@ -137,7 +138,9 @@ lfqdata$data_wide()
 #>     sep: ~
 #>     set_response: function (col_name) 
 #>     use_identification_confidence: TRUE
+#>     use_peptide_consistency: TRUE
 #>     value_vars: function () 
+#>     weight_columns: 
 #>     work_intensity: abundance
 #> 
 if (requireNamespace("SummarizedExperiment", quietly = TRUE)) {

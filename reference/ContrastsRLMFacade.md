@@ -132,7 +132,7 @@ initialize
       modelstr,
       contrasts,
       control = list(),
-      weights = .confidence_weights(lfqdata)
+      weights = .default_weights(lfqdata)
     )
 
 #### Arguments
@@ -158,7 +158,10 @@ initialize
 - `weights`:
 
   column names whose product gives the per-observation weights (default:
-  the identification confidence). Pass `NULL` for unweighted.
+  the child count times the identification confidence times the peptide
+  consistency factor, see
+  `AnalysisConfiguration$use_peptide_consistency`). Pass `NULL` for
+  unweighted.
 
 ------------------------------------------------------------------------
 
@@ -207,13 +210,13 @@ fa$to_wide()
 #> # A tibble: 9 × 5
 #>   protein_Id  diff.A_vs_Ctrl p.value.A_vs_Ctrl FDR.A_vs_Ctrl statistic.A_vs_Ctrl
 #>   <chr>                <dbl>             <dbl>         <dbl>               <dbl>
-#> 1 0EfVhX~0087         -2.44           0.00208        0.00796              -3.08 
-#> 2 7cbcrd~5725          2.79           0.000813       0.00732               3.35 
-#> 3 9VUkAq~4703          1.74           0.00265        0.00796               3.01 
-#> 4 BEJI92~5282          0.951          0.0621         0.140                 1.87 
-#> 5 CGzoYe~2147         -0.579          0.451          0.605                -0.753
-#> 6 Fl4JiV~8625         -0.174          0.833          0.833                -0.211
-#> 7 HvIpHG~9079         -0.585          0.402          0.605                -0.838
-#> 8 JcKVfU~9653          0.328          0.553          0.623                 0.593
-#> 9 SGIVBl~5782         -0.494          0.471          0.605                -0.721
+#> 1 0EfVhX~0087         -2.44            0.00297        0.0268              -3.64 
+#> 2 7cbcrd~5725          2.79            0.0165         0.0742               2.86 
+#> 3 9VUkAq~4703          1.74            0.0255         0.0764               2.59 
+#> 4 BEJI92~5282          0.951           0.0783         0.176                1.91 
+#> 5 CGzoYe~2147         -0.579           0.571          0.643               -0.579
+#> 6 Fl4JiV~8625         -0.174           0.797          0.797               -0.262
+#> 7 HvIpHG~9079         -0.585           0.429          0.610               -0.816
+#> 8 JcKVfU~9653          0.328           0.474          0.610                0.738
+#> 9 SGIVBl~5782         -0.494           0.444          0.610               -0.788
 ```
